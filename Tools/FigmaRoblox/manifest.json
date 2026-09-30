@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "imports": {
+    "c0017033ddb2557234279f2c": {
+      "name": "RebirthUI",
+      "sha256": "3b34f250469d9e9c3a95b27ca8f44cb2a54c2389a680b18c80928f122f3767b3"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+AgentWorkspace/
+setting.local.json
+.studiogametoolkit/outputs/ai-image/
+.studiogametoolkit/image-to-model/
+.studiogametoolkit/outputs/image-to-model/
+!AgentWorkspace/
+AgentWorkspace/*
+!AgentWorkspace/Figma/
+AgentWorkspace/Figma/*
+!AgentWorkspace/Figma/Game-DESIGN.md
+!AgentWorkspace/FigmaEggy/
+AgentWorkspace/FigmaEggy/*
+!AgentWorkspace/FigmaEggy/Game-DESIGN.md
+/Run.bat
+.studiogametoolkit/figma-roblox/
+Build/FigmaRoblox/
