@@ -9,6 +9,7 @@ assert(player, "A test client must be connected")
 local object = FS.PlayerManager:GetPlayerObject(player.UserId)
 assert(object, "Client/server handshake must complete first")
 local results = {}
+
 --- @param label string 可追踪的测试行为。
 --- @param body function 抛出断言即视为失败。
 local function Check(label, body)
@@ -21,6 +22,7 @@ Check("duplicate-ready-does-not-recreate-player", function()
     FS.PlayerManager:SetPlayerReady(player.UserId, false)
     assert(FS.PlayerManager:GetPlayerObject(player.UserId) == object)
 end)
+
 local publicFlag = { Type = "boolean", Key = "MigrationTestFlag", DefVal = true, Sync = true }
 local privateFlag = { Type = "boolean", Key = "MigrationPrivateFlag", DefVal = false, Sync = false }
 Check("false-value-and-private-field", function()
@@ -33,6 +35,7 @@ Check("false-value-and-private-field", function()
     assert(FX.SyncManager:GetFlag(publicFlag) == false)
     object:SyncData()
 end)
+
 local inv = object:RequireComponent("FSInventoryComp")
 local oldInventory = object:GetTable(Config.PlayerData.Inventory)
 local testId = 987654321
@@ -48,6 +51,7 @@ _G.Provider.ItemHandlers.MigrationTest = {
         return true
     end,
 }
+
 Check("inventory-stack-swap-remove-use-and-reject-invalid", function()
     inv:ClearAll()
     assert(inv:AddItems({ FS.ItemClass.New(testId, 8), FS.ItemClass.New(testId, 5) }))
@@ -64,17 +68,20 @@ Check("inventory-stack-swap-remove-use-and-reject-invalid", function()
     assert(inv:RemoveItemById(testId, 10))
     assert(inv:GetItemCountById(testId) == 2)
 end)
+
 Check("inventory-capacity-check-is-atomic", function()
     inv:ClearAll()
     local data = {}
     for i = 1, inv:GetTotalCapacity() do
         data[i] = { itemId = testId, stackCount = 10 }
     end
+
     data[1].stackCount = 9
     inv:_SetData(data)
     assert(not inv:CanAddItems({ FS.ItemClass.New(testId, 1), FS.ItemClass.New(testId, 1) }))
     assert(inv:GetGridData(1).stackCount == 9)
 end)
+
 object:SetTable(Config.PlayerData.Inventory, oldInventory)
 inv:SendInventoryDataToClient()
 _G.Provider.ItemHandlers.MigrationTest = nil
@@ -88,6 +95,7 @@ Check("guide-start-advance-complete", function()
             { finishEvent = "MigrationStep", target = { type = "Test" } },
         },
     }
+
     object:SetTable(Config.PlayerData.Guide, Config.PlayerData.Guide.DefVal)
     object:PublishEvent("MigrationStart")
     assert(object:GetTable(Config.PlayerData.Guide).activeGuideId == "MigrationTest")
@@ -97,6 +105,7 @@ Check("guide-start-advance-complete", function()
     object:SetTable(Config.PlayerData.Guide, original)
     Config.GuideGroups.MigrationTest = nil
 end)
+
 Check("ranking-native-cache-and-historical-high", function()
     local kind =
         { Name = "MigrationTest", Ascending = false, MaxCount = 10, DefaultValue = 0, UseHistoricalHighScore = true }
@@ -110,6 +119,7 @@ Check("ranking-native-cache-and-historical-high", function()
     assert(rank:GetPlayerScore(player.UserId) == 15)
     FS.PlayerKVDataManager:GetKVTable(player.UserId, Config.RankingDataStore):Set("MigrationTest", nil)
 end)
+
 Check("shop-unregistered-product-cannot-grant", function()
     assert(not FS.ShopService:CanBuy(player.UserId, -1))
     assert(FS.ShopService:ProcessReceipt({
@@ -118,6 +128,7 @@ Check("shop-unregistered-product-cannot-grant", function()
         PurchaseId = "migration-unregistered",
     }) == Enum.ProductPurchaseDecision.NotProcessedYet)
 end)
+
 Check("shop-receipt-is-idempotent", function()
     Config.Goods[testId] = { BuyHandler = "MigrationTest" }
     local grants = 0
@@ -130,16 +141,19 @@ Check("shop-receipt-is-idempotent", function()
             return true
         end,
     }
+
     local receipt = {
         PlayerId = player.UserId,
         ProductId = testId,
         PurchaseId = "migration-" .. game:GetService("HttpService"):GenerateGUID(false),
     }
+
     assert(FS.ShopService:ProcessReceipt(receipt) == Enum.ProductPurchaseDecision.PurchaseGranted)
     assert(FS.ShopService:ProcessReceipt(receipt) == Enum.ProductPurchaseDecision.PurchaseGranted)
     assert(grants == 1)
     Config.Goods[testId], _G.Provider.BuyHandlers.MigrationTest = nil, nil
 end)
+
 Check("storage-lock-save-release-reload", function()
     local id = -987654321
     local db = FS.PlayerKVDBClass.New(id)
@@ -160,23 +174,28 @@ Check("storage-lock-save-release-reload", function()
     assert(restored:GetKVTable("PlayerData"):Get("Probe")["58"] == false)
     assert(restored:Save(true))
 end)
+
 Check("class-event-component-removal", function()
     local name = "MigrationTestComponent"
     local Class = FX.GetClass(name) or FX.Class(name, "FXCompBaseClass")
+
     function Class:GetCompName()
         return "MigrationAlias"
     end
+
     local owner = FX.BaseObject.New()
     local component = owner:AddComponent(name)
     local count = 0
     component:SubscribeEvent("Probe", function(self, value)
         count += value
     end)
+
     owner:PublishEvent("Probe", 2)
     assert(count == 2)
     assert(owner:RemoveComponent("MigrationAlias"))
     assert(owner:GetComponent(name) == nil)
     owner:Dtor()
 end)
+
 player:SetAttribute("FrameworkServerTestsDone", true)
 return results

@@ -1,6 +1,7 @@
 local FX, FC = _G.FX, _G.FC
 local Player = FX.Class("FCPlayerObjectClass", "FXObjectBaseClass")
 FC.PlayerObjectClass = Player
+
 --- @param playerId number 本地玩家 UserId。
 function Player:Ctor(playerId)
     Player.Super.Ctor(self)
@@ -16,33 +17,41 @@ function Player:Ctor(playerId)
             end
         end
     end)
+
     FX.Network:RegServerMsgCallback("S2C_InventoryData", function(data)
         self._inventoryData = data
         self:PublishEvent("InventorySnapshot", data)
     end)
+
     FX.Network:RegServerMsgCallback("S2C_InventoryGridsChanged", function(changes)
         for _, change in ipairs(changes) do
             self._inventoryData[tostring(change.gridIndex)] = change.gridData
         end
+
         self:PublishEvent("InventorySnapshot", self._inventoryData)
     end)
+
     FX.Network:RegServerMsgCallback("S2C_ServerReady", function()
         if self._ready then
             return
         end
+
         self._ready = true
         self:CallAllCompMethod("OnReady")
         FC.Events.OnReady:Fire()
         self._timer = FX.Task:Interval(1, function()
             self:CallAllCompMethod("OnUpdate", os.time())
         end)
+
         print("[Roblox_Y1] 客户端与服务端已就绪")
     end)
 end
+
 --- @return number 本地玩家 ID。
 function Player:GetPlayerId()
     return self._playerId
 end
+
 --- @param field table 数据字段定义。
 --- @return any 当前值；false 是有效数据。
 function Player:_GetData(field)
@@ -50,12 +59,16 @@ function Player:_GetData(field)
     if value == nil then
         value = field.DefVal
     end
+
     if type(value) == "table" then
         return FX.Table:DeepCopy(value)
     end
+
     return value
 end
+
 Player.GetNumber, Player.GetFlag, Player.GetTable = Player._GetData, Player._GetData, Player._GetData
+
 --- 注册时回放当前值，晚创建的 UI 也可直接响应已有状态。
 --- @param field table 数据字段定义。
 --- @param callback function 变化回调。
@@ -67,25 +80,31 @@ function Player:WatchDataChanged(field, callback, owner)
         event = Instance.new("BindableEvent")
         self._playerDataListeners[field.Key] = event
     end
+
     local invoke = callback
     if owner then
         invoke = function(...)
             callback(owner, ...)
         end
     end
+
     local connection = event.Event:Connect(invoke)
     invoke(self:_GetData(field), nil, field.Key)
     return connection
 end
+
 --- 释放网络回调、每秒更新和字段监听。
 function Player:Dtor()
     FX.Task:Cancel(self._timer)
     for _, name in ipairs({ "S2C_PlayerStateSync", "S2C_InventoryData", "S2C_InventoryGridsChanged", "S2C_ServerReady" }) do
         FX.Network:UnRegServerMsgCallback(name)
     end
+
     for _, event in pairs(self._playerDataListeners) do
         event:Destroy()
     end
+
     Player.Super.Dtor(self)
 end
+
 return Player

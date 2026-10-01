@@ -16,10 +16,12 @@ return {
             Sync = true,
         },
     },
+
     ShortcutCapacity = 8,
     InventoryCapacity = 50,
     Items = {},
     ItemSchemas = {},
+
     -- 货币名 -> PlayerData 字段名，例如 Money = "Coins"；不预设游戏货币。
     RewardCurrencies = {},
     Goods = {},

@@ -5,6 +5,7 @@ require(script.Parent.FSPlayerKVTableClass)
 require(script.Parent.FSPlayerKVDBClass)
 local Manager = { _playerDBMap = {}, _closing = {} }
 FS.PlayerKVDataManager = Manager
+
 --- 周期保存同时续约会话；玩家事件由启动层按确定顺序连接。
 function Manager:Init()
     self._timer = FX.Task:Interval(Config.AutoSaveSeconds, function()
@@ -22,15 +23,18 @@ function Manager:Init()
         end
     end)
 end
+
 --- @param player Player 进入服务器的玩家。
 function Manager:PlayerAdded(player)
     if self._playerDBMap[player.UserId] then
         return
     end
+
     local db = FS.PlayerKVDBClass.New(player.UserId)
     self._playerDBMap[player.UserId] = db
     db:LoadAsync()
 end
+
 --- @param player Player 离开服务器的玩家；也用于关闭服务器。
 function Manager:PlayerRemoving(player)
     local id = player.UserId
@@ -38,17 +42,21 @@ function Manager:PlayerRemoving(player)
         while self._closing[id] do
             task.wait()
         end
+
         return
     end
+
     local db = self._playerDBMap[id]
     if not db then
         return
     end
+
     self._closing[id] = true
     db._leaving = true
     if FS.PlayerManager then
         FS.PlayerManager:OnPlayerLogout(id)
     end
+
     FS.Events.OnPlayerDataSaveStarted:Fire(id)
     FS.RankingManager:OnPlayerDataSaveStarted(id)
     if db:IsLoadFinished() then
@@ -56,12 +64,15 @@ function Manager:PlayerRemoving(player)
             if db:Save(true) then
                 break
             end
+
             task.wait(attempt)
         end
     end
+
     self._playerDBMap[id] = nil
     self._closing[id] = nil
 end
+
 --- @param id number 玩家 ID。
 --- @param name string KV 数据域。
 --- @return table 已加载的 KV 视图。
@@ -69,4 +80,5 @@ function Manager:GetKVTable(id, name)
     local db = self._playerDBMap[id]
     return db and db:GetKVTable(name)
 end
+
 return Manager

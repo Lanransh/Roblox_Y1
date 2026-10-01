@@ -16,10 +16,12 @@ local oldItem = Config.Items[itemId]
 local oldField, oldCurrency = Config.PlayerData.AddonTestCoins, Config.RewardCurrencies.AddonTest
 local oldTemp = object._tempDataMap[field.Key]
 local results = {}
+
 local function Check(name, body)
     local ok, err = pcall(body)
     table.insert(results, { name = name, passed = ok, error = not ok and tostring(err) or nil })
 end
+
 Config.Items[itemId] = { Id = itemId, Type = "AddonTest", MaxStack = 10 }
 Config.PlayerData.AddonTestCoins, Config.RewardCurrencies.AddonTest = field, "AddonTestCoins"
 Check("reward attached and real inventory mutation is all prechecked", function()
@@ -39,6 +41,7 @@ Check("reward attached and real inventory mutation is all prechecked", function(
     }))
     assert(object:GetNumber(field) == 17 and inventory:GetItemCountById(itemId) == 0)
 end)
+
 -- 恢复不依赖断言是否成功。
 object:SetTable(Config.PlayerData.Inventory, oldBag)
 inventory:SetHandItemGridIndex(oldHeld)
@@ -53,8 +56,10 @@ Check("friend state uses native platform result or explicit unavailable status",
     for _, id in ipairs(state.ids) do
         assert(id ~= player.UserId and game.Players:GetPlayerByUserId(id))
     end
+
     if state.status ~= "Ready" then
         assert(FS.FriendService:GetFriendCountInRoom(player.UserId) == nil)
     end
 end)
+
 return results

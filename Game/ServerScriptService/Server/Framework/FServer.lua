@@ -13,6 +13,7 @@ for _, name in ipairs({
 }) do
     require(root.Player:WaitForChild(name))
 end
+
 require(root.SItemClass)
 require(root.Modules.FSRankingServiceClass)
 return _G.FS

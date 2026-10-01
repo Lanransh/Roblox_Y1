@@ -2,6 +2,7 @@
 
 This checks logic and async ordering, not engine rendering or live social APIs.
 """
+
 import argparse
 from pathlib import Path
 import subprocess
@@ -30,6 +31,7 @@ for module in (
 ):
     parts.append("\n;(function()\n" + (root / module).read_text(encoding="utf-8") + "\nend)()\n")
 parts.append((root / "Tests/FrameworkAddons.spec.lua").read_text(encoding="utf-8"))
+
 output = root / "Build/FrameworkAddons.bundle.luau"
 output.parent.mkdir(exist_ok=True)
 output.write_text("".join(parts), encoding="utf-8")

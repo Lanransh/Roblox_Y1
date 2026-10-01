@@ -105,6 +105,17 @@ function UI:GetCompName()
     return "FCCommonUIComp"
 end
 
+--- @param productId number Roblox Developer Product ID。
+--- @return boolean 是否通过服务端预检并发起购买提示。
+function UI:ShowDeveloperBuyUI(productId)
+    if not FX.Network:InvokeServer("C2S_BuyCheck", productId) then
+        return false
+    end
+
+    game:GetService("MarketplaceService"):PromptProductPurchase(self:GetPlayerNode(), productId)
+    return true
+end
+
 -- 后一次提示替换前一次；销毁组件时取消计时器。
 function UI:ShowTips(message, duration)
     FX.Task:Cancel(self._tipTask)

@@ -3,12 +3,14 @@ local FX, FC = _G.FX, _G.FC
 local object = assert(FC.PlayerObject)
 assert(object._ready, "Handshake not finished")
 local results = {}
+
 --- @param label string 测试行为。
 --- @param body function 断言测试体。
 local function Check(label, body)
     local ok, err = pcall(body)
     table.insert(results, { name = label, passed = ok, error = not ok and tostring(err) or nil })
 end
+
 Check("client-false-sync-private-field-and-late-watch", function()
     assert(object._playerData.MigrationTestFlag == false)
     assert(object._playerData.MigrationPrivateFlag == nil)
@@ -23,6 +25,7 @@ Check("client-false-sync-private-field-and-late-watch", function()
     connection:Disconnect()
     assert(FX.SyncManager:GetFlag({ Type = "boolean", Key = "MigrationTestFlag", DefVal = true }) == false)
 end)
+
 Check("remote-authenticated-rpc-and-invalid-arguments", function()
     assert(type(FX.Network:InvokeServer("C2S_GetServerTime")) == "number")
     assert(not FX.Network:InvokeServer("C2S_CanUseItem", -1, -1))
@@ -30,6 +33,7 @@ Check("remote-authenticated-rpc-and-invalid-arguments", function()
     assert(not FX.Network:InvokeServer("C2S_BuyCheck", -1))
     FX.Network:SendMsgToServer("C2S_ClientReady")
 end)
+
 Check("native-ui-inventory-filter-sort-select-and-destroy", function()
     local gui = Instance.new("ScreenGui")
     gui.Name = "FrameworkMigrationTest"
@@ -51,6 +55,7 @@ Check("native-ui-inventory-filter-sort-select-and-destroy", function()
     selected.Name = "SelectedIcon"
     selected.Visible = false
     local Class = FX.GetClass("MigrationInventoryUI") or FX.Class("MigrationInventoryUI", "FCInventoryCompClass")
+
     function Class:GetInventoryListNodeMap()
         return {
             shortcut = { listNode = shortcut, templateNode = template },
@@ -58,13 +63,17 @@ Check("native-ui-inventory-filter-sort-select-and-destroy", function()
             dragParentNode = gui,
         }
     end
+
     function Class:RefreshBackpackGridNode(index, grid, node)
         node.Text = tostring(grid)
     end
+
     function Class:RefreshShortcutGridNode(index, node)
         node.Text = tostring(index)
     end
+
     function Class:OnSelectBackpackGrid(context) end
+
     --- @param data table 格子数据。
     --- @param index number 实际格号。
     --- @param filter string 筛选类型。
@@ -72,6 +81,7 @@ Check("native-ui-inventory-filter-sort-select-and-destroy", function()
     function Class:IsGridDataMatchFilter(data, index, filter)
         return data ~= nil and (filter ~= "Second" or data.itemId == 2)
     end
+
     local ui = Class.New(object)
     ui._rootNode = root
     ui:OnInventoryData({ ["58"] = { itemId = 2, stackCount = 3 }, ["9"] = { itemId = 1, stackCount = 2 } })
@@ -91,6 +101,7 @@ Check("native-ui-inventory-filter-sort-select-and-destroy", function()
     assert(#backpack:GetChildren() == 1 and #shortcut:GetChildren() == 1)
     gui:Destroy()
 end)
+
 Check("animation-key-hold-sound-lifecycle", function()
     local frame = Instance.new("Frame")
     frame.Size = UDim2.fromScale(0, 1)
@@ -104,6 +115,7 @@ Check("animation-key-hold-sound-lifecycle", function()
     hold:SetHoldCompleteCallback(function()
         completed = true
     end)
+
     hold:StartHold()
     task.wait(0.1)
     assert(completed)
@@ -117,4 +129,5 @@ Check("animation-key-hold-sound-lifecycle", function()
     assert(folder.Parent == nil)
     frame:Destroy()
 end)
+
 return results

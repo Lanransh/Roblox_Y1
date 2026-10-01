@@ -12,6 +12,7 @@ parts = ["local _G = { FX = {} }\n"]
 for name in ("FXClass", "FXTable", "FXTime"):
     parts.append(";(function()\n" + (core / f"{name}.lua").read_text(encoding="utf-8") + "\nend)()\n")
 parts.append((root / "Tests/FrameworkPure.spec.lua").read_text(encoding="utf-8"))
+
 output = root / "Build/FrameworkPure.bundle.luau"
 output.parent.mkdir(exist_ok=True)
 output.write_text("".join(parts), encoding="utf-8")

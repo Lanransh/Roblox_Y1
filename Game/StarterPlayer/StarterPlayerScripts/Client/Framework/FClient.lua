@@ -14,10 +14,13 @@ for _, name in ipairs({
 }) do
     require(root.Player:WaitForChild(name))
 end
+
 for _, name in ipairs({ "ShopPageBaseClass", "ShopItemBaseClass", "FCShopUICompClass" }) do
     require(root.Shop:WaitForChild(name))
 end
+
 for _, name in ipairs({ "FCDragObjectClass", "FCTouchObjectClass", "FCHoldUIObjectClass", "FCKeyObjectClass" }) do
     require(root:WaitForChild(name))
 end
+
 return _G.FC

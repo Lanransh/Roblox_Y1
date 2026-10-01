@@ -4,16 +4,19 @@ local FX, FC = _G.FX, _G.FC
 local object = FC.PlayerObject
 assert(object and object._ready, "Handshake required")
 local results = {}
+
 local function Check(name, body)
     local ok, err = pcall(body)
     table.insert(results, { name = name, passed = ok, error = not ok and tostring(err) or nil })
 end
+
 Check("common UI and friend components attached at startup", function()
     local ui = object:RequireComponent("FCCommonUIComp")
     assert(ui.Root:IsA("ScreenGui") and ui.Root.Parent == game.Players.LocalPlayer.PlayerGui)
     assert(ui.Root.ResetOnSpawn == false and not ui.Modal.Visible)
     assert(object:RequireComponent("FCFriendComp"))
 end)
+
 local ui = FC.CommonUICompClass.New(object)
 Check("native modal scroll content and exactly-once confirmation", function()
     local calls = 0
@@ -23,6 +26,7 @@ Check("native modal scroll content and exactly-once confirmation", function()
             calls += 1
         end,
     })
+
     task.wait()
     assert(ui.Modal.Visible and ui.Cancel.Visible and ui.Confirm:IsA("TextButton"))
     assert(ui.Description.Parent:IsA("ScrollingFrame"))
@@ -31,6 +35,7 @@ Check("native modal scroll content and exactly-once confirmation", function()
     ui:_Finish(true)
     assert(calls == 1 and not ui.Modal.Visible)
 end)
+
 Check("toast replacement timer and destructor release native resources", function()
     ui:ShowTips("旧提示", 0.05)
     ui:ShowTips("新提示", 0.3)
@@ -39,6 +44,7 @@ Check("toast replacement timer and destructor release native resources", functio
     task.wait(0.3)
     assert(not ui.Tips.Visible)
 end)
+
 ui:ShowTips("待销毁", 10)
 local root, connections = ui.Root, table.clone(ui._connections)
 ui:Dtor()
@@ -47,8 +53,10 @@ Check("UI destructor disconnects buttons and cancels toast timer", function()
     for _, connection in ipairs(connections) do
         assert(not connection.Connected)
     end
+
     assert(coroutine.status(ui._tipTask) == "dead")
 end)
+
 Check("friend snapshot request uses authenticated identity", function()
     local state = FX.Network:InvokeServer("C2S_GetFriendState", 999999999, { 1, 2, 3 })
     task.wait()
@@ -60,4 +68,5 @@ Check("friend snapshot request uses authenticated identity", function()
         assert(friend:GetFriendCountInRoom() == nil)
     end
 end)
+
 return results

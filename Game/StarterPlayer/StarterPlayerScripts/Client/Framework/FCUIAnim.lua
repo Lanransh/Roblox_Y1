@@ -1,6 +1,7 @@
 local TweenService = game:GetService("TweenService")
 local Anim = { _active = setmetatable({}, { __mode = "k" }) }
 _G.FC.UIAnim = Anim
+
 --- @param node GuiObject 动画根节点。
 --- @return UIScale 统一缩放节点。
 local function Scale(node)
@@ -8,8 +9,10 @@ local function Scale(node)
     if not scale then
         scale = Instance.new("UIScale", node)
     end
+
     return scale
 end
+
 --- @param node Instance 被插值的对象。
 --- @param goals table 目标属性。
 --- @param duration number 秒数。
@@ -24,14 +27,17 @@ function Anim:_Play(node, goals, duration, callback, info)
         if self._active[node] == tween then
             self._active[node] = nil
         end
+
         tween:Destroy()
         if state == Enum.PlaybackState.Completed and callback then
             callback()
         end
     end)
+
     tween:Play()
     return tween
 end
+
 --- @param node GuiObject 面板。
 --- @param duration number 可选秒数。
 --- @param callback function 可选完成回调。
@@ -47,6 +53,7 @@ function Anim:Open(node, duration, callback)
         TweenInfo.new(duration or 0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
     )
 end
+
 --- @param node GuiObject 面板。
 --- @param callback function 在动画后隐藏面板的回调。
 --- @param duration number 可选秒数。
@@ -57,9 +64,11 @@ function Anim:Close(node, callback, duration)
         if callback then
             callback()
         end
+
         scale.Scale = 1
     end)
 end
+
 --- @param node GuiObject 面板。
 --- @param duration number 可选秒数。
 --- @param callback function 可选完成回调。
@@ -71,6 +80,7 @@ function Anim:Show1(node, duration, callback, offset)
     node.Position = origin - UDim2.fromOffset(offset.X, offset.Y)
     return self:_Play(node, { Position = origin }, duration, callback)
 end
+
 --- @param node GuiObject 面板。
 --- @param callback function 完成后隐藏节点的回调。
 --- @param duration number 可选秒数。
@@ -83,9 +93,11 @@ function Anim:Close1(node, callback, duration, offset)
         if callback then
             callback()
         end
+
         node.Position = origin
     end)
 end
+
 --- @param node GuiObject 面板。
 --- @param offset Vector2 像素位移。
 --- @param duration number 秒数。
@@ -94,6 +106,7 @@ end
 function Anim:Move(node, offset, duration, callback)
     return self:_Play(node, { Position = node.Position + UDim2.fromOffset(offset.X, offset.Y) }, duration, callback)
 end
+
 --- @param node CanvasGroup 淡入需要原生 CanvasGroup 以覆盖子节点。
 --- @param duration number 秒数。
 --- @param callback function 完成回调。
@@ -102,6 +115,7 @@ function Anim:FadeIn(node, duration, callback)
     node.GroupTransparency = 1
     return self:_Play(node, { GroupTransparency = 0 }, duration, callback)
 end
+
 --- @param node CanvasGroup 淡出根节点。
 --- @param callback function 完成后隐藏节点的回调。
 --- @param duration number 秒数。
@@ -109,6 +123,7 @@ end
 function Anim:FadeOut(node, callback, duration)
     return self:_Play(node, { GroupTransparency = 1 }, duration, callback)
 end
+
 --- @param node GuiObject 抖动节点。
 --- @param intensity number 像素振幅。
 --- @param duration number 总秒数。
@@ -132,6 +147,7 @@ function Anim:Shake(node, intensity, duration, shakes)
         )
     )
 end
+
 --- @param node GuiObject 脉冲节点。
 --- @param scalePercent number 相对放大量，例如 0.1。
 --- @param repeatCount number 往返次数。
@@ -147,6 +163,7 @@ function Anim:Pulse(node, scalePercent, repeatCount, duration)
         TweenInfo.new(duration or 0.3, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, (repeatCount or 1) - 1, true)
     )
 end
+
 --- @param node Instance 需要停止的插值对象。
 function Anim:StopProgress(node)
     local tween = self._active[node]
@@ -156,6 +173,7 @@ function Anim:StopProgress(node)
         tween:Destroy()
     end
 end
+
 --- @param node GuiObject 进度填充节点，水平 Size.Scale 表示进度。
 --- @param progress number 0 到 1。
 --- @param duration number 秒数。
@@ -169,4 +187,5 @@ function Anim:Progress(node, progress, duration, callback)
         callback
     )
 end
+
 return Anim
