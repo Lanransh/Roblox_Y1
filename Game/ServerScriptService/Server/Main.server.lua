@@ -1,3 +1,5 @@
--- 服务端启动入口：在这里显式加载并初始化服务模块。
-print("[Roblox_Y1] 服务端已启动")
-print("你好")
+local Framework = game:GetService("ReplicatedStorage"):WaitForChild("Framework")
+require(Framework.FrameworkInit)
+require(script.Parent.Framework.FServer)
+require(script.Parent.Service.FrameworkService):Init()
+print("[Roblox_Y1] 服务端框架已启动")

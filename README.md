@@ -2,6 +2,8 @@
 
 `Game` 是整个 Roblox 同步项目的根目录，包含脚本、模型、UI 和场景节点。原始素材与完整 Studio 场景另行保存。
 
+已迁入 MiniStudio 通用框架；模块位置、业务接入和验证方式见 [框架迁移说明](Docs/框架迁移.md)。Studio 默认使用仅本次试玩有效的内存存档。
+
 ## 开始开发
 
 直接用 VS Code 打开 `F:\MiniGame\Roblox_Y1\Game`。
