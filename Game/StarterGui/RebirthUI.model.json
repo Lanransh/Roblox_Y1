@@ -7,28 +7,53 @@
   },
   "children": [
     {
-      "name": "Viewport",
-      "className": "Frame",
+      "name": "PopupPanelImg",
+      "className": "ImageLabel",
       "properties": {
-        "Size": {
+        "AnchorPoint": {
+          "Vector2": [
+            0.5,
+            0.5
+          ]
+        },
+        "Position": {
           "UDim2": [
             [
-              1,
+              0.5,
               0
             ],
             [
-              1,
+              0.5,
               0
             ]
           ]
         },
+        "Size": {
+          "UDim2": [
+            [
+              0,
+              680
+            ],
+            [
+              0,
+              450
+            ]
+          ]
+        },
+        "Rotation": 0.0,
+        "Visible": true,
         "BackgroundTransparency": 1,
-        "BorderSizePixel": 0
+        "BorderSizePixel": 0,
+        "ZIndex": 1,
+        "ClipsDescendants": false,
+        "Image": "rbxassetid://96555586521798",
+        "ImageTransparency": 0.0,
+        "ScaleType": "Stretch"
       },
       "children": [
         {
-          "name": "Canvas",
-          "className": "Frame",
+          "name": "TopBarImg",
+          "className": "ImageLabel",
           "properties": {
             "AnchorPoint": {
               "Vector2": [
@@ -39,12 +64,12 @@
             "Position": {
               "UDim2": [
                 [
-                  0.5,
-                  0
+                  0,
+                  340
                 ],
                 [
-                  0.5,
-                  0
+                  0,
+                  34
                 ]
               ]
             },
@@ -52,32 +77,84 @@
               "UDim2": [
                 [
                   0,
-                  1280
+                  662
                 ],
                 [
                   0,
-                  720
+                  50
                 ]
               ]
             },
-            "Rotation": 0,
+            "Rotation": 0.0,
             "Visible": true,
-            "BackgroundTransparency": 0.0,
+            "BackgroundTransparency": 1,
             "BorderSizePixel": 0,
             "ZIndex": 1,
-            "BackgroundColor3": {
-              "Color3": [
-                1,
-                1,
-                1
+            "Image": "rbxassetid://100383727008884",
+            "ImageTransparency": 0.0,
+            "ScaleType": "Stretch"
+          },
+          "children": [],
+          "attributes": {
+            "FigmaNodeId": {
+              "String": "1:99"
+            },
+            "FigmaFileKey": {
+              "String": "2nqyEj1d6oLdG2HqQjAerM"
+            },
+            "UIKey": {
+              "String": "figma_a431af955fe04fb504616ee5"
+            }
+          }
+        },
+        {
+          "name": "ContentImg",
+          "className": "ImageLabel",
+          "properties": {
+            "AnchorPoint": {
+              "Vector2": [
+                0.5,
+                0.5
               ]
             },
-            "ClipsDescendants": false
+            "Position": {
+              "UDim2": [
+                [
+                  0,
+                  340
+                ],
+                [
+                  0,
+                  248
+                ]
+              ]
+            },
+            "Size": {
+              "UDim2": [
+                [
+                  0,
+                  658
+                ],
+                [
+                  0,
+                  382
+                ]
+              ]
+            },
+            "Rotation": 0.0,
+            "Visible": true,
+            "BackgroundTransparency": 1,
+            "BorderSizePixel": 0,
+            "ZIndex": 2,
+            "ClipsDescendants": false,
+            "Image": "rbxassetid://88278798960834",
+            "ImageTransparency": 0.0,
+            "ScaleType": "Stretch"
           },
           "children": [
             {
-              "name": "PopupPanelImg",
-              "className": "Frame",
+              "name": "UpgradeCompareImg",
+              "className": "ImageLabel",
               "properties": {
                 "AnchorPoint": {
                   "Vector2": [
@@ -89,11 +166,11 @@
                   "UDim2": [
                     [
                       0,
-                      640
+                      329
                     ],
                     [
                       0,
-                      360
+                      121
                     ]
                   ]
                 },
@@ -101,11 +178,11 @@
                   "UDim2": [
                     [
                       0,
-                      680
+                      574
                     ],
                     [
                       0,
-                      450
+                      206
                     ]
                   ]
                 },
@@ -114,2198 +191,14 @@
                 "BackgroundTransparency": 1,
                 "BorderSizePixel": 0,
                 "ZIndex": 1,
-                "ClipsDescendants": false
+                "ClipsDescendants": false,
+                "Image": "rbxassetid://71793168866520",
+                "ImageTransparency": 0.0,
+                "ScaleType": "Stretch"
               },
               "children": [
                 {
-                  "name": "Background",
-                  "className": "ImageLabel",
-                  "properties": {
-                    "BackgroundTransparency": 1,
-                    "BorderSizePixel": 0,
-                    "Active": false,
-                    "Position": {
-                      "UDim2": [
-                        [
-                          0,
-                          0
-                        ],
-                        [
-                          0,
-                          0
-                        ]
-                      ]
-                    },
-                    "Size": {
-                      "UDim2": [
-                        [
-                          0,
-                          680
-                        ],
-                        [
-                          0,
-                          450
-                        ]
-                      ]
-                    },
-                    "Image": "rbxassetid://96555586521798",
-                    "ImageTransparency": 0.0,
-                    "ScaleType": "Stretch",
-                    "ZIndex": 0
-                  },
-                  "children": [],
-                  "attributes": {
-                    "FigmaNodeId": {
-                      "String": "1:98"
-                    },
-                    "FigmaRole": {
-                      "String": "background"
-                    }
-                  }
-                },
-                {
-                  "name": "TopBarImg",
-                  "className": "ImageLabel",
-                  "properties": {
-                    "AnchorPoint": {
-                      "Vector2": [
-                        0.5,
-                        0.5
-                      ]
-                    },
-                    "Position": {
-                      "UDim2": [
-                        [
-                          0,
-                          340
-                        ],
-                        [
-                          0,
-                          34
-                        ]
-                      ]
-                    },
-                    "Size": {
-                      "UDim2": [
-                        [
-                          0,
-                          662
-                        ],
-                        [
-                          0,
-                          50
-                        ]
-                      ]
-                    },
-                    "Rotation": 0.0,
-                    "Visible": true,
-                    "BackgroundTransparency": 1,
-                    "BorderSizePixel": 0,
-                    "ZIndex": 1,
-                    "Image": "rbxassetid://100383727008884",
-                    "ImageTransparency": 0.0,
-                    "ScaleType": "Stretch"
-                  },
-                  "children": [],
-                  "attributes": {
-                    "FigmaNodeId": {
-                      "String": "1:99"
-                    },
-                    "FigmaFileKey": {
-                      "String": "2nqyEj1d6oLdG2HqQjAerM"
-                    },
-                    "UIKey": {
-                      "String": "figma_a431af955fe04fb504616ee5"
-                    }
-                  }
-                },
-                {
-                  "name": "ContentImg",
-                  "className": "Frame",
-                  "properties": {
-                    "AnchorPoint": {
-                      "Vector2": [
-                        0.5,
-                        0.5
-                      ]
-                    },
-                    "Position": {
-                      "UDim2": [
-                        [
-                          0,
-                          340
-                        ],
-                        [
-                          0,
-                          248
-                        ]
-                      ]
-                    },
-                    "Size": {
-                      "UDim2": [
-                        [
-                          0,
-                          658
-                        ],
-                        [
-                          0,
-                          382
-                        ]
-                      ]
-                    },
-                    "Rotation": 0.0,
-                    "Visible": true,
-                    "BackgroundTransparency": 1,
-                    "BorderSizePixel": 0,
-                    "ZIndex": 2,
-                    "ClipsDescendants": false
-                  },
-                  "children": [
-                    {
-                      "name": "Background",
-                      "className": "ImageLabel",
-                      "properties": {
-                        "BackgroundTransparency": 1,
-                        "BorderSizePixel": 0,
-                        "Active": false,
-                        "Position": {
-                          "UDim2": [
-                            [
-                              0,
-                              0
-                            ],
-                            [
-                              0,
-                              0
-                            ]
-                          ]
-                        },
-                        "Size": {
-                          "UDim2": [
-                            [
-                              0,
-                              658
-                            ],
-                            [
-                              0,
-                              382
-                            ]
-                          ]
-                        },
-                        "Image": "rbxassetid://88278798960834",
-                        "ImageTransparency": 0.0,
-                        "ScaleType": "Stretch",
-                        "ZIndex": 0
-                      },
-                      "children": [],
-                      "attributes": {
-                        "FigmaNodeId": {
-                          "String": "1:100"
-                        },
-                        "FigmaRole": {
-                          "String": "background"
-                        }
-                      }
-                    },
-                    {
-                      "name": "UpgradeCompareImg",
-                      "className": "Frame",
-                      "properties": {
-                        "AnchorPoint": {
-                          "Vector2": [
-                            0.5,
-                            0.5
-                          ]
-                        },
-                        "Position": {
-                          "UDim2": [
-                            [
-                              0,
-                              329
-                            ],
-                            [
-                              0,
-                              121
-                            ]
-                          ]
-                        },
-                        "Size": {
-                          "UDim2": [
-                            [
-                              0,
-                              574
-                            ],
-                            [
-                              0,
-                              206
-                            ]
-                          ]
-                        },
-                        "Rotation": 0.0,
-                        "Visible": true,
-                        "BackgroundTransparency": 1,
-                        "BorderSizePixel": 0,
-                        "ZIndex": 1,
-                        "ClipsDescendants": false
-                      },
-                      "children": [
-                        {
-                          "name": "Background",
-                          "className": "ImageLabel",
-                          "properties": {
-                            "BackgroundTransparency": 1,
-                            "BorderSizePixel": 0,
-                            "Active": false,
-                            "Position": {
-                              "UDim2": [
-                                [
-                                  0,
-                                  0
-                                ],
-                                [
-                                  0,
-                                  0
-                                ]
-                              ]
-                            },
-                            "Size": {
-                              "UDim2": [
-                                [
-                                  0,
-                                  574
-                                ],
-                                [
-                                  0,
-                                  206
-                                ]
-                              ]
-                            },
-                            "Image": "rbxassetid://71793168866520",
-                            "ImageTransparency": 0.0,
-                            "ScaleType": "Stretch",
-                            "ZIndex": 0
-                          },
-                          "children": [],
-                          "attributes": {
-                            "FigmaNodeId": {
-                              "String": "1:101"
-                            },
-                            "FigmaRole": {
-                              "String": "background"
-                            }
-                          }
-                        },
-                        {
-                          "name": "BeforeLabelTxt",
-                          "className": "TextLabel",
-                          "properties": {
-                            "AnchorPoint": {
-                              "Vector2": [
-                                0.5,
-                                0.5
-                              ]
-                            },
-                            "Position": {
-                              "UDim2": [
-                                [
-                                  0,
-                                  147
-                                ],
-                                [
-                                  0,
-                                  25
-                                ]
-                              ]
-                            },
-                            "Size": {
-                              "UDim2": [
-                                [
-                                  0,
-                                  210
-                                ],
-                                [
-                                  0,
-                                  30
-                                ]
-                              ]
-                            },
-                            "Rotation": 0.0,
-                            "Visible": true,
-                            "BackgroundTransparency": 1,
-                            "BorderSizePixel": 0,
-                            "ZIndex": 1,
-                            "BackgroundColor3": {
-                              "Color3": [
-                                0.38823530077934265,
-                                0.4627451002597809,
-                                0.4588235318660736
-                              ]
-                            },
-                            "Text": "重生前",
-                            "TextSize": 20,
-                            "Font": "SourceSansBold",
-                            "TextWrapped": true,
-                            "RichText": false,
-                            "TextXAlignment": "Center",
-                            "TextYAlignment": "Center",
-                            "TextColor3": {
-                              "Color3": [
-                                0.38823530077934265,
-                                0.4627451002597809,
-                                0.4588235318660736
-                              ]
-                            },
-                            "TextTransparency": 0.0,
-                            "ClipsDescendants": false
-                          },
-                          "children": [],
-                          "attributes": {
-                            "FigmaNodeId": {
-                              "String": "1:102"
-                            },
-                            "FigmaFileKey": {
-                              "String": "2nqyEj1d6oLdG2HqQjAerM"
-                            },
-                            "UIKey": {
-                              "String": "figma_4de26ac22de49861abde3090"
-                            }
-                          }
-                        },
-                        {
-                          "name": "AfterLabelTxt",
-                          "className": "TextLabel",
-                          "properties": {
-                            "AnchorPoint": {
-                              "Vector2": [
-                                0.5,
-                                0.5
-                              ]
-                            },
-                            "Position": {
-                              "UDim2": [
-                                [
-                                  0,
-                                  427
-                                ],
-                                [
-                                  0,
-                                  25
-                                ]
-                              ]
-                            },
-                            "Size": {
-                              "UDim2": [
-                                [
-                                  0,
-                                  210
-                                ],
-                                [
-                                  0,
-                                  30
-                                ]
-                              ]
-                            },
-                            "Rotation": 0.0,
-                            "Visible": true,
-                            "BackgroundTransparency": 1,
-                            "BorderSizePixel": 0,
-                            "ZIndex": 2,
-                            "BackgroundColor3": {
-                              "Color3": [
-                                0.38823530077934265,
-                                0.4627451002597809,
-                                0.4588235318660736
-                              ]
-                            },
-                            "Text": "重生后",
-                            "TextSize": 20,
-                            "Font": "SourceSansBold",
-                            "TextWrapped": true,
-                            "RichText": false,
-                            "TextXAlignment": "Center",
-                            "TextYAlignment": "Center",
-                            "TextColor3": {
-                              "Color3": [
-                                0.38823530077934265,
-                                0.4627451002597809,
-                                0.4588235318660736
-                              ]
-                            },
-                            "TextTransparency": 0.0,
-                            "ClipsDescendants": false
-                          },
-                          "children": [],
-                          "attributes": {
-                            "FigmaNodeId": {
-                              "String": "1:103"
-                            },
-                            "FigmaFileKey": {
-                              "String": "2nqyEj1d6oLdG2HqQjAerM"
-                            },
-                            "UIKey": {
-                              "String": "figma_dabc78fb672f7abdb00115bc"
-                            }
-                          }
-                        },
-                        {
-                          "name": "BeforeStrengthImg",
-                          "className": "Frame",
-                          "properties": {
-                            "AnchorPoint": {
-                              "Vector2": [
-                                0.5,
-                                0.5
-                              ]
-                            },
-                            "Position": {
-                              "UDim2": [
-                                [
-                                  0,
-                                  147
-                                ],
-                                [
-                                  0,
-                                  76
-                                ]
-                              ]
-                            },
-                            "Size": {
-                              "UDim2": [
-                                [
-                                  0,
-                                  210
-                                ],
-                                [
-                                  0,
-                                  60
-                                ]
-                              ]
-                            },
-                            "Rotation": 0.0,
-                            "Visible": true,
-                            "BackgroundTransparency": 1,
-                            "BorderSizePixel": 0,
-                            "ZIndex": 3,
-                            "ClipsDescendants": false
-                          },
-                          "children": [
-                            {
-                              "name": "Background",
-                              "className": "ImageLabel",
-                              "properties": {
-                                "BackgroundTransparency": 1,
-                                "BorderSizePixel": 0,
-                                "Active": false,
-                                "Position": {
-                                  "UDim2": [
-                                    [
-                                      0,
-                                      0
-                                    ],
-                                    [
-                                      0,
-                                      0
-                                    ]
-                                  ]
-                                },
-                                "Size": {
-                                  "UDim2": [
-                                    [
-                                      0,
-                                      210
-                                    ],
-                                    [
-                                      0,
-                                      60
-                                    ]
-                                  ]
-                                },
-                                "Image": "rbxassetid://106714810516505",
-                                "ImageTransparency": 0.0,
-                                "ScaleType": "Stretch",
-                                "ZIndex": 0
-                              },
-                              "children": [],
-                              "attributes": {
-                                "FigmaNodeId": {
-                                  "String": "1:104"
-                                },
-                                "FigmaRole": {
-                                  "String": "background"
-                                }
-                              }
-                            },
-                            {
-                              "name": "BeforeStrengthIconImg",
-                              "className": "ImageLabel",
-                              "properties": {
-                                "AnchorPoint": {
-                                  "Vector2": [
-                                    0.5,
-                                    0.5
-                                  ]
-                                },
-                                "Position": {
-                                  "UDim2": [
-                                    [
-                                      0,
-                                      33
-                                    ],
-                                    [
-                                      0,
-                                      30
-                                    ]
-                                  ]
-                                },
-                                "Size": {
-                                  "UDim2": [
-                                    [
-                                      0,
-                                      29
-                                    ],
-                                    [
-                                      0,
-                                      34
-                                    ]
-                                  ]
-                                },
-                                "Rotation": 0.0,
-                                "Visible": true,
-                                "BackgroundTransparency": 1,
-                                "BorderSizePixel": 0,
-                                "ZIndex": 1,
-                                "Image": "rbxassetid://95719737785131",
-                                "ImageTransparency": 0.0,
-                                "ScaleType": "Stretch"
-                              },
-                              "children": [],
-                              "attributes": {
-                                "FigmaNodeId": {
-                                  "String": "1:105"
-                                },
-                                "FigmaFileKey": {
-                                  "String": "2nqyEj1d6oLdG2HqQjAerM"
-                                },
-                                "UIKey": {
-                                  "String": "figma_f07c1bb922d97ceb79adb5d4"
-                                }
-                              }
-                            },
-                            {
-                              "name": "BeforeStrengthTxt",
-                              "className": "TextLabel",
-                              "properties": {
-                                "AnchorPoint": {
-                                  "Vector2": [
-                                    0.5,
-                                    0.5
-                                  ]
-                                },
-                                "Position": {
-                                  "UDim2": [
-                                    [
-                                      0,
-                                      126
-                                    ],
-                                    [
-                                      0,
-                                      30
-                                    ]
-                                  ]
-                                },
-                                "Size": {
-                                  "UDim2": [
-                                    [
-                                      0,
-                                      144
-                                    ],
-                                    [
-                                      0,
-                                      60
-                                    ]
-                                  ]
-                                },
-                                "Rotation": 0.0,
-                                "Visible": true,
-                                "BackgroundTransparency": 1,
-                                "BorderSizePixel": 0,
-                                "ZIndex": 2,
-                                "BackgroundColor3": {
-                                  "Color3": [
-                                    0.12941177189350128,
-                                    0.25882354378700256,
-                                    0.29019609093666077
-                                  ]
-                                },
-                                "Text": "7x",
-                                "TextSize": 30,
-                                "Font": "SourceSansBold",
-                                "TextWrapped": true,
-                                "RichText": false,
-                                "TextXAlignment": "Center",
-                                "TextYAlignment": "Center",
-                                "TextColor3": {
-                                  "Color3": [
-                                    0.12941177189350128,
-                                    0.25882354378700256,
-                                    0.29019609093666077
-                                  ]
-                                },
-                                "TextTransparency": 0.0,
-                                "ClipsDescendants": false
-                              },
-                              "children": [],
-                              "attributes": {
-                                "FigmaNodeId": {
-                                  "String": "1:106"
-                                },
-                                "FigmaFileKey": {
-                                  "String": "2nqyEj1d6oLdG2HqQjAerM"
-                                },
-                                "UIKey": {
-                                  "String": "figma_3a97ae7e8a5dc403ee2772b0"
-                                }
-                              }
-                            }
-                          ],
-                          "attributes": {
-                            "FigmaNodeId": {
-                              "String": "1:104"
-                            },
-                            "FigmaFileKey": {
-                              "String": "2nqyEj1d6oLdG2HqQjAerM"
-                            },
-                            "UIKey": {
-                              "String": "figma_6b497a8ac48c2773f61b9910"
-                            }
-                          }
-                        },
-                        {
-                          "name": "AfterStrengthImg",
-                          "className": "Frame",
-                          "properties": {
-                            "AnchorPoint": {
-                              "Vector2": [
-                                0.5,
-                                0.5
-                              ]
-                            },
-                            "Position": {
-                              "UDim2": [
-                                [
-                                  0,
-                                  427
-                                ],
-                                [
-                                  0,
-                                  76
-                                ]
-                              ]
-                            },
-                            "Size": {
-                              "UDim2": [
-                                [
-                                  0,
-                                  210
-                                ],
-                                [
-                                  0,
-                                  60
-                                ]
-                              ]
-                            },
-                            "Rotation": 0.0,
-                            "Visible": true,
-                            "BackgroundTransparency": 1,
-                            "BorderSizePixel": 0,
-                            "ZIndex": 4,
-                            "ClipsDescendants": false
-                          },
-                          "children": [
-                            {
-                              "name": "Background",
-                              "className": "ImageLabel",
-                              "properties": {
-                                "BackgroundTransparency": 1,
-                                "BorderSizePixel": 0,
-                                "Active": false,
-                                "Position": {
-                                  "UDim2": [
-                                    [
-                                      0,
-                                      0
-                                    ],
-                                    [
-                                      0,
-                                      0
-                                    ]
-                                  ]
-                                },
-                                "Size": {
-                                  "UDim2": [
-                                    [
-                                      0,
-                                      210
-                                    ],
-                                    [
-                                      0,
-                                      60
-                                    ]
-                                  ]
-                                },
-                                "Image": "rbxassetid://87846386739366",
-                                "ImageTransparency": 0.0,
-                                "ScaleType": "Stretch",
-                                "ZIndex": 0
-                              },
-                              "children": [],
-                              "attributes": {
-                                "FigmaNodeId": {
-                                  "String": "1:107"
-                                },
-                                "FigmaRole": {
-                                  "String": "background"
-                                }
-                              }
-                            },
-                            {
-                              "name": "AfterStrengthIconImg",
-                              "className": "ImageLabel",
-                              "properties": {
-                                "AnchorPoint": {
-                                  "Vector2": [
-                                    0.5,
-                                    0.5
-                                  ]
-                                },
-                                "Position": {
-                                  "UDim2": [
-                                    [
-                                      0,
-                                      33
-                                    ],
-                                    [
-                                      0,
-                                      30
-                                    ]
-                                  ]
-                                },
-                                "Size": {
-                                  "UDim2": [
-                                    [
-                                      0,
-                                      29
-                                    ],
-                                    [
-                                      0,
-                                      34
-                                    ]
-                                  ]
-                                },
-                                "Rotation": 0.0,
-                                "Visible": true,
-                                "BackgroundTransparency": 1,
-                                "BorderSizePixel": 0,
-                                "ZIndex": 1,
-                                "Image": "rbxassetid://95719737785131",
-                                "ImageTransparency": 0.0,
-                                "ScaleType": "Stretch"
-                              },
-                              "children": [],
-                              "attributes": {
-                                "FigmaNodeId": {
-                                  "String": "1:108"
-                                },
-                                "FigmaFileKey": {
-                                  "String": "2nqyEj1d6oLdG2HqQjAerM"
-                                },
-                                "UIKey": {
-                                  "String": "figma_0882d8efe801a230a0e08c3d"
-                                }
-                              }
-                            },
-                            {
-                              "name": "AfterStrengthTxt",
-                              "className": "TextLabel",
-                              "properties": {
-                                "AnchorPoint": {
-                                  "Vector2": [
-                                    0.5,
-                                    0.5
-                                  ]
-                                },
-                                "Position": {
-                                  "UDim2": [
-                                    [
-                                      0,
-                                      126
-                                    ],
-                                    [
-                                      0,
-                                      30
-                                    ]
-                                  ]
-                                },
-                                "Size": {
-                                  "UDim2": [
-                                    [
-                                      0,
-                                      144
-                                    ],
-                                    [
-                                      0,
-                                      60
-                                    ]
-                                  ]
-                                },
-                                "Rotation": 0.0,
-                                "Visible": true,
-                                "BackgroundTransparency": 1,
-                                "BorderSizePixel": 0,
-                                "ZIndex": 2,
-                                "BackgroundColor3": {
-                                  "Color3": [
-                                    0.12941177189350128,
-                                    0.25882354378700256,
-                                    0.29019609093666077
-                                  ]
-                                },
-                                "Text": "8x",
-                                "TextSize": 30,
-                                "Font": "SourceSansBold",
-                                "TextWrapped": true,
-                                "RichText": false,
-                                "TextXAlignment": "Center",
-                                "TextYAlignment": "Center",
-                                "TextColor3": {
-                                  "Color3": [
-                                    0.12941177189350128,
-                                    0.25882354378700256,
-                                    0.29019609093666077
-                                  ]
-                                },
-                                "TextTransparency": 0.0,
-                                "ClipsDescendants": false
-                              },
-                              "children": [],
-                              "attributes": {
-                                "FigmaNodeId": {
-                                  "String": "1:109"
-                                },
-                                "FigmaFileKey": {
-                                  "String": "2nqyEj1d6oLdG2HqQjAerM"
-                                },
-                                "UIKey": {
-                                  "String": "figma_95ab6052906946a2b83fc9b7"
-                                }
-                              }
-                            }
-                          ],
-                          "attributes": {
-                            "FigmaNodeId": {
-                              "String": "1:107"
-                            },
-                            "FigmaFileKey": {
-                              "String": "2nqyEj1d6oLdG2HqQjAerM"
-                            },
-                            "UIKey": {
-                              "String": "figma_68496428b04a82e6081ab0ff"
-                            }
-                          }
-                        },
-                        {
-                          "name": "BeforeMoneyImg",
-                          "className": "Frame",
-                          "properties": {
-                            "AnchorPoint": {
-                              "Vector2": [
-                                0.5,
-                                0.5
-                              ]
-                            },
-                            "Position": {
-                              "UDim2": [
-                                [
-                                  0,
-                                  147
-                                ],
-                                [
-                                  0,
-                                  156
-                                ]
-                              ]
-                            },
-                            "Size": {
-                              "UDim2": [
-                                [
-                                  0,
-                                  210
-                                ],
-                                [
-                                  0,
-                                  60
-                                ]
-                              ]
-                            },
-                            "Rotation": 0.0,
-                            "Visible": true,
-                            "BackgroundTransparency": 1,
-                            "BorderSizePixel": 0,
-                            "ZIndex": 5,
-                            "ClipsDescendants": false
-                          },
-                          "children": [
-                            {
-                              "name": "Background",
-                              "className": "ImageLabel",
-                              "properties": {
-                                "BackgroundTransparency": 1,
-                                "BorderSizePixel": 0,
-                                "Active": false,
-                                "Position": {
-                                  "UDim2": [
-                                    [
-                                      0,
-                                      0
-                                    ],
-                                    [
-                                      0,
-                                      0
-                                    ]
-                                  ]
-                                },
-                                "Size": {
-                                  "UDim2": [
-                                    [
-                                      0,
-                                      210
-                                    ],
-                                    [
-                                      0,
-                                      60
-                                    ]
-                                  ]
-                                },
-                                "Image": "rbxassetid://106714810516505",
-                                "ImageTransparency": 0.0,
-                                "ScaleType": "Stretch",
-                                "ZIndex": 0
-                              },
-                              "children": [],
-                              "attributes": {
-                                "FigmaNodeId": {
-                                  "String": "1:110"
-                                },
-                                "FigmaRole": {
-                                  "String": "background"
-                                }
-                              }
-                            },
-                            {
-                              "name": "BeforeMoneyIconImg",
-                              "className": "ImageLabel",
-                              "properties": {
-                                "AnchorPoint": {
-                                  "Vector2": [
-                                    0.5,
-                                    0.5
-                                  ]
-                                },
-                                "Position": {
-                                  "UDim2": [
-                                    [
-                                      0,
-                                      33
-                                    ],
-                                    [
-                                      0,
-                                      30
-                                    ]
-                                  ]
-                                },
-                                "Size": {
-                                  "UDim2": [
-                                    [
-                                      0,
-                                      29
-                                    ],
-                                    [
-                                      0,
-                                      34
-                                    ]
-                                  ]
-                                },
-                                "Rotation": 0.0,
-                                "Visible": true,
-                                "BackgroundTransparency": 1,
-                                "BorderSizePixel": 0,
-                                "ZIndex": 1,
-                                "Image": "rbxassetid://103409728350373",
-                                "ImageTransparency": 0.0,
-                                "ScaleType": "Stretch"
-                              },
-                              "children": [],
-                              "attributes": {
-                                "FigmaNodeId": {
-                                  "String": "1:111"
-                                },
-                                "FigmaFileKey": {
-                                  "String": "2nqyEj1d6oLdG2HqQjAerM"
-                                },
-                                "UIKey": {
-                                  "String": "figma_8ad4ccd8fc349b86b254949f"
-                                }
-                              }
-                            },
-                            {
-                              "name": "BeforeMoneyTxt",
-                              "className": "TextLabel",
-                              "properties": {
-                                "AnchorPoint": {
-                                  "Vector2": [
-                                    0.5,
-                                    0.5
-                                  ]
-                                },
-                                "Position": {
-                                  "UDim2": [
-                                    [
-                                      0,
-                                      126
-                                    ],
-                                    [
-                                      0,
-                                      30
-                                    ]
-                                  ]
-                                },
-                                "Size": {
-                                  "UDim2": [
-                                    [
-                                      0,
-                                      144
-                                    ],
-                                    [
-                                      0,
-                                      60
-                                    ]
-                                  ]
-                                },
-                                "Rotation": 0.0,
-                                "Visible": true,
-                                "BackgroundTransparency": 1,
-                                "BorderSizePixel": 0,
-                                "ZIndex": 2,
-                                "BackgroundColor3": {
-                                  "Color3": [
-                                    0.12941177189350128,
-                                    0.25882354378700256,
-                                    0.29019609093666077
-                                  ]
-                                },
-                                "Text": "7x",
-                                "TextSize": 30,
-                                "Font": "SourceSansBold",
-                                "TextWrapped": true,
-                                "RichText": false,
-                                "TextXAlignment": "Center",
-                                "TextYAlignment": "Center",
-                                "TextColor3": {
-                                  "Color3": [
-                                    0.12941177189350128,
-                                    0.25882354378700256,
-                                    0.29019609093666077
-                                  ]
-                                },
-                                "TextTransparency": 0.0,
-                                "ClipsDescendants": false
-                              },
-                              "children": [],
-                              "attributes": {
-                                "FigmaNodeId": {
-                                  "String": "1:112"
-                                },
-                                "FigmaFileKey": {
-                                  "String": "2nqyEj1d6oLdG2HqQjAerM"
-                                },
-                                "UIKey": {
-                                  "String": "figma_3b69dc63091136c1cf381ebe"
-                                }
-                              }
-                            }
-                          ],
-                          "attributes": {
-                            "FigmaNodeId": {
-                              "String": "1:110"
-                            },
-                            "FigmaFileKey": {
-                              "String": "2nqyEj1d6oLdG2HqQjAerM"
-                            },
-                            "UIKey": {
-                              "String": "figma_2899ccad0e5508317836e7e9"
-                            }
-                          }
-                        },
-                        {
-                          "name": "AfterMoneyImg",
-                          "className": "Frame",
-                          "properties": {
-                            "AnchorPoint": {
-                              "Vector2": [
-                                0.5,
-                                0.5
-                              ]
-                            },
-                            "Position": {
-                              "UDim2": [
-                                [
-                                  0,
-                                  427
-                                ],
-                                [
-                                  0,
-                                  156
-                                ]
-                              ]
-                            },
-                            "Size": {
-                              "UDim2": [
-                                [
-                                  0,
-                                  210
-                                ],
-                                [
-                                  0,
-                                  60
-                                ]
-                              ]
-                            },
-                            "Rotation": 0.0,
-                            "Visible": true,
-                            "BackgroundTransparency": 1,
-                            "BorderSizePixel": 0,
-                            "ZIndex": 6,
-                            "ClipsDescendants": false
-                          },
-                          "children": [
-                            {
-                              "name": "Background",
-                              "className": "ImageLabel",
-                              "properties": {
-                                "BackgroundTransparency": 1,
-                                "BorderSizePixel": 0,
-                                "Active": false,
-                                "Position": {
-                                  "UDim2": [
-                                    [
-                                      0,
-                                      0
-                                    ],
-                                    [
-                                      0,
-                                      0
-                                    ]
-                                  ]
-                                },
-                                "Size": {
-                                  "UDim2": [
-                                    [
-                                      0,
-                                      210
-                                    ],
-                                    [
-                                      0,
-                                      60
-                                    ]
-                                  ]
-                                },
-                                "Image": "rbxassetid://87846386739366",
-                                "ImageTransparency": 0.0,
-                                "ScaleType": "Stretch",
-                                "ZIndex": 0
-                              },
-                              "children": [],
-                              "attributes": {
-                                "FigmaNodeId": {
-                                  "String": "1:113"
-                                },
-                                "FigmaRole": {
-                                  "String": "background"
-                                }
-                              }
-                            },
-                            {
-                              "name": "AfterMoneyIconImg",
-                              "className": "ImageLabel",
-                              "properties": {
-                                "AnchorPoint": {
-                                  "Vector2": [
-                                    0.5,
-                                    0.5
-                                  ]
-                                },
-                                "Position": {
-                                  "UDim2": [
-                                    [
-                                      0,
-                                      33
-                                    ],
-                                    [
-                                      0,
-                                      30
-                                    ]
-                                  ]
-                                },
-                                "Size": {
-                                  "UDim2": [
-                                    [
-                                      0,
-                                      29
-                                    ],
-                                    [
-                                      0,
-                                      34
-                                    ]
-                                  ]
-                                },
-                                "Rotation": 0.0,
-                                "Visible": true,
-                                "BackgroundTransparency": 1,
-                                "BorderSizePixel": 0,
-                                "ZIndex": 1,
-                                "Image": "rbxassetid://103409728350373",
-                                "ImageTransparency": 0.0,
-                                "ScaleType": "Stretch"
-                              },
-                              "children": [],
-                              "attributes": {
-                                "FigmaNodeId": {
-                                  "String": "1:114"
-                                },
-                                "FigmaFileKey": {
-                                  "String": "2nqyEj1d6oLdG2HqQjAerM"
-                                },
-                                "UIKey": {
-                                  "String": "figma_c4ed76d4e0d2f6ff85f56601"
-                                }
-                              }
-                            },
-                            {
-                              "name": "AfterMoneyTxt",
-                              "className": "TextLabel",
-                              "properties": {
-                                "AnchorPoint": {
-                                  "Vector2": [
-                                    0.5,
-                                    0.5
-                                  ]
-                                },
-                                "Position": {
-                                  "UDim2": [
-                                    [
-                                      0,
-                                      126
-                                    ],
-                                    [
-                                      0,
-                                      30
-                                    ]
-                                  ]
-                                },
-                                "Size": {
-                                  "UDim2": [
-                                    [
-                                      0,
-                                      144
-                                    ],
-                                    [
-                                      0,
-                                      60
-                                    ]
-                                  ]
-                                },
-                                "Rotation": 0.0,
-                                "Visible": true,
-                                "BackgroundTransparency": 1,
-                                "BorderSizePixel": 0,
-                                "ZIndex": 2,
-                                "BackgroundColor3": {
-                                  "Color3": [
-                                    0.12941177189350128,
-                                    0.25882354378700256,
-                                    0.29019609093666077
-                                  ]
-                                },
-                                "Text": "8x",
-                                "TextSize": 30,
-                                "Font": "SourceSansBold",
-                                "TextWrapped": true,
-                                "RichText": false,
-                                "TextXAlignment": "Center",
-                                "TextYAlignment": "Center",
-                                "TextColor3": {
-                                  "Color3": [
-                                    0.12941177189350128,
-                                    0.25882354378700256,
-                                    0.29019609093666077
-                                  ]
-                                },
-                                "TextTransparency": 0.0,
-                                "ClipsDescendants": false
-                              },
-                              "children": [],
-                              "attributes": {
-                                "FigmaNodeId": {
-                                  "String": "1:115"
-                                },
-                                "FigmaFileKey": {
-                                  "String": "2nqyEj1d6oLdG2HqQjAerM"
-                                },
-                                "UIKey": {
-                                  "String": "figma_8e9d32190a32049d10fa4446"
-                                }
-                              }
-                            }
-                          ],
-                          "attributes": {
-                            "FigmaNodeId": {
-                              "String": "1:113"
-                            },
-                            "FigmaFileKey": {
-                              "String": "2nqyEj1d6oLdG2HqQjAerM"
-                            },
-                            "UIKey": {
-                              "String": "figma_cddb6beaa3e3483878af077c"
-                            }
-                          }
-                        },
-                        {
-                          "name": "StrengthArrowTxt",
-                          "className": "TextLabel",
-                          "properties": {
-                            "AnchorPoint": {
-                              "Vector2": [
-                                0.5,
-                                0.5
-                              ]
-                            },
-                            "Position": {
-                              "UDim2": [
-                                [
-                                  0,
-                                  287
-                                ],
-                                [
-                                  0,
-                                  76
-                                ]
-                              ]
-                            },
-                            "Size": {
-                              "UDim2": [
-                                [
-                                  0,
-                                  50
-                                ],
-                                [
-                                  0,
-                                  60
-                                ]
-                              ]
-                            },
-                            "Rotation": 0.0,
-                            "Visible": true,
-                            "BackgroundTransparency": 1,
-                            "BorderSizePixel": 0,
-                            "ZIndex": 7,
-                            "BackgroundColor3": {
-                              "Color3": [
-                                0.38823530077934265,
-                                0.4627451002597809,
-                                0.4588235318660736
-                              ]
-                            },
-                            "Text": "→",
-                            "TextSize": 28,
-                            "Font": "SourceSansBold",
-                            "TextWrapped": true,
-                            "RichText": false,
-                            "TextXAlignment": "Center",
-                            "TextYAlignment": "Center",
-                            "TextColor3": {
-                              "Color3": [
-                                0.38823530077934265,
-                                0.4627451002597809,
-                                0.4588235318660736
-                              ]
-                            },
-                            "TextTransparency": 0.0,
-                            "ClipsDescendants": false
-                          },
-                          "children": [],
-                          "attributes": {
-                            "FigmaNodeId": {
-                              "String": "1:116"
-                            },
-                            "FigmaFileKey": {
-                              "String": "2nqyEj1d6oLdG2HqQjAerM"
-                            },
-                            "UIKey": {
-                              "String": "figma_0cdd4a1e1d83a4e595911cc6"
-                            }
-                          }
-                        },
-                        {
-                          "name": "MoneyArrowTxt",
-                          "className": "TextLabel",
-                          "properties": {
-                            "AnchorPoint": {
-                              "Vector2": [
-                                0.5,
-                                0.5
-                              ]
-                            },
-                            "Position": {
-                              "UDim2": [
-                                [
-                                  0,
-                                  287
-                                ],
-                                [
-                                  0,
-                                  156
-                                ]
-                              ]
-                            },
-                            "Size": {
-                              "UDim2": [
-                                [
-                                  0,
-                                  50
-                                ],
-                                [
-                                  0,
-                                  60
-                                ]
-                              ]
-                            },
-                            "Rotation": 0.0,
-                            "Visible": true,
-                            "BackgroundTransparency": 1,
-                            "BorderSizePixel": 0,
-                            "ZIndex": 8,
-                            "BackgroundColor3": {
-                              "Color3": [
-                                0.38823530077934265,
-                                0.4627451002597809,
-                                0.4588235318660736
-                              ]
-                            },
-                            "Text": "→",
-                            "TextSize": 28,
-                            "Font": "SourceSansBold",
-                            "TextWrapped": true,
-                            "RichText": false,
-                            "TextXAlignment": "Center",
-                            "TextYAlignment": "Center",
-                            "TextColor3": {
-                              "Color3": [
-                                0.38823530077934265,
-                                0.4627451002597809,
-                                0.4588235318660736
-                              ]
-                            },
-                            "TextTransparency": 0.0,
-                            "ClipsDescendants": false
-                          },
-                          "children": [],
-                          "attributes": {
-                            "FigmaNodeId": {
-                              "String": "1:117"
-                            },
-                            "FigmaFileKey": {
-                              "String": "2nqyEj1d6oLdG2HqQjAerM"
-                            },
-                            "UIKey": {
-                              "String": "figma_eec98e7f78238d8b07caf14f"
-                            }
-                          }
-                        }
-                      ],
-                      "attributes": {
-                        "FigmaNodeId": {
-                          "String": "1:101"
-                        },
-                        "FigmaFileKey": {
-                          "String": "2nqyEj1d6oLdG2HqQjAerM"
-                        },
-                        "UIKey": {
-                          "String": "figma_c6f8bdb49abf0dedffd673a3"
-                        }
-                      }
-                    },
-                    {
-                      "name": "LevelProgressImg",
-                      "className": "Frame",
-                      "properties": {
-                        "AnchorPoint": {
-                          "Vector2": [
-                            0.5,
-                            0.5
-                          ]
-                        },
-                        "Position": {
-                          "UDim2": [
-                            [
-                              0,
-                              329
-                            ],
-                            [
-                              0,
-                              265
-                            ]
-                          ]
-                        },
-                        "Size": {
-                          "UDim2": [
-                            [
-                              0,
-                              534
-                            ],
-                            [
-                              0,
-                              58
-                            ]
-                          ]
-                        },
-                        "Rotation": 0.0,
-                        "Visible": true,
-                        "BackgroundTransparency": 1,
-                        "BorderSizePixel": 0,
-                        "ZIndex": 2,
-                        "ClipsDescendants": false
-                      },
-                      "children": [
-                        {
-                          "name": "Background",
-                          "className": "ImageLabel",
-                          "properties": {
-                            "BackgroundTransparency": 1,
-                            "BorderSizePixel": 0,
-                            "Active": false,
-                            "Position": {
-                              "UDim2": [
-                                [
-                                  0,
-                                  0
-                                ],
-                                [
-                                  0,
-                                  0
-                                ]
-                              ]
-                            },
-                            "Size": {
-                              "UDim2": [
-                                [
-                                  0,
-                                  534
-                                ],
-                                [
-                                  0,
-                                  58
-                                ]
-                              ]
-                            },
-                            "Image": "rbxassetid://93225641621273",
-                            "ImageTransparency": 0.0,
-                            "ScaleType": "Stretch",
-                            "ZIndex": 0
-                          },
-                          "children": [],
-                          "attributes": {
-                            "FigmaNodeId": {
-                              "String": "1:118"
-                            },
-                            "FigmaRole": {
-                              "String": "background"
-                            }
-                          }
-                        },
-                        {
-                          "name": "LevelProgressFillImg",
-                          "className": "ImageLabel",
-                          "properties": {
-                            "AnchorPoint": {
-                              "Vector2": [
-                                0.5,
-                                0.5
-                              ]
-                            },
-                            "Position": {
-                              "UDim2": [
-                                [
-                                  0,
-                                  267
-                                ],
-                                [
-                                  0,
-                                  29
-                                ]
-                              ]
-                            },
-                            "Size": {
-                              "UDim2": [
-                                [
-                                  0,
-                                  520
-                                ],
-                                [
-                                  0,
-                                  44
-                                ]
-                              ]
-                            },
-                            "Rotation": 0.0,
-                            "Visible": true,
-                            "BackgroundTransparency": 1,
-                            "BorderSizePixel": 0,
-                            "ZIndex": 1,
-                            "Image": "rbxassetid://76026172850278",
-                            "ImageTransparency": 0.0,
-                            "ScaleType": "Stretch"
-                          },
-                          "children": [],
-                          "attributes": {
-                            "FigmaNodeId": {
-                              "String": "1:119"
-                            },
-                            "FigmaFileKey": {
-                              "String": "2nqyEj1d6oLdG2HqQjAerM"
-                            },
-                            "UIKey": {
-                              "String": "figma_72a71b12e8cdd2062a92e08b"
-                            }
-                          }
-                        },
-                        {
-                          "name": "LevelProgressTxt",
-                          "className": "TextLabel",
-                          "properties": {
-                            "AnchorPoint": {
-                              "Vector2": [
-                                0.5,
-                                0.5
-                              ]
-                            },
-                            "Position": {
-                              "UDim2": [
-                                [
-                                  0,
-                                  267
-                                ],
-                                [
-                                  0,
-                                  29
-                                ]
-                              ]
-                            },
-                            "Size": {
-                              "UDim2": [
-                                [
-                                  0,
-                                  534
-                                ],
-                                [
-                                  0,
-                                  58
-                                ]
-                              ]
-                            },
-                            "Rotation": 0.0,
-                            "Visible": true,
-                            "BackgroundTransparency": 1,
-                            "BorderSizePixel": 0,
-                            "ZIndex": 2,
-                            "BackgroundColor3": {
-                              "Color3": [
-                                0.14509804546833038,
-                                0.2666666805744171,
-                                0.22745098173618317
-                              ]
-                            },
-                            "Text": "等级 39 / 36",
-                            "TextSize": 27,
-                            "Font": "SourceSansBold",
-                            "TextWrapped": true,
-                            "RichText": false,
-                            "TextXAlignment": "Center",
-                            "TextYAlignment": "Center",
-                            "TextColor3": {
-                              "Color3": [
-                                0.14509804546833038,
-                                0.2666666805744171,
-                                0.22745098173618317
-                              ]
-                            },
-                            "TextTransparency": 0.0,
-                            "ClipsDescendants": false
-                          },
-                          "children": [],
-                          "attributes": {
-                            "FigmaNodeId": {
-                              "String": "1:120"
-                            },
-                            "FigmaFileKey": {
-                              "String": "2nqyEj1d6oLdG2HqQjAerM"
-                            },
-                            "UIKey": {
-                              "String": "figma_f287d0c84a29808a1ac64579"
-                            }
-                          }
-                        }
-                      ],
-                      "attributes": {
-                        "FigmaNodeId": {
-                          "String": "1:118"
-                        },
-                        "FigmaFileKey": {
-                          "String": "2nqyEj1d6oLdG2HqQjAerM"
-                        },
-                        "UIKey": {
-                          "String": "figma_4ad630aa4a0e152b452b77d4"
-                        }
-                      }
-                    },
-                    {
-                      "name": "ConfirmBtn",
-                      "className": "TextButton",
-                      "properties": {
-                        "AnchorPoint": {
-                          "Vector2": [
-                            0.5,
-                            0.5
-                          ]
-                        },
-                        "Position": {
-                          "UDim2": [
-                            [
-                              0,
-                              201
-                            ],
-                            [
-                              0,
-                              329
-                            ]
-                          ]
-                        },
-                        "Size": {
-                          "UDim2": [
-                            [
-                              0,
-                              210
-                            ],
-                            [
-                              0,
-                              50
-                            ]
-                          ]
-                        },
-                        "Rotation": 0.0,
-                        "Visible": true,
-                        "BackgroundTransparency": 1,
-                        "BorderSizePixel": 0,
-                        "ZIndex": 3,
-                        "Text": "",
-                        "AutoButtonColor": false,
-                        "ClipsDescendants": false
-                      },
-                      "children": [
-                        {
-                          "name": "Background",
-                          "className": "ImageLabel",
-                          "properties": {
-                            "BackgroundTransparency": 1,
-                            "BorderSizePixel": 0,
-                            "Active": false,
-                            "Position": {
-                              "UDim2": [
-                                [
-                                  0,
-                                  0
-                                ],
-                                [
-                                  0,
-                                  0
-                                ]
-                              ]
-                            },
-                            "Size": {
-                              "UDim2": [
-                                [
-                                  0,
-                                  210
-                                ],
-                                [
-                                  0,
-                                  50
-                                ]
-                              ]
-                            },
-                            "Image": "rbxassetid://100314557961146",
-                            "ImageTransparency": 0.0,
-                            "ScaleType": "Stretch",
-                            "ZIndex": 0
-                          },
-                          "children": [],
-                          "attributes": {
-                            "FigmaNodeId": {
-                              "String": "1:121"
-                            },
-                            "FigmaRole": {
-                              "String": "background"
-                            }
-                          }
-                        },
-                        {
-                          "name": "ConfirmTxt",
-                          "className": "TextLabel",
-                          "properties": {
-                            "AnchorPoint": {
-                              "Vector2": [
-                                0.5,
-                                0.5
-                              ]
-                            },
-                            "Position": {
-                              "UDim2": [
-                                [
-                                  0,
-                                  105
-                                ],
-                                [
-                                  0,
-                                  25
-                                ]
-                              ]
-                            },
-                            "Size": {
-                              "UDim2": [
-                                [
-                                  0,
-                                  210
-                                ],
-                                [
-                                  0,
-                                  50
-                                ]
-                              ]
-                            },
-                            "Rotation": 0.0,
-                            "Visible": true,
-                            "BackgroundTransparency": 1,
-                            "BorderSizePixel": 0,
-                            "ZIndex": 1,
-                            "BackgroundColor3": {
-                              "Color3": [
-                                1,
-                                1,
-                                1
-                              ]
-                            },
-                            "Text": "重生",
-                            "TextSize": 20,
-                            "Font": "SourceSansBold",
-                            "TextWrapped": true,
-                            "RichText": false,
-                            "TextXAlignment": "Center",
-                            "TextYAlignment": "Center",
-                            "TextColor3": {
-                              "Color3": [
-                                1,
-                                1,
-                                1
-                              ]
-                            },
-                            "TextTransparency": 0.0,
-                            "ClipsDescendants": false
-                          },
-                          "children": [],
-                          "attributes": {
-                            "FigmaNodeId": {
-                              "String": "1:122"
-                            },
-                            "FigmaFileKey": {
-                              "String": "2nqyEj1d6oLdG2HqQjAerM"
-                            },
-                            "UIKey": {
-                              "String": "figma_7fd3848ed123860bbc4f580e"
-                            }
-                          }
-                        }
-                      ],
-                      "attributes": {
-                        "FigmaNodeId": {
-                          "String": "1:121"
-                        },
-                        "FigmaFileKey": {
-                          "String": "2nqyEj1d6oLdG2HqQjAerM"
-                        },
-                        "UIKey": {
-                          "String": "figma_f49cfef0fed2a1a40c10df7e"
-                        }
-                      }
-                    },
-                    {
-                      "name": "PaidPurchaseBtn",
-                      "className": "TextButton",
-                      "properties": {
-                        "AnchorPoint": {
-                          "Vector2": [
-                            0.5,
-                            0.5
-                          ]
-                        },
-                        "Position": {
-                          "UDim2": [
-                            [
-                              0,
-                              457
-                            ],
-                            [
-                              0,
-                              329
-                            ]
-                          ]
-                        },
-                        "Size": {
-                          "UDim2": [
-                            [
-                              0,
-                              210
-                            ],
-                            [
-                              0,
-                              50
-                            ]
-                          ]
-                        },
-                        "Rotation": 0.0,
-                        "Visible": true,
-                        "BackgroundTransparency": 1,
-                        "BorderSizePixel": 0,
-                        "ZIndex": 4,
-                        "Text": "",
-                        "AutoButtonColor": false,
-                        "ClipsDescendants": false
-                      },
-                      "children": [
-                        {
-                          "name": "Background",
-                          "className": "ImageLabel",
-                          "properties": {
-                            "BackgroundTransparency": 1,
-                            "BorderSizePixel": 0,
-                            "Active": false,
-                            "Position": {
-                              "UDim2": [
-                                [
-                                  0,
-                                  0
-                                ],
-                                [
-                                  0,
-                                  0
-                                ]
-                              ]
-                            },
-                            "Size": {
-                              "UDim2": [
-                                [
-                                  0,
-                                  210
-                                ],
-                                [
-                                  0,
-                                  50
-                                ]
-                              ]
-                            },
-                            "Image": "rbxassetid://97751259153331",
-                            "ImageTransparency": 0.0,
-                            "ScaleType": "Stretch",
-                            "ZIndex": 0
-                          },
-                          "children": [],
-                          "attributes": {
-                            "FigmaNodeId": {
-                              "String": "1:123"
-                            },
-                            "FigmaRole": {
-                              "String": "background"
-                            }
-                          }
-                        },
-                        {
-                          "name": "PaidPurchaseTxt",
-                          "className": "TextLabel",
-                          "properties": {
-                            "AnchorPoint": {
-                              "Vector2": [
-                                0.5,
-                                0.5
-                              ]
-                            },
-                            "Position": {
-                              "UDim2": [
-                                [
-                                  0,
-                                  105
-                                ],
-                                [
-                                  0,
-                                  25
-                                ]
-                              ]
-                            },
-                            "Size": {
-                              "UDim2": [
-                                [
-                                  0,
-                                  210
-                                ],
-                                [
-                                  0,
-                                  50
-                                ]
-                              ]
-                            },
-                            "Rotation": 0.0,
-                            "Visible": true,
-                            "BackgroundTransparency": 1,
-                            "BorderSizePixel": 0,
-                            "ZIndex": 1,
-                            "BackgroundColor3": {
-                              "Color3": [
-                                0.3019607961177826,
-                                0.23137255012989044,
-                                0.125490203499794
-                              ]
-                            },
-                            "Text": "跳过重生",
-                            "TextSize": 20,
-                            "Font": "SourceSansBold",
-                            "TextWrapped": true,
-                            "RichText": false,
-                            "TextXAlignment": "Center",
-                            "TextYAlignment": "Center",
-                            "TextColor3": {
-                              "Color3": [
-                                0.3019607961177826,
-                                0.23137255012989044,
-                                0.125490203499794
-                              ]
-                            },
-                            "TextTransparency": 0.0,
-                            "ClipsDescendants": false
-                          },
-                          "children": [],
-                          "attributes": {
-                            "FigmaNodeId": {
-                              "String": "1:124"
-                            },
-                            "FigmaFileKey": {
-                              "String": "2nqyEj1d6oLdG2HqQjAerM"
-                            },
-                            "UIKey": {
-                              "String": "figma_0d16bbb41bf2921d24f2ecd1"
-                            }
-                          }
-                        }
-                      ],
-                      "attributes": {
-                        "FigmaNodeId": {
-                          "String": "1:123"
-                        },
-                        "FigmaFileKey": {
-                          "String": "2nqyEj1d6oLdG2HqQjAerM"
-                        },
-                        "UIKey": {
-                          "String": "figma_695c2cf04dd958a599058990"
-                        }
-                      }
-                    }
-                  ],
-                  "attributes": {
-                    "FigmaNodeId": {
-                      "String": "1:100"
-                    },
-                    "FigmaFileKey": {
-                      "String": "2nqyEj1d6oLdG2HqQjAerM"
-                    },
-                    "UIKey": {
-                      "String": "figma_0883e1c854c521c063a31e08"
-                    }
-                  }
-                },
-                {
-                  "name": "TitleImg",
-                  "className": "ImageLabel",
-                  "properties": {
-                    "AnchorPoint": {
-                      "Vector2": [
-                        0.5,
-                        0.5
-                      ]
-                    },
-                    "Position": {
-                      "UDim2": [
-                        [
-                          0,
-                          190
-                        ],
-                        [
-                          0,
-                          7
-                        ]
-                      ]
-                    },
-                    "Size": {
-                      "UDim2": [
-                        [
-                          0,
-                          320
-                        ],
-                        [
-                          0,
-                          70
-                        ]
-                      ]
-                    },
-                    "Rotation": 0.0,
-                    "Visible": true,
-                    "BackgroundTransparency": 1,
-                    "BorderSizePixel": 0,
-                    "ZIndex": 3,
-                    "Image": "rbxassetid://102608819137565",
-                    "ImageTransparency": 0.0,
-                    "ScaleType": "Stretch"
-                  },
-                  "children": [],
-                  "attributes": {
-                    "FigmaNodeId": {
-                      "String": "25:68"
-                    },
-                    "FigmaFileKey": {
-                      "String": "2nqyEj1d6oLdG2HqQjAerM"
-                    },
-                    "UIKey": {
-                      "String": "figma_dbe44cb49fa94466fb758de6"
-                    }
-                  }
-                },
-                {
-                  "name": "TitleTxt",
+                  "name": "BeforeLabelTxt",
                   "className": "TextLabel",
                   "properties": {
                     "AnchorPoint": {
@@ -2318,11 +211,11 @@
                       "UDim2": [
                         [
                           0,
-                          190
+                          147
                         ],
                         [
                           0,
-                          6
+                          25
                         ]
                       ]
                     },
@@ -2330,11 +223,353 @@
                       "UDim2": [
                         [
                           0,
-                          204
+                          210
                         ],
                         [
                           0,
-                          32
+                          30
+                        ]
+                      ]
+                    },
+                    "Rotation": 0.0,
+                    "Visible": true,
+                    "BackgroundTransparency": 1,
+                    "BorderSizePixel": 0,
+                    "ZIndex": 1,
+                    "BackgroundColor3": {
+                      "Color3": [
+                        0.38823530077934265,
+                        0.4627451002597809,
+                        0.4588235318660736
+                      ]
+                    },
+                    "Text": "重生前",
+                    "TextSize": 20,
+                    "Font": "SourceSansBold",
+                    "TextWrapped": true,
+                    "RichText": false,
+                    "TextXAlignment": "Center",
+                    "TextYAlignment": "Center",
+                    "TextColor3": {
+                      "Color3": [
+                        0.38823530077934265,
+                        0.4627451002597809,
+                        0.4588235318660736
+                      ]
+                    },
+                    "TextTransparency": 0.0,
+                    "ClipsDescendants": false
+                  },
+                  "children": [],
+                  "attributes": {
+                    "FigmaNodeId": {
+                      "String": "1:102"
+                    },
+                    "FigmaFileKey": {
+                      "String": "2nqyEj1d6oLdG2HqQjAerM"
+                    },
+                    "UIKey": {
+                      "String": "figma_4de26ac22de49861abde3090"
+                    }
+                  }
+                },
+                {
+                  "name": "AfterLabelTxt",
+                  "className": "TextLabel",
+                  "properties": {
+                    "AnchorPoint": {
+                      "Vector2": [
+                        0.5,
+                        0.5
+                      ]
+                    },
+                    "Position": {
+                      "UDim2": [
+                        [
+                          0,
+                          427
+                        ],
+                        [
+                          0,
+                          25
+                        ]
+                      ]
+                    },
+                    "Size": {
+                      "UDim2": [
+                        [
+                          0,
+                          210
+                        ],
+                        [
+                          0,
+                          30
+                        ]
+                      ]
+                    },
+                    "Rotation": 0.0,
+                    "Visible": true,
+                    "BackgroundTransparency": 1,
+                    "BorderSizePixel": 0,
+                    "ZIndex": 2,
+                    "BackgroundColor3": {
+                      "Color3": [
+                        0.38823530077934265,
+                        0.4627451002597809,
+                        0.4588235318660736
+                      ]
+                    },
+                    "Text": "重生后",
+                    "TextSize": 20,
+                    "Font": "SourceSansBold",
+                    "TextWrapped": true,
+                    "RichText": false,
+                    "TextXAlignment": "Center",
+                    "TextYAlignment": "Center",
+                    "TextColor3": {
+                      "Color3": [
+                        0.38823530077934265,
+                        0.4627451002597809,
+                        0.4588235318660736
+                      ]
+                    },
+                    "TextTransparency": 0.0,
+                    "ClipsDescendants": false
+                  },
+                  "children": [],
+                  "attributes": {
+                    "FigmaNodeId": {
+                      "String": "1:103"
+                    },
+                    "FigmaFileKey": {
+                      "String": "2nqyEj1d6oLdG2HqQjAerM"
+                    },
+                    "UIKey": {
+                      "String": "figma_dabc78fb672f7abdb00115bc"
+                    }
+                  }
+                },
+                {
+                  "name": "BeforeStrengthImg",
+                  "className": "ImageLabel",
+                  "properties": {
+                    "AnchorPoint": {
+                      "Vector2": [
+                        0.5,
+                        0.5
+                      ]
+                    },
+                    "Position": {
+                      "UDim2": [
+                        [
+                          0,
+                          147
+                        ],
+                        [
+                          0,
+                          76
+                        ]
+                      ]
+                    },
+                    "Size": {
+                      "UDim2": [
+                        [
+                          0,
+                          210
+                        ],
+                        [
+                          0,
+                          60
+                        ]
+                      ]
+                    },
+                    "Rotation": 0.0,
+                    "Visible": true,
+                    "BackgroundTransparency": 1,
+                    "BorderSizePixel": 0,
+                    "ZIndex": 3,
+                    "ClipsDescendants": false,
+                    "Image": "rbxassetid://106714810516505",
+                    "ImageTransparency": 0.0,
+                    "ScaleType": "Stretch"
+                  },
+                  "children": [
+                    {
+                      "name": "BeforeStrengthIconImg",
+                      "className": "ImageLabel",
+                      "properties": {
+                        "AnchorPoint": {
+                          "Vector2": [
+                            0.5,
+                            0.5
+                          ]
+                        },
+                        "Position": {
+                          "UDim2": [
+                            [
+                              0,
+                              33
+                            ],
+                            [
+                              0,
+                              30
+                            ]
+                          ]
+                        },
+                        "Size": {
+                          "UDim2": [
+                            [
+                              0,
+                              29
+                            ],
+                            [
+                              0,
+                              34
+                            ]
+                          ]
+                        },
+                        "Rotation": 0.0,
+                        "Visible": true,
+                        "BackgroundTransparency": 1,
+                        "BorderSizePixel": 0,
+                        "ZIndex": 1,
+                        "Image": "rbxassetid://95719737785131",
+                        "ImageTransparency": 0.0,
+                        "ScaleType": "Stretch"
+                      },
+                      "children": [],
+                      "attributes": {
+                        "FigmaNodeId": {
+                          "String": "1:105"
+                        },
+                        "FigmaFileKey": {
+                          "String": "2nqyEj1d6oLdG2HqQjAerM"
+                        },
+                        "UIKey": {
+                          "String": "figma_f07c1bb922d97ceb79adb5d4"
+                        }
+                      }
+                    },
+                    {
+                      "name": "BeforeStrengthTxt",
+                      "className": "TextLabel",
+                      "properties": {
+                        "AnchorPoint": {
+                          "Vector2": [
+                            0.5,
+                            0.5
+                          ]
+                        },
+                        "Position": {
+                          "UDim2": [
+                            [
+                              0,
+                              126
+                            ],
+                            [
+                              0,
+                              30
+                            ]
+                          ]
+                        },
+                        "Size": {
+                          "UDim2": [
+                            [
+                              0,
+                              144
+                            ],
+                            [
+                              0,
+                              60
+                            ]
+                          ]
+                        },
+                        "Rotation": 0.0,
+                        "Visible": true,
+                        "BackgroundTransparency": 1,
+                        "BorderSizePixel": 0,
+                        "ZIndex": 2,
+                        "BackgroundColor3": {
+                          "Color3": [
+                            0.12941177189350128,
+                            0.25882354378700256,
+                            0.29019609093666077
+                          ]
+                        },
+                        "Text": "7x",
+                        "TextSize": 30,
+                        "Font": "SourceSansBold",
+                        "TextWrapped": true,
+                        "RichText": false,
+                        "TextXAlignment": "Center",
+                        "TextYAlignment": "Center",
+                        "TextColor3": {
+                          "Color3": [
+                            0.12941177189350128,
+                            0.25882354378700256,
+                            0.29019609093666077
+                          ]
+                        },
+                        "TextTransparency": 0.0,
+                        "ClipsDescendants": false
+                      },
+                      "children": [],
+                      "attributes": {
+                        "FigmaNodeId": {
+                          "String": "1:106"
+                        },
+                        "FigmaFileKey": {
+                          "String": "2nqyEj1d6oLdG2HqQjAerM"
+                        },
+                        "UIKey": {
+                          "String": "figma_3a97ae7e8a5dc403ee2772b0"
+                        }
+                      }
+                    }
+                  ],
+                  "attributes": {
+                    "FigmaNodeId": {
+                      "String": "1:104"
+                    },
+                    "FigmaFileKey": {
+                      "String": "2nqyEj1d6oLdG2HqQjAerM"
+                    },
+                    "UIKey": {
+                      "String": "figma_6b497a8ac48c2773f61b9910"
+                    }
+                  }
+                },
+                {
+                  "name": "AfterStrengthImg",
+                  "className": "ImageLabel",
+                  "properties": {
+                    "AnchorPoint": {
+                      "Vector2": [
+                        0.5,
+                        0.5
+                      ]
+                    },
+                    "Position": {
+                      "UDim2": [
+                        [
+                          0,
+                          427
+                        ],
+                        [
+                          0,
+                          76
+                        ]
+                      ]
+                    },
+                    "Size": {
+                      "UDim2": [
+                        [
+                          0,
+                          210
+                        ],
+                        [
+                          0,
+                          60
                         ]
                       ]
                     },
@@ -2343,6 +578,977 @@
                     "BackgroundTransparency": 1,
                     "BorderSizePixel": 0,
                     "ZIndex": 4,
+                    "ClipsDescendants": false,
+                    "Image": "rbxassetid://87846386739366",
+                    "ImageTransparency": 0.0,
+                    "ScaleType": "Stretch"
+                  },
+                  "children": [
+                    {
+                      "name": "AfterStrengthIconImg",
+                      "className": "ImageLabel",
+                      "properties": {
+                        "AnchorPoint": {
+                          "Vector2": [
+                            0.5,
+                            0.5
+                          ]
+                        },
+                        "Position": {
+                          "UDim2": [
+                            [
+                              0,
+                              33
+                            ],
+                            [
+                              0,
+                              30
+                            ]
+                          ]
+                        },
+                        "Size": {
+                          "UDim2": [
+                            [
+                              0,
+                              29
+                            ],
+                            [
+                              0,
+                              34
+                            ]
+                          ]
+                        },
+                        "Rotation": 0.0,
+                        "Visible": true,
+                        "BackgroundTransparency": 1,
+                        "BorderSizePixel": 0,
+                        "ZIndex": 1,
+                        "Image": "rbxassetid://95719737785131",
+                        "ImageTransparency": 0.0,
+                        "ScaleType": "Stretch"
+                      },
+                      "children": [],
+                      "attributes": {
+                        "FigmaNodeId": {
+                          "String": "1:108"
+                        },
+                        "FigmaFileKey": {
+                          "String": "2nqyEj1d6oLdG2HqQjAerM"
+                        },
+                        "UIKey": {
+                          "String": "figma_0882d8efe801a230a0e08c3d"
+                        }
+                      }
+                    },
+                    {
+                      "name": "AfterStrengthTxt",
+                      "className": "TextLabel",
+                      "properties": {
+                        "AnchorPoint": {
+                          "Vector2": [
+                            0.5,
+                            0.5
+                          ]
+                        },
+                        "Position": {
+                          "UDim2": [
+                            [
+                              0,
+                              126
+                            ],
+                            [
+                              0,
+                              30
+                            ]
+                          ]
+                        },
+                        "Size": {
+                          "UDim2": [
+                            [
+                              0,
+                              144
+                            ],
+                            [
+                              0,
+                              60
+                            ]
+                          ]
+                        },
+                        "Rotation": 0.0,
+                        "Visible": true,
+                        "BackgroundTransparency": 1,
+                        "BorderSizePixel": 0,
+                        "ZIndex": 2,
+                        "BackgroundColor3": {
+                          "Color3": [
+                            0.12941177189350128,
+                            0.25882354378700256,
+                            0.29019609093666077
+                          ]
+                        },
+                        "Text": "8x",
+                        "TextSize": 30,
+                        "Font": "SourceSansBold",
+                        "TextWrapped": true,
+                        "RichText": false,
+                        "TextXAlignment": "Center",
+                        "TextYAlignment": "Center",
+                        "TextColor3": {
+                          "Color3": [
+                            0.12941177189350128,
+                            0.25882354378700256,
+                            0.29019609093666077
+                          ]
+                        },
+                        "TextTransparency": 0.0,
+                        "ClipsDescendants": false
+                      },
+                      "children": [],
+                      "attributes": {
+                        "FigmaNodeId": {
+                          "String": "1:109"
+                        },
+                        "FigmaFileKey": {
+                          "String": "2nqyEj1d6oLdG2HqQjAerM"
+                        },
+                        "UIKey": {
+                          "String": "figma_95ab6052906946a2b83fc9b7"
+                        }
+                      }
+                    }
+                  ],
+                  "attributes": {
+                    "FigmaNodeId": {
+                      "String": "1:107"
+                    },
+                    "FigmaFileKey": {
+                      "String": "2nqyEj1d6oLdG2HqQjAerM"
+                    },
+                    "UIKey": {
+                      "String": "figma_68496428b04a82e6081ab0ff"
+                    }
+                  }
+                },
+                {
+                  "name": "BeforeMoneyImg",
+                  "className": "ImageLabel",
+                  "properties": {
+                    "AnchorPoint": {
+                      "Vector2": [
+                        0.5,
+                        0.5
+                      ]
+                    },
+                    "Position": {
+                      "UDim2": [
+                        [
+                          0,
+                          147
+                        ],
+                        [
+                          0,
+                          156
+                        ]
+                      ]
+                    },
+                    "Size": {
+                      "UDim2": [
+                        [
+                          0,
+                          210
+                        ],
+                        [
+                          0,
+                          60
+                        ]
+                      ]
+                    },
+                    "Rotation": 0.0,
+                    "Visible": true,
+                    "BackgroundTransparency": 1,
+                    "BorderSizePixel": 0,
+                    "ZIndex": 5,
+                    "ClipsDescendants": false,
+                    "Image": "rbxassetid://106714810516505",
+                    "ImageTransparency": 0.0,
+                    "ScaleType": "Stretch"
+                  },
+                  "children": [
+                    {
+                      "name": "BeforeMoneyIconImg",
+                      "className": "ImageLabel",
+                      "properties": {
+                        "AnchorPoint": {
+                          "Vector2": [
+                            0.5,
+                            0.5
+                          ]
+                        },
+                        "Position": {
+                          "UDim2": [
+                            [
+                              0,
+                              33
+                            ],
+                            [
+                              0,
+                              30
+                            ]
+                          ]
+                        },
+                        "Size": {
+                          "UDim2": [
+                            [
+                              0,
+                              29
+                            ],
+                            [
+                              0,
+                              34
+                            ]
+                          ]
+                        },
+                        "Rotation": 0.0,
+                        "Visible": true,
+                        "BackgroundTransparency": 1,
+                        "BorderSizePixel": 0,
+                        "ZIndex": 1,
+                        "Image": "rbxassetid://103409728350373",
+                        "ImageTransparency": 0.0,
+                        "ScaleType": "Stretch"
+                      },
+                      "children": [],
+                      "attributes": {
+                        "FigmaNodeId": {
+                          "String": "1:111"
+                        },
+                        "FigmaFileKey": {
+                          "String": "2nqyEj1d6oLdG2HqQjAerM"
+                        },
+                        "UIKey": {
+                          "String": "figma_8ad4ccd8fc349b86b254949f"
+                        }
+                      }
+                    },
+                    {
+                      "name": "BeforeMoneyTxt",
+                      "className": "TextLabel",
+                      "properties": {
+                        "AnchorPoint": {
+                          "Vector2": [
+                            0.5,
+                            0.5
+                          ]
+                        },
+                        "Position": {
+                          "UDim2": [
+                            [
+                              0,
+                              126
+                            ],
+                            [
+                              0,
+                              30
+                            ]
+                          ]
+                        },
+                        "Size": {
+                          "UDim2": [
+                            [
+                              0,
+                              144
+                            ],
+                            [
+                              0,
+                              60
+                            ]
+                          ]
+                        },
+                        "Rotation": 0.0,
+                        "Visible": true,
+                        "BackgroundTransparency": 1,
+                        "BorderSizePixel": 0,
+                        "ZIndex": 2,
+                        "BackgroundColor3": {
+                          "Color3": [
+                            0.12941177189350128,
+                            0.25882354378700256,
+                            0.29019609093666077
+                          ]
+                        },
+                        "Text": "7x",
+                        "TextSize": 30,
+                        "Font": "SourceSansBold",
+                        "TextWrapped": true,
+                        "RichText": false,
+                        "TextXAlignment": "Center",
+                        "TextYAlignment": "Center",
+                        "TextColor3": {
+                          "Color3": [
+                            0.12941177189350128,
+                            0.25882354378700256,
+                            0.29019609093666077
+                          ]
+                        },
+                        "TextTransparency": 0.0,
+                        "ClipsDescendants": false
+                      },
+                      "children": [],
+                      "attributes": {
+                        "FigmaNodeId": {
+                          "String": "1:112"
+                        },
+                        "FigmaFileKey": {
+                          "String": "2nqyEj1d6oLdG2HqQjAerM"
+                        },
+                        "UIKey": {
+                          "String": "figma_3b69dc63091136c1cf381ebe"
+                        }
+                      }
+                    }
+                  ],
+                  "attributes": {
+                    "FigmaNodeId": {
+                      "String": "1:110"
+                    },
+                    "FigmaFileKey": {
+                      "String": "2nqyEj1d6oLdG2HqQjAerM"
+                    },
+                    "UIKey": {
+                      "String": "figma_2899ccad0e5508317836e7e9"
+                    }
+                  }
+                },
+                {
+                  "name": "AfterMoneyImg",
+                  "className": "ImageLabel",
+                  "properties": {
+                    "AnchorPoint": {
+                      "Vector2": [
+                        0.5,
+                        0.5
+                      ]
+                    },
+                    "Position": {
+                      "UDim2": [
+                        [
+                          0,
+                          427
+                        ],
+                        [
+                          0,
+                          156
+                        ]
+                      ]
+                    },
+                    "Size": {
+                      "UDim2": [
+                        [
+                          0,
+                          210
+                        ],
+                        [
+                          0,
+                          60
+                        ]
+                      ]
+                    },
+                    "Rotation": 0.0,
+                    "Visible": true,
+                    "BackgroundTransparency": 1,
+                    "BorderSizePixel": 0,
+                    "ZIndex": 6,
+                    "ClipsDescendants": false,
+                    "Image": "rbxassetid://87846386739366",
+                    "ImageTransparency": 0.0,
+                    "ScaleType": "Stretch"
+                  },
+                  "children": [
+                    {
+                      "name": "AfterMoneyIconImg",
+                      "className": "ImageLabel",
+                      "properties": {
+                        "AnchorPoint": {
+                          "Vector2": [
+                            0.5,
+                            0.5
+                          ]
+                        },
+                        "Position": {
+                          "UDim2": [
+                            [
+                              0,
+                              33
+                            ],
+                            [
+                              0,
+                              30
+                            ]
+                          ]
+                        },
+                        "Size": {
+                          "UDim2": [
+                            [
+                              0,
+                              29
+                            ],
+                            [
+                              0,
+                              34
+                            ]
+                          ]
+                        },
+                        "Rotation": 0.0,
+                        "Visible": true,
+                        "BackgroundTransparency": 1,
+                        "BorderSizePixel": 0,
+                        "ZIndex": 1,
+                        "Image": "rbxassetid://103409728350373",
+                        "ImageTransparency": 0.0,
+                        "ScaleType": "Stretch"
+                      },
+                      "children": [],
+                      "attributes": {
+                        "FigmaNodeId": {
+                          "String": "1:114"
+                        },
+                        "FigmaFileKey": {
+                          "String": "2nqyEj1d6oLdG2HqQjAerM"
+                        },
+                        "UIKey": {
+                          "String": "figma_c4ed76d4e0d2f6ff85f56601"
+                        }
+                      }
+                    },
+                    {
+                      "name": "AfterMoneyTxt",
+                      "className": "TextLabel",
+                      "properties": {
+                        "AnchorPoint": {
+                          "Vector2": [
+                            0.5,
+                            0.5
+                          ]
+                        },
+                        "Position": {
+                          "UDim2": [
+                            [
+                              0,
+                              126
+                            ],
+                            [
+                              0,
+                              30
+                            ]
+                          ]
+                        },
+                        "Size": {
+                          "UDim2": [
+                            [
+                              0,
+                              144
+                            ],
+                            [
+                              0,
+                              60
+                            ]
+                          ]
+                        },
+                        "Rotation": 0.0,
+                        "Visible": true,
+                        "BackgroundTransparency": 1,
+                        "BorderSizePixel": 0,
+                        "ZIndex": 2,
+                        "BackgroundColor3": {
+                          "Color3": [
+                            0.12941177189350128,
+                            0.25882354378700256,
+                            0.29019609093666077
+                          ]
+                        },
+                        "Text": "8x",
+                        "TextSize": 30,
+                        "Font": "SourceSansBold",
+                        "TextWrapped": true,
+                        "RichText": false,
+                        "TextXAlignment": "Center",
+                        "TextYAlignment": "Center",
+                        "TextColor3": {
+                          "Color3": [
+                            0.12941177189350128,
+                            0.25882354378700256,
+                            0.29019609093666077
+                          ]
+                        },
+                        "TextTransparency": 0.0,
+                        "ClipsDescendants": false
+                      },
+                      "children": [],
+                      "attributes": {
+                        "FigmaNodeId": {
+                          "String": "1:115"
+                        },
+                        "FigmaFileKey": {
+                          "String": "2nqyEj1d6oLdG2HqQjAerM"
+                        },
+                        "UIKey": {
+                          "String": "figma_8e9d32190a32049d10fa4446"
+                        }
+                      }
+                    }
+                  ],
+                  "attributes": {
+                    "FigmaNodeId": {
+                      "String": "1:113"
+                    },
+                    "FigmaFileKey": {
+                      "String": "2nqyEj1d6oLdG2HqQjAerM"
+                    },
+                    "UIKey": {
+                      "String": "figma_cddb6beaa3e3483878af077c"
+                    }
+                  }
+                },
+                {
+                  "name": "StrengthArrowTxt",
+                  "className": "TextLabel",
+                  "properties": {
+                    "AnchorPoint": {
+                      "Vector2": [
+                        0.5,
+                        0.5
+                      ]
+                    },
+                    "Position": {
+                      "UDim2": [
+                        [
+                          0,
+                          287
+                        ],
+                        [
+                          0,
+                          76
+                        ]
+                      ]
+                    },
+                    "Size": {
+                      "UDim2": [
+                        [
+                          0,
+                          50
+                        ],
+                        [
+                          0,
+                          60
+                        ]
+                      ]
+                    },
+                    "Rotation": 0.0,
+                    "Visible": true,
+                    "BackgroundTransparency": 1,
+                    "BorderSizePixel": 0,
+                    "ZIndex": 7,
+                    "BackgroundColor3": {
+                      "Color3": [
+                        0.38823530077934265,
+                        0.4627451002597809,
+                        0.4588235318660736
+                      ]
+                    },
+                    "Text": "→",
+                    "TextSize": 28,
+                    "Font": "SourceSansBold",
+                    "TextWrapped": true,
+                    "RichText": false,
+                    "TextXAlignment": "Center",
+                    "TextYAlignment": "Center",
+                    "TextColor3": {
+                      "Color3": [
+                        0.38823530077934265,
+                        0.4627451002597809,
+                        0.4588235318660736
+                      ]
+                    },
+                    "TextTransparency": 0.0,
+                    "ClipsDescendants": false
+                  },
+                  "children": [],
+                  "attributes": {
+                    "FigmaNodeId": {
+                      "String": "1:116"
+                    },
+                    "FigmaFileKey": {
+                      "String": "2nqyEj1d6oLdG2HqQjAerM"
+                    },
+                    "UIKey": {
+                      "String": "figma_0cdd4a1e1d83a4e595911cc6"
+                    }
+                  }
+                },
+                {
+                  "name": "MoneyArrowTxt",
+                  "className": "TextLabel",
+                  "properties": {
+                    "AnchorPoint": {
+                      "Vector2": [
+                        0.5,
+                        0.5
+                      ]
+                    },
+                    "Position": {
+                      "UDim2": [
+                        [
+                          0,
+                          287
+                        ],
+                        [
+                          0,
+                          156
+                        ]
+                      ]
+                    },
+                    "Size": {
+                      "UDim2": [
+                        [
+                          0,
+                          50
+                        ],
+                        [
+                          0,
+                          60
+                        ]
+                      ]
+                    },
+                    "Rotation": 0.0,
+                    "Visible": true,
+                    "BackgroundTransparency": 1,
+                    "BorderSizePixel": 0,
+                    "ZIndex": 8,
+                    "BackgroundColor3": {
+                      "Color3": [
+                        0.38823530077934265,
+                        0.4627451002597809,
+                        0.4588235318660736
+                      ]
+                    },
+                    "Text": "→",
+                    "TextSize": 28,
+                    "Font": "SourceSansBold",
+                    "TextWrapped": true,
+                    "RichText": false,
+                    "TextXAlignment": "Center",
+                    "TextYAlignment": "Center",
+                    "TextColor3": {
+                      "Color3": [
+                        0.38823530077934265,
+                        0.4627451002597809,
+                        0.4588235318660736
+                      ]
+                    },
+                    "TextTransparency": 0.0,
+                    "ClipsDescendants": false
+                  },
+                  "children": [],
+                  "attributes": {
+                    "FigmaNodeId": {
+                      "String": "1:117"
+                    },
+                    "FigmaFileKey": {
+                      "String": "2nqyEj1d6oLdG2HqQjAerM"
+                    },
+                    "UIKey": {
+                      "String": "figma_eec98e7f78238d8b07caf14f"
+                    }
+                  }
+                }
+              ],
+              "attributes": {
+                "FigmaNodeId": {
+                  "String": "1:101"
+                },
+                "FigmaFileKey": {
+                  "String": "2nqyEj1d6oLdG2HqQjAerM"
+                },
+                "UIKey": {
+                  "String": "figma_c6f8bdb49abf0dedffd673a3"
+                }
+              }
+            },
+            {
+              "name": "LevelProgressImg",
+              "className": "ImageLabel",
+              "properties": {
+                "AnchorPoint": {
+                  "Vector2": [
+                    0.5,
+                    0.5
+                  ]
+                },
+                "Position": {
+                  "UDim2": [
+                    [
+                      0,
+                      329
+                    ],
+                    [
+                      0,
+                      265
+                    ]
+                  ]
+                },
+                "Size": {
+                  "UDim2": [
+                    [
+                      0,
+                      534
+                    ],
+                    [
+                      0,
+                      58
+                    ]
+                  ]
+                },
+                "Rotation": 0.0,
+                "Visible": true,
+                "BackgroundTransparency": 1,
+                "BorderSizePixel": 0,
+                "ZIndex": 2,
+                "ClipsDescendants": false,
+                "Image": "rbxassetid://93225641621273",
+                "ImageTransparency": 0.0,
+                "ScaleType": "Stretch"
+              },
+              "children": [
+                {
+                  "name": "LevelProgressFillImg",
+                  "className": "ImageLabel",
+                  "properties": {
+                    "AnchorPoint": {
+                      "Vector2": [
+                        0.5,
+                        0.5
+                      ]
+                    },
+                    "Position": {
+                      "UDim2": [
+                        [
+                          0,
+                          267
+                        ],
+                        [
+                          0,
+                          29
+                        ]
+                      ]
+                    },
+                    "Size": {
+                      "UDim2": [
+                        [
+                          0,
+                          520
+                        ],
+                        [
+                          0,
+                          44
+                        ]
+                      ]
+                    },
+                    "Rotation": 0.0,
+                    "Visible": true,
+                    "BackgroundTransparency": 1,
+                    "BorderSizePixel": 0,
+                    "ZIndex": 1,
+                    "Image": "rbxassetid://76026172850278",
+                    "ImageTransparency": 0.0,
+                    "ScaleType": "Stretch"
+                  },
+                  "children": [],
+                  "attributes": {
+                    "FigmaNodeId": {
+                      "String": "1:119"
+                    },
+                    "FigmaFileKey": {
+                      "String": "2nqyEj1d6oLdG2HqQjAerM"
+                    },
+                    "UIKey": {
+                      "String": "figma_72a71b12e8cdd2062a92e08b"
+                    }
+                  }
+                },
+                {
+                  "name": "LevelProgressTxt",
+                  "className": "TextLabel",
+                  "properties": {
+                    "AnchorPoint": {
+                      "Vector2": [
+                        0.5,
+                        0.5
+                      ]
+                    },
+                    "Position": {
+                      "UDim2": [
+                        [
+                          0,
+                          267
+                        ],
+                        [
+                          0,
+                          29
+                        ]
+                      ]
+                    },
+                    "Size": {
+                      "UDim2": [
+                        [
+                          0,
+                          534
+                        ],
+                        [
+                          0,
+                          58
+                        ]
+                      ]
+                    },
+                    "Rotation": 0.0,
+                    "Visible": true,
+                    "BackgroundTransparency": 1,
+                    "BorderSizePixel": 0,
+                    "ZIndex": 2,
+                    "BackgroundColor3": {
+                      "Color3": [
+                        0.14509804546833038,
+                        0.2666666805744171,
+                        0.22745098173618317
+                      ]
+                    },
+                    "Text": "等级 39 / 36",
+                    "TextSize": 27,
+                    "Font": "SourceSansBold",
+                    "TextWrapped": true,
+                    "RichText": false,
+                    "TextXAlignment": "Center",
+                    "TextYAlignment": "Center",
+                    "TextColor3": {
+                      "Color3": [
+                        0.14509804546833038,
+                        0.2666666805744171,
+                        0.22745098173618317
+                      ]
+                    },
+                    "TextTransparency": 0.0,
+                    "ClipsDescendants": false
+                  },
+                  "children": [],
+                  "attributes": {
+                    "FigmaNodeId": {
+                      "String": "1:120"
+                    },
+                    "FigmaFileKey": {
+                      "String": "2nqyEj1d6oLdG2HqQjAerM"
+                    },
+                    "UIKey": {
+                      "String": "figma_f287d0c84a29808a1ac64579"
+                    }
+                  }
+                }
+              ],
+              "attributes": {
+                "FigmaNodeId": {
+                  "String": "1:118"
+                },
+                "FigmaFileKey": {
+                  "String": "2nqyEj1d6oLdG2HqQjAerM"
+                },
+                "UIKey": {
+                  "String": "figma_4ad630aa4a0e152b452b77d4"
+                }
+              }
+            },
+            {
+              "name": "ConfirmBtn",
+              "className": "ImageButton",
+              "properties": {
+                "AnchorPoint": {
+                  "Vector2": [
+                    0.5,
+                    0.5
+                  ]
+                },
+                "Position": {
+                  "UDim2": [
+                    [
+                      0,
+                      201
+                    ],
+                    [
+                      0,
+                      329
+                    ]
+                  ]
+                },
+                "Size": {
+                  "UDim2": [
+                    [
+                      0,
+                      210
+                    ],
+                    [
+                      0,
+                      50
+                    ]
+                  ]
+                },
+                "Rotation": 0.0,
+                "Visible": true,
+                "BackgroundTransparency": 1,
+                "BorderSizePixel": 0,
+                "ZIndex": 3,
+                "AutoButtonColor": false,
+                "ClipsDescendants": false,
+                "Image": "rbxassetid://100314557961146",
+                "ImageTransparency": 0.0,
+                "ScaleType": "Stretch"
+              },
+              "children": [
+                {
+                  "name": "ConfirmTxt",
+                  "className": "TextLabel",
+                  "properties": {
+                    "AnchorPoint": {
+                      "Vector2": [
+                        0.5,
+                        0.5
+                      ]
+                    },
+                    "Position": {
+                      "UDim2": [
+                        [
+                          0,
+                          105
+                        ],
+                        [
+                          0,
+                          25
+                        ]
+                      ]
+                    },
+                    "Size": {
+                      "UDim2": [
+                        [
+                          0,
+                          210
+                        ],
+                        [
+                          0,
+                          50
+                        ]
+                      ]
+                    },
+                    "Rotation": 0.0,
+                    "Visible": true,
+                    "BackgroundTransparency": 1,
+                    "BorderSizePixel": 0,
+                    "ZIndex": 1,
                     "BackgroundColor3": {
                       "Color3": [
                         1,
@@ -2351,7 +1557,7 @@
                       ]
                     },
                     "Text": "重生",
-                    "TextSize": 23,
+                    "TextSize": 20,
                     "Font": "SourceSansBold",
                     "TextWrapped": true,
                     "RichText": false,
@@ -2370,19 +1576,78 @@
                   "children": [],
                   "attributes": {
                     "FigmaNodeId": {
-                      "String": "1:126"
+                      "String": "1:122"
                     },
                     "FigmaFileKey": {
                       "String": "2nqyEj1d6oLdG2HqQjAerM"
                     },
                     "UIKey": {
-                      "String": "figma_6447096f80770c098815ce62"
+                      "String": "figma_7fd3848ed123860bbc4f580e"
                     }
                   }
+                }
+              ],
+              "attributes": {
+                "FigmaNodeId": {
+                  "String": "1:121"
                 },
+                "FigmaFileKey": {
+                  "String": "2nqyEj1d6oLdG2HqQjAerM"
+                },
+                "UIKey": {
+                  "String": "figma_f49cfef0fed2a1a40c10df7e"
+                }
+              }
+            },
+            {
+              "name": "PaidPurchaseBtn",
+              "className": "ImageButton",
+              "properties": {
+                "AnchorPoint": {
+                  "Vector2": [
+                    0.5,
+                    0.5
+                  ]
+                },
+                "Position": {
+                  "UDim2": [
+                    [
+                      0,
+                      457
+                    ],
+                    [
+                      0,
+                      329
+                    ]
+                  ]
+                },
+                "Size": {
+                  "UDim2": [
+                    [
+                      0,
+                      210
+                    ],
+                    [
+                      0,
+                      50
+                    ]
+                  ]
+                },
+                "Rotation": 0.0,
+                "Visible": true,
+                "BackgroundTransparency": 1,
+                "BorderSizePixel": 0,
+                "ZIndex": 4,
+                "AutoButtonColor": false,
+                "ClipsDescendants": false,
+                "Image": "rbxassetid://97751259153331",
+                "ImageTransparency": 0.0,
+                "ScaleType": "Stretch"
+              },
+              "children": [
                 {
-                  "name": "CloseBtn",
-                  "className": "TextButton",
+                  "name": "PaidPurchaseTxt",
+                  "className": "TextLabel",
                   "properties": {
                     "AnchorPoint": {
                       "Vector2": [
@@ -2394,11 +1659,11 @@
                       "UDim2": [
                         [
                           0,
-                          619
+                          105
                         ],
                         [
                           0,
-                          12
+                          25
                         ]
                       ]
                     },
@@ -2406,11 +1671,11 @@
                       "UDim2": [
                         [
                           0,
-                          78
+                          210
                         ],
                         [
                           0,
-                          78
+                          50
                         ]
                       ]
                     },
@@ -2418,246 +1683,435 @@
                     "Visible": true,
                     "BackgroundTransparency": 1,
                     "BorderSizePixel": 0,
-                    "ZIndex": 5,
-                    "Text": "",
-                    "AutoButtonColor": false,
+                    "ZIndex": 1,
+                    "BackgroundColor3": {
+                      "Color3": [
+                        0.3019607961177826,
+                        0.23137255012989044,
+                        0.125490203499794
+                      ]
+                    },
+                    "Text": "跳过重生",
+                    "TextSize": 20,
+                    "Font": "SourceSansBold",
+                    "TextWrapped": true,
+                    "RichText": false,
+                    "TextXAlignment": "Center",
+                    "TextYAlignment": "Center",
+                    "TextColor3": {
+                      "Color3": [
+                        0.3019607961177826,
+                        0.23137255012989044,
+                        0.125490203499794
+                      ]
+                    },
+                    "TextTransparency": 0.0,
                     "ClipsDescendants": false
                   },
-                  "children": [
-                    {
-                      "name": "Background",
-                      "className": "ImageLabel",
-                      "properties": {
-                        "BackgroundTransparency": 1,
-                        "BorderSizePixel": 0,
-                        "Active": false,
-                        "Position": {
-                          "UDim2": [
-                            [
-                              0,
-                              0
-                            ],
-                            [
-                              0,
-                              0
-                            ]
-                          ]
-                        },
-                        "Size": {
-                          "UDim2": [
-                            [
-                              0,
-                              78
-                            ],
-                            [
-                              0,
-                              78
-                            ]
-                          ]
-                        },
-                        "Image": "rbxassetid://70418153209738",
-                        "ImageTransparency": 0.0,
-                        "ScaleType": "Stretch",
-                        "ZIndex": 0
-                      },
-                      "children": [],
-                      "attributes": {
-                        "FigmaNodeId": {
-                          "String": "25:74"
-                        },
-                        "FigmaRole": {
-                          "String": "background"
-                        }
-                      }
-                    },
-                    {
-                      "name": "CloseCoreImg",
-                      "className": "ImageLabel",
-                      "properties": {
-                        "AnchorPoint": {
-                          "Vector2": [
-                            0.5,
-                            0.5
-                          ]
-                        },
-                        "Position": {
-                          "UDim2": [
-                            [
-                              0,
-                              39
-                            ],
-                            [
-                              0,
-                              39
-                            ]
-                          ]
-                        },
-                        "Size": {
-                          "UDim2": [
-                            [
-                              0,
-                              42
-                            ],
-                            [
-                              0,
-                              42
-                            ]
-                          ]
-                        },
-                        "Rotation": 0.0,
-                        "Visible": true,
-                        "BackgroundTransparency": 1,
-                        "BorderSizePixel": 0,
-                        "ZIndex": 1,
-                        "Image": "rbxassetid://99178849495030",
-                        "ImageTransparency": 0.0,
-                        "ScaleType": "Stretch"
-                      },
-                      "children": [],
-                      "attributes": {
-                        "FigmaNodeId": {
-                          "String": "I25:74;1:30"
-                        },
-                        "FigmaFileKey": {
-                          "String": "2nqyEj1d6oLdG2HqQjAerM"
-                        },
-                        "UIKey": {
-                          "String": "figma_265a18b458c8a8253055b1b3"
-                        }
-                      }
-                    },
-                    {
-                      "name": "CloseIconTxt",
-                      "className": "TextLabel",
-                      "properties": {
-                        "AnchorPoint": {
-                          "Vector2": [
-                            0.5,
-                            0.5
-                          ]
-                        },
-                        "Position": {
-                          "UDim2": [
-                            [
-                              0,
-                              39
-                            ],
-                            [
-                              0,
-                              34
-                            ]
-                          ]
-                        },
-                        "Size": {
-                          "UDim2": [
-                            [
-                              0,
-                              42
-                            ],
-                            [
-                              0,
-                              44
-                            ]
-                          ]
-                        },
-                        "Rotation": 0.0,
-                        "Visible": true,
-                        "BackgroundTransparency": 1,
-                        "BorderSizePixel": 0,
-                        "ZIndex": 2,
-                        "BackgroundColor3": {
-                          "Color3": [
-                            1,
-                            1,
-                            1
-                          ]
-                        },
-                        "Text": "×",
-                        "TextSize": 38,
-                        "Font": "SourceSansBold",
-                        "TextWrapped": true,
-                        "RichText": false,
-                        "TextXAlignment": "Center",
-                        "TextYAlignment": "Center",
-                        "TextColor3": {
-                          "Color3": [
-                            1,
-                            1,
-                            1
-                          ]
-                        },
-                        "TextTransparency": 0.0,
-                        "ClipsDescendants": false
-                      },
-                      "children": [],
-                      "attributes": {
-                        "FigmaNodeId": {
-                          "String": "I25:74;1:31"
-                        },
-                        "FigmaFileKey": {
-                          "String": "2nqyEj1d6oLdG2HqQjAerM"
-                        },
-                        "UIKey": {
-                          "String": "figma_a0d55ed81a9e5622e860c617"
-                        }
-                      }
-                    }
-                  ],
+                  "children": [],
                   "attributes": {
                     "FigmaNodeId": {
-                      "String": "25:74"
+                      "String": "1:124"
                     },
                     "FigmaFileKey": {
                       "String": "2nqyEj1d6oLdG2HqQjAerM"
                     },
                     "UIKey": {
-                      "String": "figma_b485ec3e032f9d72b6005665"
+                      "String": "figma_0d16bbb41bf2921d24f2ecd1"
                     }
                   }
                 }
               ],
               "attributes": {
                 "FigmaNodeId": {
-                  "String": "1:98"
+                  "String": "1:123"
                 },
                 "FigmaFileKey": {
                   "String": "2nqyEj1d6oLdG2HqQjAerM"
                 },
                 "UIKey": {
-                  "String": "figma_5cc687308a5e46166078cd17"
+                  "String": "figma_695c2cf04dd958a599058990"
                 }
               }
-            },
-            {
-              "name": "FigmaScale",
-              "className": "UIScale",
-              "properties": {
-                "Scale": 1
-              },
-              "children": []
             }
           ],
           "attributes": {
             "FigmaNodeId": {
-              "String": "1:97"
+              "String": "1:100"
             },
             "FigmaFileKey": {
               "String": "2nqyEj1d6oLdG2HqQjAerM"
             },
             "UIKey": {
-              "String": "figma_c0017033ddb2557234279f2c"
+              "String": "figma_0883e1c854c521c063a31e08"
             }
           }
+        },
+        {
+          "name": "TitleImg",
+          "className": "ImageLabel",
+          "properties": {
+            "AnchorPoint": {
+              "Vector2": [
+                0.5,
+                0.5
+              ]
+            },
+            "Position": {
+              "UDim2": [
+                [
+                  0,
+                  190
+                ],
+                [
+                  0,
+                  7
+                ]
+              ]
+            },
+            "Size": {
+              "UDim2": [
+                [
+                  0,
+                  320
+                ],
+                [
+                  0,
+                  70
+                ]
+              ]
+            },
+            "Rotation": 0.0,
+            "Visible": true,
+            "BackgroundTransparency": 1,
+            "BorderSizePixel": 0,
+            "ZIndex": 3,
+            "Image": "rbxassetid://102608819137565",
+            "ImageTransparency": 0.0,
+            "ScaleType": "Stretch"
+          },
+          "children": [],
+          "attributes": {
+            "FigmaNodeId": {
+              "String": "25:68"
+            },
+            "FigmaFileKey": {
+              "String": "2nqyEj1d6oLdG2HqQjAerM"
+            },
+            "UIKey": {
+              "String": "figma_dbe44cb49fa94466fb758de6"
+            }
+          }
+        },
+        {
+          "name": "TitleTxt",
+          "className": "TextLabel",
+          "properties": {
+            "AnchorPoint": {
+              "Vector2": [
+                0.5,
+                0.5
+              ]
+            },
+            "Position": {
+              "UDim2": [
+                [
+                  0,
+                  190
+                ],
+                [
+                  0,
+                  6
+                ]
+              ]
+            },
+            "Size": {
+              "UDim2": [
+                [
+                  0,
+                  204
+                ],
+                [
+                  0,
+                  32
+                ]
+              ]
+            },
+            "Rotation": 0.0,
+            "Visible": true,
+            "BackgroundTransparency": 1,
+            "BorderSizePixel": 0,
+            "ZIndex": 4,
+            "BackgroundColor3": {
+              "Color3": [
+                1,
+                1,
+                1
+              ]
+            },
+            "Text": "重生",
+            "TextSize": 23,
+            "Font": "SourceSansBold",
+            "TextWrapped": true,
+            "RichText": false,
+            "TextXAlignment": "Center",
+            "TextYAlignment": "Center",
+            "TextColor3": {
+              "Color3": [
+                1,
+                1,
+                1
+              ]
+            },
+            "TextTransparency": 0.0,
+            "ClipsDescendants": false
+          },
+          "children": [],
+          "attributes": {
+            "FigmaNodeId": {
+              "String": "1:126"
+            },
+            "FigmaFileKey": {
+              "String": "2nqyEj1d6oLdG2HqQjAerM"
+            },
+            "UIKey": {
+              "String": "figma_6447096f80770c098815ce62"
+            }
+          }
+        },
+        {
+          "name": "CloseBtn",
+          "className": "ImageButton",
+          "properties": {
+            "AnchorPoint": {
+              "Vector2": [
+                0.5,
+                0.5
+              ]
+            },
+            "Position": {
+              "UDim2": [
+                [
+                  0,
+                  619
+                ],
+                [
+                  0,
+                  12
+                ]
+              ]
+            },
+            "Size": {
+              "UDim2": [
+                [
+                  0,
+                  78
+                ],
+                [
+                  0,
+                  78
+                ]
+              ]
+            },
+            "Rotation": 0.0,
+            "Visible": true,
+            "BackgroundTransparency": 1,
+            "BorderSizePixel": 0,
+            "ZIndex": 5,
+            "AutoButtonColor": false,
+            "ClipsDescendants": false,
+            "Image": "rbxassetid://70418153209738",
+            "ImageTransparency": 0.0,
+            "ScaleType": "Stretch"
+          },
+          "children": [
+            {
+              "name": "CloseCoreImg",
+              "className": "ImageLabel",
+              "properties": {
+                "AnchorPoint": {
+                  "Vector2": [
+                    0.5,
+                    0.5
+                  ]
+                },
+                "Position": {
+                  "UDim2": [
+                    [
+                      0,
+                      39
+                    ],
+                    [
+                      0,
+                      39
+                    ]
+                  ]
+                },
+                "Size": {
+                  "UDim2": [
+                    [
+                      0,
+                      42
+                    ],
+                    [
+                      0,
+                      42
+                    ]
+                  ]
+                },
+                "Rotation": 0.0,
+                "Visible": true,
+                "BackgroundTransparency": 1,
+                "BorderSizePixel": 0,
+                "ZIndex": 1,
+                "Image": "rbxassetid://99178849495030",
+                "ImageTransparency": 0.0,
+                "ScaleType": "Stretch"
+              },
+              "children": [],
+              "attributes": {
+                "FigmaNodeId": {
+                  "String": "I25:74;1:30"
+                },
+                "FigmaFileKey": {
+                  "String": "2nqyEj1d6oLdG2HqQjAerM"
+                },
+                "UIKey": {
+                  "String": "figma_265a18b458c8a8253055b1b3"
+                }
+              }
+            },
+            {
+              "name": "CloseIconTxt",
+              "className": "TextLabel",
+              "properties": {
+                "AnchorPoint": {
+                  "Vector2": [
+                    0.5,
+                    0.5
+                  ]
+                },
+                "Position": {
+                  "UDim2": [
+                    [
+                      0,
+                      39
+                    ],
+                    [
+                      0,
+                      34
+                    ]
+                  ]
+                },
+                "Size": {
+                  "UDim2": [
+                    [
+                      0,
+                      42
+                    ],
+                    [
+                      0,
+                      44
+                    ]
+                  ]
+                },
+                "Rotation": 0.0,
+                "Visible": true,
+                "BackgroundTransparency": 1,
+                "BorderSizePixel": 0,
+                "ZIndex": 2,
+                "BackgroundColor3": {
+                  "Color3": [
+                    1,
+                    1,
+                    1
+                  ]
+                },
+                "Text": "×",
+                "TextSize": 38,
+                "Font": "SourceSansBold",
+                "TextWrapped": true,
+                "RichText": false,
+                "TextXAlignment": "Center",
+                "TextYAlignment": "Center",
+                "TextColor3": {
+                  "Color3": [
+                    1,
+                    1,
+                    1
+                  ]
+                },
+                "TextTransparency": 0.0,
+                "ClipsDescendants": false
+              },
+              "children": [],
+              "attributes": {
+                "FigmaNodeId": {
+                  "String": "I25:74;1:31"
+                },
+                "FigmaFileKey": {
+                  "String": "2nqyEj1d6oLdG2HqQjAerM"
+                },
+                "UIKey": {
+                  "String": "figma_a0d55ed81a9e5622e860c617"
+                }
+              }
+            }
+          ],
+          "attributes": {
+            "FigmaNodeId": {
+              "String": "25:74"
+            },
+            "FigmaFileKey": {
+              "String": "2nqyEj1d6oLdG2HqQjAerM"
+            },
+            "UIKey": {
+              "String": "figma_b485ec3e032f9d72b6005665"
+            }
+          }
+        },
+        {
+          "name": "FigmaScale",
+          "className": "UIScale",
+          "properties": {
+            "Scale": 1
+          },
+          "children": []
         }
-      ]
+      ],
+      "attributes": {
+        "FigmaNodeId": {
+          "String": "1:98"
+        },
+        "FigmaFileKey": {
+          "String": "2nqyEj1d6oLdG2HqQjAerM"
+        },
+        "UIKey": {
+          "String": "figma_5cc687308a5e46166078cd17"
+        }
+      }
     },
     {
       "name": "FigmaCanvasAdapter",
       "className": "LocalScript",
       "properties": {
-        "Source": "local screen = script.Parent\nlocal viewport = screen:WaitForChild(\"Viewport\")\nlocal canvas = viewport:WaitForChild(\"Canvas\")\nlocal scale = canvas:WaitForChild(\"FigmaScale\")\nlocal function resize()\n    local size = viewport.AbsoluteSize\n    scale.Scale = math.min(size.X / canvas.Size.X.Offset, size.Y / canvas.Size.Y.Offset)\nend\nviewport:GetPropertyChangedSignal(\"AbsoluteSize\"):Connect(resize)\nresize()\n"
+        "Source": "local screen = script.Parent\nlocal canvas = screen:FindFirstChildWhichIsA(\"GuiObject\")\nwhile not canvas do\n    screen.ChildAdded:Wait()\n    canvas = screen:FindFirstChildWhichIsA(\"GuiObject\")\nend\nlocal scale = canvas:WaitForChild(\"FigmaScale\")\nlocal width = tonumber(script:GetAttribute(\"DesignWidth\"))\nlocal height = tonumber(script:GetAttribute(\"DesignHeight\"))\nlocal offsetX = tonumber(script:GetAttribute(\"DesignOffsetX\"))\nlocal offsetY = tonumber(script:GetAttribute(\"DesignOffsetY\"))\nlocal function resize()\n    local size = screen.AbsoluteSize\n    local ratio = math.min(size.X / width, size.Y / height)\n    scale.Scale = ratio\n    canvas.Position = UDim2.new(0.5, offsetX * ratio, 0.5, offsetY * ratio)\nend\nscreen:GetPropertyChangedSignal(\"AbsoluteSize\"):Connect(resize)\nresize()\n"
       },
-      "children": []
+      "children": [],
+      "attributes": {
+        "DesignWidth": {
+          "String": "1280"
+        },
+        "DesignHeight": {
+          "String": "720"
+        },
+        "DesignOffsetX": {
+          "String": "0.0"
+        },
+        "DesignOffsetY": {
+          "String": "0.0"
+        }
+      }
     }
   ],
   "attributes": {

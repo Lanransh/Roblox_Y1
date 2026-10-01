@@ -1,0 +1,33 @@
+{
+  "version": 7,
+  "guid": "9ece487b-544f-4479-aaad-530fedc9eaa8",
+  "rootNodeId": "studio-block-models-root",
+  "nodes": [
+    {
+      "id": "studio-block-models-root",
+      "name": "Root",
+      "parentId": null,
+      "type": "Transform",
+      "transform": {
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    }
+  ],
+  "prefabFolders": [],
+  "prefabs": [],
+  "externalPrefabAliases": []
+}
