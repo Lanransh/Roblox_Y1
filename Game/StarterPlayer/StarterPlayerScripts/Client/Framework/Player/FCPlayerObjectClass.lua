@@ -6,7 +6,7 @@ FC.PlayerObjectClass = Player
 function Player:Ctor(playerId)
     Player.Super.Ctor(self)
     self._playerId = playerId
-    self._playerData, self._playerDataListeners, self._inventoryData = {}, {}, {}
+    self._playerData, self._playerDataListeners = {}, {}
     self._ready = false
     FX.Network:RegServerMsgCallback("S2C_PlayerStateSync", function(data)
         for key, value in pairs(data) do
@@ -16,19 +16,6 @@ function Player:Ctor(playerId)
                 self._playerDataListeners[key]:Fire(value, old, key)
             end
         end
-    end)
-
-    FX.Network:RegServerMsgCallback("S2C_InventoryData", function(data)
-        self._inventoryData = data
-        self:PublishEvent("InventorySnapshot", data)
-    end)
-
-    FX.Network:RegServerMsgCallback("S2C_InventoryGridsChanged", function(changes)
-        for _, change in ipairs(changes) do
-            self._inventoryData[tostring(change.gridIndex)] = change.gridData
-        end
-
-        self:PublishEvent("InventorySnapshot", self._inventoryData)
     end)
 
     FX.Network:RegServerMsgCallback("S2C_ServerReady", function()
@@ -96,7 +83,7 @@ end
 --- 释放网络回调、每秒更新和字段监听。
 function Player:Dtor()
     FX.Task:Cancel(self._timer)
-    for _, name in ipairs({ "S2C_PlayerStateSync", "S2C_InventoryData", "S2C_InventoryGridsChanged", "S2C_ServerReady" }) do
+    for _, name in ipairs({ "S2C_PlayerStateSync", "S2C_ServerReady" }) do
         FX.Network:UnRegServerMsgCallback(name)
     end
 

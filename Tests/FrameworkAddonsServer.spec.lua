@@ -11,7 +11,6 @@ local inventory = object:RequireComponent("FSInventoryComp")
 local itemId = 987654320
 local field = { Type = "number", Key = "AddonTestCoins", DefVal = 0, Sync = false }
 local oldBag = object:GetTable(Config.PlayerData.Inventory)
-local oldHeld = inventory:GetHandItemGridIndex()
 local oldItem = Config.Items[itemId]
 local oldField, oldCurrency = Config.PlayerData.AddonTestCoins, Config.RewardCurrencies.AddonTest
 local oldTemp = object._tempDataMap[field.Key]
@@ -44,8 +43,7 @@ end)
 
 -- 恢复不依赖断言是否成功。
 object:SetTable(Config.PlayerData.Inventory, oldBag)
-inventory:SetHandItemGridIndex(oldHeld)
-inventory:SendInventoryDataToClient()
+inventory:OnAllChanged()
 Config.Items[itemId] = oldItem
 Config.PlayerData.AddonTestCoins, Config.RewardCurrencies.AddonTest = oldField, oldCurrency
 object._tempDataMap[field.Key] = oldTemp

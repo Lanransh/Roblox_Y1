@@ -8,7 +8,6 @@ for _, name in ipairs({
     "FCCommonUICompClass",
     "FCFriendCompClass",
     "FCSoundCompClass",
-    "FCInventoryCompClass",
     "FCRankingUICompClass",
     "FCTutorialGuideCompClass",
 }) do
@@ -19,7 +18,7 @@ for _, name in ipairs({ "ShopPageBaseClass", "ShopItemBaseClass", "FCShopUICompC
     require(root.Shop:WaitForChild(name))
 end
 
-for _, name in ipairs({ "FCDragObjectClass", "FCTouchObjectClass", "FCHoldUIObjectClass", "FCKeyObjectClass" }) do
+for _, name in ipairs({ "FCHoldUIObjectClass", "FCKeyObjectClass" }) do
     require(root:WaitForChild(name))
 end
 

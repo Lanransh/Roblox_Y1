@@ -1,6 +1,25 @@
 local FX, FS = _G.FX, _G.FS
 local Config = require(game.ReplicatedStorage.Shared.Config.FrameworkConfig)
+local RunService = game:GetService("RunService")
 local Inventory = FX.Class("SInventoryCompClass", "FSInventoryCompClass")
+
+_G.Provider.ItemHandlers.DemoTool = {
+    CanUse = function(_, context)
+        if context.itemObject:GetItemId() == 1001 then
+            context.consumeCount = 0
+        end
+        return true
+    end,
+    Use = function(_, context)
+        context.playerObject:ShowTips("使用了" .. context.itemDataConfig.Name)
+        return true
+    end,
+}
+
+function Inventory:Ctor(owner)
+    Inventory.Super.Ctor(self, owner)
+    self._tools = {}
+end
 
 --- @return table 背包容量与持久字段。
 function Inventory:GetConfig()
@@ -11,9 +30,101 @@ function Inventory:GetConfig()
     }
 end
 
---- 登录时全量发送背包，后续变化走增量协议。
+--- 登录后从存档创建原生 Tool，后续由数据变化监听保持同步。
 function Inventory:OnPlayerLogin()
-    self:SendInventoryDataToClient()
+    local player = self:GetPlayerNode()
+    self:WatchDataChanged(Config.PlayerData.Inventory, self.SyncTools, self)
+    self:TrackConnection(player.CharacterAdded:Connect(function(character)
+        task.defer(function()
+            if self._tools and player.Character == character then
+                self:SyncTools()
+            end
+        end)
+    end))
+    self:TrackConnection(player.CharacterAppearanceLoaded:Connect(function(character)
+        if self._tools and player.Character == character then
+            self:SyncTools()
+        end
+    end))
+
+    -- 试玩时给空存档发测试道具；正式服务器只显示已保存或业务发放的物品。
+    if RunService:IsStudio() and next(self:GetData()) == nil then
+        self:AddItems({ FS.ItemClass.New(1001, 1), FS.ItemClass.New(1002, 3) })
+    end
+    self:SyncTools()
+end
+
+function Inventory:OnAllChanged()
+    self:SyncTools()
+end
+
+function Inventory:SyncTools()
+    local player = self:GetPlayerNode()
+    local backpack = player and player:FindFirstChildOfClass("Backpack")
+    if not backpack or not self._tools then
+        return
+    end
+
+    local data = self:GetData()
+    for gridIndex, tool in pairs(self._tools) do
+        local item = data[gridIndex]
+        local config = item and Config.Items[item.itemId]
+        if not config or not config.ToolShape or (tool.Parent ~= backpack and tool.Parent ~= player.Character)
+            or tool:GetAttribute("FrameworkItemId") ~= item.itemId then
+            tool:Destroy()
+            self._tools[gridIndex] = nil
+        end
+    end
+
+    for gridIndex = 1, self:GetTotalCapacity() do
+        local item = data[gridIndex]
+        local config = item and Config.Items[item.itemId]
+        if config and config.ToolShape then
+            local tool = self._tools[gridIndex]
+            if not tool then
+                tool = Instance.new("Tool")
+                tool.CanBeDropped = false
+                tool.ToolTip = config.Name
+                tool:SetAttribute("FrameworkGridIndex", gridIndex)
+                tool:SetAttribute("FrameworkItemId", item.itemId)
+
+                local handle = Instance.new("Part")
+                handle.Name = "Handle"
+                handle.Shape = Enum.PartType[config.ToolShape]
+                handle.Size = Vector3.new(0.9, 0.9, 0.9)
+                handle.Color = config.ToolColor
+                handle.CanCollide = false
+                handle.Massless = true
+                handle.Parent = tool
+
+                self._tools[gridIndex] = tool
+                tool.Parent = backpack
+            end
+            tool.Name = item.stackCount > 1 and string.format("%s x%d", config.Name, item.stackCount) or config.Name
+        end
+    end
+end
+
+function Inventory:ActivateTool(tool)
+    if typeof(tool) ~= "Instance" or not tool:IsA("Tool") then
+        return false
+    end
+    local player = self:GetPlayerNode()
+    local gridIndex = tool:GetAttribute("FrameworkGridIndex")
+    local item = type(gridIndex) == "number" and self:GetGridData(gridIndex)
+    if not player or tool.Parent ~= player.Character or self._tools[gridIndex] ~= tool
+        or not item or item.itemId ~= tool:GetAttribute("FrameworkItemId") then
+        return false
+    end
+    return self:UseItem(gridIndex, 1)
+end
+
+function Inventory:Dtor()
+    for _, tool in pairs(self._tools) do
+        tool:Destroy()
+    end
+    self._tools = nil
+    Inventory.Super.Dtor(self)
 end
 
 local Guide = FX.Class("STutorialGuideCompClass", "FSTutorialGuideCompClass")

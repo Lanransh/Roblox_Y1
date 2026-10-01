@@ -19,7 +19,16 @@ return {
 
     ShortcutCapacity = 8,
     InventoryCapacity = 50,
-    Items = {},
+    Items = {
+        [1001] = {
+            Id = 1001, Type = "DemoTool", MaxStack = 1, UseHandler = "DemoTool",
+            Name = "测试方块", ToolShape = "Block", ToolColor = Color3.fromRGB(49, 160, 255),
+        },
+        [1002] = {
+            Id = 1002, Type = "DemoTool", MaxStack = 10, UseHandler = "DemoTool",
+            Name = "测试球", ToolShape = "Ball", ToolColor = Color3.fromRGB(255, 178, 55),
+        },
+    },
     ItemSchemas = {},
 
     -- 货币名 -> PlayerData 字段名，例如 Money = "Coins"；不预设游戏货币。

@@ -9,31 +9,8 @@
 local FX, FS = _G.FX, _G.FS
 local FXTable = FX.Table
 local FXLog = FX.Log
-local FXNetwork = FX.Network
 
 local FSInventoryCompClass = FX.Class("FSInventoryCompClass", "FSPlayerCompClass")
-function FSInventoryCompClass:Ctor(owner)
-    FSInventoryCompClass.Super.Ctor(self, owner)
-    self._handItemGridIndex = nil
-    self._handItemNode = nil
-end
-
---[[
-    手持道具处理器, 按 itemConfig.HandEffect 注册处理函数
-    itemObject: 物品对象
-    返回值: 返回手持的对象节点, 如果返回 nil, 则不显示手持物品
-
-    示例:
-    context = {
-        itemObject = itemObject,
-        itemDataConfig = itemDataConfig,
-    }
-    function FSInventoryCompClass.HandItemHandler:Test(context)
-        -- 返回手持的对象节点, 如果返回 nil, 则不显示手持物品
-        return Instance.new("Model")
-    end
-]]
-FSInventoryCompClass.HandItemHandler = {}
 
 function FSInventoryCompClass:GetConfig()
     --[[
@@ -46,84 +23,8 @@ function FSInventoryCompClass:GetConfig()
     error("GetConfig not implemented")
 end
 
--- 数据变化时调用
-function FSInventoryCompClass:OnAllChanged()
-    self:SendInventoryDataToClient()
-end
-
-function FSInventoryCompClass:SendInventoryDataToClient()
-    FXNetwork:SendMsgToClient(
-        self:GetPlayerId(),
-        "S2C_InventoryData",
-        self:GetTable(self:GetConfig().storeTableVarEnum)
-    )
-end
-
--- 格子数据变化时调用
--- girdIndices: { [格子编号] = "add" | "remove" | "swap", ... }
-function FSInventoryCompClass:OnGridsChanged(girdIndices)
-    local newGridData = {}
-    local nextHandItemGridIndex = nil
-    for gridIndex, operation in pairs(girdIndices) do
-        local gridData = self:GetGridData(gridIndex)
-        table.insert(newGridData, {
-            gridIndex = gridIndex,
-            gridData = gridData,
-        })
-        if operation == "add" then
-            if not nextHandItemGridIndex then
-                nextHandItemGridIndex = gridIndex
-            end
-        end
-    end
-    self:SetHandItemGridIndex(nextHandItemGridIndex)
-    FXNetwork:SendMsgToClient(self:GetPlayerId(), "S2C_InventoryGridsChanged", newGridData)
-end
-
-function FSInventoryCompClass:DestroyHeldItem()
-    if self._handItemNode then
-        self._handItemNode:Destroy()
-        self._handItemNode = nil
-    end
-end
-
---- 当手持物品变化时刷新展示；未配置手持处理器的道具不创建角色挂点。
----@param itemObject table 当前选中的手持道具对象，清空手持时由框架传入 nil。
----@return boolean|nil 是否完成本次手持状态刷新；清空时不返回结果。
-function FSInventoryCompClass:OnHandItemChanged(itemObject)
-    self:DestroyHeldItem()
-    if not itemObject then
-        return
-    end
-
-    local itemDataConfig = self:GetItemDataConfig(itemObject:GetItemId())
-    if itemDataConfig.HeldHandler == nil then
-        return true
-    end
-
-    local handItemHandler = self.HandItemHandler[itemDataConfig.HeldHandler]
-    if not handItemHandler then
-        FXLog:ErrorFmt("OnHandItemChanged failed, itemDataConfig.HeldHandler: %s", itemDataConfig.HeldHandler)
-        return false
-    end
-
-    local heldItemContext = {
-        itemObject = itemObject,
-        itemDataConfig = itemDataConfig,
-    }
-    local ok, ret = pcall(handItemHandler, self, heldItemContext)
-    if not ok then
-        FXLog:ErrorFmt("OnHandItemChanged failed, itemObject: %s, error: %s", FXTable:ToString(itemObject), ret)
-        return false
-    end
-
-    self._handItemNode = ret
-    if self._handItemNode == nil then
-        FXLog:ErrorFmt("OnHandItemChanged failed, ret: %s", FXTable:ToString(ret))
-        return false
-    end
-    return true
-end
+-- 数据变化时由项目组件同步原生 Tool。
+function FSInventoryCompClass:OnAllChanged() end
 
 -- 获取组件名称
 function FSInventoryCompClass:GetCompName()
@@ -202,46 +103,6 @@ function FSInventoryCompClass:_GetGridIteratorInfoList(type)
         return { shortcutIteratorInfo, inventoryIteratorInfo }
     else
         return { inventoryIteratorInfo, shortcutIteratorInfo }
-    end
-end
-
--- 获取手持物品格子编号
-function FSInventoryCompClass:GetHandItemGridIndex()
-    return self._handItemGridIndex
-end
-
--- 设置手持物品格子编号
-function FSInventoryCompClass:SetHandItemGridIndex(gridIndex)
-    if gridIndex ~= nil and (gridIndex < 1 or gridIndex > self:GetTotalCapacity()) then
-        FXLog:ErrorFmt("SetHandItemGridIndex failed, gridIndex: %d, totalCap: %d", gridIndex, self:GetTotalCapacity())
-        return false
-    end
-    if self._handItemGridIndex == gridIndex then
-        return
-    end
-    self._handItemGridIndex = gridIndex
-    if gridIndex ~= nil then
-        self:OnHandItemChanged(self:GetGridItemObject(gridIndex))
-    else
-        self:OnHandItemChanged(nil)
-    end
-end
-
--- 获取手持物品物品对象
-function FSInventoryCompClass:GetHandItemItemObject()
-    if self._handItemGridIndex == nil then
-        return nil
-    end
-    return self:GetGridItemObject(self._handItemGridIndex)
-end
-
--- 如果手持物品格子编号发生变化, 则调用 OnHandItemChanged 方法
-function FSInventoryCompClass:FireHandItemChangedIfNeeded(changedGridIndices)
-    if not self._handItemGridIndex then
-        return
-    end
-    if changedGridIndices[self._handItemGridIndex] then
-        self:OnHandItemChanged(self:GetGridItemObject(self._handItemGridIndex))
     end
 end
 
@@ -378,7 +239,6 @@ function FSInventoryCompClass:RemoveItems(items, priority)
         return true
     end
 
-    local changedGridIndices = {}
     priority = priority or 0
     local data = self:_GetData()
     local iterInfoList = self:_GetGridIteratorInfoList(priority)
@@ -394,7 +254,6 @@ function FSInventoryCompClass:RemoveItems(items, priority)
         local realRemoveCount = math.min(removeCount, gridData.stackCount)
         gridData.stackCount = gridData.stackCount - realRemoveCount
         removeCountByItemId[gridData.itemId] = removeCount - realRemoveCount
-        changedGridIndices[gridIndex] = "remove"
         if gridData.stackCount <= 0 then
             data[gridIndex] = nil
         end
@@ -424,8 +283,6 @@ function FSInventoryCompClass:RemoveItems(items, priority)
     end
 
     self:_SetData(data)
-    self:FireHandItemChangedIfNeeded(changedGridIndices)
-    self:OnGridsChanged(changedGridIndices)
     return true
 end
 
@@ -441,9 +298,6 @@ function FSInventoryCompClass:AddItems(items, priority)
     if not self:CanAddItems(items) then
         return false
     end
-
-    local changedGridIndices = {}
-
     priority = priority or 0
     local data = self:_GetData()
     local iterInfoList = self:_GetGridIteratorInfoList(priority)
@@ -456,11 +310,7 @@ function FSInventoryCompClass:AddItems(items, priority)
                 for i = iterInfo.first, iterInfo.last do
                     local gridData = data[i]
                     if gridData then
-                        local previousCount = gridData.stackCount
                         local complete = self:_StackItem(gridData, serializedData)
-                        if gridData.stackCount ~= previousCount then
-                            changedGridIndices[i] = "add"
-                        end
                         if complete then
                             return true
                         end
@@ -490,7 +340,6 @@ function FSInventoryCompClass:AddItems(items, priority)
                     stackCount = addCount,
                     extraData = serializedData.extraData,
                 }
-                changedGridIndices[grid] = "add"
                 serializedData.stackCount = serializedData.stackCount - addCount
                 return serializedData.stackCount <= 0
             end
@@ -515,8 +364,6 @@ function FSInventoryCompClass:AddItems(items, priority)
         addItem(item)
     end
     local ret = self:_SetData(data)
-    self:FireHandItemChangedIfNeeded(changedGridIndices)
-    self:OnGridsChanged(changedGridIndices)
     return ret
 end
 
@@ -538,7 +385,6 @@ function FSInventoryCompClass:RemoveItemById(itemId, count, priority)
         return false
     end
 
-    local changedGridIndices = {}
     priority = priority or 0
     local data = self:_GetData()
     local remainingCount = count
@@ -551,14 +397,11 @@ function FSInventoryCompClass:RemoveItemById(itemId, count, priority)
                 local removeCount = math.min(remainingCount, gridData.stackCount)
                 gridData.stackCount = gridData.stackCount - removeCount
                 remainingCount = remainingCount - removeCount
-                changedGridIndices[i] = "remove"
                 if gridData.stackCount <= 0 then
                     data[i] = nil
                 end
                 if remainingCount <= 0 then
                     local ret = self:_SetData(data)
-                    self:FireHandItemChangedIfNeeded(changedGridIndices)
-                    self:OnGridsChanged(changedGridIndices)
                     return ret
                 end
             end
@@ -707,11 +550,7 @@ function FSInventoryCompClass:RemoveItemFromGridId(grid, count)
     else
         data[grid] = nil
     end
-    local changedGridIndices = {}
-    changedGridIndices[grid] = "remove"
     local ret = self:_SetData(data)
-    self:FireHandItemChangedIfNeeded(changedGridIndices)
-    self:OnGridsChanged(changedGridIndices)
     return ret
 end
 
@@ -765,11 +604,7 @@ function FSInventoryCompClass:AddItemToGridId(grid, itemObject)
         data[grid].stackCount = data[grid].stackCount + itemObject:GetStackCount()
     end
 
-    local changedGridIndices = {}
-    changedGridIndices[grid] = "add"
     self:_SetData(data)
-    self:FireHandItemChangedIfNeeded(changedGridIndices)
-    self:OnGridsChanged(changedGridIndices)
     return true
 end
 
@@ -793,14 +628,9 @@ function FSInventoryCompClass:SwapGridData(grid1, grid2)
         return true
     end
 
-    local changedGridIndices = {}
-    changedGridIndices[grid1] = "swap"
-    changedGridIndices[grid2] = "swap"
     data[grid1] = grid2Data
     data[grid2] = grid1Data
     local ret = self:_SetData(data)
-    self:FireHandItemChangedIfNeeded(changedGridIndices)
-    self:OnGridsChanged(changedGridIndices)
     return ret
 end
 
@@ -883,8 +713,6 @@ function FSInventoryCompClass:SortByItemId(sortRule)
         sortRange(inventoryIterInfo.first, inventoryIterInfo.last)
     end
     local ret = self:_SetData(data)
-
-    self:OnHandItemChanged(self:GetHandItemItemObject())
     self:OnAllChanged()
     return ret
 end
@@ -899,7 +727,6 @@ function FSInventoryCompClass:ClearAll()
         data[i] = nil
     end
     local ret = self:_SetData(data)
-    self:OnHandItemChanged(nil)
     self:OnAllChanged()
     return ret
 end
@@ -910,14 +737,10 @@ end
 function FSInventoryCompClass:ClearShortcut()
     local data = self:_GetData()
     local shortcutCap = self:GetShortcutCapacity()
-    local changedGridIndices = {}
     for i = 1, shortcutCap do
         data[i] = nil
-        changedGridIndices[i] = "remove"
     end
     local ret = self:_SetData(data)
-    self:FireHandItemChangedIfNeeded(changedGridIndices)
-    self:OnGridsChanged(changedGridIndices)
     return ret
 end
 
@@ -932,9 +755,6 @@ function FSInventoryCompClass:ClearInventory()
         data[i] = nil
     end
     local ret = self:_SetData(data)
-    if self._handItemGridIndex and self._handItemGridIndex > shortcutCap then
-        self:OnHandItemChanged(nil)
-    end
     self:OnAllChanged()
 
     return ret
@@ -1077,9 +897,4 @@ function FSInventoryCompClass:GetItemDataConfig(itemId)
     return _G.Provider:GetItemDataConfig(itemId)
 end
 
---- 离服时释放手持展示节点。
-function FSInventoryCompClass:Dtor()
-    self:DestroyHeldItem()
-    FSInventoryCompClass.Super.Dtor(self)
-end
 return FSInventoryCompClass

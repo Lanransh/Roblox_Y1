@@ -83,7 +83,7 @@ Check("inventory-capacity-check-is-atomic", function()
 end)
 
 object:SetTable(Config.PlayerData.Inventory, oldInventory)
-inv:SendInventoryDataToClient()
+inv:OnAllChanged()
 _G.Provider.ItemHandlers.MigrationTest = nil
 Config.Items[testId] = previousItem
 

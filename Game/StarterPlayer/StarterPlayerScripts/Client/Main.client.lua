@@ -7,6 +7,7 @@ local FC, FX = _G.FC, _G.FX
 local PlayerClass = require(script.Parent.Player.CPlayerObjectClass)
 
 FC.PlayerObject = PlayerClass.New(Players.LocalPlayer.UserId)
+require(script.Parent.Player.CNativeBackpack).Start(Players.LocalPlayer, FX.Network)
 
 -- 在此添加项目客户端组件；UI 子类提供自己的原生节点和模板。
 FX.Network:RegServerMsgCallback("S2C_ShowTips", function(message, duration)

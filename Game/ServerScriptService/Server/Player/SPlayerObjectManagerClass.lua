@@ -3,10 +3,6 @@ local Players = game:GetService("Players")
 local Manager = FX.Class("SPlayerObjectManagerClass", "FSPlayerObjectManagerClass")
 _G.SPlayerObjectManagerClass = Manager
 
-local function Integer(value, min, max)
-    return type(value) == "number" and value == value and value % 1 == 0 and value >= min and value <= max
-end
-
 --- 使用项目玩家类构建服务端玩家管理器。
 function Manager:Ctor()
     Manager.Super.Ctor(self, "SPlayerObjectClass")
@@ -18,43 +14,17 @@ function Manager:GetInventory(playerId)
     return player and player:GetComponent("FSInventoryComp")
 end
 
---- 仅转发已登记协议，并校验所有来自客户端的背包参数。
+--- 只接受原生 Tool 使用请求，物品归属由服务端背包组件校验。
 function Manager:RegForwardFrameworkClientMsg()
     FX.Network:RegClientMsgCallback("C2S_GetServerTime", function()
         return workspace:GetServerTimeNow()
     end)
 
-    FX.Network:RegClientMsgCallback("C2S_SetHeldGridIndex", function(id, index)
+    FX.Network:RegClientMsgCallback("C2S_ActivateTool", function(id, tool)
         local inv = self:GetInventory(id)
-        if inv and (index == nil or Integer(index, 1, inv:GetTotalCapacity())) then
-            inv:SetHandItemGridIndex(index)
+        if inv then
+            return inv:ActivateTool(tool)
         end
-    end)
-
-    FX.Network:RegClientMsgCallback("C2S_SwapGrid", function(id, a, b)
-        local inv = self:GetInventory(id)
-        if inv and Integer(a, 1, inv:GetTotalCapacity()) and Integer(b, 1, inv:GetTotalCapacity()) then
-            return inv:SwapGridData(a, b)
-        end
-
-        return false
-    end)
-
-    FX.Network:RegClientMsgCallback("C2S_CanUseItem", function(id, index, count)
-        local inv = self:GetInventory(id)
-        if not inv or not Integer(index, 1, inv:GetTotalCapacity()) or not Integer(count, 1, 100000000) then
-            return false
-        end
-
-        return inv:CanUseItem(index, count) == true
-    end)
-
-    FX.Network:RegClientMsgCallback("C2S_UseItem", function(id, index, count)
-        local inv = self:GetInventory(id)
-        if inv and Integer(index, 1, inv:GetTotalCapacity()) and Integer(count, 1, 100000000) then
-            return inv:UseItem(index, count)
-        end
-
         return false
     end)
 end

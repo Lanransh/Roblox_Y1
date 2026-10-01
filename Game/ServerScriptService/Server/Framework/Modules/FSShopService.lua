@@ -85,7 +85,7 @@ function Shop:ProcessReceipt(receipt)
                 player._pendingSyncData = pendingBefore
                 local inventory = player:GetComponent("FSInventoryComp")
                 if inventory then
-                    inventory:SendInventoryDataToClient()
+                    inventory:OnAllChanged()
                 end
 
                 return retry
