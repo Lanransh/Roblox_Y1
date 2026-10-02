@@ -1,6 +1,6 @@
 # 构建产物与本地工具
-/Build/
-/Tools/.bin/
+/Game/Build/
+/Game/Tools/.bin/
 
 # Studio 自动保存与锁文件；Places 中的正式源文件需要提交
 *.rbxl.lock
@@ -30,4 +30,3 @@ AgentWorkspace/Figma/*
 AgentWorkspace/FigmaEggy/*
 !AgentWorkspace/FigmaEggy/Game-DESIGN.md
 /Run.bat
-/Build/FigmaRoblox/

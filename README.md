@@ -23,8 +23,8 @@ rojo serve
 在 Game 目录构建：
 
 ```powershell
-New-Item -ItemType Directory -Path ../Build -Force | Out-Null
-rojo build -o ../Build/Roblox_Y1.rbxlx
+New-Item -ItemType Directory -Path Build -Force | Out-Null
+rojo build -o Build/Roblox_Y1.rbxlx
 ```
 
 若终端位于仓库根目录，执行 `rojo serve Game/default.project.json`。
@@ -72,6 +72,23 @@ Shared 的内容客户端可见，存档和发奖校验等放在 ServerScriptSer
 `rojo build` 仅包含 Game 中映射的内容，不会合并 Studio 中额外的地图、Terrain 或 UI。网格、Terrain 等存在实时同步限制，具体见资源工作流。
 空目录使用 `.gitkeep` 纳入 Git，占位文件不会同步成节点。
 
+## Game 内的开发辅助目录
+
+以下目录统一放在 `Game` 内，未加入 `default.project.json` 的服务映射，不会同步到 Studio 或包含在默认构建中。
+
+| 目录 | 用途 |
+| --- | --- |
+| Game/Tests | 框架测试脚本、测试夹具和历史测试结果 |
+| Game/Tools | Python 测试运行工具：拼接框架源码与测试脚本，再调用本地 Luau CLI |
+| Game/Build | Rojo 场景构建、sourcemap 和测试工具生成的临时脚本，Git 忽略 |
+
+测试工具从自身位置定位 Game，可从任意目录调用；以下命令在 Game 目录执行：
+
+```powershell
+python Tools/run_framework_pure_tests.py --luau <luau.exe 的本地路径>
+python Tools/run_framework_addon_tests.py --luau <luau.exe 的本地路径>
+```
+
 ## 仓库其他目录
 
 | 目录 | 用途 |
@@ -79,9 +96,6 @@ Shared 的内容客户端可见，存档和发奖校验等放在 ServerScriptSer
 | ArtSource | OBJ、FBX、原始图片和音频，不直接同步 |
 | Places | Studio 保存的完整场景源文件 |
 | Docs | 设计文档与资源工作流 |
-| Tests | 测试代码，不包含在默认构建中 |
-| Tools | 辅助工具 |
-| Build | 构建产物，Git 忽略 |
 
 ## 开发工具
 

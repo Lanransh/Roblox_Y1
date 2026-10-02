@@ -11,9 +11,9 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--luau", required=True, type=Path)
 args = parser.parse_args()
 root = Path(__file__).resolve().parents[1]
-shared = "Game/ReplicatedStorage/Framework"
-server = "Game/ServerScriptService/Server/Framework"
-client = "Game/StarterPlayer/StarterPlayerScripts/Client/Framework"
+shared = "ReplicatedStorage/Framework"
+server = "ServerScriptService/Server/Framework"
+client = "StarterPlayer/StarterPlayerScripts/Client/Framework"
 parts = [(root / "Tests/FrameworkAddons.harness.lua").read_text(encoding="utf-8")]
 for module in (
     f"{shared}/Shared/Core/FXClass.lua",

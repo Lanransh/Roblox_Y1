@@ -20,7 +20,7 @@
 | `Workspace/`、`ServerStorage/Assets/Maps/` | 场景与服务端地图模板 |
 
 `default.project.json` 明确映射服务，`Game/Shared/` 当前没有服务映射。公共新模块放到 `ReplicatedStorage/Shared/`，不要凭目录名猜同步关系。
-`Docs/` 和 `.agents/` 属于开发资料；`../Tests/` 不在默认构建中。
+`Docs/` 和 `.agents/` 属于开发资料；`Tests/`、`Tools/`、`Build/` 不在默认构建中。
 
 服务端公共层 -> FServer -> 注册业务类与服务 -> 加载档案 -> 客户端 Ready -> 玩家对象与组件 -> 初始同步。
 客户端公共层 -> FClient -> require 项目类 -> 创建玩家对象 -> 等待服务注册 -> 发送 Ready。

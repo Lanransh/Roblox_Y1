@@ -14,7 +14,7 @@
 - `Docs/功能验收清单.md`：当前已实现功能及其验收状态
 - `Workspace/`、`ServerStorage/`、`StarterGui/`：场景、服务器模板和 UI 源节点
 - `../Docs/框架迁移.md`：已迁移能力、业务接入与历史验证记录
-- `../Tests/`、`../Tools/`、`../Build/`：测试、辅助工具和构建产物
+- `Tests/`、`Tools/`、`Build/`：测试、辅助工具和构建产物，不加入 Rojo 服务映射
 
 ## 共享技能
 在编写代码之前，先读取并遵循与当前任务匹配的技能文档：
@@ -63,7 +63,7 @@
 
 ## 补充说明
 - 如果任务涉及场景或 UI 节点，先检查 `default.project.json`、对应模型源文件与动态创建代码；当前项目没有 `MapTree/`，不要依赖 `.maptree`。
-- `.agents/`、`AGENTS.md` 和 `Docs/` 是开发资料，不加入 Rojo 的服务映射。
+- `.agents/`、`AGENTS.md`、`Docs/`、`Tests/`、`Tools/` 和 `Build/` 是开发资料或产物，不加入 Rojo 的服务映射。
 - 业务模块显式声明 `local FX, FC, FS = _G.FX, _G.FC, _G.FS` 中实际用到的变量；每个 ModuleScript 返回有效结果。
 - 项目协议声明在 `ReplicatedStorage/Shared/Config/FrameworkConfig.lua` 的 `ClientMessages/ServerMessages`；框架协议在 `ReplicatedStorage/Framework/FrameworkInit.lua`。
 - 新代码直接用 Roblox 服务名称；不使用 MiniStudio 节点 API 或资源 URI。
@@ -89,7 +89,7 @@
 
 ## Luau 验证规则
 - 默认沿用源工作区的验证限制：新增或修改 Luau 后只做编译/语法验证及相关 Rojo 构建，不自行运行 Lua 脚本或启动游戏。用户明确要求运行测试或试玩时，以该授权为准，并在结果中区分编译、构建与实际运行验证。
-- 编译器先检查 PATH 和 `../Build/luau/luau-compile.exe` 等实际本地位置，不假设已安装；缺失时报告未完成语法验证。构建命令（在 Game 中）为 `rojo build default.project.json -o ../Build/Roblox_Y1.rbxlx`，先确认输出目录存在。
+- 编译器先检查 PATH 和 `Build/luau/luau-compile.exe` 等实际本地位置，不假设已安装；缺失时报告未完成语法验证。构建命令（在 Game 中）为 `rojo build default.project.json -o Build/Roblox_Y1.rbxlx`，先确认输出目录存在。
 - `git diff --check` 从仓库根执行。不要把历史验收记录当作本次结果。
 
 ## 编码与文本处理规范
