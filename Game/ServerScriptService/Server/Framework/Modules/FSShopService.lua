@@ -17,6 +17,7 @@ local function Immediate(callback)
     return ok and result == true
 end
 
+--- 框架可先于业务管理器初始化，玩家尚未就绪时拒绝购买预检。
 --- @param playerId number 服务端认证的玩家 ID。
 --- @param productId number 已登记的 Developer Product ID。
 --- @return boolean 是否允许展示购买窗口；不授予任何奖励。
@@ -25,7 +26,7 @@ function Shop:CanBuy(playerId, productId)
         return false
     end
 
-    local player = FS.PlayerManager:GetPlayerObject(playerId)
+    local player = FS.PlayerManager and FS.PlayerManager:GetPlayerObject(playerId)
     if not player or not _G.Provider:GetGoodsConfig(productId) then
         return false
     end
@@ -36,11 +37,12 @@ function Shop:CanBuy(playerId, productId)
 end
 
 --- 只接受 Roblox ProcessReceipt 的购买凭证；去重标记与奖励位于同一玩家档案。
+--- 管理器尚未创建时保留凭证，等待 Roblox 后续重试。
 --- @param receipt table Roblox 提供的已支付凭证。
 --- @return Enum.ProductPurchaseDecision 保存完成后才确认购买。
 function Shop:ProcessReceipt(receipt)
     local id = receipt.PlayerId
-    local player = FS.PlayerManager:GetPlayerObject(id)
+    local player = FS.PlayerManager and FS.PlayerManager:GetPlayerObject(id)
     local db = FS.PlayerKVDataManager._playerDBMap[id]
     local retry = Enum.ProductPurchaseDecision.NotProcessedYet
     if not player or not db or not db:IsLoadFinished() or db._leaving or self._busy[id] then

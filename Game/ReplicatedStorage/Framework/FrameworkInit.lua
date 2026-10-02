@@ -1,4 +1,4 @@
--- 两端只初始化公共层；服务端实现保留在 ServerScriptService。
+-- 公共层初始化后加载当前端框架；服务端实现保留在 ServerScriptService。
 local RunService = game:GetService("RunService")
 local FX = {}
 _G.FX, _G.FC, _G.FS = FX, {}, {}
@@ -32,4 +32,11 @@ FX.FrameworkServerMsgID = {
 
 _G.Provider = require(script.Parent:WaitForChild("Provider"))
 require(script.Parent:WaitForChild("FShared"))
+if RunService:IsClient() then
+    local client = game:GetService("Players").LocalPlayer:WaitForChild("PlayerScripts"):WaitForChild("Client")
+    require(client:WaitForChild("Framework"):WaitForChild("FClient"))
+else
+    local server = game:GetService("ServerScriptService"):WaitForChild("Server")
+    require(server:WaitForChild("Framework"):WaitForChild("FServer"))
+end
 return FX

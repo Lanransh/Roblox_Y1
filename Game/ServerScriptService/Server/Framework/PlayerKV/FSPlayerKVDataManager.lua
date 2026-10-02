@@ -6,7 +6,7 @@ require(script.Parent.FSPlayerKVDBClass)
 local Manager = { _playerDBMap = {}, _closing = {} }
 FS.PlayerKVDataManager = Manager
 
---- 周期保存同时续约会话；玩家事件由启动层按确定顺序连接。
+--- 周期保存同时续约会话；玩家事件由 FServer 在通用服务初始化后连接。
 function Manager:Init()
     self._timer = FX.Task:Interval(Config.AutoSaveSeconds, function()
         for id, db in pairs(self._playerDBMap) do

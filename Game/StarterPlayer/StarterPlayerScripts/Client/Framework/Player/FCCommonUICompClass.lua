@@ -21,6 +21,8 @@ local function Text(className, name, parent, properties)
     return Node(className, name, parent, properties)
 end
 
+--- 初始化通用 UI，并在客户端就绪前注册提示与购买协议。
+--- @param owner table 所属客户端玩家对象。
 function UI:Ctor(owner)
     UI.Super.Ctor(self, owner)
     self.Root = Node("ScreenGui", "FrameworkCommonUI", self:GetPlayerNode():WaitForChild("PlayerGui"), {
@@ -99,6 +101,13 @@ function UI:Ctor(owner)
         self:_Finish(false)
     end))
     self:SubscribeEvent("ShowTips", self.ShowTips)
+    --- 将服务端提示广播给玩家组件，保持 ShowTips 事件的现有接法。
+    --- @param message string 提示内容。
+    --- @param duration number 可选显示时长，单位为秒。
+    FX.Network:RegServerMsgCallback("S2C_ShowTips", function(message, duration)
+        self:GetPlayerObject():PublishEvent("ShowTips", message, duration)
+    end)
+    FX.Network:RegServerMsgCallback("S2C_ShowDeveloperBuyUI", self.ShowDeveloperBuyUI, self)
 end
 
 function UI:GetCompName()
@@ -177,7 +186,10 @@ function UI:HideTooltips()
     self._previousSelection = nil
 end
 
+--- 释放组件拥有的协议回调、提示计时器和 UI 节点。
 function UI:Dtor()
+    FX.Network:UnRegServerMsgCallback("S2C_ShowTips")
+    FX.Network:UnRegServerMsgCallback("S2C_ShowDeveloperBuyUI")
     FX.Task:Cancel(self._tipTask)
     self:HideTooltips()
     UI.Super.Dtor(self)

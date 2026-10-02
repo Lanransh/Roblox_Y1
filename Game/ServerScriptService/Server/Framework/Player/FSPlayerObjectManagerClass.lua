@@ -3,13 +3,20 @@ local Players = game:GetService("Players")
 local Class = FX.Class("FSPlayerObjectManagerClass", "FSObjectManagerClass")
 FS.PlayerMgrClass = Class
 
+--- 接管项目玩家管理器，并在业务服务已创建后自动开放客户端握手。
 --- @param playerClassType string 项目玩家类名。
 function Class:Ctor(playerClassType)
     Class.Super.Ctor(self, playerClassType)
     self._playerMap, self._clientReady, self._serverReady = {}, {}, {}
     self._connections = {}
+    --- 握手时补接可能先于管理器创建完成的存档加载结果。
+    --- @param id number 引擎认证的玩家 ID。
     FX.Network:RegClientMsgCallback("C2S_ClientReady", function(id)
         self:SetPlayerReady(id, true)
+        local db = FS.PlayerKVDataManager._playerDBMap[id]
+        if db and db:IsLoadFinished() then
+            self:SetPlayerReady(id, false)
+        end
     end)
 
     table.insert(
@@ -36,6 +43,8 @@ function Class:Ctor(playerClassType)
             end
         end
     end)
+    FS.PlayerManager = self
+    game.ReplicatedStorage.Framework.Network:SetAttribute("ServerReady", true)
 end
 
 --- 重复 Ready 请求不会重建对象或重复发奖。
