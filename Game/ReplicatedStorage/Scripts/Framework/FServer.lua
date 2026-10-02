@@ -1,4 +1,4 @@
-local root = script.Parent
+local root = script.Parent:WaitForChild("Server")
 require(root.FSEvents)
 require(root.PlayerKV.FSPlayerKVDataManager)
 require(root.Ranking.FSRankingManager)

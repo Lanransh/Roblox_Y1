@@ -8,9 +8,9 @@
 
 ## 重要目录
 - `default.project.json`：Rojo 服务映射
-- `ReplicatedStorage/Framework/`：公共框架；`ReplicatedStorage/Shared/`：公共配置与模块
-- `ServerScriptService/Server/`：服务端业务及框架
-- `StarterPlayer/StarterPlayerScripts/Client/`：客户端业务及框架
+- `ReplicatedStorage/Scripts/Framework/`：FX/FC/FS 框架，沿用 MiniStudio 的 Shared/Client/Server 分层；`ReplicatedStorage/Shared/`：公共配置与模块
+- `ServerScriptService/Server/`：服务端业务入口、项目类和私有配置
+- `StarterPlayer/StarterPlayerScripts/Client/`：客户端业务入口、玩家对象与项目组件
 - `Docs/功能验收清单.md`：当前已实现功能及其验收状态
 - `Workspace/`、`ServerStorage/`、`StarterGui/`：场景、服务器模板和 UI 源节点
 - `../Docs/框架迁移.md`：已迁移能力、业务接入与历史验证记录
@@ -21,7 +21,6 @@
 - `.agents/skills/roblox-luau-standards/SKILL.md`
 - `.agents/skills/roblox-framework-dev/SKILL.md`
 - `.agents/skills/roblox-ui-components/SKILL.md`
-- `.agents/skills/roblox-node-tree-reader/SKILL.md`
 - `.agents/skills/roblox-engine-nodes/SKILL.md`
 - `.agents/skills/game-examples/SKILL.md`
 - `.agents/skills/server-code-critical-review/SKILL.md`
@@ -33,7 +32,6 @@
 - 进行 Lua 编码、重构、风格修复或普通代码审查时，使用 `roblox-luau-standards`
 - 涉及框架结构、玩家数据、服务端逻辑、客户端玩家组件、协议链路或组件协作时，使用 `roblox-framework-dev`；纯 UI 表现修改不触发该 Skill
 - 修改客户端 UI 时，使用 `roblox-ui-components`
-- 涉及任何地图树、场景节点、存储节点或 UI 节点访问时，使用 `roblox-node-tree-reader`
 - 涉及非 UI 引擎节点 API，例如 `Instance`、`BasePart`、`Model:PivotTo`、`Clone`、`Destroy` 或场景节点属性访问时，使用 `roblox-engine-nodes`；纯 UI 节点属性和事件由 `roblox-ui-components` 负责
 - 涉及框架类用法示例、组件内交互接法、交互生命周期清理时，使用 `game-examples`，并以该 Skill 自身的路由规则为唯一 reference 入口
 - 审查服务端安全漏洞、权限绕过、严重逻辑缺陷、崩溃风险或高危遗漏时，以 `server-code-critical-review` 为主；除非用户同时要求风格审查，否则不输出普通风格问题
@@ -45,7 +43,7 @@
 
 - 专用 Skill 优先于通用 Skill。例如背包拖拽先读取 `game-examples` 的背包 reference 确认当前原生 Tool 接法，再按需要读取原生拖拽 reference；不假设已有定制背包类。
 - UI 任务由 `roblox-ui-components` 负责 UI API；只有同时操作非 UI 场景节点时才追加 `roblox-engine-nodes`。
-- `roblox-node-tree-reader` 只负责确认节点路径、层级和类型，不重复规定 UI 生命周期或引擎 API。
+- 场景、存储和 UI 节点的路径、层级、ClassName 与属性直接通过 Roblox MCP 查询；UI 生命周期和引擎 API 仍由对应 Skill 负责。
 - `roblox-luau-standards` 负责通用 Lua 规范；服务端安全审查的结论范围由 `server-code-critical-review` 决定。
 
 ## Skill 渐进读取与内容复用
@@ -62,10 +60,16 @@
 
 
 ## 补充说明
-- 如果任务涉及场景或 UI 节点，先检查 `default.project.json`、对应模型源文件与动态创建代码；当前项目没有 `MapTree/`，不要依赖 `.maptree`。
+- 需要读取场景、存储或 UI 节点时，直接使用 Roblox MCP：先用 `list_roblox_studios` 确定目标 Studio，再用 `get_studio_state` 确认当前模式和可用 DataModel。
+- 用 `search_game_tree` 查询目标子树，按需要限定路径、类型、深度和结果数量；用 `inspect_instance` 获取具体节点的属性、Attributes 和子节点。节点名称、完整路径、层级和 ClassName 以 MCP 返回结果为准，不猜测。
+- 编辑态查询使用 `Edit`；已有试玩中的运行时查询按目标使用 `Client` 或 `Server`。UI 模板查 `StarterGui`，玩家实际界面在客户端 DataModel 中查目标玩家的 `PlayerGui`，不要把模板当作运行时界面。
+- 只读节点查询直接进行；需要的运行时 DataModel 尚未开启时，说明待确认范围，按既有测试或试玩授权决定是否启动游戏。
+- MCP 不可用时说明当前实例结构尚未确认；本地模型源文件、动态创建代码和 Rojo sourcemap 可用于分析预期结构，但不能作为当前 Studio 或运行时节点已存在的证据。修改本地模型或服务映射时再检查 `default.project.json` 和对应源文件。
 - `.agents/`、`AGENTS.md`、`Docs/`、`Tests/`、`Tools/` 和 `Build/` 是开发资料或产物，不加入 Rojo 的服务映射。
 - 业务模块显式声明 `local FX, FC, FS = _G.FX, _G.FC, _G.FS` 中实际用到的变量；每个 ModuleScript 返回有效结果。
-- 项目协议声明在 `ReplicatedStorage/Shared/Config/FrameworkConfig.lua` 的 `ClientMessages/ServerMessages`；框架协议在 `ReplicatedStorage/Framework/FrameworkInit.lua`。
+- 项目协议声明在 `ReplicatedStorage/Shared/Config/FrameworkConfig.lua` 的 `ClientMessages/ServerMessages`；框架协议在 `ReplicatedStorage/Scripts/Framework/FrameworkInit.lua`。
+- `FC` 开头的代码属于框架，统一放在 `ReplicatedStorage/Scripts/Framework/Client/`；项目开发不直接修改这些框架代码，只通过项目子类继承和覆写接入，子类放在 `StarterPlayer/StarterPlayerScripts/Client/`。
+- 目录尽量对齐 `F:/MiniGame/Studio_Y3/Code`：MiniStudio 的 `MainStorage` 对应 Roblox 的 `ReplicatedStorage`；保留 `Scripts/Framework/Shared`、`Client`、`Server` 分层，`FShared/FClient/FServer/FrameworkInit` 放在框架根目录。服务端框架仅由服务器初始化，私有配置仍放在 `ServerScriptService`。
 - 新代码直接用 Roblox 服务名称；不使用 MiniStudio 节点 API 或资源 URI。
 
 ## PowerShell 命令安全规范
@@ -89,6 +93,7 @@
 
 ## Luau 验证规则
 - 默认沿用源工作区的验证限制：新增或修改 Luau 后只做编译/语法验证及相关 Rojo 构建，不自行运行 Lua 脚本或启动游戏。用户明确要求运行测试或试玩时，以该授权为准，并在结果中区分编译、构建与实际运行验证。
+- 通过 Roblox MCP 只读查询当前场景或 UI 节点属于开发信息读取，可直接执行；这不等于启动试玩或运行游戏测试。
 - 编译器先检查 PATH 和 `Build/luau/luau-compile.exe` 等实际本地位置，不假设已安装；缺失时报告未完成语法验证。构建命令（在 Game 中）为 `rojo build default.project.json -o Build/Roblox_Y1.rbxlx`，先确认输出目录存在。
 - `git diff --check` 从仓库根执行。不要把历史验收记录当作本次结果。
 

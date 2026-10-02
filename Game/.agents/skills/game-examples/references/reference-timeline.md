@@ -7,7 +7,7 @@
 Open/Close、Move、FadeIn/FadeOut、Shake/Pulse、Progress。
 缩放使用 UIScale，整组透明度使用 CanvasGroup，进度操作填充 GuiObject.Size。
 
-场景动画可查看 `ReplicatedStorage/Framework/Shared/Object/FXModelAnimationCompClass.lua`，
+场景动画可查看 `ReplicatedStorage/Scripts/Framework/Shared/Object/FXModelAnimationCompClass.lua`，
 根据实际方法签名使用。简单属性补间可用 TweenService；Model 的变换需 PivotTo，
 不能直接 Tween 一个不存在的 Model.Position。
 

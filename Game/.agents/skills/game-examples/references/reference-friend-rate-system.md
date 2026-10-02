@@ -4,9 +4,9 @@
 当前没有好友收益倍率、InviteFriendData、eFriendExtraRate、邀请 UI 或客户端上传好友列表协议。
 
 现有服务：
-- `ServerScriptService/Server/Framework/Modules/FSFriendService.lua`，
+- `ReplicatedStorage/Scripts/Framework/Server/Modules/FSFriendService.lua`，
   服务实例 FS.FriendService：GetFriendIds(userId)/IsFriend(userId, otherId)/GetFriendCountInRoom(userId)/GetState(userId)。
-- `StarterPlayer/StarterPlayerScripts/Client/Framework/Player/FCFriendCompClass.lua`，
+- `ReplicatedStorage/Scripts/Framework/Client/Player/FCFriendCompClass.lua`，
   已挂载组件 FC.PlayerObject:RequireComponent("FCFriendComp")，GetState/GetFriendCountInRoom。
 - C2S_GetFriendState 与 S2C_FriendState 只传服务器验证的同服快照。
 - state 为 {ids, status, revision}，status 为 Loading/Ready/Unavailable。

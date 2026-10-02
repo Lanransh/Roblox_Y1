@@ -5,7 +5,7 @@ description: 在 Roblox_Y1 的 FCUICompClass 中开发原生 ScreenGui、GuiObje
 
 # Roblox UI 组件
 
-先按 roblox-node-tree-reader 检查目标模型或动态创建代码。按当前任务读取：
+需要读取 UI 节点时，按 Game/AGENTS.md 的 Roblox MCP 规则查询实际路径、ClassName、层级和属性；区分 StarterGui 模板与客户端 PlayerGui 界面。按当前任务读取：
 - 节点属性、按钮事件、列表：[reference-ui-node-access.md](reference-ui-node-access.md)。
 - 组件结构与生命周期：[reference-rules.md](reference-rules.md)。
 - 常用接法：[reference-cheatsheet.md](reference-cheatsheet.md)。

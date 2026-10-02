@@ -4,7 +4,7 @@
 不要生成继承该类的代码，也不要假设已有背包筛选、拖拽换格、详情面板或库存同步协议。
 
 实际入口：
-- `ServerScriptService/Server/Framework/Player/FSInventoryCompClass.lua`：存档、容量、堆叠、增删、换格、UseItem。
+- `ReplicatedStorage/Scripts/Framework/Server/Player/FSInventoryCompClass.lua`：存档、容量、堆叠、增删、换格、UseItem。
 - `ServerScriptService/Server/Player/SPlayerObjectClass.lua`：SInventoryCompClass，
   创建 Tool、SyncTools、ActivateTool；组件协作名为 FSInventoryComp。
 - `StarterPlayer/StarterPlayerScripts/Client/Player/CNativeBackpack.lua`：Tool.Activated 输入，

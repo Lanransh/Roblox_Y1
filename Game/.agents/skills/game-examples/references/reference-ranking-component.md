@@ -1,6 +1,6 @@
 # 排行榜组件
 
-基类：`StarterPlayer/StarterPlayerScripts/Client/Framework/Player/FCRankingUICompClass.lua`。
+基类：`ReplicatedStorage/Scripts/Framework/Client/Player/FCRankingUICompClass.lua`。
 服务端校验：`ServerScriptService/Server/Service/SRankingServiceClass.lua`。
 当前 FrameworkConfig.Rankings 为空，没有已启用的业务榜。
 

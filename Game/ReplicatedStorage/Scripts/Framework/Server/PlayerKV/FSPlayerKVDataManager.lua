@@ -1,6 +1,6 @@
 local FX, FS = _G.FX, _G.FS
 local Players = game:GetService("Players")
-local Config = require(script.Parent.Parent.Parent.Config.StorageConfig)
+local Config = require(game:GetService("ServerScriptService").Server.Config.StorageConfig)
 require(script.Parent.FSPlayerKVTableClass)
 require(script.Parent.FSPlayerKVDBClass)
 local Manager = { _playerDBMap = {}, _closing = {} }

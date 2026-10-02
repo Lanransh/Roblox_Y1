@@ -1,7 +1,7 @@
 # UI 与键盘长按
 
 现有类：
-- `StarterPlayer/StarterPlayerScripts/Client/Framework/FCHoldUIObjectClass.lua` -> FC.HoldUIObjectClass
+- `ReplicatedStorage/Scripts/Framework/Client/FCHoldUIObjectClass.lua` -> FC.HoldUIObjectClass
 - 同目录 `FCKeyObjectClass.lua` -> FC.KeyObjectClass
 - FClient 已 require 两者；类名和 FC 导出名不同，不使用旧 FC.FCHoldUIObjectClass。
 

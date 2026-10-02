@@ -38,6 +38,8 @@ Game/
 ├─ Workspace/                         # 场景中的节点、模型
 ├─ ReplicatedStorage/
 │  ├─ Shared/                         # 公共模块、配置、协议
+│  ├─ Scripts/
+│  │  └─ Framework/                  # FX/FC/FS 框架，Shared/Client/Server 分层
 │  └─ Assets/                         # Models、Effects、UI 模板
 ├─ ServerScriptService/
 │  └─ Server/                         # Main.server.lua、服务端模块
@@ -49,7 +51,8 @@ Game/
       └─ Client/                     # Main.client.lua、客户端模块
 ```
 
-服务目录在本地和 Studio 中对应。现有 Server、Client、Shared 子层级保留，脚本在游戏中的路径不变。
+服务目录在本地和 Studio 中对应。框架目录沿用 MiniStudio 的 `MainStorage/Scripts/Framework` 结构，以 `ReplicatedStorage` 对应 `MainStorage`；`FShared/FClient/FServer/FrameworkInit` 放在框架根目录，模块按 `Shared/Client/Server` 分层。服务端框架仅在服务器初始化，私有配置保留在 `ServerScriptService`。
+`FC` 开头的框架代码放在 `ReplicatedStorage/Scripts/Framework/Client`；项目通过 `StarterPlayerScripts/Client` 下的子类继承和覆写接入，不直接修改 FC 框架代码。
 Workspace 和 StarterGui 目前为空，等待加入实际节点。
 当前只映射上述服务；新增其他服务或 StarterCharacterScripts 时，需要在配置中添加对应映射。
 

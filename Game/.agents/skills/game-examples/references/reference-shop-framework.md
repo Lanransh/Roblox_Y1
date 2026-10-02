@@ -1,6 +1,6 @@
 # 商店 UI 与支付
 
-已迁入的 UI 基类在 `StarterPlayer/StarterPlayerScripts/Client/Framework/Shop/`：
+已迁入的 UI 基类在 `ReplicatedStorage/Scripts/Framework/Client/Shop/`：
 FCShopUICompClass、ShopPageBaseClass、ShopItemBaseClass。当前尚无项目商店界面。
 
 容器子类：
@@ -18,7 +18,7 @@ Developer Product：
 - `FrameworkConfig.Goods[productId]` 配置 BuyHandler。
 - handler 在服务端 `_G.Provider.BuyHandlers` 注册，使用 CanBuy(context)/Buy(context)。
 - 客户端通过 FCCommonUIComp:ShowDeveloperBuyUI(productId) 执行预检后显示购买窗口。
-- `ServerScriptService/Server/Framework/Modules/FSShopService.lua` 唯一持有 ProcessReceipt；
+- `ReplicatedStorage/Scripts/Framework/Server/Modules/FSShopService.lua` 唯一持有 ProcessReceipt；
   在凭证阶段重新 CanBuy/Buy，PurchaseId 与奖励写入同一档案，保存成功才确认。
 - 当前数量为 1；不要照搬原项目 devGoodsId/num/desc 多参数 UI 入口。
 - CanBuy 是纯判断，Buy 必须无 yield、返回 true 才成功，只改当前玩家档案；

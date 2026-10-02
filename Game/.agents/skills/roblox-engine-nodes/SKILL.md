@@ -5,7 +5,7 @@ description: 使用 Roblox Instance、BasePart、Model、Humanoid 等非 UI 节�
 
 # Roblox 非 UI 节点
 
-节点路径先按 roblox-node-tree-reader 确认。按需要读取：
+需要读取场景或存储节点时，按 Game/AGENTS.md 的 Roblox MCP 规则查询实际路径、ClassName、层级和属性。按需要读取：
 - 属性、移动、接触事件：[reference-cheatsheet.md](reference-cheatsheet.md)。
 - 类型、所有权、物理边界和清理：[reference-rules.md](reference-rules.md)。
 - 克隆与接触代码：[reference-examples.md](reference-examples.md)。

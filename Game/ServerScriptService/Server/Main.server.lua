@@ -1,4 +1,4 @@
-local Framework = game:GetService("ReplicatedStorage"):WaitForChild("Framework")
+local Framework = game:GetService("ReplicatedStorage"):WaitForChild("Scripts"):WaitForChild("Framework")
 require(Framework:WaitForChild("FrameworkInit"))
 local Player = script.Parent.Player
 local Service = script.Parent.Service

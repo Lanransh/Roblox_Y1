@@ -44,7 +44,7 @@ function Class:Ctor(playerClassType)
         end
     end)
     FS.PlayerManager = self
-    game.ReplicatedStorage.Framework.Network:SetAttribute("ServerReady", true)
+    game.ReplicatedStorage.Scripts.Framework.Network:SetAttribute("ServerReady", true)
 end
 
 --- 重复 Ready 请求不会重建对象或重复发奖。

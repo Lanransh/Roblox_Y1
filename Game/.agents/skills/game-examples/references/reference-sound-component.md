@@ -1,6 +1,6 @@
 # 声音组件
 
-基类：`StarterPlayer/StarterPlayerScripts/Client/Framework/Player/FCSoundCompClass.lua`，
+基类：`ReplicatedStorage/Scripts/Framework/Client/Player/FCSoundCompClass.lua`，
 已由 FClient require，但当前 CPlayerObjectClass 没有挂载声音组件。
 
 需要声音时新增项目子类，覆盖 GetCompName/GetBGMSoundIdList，require 后挂载。

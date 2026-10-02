@@ -17,6 +17,6 @@
 | 通用奖励 | 玩家 `RequireComponent("FSRewardComp")` |
 | 通用弹窗 | `FC.PlayerObject:RequireComponent("FCCommonUIComp")` |
 
-源码依据：`ReplicatedStorage/Framework/Shared/Core/FXNetwork.lua`、
+源码依据：`ReplicatedStorage/Scripts/Framework/Shared/Core/FXNetwork.lua`、
 `Shared/Object/FXCompBaseClass.lua`（在 Framework 下）以及两端 Framework/Player 基类。
 协议名字只能注册一次；不要在每个玩家组件构造时重复注册服务端全局协议。

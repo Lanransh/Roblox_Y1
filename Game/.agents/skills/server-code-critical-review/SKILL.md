@@ -13,10 +13,10 @@ description: 审查 Roblox_Y1 服务端的身份与权限漏洞、严重逻辑�
 
 路径以 Game 为根：
 - 项目协议白名单：ReplicatedStorage/Shared/Config/FrameworkConfig.lua 的 ClientMessages/ServerMessages。
-- 框架协议：ReplicatedStorage/Framework/FrameworkInit.lua。
-- 网络身份与限速：ReplicatedStorage/Framework/Shared/Core/FXNetwork.lua。
+- 框架协议：ReplicatedStorage/Scripts/Framework/FrameworkInit.lua。
+- 网络身份与限速：ReplicatedStorage/Scripts/Framework/Shared/Core/FXNetwork.lua。
 - 管理器：ServerScriptService/Server/Player/SPlayerObjectManagerClass.lua；
-  服务协议搜索 Server/Service 与 Server/Framework/Modules 的 RegClientMsgCallback。
+  服务协议搜索 ServerScriptService/Server/Service 与 ReplicatedStorage/Scripts/Framework/Server/Modules 的 RegClientMsgCallback。
 - 非协议功能直接从平台回调、任务、玩家生命周期或调用方追踪，不以缺少协议为由停止。
 
 ## 身份与状态
@@ -47,7 +47,7 @@ description: 审查 Roblox_Y1 服务端的身份与权限漏洞、严重逻辑�
 
 ## 奖励（涉及发放或消耗时）
 
-查 ServerScriptService/Server/Framework/Player/FSRewardCompClass.lua。
+查 ReplicatedStorage/Scripts/Framework/Server/Player/FSRewardCompClass.lua。
 协作名 FSRewardComp，方法 CanAddRewards/AddRewards/CanConsumeRewards/ConsumeRewards。
 
 - 当前支持 Type=Item/Money；Money 依赖 FrameworkConfig.RewardCurrencies 到 PlayerData 的映射。

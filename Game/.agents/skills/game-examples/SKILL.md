@@ -26,4 +26,4 @@ description: Roblox_Y1 框架的协议、玩家组件、原生背包、商店、
 
 背包、触摸、拖拽、Timeline 参考已按 Roblox 改写；原 MiniStudio 同名类并非都已迁入。
 好友倍率与邀请 UI 也不是当前已有玩法。按明确需求补最小实现，不自动移植原项目业务。
-代码遵循 roblox-luau-standards；UI 按 roblox-ui-components；路径按 roblox-node-tree-reader。
+代码遵循 roblox-luau-standards；UI 按 roblox-ui-components；需要读取场景或 UI 节点时，按 Game/AGENTS.md 的 Roblox MCP 规则直接查询。

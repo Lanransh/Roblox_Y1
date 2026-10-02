@@ -1,5 +1,5 @@
 local DataStoreService = game:GetService("DataStoreService")
-local StorageConfig = require(script.Parent.Parent.Parent.Config.StorageConfig)
+local StorageConfig = require(game:GetService("ServerScriptService").Server.Config.StorageConfig)
 local memory = game:GetService("RunService"):IsStudio() and StorageConfig.StudioMemory
 local Players = game:GetService("Players")
 local FX, FS = _G.FX, _G.FS

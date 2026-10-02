@@ -1,4 +1,4 @@
--- 公共层初始化后加载当前端框架；服务端实现保留在 ServerScriptService。
+-- 沿用 MiniStudio 的框架分层，公共层初始化后只加载当前端实现。
 local RunService = game:GetService("RunService")
 local FX = {}
 _G.FX, _G.FC, _G.FS = FX, {}, {}
@@ -33,10 +33,8 @@ FX.FrameworkServerMsgID = {
 _G.Provider = require(script.Parent:WaitForChild("Provider"))
 require(script.Parent:WaitForChild("FShared"))
 if RunService:IsClient() then
-    local client = game:GetService("Players").LocalPlayer:WaitForChild("PlayerScripts"):WaitForChild("Client")
-    require(client:WaitForChild("Framework"):WaitForChild("FClient"))
+    require(script.Parent:WaitForChild("FClient"))
 else
-    local server = game:GetService("ServerScriptService"):WaitForChild("Server")
-    require(server:WaitForChild("Framework"):WaitForChild("FServer"))
+    require(script.Parent:WaitForChild("FServer"))
 end
 return FX

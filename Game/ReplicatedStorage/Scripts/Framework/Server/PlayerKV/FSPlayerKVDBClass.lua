@@ -1,5 +1,5 @@
 local FX, FS = _G.FX, _G.FS
-local Config = require(script.Parent.Parent.Parent.Config.StorageConfig)
+local Config = require(game:GetService("ServerScriptService").Server.Config.StorageConfig)
 local DataStoreService = game:GetService("DataStoreService")
 local HttpService = game:GetService("HttpService")
 local memory = game:GetService("RunService"):IsStudio() and Config.StudioMemory
