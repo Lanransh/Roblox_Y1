@@ -1,5 +1,8 @@
-local Framework = game:GetService("ReplicatedStorage"):WaitForChild("Scripts"):WaitForChild("Framework")
-require(Framework:WaitForChild("FrameworkInit"))
+local Shared = game:GetService("ReplicatedStorage"):WaitForChild("Shared")
+require(Shared:WaitForChild("GameInit"))
+local Handlers = script.Parent.Handlers
+_G.Provider.ItemHandlers = require(Handlers.ItemHandlers)
+_G.Provider.BuyHandlers = require(Handlers.BuyHandlers)
 local Player = script.Parent.Player
 local Service = script.Parent.Service
 

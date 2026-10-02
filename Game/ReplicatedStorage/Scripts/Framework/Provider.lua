@@ -33,6 +33,11 @@ function Provider:GetPlayerDataConfig()
     return Config.PlayerData
 end
 
+--- @return table 供共享数据同步器使用的服务器字段定义。
+function Provider:GetServerDataConfig()
+    return Config.ServerData
+end
+
 --- @return table 快捷栏手持与原生背包面板配置，不删除服务端背包数据。
 function Provider:GetNativeBackpackConfig()
     return Config.NativeBackpack

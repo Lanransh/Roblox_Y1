@@ -3,19 +3,6 @@ local Config = require(game.ReplicatedStorage.Shared.Config.FrameworkConfig)
 local RunService = game:GetService("RunService")
 local Inventory = FX.Class("SInventoryCompClass", "FSInventoryCompClass")
 
-_G.Provider.ItemHandlers.DemoTool = {
-    CanUse = function(_, context)
-        if context.itemObject:GetItemId() == 1001 then
-            context.consumeCount = 0
-        end
-        return true
-    end,
-    Use = function(_, context)
-        context.playerObject:ShowTips("使用了" .. context.itemDataConfig.Name)
-        return true
-    end,
-}
-
 function Inventory:Ctor(owner)
     Inventory.Super.Ctor(self, owner)
     self._tools = {}
