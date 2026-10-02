@@ -17,6 +17,12 @@ return {
         },
     },
 
+    -- 快捷栏关闭后，框架背包数据不再生成手持 Tool；仍可通过服务端背包 API 使用物品。
+    -- 原生背包面板与快捷栏共用显示接口；关闭面板时原生快捷栏也会隐藏。
+    NativeBackpack = {
+        ShortcutEnabled = true,
+        InventoryEnabled = true,
+    },
     ShortcutCapacity = 8,
     InventoryCapacity = 50,
     Items = {

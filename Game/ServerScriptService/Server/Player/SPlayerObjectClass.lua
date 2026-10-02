@@ -58,10 +58,19 @@ function Inventory:OnAllChanged()
     self:SyncTools()
 end
 
+--- 将框架道具数据投影为原生 Tool；快捷栏关闭时清理本组件持有的 Tool，保留道具数据。
 function Inventory:SyncTools()
     local player = self:GetPlayerNode()
     local backpack = player and player:FindFirstChildOfClass("Backpack")
     if not backpack or not self._tools then
+        return
+    end
+
+    if not _G.Provider:GetNativeBackpackConfig().ShortcutEnabled then
+        for gridIndex, tool in pairs(self._tools) do
+            tool:Destroy()
+            self._tools[gridIndex] = nil
+        end
         return
     end
 
@@ -105,7 +114,13 @@ function Inventory:SyncTools()
     end
 end
 
+--- 快捷栏关闭时拒绝手持使用入口；其他请求仍需校验归属及装备状态。
+--- @param tool Instance 客户端请求使用的原生 Tool。
+--- @return boolean 是否通过校验并使用成功。
 function Inventory:ActivateTool(tool)
+    if not _G.Provider:GetNativeBackpackConfig().ShortcutEnabled then
+        return false
+    end
     if typeof(tool) ~= "Instance" or not tool:IsA("Tool") then
         return false
     end

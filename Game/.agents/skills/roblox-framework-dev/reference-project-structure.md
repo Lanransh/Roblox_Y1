@@ -12,8 +12,8 @@
 | `ServerScriptService/Server/Service/` | 项目跨玩家服务；沿用当前实际目录 Service |
 | `ReplicatedStorage/Scripts/Framework/Server/` | FS 框架、KV、奖励、排行榜、支付和好友 |
 | `ServerScriptService/Server/Config/StorageConfig.lua` | 仅服务器可见的存档配置 |
-| `StarterPlayer/StarterPlayerScripts/Client/Main.client.lua` | require FrameworkInit 与项目类、创建玩家对象、Tool 输入、调用 FC.WaitServerReady |
-| `StarterPlayer/StarterPlayerScripts/Client/Player/` | 客户端玩家对象和原生背包适配 |
+| `StarterPlayer/StarterPlayerScripts/Client/Main.client.lua` | require FrameworkInit 与项目类、创建玩家对象、调用 FC.WaitServerReady |
+| `StarterPlayer/StarterPlayerScripts/Client/Player/` | 客户端项目玩家对象 |
 | `StarterPlayer/StarterPlayerScripts/Client/UI/` | 项目 UI 组件 |
 | `ReplicatedStorage/Scripts/Framework/Client/` | FC 玩家、UI、商店、声音、输入等框架 |
 | `StarterGui/` | 随玩家复制到 PlayerGui 的 UI 模板 |
@@ -23,6 +23,7 @@
 `Docs/` 和 `.agents/` 属于开发资料；`Tests/`、`Tools/`、`Build/` 不在默认构建中。
 
 FrameworkInit 在公共层加载完成后自动 require 当前端的 FServer/FClient，Main 不再分别加载端框架。
+FClient 自动启动 FC.NativeBackpack；Provider:GetNativeBackpackConfig() 返回 FrameworkConfig.NativeBackpack。ShortcutEnabled=false 时服务端停止生成框架手持 Tool，并关闭客户端使用绑定，背包数据和服务端直接 UseItem 保留。InventoryEnabled 控制原生界面显示；原生快捷栏与面板共用显示接口，任一字段为 false 时同时隐藏。
 MiniStudio 的 MainStorage 对应 Roblox 的 ReplicatedStorage；框架沿用 Scripts/Framework 层级，端入口放在框架根目录。FS 框架仅在服务器初始化，私有存档配置保留在 ServerScriptService。
 FC 框架统一放在 ReplicatedStorage/Scripts/Framework/Client；项目开发不直接修改 FC 框架代码，只通过 StarterPlayerScripts/Client 下的项目子类继承和覆写接入。
 FServer 加载时直接初始化 KV、排行榜、支付和好友服务，绑定玩家进出、存档失败和关服保存，并处理已在线玩家的存档加载。

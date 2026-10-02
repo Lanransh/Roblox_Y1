@@ -33,6 +33,11 @@ function Provider:GetPlayerDataConfig()
     return Config.PlayerData
 end
 
+--- @return table 快捷栏手持与原生背包面板配置，不删除服务端背包数据。
+function Provider:GetNativeBackpackConfig()
+    return Config.NativeBackpack
+end
+
 --- @return table 存档版本字段。
 function Provider:GetPlayerDataVersionVariantEnum()
     return Config.PlayerData.DataVersion

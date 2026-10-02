@@ -6,6 +6,10 @@
 
 Studio 试玩时，空背包会获得一个可重复使用的测试方块和三个可消耗的测试球。它们显示在 Roblox 默认背包中；点击使用由服务端校验并写入框架背包数据。停止试玩后内存存档会清空，正式服务器不会自动发放测试道具。
 
+原生背包由客户端框架自动启动，项目入口无需手动调用。`Provider:GetNativeBackpackConfig()` 返回 `Game/ReplicatedStorage/Shared/Config/FrameworkConfig.lua` 中的 `NativeBackpack` 配置表，包含默认均为 `true` 的 `ShortcutEnabled` 和 `InventoryEnabled`。
+
+`ShortcutEnabled = false` 时服务端不再生成框架手持 Tool，并关闭客户端 Tool 使用绑定及服务端 ActivateTool 入口，玩家无法手持框架道具；背包数据、发放和服务端直接调用 `UseItem` 的能力保留。`InventoryEnabled` 控制原生背包界面显示，不删除数据。Roblox 原生面板与快捷栏共用显示接口，任一字段为 `false` 时两者都隐藏，只关闭面板时输出限制警告，无法独立隐藏其中一个。配置修改后需重新进入试玩或启动新服务器。
+
 ## 开始开发
 
 直接用 VS Code 打开 `F:\MiniGame\Roblox_Y1\Game`。

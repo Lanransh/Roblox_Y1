@@ -26,6 +26,9 @@ end
 
 local FX, FC = _G.FX, _G.FC
 
+FC.NativeBackpack = require(root:WaitForChild("FCNativeBackpack"))
+FC.NativeBackpack.Start(game:GetService("Players").LocalPlayer, FX.Network, _G.Provider:GetNativeBackpackConfig())
+
 --- 玩家对象与组件创建完成后发起握手，等待服务端完成初始同步。
 function FC.WaitServerReady()
     local network = script.Parent:WaitForChild("Network")
