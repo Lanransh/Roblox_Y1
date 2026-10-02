@@ -2,7 +2,7 @@
 local RunService = game:GetService("RunService")
 local FX = {}
 _G.FX, _G.FC, _G.FS = FX, {}, {}
-_G.MS = {
+_G.Rbx = {
     Players = game:GetService("Players"),
     RunService = RunService,
     MainStorage = game:GetService("ReplicatedStorage"),

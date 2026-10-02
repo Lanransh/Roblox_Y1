@@ -1,4 +1,4 @@
-local FX, FC, MS = _G.FX, _G.FC, _G.MS
+local FX, FC, MS = _G.FX, _G.FC, _G.Rbx
 local FXNetwork = FX.Network
 
 local FCPlayerCompClass = FX.Class("FCPlayerCompClass", "FXCompBaseClass")

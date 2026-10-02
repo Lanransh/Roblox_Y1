@@ -1,7 +1,4 @@
--- 沿用当前 Roblox 项目的容量，避免恢复文件时改变已有背包格数。
+-- 项目公共枚举；背包与快捷栏容量由 SetupProvider 返回。
 return {
-    PlayerKV = { "PlayerData", "DynamicData", "StaticData", "ActivityData" },
     RankingDataStore = "ActivityData",
-    PlayerShortcutCapacity = 8,
-    PlayerInventoryCapacity = 50,
 }

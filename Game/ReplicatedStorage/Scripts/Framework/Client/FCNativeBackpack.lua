@@ -4,13 +4,15 @@ local NativeBackpack = {}
 --- 快捷栏关闭时不接入手持输入，背包面板显示与服务端道具数据分离。
 --- @param player Player 本地玩家，负责监听背包替换与角色重生。
 --- @param network table 已初始化的框架网络模块。
---- @param config table 快捷栏手持与原生背包面板开关。
+--- @param config table 快捷栏布尔开关与背包容量，背包容量为 0 时关闭面板。
 function NativeBackpack.Start(player, network, config)
-    if config.ShortcutEnabled and not config.InventoryEnabled then
+    local shortcutEnabled = config.ShortcutEnabled
+    local inventoryEnabled = config.InventoryCapacity > 0
+    if shortcutEnabled and not inventoryEnabled then
         warn("[Framework] Roblox 原生背包面板与快捷栏共用显示接口；关闭背包面板也会隐藏快捷栏。")
     end
-    StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Backpack, config.ShortcutEnabled and config.InventoryEnabled)
-    if not config.ShortcutEnabled then
+    StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Backpack, shortcutEnabled and inventoryEnabled)
+    if not shortcutEnabled then
         return
     end
 

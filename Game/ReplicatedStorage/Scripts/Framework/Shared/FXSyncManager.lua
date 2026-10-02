@@ -1,4 +1,4 @@
-local FX, MS = _G.FX, _G.MS
+local FX, MS = _G.FX, _G.Rbx
 local FXTask = FX.Task
 local FXNetwork = FX.Network
 local FXTable = FX.Table

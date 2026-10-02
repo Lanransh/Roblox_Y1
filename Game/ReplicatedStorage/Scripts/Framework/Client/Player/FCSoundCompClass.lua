@@ -1,4 +1,4 @@
-local FX, FC, MS = _G.FX, _G.FC, _G.MS
+local FX, FC, MS = _G.FX, _G.FC, _G.Rbx
 
 local LocalPlayer = MS.Players.LocalPlayer
 

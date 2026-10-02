@@ -1,5 +1,4 @@
 -- 项目配置和框架之间的唯一入口；服务端处理器由服务端注册，永不复制给客户端。
-local GameConfig, GameEnum = _G.GameConfig, _G.GameEnum
 local PlayerDataConfig, ServerDataConfig = _G.PlayerDataConfig, _G.ServerDataConfig
 local NetworkProtocol, RankingDataConfig = _G.NetworkProtocol, _G.RankingDataConfig
 local ItemConfig, GoodsConfig = _G.ItemConfig, _G.GoodsConfig
@@ -17,7 +16,7 @@ end
 
 --- @return table 玩家持久化数据域。
 function Provider:GetPlayerKVEnum()
-    return GameEnum.PlayerKV
+    return _G.PlayerKVEnum
 end
 
 --- @return table 项目排行榜列表。
@@ -27,7 +26,7 @@ end
 
 --- @return string 排行榜本地分数数据域。
 function Provider:GetRankingDataStore()
-    return GameEnum.RankingDataStore
+    return _G.PlayerKVEnum.eActivityData
 end
 
 --- @return table 玩家字段定义与默认值。
@@ -40,9 +39,12 @@ function Provider:GetServerDataConfig()
     return ServerDataConfig
 end
 
---- @return table 快捷栏手持与原生背包面板配置，不删除服务端背包数据。
+--- @return table 快捷栏开关（开启时固定 10 格）与背包容量（非负整数，0 关闭），不删除已有存档。
 function Provider:GetNativeBackpackConfig()
-    return GameConfig.NativeBackpack
+    return {
+        ShortcutEnabled = true,
+        InventoryCapacity = 50,
+    }
 end
 
 --- @return table 存档版本字段。

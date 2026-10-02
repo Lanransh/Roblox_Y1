@@ -46,7 +46,7 @@ function DB:LoadAsync()
         end
 
         self._data = record.Data
-        for _, name in ipairs(_G.Provider:GetPlayerKVEnum()) do
+        for enumKey, name in pairs(_G.Provider:GetPlayerKVEnum()) do
             local data = self._data[name]
             if data ~= nil and type(data) ~= "table" then
                 warn("[Storage] Invalid KV domain", name)

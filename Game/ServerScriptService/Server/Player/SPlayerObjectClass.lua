@@ -1,5 +1,5 @@
 local FX, FS = _G.FX, _G.FS
-local GameConfig, GameEnum = _G.GameConfig, _G.GameEnum
+local GameConfig = _G.GameConfig
 local PlayerDataConfig, ItemConfig = _G.PlayerDataConfig, _G.ItemConfig
 local TutorialGuideConfig = _G.TutorialGuideConfig
 local RunService = game:GetService("RunService")
@@ -12,10 +12,11 @@ end
 
 --- @return table 背包容量与持久字段。
 function Inventory:GetConfig()
+    local config = _G.Provider:GetNativeBackpackConfig()
     return {
         storeTableVarEnum = PlayerDataConfig.Inventory,
-        shortcutCapacity = GameEnum.PlayerShortcutCapacity,
-        inventoryCapacity = GameEnum.PlayerInventoryCapacity,
+        shortcutCapacity = config.ShortcutEnabled and 10 or 0,
+        inventoryCapacity = config.InventoryCapacity,
     }
 end
 
