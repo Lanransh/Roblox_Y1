@@ -1,0 +1,19 @@
+{
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {
+        "files.exclude": {
+            "Build": true,
+            "Tools": true,
+            "Workspace": true
+        },
+        "search.exclude": {
+            "Build": true,
+            "Tools": true,
+            "Workspace": true
+        }
+    }
+}
