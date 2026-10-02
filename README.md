@@ -9,6 +9,7 @@ Studio 试玩时，空背包会获得一个可重复使用的测试方块和三�
 ## 开始开发
 
 直接用 VS Code 打开 `F:\MiniGame\Roblox_Y1\Game`。
+工作区规则位于 `Game/AGENTS.md`，项目技能位于 `Game/.agents/skills/`；提示词的 Roblox 适配范围见 [提示词迁移检查](Game/Docs/提示词迁移检查.md)。
 Rojo 配置位于 `Game/default.project.json`，所有 `$path` 均指向 Game 内部。
 按 Ctrl+Shift+P 运行 `Rojo: Open Menu` 启动同步，或者在 Game 目录执行：
 
