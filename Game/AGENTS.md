@@ -8,7 +8,7 @@
 
 ## 重要目录
 - `default.project.json`：Rojo 服务映射
-- `ReplicatedStorage/Scripts/Framework/`：FX/FC/FS 框架，沿用 MiniStudio 的 Shared/Client/Server 分层；`ReplicatedStorage/Shared/`：公共配置与模块
+- `ReplicatedStorage/Scripts/Framework/`：FX/FC/FS 框架，沿用 MiniStudio 的 Shared/Client/Server 分层；`ReplicatedStorage/Scripts/Game/Shared/`：公共配置与模块
 - `ServerScriptService/Server/`：服务端业务入口、项目类和私有配置
 - `StarterPlayer/StarterPlayerScripts/Client/`：客户端业务入口、玩家对象与项目组件
 - `Docs/功能验收清单.md`：当前已实现功能及其验收状态
@@ -56,7 +56,7 @@
 - 不创建额外的 Skill 缓存文件或已读取文件清单。
 
 ## 明确的禁止(必须遵守)
-- 禁止一次性读取 `ReplicatedStorage/Shared/Config/` 整个目录；先使用 `rg` 定位目标配置和行号，再只读取完成任务所需的最小文件片段。
+- 禁止一次性读取 `ReplicatedStorage/Scripts/Game/Configs/` 和 `ReplicatedStorage/Scripts/Game/Shared/` 整个目录；先使用 `rg` 定位目标配置和行号，再只读取完成任务所需的最小文件片段。
 
 
 ## 补充说明
@@ -67,7 +67,7 @@
 - MCP 不可用时说明当前实例结构尚未确认；本地模型源文件、动态创建代码和 Rojo sourcemap 可用于分析预期结构，但不能作为当前 Studio 或运行时节点已存在的证据。修改本地模型或服务映射时再检查 `default.project.json` 和对应源文件。
 - `.agents/`、`AGENTS.md`、`Docs/`、`Tests/`、`Tools/` 和 `Build/` 是开发资料或产物，不加入 Rojo 的服务映射。
 - 业务模块显式声明 `local FX, FC, FS = _G.FX, _G.FC, _G.FS` 中实际用到的变量；每个 ModuleScript 返回有效结果。
-- 项目协议声明在 `ReplicatedStorage/Shared/Config/FrameworkConfig.lua` 的 `ClientMessages/ServerMessages`；框架协议在 `ReplicatedStorage/Scripts/Framework/FrameworkInit.lua`。
+- 项目协议声明在 `ReplicatedStorage/Scripts/Game/Shared/NetworkProtocol.lua` 的 `ClientMsgID/ServerMsgID`；框架协议在 `ReplicatedStorage/Scripts/Framework/FrameworkInit.lua`。
 - `FC` 开头的代码属于框架，统一放在 `ReplicatedStorage/Scripts/Framework/Client/`；项目开发不直接修改这些框架代码，只通过项目子类继承和覆写接入，子类放在 `StarterPlayer/StarterPlayerScripts/Client/`。
 - 目录尽量对齐 `F:/MiniGame/Studio_Y3/Code`：MiniStudio 的 `MainStorage` 对应 Roblox 的 `ReplicatedStorage`；保留 `Scripts/Framework/Shared`、`Client`、`Server` 分层，`FShared/FClient/FServer/FrameworkInit` 放在框架根目录。服务端框架仅由服务器初始化，私有配置仍放在 `ServerScriptService`。
 - 新代码直接用 Roblox 服务名称；不使用 MiniStudio 节点 API 或资源 URI。

@@ -2,8 +2,8 @@
 
 路径均以 Game 为根。先查现有协议和处理器，避免重复名字与重复注册。
 
-1. 项目 C2S 名称加入 `ReplicatedStorage/Shared/Config/FrameworkConfig.lua` 的 ClientMessages；
-   S2C 名称加入 ServerMessages。FXNetwork 初始化会合并 Provider 与 FrameworkInit 中的框架白名单。
+1. 项目 C2S 名称加入 `ReplicatedStorage/Scripts/Game/Shared/NetworkProtocol.lua` 的 ClientMsgID；
+   S2C 名称加入 ServerMsgID。FXNetwork 初始化会合并 Provider 与 FrameworkInit 中的框架白名单。
 2. 参数注释放在声明附近，写明类型、范围、身份来源、是否 RPC 及实际返回值。
 3. 服务端管理器或服务初始化时 RegClientMsgCallback 一次。当前管理器有
    RegForwardFrameworkClientMsg，没有通用 RegForwardClientMsg 自动路由。

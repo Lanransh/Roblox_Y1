@@ -1,6 +1,6 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
-require(ReplicatedStorage:WaitForChild("Shared"):WaitForChild("GameInit"))
+require(ReplicatedStorage:WaitForChild("Scripts"):WaitForChild("GameInit"))
 local FC = _G.FC
 local PlayerClass = require(script.Parent.Player.CPlayerObjectClass)
 

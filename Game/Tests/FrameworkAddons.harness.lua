@@ -51,7 +51,7 @@ local Config = {
     RewardCurrencies = { Money = "Coins", Gold = "Coins" },
 }
 
-local game = { ReplicatedStorage = { Shared = { Config = { FrameworkConfig = Config } } } }
+local game = {}
 
 function game:GetService(name)
     return ({ Players = players, GuiService = selection, UserInputService = input })[name]
@@ -92,6 +92,9 @@ end
 local intervals = {}
 local nextId = 0
 local _G = {
+    GameConfig = { RewardCurrencies = Config.RewardCurrencies },
+    ItemConfig = { Data = Config.Items, ExtraDataSchema = Config.ItemSchemas },
+    PlayerDataConfig = Config.PlayerData,
     FX = {
         Network = network,
         GenObjectID = function()

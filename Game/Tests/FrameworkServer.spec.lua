@@ -1,7 +1,9 @@
 -- 仅通过 Studio MCP 在内存存档的试玩服务器中执行；不进入默认 Rojo 构建。
 local FX, FS = _G.FX, _G.FS
 local Players = game:GetService("Players")
-local Config = require(game.ReplicatedStorage.Shared.Config.FrameworkConfig)
+local ItemConfig, GoodsConfig = _G.ItemConfig, _G.GoodsConfig
+local PlayerDataConfig, TutorialGuideConfig = _G.PlayerDataConfig, _G.TutorialGuideConfig
+local GameEnum = _G.GameEnum
 assert(game:GetService("RunService"):IsStudio(), "Studio only")
 assert(require(game.ServerScriptService.Server.Config.StorageConfig).StudioMemory, "Memory storage required")
 local player = Players:GetPlayers()[1]
@@ -37,10 +39,10 @@ Check("false-value-and-private-field", function()
 end)
 
 local inv = object:RequireComponent("FSInventoryComp")
-local oldInventory = object:GetTable(Config.PlayerData.Inventory)
+local oldInventory = object:GetTable(PlayerDataConfig.Inventory)
 local testId = 987654321
-local previousItem = Config.Items[testId]
-Config.Items[testId] = { Id = testId, Type = "MigrationTest", MaxStack = 10, UseHandler = "MigrationTest" }
+local previousItem = ItemConfig.Data[testId]
+ItemConfig.Data[testId] = { Id = testId, Type = "MigrationTest", MaxStack = 10, UseHandler = "MigrationTest" }
 local used = 0
 _G.Provider.ItemHandlers.MigrationTest = {
     CanUse = function()
@@ -59,7 +61,7 @@ Check("inventory-stack-swap-remove-use-and-reject-invalid", function()
     assert(inv:GetGridData(2).stackCount == 3)
     assert(inv:SwapGridData(2, 58))
     assert(inv:GetGridData(2) == nil and inv:GetGridData(58).stackCount == 3)
-    assert(object:GetTable(Config.PlayerData.Inventory)["58"].stackCount == 3)
+    assert(object:GetTable(PlayerDataConfig.Inventory)["58"].stackCount == 3)
     assert(not inv:CanUseItem(58, -1))
     assert(not inv:CanUseItem(0 / 0, 1))
     assert(not inv:CanUseItem(58, math.huge))
@@ -82,28 +84,28 @@ Check("inventory-capacity-check-is-atomic", function()
     assert(inv:GetGridData(1).stackCount == 9)
 end)
 
-object:SetTable(Config.PlayerData.Inventory, oldInventory)
+object:SetTable(PlayerDataConfig.Inventory, oldInventory)
 inv:OnAllChanged()
 _G.Provider.ItemHandlers.MigrationTest = nil
-Config.Items[testId] = previousItem
+ItemConfig.Data[testId] = previousItem
 
 Check("guide-start-advance-complete", function()
-    local original = object:GetTable(Config.PlayerData.Guide)
-    Config.GuideGroups.MigrationTest = {
+    local original = object:GetTable(PlayerDataConfig.Guide)
+    TutorialGuideConfig.MigrationTest = {
         startEvent = "MigrationStart",
         steps = {
             { finishEvent = "MigrationStep", target = { type = "Test" } },
         },
     }
 
-    object:SetTable(Config.PlayerData.Guide, Config.PlayerData.Guide.DefVal)
+    object:SetTable(PlayerDataConfig.Guide, PlayerDataConfig.Guide.DefVal)
     object:PublishEvent("MigrationStart")
-    assert(object:GetTable(Config.PlayerData.Guide).activeGuideId == "MigrationTest")
+    assert(object:GetTable(PlayerDataConfig.Guide).activeGuideId == "MigrationTest")
     object:PublishEvent("MigrationStep")
-    assert(object:GetTable(Config.PlayerData.Guide).guideMap.MigrationTest.state == "Finished")
-    assert(object:GetTable(Config.PlayerData.Guide).target.type == "None")
-    object:SetTable(Config.PlayerData.Guide, original)
-    Config.GuideGroups.MigrationTest = nil
+    assert(object:GetTable(PlayerDataConfig.Guide).guideMap.MigrationTest.state == "Finished")
+    assert(object:GetTable(PlayerDataConfig.Guide).target.type == "None")
+    object:SetTable(PlayerDataConfig.Guide, original)
+    TutorialGuideConfig.MigrationTest = nil
 end)
 
 Check("ranking-native-cache-and-historical-high", function()
@@ -117,7 +119,7 @@ Check("ranking-native-cache-and-historical-high", function()
     assert(rank:GetGlobalRankingData()[1].rankScore == 15)
     rank:UpdatePlayerScore(player.UserId, 5)
     assert(rank:GetPlayerScore(player.UserId) == 15)
-    FS.PlayerKVDataManager:GetKVTable(player.UserId, Config.RankingDataStore):Set("MigrationTest", nil)
+    FS.PlayerKVDataManager:GetKVTable(player.UserId, GameEnum.RankingDataStore):Set("MigrationTest", nil)
 end)
 
 Check("shop-unregistered-product-cannot-grant", function()
@@ -130,7 +132,7 @@ Check("shop-unregistered-product-cannot-grant", function()
 end)
 
 Check("shop-receipt-is-idempotent", function()
-    Config.Goods[testId] = { BuyHandler = "MigrationTest" }
+    GoodsConfig.GoodsData[testId] = { BuyHandler = "MigrationTest" }
     local grants = 0
     _G.Provider.BuyHandlers.MigrationTest = {
         CanBuy = function()
@@ -151,7 +153,7 @@ Check("shop-receipt-is-idempotent", function()
     assert(FS.ShopService:ProcessReceipt(receipt) == Enum.ProductPurchaseDecision.PurchaseGranted)
     assert(FS.ShopService:ProcessReceipt(receipt) == Enum.ProductPurchaseDecision.PurchaseGranted)
     assert(grants == 1)
-    Config.Goods[testId], _G.Provider.BuyHandlers.MigrationTest = nil, nil
+    GoodsConfig.GoodsData[testId], _G.Provider.BuyHandlers.MigrationTest = nil, nil
 end)
 
 Check("storage-lock-save-release-reload", function()

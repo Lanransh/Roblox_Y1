@@ -1,5 +1,5 @@
 local FX, FS = _G.FX, _G.FS
-local Config = require(game.ReplicatedStorage.Shared.Config.FrameworkConfig)
+local GameConfig, ItemConfig, PlayerDataConfig = _G.GameConfig, _G.ItemConfig, _G.PlayerDataConfig
 local Reward = FX.Class("FSRewardCompClass", "FSPlayerCompClass")
 FS.RewardCompClass = Reward
 local MAX_INTEGER = 9007199254740991
@@ -14,6 +14,9 @@ end
 
 -- 服务端入口。先汇总整批货币并检查整个背包容量，再执行；没有客户端领奖协议。
 -- Type = Item / Money；保留 Y3 的 ItemId/Count 和 itemId/count 写法。
+--- @param rewards table 本次奖励或消耗列表。
+--- @param consume boolean 是否按消耗验证余额。
+--- @return table 校验通过的变更计划，失败返回 nil。
 function Reward:_Prepare(rewards, consume)
     if type(rewards) ~= "table" then
         return nil
@@ -38,7 +41,7 @@ function Reward:_Prepare(rewards, consume)
         if entry.Type == "Item" then
             local id = entry.ItemId or entry.itemId
             local extra = entry.ExtraData or entry.extraData
-            local item = Config.Items[id]
+            local item = ItemConfig.Data[id]
             if not inventory or not item or not Integer(item.MaxStack) or item.MaxStack < 1 then
                 return nil
             end
@@ -47,7 +50,7 @@ function Reward:_Prepare(rewards, consume)
                 return nil
             end
             if extra then
-                local schema = Config.ItemSchemas[item.Type]
+                local schema = ItemConfig.ExtraDataSchema[item.Type]
                 if not schema then
                     return nil
                 end
@@ -67,8 +70,8 @@ function Reward:_Prepare(rewards, consume)
                 count -= stack
             end
         elseif entry.Type == "Money" then
-            local fieldName = Config.RewardCurrencies[entry.Currency or "Money"]
-            local field = fieldName and Config.PlayerData[fieldName]
+            local fieldName = GameConfig.RewardCurrencies[entry.Currency or "Money"]
+            local field = fieldName and PlayerDataConfig[fieldName]
             if not field or field.Type ~= "number" then
                 return nil
             end

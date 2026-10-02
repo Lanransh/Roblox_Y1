@@ -9,9 +9,9 @@
   创建 Tool、SyncTools、ActivateTool；组件协作名为 FSInventoryComp。
 - `ReplicatedStorage/Scripts/Framework/Client/FCNativeBackpack.lua`：Tool.Activated 输入，
   发送 C2S_ActivateTool；由 FClient 自动启动，项目 Main 无需手动调用。
-- `ReplicatedStorage/Shared/Config/FrameworkConfig.lua`：Inventory 字段、Items、容量配置。
+- `ReplicatedStorage/Scripts/Game/Shared/PlayerDataConfig.lua`、`GameEnum.lua` 和 `ReplicatedStorage/Scripts/Game/Configs/ItemConfig.lua`：Inventory 字段、背包容量与道具定义。
 
-`Provider:GetNativeBackpackConfig()` 返回 `FrameworkConfig.NativeBackpack` 配置表，包含 `ShortcutEnabled` 和 `InventoryEnabled`，默认均为 true。
+`Provider:GetNativeBackpackConfig()` 返回 `GameConfig.NativeBackpack` 配置表，包含 `ShortcutEnabled` 和 `InventoryEnabled`，默认均为 true。
 `ShortcutEnabled = false` 时，服务端不再将框架道具生成成 Tool，清理本组件已有 Tool，拒绝 ActivateTool 请求；客户端跳过 Tool 使用绑定，玩家无法手持框架道具。背包数据、发放及服务端直接调用 UseItem 的能力保留。
 `InventoryEnabled` 控制原生界面显示，不删除背包数据。原生快捷栏和背包面板共用 CoreGui Backpack，任一字段为 false 时两者都隐藏；只关闭面板时输出原生界面限制警告。显示区不能独立隐藏。
 配置在启动时读取，修改后需重启客户端与服务器。

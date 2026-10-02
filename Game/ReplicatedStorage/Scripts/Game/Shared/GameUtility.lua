@@ -1,9 +1,9 @@
 -- 迁入 MiniStudio 的通用查询、数值和概率工具；源项目训练场/哑铃业务依赖未迁入。
 local Provider = _G.Provider
-local Config = require(script.Parent:WaitForChild("Config"):WaitForChild("FrameworkConfig"))
+local GoodsConfig = _G.GoodsConfig
 local GameUtility = {}
 
---- 道具数据和显示属性在 Roblox 项目中由同一份 Items 配置提供。
+--- 道具数据和显示属性在 Roblox 项目中由同一份 ItemConfig.Data 提供。
 --- @param itemId number 道具配置 ID。
 --- @return table 道具定义，未配置时返回 nil。
 function GameUtility.GetItemDataConfig(itemId)
@@ -36,7 +36,7 @@ end
 --- @param condFunc function 可选的商品筛选条件。
 --- @return table 首个符合条件的商品，未找到时返回 nil。
 function GameUtility.FindGoodsConfig(buyHandler, condFunc)
-    for productId, goodsConfig in pairs(Config.Goods) do
+    for productId, goodsConfig in pairs(GoodsConfig.GoodsData) do
         if goodsConfig.BuyHandler == buyHandler and (not condFunc or condFunc(goodsConfig)) then
             return goodsConfig
         end

@@ -14,7 +14,7 @@ end
 
 --- 玩家档案就绪后执行登录相关业务。
 function SExampleCompClass:OnPlayerLogin()
-    -- 写入使用 FrameworkConfig.PlayerData 中已声明的字段。
+    -- 写入使用 PlayerDataConfig 中已声明的字段。
 end
 
 return SExampleCompClass

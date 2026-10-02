@@ -2,7 +2,7 @@
 
 | 任务 | 当前接法 |
 | --- | --- |
-| 获取公共配置 | `require(game:GetService("ReplicatedStorage").Shared.Config.FrameworkConfig)`；客户端首次复制需等待 |
+| 获取公共配置 | GameInit 显式加载独立配置；例如 `_G.PlayerDataConfig`、`_G.ItemConfig` |
 | 数值字段 | 服务端 `SetNumber/AddNumber/SubNumber`；两端 `GetNumber` |
 | 布尔、表字段 | `SetFlag/GetFlag/SetTable/GetTable`，写入只在服务端 |
 | 数据订阅 | `WatchDataChanged(fieldDefinition, callback, owner)`；玩家组件封装会 TrackConnection |

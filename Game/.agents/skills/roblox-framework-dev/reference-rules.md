@@ -1,6 +1,6 @@
 # 玩家数据与组件规则
 
-- 玩家字段定义为 `{Type, Key, DefVal, Sync, KVTable}`，存在 `FrameworkConfig.PlayerData`；KVTable 需在 PlayerKV 中声明。
+- 玩家字段定义为 `{Type, Key, DefVal, Sync, KVTable}`，存在 `PlayerDataConfig`；KVTable 需在 PlayerKV 中声明。
 - Type 和读写接口一致，Key 保持稳定；旧存档结构变更在 `SPlayerObjectClass:MigrateData` 中处理，不自动清库。
 - Sync=false 的字段不会传给客户端。当前 Inventory 是私有字段，原生 Tool 用服务端实例呈现。
 - GetTable 返回副本，修改后必须 SetTable 提交；nil 写入恢复默认值。日/周/月重置使用 KVResetType 和服务器 UTC。

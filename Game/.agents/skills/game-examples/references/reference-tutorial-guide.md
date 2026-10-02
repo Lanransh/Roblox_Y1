@@ -1,7 +1,7 @@
 # 新手引导接入
 
 现有服务端 STutorialGuideCompClass 在 SPlayerObjectClass.lua 内定义并已挂载，
-使用 FrameworkConfig.GuideGroups 与 PlayerData.Guide。
+使用 TutorialGuideConfig 与 PlayerData.Guide。
 当前 GuideGroups 为空。客户端只有 FCTutorialGuideCompClass 基类，尚未挂载项目引导表现。
 
 按实际需求：

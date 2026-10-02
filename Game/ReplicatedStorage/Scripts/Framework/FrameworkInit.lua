@@ -30,7 +30,6 @@ FX.FrameworkServerMsgID = {
     "S2C_FriendState", -- 下发同服好友快照；参数 state = {ids = UserId 数组, status = "Loading"/"Ready"/"Unavailable", revision = 版本号}；失败时可保留旧快照。
 }
 
-_G.Provider = require(script.Parent:WaitForChild("Provider"))
 require(script.Parent:WaitForChild("FShared"))
 if RunService:IsClient() then
     require(script.Parent:WaitForChild("FClient"))

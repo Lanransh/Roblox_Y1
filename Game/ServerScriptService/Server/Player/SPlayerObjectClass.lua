@@ -1,5 +1,7 @@
 local FX, FS = _G.FX, _G.FS
-local Config = require(game.ReplicatedStorage.Shared.Config.FrameworkConfig)
+local GameConfig, GameEnum = _G.GameConfig, _G.GameEnum
+local PlayerDataConfig, ItemConfig = _G.PlayerDataConfig, _G.ItemConfig
+local TutorialGuideConfig = _G.TutorialGuideConfig
 local RunService = game:GetService("RunService")
 local Inventory = FX.Class("SInventoryCompClass", "FSInventoryCompClass")
 
@@ -11,16 +13,16 @@ end
 --- @return table 背包容量与持久字段。
 function Inventory:GetConfig()
     return {
-        storeTableVarEnum = Config.PlayerData.Inventory,
-        shortcutCapacity = Config.ShortcutCapacity,
-        inventoryCapacity = Config.InventoryCapacity,
+        storeTableVarEnum = PlayerDataConfig.Inventory,
+        shortcutCapacity = GameEnum.PlayerShortcutCapacity,
+        inventoryCapacity = GameEnum.PlayerInventoryCapacity,
     }
 end
 
 --- 登录后从存档创建原生 Tool，后续由数据变化监听保持同步。
 function Inventory:OnPlayerLogin()
     local player = self:GetPlayerNode()
-    self:WatchDataChanged(Config.PlayerData.Inventory, self.SyncTools, self)
+    self:WatchDataChanged(PlayerDataConfig.Inventory, self.SyncTools, self)
     self:TrackConnection(player.CharacterAdded:Connect(function(character)
         task.defer(function()
             if self._tools and player.Character == character then
@@ -64,7 +66,7 @@ function Inventory:SyncTools()
     local data = self:GetData()
     for gridIndex, tool in pairs(self._tools) do
         local item = data[gridIndex]
-        local config = item and Config.Items[item.itemId]
+        local config = item and ItemConfig.Data[item.itemId]
         if not config or not config.ToolShape or (tool.Parent ~= backpack and tool.Parent ~= player.Character)
             or tool:GetAttribute("FrameworkItemId") ~= item.itemId then
             tool:Destroy()
@@ -74,7 +76,7 @@ function Inventory:SyncTools()
 
     for gridIndex = 1, self:GetTotalCapacity() do
         local item = data[gridIndex]
-        local config = item and Config.Items[item.itemId]
+        local config = item and ItemConfig.Data[item.itemId]
         if config and config.ToolShape then
             local tool = self._tools[gridIndex]
             if not tool then
@@ -138,12 +140,12 @@ end
 
 --- @return table 项目引导 DSL。
 function Guide:GetGuideConfig()
-    return Config.GuideGroups
+    return TutorialGuideConfig
 end
 
 --- @return table 引导数据字段。
 function Guide:GetGuideStorage()
-    return Config.PlayerData.Guide
+    return PlayerDataConfig.Guide
 end
 
 local Player = FX.Class("SPlayerObjectClass", "FSPlayerObjectClass")
@@ -158,8 +160,8 @@ end
 
 --- @param version number 已保存的数据版本；新增迁移在此顺序执行。
 function Player:MigrateData(version)
-    assert(version <= Config.DataVersion, "Saved data is newer than this server")
-    self:SetNumber(Config.PlayerData.DataVersion, Config.DataVersion)
+    assert(version <= GameConfig.DataVersion, "Saved data is newer than this server")
+    self:SetNumber(PlayerDataConfig.DataVersion, GameConfig.DataVersion)
 end
 
 --- 先同步初始数据，再向玩家组件发布登录事件。

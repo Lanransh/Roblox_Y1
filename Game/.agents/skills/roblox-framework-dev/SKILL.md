@@ -16,8 +16,8 @@ description: 在 Roblox_Y1 已迁移的 FX/FC/FS 框架中接入玩家组件、�
 核心约束：
 
 - 服务端拥有权威状态；公共目录只放允许复制到客户端的配置与模块。
-- 默认值来自 `FrameworkConfig.PlayerData`，不要在每个组件重新补默认结构。
-- 新业务协议加到 `FrameworkConfig.ClientMessages/ServerMessages`；框架协议才修改 `FrameworkInit.lua`。声明在网络层首次 require 时读取，不能在启动后临时追加。
+- 默认值来自 `PlayerDataConfig`，不要在每个组件重新补默认结构。
+- 新业务协议加到 `NetworkProtocol.ClientMsgID/ServerMsgID`；框架协议才修改 `FrameworkInit.lua`。声明在网络层首次 require 时读取，不能在启动后临时追加。
 - 模块通过 require 注册类，之后才用 AddComponent。当前工程没有自动遍历加载全部业务类。
 - 玩家组件每秒更新可用 `OnUpdate(serverTime)`；独立轮询需持有任务句柄，析构时取消。
 - `WatchDataChanged` 会立即回放当前值；不要另写一份相同的初始 UI 更新。

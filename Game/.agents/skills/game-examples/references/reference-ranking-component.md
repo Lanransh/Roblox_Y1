@@ -2,7 +2,7 @@
 
 基类：`ReplicatedStorage/Scripts/Framework/Client/Player/FCRankingUICompClass.lua`。
 服务端校验：`ServerScriptService/Server/Service/SRankingServiceClass.lua`。
-当前 FrameworkConfig.Rankings 为空，没有已启用的业务榜。
+当前 RankingDataConfig 为空，没有已启用的业务榜。
 
 先确定榜单规则和配置，再提供真实 UI：
 - Ctor 在 Super.Ctor 之前准备基类会调用的节点映射与配置；基类构造会绑定按钮。

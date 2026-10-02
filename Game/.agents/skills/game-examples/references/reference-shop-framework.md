@@ -15,7 +15,7 @@ FCShopUICompClass、ShopPageBaseClass、ShopItemBaseClass。当前尚无项目�
 列表保留 UIListLayout 等布局节点，使用原生克隆，不调用旧 UIList:SetVirtual。
 
 Developer Product：
-- `FrameworkConfig.Goods[productId]` 配置 BuyHandler。
+- `GoodsConfig.GoodsData[productId]` 配置 BuyHandler。
 - handler 在服务端 `_G.Provider.BuyHandlers` 注册，使用 CanBuy(context)/Buy(context)。
 - 客户端通过 FCCommonUIComp:ShowDeveloperBuyUI(productId) 执行预检后显示购买窗口。
 - `ReplicatedStorage/Scripts/Framework/Server/Modules/FSShopService.lua` 唯一持有 ProcessReceipt；

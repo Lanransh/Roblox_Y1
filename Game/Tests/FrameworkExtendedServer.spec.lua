@@ -1,6 +1,6 @@
 -- 仅作为正常 Script 在 Studio 内存存档试玩中运行。
 local FS = _G.FS
-local Config = require(game.ReplicatedStorage.Shared.Config.FrameworkConfig)
+local GoodsConfig = _G.GoodsConfig
 assert(game:GetService("RunService"):IsStudio())
 assert(require(game.ServerScriptService.Server.Config.StorageConfig).StudioMemory)
 local id = game.Players:GetPlayers()[1].UserId
@@ -18,7 +18,7 @@ end
 local field = { Type = "number", Key = "MigrationReward", DefVal = 0, KVTable = "PlayerData", Sync = false }
 local product = 987654322
 local originalSave = db.Save
-Config.Goods[product] = { BuyHandler = "MigrationFailure" }
+GoodsConfig.GoodsData[product] = { BuyHandler = "MigrationFailure" }
 local handler = {
     CanBuy = function()
         return true
@@ -87,7 +87,7 @@ Check("shop-save-failure-retry-does-not-repeat-reward", function()
 end)
 
 db.Save = originalSave
-Config.Goods[product], _G.Provider.BuyHandlers.MigrationFailure = nil, nil
+GoodsConfig.GoodsData[product], _G.Provider.BuyHandlers.MigrationFailure = nil, nil
 Check("player-table-copy-default-and-periodic-reset", function()
     local definition =
         { Type = "table", Key = "MigrationTable", DefVal = { enabled = false }, KVTable = "PlayerData", Sync = false }
