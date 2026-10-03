@@ -6,6 +6,7 @@ _G.Provider.BuyHandlers = require(Handlers.BuyHandlers)
 local Player = script.Parent.Player
 local Service = script.Parent.Service
 
+require(Player.SRockLevelCompClass)
 require(Player.SPlayerObjectClass)
 local ManagerClass = require(Player.SPlayerObjectManagerClass)
 local RankingClass = require(Service.SRankingServiceClass)

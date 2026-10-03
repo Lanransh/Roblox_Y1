@@ -157,6 +157,7 @@ function Player:Ctor(id)
     self:AddComponent("SInventoryCompClass")
     self:AddComponent("FSRewardCompClass")
     self:AddComponent("STutorialGuideCompClass")
+    self:AddComponent("SRockLevelCompClass")
 end
 
 --- @param version number 已保存的数据版本；新增迁移在此顺序执行。

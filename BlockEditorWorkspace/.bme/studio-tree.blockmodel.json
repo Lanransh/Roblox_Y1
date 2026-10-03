@@ -25,6 +25,33 @@
           1
         ]
       }
+    },
+    {
+      "id": "prefab-node-359e9bdc-2e4f-487d-ad2f-94973e847164",
+      "name": "世界1",
+      "parentId": "studio-block-models-root",
+      "type": "PrefabReference",
+      "transform": {
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          4,
+          4,
+          4
+        ]
+      },
+      "target": {
+        "kind": "project",
+        "projectGuid": "1ff405b8-a52e-4d7f-86ab-f3ee2dde4025"
+      }
     }
   ],
   "prefabFolders": [],
@@ -33,6 +60,10 @@
     {
       "projectGuid": "79f8d789-5cf2-4c3b-a3a4-34a1bac39aea",
       "name": "1"
+    },
+    {
+      "projectGuid": "1ff405b8-a52e-4d7f-86ab-f3ee2dde4025",
+      "name": "世界1"
     }
   ]
 }
