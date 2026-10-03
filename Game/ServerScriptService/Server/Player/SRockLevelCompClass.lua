@@ -67,7 +67,7 @@ function Component:RestoreRocks()
     self._hit = false
 end
 
---- 每次只处理朝向上最近的未破坏石头；保留每秒常规攻击和间隔内一击击破的节奏。
+--- 每次只处理朝向上最近的未破坏石头；所有攻击（包括残血击破）统一遵守 1 秒间隔。
 function Component:Tick()
     local character = self:GetPlayerCharacter()
     local root = character and character:FindFirstChild("HumanoidRootPart")
@@ -109,7 +109,7 @@ function Component:Tick()
                 local health = self._health[key] or RockLevel.HP[index]
                 if health > 0 then
                     targetFound = true
-                    if damage > 0 and (regularAttack or health <= damage) then
+                    if damage > 0 and regularAttack then
                         self._health[key] = math.max(0, health - damage)
                         changed = true
                         self._hit = true

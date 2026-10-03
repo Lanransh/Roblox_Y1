@@ -5,13 +5,20 @@ local Debris = game:GetService("Debris")
 local RockLevel = require(ReplicatedStorage.Scripts.Game.Shared.RockLevel)
 local Fields = _G.PlayerDataConfig
 local Component = FX.Class("CRockLevelCompClass", "FCPlayerCompClass")
+local RockNames = {"Rock_01", "Rock_02", "Rock_03", "Rock_04", "Rock_Small_01"}
+local RockColors = {
+    Color3.fromRGB(217, 220, 224), Color3.fromRGB(228, 225, 215),
+    Color3.fromRGB(224, 228, 226), Color3.fromRGB(235, 233, 223),
+    Color3.fromRGB(219, 224, 218),
+}
 
---- 只拥有本客户端生成的石头；不会修改公共 rockStone 模板。
+--- 只拥有本客户端生成的石头；不会修改公共 SyntyRocks 模板。
 --- @param owner FCPlayerObjectClass 客户端玩家对象。
 function Component:Ctor(owner)
     Component.Super.Ctor(self, owner)
     self._chunks = {}
     self._pool = {}
+    self._templates = {}
     self._health = {}
     self._fragments = {}
 end
@@ -37,28 +44,30 @@ function Component:OnReady()
         self._fragmentTemplate.Size = size
         mesh:Destroy()
     end
-    self._template = ReplicatedStorage:WaitForChild("Assets"):WaitForChild("Models"):WaitForChild("rockStone"):Clone()
-    -- JSON 同步可能丢失网格的原始尺寸；补齐网格数据后，Size 才能正确控制显示与碰撞。
-    for index, part in ipairs(self._template:GetDescendants()) do
-        if part:IsA("MeshPart") and part.MeshSize.Magnitude == 0 then
+    local sources = assets:WaitForChild("Models"):WaitForChild("SyntyRocks")
+    for index, name in ipairs(RockNames) do
+        local source = sources:WaitForChild(name)
+        local part = source:Clone()
+        -- JSON 同步可能丢失原始网格尺寸；恢复后保留已验看的尺寸和贴图。
+        if part.MeshSize.Magnitude == 0 then
             local size = part.Size
             local mesh = game:GetService("AssetService"):CreateMeshPartAsync(part.MeshContent)
             part:ApplyMesh(mesh)
             part.Size = size
+            part.TextureID = source.TextureID
             mesh:Destroy()
         end
+        local template = Instance.new("Model")
+        template.Name = name
+        part.Name = "Root"
+        part.CFrame = CFrame.new()
+        part.Parent = template
+        template.PrimaryPart = part
+        template:SetAttribute("Variant", index)
+        template:SetAttribute("FullHeight", part.Size.Y)
+        self._templates[index] = template
+        self._pool[index] = {}
     end
-    self._template.CollisionBoxes:Destroy()
-    self._template.Root.Size = Vector3.new(0.01, 0.01, 0.01)
-    self._template.PrimaryPart = nil
-    local bounds, size = self._template:GetBoundingBox()
-    self._template.WorldPivot = bounds
-    self._template:ScaleTo(self._template:GetScale() * RockLevel.CellSize * 0.95
-        / math.max(size.X, size.Y, size.Z))
-    local scaledBounds, scaledSize = self._template:GetBoundingBox()
-    self._template.WorldPivot = scaledBounds
-    self._rockHeight = scaledSize.Y
-    self._rockScale = self._template:GetScale()
     self._areas = RockLevel.GetAreas()
     self._folder = Instance.new("Folder")
     self._folder.Name = "RockLevelVisuals"
@@ -105,7 +114,7 @@ function Component:RefreshHealth()
     self._health = health
 end
 
---- 命中时使用拆出的 ROCK 烟尘、碎裂声与碎石资源，不执行原 Tool 的投掷逻辑。
+--- 每次命中播放一次声音及 ROCK 烟尘与碎石，碎石从当前模型顶部飘出并沿用关卡色。
 --- @param rock Model 当前受击且仍在场景中的石头。
 --- @param broken boolean 本次扣血是否击破石头。
 function Component:PlayHitEffect(rock, broken)
@@ -148,18 +157,20 @@ function Component:PlayHitEffect(rock, broken)
     away = away.Unit
     local fragmentPosition = position + away * 0.5
     fragmentPosition = Vector3.new(fragmentPosition.X,
-        math.max(fragmentPosition.Y, center.Y + self._rockHeight * rock:GetScale() / self._rockScale / 2 + 0.4), fragmentPosition.Z)
+        math.max(fragmentPosition.Y, center.Y + rock.Root.Size.Y / 2 + 0.4), fragmentPosition.Z)
     self:SpawnFragments(CFrame.lookAt(fragmentPosition, fragmentPosition + away),
-        rock.Root["0"].SurfaceAppearance.Color, broken)
+        rock:GetAttribute("GroundColor"), broken)
     Debris:AddItem(effect, math.max(3, dust.Lifetime.Max + 0.1, sound.TimeLength + 0.1))
 end
 
---- 小碎石按环形方向向上喷起并四散，沿用所在关卡颜色且不参与碰撞。
+--- 小碎石按环形方向向上喷起并四散；灰色材质仅叠加 20% 关卡色，不参与碰撞。
 --- @param origin CFrame 石头上方的生成位置及远离玩家的水平朝向。
---- @param color Color3 对应地板的颜色。
+--- @param color Color3 对应地板的原始颜色，以 20% 强度叠加到碎石底色。
 --- @param broken boolean 击破时增加碎石数量和尺寸。
 function Component:SpawnFragments(origin, color, broken)
     local source = self._fragmentTemplate
+    local tint = Color3.new(1, 1, 1):Lerp(color, 0.2)
+    local fragmentColor = Color3.new(source.Color.R * tint.R, source.Color.G * tint.G, source.Color.B * tint.B)
     local count = broken and 9 or 5
     local phase = math.random() * math.pi * 2
     for index = 1, count do
@@ -170,7 +181,7 @@ function Component:SpawnFragments(origin, color, broken)
         fragment.CanTouch = false
         fragment.CanQuery = false
         fragment.CastShadow = false
-        fragment.Color = color
+        fragment.Color = fragmentColor
         local size = (0.5 + math.random() * 0.4) * (broken and 1.3 or 1)
         fragment.Size = source.Size * (size / math.max(source.Size.X, source.Size.Y, source.Size.Z))
         local rotation = CFrame.Angles(math.random() * math.pi, math.random() * math.pi, math.random() * math.pi)
@@ -207,74 +218,68 @@ function Component:UpdateFragments()
     end
 end
 
---- 复用网格时恢复满血尺寸并清除外观缓存，随后按当前血量和关卡色显示。
+--- 按格子固定随机模型、朝向和灰色，分模型复用，避免重新载入时外观跳变。
 --- @param area table 所属关卡。
 --- @param column number 从零开始的列号。
 --- @param row number 从零开始的行号。
 --- @return Model 本客户端拥有的石头。
 function Component:CreateRock(area, column, row)
-    local rock = table.remove(self._pool)
+    local x = area.MinX + (column + 0.5) * RockLevel.CellSize
+    local z = area.MinZ + (row + 0.5) * RockLevel.CellSize
+    local seed = math.abs(math.floor(x * 73856093 + z * 19349663)) % 2147483647
+    local random = Random.new(seed)
+    local variant = random:NextInteger(1, #RockNames)
+    local rotation = CFrame.Angles(0, random:NextInteger(0, 3) * math.pi / 2, 0)
+    local rock = table.remove(self._pool[variant])
     if not rock then
-        rock = self._template:Clone()
-        for index, part in ipairs(rock:GetDescendants()) do
-            if part:IsA("BasePart") then
-                part.Anchored = true
-                part.CanTouch = false
-                part.CastShadow = false
-            end
-        end
+        rock = self._templates[variant]:Clone()
     end
     rock.Name = "Rock_" .. area.Index .. "_" .. (row * area.Columns + column + 1)
-    rock:ScaleTo(self._rockScale)
+    rock:ScaleTo(1)
+    rock:SetAttribute("BaseColor", RockColors[Random.new(seed + 17):NextInteger(1, #RockColors)])
     rock:SetAttribute("HealthRatio", nil)
     rock:SetAttribute("GroundColor", nil)
-    rock:PivotTo(CFrame.new(area.MinX + (column + 0.5) * RockLevel.CellSize,
-        area.FloorY + self._rockHeight / 2, area.MinZ + (row + 0.5) * RockLevel.CellSize))
+    rock:PivotTo(CFrame.new(x, area.FloorY + rock:GetAttribute("FullHeight") / 2, z) * rotation)
     self:SetRockState(rock, true)
     rock.Parent = self._folder
     return rock
 end
 
---- 按血量比例缩放并保持底面贴地，只在比例或地板色变化时修改网格。
+--- 保留模型朝向并按血量缩放贴地；关卡色仅以 20% 强度染色，保持灰色岩石主体。
 --- @param rock Model 当前客户端石头。
 --- @param area table 所属关卡及常驻颜色标记。
 --- @param health number 大于零的当前血量。
 function Component:UpdateRockAppearance(rock, area, health)
-    local ratio = math.clamp(health / RockLevel.HP[area.Index], 0.001, 1)
+    local ratio = math.clamp(health / RockLevel.HP[area.Index], 0.3, 1)
     if rock:GetAttribute("HealthRatio") ~= ratio then
-        local position = rock:GetPivot().Position
-        rock:ScaleTo(self._rockScale * ratio)
-        rock:PivotTo(CFrame.new(position.X, area.FloorY + self._rockHeight * ratio / 2, position.Z))
+        local pivot = rock:GetPivot()
+        rock:ScaleTo(ratio)
+        rock:PivotTo(CFrame.new(pivot.Position.X,
+            area.FloorY + rock:GetAttribute("FullHeight") * ratio / 2, pivot.Position.Z) * pivot.Rotation)
         rock:SetAttribute("HealthRatio", ratio)
     end
     local color = area.Node.Color
     if rock:GetAttribute("GroundColor") ~= color then
-        for index, part in ipairs(rock.Root:GetChildren()) do
-            if part:IsA("MeshPart") then
-                part.SurfaceAppearance.Color = color
-            end
-        end
+        local baseColor = rock:GetAttribute("BaseColor")
+        local tint = Color3.new(1, 1, 1):Lerp(color, 0.2)
+        rock.Root.SurfaceAppearance.Color = Color3.new(baseColor.R * tint.R, baseColor.G * tint.G, baseColor.B * tint.B)
         rock:SetAttribute("GroundColor", color)
     end
 end
 
---- 隐藏时解除碰撞并移出场景，保留网格供附近关卡复用。
+--- 隐藏时解除碰撞并移出场景，按模型种类回收，避免复用时改变选定的轮廓。
 --- @param rock Model 本组件创建的石头。
 function Component:RecycleRock(rock)
     self:SetRockState(rock, false)
     rock.Parent = nil
-    table.insert(self._pool, rock)
+    table.insert(self._pool[rock:GetAttribute("Variant")], rock)
 end
 
---- 更新可见网格的通行状态，保留所在关卡的地板配色。
+--- 每块石头只有一个根网格，碰撞仍由当前血量能否一击击破决定。
 --- @param rock Model 本组件创建的石头。
 --- @param canCollide boolean 是否阻挡玩家。
 function Component:SetRockState(rock, canCollide)
-    for index, part in ipairs(rock.Root:GetChildren()) do
-        if part:IsA("MeshPart") then
-            part.CanCollide = canCollide
-        end
-    end
+    rock.Root.CanCollide = canCollide
 end
 
 --- 更新短时碎石表现，每帧最多载入最近的一块；64 studs 载入、72 studs 移除。
@@ -343,20 +348,22 @@ function Component:ResetVisuals()
     end
 end
 
---- 释放场景内碎石、已显示及池内网格，基类负责断开全部监听。
+--- 释放场景、五种本地模板及各自的复用池，基类负责断开全部监听。
 function Component:Dtor()
     if self._fragmentTemplate then
         self._fragmentTemplate:Destroy()
     end
-    if self._template then
-        self._template:Destroy()
+    for index, template in ipairs(self._templates) do
+        template:Destroy()
     end
     if self._folder then
         self._folder:Destroy()
     end
     self._fragments = {}
-    for index = 1, #self._pool do
-        self._pool[index]:Destroy()
+    for index, pool in ipairs(self._pool) do
+        for rockIndex, rock in ipairs(pool) do
+            rock:Destroy()
+        end
     end
     Component.Super.Dtor(self)
 end
