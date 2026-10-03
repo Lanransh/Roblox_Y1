@@ -2682,65 +2682,6 @@
           }
         }
       ]
-    },
-    {
-      "guid": "794c807e-468c-4c96-8127-e7c93f05fbeb",
-      "name": "世界2青色棋格地板",
-      "folderId": null,
-      "rootNodeId": "ai-node-6",
-      "nodes": [
-        {
-          "id": "ai-node-6",
-          "name": "Ground4",
-          "parentId": null,
-          "type": "Geometry",
-          "transform": {
-            "position": [
-              0,
-              0,
-              0
-            ],
-            "rotation": [
-              0,
-              0,
-              0
-            ],
-            "scale": [
-              1,
-              1,
-              1
-            ]
-          },
-          "geometry": {
-            "type": "Box",
-            "size": [
-              36,
-              1,
-              24
-            ],
-            "color": "#d5f5f4",
-            "texturePattern": "solid",
-            "roblox": {
-              "surfaces": {
-                "top": "Studs",
-                "bottom": "Studs",
-                "left": "Studs",
-                "right": "Studs",
-                "front": "Studs",
-                "back": "Studs"
-              },
-              "faceTextures": {
-                "top": "checker",
-                "bottom": "checker",
-                "left": "checker",
-                "right": "checker",
-                "front": "checker",
-                "back": "checker"
-              }
-            }
-          }
-        }
-      ]
     }
   ],
   "externalPrefabAliases": []

@@ -30,3 +30,4 @@ AgentWorkspace/Figma/*
 AgentWorkspace/FigmaEggy/*
 !AgentWorkspace/FigmaEggy/Game-DESIGN.md
 /Run.bat
+/Build/FigmaRoblox/

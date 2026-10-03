@@ -1,0 +1,1468 @@
+{
+  "className": "ScreenGui",
+  "properties": {
+    "ResetOnSpawn": false,
+    "ZIndexBehavior": "Sibling",
+    "ScreenInsets": "CoreUISafeInsets"
+  },
+  "children": [
+    {
+      "name": "Canvas",
+      "className": "Frame",
+      "properties": {
+        "AnchorPoint": {
+          "Vector2": [
+            0.5,
+            0.5
+          ]
+        },
+        "Position": {
+          "UDim2": [
+            [
+              0.5,
+              0
+            ],
+            [
+              0.5,
+              0
+            ]
+          ]
+        },
+        "Size": {
+          "UDim2": [
+            [
+              0,
+              1280
+            ],
+            [
+              0,
+              720
+            ]
+          ]
+        },
+        "Rotation": 0,
+        "Visible": true,
+        "BackgroundTransparency": 1,
+        "BorderSizePixel": 0,
+        "ZIndex": 1,
+        "ClipsDescendants": false
+      },
+      "children": [
+        {
+          "name": "PopupPanelImg",
+          "className": "Frame",
+          "properties": {
+            "AnchorPoint": {
+              "Vector2": [
+                0.5,
+                0.5
+              ]
+            },
+            "Position": {
+              "UDim2": [
+                [
+                  0,
+                  640
+                ],
+                [
+                  0,
+                  395
+                ]
+              ]
+            },
+            "Size": {
+              "UDim2": [
+                [
+                  0,
+                  650
+                ],
+                [
+                  0,
+                  330
+                ]
+              ]
+            },
+            "Rotation": 0.0,
+            "Visible": true,
+            "BackgroundTransparency": 0.30000001192092896,
+            "BorderSizePixel": 0,
+            "ZIndex": 1,
+            "BackgroundColor3": {
+              "Color3": [
+                0,
+                0,
+                0
+              ]
+            },
+            "ClipsDescendants": false
+          },
+          "children": [
+            {
+              "name": "Corner",
+              "className": "UICorner",
+              "properties": {
+                "CornerRadius": {
+                  "UDim": [
+                    0,
+                    2
+                  ]
+                }
+              },
+              "children": []
+            },
+            {
+              "name": "Stroke",
+              "className": "UIStroke",
+              "properties": {
+                "Color": {
+                  "Color3": [
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                "Thickness": 2,
+                "Transparency": 0.0,
+                "ApplyStrokeMode": "Border"
+              },
+              "children": []
+            },
+            {
+              "name": "OfflineDurationTxt",
+              "className": "TextLabel",
+              "properties": {
+                "AnchorPoint": {
+                  "Vector2": [
+                    0.5,
+                    0.5
+                  ]
+                },
+                "Position": {
+                  "UDim2": [
+                    [
+                      0,
+                      325
+                    ],
+                    [
+                      0,
+                      30
+                    ]
+                  ]
+                },
+                "Size": {
+                  "UDim2": [
+                    [
+                      0,
+                      602
+                    ],
+                    [
+                      0,
+                      29
+                    ]
+                  ]
+                },
+                "Rotation": 0.0,
+                "Visible": true,
+                "BackgroundTransparency": 1,
+                "BorderSizePixel": 0,
+                "ZIndex": 1,
+                "BackgroundColor3": {
+                  "Color3": [
+                    1,
+                    1,
+                    1
+                  ]
+                },
+                "Text": "Welcome back! You were away for 8h 24m.",
+                "TextSize": 20,
+                "Font": "BuilderSansBold",
+                "TextScaled": false,
+                "TextWrapped": true,
+                "RichText": false,
+                "TextXAlignment": "Center",
+                "TextYAlignment": "Center",
+                "TextColor3": {
+                  "Color3": [
+                    1,
+                    1,
+                    1
+                  ]
+                },
+                "TextTransparency": 0.0,
+                "ClipsDescendants": false
+              },
+              "children": [
+                {
+                  "name": "Stroke",
+                  "className": "UIStroke",
+                  "properties": {
+                    "Color": {
+                      "Color3": [
+                        0.09803921729326248,
+                        0.13333334028720856,
+                        0.08235294371843338
+                      ]
+                    },
+                    "Thickness": 1.2000000476837158,
+                    "Transparency": 0.0,
+                    "ApplyStrokeMode": "Contextual"
+                  },
+                  "children": []
+                }
+              ],
+              "attributes": {
+                "FigmaNodeId": {
+                  "String": "6:12"
+                },
+                "FigmaFileKey": {
+                  "String": "B7UgSPMFWQlTSGadG4Ucsx"
+                },
+                "UIKey": {
+                  "String": "figma_ce0c7180cb4cbfdec94085b1"
+                }
+              }
+            },
+            {
+              "name": "StrengthRewardImg",
+              "className": "ImageLabel",
+              "properties": {
+                "AnchorPoint": {
+                  "Vector2": [
+                    0.5,
+                    0.5
+                  ]
+                },
+                "Position": {
+                  "UDim2": [
+                    [
+                      0,
+                      325
+                    ],
+                    [
+                      0,
+                      124
+                    ]
+                  ]
+                },
+                "Size": {
+                  "UDim2": [
+                    [
+                      0,
+                      570
+                    ],
+                    [
+                      0,
+                      71
+                    ]
+                  ]
+                },
+                "Rotation": 0.0,
+                "Visible": true,
+                "BackgroundTransparency": 1,
+                "BorderSizePixel": 0,
+                "ZIndex": 2,
+                "ClipsDescendants": false,
+                "Image": "rbxassetid://138540999230245",
+                "ImageTransparency": 0.0,
+                "ScaleType": "Stretch"
+              },
+              "children": [
+                {
+                  "name": "StrengthIconBox",
+                  "className": "Frame",
+                  "properties": {
+                    "AnchorPoint": {
+                      "Vector2": [
+                        0.5,
+                        0.5
+                      ]
+                    },
+                    "Position": {
+                      "UDim2": [
+                        [
+                          0,
+                          39
+                        ],
+                        [
+                          0,
+                          36
+                        ]
+                      ]
+                    },
+                    "Size": {
+                      "UDim2": [
+                        [
+                          0,
+                          51
+                        ],
+                        [
+                          0,
+                          51
+                        ]
+                      ]
+                    },
+                    "Rotation": 0.0,
+                    "Visible": true,
+                    "BackgroundTransparency": 1,
+                    "BorderSizePixel": 0,
+                    "ZIndex": 1,
+                    "ClipsDescendants": false
+                  },
+                  "children": [
+                    {
+                      "name": "Corner",
+                      "className": "UICorner",
+                      "properties": {
+                        "CornerRadius": {
+                          "UDim": [
+                            0,
+                            6
+                          ]
+                        }
+                      },
+                      "children": []
+                    },
+                    {
+                      "name": "StrengthMarkTxt",
+                      "className": "TextLabel",
+                      "properties": {
+                        "AnchorPoint": {
+                          "Vector2": [
+                            0.5,
+                            0.5
+                          ]
+                        },
+                        "Position": {
+                          "UDim2": [
+                            [
+                              0,
+                              26
+                            ],
+                            [
+                              0,
+                              24
+                            ]
+                          ]
+                        },
+                        "Size": {
+                          "UDim2": [
+                            [
+                              0,
+                              51
+                            ],
+                            [
+                              0,
+                              48
+                            ]
+                          ]
+                        },
+                        "Rotation": 0.0,
+                        "Visible": true,
+                        "BackgroundTransparency": 1,
+                        "BorderSizePixel": 0,
+                        "ZIndex": 1,
+                        "BackgroundColor3": {
+                          "Color3": [
+                            0.43921568989753723,
+                            0.9058823585510254,
+                            0.16862745583057404
+                          ]
+                        },
+                        "Text": "+",
+                        "TextSize": 32.29999923706055,
+                        "Font": "BuilderSansBold",
+                        "TextScaled": false,
+                        "TextWrapped": true,
+                        "RichText": false,
+                        "TextXAlignment": "Center",
+                        "TextYAlignment": "Center",
+                        "TextColor3": {
+                          "Color3": [
+                            0.43921568989753723,
+                            0.9058823585510254,
+                            0.16862745583057404
+                          ]
+                        },
+                        "TextTransparency": 0.0,
+                        "ClipsDescendants": false
+                      },
+                      "children": [
+                        {
+                          "name": "Stroke",
+                          "className": "UIStroke",
+                          "properties": {
+                            "Color": {
+                              "Color3": [
+                                0.09803921729326248,
+                                0.13333334028720856,
+                                0.08235294371843338
+                              ]
+                            },
+                            "Thickness": 1.2000000476837158,
+                            "Transparency": 0.0,
+                            "ApplyStrokeMode": "Contextual"
+                          },
+                          "children": []
+                        }
+                      ],
+                      "attributes": {
+                        "FigmaNodeId": {
+                          "String": "6:15"
+                        },
+                        "FigmaFileKey": {
+                          "String": "B7UgSPMFWQlTSGadG4Ucsx"
+                        },
+                        "UIKey": {
+                          "String": "figma_a75aaadfea54c42b21845a4d"
+                        }
+                      }
+                    }
+                  ],
+                  "attributes": {
+                    "FigmaNodeId": {
+                      "String": "6:14"
+                    },
+                    "FigmaFileKey": {
+                      "String": "B7UgSPMFWQlTSGadG4Ucsx"
+                    },
+                    "UIKey": {
+                      "String": "figma_b3af3ed89f6a71eeca79e31d"
+                    }
+                  }
+                },
+                {
+                  "name": "StrengthRewardLabelTxt",
+                  "className": "TextLabel",
+                  "properties": {
+                    "AnchorPoint": {
+                      "Vector2": [
+                        0.5,
+                        0.5
+                      ]
+                    },
+                    "Position": {
+                      "UDim2": [
+                        [
+                          0,
+                          188
+                        ],
+                        [
+                          0,
+                          33
+                        ]
+                      ]
+                    },
+                    "Size": {
+                      "UDim2": [
+                        [
+                          0,
+                          220
+                        ],
+                        [
+                          0,
+                          32
+                        ]
+                      ]
+                    },
+                    "Rotation": 0.0,
+                    "Visible": true,
+                    "BackgroundTransparency": 1,
+                    "BorderSizePixel": 0,
+                    "ZIndex": 2,
+                    "BackgroundColor3": {
+                      "Color3": [
+                        1,
+                        1,
+                        1
+                      ]
+                    },
+                    "Text": "Strength Earned",
+                    "TextSize": 20,
+                    "Font": "BuilderSansBold",
+                    "TextScaled": false,
+                    "TextWrapped": true,
+                    "RichText": false,
+                    "TextXAlignment": "Left",
+                    "TextYAlignment": "Center",
+                    "TextColor3": {
+                      "Color3": [
+                        1,
+                        1,
+                        1
+                      ]
+                    },
+                    "TextTransparency": 0.0,
+                    "ClipsDescendants": false
+                  },
+                  "children": [
+                    {
+                      "name": "Stroke",
+                      "className": "UIStroke",
+                      "properties": {
+                        "Color": {
+                          "Color3": [
+                            0.09803921729326248,
+                            0.13333334028720856,
+                            0.08235294371843338
+                          ]
+                        },
+                        "Thickness": 1.2000000476837158,
+                        "Transparency": 0.0,
+                        "ApplyStrokeMode": "Contextual"
+                      },
+                      "children": []
+                    }
+                  ],
+                  "attributes": {
+                    "FigmaNodeId": {
+                      "String": "6:16"
+                    },
+                    "FigmaFileKey": {
+                      "String": "B7UgSPMFWQlTSGadG4Ucsx"
+                    },
+                    "UIKey": {
+                      "String": "figma_722e2e4fe2b599d902535551"
+                    }
+                  }
+                },
+                {
+                  "name": "StrengthRewardValueTxt",
+                  "className": "TextLabel",
+                  "properties": {
+                    "AnchorPoint": {
+                      "Vector2": [
+                        0.5,
+                        0.5
+                      ]
+                    },
+                    "Position": {
+                      "UDim2": [
+                        [
+                          0,
+                          409
+                        ],
+                        [
+                          0,
+                          31
+                        ]
+                      ]
+                    },
+                    "Size": {
+                      "UDim2": [
+                        [
+                          0,
+                          269
+                        ],
+                        [
+                          0,
+                          49
+                        ]
+                      ]
+                    },
+                    "Rotation": 0.0,
+                    "Visible": true,
+                    "BackgroundTransparency": 1,
+                    "BorderSizePixel": 0,
+                    "ZIndex": 3,
+                    "BackgroundColor3": {
+                      "Color3": [
+                        0.6039215922355652,
+                        1,
+                        0.32156863808631897
+                      ]
+                    },
+                    "Text": "+411.2M",
+                    "TextSize": 28.899999618530273,
+                    "Font": "BuilderSansExtraBold",
+                    "TextScaled": false,
+                    "TextWrapped": true,
+                    "RichText": false,
+                    "TextXAlignment": "Right",
+                    "TextYAlignment": "Center",
+                    "TextColor3": {
+                      "Color3": [
+                        0.6039215922355652,
+                        1,
+                        0.32156863808631897
+                      ]
+                    },
+                    "TextTransparency": 0.0,
+                    "ClipsDescendants": false
+                  },
+                  "children": [
+                    {
+                      "name": "Stroke",
+                      "className": "UIStroke",
+                      "properties": {
+                        "Color": {
+                          "Color3": [
+                            0.09803921729326248,
+                            0.13333334028720856,
+                            0.08235294371843338
+                          ]
+                        },
+                        "Thickness": 1.2000000476837158,
+                        "Transparency": 0.0,
+                        "ApplyStrokeMode": "Contextual"
+                      },
+                      "children": []
+                    }
+                  ],
+                  "attributes": {
+                    "FigmaNodeId": {
+                      "String": "6:17"
+                    },
+                    "FigmaFileKey": {
+                      "String": "B7UgSPMFWQlTSGadG4Ucsx"
+                    },
+                    "UIKey": {
+                      "String": "figma_a0208313801ab8dd5a2d6557"
+                    }
+                  }
+                }
+              ],
+              "attributes": {
+                "FigmaNodeId": {
+                  "String": "6:13"
+                },
+                "FigmaFileKey": {
+                  "String": "B7UgSPMFWQlTSGadG4Ucsx"
+                },
+                "UIKey": {
+                  "String": "figma_87288caf61199336a2ff412a"
+                }
+              }
+            },
+            {
+              "name": "OfflineLimitHintTxt",
+              "className": "TextLabel",
+              "properties": {
+                "AnchorPoint": {
+                  "Vector2": [
+                    0.5,
+                    0.5
+                  ]
+                },
+                "Position": {
+                  "UDim2": [
+                    [
+                      0,
+                      325
+                    ],
+                    [
+                      0,
+                      219
+                    ]
+                  ]
+                },
+                "Size": {
+                  "UDim2": [
+                    [
+                      0,
+                      602
+                    ],
+                    [
+                      0,
+                      26
+                    ]
+                  ]
+                },
+                "Rotation": 0.0,
+                "Visible": true,
+                "BackgroundTransparency": 1,
+                "BorderSizePixel": 0,
+                "ZIndex": 3,
+                "BackgroundColor3": {
+                  "Color3": [
+                    1,
+                    1,
+                    1
+                  ]
+                },
+                "Text": "Offline rewards accumulate for up to 12 hours.",
+                "TextSize": 16,
+                "Font": "BuilderSansBold",
+                "TextScaled": false,
+                "TextWrapped": true,
+                "RichText": false,
+                "TextXAlignment": "Center",
+                "TextYAlignment": "Center",
+                "TextColor3": {
+                  "Color3": [
+                    1,
+                    1,
+                    1
+                  ]
+                },
+                "TextTransparency": 0.0,
+                "ClipsDescendants": false
+              },
+              "children": [
+                {
+                  "name": "Stroke",
+                  "className": "UIStroke",
+                  "properties": {
+                    "Color": {
+                      "Color3": [
+                        0.09803921729326248,
+                        0.13333334028720856,
+                        0.08235294371843338
+                      ]
+                    },
+                    "Thickness": 1.2000000476837158,
+                    "Transparency": 0.0,
+                    "ApplyStrokeMode": "Contextual"
+                  },
+                  "children": []
+                }
+              ],
+              "attributes": {
+                "FigmaNodeId": {
+                  "String": "6:18"
+                },
+                "FigmaFileKey": {
+                  "String": "B7UgSPMFWQlTSGadG4Ucsx"
+                },
+                "UIKey": {
+                  "String": "figma_5aad07b2955a9589b91b462a"
+                }
+              }
+            },
+            {
+              "name": "ClaimBtn",
+              "className": "TextButton",
+              "properties": {
+                "AnchorPoint": {
+                  "Vector2": [
+                    0.5,
+                    0.5
+                  ]
+                },
+                "Position": {
+                  "UDim2": [
+                    [
+                      0,
+                      190
+                    ],
+                    [
+                      0,
+                      281
+                    ]
+                  ]
+                },
+                "Size": {
+                  "UDim2": [
+                    [
+                      0,
+                      230
+                    ],
+                    [
+                      0,
+                      54
+                    ]
+                  ]
+                },
+                "Rotation": 0.0,
+                "Visible": true,
+                "BackgroundTransparency": 1,
+                "BorderSizePixel": 0,
+                "ZIndex": 4,
+                "Text": "",
+                "AutoButtonColor": false,
+                "ClipsDescendants": false
+              },
+              "children": [
+                {
+                  "name": "Background",
+                  "className": "ImageLabel",
+                  "properties": {
+                    "BackgroundTransparency": 1,
+                    "BorderSizePixel": 0,
+                    "Active": false,
+                    "Position": {
+                      "UDim2": [
+                        [
+                          0,
+                          -3
+                        ],
+                        [
+                          0,
+                          -3
+                        ]
+                      ]
+                    },
+                    "Size": {
+                      "UDim2": [
+                        [
+                          0,
+                          236
+                        ],
+                        [
+                          0,
+                          60
+                        ]
+                      ]
+                    },
+                    "Image": "rbxassetid://138769012014996",
+                    "ImageTransparency": 0.0,
+                    "ScaleType": "Stretch",
+                    "ZIndex": 0
+                  },
+                  "children": [],
+                  "attributes": {
+                    "FigmaNodeId": {
+                      "String": "6:19"
+                    },
+                    "FigmaRole": {
+                      "String": "background"
+                    }
+                  }
+                },
+                {
+                  "name": "ClaimTxt",
+                  "className": "TextLabel",
+                  "properties": {
+                    "AnchorPoint": {
+                      "Vector2": [
+                        0.5,
+                        0.5
+                      ]
+                    },
+                    "Position": {
+                      "UDim2": [
+                        [
+                          0,
+                          115
+                        ],
+                        [
+                          0,
+                          27
+                        ]
+                      ]
+                    },
+                    "Size": {
+                      "UDim2": [
+                        [
+                          0,
+                          230
+                        ],
+                        [
+                          0,
+                          54
+                        ]
+                      ]
+                    },
+                    "Rotation": 0.0,
+                    "Visible": true,
+                    "BackgroundTransparency": 1,
+                    "BorderSizePixel": 0,
+                    "ZIndex": 1,
+                    "BackgroundColor3": {
+                      "Color3": [
+                        1,
+                        1,
+                        1
+                      ]
+                    },
+                    "Text": "Claim",
+                    "TextSize": 24,
+                    "Font": "BuilderSansBold",
+                    "TextScaled": false,
+                    "TextWrapped": true,
+                    "RichText": false,
+                    "TextXAlignment": "Center",
+                    "TextYAlignment": "Center",
+                    "TextColor3": {
+                      "Color3": [
+                        1,
+                        1,
+                        1
+                      ]
+                    },
+                    "TextTransparency": 0.0,
+                    "ClipsDescendants": false
+                  },
+                  "children": [
+                    {
+                      "name": "Stroke",
+                      "className": "UIStroke",
+                      "properties": {
+                        "Color": {
+                          "Color3": [
+                            0.09803921729326248,
+                            0.13333334028720856,
+                            0.08235294371843338
+                          ]
+                        },
+                        "Thickness": 1.5,
+                        "Transparency": 0.0,
+                        "ApplyStrokeMode": "Contextual"
+                      },
+                      "children": []
+                    }
+                  ],
+                  "attributes": {
+                    "FigmaNodeId": {
+                      "String": "6:21"
+                    },
+                    "FigmaFileKey": {
+                      "String": "B7UgSPMFWQlTSGadG4Ucsx"
+                    },
+                    "UIKey": {
+                      "String": "figma_d9949f9d437fc5c68c993bb2"
+                    }
+                  }
+                }
+              ],
+              "attributes": {
+                "FigmaNodeId": {
+                  "String": "6:19"
+                },
+                "FigmaFileKey": {
+                  "String": "B7UgSPMFWQlTSGadG4Ucsx"
+                },
+                "UIKey": {
+                  "String": "figma_caf167382db43ebbab3f0aff"
+                }
+              }
+            },
+            {
+              "name": "DoubleClaimBtn",
+              "className": "TextButton",
+              "properties": {
+                "AnchorPoint": {
+                  "Vector2": [
+                    0.5,
+                    0.5
+                  ]
+                },
+                "Position": {
+                  "UDim2": [
+                    [
+                      0,
+                      460
+                    ],
+                    [
+                      0,
+                      281
+                    ]
+                  ]
+                },
+                "Size": {
+                  "UDim2": [
+                    [
+                      0,
+                      230
+                    ],
+                    [
+                      0,
+                      54
+                    ]
+                  ]
+                },
+                "Rotation": 0.0,
+                "Visible": true,
+                "BackgroundTransparency": 1,
+                "BorderSizePixel": 0,
+                "ZIndex": 5,
+                "Text": "",
+                "AutoButtonColor": false,
+                "ClipsDescendants": false
+              },
+              "children": [
+                {
+                  "name": "Background",
+                  "className": "ImageLabel",
+                  "properties": {
+                    "BackgroundTransparency": 1,
+                    "BorderSizePixel": 0,
+                    "Active": false,
+                    "Position": {
+                      "UDim2": [
+                        [
+                          0,
+                          -3
+                        ],
+                        [
+                          0,
+                          -3
+                        ]
+                      ]
+                    },
+                    "Size": {
+                      "UDim2": [
+                        [
+                          0,
+                          236
+                        ],
+                        [
+                          0,
+                          60
+                        ]
+                      ]
+                    },
+                    "Image": "rbxassetid://82095037080503",
+                    "ImageTransparency": 0.0,
+                    "ScaleType": "Stretch",
+                    "ZIndex": 0
+                  },
+                  "children": [],
+                  "attributes": {
+                    "FigmaNodeId": {
+                      "String": "6:22"
+                    },
+                    "FigmaRole": {
+                      "String": "background"
+                    }
+                  }
+                },
+                {
+                  "name": "DoubleClaimTxt",
+                  "className": "TextLabel",
+                  "properties": {
+                    "AnchorPoint": {
+                      "Vector2": [
+                        0.5,
+                        0.5
+                      ]
+                    },
+                    "Position": {
+                      "UDim2": [
+                        [
+                          0,
+                          115
+                        ],
+                        [
+                          0,
+                          27
+                        ]
+                      ]
+                    },
+                    "Size": {
+                      "UDim2": [
+                        [
+                          0,
+                          230
+                        ],
+                        [
+                          0,
+                          54
+                        ]
+                      ]
+                    },
+                    "Rotation": 0.0,
+                    "Visible": true,
+                    "BackgroundTransparency": 1,
+                    "BorderSizePixel": 0,
+                    "ZIndex": 1,
+                    "BackgroundColor3": {
+                      "Color3": [
+                        1,
+                        1,
+                        1
+                      ]
+                    },
+                    "Text": "Claim x2",
+                    "TextSize": 24,
+                    "Font": "BuilderSansBold",
+                    "TextScaled": false,
+                    "TextWrapped": true,
+                    "RichText": false,
+                    "TextXAlignment": "Center",
+                    "TextYAlignment": "Center",
+                    "TextColor3": {
+                      "Color3": [
+                        1,
+                        1,
+                        1
+                      ]
+                    },
+                    "TextTransparency": 0.0,
+                    "ClipsDescendants": false
+                  },
+                  "children": [
+                    {
+                      "name": "Stroke",
+                      "className": "UIStroke",
+                      "properties": {
+                        "Color": {
+                          "Color3": [
+                            0.09803921729326248,
+                            0.13333334028720856,
+                            0.08235294371843338
+                          ]
+                        },
+                        "Thickness": 1.5,
+                        "Transparency": 0.0,
+                        "ApplyStrokeMode": "Contextual"
+                      },
+                      "children": []
+                    }
+                  ],
+                  "attributes": {
+                    "FigmaNodeId": {
+                      "String": "6:24"
+                    },
+                    "FigmaFileKey": {
+                      "String": "B7UgSPMFWQlTSGadG4Ucsx"
+                    },
+                    "UIKey": {
+                      "String": "figma_c5bc348893c1ade1a957baa3"
+                    }
+                  }
+                }
+              ],
+              "attributes": {
+                "FigmaNodeId": {
+                  "String": "6:22"
+                },
+                "FigmaFileKey": {
+                  "String": "B7UgSPMFWQlTSGadG4Ucsx"
+                },
+                "UIKey": {
+                  "String": "figma_0ef46e82f6f80b22f32783a7"
+                }
+              }
+            }
+          ],
+          "attributes": {
+            "FigmaNodeId": {
+              "String": "5:6"
+            },
+            "FigmaFileKey": {
+              "String": "B7UgSPMFWQlTSGadG4Ucsx"
+            },
+            "UIKey": {
+              "String": "figma_1bcb65c385a282b8f492a8df"
+            }
+          }
+        },
+        {
+          "name": "TitleBox",
+          "className": "Frame",
+          "properties": {
+            "AnchorPoint": {
+              "Vector2": [
+                0.5,
+                0.5
+              ]
+            },
+            "Position": {
+              "UDim2": [
+                [
+                  0,
+                  640
+                ],
+                [
+                  0,
+                  195
+                ]
+              ]
+            },
+            "Size": {
+              "UDim2": [
+                [
+                  0,
+                  650
+                ],
+                [
+                  0,
+                  70
+                ]
+              ]
+            },
+            "Rotation": 0.0,
+            "Visible": true,
+            "BackgroundTransparency": 1,
+            "BorderSizePixel": 0,
+            "ZIndex": 2,
+            "ClipsDescendants": false
+          },
+          "children": [
+            {
+              "name": "Corner",
+              "className": "UICorner",
+              "properties": {
+                "CornerRadius": {
+                  "UDim": [
+                    0,
+                    10
+                  ]
+                }
+              },
+              "children": []
+            },
+            {
+              "name": "TitleImg",
+              "className": "ImageLabel",
+              "properties": {
+                "AnchorPoint": {
+                  "Vector2": [
+                    0.5,
+                    0.5
+                  ]
+                },
+                "Position": {
+                  "UDim2": [
+                    [
+                      0,
+                      325
+                    ],
+                    [
+                      0,
+                      35
+                    ]
+                  ]
+                },
+                "Size": {
+                  "UDim2": [
+                    [
+                      0,
+                      656
+                    ],
+                    [
+                      0,
+                      76
+                    ]
+                  ]
+                },
+                "Rotation": 0.0,
+                "Visible": true,
+                "BackgroundTransparency": 1,
+                "BorderSizePixel": 0,
+                "ZIndex": 1,
+                "Image": "rbxassetid://119001671701874",
+                "ImageTransparency": 0.0,
+                "ScaleType": "Stretch"
+              },
+              "children": [],
+              "attributes": {
+                "FigmaNodeId": {
+                  "String": "5:8"
+                },
+                "FigmaFileKey": {
+                  "String": "B7UgSPMFWQlTSGadG4Ucsx"
+                },
+                "UIKey": {
+                  "String": "figma_a126db9f0dcb03e087041e88"
+                }
+              }
+            },
+            {
+              "name": "TitleTxt",
+              "className": "TextLabel",
+              "properties": {
+                "AnchorPoint": {
+                  "Vector2": [
+                    0.5,
+                    0.5
+                  ]
+                },
+                "Position": {
+                  "UDim2": [
+                    [
+                      0,
+                      293
+                    ],
+                    [
+                      0,
+                      35
+                    ]
+                  ]
+                },
+                "Size": {
+                  "UDim2": [
+                    [
+                      0,
+                      538
+                    ],
+                    [
+                      0,
+                      70
+                    ]
+                  ]
+                },
+                "Rotation": 0.0,
+                "Visible": true,
+                "BackgroundTransparency": 1,
+                "BorderSizePixel": 0,
+                "ZIndex": 2,
+                "BackgroundColor3": {
+                  "Color3": [
+                    1,
+                    1,
+                    1
+                  ]
+                },
+                "Text": "OFFLINE REWARDS",
+                "TextSize": 30,
+                "Font": "BuilderSansExtraBold",
+                "TextScaled": false,
+                "TextWrapped": true,
+                "RichText": false,
+                "TextXAlignment": "Left",
+                "TextYAlignment": "Center",
+                "TextColor3": {
+                  "Color3": [
+                    1,
+                    1,
+                    1
+                  ]
+                },
+                "TextTransparency": 0.0,
+                "ClipsDescendants": false
+              },
+              "children": [
+                {
+                  "name": "Stroke",
+                  "className": "UIStroke",
+                  "properties": {
+                    "Color": {
+                      "Color3": [
+                        0,
+                        0,
+                        0
+                      ]
+                    },
+                    "Thickness": 2,
+                    "Transparency": 0.0,
+                    "ApplyStrokeMode": "Contextual"
+                  },
+                  "children": []
+                }
+              ],
+              "attributes": {
+                "FigmaNodeId": {
+                  "String": "5:9"
+                },
+                "FigmaFileKey": {
+                  "String": "B7UgSPMFWQlTSGadG4Ucsx"
+                },
+                "UIKey": {
+                  "String": "figma_7040e34055a64e13e65213a2"
+                }
+              }
+            },
+            {
+              "name": "CloseBtn",
+              "className": "ImageButton",
+              "properties": {
+                "AnchorPoint": {
+                  "Vector2": [
+                    0.5,
+                    0.5
+                  ]
+                },
+                "Position": {
+                  "UDim2": [
+                    [
+                      0,
+                      614
+                    ],
+                    [
+                      0,
+                      35
+                    ]
+                  ]
+                },
+                "Size": {
+                  "UDim2": [
+                    [
+                      0,
+                      58
+                    ],
+                    [
+                      0,
+                      58
+                    ]
+                  ]
+                },
+                "Rotation": 0.0,
+                "Visible": true,
+                "BackgroundTransparency": 1,
+                "BorderSizePixel": 0,
+                "ZIndex": 3,
+                "AutoButtonColor": false,
+                "Image": "rbxassetid://102499871812621",
+                "ImageTransparency": 0.0,
+                "ScaleType": "Stretch"
+              },
+              "children": [],
+              "attributes": {
+                "FigmaNodeId": {
+                  "String": "5:10"
+                },
+                "FigmaFileKey": {
+                  "String": "B7UgSPMFWQlTSGadG4Ucsx"
+                },
+                "UIKey": {
+                  "String": "figma_0f60160f07787f3d3b1fe37b"
+                }
+              }
+            }
+          ],
+          "attributes": {
+            "FigmaNodeId": {
+              "String": "5:7"
+            },
+            "FigmaFileKey": {
+              "String": "B7UgSPMFWQlTSGadG4Ucsx"
+            },
+            "UIKey": {
+              "String": "figma_df564feefbbdb40450bf6ea8"
+            }
+          }
+        },
+        {
+          "name": "FigmaScale",
+          "className": "UIScale",
+          "properties": {
+            "Scale": 1
+          },
+          "children": []
+        }
+      ],
+      "attributes": {
+        "FigmaNodeId": {
+          "String": "5:5"
+        },
+        "FigmaFileKey": {
+          "String": "B7UgSPMFWQlTSGadG4Ucsx"
+        },
+        "UIKey": {
+          "String": "figma_8e53084e7a80b8e989ba29cd"
+        }
+      }
+    },
+    {
+      "name": "FigmaCanvasAdapter",
+      "className": "LocalScript",
+      "properties": {
+        "Source": "local screen = script.Parent\nlocal canvas = screen:FindFirstChildWhichIsA(\"GuiObject\")\nwhile not canvas do\n    screen.ChildAdded:Wait()\n    canvas = screen:FindFirstChildWhichIsA(\"GuiObject\")\nend\nlocal scale = canvas:WaitForChild(\"FigmaScale\")\nlocal width = tonumber(script:GetAttribute(\"DesignWidth\"))\nlocal height = tonumber(script:GetAttribute(\"DesignHeight\"))\nlocal offsetX = tonumber(script:GetAttribute(\"DesignOffsetX\"))\nlocal offsetY = tonumber(script:GetAttribute(\"DesignOffsetY\"))\nlocal function resize()\n    local size = screen.AbsoluteSize\n    local ratio = math.min(size.X / width, size.Y / height)\n    scale.Scale = ratio\n    canvas.Position = UDim2.new(0.5, offsetX * ratio, 0.5, offsetY * ratio)\nend\nscreen:GetPropertyChangedSignal(\"AbsoluteSize\"):Connect(resize)\nresize()\n"
+      },
+      "children": [],
+      "attributes": {
+        "DesignWidth": {
+          "String": "1280"
+        },
+        "DesignHeight": {
+          "String": "720"
+        },
+        "DesignOffsetX": {
+          "String": "0"
+        },
+        "DesignOffsetY": {
+          "String": "0"
+        }
+      }
+    }
+  ],
+  "attributes": {
+    "FigmaNodeId": {
+      "String": "5:5"
+    },
+    "FigmaFileKey": {
+      "String": "B7UgSPMFWQlTSGadG4Ucsx"
+    }
+  }
+}
