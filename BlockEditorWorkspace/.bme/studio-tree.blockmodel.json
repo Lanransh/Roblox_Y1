@@ -1,5 +1,5 @@
 {
-  "version": 7,
+  "version": 9,
   "guid": "9ece487b-544f-4479-aaad-530fedc9eaa8",
   "rootNodeId": "studio-block-models-root",
   "nodes": [
@@ -29,5 +29,10 @@
   ],
   "prefabFolders": [],
   "prefabs": [],
-  "externalPrefabAliases": []
+  "externalPrefabAliases": [
+    {
+      "projectGuid": "79f8d789-5cf2-4c3b-a3a4-34a1bac39aea",
+      "name": "1"
+    }
+  ]
 }

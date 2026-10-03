@@ -10,7 +10,7 @@ for _, name in ipairs({ "FXObjectBaseClass", "FXCompBaseClass", "FXModelAnimatio
     require(root:WaitForChild("Object"):WaitForChild(name))
 end
 
-for _, name in ipairs({ "FXSyncManager", "FXDelayedInvokeClass", "FXItemProcessor", "FXBuyProcessor" }) do
+for _, name in ipairs({ "FXSyncManager", "FXDelayedInvokeClass", "FXProximityPromptObjectClass", "FXItemProcessor", "FXBuyProcessor" }) do
     require(root:WaitForChild(name))
 end
 

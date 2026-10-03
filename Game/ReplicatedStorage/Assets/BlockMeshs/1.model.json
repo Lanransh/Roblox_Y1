@@ -1,0 +1,177 @@
+{
+  "ClassName": "Model",
+  "Children": [
+    {
+      "Name": "Cube_1",
+      "ClassName": "Part",
+      "Children": [
+        {
+          "Name": "Checker_top",
+          "ClassName": "Texture",
+          "Children": [],
+          "Properties": {
+            "Texture": "rbxassetid://6372755229",
+            "Face": "Top",
+            "StudsPerTileU": 8,
+            "StudsPerTileV": 8,
+            "Color3": [
+              0,
+              0,
+              0
+            ],
+            "Transparency": 0.65
+          }
+        },
+        {
+          "Name": "Checker_bottom",
+          "ClassName": "Texture",
+          "Children": [],
+          "Properties": {
+            "Texture": "rbxassetid://6372755229",
+            "Face": "Bottom",
+            "StudsPerTileU": 8,
+            "StudsPerTileV": 8,
+            "Color3": [
+              0,
+              0,
+              0
+            ],
+            "Transparency": 0.65
+          }
+        },
+        {
+          "Name": "Checker_left",
+          "ClassName": "Texture",
+          "Children": [],
+          "Properties": {
+            "Texture": "rbxassetid://6372755229",
+            "Face": "Left",
+            "StudsPerTileU": 8,
+            "StudsPerTileV": 8,
+            "Color3": [
+              0,
+              0,
+              0
+            ],
+            "Transparency": 0.65
+          }
+        },
+        {
+          "Name": "Checker_right",
+          "ClassName": "Texture",
+          "Children": [],
+          "Properties": {
+            "Texture": "rbxassetid://6372755229",
+            "Face": "Right",
+            "StudsPerTileU": 8,
+            "StudsPerTileV": 8,
+            "Color3": [
+              0,
+              0,
+              0
+            ],
+            "Transparency": 0.65
+          }
+        },
+        {
+          "Name": "Checker_front",
+          "ClassName": "Texture",
+          "Children": [],
+          "Properties": {
+            "Texture": "rbxassetid://6372755229",
+            "Face": "Front",
+            "StudsPerTileU": 8,
+            "StudsPerTileV": 8,
+            "Color3": [
+              0,
+              0,
+              0
+            ],
+            "Transparency": 0.65
+          }
+        },
+        {
+          "Name": "Checker_back",
+          "ClassName": "Texture",
+          "Children": [],
+          "Properties": {
+            "Texture": "rbxassetid://6372755229",
+            "Face": "Back",
+            "StudsPerTileU": 8,
+            "StudsPerTileV": 8,
+            "Color3": [
+              0,
+              0,
+              0
+            ],
+            "Transparency": 0.65
+          }
+        }
+      ],
+      "Properties": {
+        "Size": [
+          10.7,
+          9.4,
+          9.9
+        ],
+        "CFrame": [
+          5,
+          5.2,
+          4.5,
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "Color": [
+          0.7490196078431373,
+          0.9098039215686274,
+          0.6470588235294118
+        ],
+        "Material": "Plastic",
+        "Anchored": true,
+        "CanCollide": true,
+        "TopSurface": "Studs",
+        "BottomSurface": "Studs",
+        "LeftSurface": "Studs",
+        "RightSurface": "Studs",
+        "FrontSurface": "Studs",
+        "BackSurface": "Studs",
+        "Shape": "Block"
+      }
+    }
+  ],
+  "Properties": {
+    "WorldPivotData": {
+      "OptionalCFrame": {
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "orientation": [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ]
+      }
+    }
+  }
+}
