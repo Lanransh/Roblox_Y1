@@ -19,9 +19,14 @@ function Component:GetCompName()
     return "SRockLevelComp"
 end
 
---- 读档后启动服务端位置检查；客户端不提交伤害、经验或命中名单。
+--- 读档后将地板颜色复制到常驻关卡标记并启动位置检查，客户端无需等待远处地板流入。
 function Component:OnPlayerLogin()
     self._areas = RockLevel.GetAreas()
+    local grounds = workspace:WaitForChild("BlockMeshs"):WaitForChild("世界1"):WaitForChild("GuanQia")
+    for index, area in ipairs(self._areas) do
+        local ground = grounds:WaitForChild("Ground" .. index)
+        area.Node.Color = ground.Color
+    end
     local player = self:GetPlayerNode()
     self._stats = player:FindFirstChild("leaderstats")
     self._ownsStats = self._stats == nil
@@ -62,7 +67,7 @@ function Component:RestoreRocks()
     self._hit = false
 end
 
---- 每秒常规攻击，间隔中只清除可一击击破的格子；限制角色高度和击打范围。
+--- 每次只处理朝向上最近的未破坏石头；保留每秒常规攻击和间隔内一击击破的节奏。
 function Component:Tick()
     local character = self:GetPlayerCharacter()
     local root = character and character:FindFirstChild("HumanoidRootPart")
@@ -90,6 +95,7 @@ function Component:Tick()
     end
     local regularAttack = now - self._lastAttack >= 1
     local changed = false
+    local targetFound = false
     local level = self:GetNumber(Fields.RockTrainingLevel)
     for index = 1, #self._areas do
         local area = self._areas[index]
@@ -101,12 +107,19 @@ function Component:Tick()
             for cellIndex = 1, #cells do
                 local key = cells[cellIndex]
                 local health = self._health[key] or RockLevel.HP[index]
-                if damage > 0 and health > 0 and (regularAttack or health <= damage) then
-                    self._health[key] = math.max(0, health - damage)
-                    changed = true
-                    self._hit = true
+                if health > 0 then
+                    targetFound = true
+                    if damage > 0 and (regularAttack or health <= damage) then
+                        self._health[key] = math.max(0, health - damage)
+                        changed = true
+                        self._hit = true
+                    end
+                    break
                 end
             end
+        end
+        if targetFound then
+            break
         end
     end
     if regularAttack then

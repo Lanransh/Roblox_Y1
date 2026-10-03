@@ -439,180 +439,146 @@
         },
         {
           "Name": "Ground4",
-          "ClassName": "Model",
+          "ClassName": "Part",
           "Children": [
             {
-              "Name": "Ground4",
-              "ClassName": "Part",
-              "Children": [
-                {
-                  "Name": "Checker_top",
-                  "ClassName": "Texture",
-                  "Children": [],
-                  "Properties": {
-                    "Texture": "rbxassetid://6372755229",
-                    "Face": "Top",
-                    "StudsPerTileU": 8,
-                    "StudsPerTileV": 8,
-                    "Color3": [
-                      0,
-                      0,
-                      0
-                    ],
-                    "Transparency": 0.65
-                  }
-                },
-                {
-                  "Name": "Checker_bottom",
-                  "ClassName": "Texture",
-                  "Children": [],
-                  "Properties": {
-                    "Texture": "rbxassetid://6372755229",
-                    "Face": "Bottom",
-                    "StudsPerTileU": 8,
-                    "StudsPerTileV": 8,
-                    "Color3": [
-                      0,
-                      0,
-                      0
-                    ],
-                    "Transparency": 0.65
-                  }
-                },
-                {
-                  "Name": "Checker_left",
-                  "ClassName": "Texture",
-                  "Children": [],
-                  "Properties": {
-                    "Texture": "rbxassetid://6372755229",
-                    "Face": "Left",
-                    "StudsPerTileU": 8,
-                    "StudsPerTileV": 8,
-                    "Color3": [
-                      0,
-                      0,
-                      0
-                    ],
-                    "Transparency": 0.65
-                  }
-                },
-                {
-                  "Name": "Checker_right",
-                  "ClassName": "Texture",
-                  "Children": [],
-                  "Properties": {
-                    "Texture": "rbxassetid://6372755229",
-                    "Face": "Right",
-                    "StudsPerTileU": 8,
-                    "StudsPerTileV": 8,
-                    "Color3": [
-                      0,
-                      0,
-                      0
-                    ],
-                    "Transparency": 0.65
-                  }
-                },
-                {
-                  "Name": "Checker_front",
-                  "ClassName": "Texture",
-                  "Children": [],
-                  "Properties": {
-                    "Texture": "rbxassetid://6372755229",
-                    "Face": "Front",
-                    "StudsPerTileU": 8,
-                    "StudsPerTileV": 8,
-                    "Color3": [
-                      0,
-                      0,
-                      0
-                    ],
-                    "Transparency": 0.65
-                  }
-                },
-                {
-                  "Name": "Checker_back",
-                  "ClassName": "Texture",
-                  "Children": [],
-                  "Properties": {
-                    "Texture": "rbxassetid://6372755229",
-                    "Face": "Back",
-                    "StudsPerTileU": 8,
-                    "StudsPerTileV": 8,
-                    "Color3": [
-                      0,
-                      0,
-                      0
-                    ],
-                    "Transparency": 0.65
-                  }
-                }
-              ],
+              "Name": "Checker_top",
+              "ClassName": "Texture",
+              "Children": [],
               "Properties": {
-                "Size": [
-                  144,
-                  4,
-                  96
+                "Texture": "rbxassetid://6372755229",
+                "Face": "Top",
+                "StudsPerTileU": 8,
+                "StudsPerTileV": 8,
+                "Color3": [
+                  0,
+                  0,
+                  0
                 ],
-                "CFrame": [
+                "Transparency": 0.65
+              }
+            },
+            {
+              "Name": "Checker_bottom",
+              "ClassName": "Texture",
+              "Children": [],
+              "Properties": {
+                "Texture": "rbxassetid://6372755229",
+                "Face": "Bottom",
+                "StudsPerTileU": 8,
+                "StudsPerTileV": 8,
+                "Color3": [
                   0,
-                  -4,
-                  406,
-                  1,
                   0,
-                  0,
-                  0,
-                  1,
-                  0,
-                  0,
-                  0,
-                  1
+                  0
                 ],
-                "Color": [
-                  0.8352941176470589,
-                  0.9607843137254902,
-                  0.9568627450980393
+                "Transparency": 0.65
+              }
+            },
+            {
+              "Name": "Checker_left",
+              "ClassName": "Texture",
+              "Children": [],
+              "Properties": {
+                "Texture": "rbxassetid://6372755229",
+                "Face": "Left",
+                "StudsPerTileU": 8,
+                "StudsPerTileV": 8,
+                "Color3": [
+                  0,
+                  0,
+                  0
                 ],
-                "Material": "Plastic",
-                "Anchored": true,
-                "CanCollide": true,
-                "TopSurface": "Studs",
-                "BottomSurface": "Studs",
-                "LeftSurface": "Studs",
-                "RightSurface": "Studs",
-                "FrontSurface": "Studs",
-                "BackSurface": "Studs",
-                "Shape": "Block"
+                "Transparency": 0.65
+              }
+            },
+            {
+              "Name": "Checker_right",
+              "ClassName": "Texture",
+              "Children": [],
+              "Properties": {
+                "Texture": "rbxassetid://6372755229",
+                "Face": "Right",
+                "StudsPerTileU": 8,
+                "StudsPerTileV": 8,
+                "Color3": [
+                  0,
+                  0,
+                  0
+                ],
+                "Transparency": 0.65
+              }
+            },
+            {
+              "Name": "Checker_front",
+              "ClassName": "Texture",
+              "Children": [],
+              "Properties": {
+                "Texture": "rbxassetid://6372755229",
+                "Face": "Front",
+                "StudsPerTileU": 8,
+                "StudsPerTileV": 8,
+                "Color3": [
+                  0,
+                  0,
+                  0
+                ],
+                "Transparency": 0.65
+              }
+            },
+            {
+              "Name": "Checker_back",
+              "ClassName": "Texture",
+              "Children": [],
+              "Properties": {
+                "Texture": "rbxassetid://6372755229",
+                "Face": "Back",
+                "StudsPerTileU": 8,
+                "StudsPerTileV": 8,
+                "Color3": [
+                  0,
+                  0,
+                  0
+                ],
+                "Transparency": 0.65
               }
             }
           ],
           "Properties": {
-            "WorldPivotData": {
-              "OptionalCFrame": {
-                "position": [
-                  0,
-                  -4,
-                  406
-                ],
-                "orientation": [
-                  [
-                    1,
-                    0,
-                    0
-                  ],
-                  [
-                    0,
-                    1,
-                    0
-                  ],
-                  [
-                    0,
-                    0,
-                    1
-                  ]
-                ]
-              }
-            }
+            "Size": [
+              144,
+              4,
+              96
+            ],
+            "CFrame": [
+              0,
+              -4,
+              406,
+              1,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              1
+            ],
+            "Color": [
+              0.8352941176470589,
+              0.9607843137254902,
+              0.9568627450980393
+            ],
+            "Material": "Plastic",
+            "Anchored": true,
+            "CanCollide": true,
+            "TopSurface": "Studs",
+            "BottomSurface": "Studs",
+            "LeftSurface": "Studs",
+            "RightSurface": "Studs",
+            "FrontSurface": "Studs",
+            "BackSurface": "Studs",
+            "Shape": "Block"
           }
         },
         {
@@ -1480,6 +1446,150 @@
           }
         },
         {
+          "Name": "Ground11",
+          "ClassName": "Part",
+          "Children": [
+            {
+              "Name": "Checker_top",
+              "ClassName": "Texture",
+              "Children": [],
+              "Properties": {
+                "Texture": "rbxassetid://6372755229",
+                "Face": "Top",
+                "StudsPerTileU": 8,
+                "StudsPerTileV": 8,
+                "Color3": [
+                  0,
+                  0,
+                  0
+                ],
+                "Transparency": 0.65
+              }
+            },
+            {
+              "Name": "Checker_bottom",
+              "ClassName": "Texture",
+              "Children": [],
+              "Properties": {
+                "Texture": "rbxassetid://6372755229",
+                "Face": "Bottom",
+                "StudsPerTileU": 8,
+                "StudsPerTileV": 8,
+                "Color3": [
+                  0,
+                  0,
+                  0
+                ],
+                "Transparency": 0.65
+              }
+            },
+            {
+              "Name": "Checker_left",
+              "ClassName": "Texture",
+              "Children": [],
+              "Properties": {
+                "Texture": "rbxassetid://6372755229",
+                "Face": "Left",
+                "StudsPerTileU": 8,
+                "StudsPerTileV": 8,
+                "Color3": [
+                  0,
+                  0,
+                  0
+                ],
+                "Transparency": 0.65
+              }
+            },
+            {
+              "Name": "Checker_right",
+              "ClassName": "Texture",
+              "Children": [],
+              "Properties": {
+                "Texture": "rbxassetid://6372755229",
+                "Face": "Right",
+                "StudsPerTileU": 8,
+                "StudsPerTileV": 8,
+                "Color3": [
+                  0,
+                  0,
+                  0
+                ],
+                "Transparency": 0.65
+              }
+            },
+            {
+              "Name": "Checker_front",
+              "ClassName": "Texture",
+              "Children": [],
+              "Properties": {
+                "Texture": "rbxassetid://6372755229",
+                "Face": "Front",
+                "StudsPerTileU": 8,
+                "StudsPerTileV": 8,
+                "Color3": [
+                  0,
+                  0,
+                  0
+                ],
+                "Transparency": 0.65
+              }
+            },
+            {
+              "Name": "Checker_back",
+              "ClassName": "Texture",
+              "Children": [],
+              "Properties": {
+                "Texture": "rbxassetid://6372755229",
+                "Face": "Back",
+                "StudsPerTileU": 8,
+                "StudsPerTileV": 8,
+                "Color3": [
+                  0,
+                  0,
+                  0
+                ],
+                "Transparency": 0.65
+              }
+            }
+          ],
+          "Properties": {
+            "Size": [
+              144,
+              4,
+              96
+            ],
+            "CFrame": [
+              0,
+              -4,
+              1078,
+              1,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              1
+            ],
+            "Color": [
+              0.8352941176470589,
+              0.9607843137254902,
+              0.9568627450980393
+            ],
+            "Material": "Plastic",
+            "Anchored": true,
+            "CanCollide": true,
+            "TopSurface": "Studs",
+            "BottomSurface": "Studs",
+            "LeftSurface": "Studs",
+            "RightSurface": "Studs",
+            "FrontSurface": "Studs",
+            "BackSurface": "Studs",
+            "Shape": "Block"
+          }
+        },
+        {
           "Name": "Ground12",
           "ClassName": "Part",
           "Children": [
@@ -1610,6 +1720,150 @@
               0.9529411764705882,
               0.9647058823529412,
               0.8117647058823529
+            ],
+            "Material": "Plastic",
+            "Anchored": true,
+            "CanCollide": true,
+            "TopSurface": "Studs",
+            "BottomSurface": "Studs",
+            "LeftSurface": "Studs",
+            "RightSurface": "Studs",
+            "FrontSurface": "Studs",
+            "BackSurface": "Studs",
+            "Shape": "Block"
+          }
+        },
+        {
+          "Name": "Ground13",
+          "ClassName": "Part",
+          "Children": [
+            {
+              "Name": "Checker_top",
+              "ClassName": "Texture",
+              "Children": [],
+              "Properties": {
+                "Texture": "rbxassetid://6372755229",
+                "Face": "Top",
+                "StudsPerTileU": 8,
+                "StudsPerTileV": 8,
+                "Color3": [
+                  0,
+                  0,
+                  0
+                ],
+                "Transparency": 0.65
+              }
+            },
+            {
+              "Name": "Checker_bottom",
+              "ClassName": "Texture",
+              "Children": [],
+              "Properties": {
+                "Texture": "rbxassetid://6372755229",
+                "Face": "Bottom",
+                "StudsPerTileU": 8,
+                "StudsPerTileV": 8,
+                "Color3": [
+                  0,
+                  0,
+                  0
+                ],
+                "Transparency": 0.65
+              }
+            },
+            {
+              "Name": "Checker_left",
+              "ClassName": "Texture",
+              "Children": [],
+              "Properties": {
+                "Texture": "rbxassetid://6372755229",
+                "Face": "Left",
+                "StudsPerTileU": 8,
+                "StudsPerTileV": 8,
+                "Color3": [
+                  0,
+                  0,
+                  0
+                ],
+                "Transparency": 0.65
+              }
+            },
+            {
+              "Name": "Checker_right",
+              "ClassName": "Texture",
+              "Children": [],
+              "Properties": {
+                "Texture": "rbxassetid://6372755229",
+                "Face": "Right",
+                "StudsPerTileU": 8,
+                "StudsPerTileV": 8,
+                "Color3": [
+                  0,
+                  0,
+                  0
+                ],
+                "Transparency": 0.65
+              }
+            },
+            {
+              "Name": "Checker_front",
+              "ClassName": "Texture",
+              "Children": [],
+              "Properties": {
+                "Texture": "rbxassetid://6372755229",
+                "Face": "Front",
+                "StudsPerTileU": 8,
+                "StudsPerTileV": 8,
+                "Color3": [
+                  0,
+                  0,
+                  0
+                ],
+                "Transparency": 0.65
+              }
+            },
+            {
+              "Name": "Checker_back",
+              "ClassName": "Texture",
+              "Children": [],
+              "Properties": {
+                "Texture": "rbxassetid://6372755229",
+                "Face": "Back",
+                "StudsPerTileU": 8,
+                "StudsPerTileV": 8,
+                "Color3": [
+                  0,
+                  0,
+                  0
+                ],
+                "Transparency": 0.65
+              }
+            }
+          ],
+          "Properties": {
+            "Size": [
+              144,
+              3.2,
+              96
+            ],
+            "CFrame": [
+              0,
+              -4.4,
+              1270,
+              1,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              1
+            ],
+            "Color": [
+              0.9607843137254902,
+              0.9607843137254902,
+              0.9607843137254902
             ],
             "Material": "Plastic",
             "Anchored": true,
@@ -6729,328 +6983,6 @@
                   -154.4,
                   0,
                   -2
-                ],
-                "orientation": [
-                  [
-                    1,
-                    0,
-                    0
-                  ],
-                  [
-                    0,
-                    1,
-                    0
-                  ],
-                  [
-                    0,
-                    0,
-                    1
-                  ]
-                ]
-              }
-            }
-          }
-        },
-        {
-          "Name": "Ground13",
-          "ClassName": "Part",
-          "Children": [
-            {
-              "Name": "Checker_top",
-              "ClassName": "Texture",
-              "Children": [],
-              "Properties": {
-                "Texture": "rbxassetid://6372755229",
-                "Face": "Top",
-                "StudsPerTileU": 8,
-                "StudsPerTileV": 8,
-                "Color3": [
-                  0,
-                  0,
-                  0
-                ],
-                "Transparency": 0.65
-              }
-            },
-            {
-              "Name": "Checker_bottom",
-              "ClassName": "Texture",
-              "Children": [],
-              "Properties": {
-                "Texture": "rbxassetid://6372755229",
-                "Face": "Bottom",
-                "StudsPerTileU": 8,
-                "StudsPerTileV": 8,
-                "Color3": [
-                  0,
-                  0,
-                  0
-                ],
-                "Transparency": 0.65
-              }
-            },
-            {
-              "Name": "Checker_left",
-              "ClassName": "Texture",
-              "Children": [],
-              "Properties": {
-                "Texture": "rbxassetid://6372755229",
-                "Face": "Left",
-                "StudsPerTileU": 8,
-                "StudsPerTileV": 8,
-                "Color3": [
-                  0,
-                  0,
-                  0
-                ],
-                "Transparency": 0.65
-              }
-            },
-            {
-              "Name": "Checker_right",
-              "ClassName": "Texture",
-              "Children": [],
-              "Properties": {
-                "Texture": "rbxassetid://6372755229",
-                "Face": "Right",
-                "StudsPerTileU": 8,
-                "StudsPerTileV": 8,
-                "Color3": [
-                  0,
-                  0,
-                  0
-                ],
-                "Transparency": 0.65
-              }
-            },
-            {
-              "Name": "Checker_front",
-              "ClassName": "Texture",
-              "Children": [],
-              "Properties": {
-                "Texture": "rbxassetid://6372755229",
-                "Face": "Front",
-                "StudsPerTileU": 8,
-                "StudsPerTileV": 8,
-                "Color3": [
-                  0,
-                  0,
-                  0
-                ],
-                "Transparency": 0.65
-              }
-            },
-            {
-              "Name": "Checker_back",
-              "ClassName": "Texture",
-              "Children": [],
-              "Properties": {
-                "Texture": "rbxassetid://6372755229",
-                "Face": "Back",
-                "StudsPerTileU": 8,
-                "StudsPerTileV": 8,
-                "Color3": [
-                  0,
-                  0,
-                  0
-                ],
-                "Transparency": 0.65
-              }
-            }
-          ],
-          "Properties": {
-            "Size": [
-              144,
-              3.2,
-              96
-            ],
-            "CFrame": [
-              0,
-              -4.4,
-              1270,
-              1,
-              0,
-              0,
-              0,
-              1,
-              0,
-              0,
-              0,
-              1
-            ],
-            "Color": [
-              0.9607843137254902,
-              0.9607843137254902,
-              0.9607843137254902
-            ],
-            "Material": "Plastic",
-            "Anchored": true,
-            "CanCollide": true,
-            "TopSurface": "Studs",
-            "BottomSurface": "Studs",
-            "LeftSurface": "Studs",
-            "RightSurface": "Studs",
-            "FrontSurface": "Studs",
-            "BackSurface": "Studs",
-            "Shape": "Block"
-          }
-        },
-        {
-          "Name": "Ground11",
-          "ClassName": "Model",
-          "Children": [
-            {
-              "Name": "Ground4",
-              "ClassName": "Part",
-              "Children": [
-                {
-                  "Name": "Checker_top",
-                  "ClassName": "Texture",
-                  "Children": [],
-                  "Properties": {
-                    "Texture": "rbxassetid://6372755229",
-                    "Face": "Top",
-                    "StudsPerTileU": 8,
-                    "StudsPerTileV": 8,
-                    "Color3": [
-                      0,
-                      0,
-                      0
-                    ],
-                    "Transparency": 0.65
-                  }
-                },
-                {
-                  "Name": "Checker_bottom",
-                  "ClassName": "Texture",
-                  "Children": [],
-                  "Properties": {
-                    "Texture": "rbxassetid://6372755229",
-                    "Face": "Bottom",
-                    "StudsPerTileU": 8,
-                    "StudsPerTileV": 8,
-                    "Color3": [
-                      0,
-                      0,
-                      0
-                    ],
-                    "Transparency": 0.65
-                  }
-                },
-                {
-                  "Name": "Checker_left",
-                  "ClassName": "Texture",
-                  "Children": [],
-                  "Properties": {
-                    "Texture": "rbxassetid://6372755229",
-                    "Face": "Left",
-                    "StudsPerTileU": 8,
-                    "StudsPerTileV": 8,
-                    "Color3": [
-                      0,
-                      0,
-                      0
-                    ],
-                    "Transparency": 0.65
-                  }
-                },
-                {
-                  "Name": "Checker_right",
-                  "ClassName": "Texture",
-                  "Children": [],
-                  "Properties": {
-                    "Texture": "rbxassetid://6372755229",
-                    "Face": "Right",
-                    "StudsPerTileU": 8,
-                    "StudsPerTileV": 8,
-                    "Color3": [
-                      0,
-                      0,
-                      0
-                    ],
-                    "Transparency": 0.65
-                  }
-                },
-                {
-                  "Name": "Checker_front",
-                  "ClassName": "Texture",
-                  "Children": [],
-                  "Properties": {
-                    "Texture": "rbxassetid://6372755229",
-                    "Face": "Front",
-                    "StudsPerTileU": 8,
-                    "StudsPerTileV": 8,
-                    "Color3": [
-                      0,
-                      0,
-                      0
-                    ],
-                    "Transparency": 0.65
-                  }
-                },
-                {
-                  "Name": "Checker_back",
-                  "ClassName": "Texture",
-                  "Children": [],
-                  "Properties": {
-                    "Texture": "rbxassetid://6372755229",
-                    "Face": "Back",
-                    "StudsPerTileU": 8,
-                    "StudsPerTileV": 8,
-                    "Color3": [
-                      0,
-                      0,
-                      0
-                    ],
-                    "Transparency": 0.65
-                  }
-                }
-              ],
-              "Properties": {
-                "Size": [
-                  144,
-                  4,
-                  96
-                ],
-                "CFrame": [
-                  0,
-                  -4,
-                  1078,
-                  1,
-                  0,
-                  0,
-                  0,
-                  1,
-                  0,
-                  0,
-                  0,
-                  1
-                ],
-                "Color": [
-                  0.8352941176470589,
-                  0.9607843137254902,
-                  0.9568627450980393
-                ],
-                "Material": "Plastic",
-                "Anchored": true,
-                "CanCollide": true,
-                "TopSurface": "Studs",
-                "BottomSurface": "Studs",
-                "LeftSurface": "Studs",
-                "RightSurface": "Studs",
-                "FrontSurface": "Studs",
-                "BackSurface": "Studs",
-                "Shape": "Block"
-              }
-            }
-          ],
-          "Properties": {
-            "WorldPivotData": {
-              "OptionalCFrame": {
-                "position": [
-                  0,
-                  -4,
-                  1078
                 ],
                 "orientation": [
                   [

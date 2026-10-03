@@ -65,41 +65,23 @@ function RockLevel.GetAreas()
     return areas
 end
 
---- 对齐 Roblox 的 +Z 行方向；直向覆盖脚下和前方五格，斜向覆盖九格。
+--- 只检测角色水平朝向前方 3 studs 的格子，空格不继续向远处搜索。
 --- @param area table 关卡边界。
 --- @param position Vector3 服务端角色位置。
 --- @param look Vector3 角色朝向。
---- @return table 区域内有效格子的唯一编号。
+--- @return table 最多包含一个近身格子编号，越界或无水平朝向时为空。
 function RockLevel.GetFrontCells(area, position, look)
-    local column = math.floor((position.X - area.MinX) / RockLevel.CellSize)
-    local row = math.floor((position.Z - area.MinZ) / RockLevel.CellSize)
-    local threshold = math.sin(math.rad(22.5))
-    local dx = math.abs(look.X) > threshold and math.sign(look.X) or 0
-    local dz = math.abs(look.Z) > threshold and math.sign(look.Z) or 0
-    local offsets = {{0, 0}}
-    if dx ~= 0 and dz ~= 0 then
-        for x = 0, 2 do
-            for z = 0, 2 do
-                if x ~= 0 or z ~= 0 then
-                    table.insert(offsets, {dx * x, dz * z})
-                end
-            end
-        end
-    elseif dx ~= 0 or dz ~= 0 then
-        for depth = 1, 2 do
-            for width = 0, 1 do
-                table.insert(offsets, {dx * depth - dz * width, dz * depth + dx * width})
-            end
-        end
+    local forward = Vector3.new(look.X, 0, look.Z)
+    if forward.Magnitude < 0.01 then
+        return {}
     end
-    local cells = {}
-    for index = 1, #offsets do
-        local x, z = column + offsets[index][1], row + offsets[index][2]
-        if x >= 0 and x < area.Columns and z >= 0 and z < area.Rows then
-            table.insert(cells, tostring(area.Index) .. ":" .. tostring(z * area.Columns + x + 1))
-        end
+    local target = position + forward.Unit * 3
+    local column = math.floor((target.X - area.MinX) / RockLevel.CellSize)
+    local row = math.floor((target.Z - area.MinZ) / RockLevel.CellSize)
+    if column < 0 or column >= area.Columns or row < 0 or row >= area.Rows then
+        return {}
     end
-    return cells
+    return {tostring(area.Index) .. ":" .. tostring(row * area.Columns + column + 1)}
 end
 
 return RockLevel
