@@ -5,6 +5,7 @@ _G.ItemConfig = require(Configs:WaitForChild("ItemConfig"))
 _G.GoodsConfig = require(Configs:WaitForChild("GoodsConfig"))
 _G.ActivityConfig = require(Configs:WaitForChild("ActivityConfig"))
 _G.ShopConfig = require(Configs:WaitForChild("ShopConfig"))
+_G.NumericalConfig = require(Configs:WaitForChild("NumericalConfig"))
 
 local GameShared = script.Parent:WaitForChild("Game"):WaitForChild("Shared")
 _G.NetworkProtocol = require(GameShared:WaitForChild("NetworkProtocol"))

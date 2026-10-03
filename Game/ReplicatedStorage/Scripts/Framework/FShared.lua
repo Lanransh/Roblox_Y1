@@ -1,6 +1,6 @@
 local root = script.Parent:WaitForChild("Shared")
 local core = root:WaitForChild("Core")
-for _, name in ipairs({ "FXLoader", "FXTable", "FXClass", "FXLog", "FXTask", "FXTime", "FXMath", "FXJson" }) do
+for _, name in ipairs({ "FXLoader", "FXTable", "FXClass", "FXLog", "FXTask", "FXTime", "FXMath", "FXJson", "FXCurveSampler" }) do
     require(core:WaitForChild(name))
 end
 
