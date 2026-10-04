@@ -394,7 +394,7 @@ function Component:SwingPickaxe(humanoid, key, area)
     end)
 end
 
---- 每次只处理朝向上最近的未破坏石头；所有攻击（包括残血击破）统一遵守 0.8 秒间隔。
+--- 处理近身攻击，并由服务端每秒最多结算一次地面移动与击打收益；客户端不提交走路奖励。
 function Component:Tick()
     local character = self:GetPlayerCharacter()
     local root = character and character:FindFirstChild("HumanoidRootPart")
@@ -454,14 +454,18 @@ function Component:Tick()
         self._lastAttack = now
     end
     if now - self._lastGrowth >= 1 then
-        local seconds = math.floor(now - self._lastGrowth)
-        local gain = RockLevel.AutomaticTraining * seconds + (self._hit and 2 or 0)
+        -- 按服务端观察到的水平速度判断移动，站立、腾空和坐下均不发走路收益。
+        local velocity = root.AssemblyLinearVelocity
+        local walking = humanoid.FloorMaterial ~= Enum.Material.Air and not humanoid.Sit
+            and Vector3.new(velocity.X, 0, velocity.Z).Magnitude > 0.5
+        local gain = (walking and RockLevel.WalkTraining or 0) + (self._hit and 2 or 0)
         if gain > 0 then
             self:AddNumber(Fields.RockTrainingValue, gain)
             self:RefreshProgress()
             FX.Network:SendMsgToClient(self:GetPlayerId(), "S2C_TrainingEffect", gain)
         end
-        self._lastGrowth += seconds
+        -- 不按积压秒数补发，避免卡顿恢复时把无法确认的移动时长算作走路收益。
+        self._lastGrowth = now
         self._hit = false
     end
 end

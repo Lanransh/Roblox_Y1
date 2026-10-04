@@ -2,7 +2,9 @@ local FX = _G.FX
 local Fields = _G.PlayerDataConfig
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
+local GuiService = game:GetService("GuiService")
 local RockLevel = require(game:GetService("ReplicatedStorage").Scripts.Game.Shared.RockLevel)
+local GameUtility = require(game:GetService("ReplicatedStorage").Scripts.Game.Shared.GameUtility)
 local Component = FX.Class("CMainUICompClass", "FCUICompClass")
 
 --- 返回主界面业务组件名，供项目组件协作使用。
@@ -22,20 +24,14 @@ function Component:OnReady()
     self._leftDown = self._rootNode:WaitForChild("LeftDown")
     self._effects = {}
     self._lastClick = -math.huge
-    -- 特效单独放在屏幕坐标层，避免主界面的分组缩放脚本改变飞行终点。
-    self._effectGui = Instance.new("ScreenGui")
-    self._effectGui.Name = "TrainingEffects"
-    self._effectGui.ResetOnSpawn = false
-    self._effectGui.IgnoreGuiInset = true
-    self._effectGui.ScreenInsets = Enum.ScreenInsets.None
-    self._effectGui.DisplayOrder = self._rootNode.DisplayOrder + 1
-    self._effectGui.Parent = self._playerGui
+    -- 复用 Rojo 管理的 ScreenGui，飘字直属该节点，不受 Canvas 缩放影响。
+    self._effectGui = self._playerGui:WaitForChild("ScreenGui")
     self._pulseScale = Instance.new("UIScale")
     self._pulseScale.Parent = self._strength
     self:BindButtons()
     --- 使用收益来源决定动画路线，不从合并后的训练值变化猜测点击。
     --- @param gain number 服务端确认的收益。
-    --- @param position Vector2? 点击的原始屏幕坐标，自动收益为空。
+    --- @param position Vector2? 点击的原始屏幕坐标，走路及击打收益为空。
     FX.Network:RegServerMsgCallback("S2C_TrainingEffect", function(gain, position)
         self:ShowTrainingEffect(gain, position)
     end)
@@ -109,7 +105,7 @@ function Component:BindButtons()
     self:TrackConnection(lootButton.Activated:Connect(function()
         local lines = {"战利品背包（返回基地自动存放）"}
         for index, entry in ipairs(self:GetTable(Fields.RockLoot)) do
-            table.insert(lines, string.format("%s  $%d", entry.DisplayName, entry.Price))
+            table.insert(lines, string.format("%s  $%s", entry.DisplayName, GameUtility.NumberToText(entry.Price)))
         end
         if #lines == 1 then
             table.insert(lines, "暂无战利品")
@@ -125,10 +121,10 @@ function Component:ShowDeveloping()
     self:GetPlayerObject():RequireComponent("FCCommonUIComp"):ShowTips("开发中")
 end
 
---- 钻石从持久字段显示，默认 500 由服务端字段定义提供。
+--- 钻石读取持久字段并使用通用数量格式，默认 500 由服务端字段定义提供。
 --- @param value number 同步后的钻石数量。
 function Component:RefreshDiamonds(value)
-    self._leftDown:WaitForChild("DiamondStat"):WaitForChild("Value").Text = tostring(value)
+    self._leftDown:WaitForChild("DiamondStat"):WaitForChild("Value").Text = GameUtility.NumberToText(value)
 end
 
 --- 战利品与原生背包分别显示，拾取后可以直接确认当前携带数量。
@@ -137,15 +133,16 @@ function Component:RefreshLoot(loot)
     self._leftDown.BackpackStat.Value.Text = string.format("%d/%d", #loot, RockLevel.LootCapacity)
 end
 
---- 沿用累计经验减当前等级门槛的进度算法，以及 0.3 秒 Quad Out 平滑填充。
+--- 经验与力量使用通用数量格式；进度仍按真实数值计算，并以 0.3 秒 Quad Out 平滑填充。
 --- @param value number 同步后的累计训练值。
 --- @param oldValue number? 上一次训练值，首次回放为 nil。
 function Component:RefreshProgress(value, oldValue)
     local level, strength, progressValue, required = RockLevel.GetProgress(value)
     local progress = math.clamp(progressValue / required, 0, 1)
     self._bar.LevelLabel.Text = string.format("Lv.%d", level)
-    self._bar.ProgressLabel.Text = string.format("%d/%d", math.min(progressValue, required), required)
-    self._strength.Text = string.format("力量:%s", tostring(strength))
+    self._bar.ProgressLabel.Text = string.format("%s/%s",
+        GameUtility.NumberToText(math.min(progressValue, required)), GameUtility.NumberToText(required))
+    self._strength.Text = string.format("力量:%s", GameUtility.NumberToText(strength))
     if level >= RockLevel.MaxLevel then
         progress = 1
         self._bar.ProgressLabel.Text = "已满级"
@@ -164,17 +161,44 @@ function Component:RefreshProgress(value, oldValue)
     end
 end
 
---- 点击收益从原点击位置直飞屏幕中央，自动收益保留中心散开后飞向力量栏。
+--- 点击显示一个全额图标，走路及击打在角色周围独立随机显示三个均分图标，飞向中心时最小缩至 50%。
 --- @param gain number 本次服务器确认增加的训练值。
---- @param position Vector2? 点击起点，自动训练收益不传。
+--- @param position Vector2? 点击起点，走路及击打收益不传。
 function Component:ShowTrainingEffect(gain, position)
-    local count = position and 1 or math.random(2, 3)
+    -- 完整屏幕与角色投影都转换到共用 ScreenGui 的局部坐标，避免安全区造成偏移。
+    local origin = self._effectGui.AbsolutePosition
+    local screenArea = GuiService:GetInsetArea(Enum.ScreenInsets.None)
+    local target = (screenArea.Min + screenArea.Max) / 2 - origin
+    local spawnCenter = target
+    if not position then
+        local character = self:GetPlayerNode().Character
+        local camera = workspace.CurrentCamera
+        if character and camera then
+            local projected, onScreen = camera:WorldToScreenPoint(character:GetPivot().Position)
+            if onScreen then
+                spawnCenter = Vector2.new(projected.X, projected.Y) - origin
+            end
+        end
+    end
+    local count = position and 1 or 3
+    -- 先均分实际收益再统一格式化，仅改变客户端文案，不改变服务端奖励。
+    local gainText = GameUtility.NumberToText(gain / count)
     for index = 1, count do
+        local startPosition
+        if position then
+            startPosition = position - origin
+        else
+            -- 每个图标独立选择方向和距离，避免同批图标呈固定三角形分布。
+            local angle = math.random() * math.pi * 2
+            local radius = math.random(180, 300)
+            startPosition = spawnCenter + Vector2.new(math.cos(angle), math.sin(angle)) * radius
+        end
+        local initialDistance = math.max((startPosition - target).Magnitude, 1)
         local icon = self._bar.StrengthIcon:Clone()
         icon.Name = "TrainingGain"
         icon.AnchorPoint = Vector2.new(0.5, 0.5)
-        icon.Position = position and UDim2.fromOffset(position.X, position.Y) or UDim2.fromScale(0.5, 0.58)
-        icon.Size = UDim2.fromOffset(42, 42)
+        icon.Position = UDim2.fromOffset(startPosition.X, startPosition.Y)
+        icon.Size = UDim2.fromOffset(80, 80)
         icon.Visible = true
         icon.Parent = self._effectGui
         local label = Instance.new("TextLabel")
@@ -182,32 +206,31 @@ function Component:ShowTrainingEffect(gain, position)
         label.Size = UDim2.fromOffset(100, 30)
         label.Position = UDim2.new(0.5, -50, 1, 0)
         label.Font = Enum.Font.GothamBold
-        label.TextSize = 24
+        label.TextSize = 28
         label.TextColor3 = Color3.new(1, 1, 1)
         label.TextStrokeTransparency = 0.3
-        label.Text = "+" .. tostring(gain)
+        label.Text = "+" .. gainText
         label.Parent = icon
         local effect = {}
         self._effects[icon] = effect
+        --- 按实际剩余路程计算图标尺寸，抵达中心时仍保留初始大小的一半。
+        local function UpdateSize()
+            local currentPosition = Vector2.new(icon.Position.X.Offset, icon.Position.Y.Offset)
+            local remaining = math.clamp((currentPosition - target).Magnitude / initialDistance, 0, 1)
+            local size = 80 * (0.5 + 0.5 * remaining)
+            icon.Size = UDim2.fromOffset(size, size)
+        end
+        effect.SizeConnection = icon:GetPropertyChangedSignal("Position"):Connect(UpdateSize)
+        UpdateSize()
+        --- 动画结束后释放本次飘字与尺寸监听，走路及击打收益保留力量栏到账反馈。
         effect.Task = task.spawn(function()
-            if not position then
-                effect.Tween = TweenService:Create(icon,
-                    TweenInfo.new(0.22, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
-                        Position = UDim2.new(0.5, math.random(-150, 150), 0.58, math.random(-120, 20)),
-                        Size = UDim2.fromOffset(45, 45),
-                    })
-                effect.Tween:Play()
-                effect.Tween.Completed:Wait()
-                effect.Tween:Destroy()
-            end
-            local target = self._strength.AbsolutePosition + self._strength.AbsoluteSize / 2
             effect.Tween = TweenService:Create(icon,
                 TweenInfo.new(0.62, Enum.EasingStyle.Quart, Enum.EasingDirection.In), {
-                    Position = position and UDim2.fromScale(0.5, 0.5) or UDim2.fromOffset(target.X, target.Y),
-                    Size = UDim2.fromOffset(25, 25), ImageTransparency = 0.8,
+                    Position = UDim2.fromOffset(target.X, target.Y), ImageTransparency = 0.8,
                 })
             effect.Tween:Play()
             effect.Tween.Completed:Wait()
+            effect.SizeConnection:Disconnect()
             effect.Tween:Destroy()
             self._effects[icon] = nil
             icon:Destroy()
@@ -230,11 +253,12 @@ function Component:PulseStrength()
     self._pulseTween:Play()
 end
 
---- 释放界面自建节点和未结束动画，基类负责取消数据及按钮监听。
+--- 释放自建节点和未结束动画，保留共用 ScreenGui；基类负责取消数据及按钮监听。
 function Component:Dtor()
     FX.Network:UnRegServerMsgCallback("S2C_TrainingEffect")
     for icon, effect in pairs(self._effects or {}) do
         task.cancel(effect.Task)
+        effect.SizeConnection:Disconnect()
         effect.Tween:Cancel()
         effect.Tween:Destroy()
         icon:Destroy()
@@ -243,7 +267,7 @@ function Component:Dtor()
         tween:Cancel()
         tween:Destroy()
     end
-    for name, node in pairs({Effects = self._effectGui, Pulse = self._pulseScale, Loot = self._lootButton}) do
+    for name, node in pairs({Pulse = self._pulseScale, Loot = self._lootButton}) do
         node:Destroy()
     end
     Component.Super.Dtor(self)

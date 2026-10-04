@@ -9,7 +9,7 @@ return {
         "C2S_ClickTraining",
     },
     ServerMsgID = {
-        -- gain: number，实际收益；position: Vector2?，点击起点，自动训练时不传。
+        -- gain: number，服务端实际总收益；position: Vector2?，点击起点，走路及击打时不传。
         "S2C_TrainingEffect",
     },
 }
