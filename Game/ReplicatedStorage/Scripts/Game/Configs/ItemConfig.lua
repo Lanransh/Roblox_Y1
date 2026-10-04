@@ -8,9 +8,14 @@ return {
             Id = 1002, Type = "DemoTool", MaxStack = 10, UseHandler = "DemoTool",
             Name = "测试球", ToolShape = "Ball", ToolColor = Color3.fromRGB(255, 178, 55),
         },
+        [1003] = {
+            Id = 1003, Type = "RockCollectible", MaxStack = 1,
+            Name = "石头收藏品",
+        },
     },
     Display = {},
     ExtraDataSchema = {
+        RockCollectible = { TemplateName = "", Price = 0 },
         Animal = {
             level = 1,
             mutationExp = 1,

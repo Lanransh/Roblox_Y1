@@ -90,9 +90,14 @@ function Component:OnReady()
     end))
 end
 
---- 只为已显示石头的实际扣血播放特效；首次同步和恢复血量不播放。
+--- 为实际扣血播放特效；观察到击破后请求服务器弹出该石头的道具。
 function Component:RefreshHealth()
     local health = self:GetTable(Fields.RockHealth)
+    for key, value in pairs(health) do
+        if value == 0 and self._health[key] ~= 0 then
+            FX.Network:SendMsgToServer("C2S_RequestRockDrop", key)
+        end
+    end
     for key, oldValue in pairs(self._health) do
         if health[key] == nil or health[key] > oldValue then
             self:ResetVisuals()

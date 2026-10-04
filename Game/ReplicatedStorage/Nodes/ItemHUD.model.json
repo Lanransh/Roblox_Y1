@@ -1,0 +1,316 @@
+{
+  "className": "BillboardGui",
+  "properties": {
+    "AlwaysOnTop": true,
+    "Enabled": true,
+    "LightInfluence": 0,
+    "MaxDistance": 100,
+    "Size": {
+      "UDim2": [
+        [
+          5.2,
+          0
+        ],
+        [
+          2.8,
+          0
+        ]
+      ]
+    },
+    "StudsOffsetWorldSpace": {
+      "Vector3": [
+        0,
+        2.978811264038086,
+        0
+      ]
+    }
+  },
+  "children": [
+    {
+      "name": "Frame",
+      "className": "Frame",
+      "properties": {
+        "BackgroundTransparency": 1,
+        "BorderSizePixel": 0,
+        "Size": {
+          "UDim2": [
+            [
+              1,
+              0
+            ],
+            [
+              1,
+              0
+            ]
+          ]
+        }
+      },
+      "children": [
+        {
+          "name": "Timer",
+          "className": "TextLabel",
+          "properties": {
+            "Size": {
+              "UDim2": [
+                [
+                  0.3,
+                  0
+                ],
+                [
+                  0.2,
+                  0
+                ]
+              ]
+            },
+            "Position": {
+              "UDim2": [
+                [
+                  0.5,
+                  0
+                ],
+                [
+                  0,
+                  0
+                ]
+              ]
+            },
+            "AnchorPoint": {
+              "Vector2": [
+                0.5,
+                0
+              ]
+            },
+            "BackgroundTransparency": 1,
+            "BorderSizePixel": 0,
+            "Text": "4s",
+            "TextColor3": {
+              "Color3": [
+                1,
+                0.33333334,
+                0.17647059
+              ]
+            },
+            "TextSize": 8,
+            "TextScaled": true,
+            "TextWrapped": true,
+            "Font": "GothamBlack"
+          },
+          "children": [
+            {
+              "name": "TextOutline",
+              "className": "UIStroke",
+              "properties": {
+                "Color": {
+                  "Color3": [
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                "Thickness": 2.5
+              }
+            }
+          ]
+        },
+        {
+          "name": "ItemName",
+          "className": "TextLabel",
+          "properties": {
+            "Size": {
+              "UDim2": [
+                [
+                  0.96,
+                  0
+                ],
+                [
+                  0.26,
+                  0
+                ]
+              ]
+            },
+            "Position": {
+              "UDim2": [
+                [
+                  0.5,
+                  0
+                ],
+                [
+                  0.21,
+                  0
+                ]
+              ]
+            },
+            "AnchorPoint": {
+              "Vector2": [
+                0.5,
+                0
+              ]
+            },
+            "BackgroundTransparency": 1,
+            "BorderSizePixel": 0,
+            "Text": "大木桶01",
+            "TextColor3": {
+              "Color3": [
+                1,
+                1,
+                1
+              ]
+            },
+            "TextSize": 8,
+            "TextScaled": true,
+            "TextWrapped": true,
+            "Font": "GothamBlack"
+          },
+          "children": [
+            {
+              "name": "TextOutline",
+              "className": "UIStroke",
+              "properties": {
+                "Color": {
+                  "Color3": [
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                "Thickness": 2.5
+              }
+            }
+          ]
+        },
+        {
+          "name": "Rarity",
+          "className": "TextLabel",
+          "properties": {
+            "Size": {
+              "UDim2": [
+                [
+                  0.64,
+                  0
+                ],
+                [
+                  0.23,
+                  0
+                ]
+              ]
+            },
+            "Position": {
+              "UDim2": [
+                [
+                  0.5,
+                  0
+                ],
+                [
+                  0.49,
+                  0
+                ]
+              ]
+            },
+            "AnchorPoint": {
+              "Vector2": [
+                0.5,
+                0
+              ]
+            },
+            "BackgroundTransparency": 1,
+            "BorderSizePixel": 0,
+            "Text": "神圣的",
+            "TextColor3": {
+              "Color3": [
+                1,
+                0.1254902,
+                0.1254902
+              ]
+            },
+            "TextSize": 8,
+            "TextScaled": true,
+            "TextWrapped": true,
+            "Font": "GothamBlack"
+          },
+          "children": [
+            {
+              "name": "TextOutline",
+              "className": "UIStroke",
+              "properties": {
+                "Color": {
+                  "Color3": [
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                "Thickness": 2.5
+              }
+            }
+          ]
+        },
+        {
+          "name": "Price",
+          "className": "TextLabel",
+          "properties": {
+            "Size": {
+              "UDim2": [
+                [
+                  0.78,
+                  0
+                ],
+                [
+                  0.25,
+                  0
+                ]
+              ]
+            },
+            "Position": {
+              "UDim2": [
+                [
+                  0.5,
+                  0
+                ],
+                [
+                  0.74,
+                  0
+                ]
+              ]
+            },
+            "AnchorPoint": {
+              "Vector2": [
+                0.5,
+                0
+              ]
+            },
+            "BackgroundTransparency": 1,
+            "BorderSizePixel": 0,
+            "Text": "$129M",
+            "TextColor3": {
+              "Color3": [
+                0.43529412,
+                1,
+                0
+              ]
+            },
+            "TextSize": 8,
+            "TextScaled": true,
+            "TextWrapped": true,
+            "Font": "GothamBlack"
+          },
+          "children": [
+            {
+              "name": "TextOutline",
+              "className": "UIStroke",
+              "properties": {
+                "Color": {
+                  "Color3": [
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                "Thickness": 2.5
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

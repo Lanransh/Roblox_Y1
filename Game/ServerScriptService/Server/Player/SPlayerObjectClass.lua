@@ -3,6 +3,7 @@ local GameConfig = _G.GameConfig
 local PlayerDataConfig, ItemConfig = _G.PlayerDataConfig, _G.ItemConfig
 local TutorialGuideConfig = _G.TutorialGuideConfig
 local RunService = game:GetService("RunService")
+local Collectible = require(script.Parent.RockCollectible)
 local Inventory = FX.Class("SInventoryCompClass", "FSInventoryCompClass")
 
 function Inventory:Ctor(owner)
@@ -48,7 +49,7 @@ function Inventory:OnAllChanged()
     self:SyncTools()
 end
 
---- 将框架道具数据投影为原生 Tool；快捷栏关闭时清理本组件持有的 Tool，保留道具数据。
+--- 将背包投影为原生 Tool；收藏品保留独立模型和价格，换格后重建不匹配的显示。
 function Inventory:SyncTools()
     local player = self:GetPlayerNode()
     local backpack = player and player:FindFirstChildOfClass("Backpack")
@@ -68,8 +69,12 @@ function Inventory:SyncTools()
     for gridIndex, tool in pairs(self._tools) do
         local item = data[gridIndex]
         local config = item and ItemConfig.Data[item.itemId]
-        if not config or not config.ToolShape or (tool.Parent ~= backpack and tool.Parent ~= player.Character)
-            or tool:GetAttribute("FrameworkItemId") ~= item.itemId then
+        if not config or (not config.ToolShape and item.itemId ~= Collectible.ItemId)
+            or (tool.Parent ~= backpack and tool.Parent ~= player.Character)
+            or tool:GetAttribute("FrameworkItemId") ~= item.itemId
+            or (item.itemId == Collectible.ItemId and (not item.extraData
+                or tool:GetAttribute("CollectibleTemplate") ~= item.extraData.TemplateName
+                or tool:GetAttribute("Price") ~= item.extraData.Price)) then
             tool:Destroy()
             self._tools[gridIndex] = nil
         end
@@ -78,33 +83,43 @@ function Inventory:SyncTools()
     for gridIndex = 1, self:GetTotalCapacity() do
         local item = data[gridIndex]
         local config = item and ItemConfig.Data[item.itemId]
-        if config and config.ToolShape then
+        if config and (config.ToolShape or item.itemId == Collectible.ItemId) then
             local tool = self._tools[gridIndex]
             if not tool then
-                tool = Instance.new("Tool")
-                tool.CanBeDropped = false
-                tool.ToolTip = config.Name
+                if item.itemId == Collectible.ItemId then
+                    tool = Collectible.CreateTool(item.extraData)
+                    if not tool then
+                        continue
+                    end
+                else
+                    tool = Instance.new("Tool")
+                    tool.CanBeDropped = false
+                    tool.ToolTip = config.Name
+
+                    local handle = Instance.new("Part")
+                    handle.Name = "Handle"
+                    handle.Shape = Enum.PartType[config.ToolShape]
+                    handle.Size = Vector3.new(0.9, 0.9, 0.9)
+                    handle.Color = config.ToolColor
+                    handle.CanCollide = false
+                    handle.Massless = true
+                    handle.Parent = tool
+                end
+
                 tool:SetAttribute("FrameworkGridIndex", gridIndex)
                 tool:SetAttribute("FrameworkItemId", item.itemId)
-
-                local handle = Instance.new("Part")
-                handle.Name = "Handle"
-                handle.Shape = Enum.PartType[config.ToolShape]
-                handle.Size = Vector3.new(0.9, 0.9, 0.9)
-                handle.Color = config.ToolColor
-                handle.CanCollide = false
-                handle.Massless = true
-                handle.Parent = tool
 
                 self._tools[gridIndex] = tool
                 tool.Parent = backpack
             end
-            tool.Name = item.stackCount > 1 and string.format("%s x%d", config.Name, item.stackCount) or config.Name
+            if item.itemId ~= Collectible.ItemId then
+                tool.Name = item.stackCount > 1 and string.format("%s x%d", config.Name, item.stackCount) or config.Name
+            end
         end
     end
 end
 
---- 快捷栏关闭时拒绝手持使用入口；其他请求仍需校验归属及装备状态。
+--- 校验快捷栏、归属和装备状态；收藏品只供手持展示，不执行使用消耗。
 --- @param tool Instance 客户端请求使用的原生 Tool。
 --- @return boolean 是否通过校验并使用成功。
 function Inventory:ActivateTool(tool)
@@ -119,6 +134,9 @@ function Inventory:ActivateTool(tool)
     local item = type(gridIndex) == "number" and self:GetGridData(gridIndex)
     if not player or tool.Parent ~= player.Character or self._tools[gridIndex] ~= tool
         or not item or item.itemId ~= tool:GetAttribute("FrameworkItemId") then
+        return false
+    end
+    if item.itemId == Collectible.ItemId then
         return false
     end
     return self:UseItem(gridIndex, 1)

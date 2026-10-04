@@ -1,0 +1,39 @@
+{
+  "ClassName": "Tool",
+  "Properties": {
+    "CanBeDropped": false,
+    "ManualActivationOnly": true,
+    "ToolTip": "免费镐子",
+    "TextureId": "rbxassetid://59102685",
+    "Grip": [0, 0, -0.5, 0, 0, 1, 1, 0, 0, 0, 1, 0]
+  },
+  "Children": [
+    {
+      "Name": "Handle",
+      "ClassName": "Part",
+      "Properties": {
+        "Size": [1, 0.8, 3],
+        "Color": [0.3882353, 0.372549, 0.3843137],
+        "Reflectance": 0.4,
+        "CanCollide": false,
+        "CanTouch": false,
+        "CanQuery": false,
+        "Massless": true,
+        "TopSurface": "Smooth",
+        "BottomSurface": "Smooth"
+      },
+      "Children": [
+        {
+          "Name": "Mesh",
+          "ClassName": "SpecialMesh",
+          "Properties": {
+            "MeshType": "FileMesh",
+            "MeshId": "rbxassetid://22147051",
+            "TextureId": "rbxassetid://22147026",
+            "Scale": [1.2, 1.2, 1.2]
+          }
+        }
+      ]
+    }
+  ]
+}
