@@ -37,7 +37,7 @@
 - 审查服务端安全漏洞、权限绕过、严重逻辑缺陷、崩溃风险或高危遗漏时，以 `server-code-critical-review` 为主；除非用户同时要求风格审查，否则不输出普通风格问题
 - 只有用户显式调用 `$integrate-feature-branch` 并要求集成已测试通过的 feature 时，才使用 `integrate-feature-branch`
 
-- 完成或修改玩法系统、代码或配置改动影响玩法行为或数值结果时，以及盘点玩法或记录验收结果时，使用 `maintain-acceptance-checklist`，按玩法系统维护 `Docs/功能验收清单.md` 的系统功能和数值两部分；纯框架整理、日志等不影响玩法的改动不列项
+- 修改公式、数值、道具使用或付费规则，以及整理清单、盘点数值或记录验收结论时，使用 `maintain-acceptance-checklist`，按系统维护 `Docs/功能验收清单.md`，每个验收点独立一行复选项；不记录动画、音效、UI、加载等表现或开发过程
 
 ## Skill 选择优先级
 
