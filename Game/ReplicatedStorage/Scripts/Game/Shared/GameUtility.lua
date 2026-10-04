@@ -45,17 +45,21 @@ function GameUtility.FindGoodsConfig(buyHandler, condFunc)
 end
 
 local units = {
-    { 1e36, "涧" }, { 1e32, "沟" }, { 1e28, "穰" }, { 1e24, "秭" }, { 1e20, "垓" },
-    { 1e16, "京" }, { 1e12, "兆" }, { 1e8, "亿" }, { 1e4, "万" },
+    { 1e36, "Ud" }, { 1e33, "Dc" }, { 1e30, "No" }, { 1e27, "Oc" },
+    { 1e24, "Sp" }, { 1e21, "Sx" }, { 1e18, "Qi" }, { 1e15, "Qa" },
+    { 1e12, "T" }, { 1e9, "B" }, { 1e6, "M" }, { 1e3, "K" },
 }
 
---- 按 MiniStudio 的中文数量单位显示数值，大单位保留两位小数。
+--- 按 K 到 Ud 缩写数量；不足千的整数直接显示，小数与大单位均保留两位小数。
 --- @param number number 待显示数值，nil 按零处理。
 --- @return string 数值文本。
 function GameUtility.NumberToText(number)
     number = number or 0
     local absNumber = math.abs(number)
-    if absNumber < 1e4 then
+    if absNumber < 1e3 then
+        if number % 1 ~= 0 then
+            return string.format("%.2f", number)
+        end
         return tostring(math.floor(number))
     end
     for index, entry in ipairs(units) do
@@ -67,13 +71,16 @@ function GameUtility.NumberToText(number)
     return tostring(number)
 end
 
---- 沿用源项目显示规则：换算后不足 100 保留小数，否则向下取整。
+--- 不足 1 的非零数保留两位小数；其余沿用整数及英文大单位的取整规则。
 --- @param number number 待显示数值，nil 按零处理。
 --- @return string 数值文本。
 function GameUtility.NumberToTextFloor(number)
     number = number or 0
     local absNumber = math.abs(number)
-    if absNumber < 1e4 then
+    if absNumber > 0 and absNumber < 1 then
+        return string.format("%.2f", number)
+    end
+    if absNumber < 1e3 then
         return tostring(math.floor(number))
     end
     for index, entry in ipairs(units) do
