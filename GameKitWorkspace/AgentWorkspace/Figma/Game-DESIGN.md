@@ -117,16 +117,18 @@
 `TitleTxt` 参考值：
 
 - 字体：`Inter Bold` / `Inter Extra Bold`
-- 字号：`22~23`
+- 字号：`30`
 - 颜色：`#FFFFFF`
-- 对齐：水平居中、垂直居中
-- 文本阴影：`DROP_SHADOW rgba(0,53,111,0.55)`，offset `(0,2)`，radius `1.5`
+- 对齐：左对齐、垂直居中
+- 白色文字配黑色描边，不使用文字阴影。
 
-位置参考：
+标题布局参考值（均为 `TitleBox` 内局部坐标）：
 
-- `SmallWindowUI`：`TitleBox (28,-26)`，`TitleTxt (86,-8)`
-- `MediumWindowUI`：`TitleBox (30,-28)`，`TitleTxt (88,-10)`
-- `LargeWindowUI`：`TitleBox (32,-30)`，`TitleTxt (90,-12)`
+- 左侧 `x=0~100` 为 `100` 宽的图标预留区；未提供图标时保留空位。
+- `TitleTxt`：`x=124`、`y=0`、高度 `70`，图标区与文字间隔 `24`。
+- 文本框右边缘与 `CloseBtn` 左边缘保留 `26` 间距；宽度为 `CloseBtn.x - 26 - 124`，不得覆盖图标区或关闭按钮。
+- 小、中、大模板的文本框宽度分别为 `438`、`568`、`608`；模板和真实游戏 UI 使用同一规则。
+- 每个真实游戏 UI 的标题使用不同主题色，保留模板造型、纹理、描边与高光层次。当前配色：离线奖励 `#E58324`、切割器 `#DF1A23`、收藏 `#3479D9`、出售 `#299B50`、每日奖励 `#CEA323`、钻石礼包 `#159BC5`、拖尾 `#8A48CF`、重生 `#D83D88`、商店 `#179887`。
 
 ## 六、关闭按钮
 
@@ -265,7 +267,7 @@
 
 `参考值`：
 
-- `TitleTxt`：`Inter Bold` / `Inter Extra Bold`，`22~23`
+- `TitleTxt`：`Inter Bold` / `Inter Extra Bold`，`30`
 - `OperationButtonExamplesUI` 按钮文字：`Inter Bold`，`20`
 - `CloseIconTxt`：`Inter Extra Bold`，`38`
 - `ProgressTxt`：`Inter Extra Bold`，`22`
