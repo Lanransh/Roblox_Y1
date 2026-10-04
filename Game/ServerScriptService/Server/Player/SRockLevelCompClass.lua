@@ -16,7 +16,6 @@ function Component:Ctor(owner)
     self._random = Random.new()
     self._lastAttack = -1
     self._lastGrowth = os.clock()
-    self._lastClick = -math.huge
     self._hit = false
 end
 
@@ -94,7 +93,7 @@ function Component:RollDrop(key, area)
     }
 end
 
---- 弹出已确认击破的个人石头道具，随后连同 ItemHUD 持续漂浮并开放 E 拾取。
+--- 弹出已确认击破的个人石头道具，随后连同 ItemHUD 持续漂浮，长按 E 0.5 秒拾取。
 --- @param key string 客户端提交的石头格号，不接受其位置或奖励数据。
 function Component:RequestDrop(key)
     if type(key) ~= "string" or #key > 40 or self._health[key] ~= 0 then
@@ -125,7 +124,7 @@ function Component:RequestDrop(key)
     prompt.ActionText = "拾取"
     prompt.ObjectText = hud.Frame.ItemName.Text
     prompt.KeyboardKeyCode = Enum.KeyCode.E
-    prompt.HoldDuration = 0
+    prompt.HoldDuration = 0.5
     prompt.MaxActivationDistance = Collectible.PickupDistance
     prompt.RequiresLineOfSight = false
     prompt.Enabled = false
@@ -221,26 +220,6 @@ function Component:DepositLoot()
     self._depositFull = #loot > 0
 end
 
---- 点击训练只接受已登录的存活角色，每 0.2 秒最多结算一次。
---- @param position Vector2 客户端点击坐标，仅用于回传表现，不影响奖励数量。
-function Component:ClickTraining(position)
-    if typeof(position) ~= "Vector2" or not (math.abs(position.X) <= 100000
-        and math.abs(position.Y) <= 100000) then
-        return
-    end
-    local character = self:GetPlayerCharacter()
-    local humanoid = character and character:FindFirstChildOfClass("Humanoid")
-    local now = os.clock()
-    if not self._levelStat or not humanoid or humanoid.Health <= 0
-        or now - self._lastClick < RockLevel.ClickInterval then
-        return
-    end
-    self._lastClick = now
-    self:AddNumber(Fields.RockTrainingValue, RockLevel.ClickTraining)
-    self:RefreshProgress()
-    FX.Network:SendMsgToClient(self:GetPlayerId(), "S2C_TrainingEffect", RockLevel.ClickTraining, position)
-end
-
 --- 结束个人关卡轮次时释放掉落、提示连接和仍在播放的补间任务。
 function Component:ClearDrops()
     self._dropResults = {}
@@ -257,7 +236,7 @@ function Component:ClearDrops()
     self._dropNodes = {}
 end
 
---- 出生与重生时发放默认镐子，并为当前 R15 角色缓存上半身攻击轨道。
+--- 出生与重生时发放带短拖尾的默认镐子，并为当前 R15 角色缓存上半身攻击轨道。
 --- @param humanoid Humanoid 当前存活角色的 Humanoid。
 function Component:EquipPickaxe(humanoid)
     if self._swingTrack then
@@ -269,6 +248,27 @@ function Component:EquipPickaxe(humanoid)
     end
     self._pickaxe = ServerStorage:WaitForChild("StarterPickaxe"):Clone()
     self._pickaxe.Name = "免费镐子"
+    local handle = self._pickaxe:WaitForChild("Handle")
+    local start = Instance.new("Attachment")
+    start.Name = "SwingTrailStart"
+    start.Position = Vector3.new(0, 0, -handle.Size.Z * 0.35)
+    start.Parent = handle
+    local finish = Instance.new("Attachment")
+    finish.Name = "SwingTrailEnd"
+    finish.Position = Vector3.new(0, 0, handle.Size.Z * 0.35)
+    finish.Parent = handle
+    self._swingTrail = Instance.new("Trail")
+    self._swingTrail.Name = "PickaxeSwingTrail"
+    self._swingTrail.Attachment0 = start
+    self._swingTrail.Attachment1 = finish
+    self._swingTrail.Lifetime = 0.1
+    self._swingTrail.MinLength = 0.05
+    self._swingTrail.FaceCamera = true
+    self._swingTrail.Color = ColorSequence.new(Color3.fromRGB(255, 240, 205))
+    self._swingTrail.Transparency = NumberSequence.new(0.55, 1)
+    self._swingTrail.WidthScale = NumberSequence.new(1, 0)
+    self._swingTrail.Enabled = false
+    self._swingTrail.Parent = handle
     self._pickaxe.Parent = self:GetPlayerNode():WaitForChild("Backpack")
     humanoid:EquipTool(self._pickaxe)
     if humanoid.RigType == Enum.HumanoidRigType.R15 then
@@ -288,8 +288,12 @@ function Component:EquipPickaxe(humanoid)
     end
 end
 
---- 淡出上半身轨道并恢复旧关节补间，取消中断后的延迟伤害。
+--- 中断时关闭并清空拖尾，淡出上半身轨道、恢复关节，取消延迟伤害。
 function Component:StopSwing()
+    if self._swingTrail then
+        self._swingTrail.Enabled = false
+        self._swingTrail:Clear()
+    end
     if self._swingTask then
         task.cancel(self._swingTask)
         self._swingTask = nil
@@ -349,7 +353,7 @@ function Component:ResolvePickaxeHit(character, key, area)
     self:SetTable(Fields.RockHealth, self._health)
 end
 
---- R15 用 1.25 倍速的 06 号上半身轨道叠加行走，配合 0.8 秒攻击间隔；R6 保留原补间。
+--- 拖尾仅覆盖下砸阶段；R15 保留 1.25 倍速轨道和原伤害时点，R6 保留原补间。
 --- @param humanoid Humanoid 当前执行敲击的角色。
 --- @param key string 本次锁定的石头格子。
 --- @param area table 石头所属关卡。
@@ -363,9 +367,13 @@ function Component:SwingPickaxe(humanoid, key, area)
         self._swingTrack:Play(0.08, 1, 1.25)
         -- 原动画加速后在 0.2 秒举起、0.4 秒砸下；0.72 秒开始淡出，0.8 秒前结束。
         self._swingTask = task.spawn(function()
-            task.wait(0.4)
+            task.wait(0.2)
+            self._swingTrail.Enabled = true
+            task.wait(0.2)
             self:ResolvePickaxeHit(character, key, area)
-            task.wait(0.32)
+            task.wait(0.06)
+            self._swingTrail.Enabled = false
+            task.wait(0.26)
             self._swingTask = nil
             self:StopSwing()
         end)
@@ -383,10 +391,12 @@ function Component:SwingPickaxe(humanoid, key, area)
     self._swingTask = task.spawn(function()
         self:PoseSwing(0.22, 85, 12, Enum.EasingDirection.Out)
         task.wait(0.22)
+        self._swingTrail.Enabled = true
         self:PoseSwing(0.1, -40, -18, Enum.EasingDirection.In)
         task.wait(0.1)
         self:ResolvePickaxeHit(character, key, area)
         task.wait(0.08)
+        self._swingTrail.Enabled = false
         self:PoseSwing(0.28, 0, 0, Enum.EasingDirection.Out)
         task.wait(0.28)
         self._swingTask = nil
@@ -394,7 +404,7 @@ function Component:SwingPickaxe(humanoid, key, area)
     end)
 end
 
---- 处理近身攻击，并由服务端每秒最多结算一次地面移动与击打收益；客户端不提交走路奖励。
+--- 满血可秒杀时即时破坏脚下或前方石头，其余沿用挥镐；训练收益仍每秒最多结算一次。
 function Component:Tick()
     local character = self:GetPlayerCharacter()
     local root = character and character:FindFirstChild("HumanoidRootPart")
@@ -434,12 +444,30 @@ function Component:Tick()
             and position.Z >= area.MinZ - 8 and position.Z < area.MinZ + area.Node.Size.Z + 8 then
             local damage = RockLevel.GetDamage(level, index)
             local cells = RockLevel.GetFrontCells(area, position, root.CFrame.LookVector)
+            local instantBreak = damage >= RockLevel.HP[index]
+            if instantBreak then
+                -- 穿行时先检查脚下，避免玩家越过前方格子后石头仍留在身后。
+                local column = math.floor((position.X - area.MinX) / RockLevel.CellSize)
+                local row = math.floor((position.Z - area.MinZ) / RockLevel.CellSize)
+                if column >= 0 and column < area.Columns and row >= 0 and row < area.Rows then
+                    table.insert(cells, 1, index .. ":" .. (row * area.Columns + column + 1))
+                end
+            end
             for cellIndex = 1, #cells do
                 local key = cells[cellIndex]
                 local health = self._health[key] or RockLevel.HP[index]
                 if health > 0 then
                     targetFound = true
-                    if damage > 0 and regularAttack then
+                    if instantBreak then
+                        self:StopSwing()
+                        if self._pickaxe.Parent ~= character then
+                            humanoid:EquipTool(self._pickaxe)
+                        end
+                        self._health[key] = 0
+                        self:RollDrop(key, area)
+                        self._hit = true
+                        self:SetTable(Fields.RockHealth, self._health)
+                    elseif damage > 0 and regularAttack then
                         self:SwingPickaxe(humanoid, key, area)
                     end
                     break
@@ -470,7 +498,7 @@ function Component:Tick()
     end
 end
 
---- 离服释放掉落、结算任务、当前角色轨道和镐子。
+--- 离服释放掉落、结算任务、当前角色轨道和镐子，并解除拖尾引用。
 function Component:OnPlayerLogout()
     self:ClearDrops()
     self:StopSwing()
@@ -484,6 +512,7 @@ function Component:OnPlayerLogout()
         self._pickaxe:Destroy()
         self._pickaxe = nil
     end
+    self._swingTrail = nil
 end
 
 --- 析构也释放任务，覆盖初始化中断的生命周期。

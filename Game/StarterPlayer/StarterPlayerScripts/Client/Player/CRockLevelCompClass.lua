@@ -2,9 +2,11 @@ local FX = _G.FX
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 local Debris = game:GetService("Debris")
+local TweenService = game:GetService("TweenService")
 local RockLevel = require(ReplicatedStorage.Scripts.Game.Shared.RockLevel)
 local Fields = _G.PlayerDataConfig
 local Component = FX.Class("CRockLevelCompClass", "FCPlayerCompClass")
+local ColliderHeight = 16
 local RockNames = {"Rock_01", "Rock_02", "Rock_03", "Rock_04", "Rock_Small_01"}
 local RockColors = {
     Color3.fromRGB(217, 220, 224), Color3.fromRGB(228, 225, 215),
@@ -21,6 +23,11 @@ function Component:Ctor(owner)
     self._templates = {}
     self._health = {}
     self._fragments = {}
+    self._fragmentPool = {}
+    self._sparks = {}
+    self._sparkPool = {}
+    self._hitReactions = {}
+    self._nextChunkCheck = 0
 end
 
 --- 返回项目关卡组件协作名称。
@@ -29,7 +36,7 @@ function Component:GetCompName()
     return "CRockLevelComp"
 end
 
---- 同步握手后加载无脚本受击资源、构造 6×6 块索引，并订阅服务端权威血量。
+--- 同步握手后加载受击资源，为石头模板建立独立方块碰撞体，构造 6×6 块索引并订阅血量。
 function Component:OnReady()
     local assets = ReplicatedStorage:WaitForChild("Assets")
     local effects = assets:WaitForChild("Effects"):WaitForChild("ROCK")
@@ -61,7 +68,23 @@ function Component:OnReady()
         template.Name = name
         part.Name = "Root"
         part.CFrame = CFrame.new()
+        part.CanCollide = false
+        part.CanTouch = false
+        part.CanQuery = false
         part.Parent = template
+        local collider = Instance.new("Part")
+        collider.Name = "Collider"
+        collider.Shape = Enum.PartType.Block
+        collider.Size = Vector3.new(part.Size.X, ColliderHeight, part.Size.Z)
+        collider.CFrame = CFrame.new(0, (ColliderHeight - part.Size.Y) / 2, 0)
+        -- 默认相机遮挡检测忽略全透明部件；可见网格已关闭碰撞与查询。
+        collider.Transparency = 1
+        collider.Anchored = true
+        collider.CanCollide = false
+        collider.CanTouch = false
+        collider.CanQuery = false
+        collider.CastShadow = false
+        collider.Parent = template
         template.PrimaryPart = part
         template:SetAttribute("Variant", index)
         template:SetAttribute("FullHeight", part.Size.Y)
@@ -117,9 +140,10 @@ function Component:RefreshHealth()
         end
     end
     self._health = health
+    self._refreshRocks = true
 end
 
---- 每次命中播放一次声音及 ROCK 烟尘与碎石，碎石从当前模型顶部飘出并沿用关卡色。
+--- 每次命中均显示少量碎屑与金色短火花，仅击破时从石头中心散出较大烟尘。
 --- @param rock Model 当前受击且仍在场景中的石头。
 --- @param broken boolean 本次扣血是否击破石头。
 function Component:PlayHitEffect(rock, broken)
@@ -133,12 +157,18 @@ function Component:PlayHitEffect(rock, broken)
     if direction.Magnitude < 0.01 then
         return
     end
-    local params = RaycastParams.new()
-    params.FilterType = Enum.RaycastFilterType.Include
-    params.FilterDescendantsInstances = {rock}
-    local hit = workspace:Raycast(root.Position, direction.Unit * (direction.Magnitude + RockLevel.CellSize), params)
-    local normal = hit and hit.Normal or -direction.Unit
-    local position = hit and hit.Position or center
+    -- 表现点放在镜头可见侧的包围盒外，避免碰撞网格内凹或角色贴入石头时遮住火花。
+    local camera = workspace.CurrentCamera
+    local toViewer = (camera and camera.CFrame.Position or root.Position) - center
+    if toViewer.Magnitude < 0.01 then
+        toViewer = -direction
+    end
+    local normal = toViewer.Unit
+    local localDirection = rock.Root.CFrame:VectorToObjectSpace(normal)
+    local halfSize = rock.Root.Size / 2
+    local distance = 1 / math.max(math.abs(localDirection.X) / halfSize.X,
+        math.abs(localDirection.Y) / halfSize.Y, math.abs(localDirection.Z) / halfSize.Z)
+    local position = rock.Root.Position + normal * distance
     local effect = Instance.new("Part")
     effect.Name = "RockHitEffect"
     effect.Size = Vector3.new(0.1, 0.1, 0.1)
@@ -147,39 +177,97 @@ function Component:PlayHitEffect(rock, broken)
     effect.CanCollide = false
     effect.CanTouch = false
     effect.CanQuery = false
-    effect.CFrame = CFrame.lookAt(position + normal * 0.1, position + normal)
-    local dust = self._smokeTemplate:Clone()
-    dust.Parent = effect
+    effect.CFrame = CFrame.lookAt(position + normal * 0.55, position + normal * 1.55)
     local sound = self._breakSound:Clone()
     sound.Parent = effect
     effect.Parent = self._folder
-    dust:Emit(broken and 10 or 5)
+    if broken then
+        local dustOrigin = Instance.new("Attachment")
+        dustOrigin.Position = effect.CFrame:PointToObjectSpace(center)
+        dustOrigin.Parent = effect
+        local dust = self._smokeTemplate:Clone()
+        dust.Lifetime = NumberRange.new(0.3, 0.45)
+        dust.Size = NumberSequence.new(3, 7)
+        dust.Transparency = NumberSequence.new(0.25, 1)
+        dust.Parent = dustOrigin
+        dust:Emit(3)
+    end
+    self:PlayImpactSparks(effect, broken)
     sound:Play()
     local away = Vector3.new(direction.X, 0, direction.Z)
     if away.Magnitude < 0.01 then
         away = Vector3.new(0, 0, 1)
     end
     away = away.Unit
-    local fragmentPosition = position + away * 0.5
-    fragmentPosition = Vector3.new(fragmentPosition.X,
-        math.max(fragmentPosition.Y, center.Y + rock.Root.Size.Y / 2 + 0.4), fragmentPosition.Z)
-    self:SpawnFragments(CFrame.lookAt(fragmentPosition, fragmentPosition + away),
-        rock:GetAttribute("GroundColor"), broken)
-    Debris:AddItem(effect, math.max(3, dust.Lifetime.Max + 0.1, sound.TimeLength + 0.1))
+    if not broken then
+        self._hitReactions[rock] = {Started = os.clock(), Direction = away}
+    end
+    local fragmentOrigin = broken and CFrame.lookAt(center, center + normal) or effect.CFrame
+    self:SpawnFragments(fragmentOrigin, rock:GetAttribute("GroundColor"), rock.Root.Size, broken)
+    Debris:AddItem(effect, math.max(3, sound.TimeLength + 0.1))
 end
 
---- 小碎石按环形方向向上喷起并四散；灰色材质仅叠加 20% 关卡色，不参与碰撞。
---- @param origin CFrame 石头上方的生成位置及远离玩家的水平朝向。
+--- 从火花池取得金色亮条并重置表现；独立于音效容器持有，避免容器销毁误删池中节点。
+--- @param effect BasePart 位于接触点且朝向表面外侧的特效容器。
+--- @param broken boolean 击破时增加火花数量。
+function Component:PlayImpactSparks(effect, broken)
+    local count = broken and 6 or 4
+    local phase = math.random() * math.pi * 2
+    for index = 1, count do
+        local angle = phase + (index - 1) * math.pi * 2 / count
+        local direction = effect.CFrame:VectorToWorldSpace(Vector3.new(math.cos(angle), math.sin(angle), -0.65)).Unit
+        local position = effect.Position + direction * 0.5
+        local spark = table.remove(self._sparkPool) or Instance.new("Part")
+        spark.Name = "RockImpactSpark"
+        spark.Material = Enum.Material.Neon
+        spark.Color = Color3.fromRGB(255, 205, 35)
+        spark.Size = Vector3.new(0.22, 0.22, 1.5)
+        spark.CFrame = CFrame.lookAt(position, position + direction)
+        spark.Anchored = true
+        spark.CanCollide = false
+        spark.CanTouch = false
+        spark.CanQuery = false
+        spark.CastShadow = false
+        spark.Transparency = 0
+        spark.Parent = self._folder
+        local lifetime = 0.22 + math.random() * 0.04
+        local tween = TweenService:Create(spark, TweenInfo.new(lifetime, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+            CFrame = spark.CFrame + direction * 1.2,
+            Size = Vector3.new(0.05, 0.05, 0.45), Transparency = 1,
+        })
+        table.insert(self._sparks, {Part = spark, Tween = tween, Expires = os.clock() + lifetime + 0.02})
+        tween:Play()
+    end
+end
+
+--- 火花寿命结束后先停止并释放补间，再移出场景归池；角色缺失时也正常回收。
+function Component:UpdateSparks()
+    local now = os.clock()
+    for index = #self._sparks, 1, -1 do
+        local spark = self._sparks[index]
+        if now >= spark.Expires then
+            spark.Tween:Cancel()
+            spark.Tween:Destroy()
+            spark.Part.Parent = nil
+            table.insert(self._sparkPool, spark.Part)
+            table.remove(self._sparks, index)
+        end
+    end
+end
+
+--- 优先复用碎石，普通命中喷出三块小碎屑，击破爆散四块；重置透明度避免复用时不可见。
+--- @param origin CFrame 普通命中的表面位置或击破的石头中心，朝向表面外侧。
 --- @param color Color3 对应地板的原始颜色，以 20% 强度叠加到碎石底色。
---- @param broken boolean 击破时增加碎石数量和尺寸。
-function Component:SpawnFragments(origin, color, broken)
+--- @param rockSize Vector3 当前石头尺寸，用于限定击破碎块的生成范围。
+--- @param broken boolean 是否击破，控制碎屑数量、尺寸及生成范围。
+function Component:SpawnFragments(origin, color, rockSize, broken)
     local source = self._fragmentTemplate
     local tint = Color3.new(1, 1, 1):Lerp(color, 0.2)
     local fragmentColor = Color3.new(source.Color.R * tint.R, source.Color.G * tint.G, source.Color.B * tint.B)
-    local count = broken and 9 or 5
+    local count = broken and 4 or 3
     local phase = math.random() * math.pi * 2
     for index = 1, count do
-        local fragment = source:Clone()
+        local fragment = table.remove(self._fragmentPool) or source:Clone()
         fragment.Name = "RockFragment"
         fragment.Anchored = true
         fragment.CanCollide = false
@@ -187,30 +275,35 @@ function Component:SpawnFragments(origin, color, broken)
         fragment.CanQuery = false
         fragment.CastShadow = false
         fragment.Color = fragmentColor
-        local size = (0.5 + math.random() * 0.4) * (broken and 1.3 or 1)
+        fragment.Transparency = source.Transparency
+        local size = (0.5 + math.random() * 0.4) * (broken and 1.8 or 0.65)
         fragment.Size = source.Size * (size / math.max(source.Size.X, source.Size.Y, source.Size.Z))
         local rotation = CFrame.Angles(math.random() * math.pi, math.random() * math.pi, math.random() * math.pi)
-        fragment.CFrame = CFrame.new(origin.Position) * rotation
+        local offset = broken and Vector3.new((math.random() - 0.5) * rockSize.X * 0.7,
+            (math.random() - 0.5) * rockSize.Y * 0.5, (math.random() - 0.5) * rockSize.Z * 0.7) or Vector3.zero
+        fragment.CFrame = CFrame.new(origin.Position + offset) * rotation
         fragment.Parent = self._folder
         local angle = phase + (index - 1 + math.random() * 0.4) / count * math.pi * 2
-        local spread = 4 + math.random() * 3
+        local spread = broken and (7 + math.random() * 5) or 2
         table.insert(self._fragments, {
-            Part = fragment, Size = fragment.Size, Position = origin.Position, Rotation = rotation,
-            Started = os.clock(), Lifetime = 1 + math.random() * 0.2,
-            Velocity = Vector3.new(math.cos(angle) * spread, 10 + math.random() * 3, math.sin(angle) * spread),
+            Part = fragment, Size = fragment.Size, Position = origin.Position + offset, Rotation = rotation,
+            Started = os.clock(), Lifetime = 0.45 + math.random() * 0.1,
+            Velocity = Vector3.new(math.cos(angle) * spread, broken and (8 + math.random() * 3) or 5,
+                math.sin(angle) * spread) + (broken and Vector3.zero or origin.LookVector * 6),
             Spin = Vector3.new(math.random() * 10 - 5, math.random() * 10 - 5, math.random() * 10 - 5),
         })
     end
 end
 
---- 碎石先完整展示弹起与翻滚，只在最后三成寿命缩小淡出；角色缺失时也继续清理。
+--- 碎石在最后三成寿命缩小淡出，到期移出场景归池；角色缺失时也继续回收。
 function Component:UpdateFragments()
     local now = os.clock()
     for index = #self._fragments, 1, -1 do
         local fragment = self._fragments[index]
         local elapsed = now - fragment.Started
         if elapsed >= fragment.Lifetime then
-            fragment.Part:Destroy()
+            fragment.Part.Parent = nil
+            table.insert(self._fragmentPool, fragment.Part)
             table.remove(self._fragments, index)
         else
             local fade = math.clamp((elapsed / fragment.Lifetime - 0.7) / 0.3, 0, 1)
@@ -245,22 +338,42 @@ function Component:CreateRock(area, column, row)
     rock:SetAttribute("HealthRatio", nil)
     rock:SetAttribute("GroundColor", nil)
     rock:PivotTo(CFrame.new(x, area.FloorY + rock:GetAttribute("FullHeight") / 2, z) * rotation)
+    rock:SetAttribute("RestPivot", rock:GetPivot())
     self:SetRockState(rock, true)
     rock.Parent = self._folder
     return rock
 end
 
---- 保留模型朝向并按血量缩放贴地；关卡色仅以 20% 强度染色，保持灰色岩石主体。
+--- 受损与受击只改变外观；碰撞盒保持竖直及固定高度，避免缩小或倾斜后可跳上石头。
 --- @param rock Model 当前客户端石头。
 --- @param area table 所属关卡及常驻颜色标记。
 --- @param health number 大于零的当前血量。
 function Component:UpdateRockAppearance(rock, area, health)
-    local ratio = math.clamp(health / RockLevel.HP[area.Index], 0.3, 1)
-    if rock:GetAttribute("HealthRatio") ~= ratio then
-        local pivot = rock:GetPivot()
+    local healthRatio = health / RockLevel.HP[area.Index]
+    local ratio = healthRatio > 0.66 and 1 or (healthRatio > 0.33 and 0.92 or 0.84)
+    local reaction = self._hitReactions[rock]
+    if rock:GetAttribute("HealthRatio") ~= ratio or reaction then
+        local pivot = rock:GetAttribute("RestPivot")
         rock:ScaleTo(ratio)
-        rock:PivotTo(CFrame.new(pivot.Position.X,
-            area.FloorY + rock:GetAttribute("FullHeight") * ratio / 2, pivot.Position.Z) * pivot.Rotation)
+        local pose = CFrame.new(pivot.Position.X,
+            area.FloorY + rock:GetAttribute("FullHeight") * ratio / 2, pivot.Position.Z) * pivot.Rotation
+        if reaction then
+            reaction.Area = area
+            reaction.Health = health
+            local progress = math.clamp((os.clock() - reaction.Started) / 0.16, 0, 1)
+            local kick = math.sin(progress * math.pi * 2) * (1 - progress)
+            local direction = reaction.Direction
+            pose = CFrame.new(direction * (0.18 * kick)) * pose
+                * CFrame.fromAxisAngle(pivot:VectorToObjectSpace(Vector3.yAxis:Cross(direction)), math.rad(4) * kick)
+            if progress >= 1 then
+                self._hitReactions[rock] = nil
+            end
+        end
+        rock:PivotTo(pose)
+        local collider = rock.Collider
+        collider.Size = Vector3.new(rock.Root.Size.X, ColliderHeight, rock.Root.Size.Z)
+        collider.CFrame = CFrame.new(pivot.Position.X, area.FloorY + ColliderHeight / 2, pivot.Position.Z)
+            * pivot.Rotation
         rock:SetAttribute("HealthRatio", ratio)
     end
     local color = area.Node.Color
@@ -275,57 +388,134 @@ end
 --- 隐藏时解除碰撞并移出场景，按模型种类回收，避免复用时改变选定的轮廓。
 --- @param rock Model 本组件创建的石头。
 function Component:RecycleRock(rock)
+    self._hitReactions[rock] = nil
     self:SetRockState(rock, false)
     rock.Parent = nil
     table.insert(self._pool[rock:GetAttribute("Variant")], rock)
 end
 
---- 每块石头只有一个根网格，碰撞仍由当前血量能否一击击破决定。
+--- 仅切换独立方块的碰撞；满血可一击击破的关卡允许穿行，由服务端即时破坏近身石头。
 --- @param rock Model 本组件创建的石头。
 --- @param canCollide boolean 是否阻挡玩家。
 function Component:SetRockState(rock, canCollide)
-    rock.Root.CanCollide = canCollide
+    if rock.Collider.CanCollide ~= canCollide then
+        rock.Collider.CanCollide = canCollide
+    end
 end
 
---- 更新短时碎石表现，每帧最多载入最近的一块；64 studs 载入、72 studs 移除。
+--- 石头关卡内禁止爬梯式攀爬，离开后恢复角色原设置；重生后重新记录新角色状态。
+--- @param character Model 当前本地角色。
+--- @param position Vector3 角色根节点位置，用于判断是否位于石头关卡。
+function Component:UpdateClimbing(character, position)
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if not humanoid then
+        return
+    end
+    local climbing = Enum.HumanoidStateType.Climbing
+    if self._climbHumanoid ~= humanoid then
+        if self._climbHumanoid and self._climbHumanoid.Parent then
+            self._climbHumanoid:SetStateEnabled(climbing, self._originalClimbingEnabled)
+        end
+        self._climbHumanoid = humanoid
+        self._originalClimbingEnabled = humanoid:GetStateEnabled(climbing)
+    end
+    local inRockArea = false
+    for index, area in ipairs(self._areas) do
+        if position.X >= area.MinX and position.X < area.MinX + area.Columns * RockLevel.CellSize
+            and position.Z >= area.MinZ and position.Z < area.MinZ + area.Rows * RockLevel.CellSize
+            and math.abs(position.Y - area.FloorY) < 12 then
+            inRockArea = true
+            break
+        end
+    end
+    local enabled = self._originalClimbingEnabled and not inRockArea
+    if humanoid:GetStateEnabled(climbing) ~= enabled then
+        humanoid:SetStateEnabled(climbing, enabled)
+    end
+    if inRockArea and humanoid:GetState() == climbing then
+        humanoid:ChangeState(Enum.HumanoidStateType.Freefall)
+    end
+end
+
+--- 每 0.1 秒检查分块及攀爬限制，每帧最多生成 6 块石头；血量与等级变化及时刷新。
 function Component:UpdateVisuals()
     self:UpdateFragments()
+    self:UpdateSparks()
     local character = self:GetPlayerCharacter()
     local root = character and character:FindFirstChild("HumanoidRootPart")
     if not root then
         return
     end
     local position = root.Position
-    local candidate, nearest = nil, math.huge
-    for index = 1, #self._chunks do
-        local chunk = self._chunks[index]
-        local distance = Vector3.new(position.X - chunk.Center.X, 0, position.Z - chunk.Center.Z).Magnitude
-        if chunk.Rocks and distance > RockLevel.HideDistance then
-            for key, rock in pairs(chunk.Rocks) do
-                self:RecycleRock(rock)
-            end
-            chunk.Rocks = nil
-        elseif not chunk.Rocks and distance <= RockLevel.LoadDistance and distance < nearest then
-            candidate, nearest = chunk, distance
-        end
-    end
-    if candidate then
-        candidate.Rocks = {}
-        for row = candidate.Row, math.min(candidate.Row + 5, candidate.Area.Rows - 1) do
-            for column = candidate.Column, math.min(candidate.Column + 5, candidate.Area.Columns - 1) do
-                local key = candidate.Area.Index .. ":" .. (row * candidate.Area.Columns + column + 1)
-                if self._health[key] ~= 0 then
-                    local rock = self:CreateRock(candidate.Area, column, row)
-                    candidate.Rocks[key] = rock
+    local now = os.clock()
+    if now >= self._nextChunkCheck then
+        self._nextChunkCheck = now + 0.1
+        self:UpdateClimbing(character, position)
+        self._refreshRocks = true
+        local candidate, nearest = nil, math.huge
+        for index = 1, #self._chunks do
+            local chunk = self._chunks[index]
+            local dx, dz = position.X - chunk.Center.X, position.Z - chunk.Center.Z
+            local distanceSquared = dx * dx + dz * dz
+            if chunk.Rocks and distanceSquared > RockLevel.HideDistance * RockLevel.HideDistance then
+                for key, rock in pairs(chunk.Rocks) do
+                    self:RecycleRock(rock)
                 end
+                chunk.Rocks = nil
+                if self._loadingChunk == chunk then
+                    self._loadingChunk = nil
+                end
+            elseif not chunk.Rocks and distanceSquared <= RockLevel.LoadDistance * RockLevel.LoadDistance
+                and distanceSquared < nearest then
+                candidate, nearest = chunk, distanceSquared
             end
+        end
+        if candidate and not self._loadingChunk then
+            candidate.Rocks = {}
+            candidate.NextCell = 0
+            self._loadingChunk = candidate
         end
     end
     local level = self:GetNumber(Fields.RockTrainingLevel)
+    local loading = self._loadingChunk
+    if loading then
+        local columns = math.min(6, loading.Area.Columns - loading.Column)
+        local count = columns * math.min(6, loading.Area.Rows - loading.Row)
+        local canCollide = RockLevel.GetDamage(level, loading.Area.Index) < RockLevel.HP[loading.Area.Index]
+        for cell = loading.NextCell, math.min(loading.NextCell + 5, count - 1) do
+            local row = loading.Row + math.floor(cell / columns)
+            local column = loading.Column + cell % columns
+            local key = loading.Area.Index .. ":" .. (row * loading.Area.Columns + column + 1)
+            local health = self._health[key] or RockLevel.HP[loading.Area.Index]
+            if health > 0 then
+                local rock = self:CreateRock(loading.Area, column, row)
+                loading.Rocks[key] = rock
+                self:UpdateRockAppearance(rock, loading.Area, health)
+                self:SetRockState(rock, canCollide)
+            end
+            loading.NextCell = cell + 1
+        end
+        if loading.NextCell >= count then
+            self._loadingChunk = nil
+        end
+    end
+    if self._refreshRocks or self._visualLevel ~= level then
+        self._refreshRocks = false
+        self._visualLevel = level
+        self:RefreshVisibleRocks(level)
+    end
+    for rock, reaction in pairs(self._hitReactions) do
+        self:UpdateRockAppearance(rock, reaction.Area, reaction.Health)
+    end
+end
+
+--- 在状态变化或低频检查时同步已显示石头，避免静止石头每帧重复计算与写属性。
+--- @param level number 当前训练等级，按关卡满血判断是否允许直接穿行。
+function Component:RefreshVisibleRocks(level)
     for index = 1, #self._chunks do
         local chunk = self._chunks[index]
         if chunk.Rocks then
-            local damage = RockLevel.GetDamage(level, chunk.Area.Index)
+            local canCollide = RockLevel.GetDamage(level, chunk.Area.Index) < RockLevel.HP[chunk.Area.Index]
             for key, rock in pairs(chunk.Rocks) do
                 local health = self._health[key] or RockLevel.HP[chunk.Area.Index]
                 if health <= 0 then
@@ -333,7 +523,7 @@ function Component:UpdateVisuals()
                     chunk.Rocks[key] = nil
                 else
                     self:UpdateRockAppearance(rock, chunk.Area, health)
-                    self:SetRockState(rock, health > damage)
+                    self:SetRockState(rock, canCollide)
                 end
             end
         end
@@ -342,6 +532,8 @@ end
 
 --- 回到安全区后清空已显示的块索引，下一帧按新血量重建。
 function Component:ResetVisuals()
+    self._loadingChunk = nil
+    self._nextChunkCheck = 0
     for index = 1, #self._chunks do
         local chunk = self._chunks[index]
         if chunk.Rocks then
@@ -353,18 +545,35 @@ function Component:ResetVisuals()
     end
 end
 
---- 释放场景、五种本地模板及各自的复用池，基类负责断开全部监听。
+--- 恢复角色攀爬设置，停止火花补间并释放场景、模板及全部对象池，基类负责断开监听。
 function Component:Dtor()
+    if self._climbHumanoid and self._climbHumanoid.Parent then
+        self._climbHumanoid:SetStateEnabled(Enum.HumanoidStateType.Climbing, self._originalClimbingEnabled)
+    end
     if self._fragmentTemplate then
         self._fragmentTemplate:Destroy()
     end
     for index, template in ipairs(self._templates) do
         template:Destroy()
     end
+    for index, spark in ipairs(self._sparks) do
+        spark.Tween:Cancel()
+        spark.Tween:Destroy()
+    end
+    self._sparks = {}
+    for index, fragment in ipairs(self._fragmentPool) do
+        fragment:Destroy()
+    end
+    self._fragmentPool = {}
+    for index, spark in ipairs(self._sparkPool) do
+        spark:Destroy()
+    end
+    self._sparkPool = {}
     if self._folder then
         self._folder:Destroy()
     end
     self._fragments = {}
+    self._hitReactions = {}
     for index, pool in ipairs(self._pool) do
         for rockIndex, rock in ipairs(pool) do
             rock:Destroy()

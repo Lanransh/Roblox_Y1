@@ -4,6 +4,7 @@ require(ReplicatedStorage:WaitForChild("Scripts"):WaitForChild("GameInit"))
 local FC = _G.FC
 require(script.Parent.Player.CRockLevelCompClass)
 require(script.Parent.UI.CMainUICompClass)
+require(script.Parent.UI.CCommonUICompClass)
 local PlayerClass = require(script.Parent.Player.CPlayerObjectClass)
 
 FC.PlayerObject = PlayerClass.New(Players.LocalPlayer.UserId)

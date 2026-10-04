@@ -353,56 +353,17 @@ end)
    </Properties>
   </Item>
   </Item>
-  <Item class="TextLabel">
+  <Item class="ImageLabel">
    <Properties>
     <string name="Name">StrengthIcon</string>
-    <bool name="Active">false</bool>
-    <Vector2 name="AnchorPoint"><X>0</X><Y>0</Y></Vector2>
-    <bool name="AutoLocalize">true</bool>
-    <token name="AutomaticSize">0</token>
-    <Color3 name="BackgroundColor3"><R>0.6392157077789307</R><G>0.6352941393852234</G><B>0.6470588445663452</B></Color3>
     <float name="BackgroundTransparency">1</float>
-    <Color3 name="BorderColor3"><R>0.10588235408067703</R><G>0.16470588743686676</G><B>0.2078431397676468</B></Color3>
-    <token name="BorderMode">0</token>
     <int name="BorderSizePixel">0</int>
-    <bool name="ClipsDescendants">false</bool>
-    <Font name="FontFace"><Family><url>rbxasset://fonts/families/GothamSSm.json</url></Family><Weight>900</Weight><Style>0</Style><CachedFaceId><null></null></CachedFaceId></Font>
-    <bool name="Interactable">true</bool>
-    <int name="LayoutOrder">0</int>
-    <float name="LineHeight">1</float>
-    <int name="MaxVisibleGraphemes">-1</int>
     <UDim2 name="Position"><XS>0</XS><XO>5</XO><YS>0</YS><YO>3</YO></UDim2>
-    <bool name="RichText">false</bool>
-    <float name="Rotation">0</float>
-    <bool name="Selectable">false</bool>
-    <int name="SelectionOrder">0</int>
     <UDim2 name="Size"><XS>0</XS><XO>48</XO><YS>0</YS><YO>46</YO></UDim2>
-    <token name="SizeConstraint">0</token>
-    <string name="Text">💪</string>
-    <Color3 name="TextColor3"><R>1</R><G>0.7529411911964417</G><B>0.13333334028720856</B></Color3>
-    <bool name="TextScaled">true</bool>
-    <float name="TextSize">8</float>
-    <Color3 name="TextStrokeColor3"><R>0</R><G>0</G><B>0</B></Color3>
-    <float name="TextStrokeTransparency">1</float>
-    <float name="TextTransparency">0</float>
-    <token name="TextTruncate">0</token>
-    <bool name="TextWrapped">true</bool>
-    <token name="TextXAlignment">2</token>
-    <token name="TextYAlignment">1</token>
-    <bool name="Visible">true</bool>
+    <Content name="Image"><url>rbxassetid://123326023432901</url></Content>
+    <token name="ScaleType">3</token>
     <int name="ZIndex">5</int>
    </Properties>
-  <Item class="UIStroke">
-   <Properties>
-    <string name="Name">TextOutline</string>
-    <token name="ApplyStrokeMode">0</token>
-    <Color3 name="Color"><R>0</R><G>0</G><B>0</B></Color3>
-    <bool name="Enabled">true</bool>
-    <token name="LineJoinMode">0</token>
-    <float name="Thickness">2</float>
-    <float name="Transparency">0</float>
-   </Properties>
-  </Item>
   </Item>
   <Item class="TextLabel">
    <Properties>

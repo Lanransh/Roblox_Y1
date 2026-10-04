@@ -13,7 +13,7 @@ function Component:GetCompName()
     return "CMainUIComp"
 end
 
---- 服务端就绪后绑定一次长生命周期界面，初始同步不播放收益动画。
+--- 服务端就绪后绑定并显示长生命周期主界面，初始同步不播放收益动画。
 function Component:OnReady()
     self._playerGui = self:GetPlayerNode():WaitForChild("PlayerGui")
     self._rootNode = self._playerGui:WaitForChild("MainUI")
@@ -29,42 +29,42 @@ function Component:OnReady()
     self._pulseScale = Instance.new("UIScale")
     self._pulseScale.Parent = self._strength
     self:BindButtons()
-    --- 使用收益来源决定动画路线，不从合并后的训练值变化猜测点击。
-    --- @param gain number 服务端确认的收益。
-    --- @param position Vector2? 点击的原始屏幕坐标，走路及击打收益为空。
-    FX.Network:RegServerMsgCallback("S2C_TrainingEffect", function(gain, position)
-        self:ShowTrainingEffect(gain, position)
+    --- 走路及击打按服务端结算播放，点击图标由本地输入立即播放。
+    --- @param gain number 服务端确认的走路及击打收益。
+    FX.Network:RegServerMsgCallback("S2C_TrainingEffect", function(gain)
+        self:ShowTrainingEffect(gain)
     end)
     self:WatchDataChanged(Fields.RockTrainingValue, self.RefreshProgress, self)
     self:WatchDataChanged(Fields.Diamonds, self.RefreshDiamonds, self)
     self:WatchDataChanged(Fields.RockLoot, self.RefreshLoot, self)
-    --- 鼠标只在未被按钮、背包等 UI 消耗时触发训练。
+    --- 鼠标只在未被按钮、背包等 UI 消耗时播放点击图标。
     --- @param input InputObject 本次输入。
     --- @param processed boolean 是否已被引擎 UI 消耗。
     self:TrackConnection(UserInputService.InputBegan:Connect(function(input, processed)
         if input.UserInputType == Enum.UserInputType.MouseButton1 and not processed then
-            self:RequestTraining(Vector2.new(input.Position.X, input.Position.Y))
+            self:ShowClickTrainingEffect(Vector2.new(input.Position.X, input.Position.Y))
         end
     end))
-    --- 触屏只处理世界轻触，不把摇杆拖动和界面点击当训练。
+    --- 触屏只为世界轻触播放点击图标，忽略摇杆拖动和界面点击。
     --- @param position Vector2 引擎提供的轻触位置，作为图标飞行起点。
     --- @param processed boolean 是否被界面消耗。
     self:TrackConnection(UserInputService.TouchTapInWorld:Connect(function(position, processed)
         if not processed then
-            self:RequestTraining(position)
+            self:ShowClickTrainingEffect(position)
         end
     end))
+    self:Show()
 end
 
---- 本地限速减少无效请求，奖励和实际限速仍由服务端决定。
+--- 本地限速后立即播放点击图标，仅做表现，不发送请求或增加训练值。
 --- @param position Vector2 本次点击或轻触的屏幕像素坐标。
-function Component:RequestTraining(position)
+function Component:ShowClickTrainingEffect(position)
     local now = os.clock()
     if UserInputService:GetFocusedTextBox() or now - self._lastClick < RockLevel.ClickInterval then
         return
     end
     self._lastClick = now
-    FX.Network:SendMsgToServer("C2S_ClickTraining", position)
+    self:ShowTrainingEffect(RockLevel.ClickEffectValue, position)
 end
 
 --- 所有现有主界面按钮均有响应；已存在重生界面可打开，其余显示开发中。
@@ -162,7 +162,7 @@ function Component:RefreshProgress(value, oldValue)
 end
 
 --- 点击显示一个全额图标，走路及击打在角色周围独立随机显示三个均分图标，飞向中心时最小缩至 50%。
---- @param gain number 本次服务器确认增加的训练值。
+--- @param gain number 点击时为配置的表现数值，走路及击打时为服务器确认的收益。
 --- @param position Vector2? 点击起点，走路及击打收益不传。
 function Component:ShowTrainingEffect(gain, position)
     -- 完整屏幕与角色投影都转换到共用 ScreenGui 的局部坐标，避免安全区造成偏移。

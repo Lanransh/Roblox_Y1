@@ -6,7 +6,7 @@ _G.CPlayerObjectClass = Player
 --- @param playerId number 当前玩家的 Roblox UserId。
 function Player:Ctor(playerId)
     Player.Super.Ctor(self, playerId)
-    self:AddComponent("FCCommonUICompClass")
+    self:AddComponent("CCommonUICompClass")
     self:AddComponent("FCFriendCompClass")
     self:AddComponent("CRockLevelCompClass")
     self:AddComponent("CMainUICompClass")

@@ -5,11 +5,9 @@ return {
         -- key: string，当前玩家已击破的石头格号；服务器校验血量并只弹出一次。
         -- 单向请求，不接受客户端提供道具、价格、位置或玩家身份。
         "C2S_RequestRockDrop",
-        -- position: Vector2，点击的屏幕像素坐标，仅用于表现；服务端校验存活并限速。
-        "C2S_ClickTraining",
     },
     ServerMsgID = {
-        -- gain: number，服务端实际总收益；position: Vector2?，点击起点，走路及击打时不传。
+        -- gain: number，服务端实际走路及击打总收益；点击图标由客户端立即播放，无需回包。
         "S2C_TrainingEffect",
     },
 }
