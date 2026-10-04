@@ -38,6 +38,7 @@
       "$className": "StarterGui",
       "$ignoreUnknownInstances": true,
       "MainUI": { "$path": "StarterGui/Main" },
+      "ScreenGui": { "$path": "StarterGui/ScreenGui" },
       "RebirthUI": { "$path": "StarterGui/RebirthUI.model.json" },
       "OfflineRewardUI": { "$path": "StarterGui/OfflineRewardUI.model.json" }
     },
