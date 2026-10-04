@@ -16,6 +16,7 @@ function Component:Ctor(owner)
     self._random = Random.new()
     self._lastAttack = -1
     self._lastGrowth = os.clock()
+    self._lastClick = -math.huge
     self._hit = false
 end
 
@@ -176,18 +177,68 @@ function Component:PickupDrop(key)
         return
     end
     drop.Picking = true
-    local inventory = self:GetPlayerObject():RequireComponent("FSInventoryComp")
-    local item = FS.ItemClass.New(Collectible.ItemId, 1, {TemplateName = drop.Template.Name, Price = drop.Price})
-    if not inventory:AddItems({item}) then
+    local loot = self:GetTable(Fields.RockLoot)
+    if #loot >= RockLevel.LootCapacity then
         drop.Picking = false
-        self:ShowTips("背包已满，请先腾出空位")
+        self:ShowTips("战利品背包已满，请返回基地存放")
         return
     end
+    table.insert(loot, {TemplateName = drop.Template.Name, Price = drop.Price,
+        DisplayName = drop.Template:GetAttribute("DisplayName")})
+    self:SetTable(Fields.RockLoot, loot)
     self._dropNodes[key] = nil
     drop.Tween:Cancel()
     drop.Tween:Destroy()
     drop.Model:Destroy()
     self:ShowTips("拾取了" .. drop.Template:GetAttribute("DisplayName"))
+end
+
+--- 仅在基地调用，逐件入正式背包；满包时保留未转移战利品，避免丢失或重复发放。
+function Component:DepositLoot()
+    local loot = self:GetTable(Fields.RockLoot)
+    if #loot == 0 then
+        return
+    end
+    local inventory = self:GetPlayerObject():RequireComponent("FSInventoryComp")
+    local deposited = 0
+    while #loot > 0 do
+        local entry = loot[1]
+        local item = FS.ItemClass.New(Collectible.ItemId, 1,
+            {TemplateName = entry.TemplateName, Price = entry.Price})
+        if not inventory:AddItems({item}) then
+            break
+        end
+        table.remove(loot, 1)
+        deposited += 1
+    end
+    if deposited > 0 then
+        self:SetTable(Fields.RockLoot, loot)
+        self:ShowTips(string.format("已将 %d 件战利品存入背包", deposited))
+    end
+    if #loot > 0 and not self._depositFull then
+        self:ShowTips("背包已满，剩余道具保留在战利品背包")
+    end
+    self._depositFull = #loot > 0
+end
+
+--- 点击训练只接受已登录的存活角色，每 0.2 秒最多结算一次。
+--- @param position Vector2 客户端点击坐标，仅用于回传表现，不影响奖励数量。
+function Component:ClickTraining(position)
+    if typeof(position) ~= "Vector2" or not (math.abs(position.X) <= 100000
+        and math.abs(position.Y) <= 100000) then
+        return
+    end
+    local character = self:GetPlayerCharacter()
+    local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+    local now = os.clock()
+    if not self._levelStat or not humanoid or humanoid.Health <= 0
+        or now - self._lastClick < RockLevel.ClickInterval then
+        return
+    end
+    self._lastClick = now
+    self:AddNumber(Fields.RockTrainingValue, RockLevel.ClickTraining)
+    self:RefreshProgress()
+    FX.Network:SendMsgToClient(self:GetPlayerId(), "S2C_TrainingEffect", RockLevel.ClickTraining, position)
 end
 
 --- 结束个人关卡轮次时释放掉落、提示连接和仍在播放的补间任务。
@@ -350,7 +401,7 @@ function Component:Tick()
     local humanoid = character and character:FindFirstChildOfClass("Humanoid")
     if not root or not humanoid or humanoid.Health <= 0 then
         self:StopSwing()
-        self._lastPosition = nil
+        self._lastGrowth = os.clock()
         self._hit = false
         return
     end
@@ -358,7 +409,6 @@ function Component:Tick()
     local position = root.Position
     if self._character ~= character then
         self._character = character
-        self._lastPosition = position
         self._lastGrowth = now
         self:RestoreRocks()
         self:EquipPickaxe(humanoid)
@@ -370,6 +420,9 @@ function Component:Tick()
         and math.abs(position.Y - firstArea.FloorY) < 16
     if inSafeArea then
         self:RestoreRocks()
+        self:DepositLoot()
+    else
+        self._depositFull = false
     end
     local regularAttack = now - self._lastAttack >= 0.8
     local targetFound = false
@@ -401,19 +454,14 @@ function Component:Tick()
         self._lastAttack = now
     end
     if now - self._lastGrowth >= 1 then
-        local previous = self._lastPosition or position
-        local distance = Vector3.new(position.X - previous.X, 0, position.Z - previous.Z).Magnitude
-        local elapsed = now - self._lastGrowth
-        -- 不按客户端声明的行走状态结算，排除原地和超出正常步速的瞬移。
-        local moving = distance > 0.1 and distance <= humanoid.WalkSpeed * elapsed * 1.5
-            and humanoid.FloorMaterial ~= Enum.Material.Air
-        local gain = (moving and 2 or 0) + (self._hit and 2 or 0)
+        local seconds = math.floor(now - self._lastGrowth)
+        local gain = RockLevel.AutomaticTraining * seconds + (self._hit and 2 or 0)
         if gain > 0 then
             self:AddNumber(Fields.RockTrainingValue, gain)
             self:RefreshProgress()
+            FX.Network:SendMsgToClient(self:GetPlayerId(), "S2C_TrainingEffect", gain)
         end
-        self._lastPosition = position
-        self._lastGrowth = now
+        self._lastGrowth += seconds
         self._hit = false
     end
 end

@@ -36,8 +36,10 @@
     },
     "StarterGui": {
       "$className": "StarterGui",
-      "$path": "StarterGui",
-      "$ignoreUnknownInstances": true
+      "$ignoreUnknownInstances": true,
+      "MainUI": { "$path": "StarterGui/Main" },
+      "RebirthUI": { "$path": "StarterGui/RebirthUI.model.json" },
+      "OfflineRewardUI": { "$path": "StarterGui/OfflineRewardUI.model.json" }
     },
     "StarterPlayer": {
       "$className": "StarterPlayer",

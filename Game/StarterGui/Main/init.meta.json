@@ -5,7 +5,7 @@
     "AutoLocalize": true,
     "ScreenInsets": "DeviceSafeInsets",
     "DisplayOrder": 0,
-    "ResetOnSpawn": true,
+    "ResetOnSpawn": false,
     "ClipToDeviceSafeArea": true,
     "SafeAreaCompatibility": "FullscreenExtension",
     "ZIndexBehavior": "Sibling"

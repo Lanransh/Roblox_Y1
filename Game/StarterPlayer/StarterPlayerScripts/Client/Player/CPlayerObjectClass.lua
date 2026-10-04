@@ -9,6 +9,7 @@ function Player:Ctor(playerId)
     self:AddComponent("FCCommonUICompClass")
     self:AddComponent("FCFriendCompClass")
     self:AddComponent("CRockLevelCompClass")
+    self:AddComponent("CMainUICompClass")
 end
 
 return Player

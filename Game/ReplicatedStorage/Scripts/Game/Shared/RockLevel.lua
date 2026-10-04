@@ -6,6 +6,10 @@ local RockLevel = {
     LoadDistance = 64,
     HideDistance = 72,
     MaxLevel = NumericalConfig.levelCurves.input.max,
+    AutomaticTraining = NumericalConfig.trainingSettlementsPerSecond,
+    ClickTraining = 2,
+    ClickInterval = 0.2,
+    LootCapacity = 12, -- 沿用 Studio_Y3 的战利品库存容量。
     HP = {29, 122, 520, 2176, 9101, 38000, 159000, 664000, 2770000, 11600000, 48400000, 202000000, 844000000},
 }
 local thresholds = {0}
@@ -21,6 +25,8 @@ end
 --- @param value number 服务端持久化的累计训练值。
 --- @return number 训练等级。
 --- @return number 对应力量。
+--- @return number 当前等级内的训练进度。
+--- @return number 当前等级升级需求。
 function RockLevel.GetProgress(value)
     local level = 1
     while level < RockLevel.MaxLevel do
@@ -32,7 +38,8 @@ function RockLevel.GetProgress(value)
         end
         level += 1
     end
-    return level, CurveSampler:SampleCurveGroupColumnFormula(NumericalConfig.levelCurves, "strength", level)
+    return level, CurveSampler:SampleCurveGroupColumnFormula(NumericalConfig.levelCurves, "strength", level),
+        value - thresholds[level], RockLevel.GetNextExperience(level)
 end
 
 --- 从 stageCurves 读取推荐等级，保留等级差减伤规则。

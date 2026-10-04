@@ -18,12 +18,46 @@
     <float name="Rotation">0</float>
     <bool name="Selectable">false</bool>
     <int name="SelectionOrder">0</int>
-    <UDim2 name="Size"><XS>0</XS><XO>246</XO><YS>0</YS><YO>167</YO></UDim2>
+    <UDim2 name="Size"><XS>0</XS><XO>246</XO><YS>0</YS><YO>217</YO></UDim2>
     <token name="SizeConstraint">0</token>
     <token name="Style">0</token>
     <bool name="Visible">true</bool>
     <int name="ZIndex">1</int>
    </Properties>
+  <Item class="Frame">
+   <Properties>
+    <string name="Name">DiamondStat</string>
+    <UDim2 name="Position"><XS>0</XS><XO>16</XO><YS>0</YS><YO>175</YO></UDim2>
+    <UDim2 name="Size"><XS>0</XS><XO>230</XO><YS>0</YS><YO>42</YO></UDim2>
+    <Color3 name="BackgroundColor3"><R>0.122</R><G>0.137</G><B>0.192</B></Color3>
+    <float name="BackgroundTransparency">0.45</float>
+    <int name="BorderSizePixel">0</int>
+   </Properties>
+   <Item class="UICorner"><Properties><UDim name="CornerRadius"><S>0</S><O>4</O></UDim></Properties></Item>
+   <Item class="TextLabel">
+    <Properties>
+     <string name="Name">Icon</string>
+     <string name="Text">◆</string>
+     <UDim2 name="Size"><XS>0</XS><XO>42</XO><YS>1</YS><YO>0</YO></UDim2>
+     <float name="BackgroundTransparency">1</float>
+     <Color3 name="TextColor3"><R>0.3</R><G>0.85</G><B>1</B></Color3>
+     <float name="TextSize">32</float>
+    </Properties>
+   </Item>
+   <Item class="TextLabel">
+    <Properties>
+     <string name="Name">Value</string>
+     <string name="Text">500</string>
+     <UDim2 name="Position"><XS>0</XS><XO>48</XO><YS>0</YS><YO>0</YO></UDim2>
+     <UDim2 name="Size"><XS>1</XS><XO>-56</XO><YS>1</YS><YO>0</YO></UDim2>
+     <float name="BackgroundTransparency">1</float>
+     <Color3 name="TextColor3"><R>1</R><G>1</G><B>1</B></Color3>
+     <float name="TextSize">24</float>
+     <token name="TextXAlignment">0</token>
+     <token name="Font">20</token>
+    </Properties>
+   </Item>
+  </Item>
   <Item class="Frame">
    <Properties>
     <string name="Name">RebirthStat</string>

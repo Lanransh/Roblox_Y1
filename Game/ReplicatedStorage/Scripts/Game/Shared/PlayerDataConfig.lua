@@ -9,6 +9,14 @@ _G.PlayerKVEnum = {
 local PlayerKVEnum = _G.PlayerKVEnum
 
 return {
+    Diamonds = {
+        Type = "number", Key = "Diamonds", DefVal = 500,
+        KVTable = PlayerKVEnum.ePlayerData, Sync = true,
+    },
+    RockLoot = {
+        Type = "table", Key = "RockLoot", DefVal = {},
+        KVTable = PlayerKVEnum.ePlayerData, Sync = true,
+    },
     RockTrainingValue = {
         Type = "number", Key = "RockTrainingValue", DefVal = 0,
         KVTable = PlayerKVEnum.ePlayerData, Sync = true,

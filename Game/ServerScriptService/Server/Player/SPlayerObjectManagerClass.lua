@@ -22,6 +22,17 @@ function Manager:RegRockDropMsg()
         end
     end
     FX.Network:RegClientMsgCallback("C2S_RequestRockDrop", requestDrop)
+    --- 客户端只能请求点击，不能提交训练数量或其他玩家身份。
+    --- @param userId number 引擎认证的玩家身份。
+    --- @param position Vector2 点击像素坐标，仅转发给本人播放动画。
+    local function clickTraining(userId, position)
+        local player = self:GetPlayerObject(userId)
+        local rocks = player and player:GetComponent("SRockLevelComp")
+        if rocks then
+            rocks:ClickTraining(position)
+        end
+    end
+    FX.Network:RegClientMsgCallback("C2S_ClickTraining", clickTraining)
 end
 
 function Manager:GetInventory(playerId)
