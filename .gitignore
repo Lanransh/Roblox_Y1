@@ -31,3 +31,5 @@ AgentWorkspace/FigmaEggy/*
 !AgentWorkspace/FigmaEggy/Game-DESIGN.md
 /Run.bat
 /Build/FigmaRoblox/
+.studiogametoolkit/figma-roblox/
+Build/FigmaRoblox/

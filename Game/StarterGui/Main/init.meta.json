@@ -1,0 +1,13 @@
+{
+  "className": "ScreenGui",
+  "properties": {
+    "Enabled": true,
+    "AutoLocalize": true,
+    "ScreenInsets": "DeviceSafeInsets",
+    "DisplayOrder": 0,
+    "ResetOnSpawn": true,
+    "ClipToDeviceSafeArea": true,
+    "SafeAreaCompatibility": "FullscreenExtension",
+    "ZIndexBehavior": "Sibling"
+  }
+}

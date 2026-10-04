@@ -3,7 +3,8 @@
   "properties": {
     "ResetOnSpawn": false,
     "ZIndexBehavior": "Sibling",
-    "ScreenInsets": "CoreUISafeInsets"
+    "ScreenInsets": "CoreUISafeInsets",
+    "Enabled": false
   },
   "children": [
     {
