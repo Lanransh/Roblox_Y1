@@ -73,8 +73,8 @@ end
 
 --- 翻译加载完成或玩家切换语言时更新当前文案，不重置提示关闭计时。
 function UI:RefreshLocalization()
-    if self._tipKey and self.Tips.Visible then
-        self.Tips.Text = self.Localization:FormatByKey(self._tipKey, self._tipArguments)
+    if self._tipKey and self._tipLabel then
+        self._tipLabel.Text = self.Localization:FormatByKey(self._tipKey, self._tipArguments)
     end
     if self._descriptionKey then
         self.Description.Text = self.Localization:FormatByKey(self._descriptionKey, self._descriptionArguments)

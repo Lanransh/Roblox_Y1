@@ -119,12 +119,15 @@ function Anim:FadeIn(node, duration, callback)
     return self:_Play(node, { GroupTransparency = 0 }, duration, callback)
 end
 
+--- 整组淡出文字、背景和描边，可先停留指定秒数再开始。
 --- @param node CanvasGroup 淡出根节点。
 --- @param callback function 完成后隐藏节点的回调。
 --- @param duration number 秒数。
+--- @param delay number? 淡出前的停留秒数，默认不等待。
 --- @return Tween 淡出动画。
-function Anim:FadeOut(node, callback, duration)
-    return self:_Play(node, { GroupTransparency = 1 }, duration, callback)
+function Anim:FadeOut(node, callback, duration, delay)
+    return self:_Play(node, { GroupTransparency = 1 }, duration, callback,
+        TweenInfo.new(duration or 0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.Out, 0, false, delay or 0))
 end
 
 --- @param node GuiObject 抖动节点。

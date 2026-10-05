@@ -32,16 +32,41 @@ function UI:Ctor(owner)
     })
     self.Tips = Text("TextLabel", "Tips", self.Root, {
         AnchorPoint = Vector2.new(0.5, 0),
-        Position = UDim2.fromScale(0.5, 0.12),
+        Position = UDim2.fromScale(0.5, 0.08),
         Size = UDim2.new(0.86, 0, 0, 64),
-        BackgroundColor3 = Color3.fromRGB(28, 34, 48),
-        BackgroundTransparency = 0.1,
+        BackgroundColor3 = Color3.fromRGB(8, 10, 14),
+        BackgroundTransparency = 0.35,
         Visible = false,
         Text = "",
         ZIndex = 10,
     })
-    Node("UISizeConstraint", "MaxWidth", self.Tips, { MaxSize = Vector2.new(600, 120) })
-    Node("UICorner", "Corner", self.Tips, { CornerRadius = UDim.new(0, 12) })
+    self.Tips.Font = Enum.Font.GothamBlack
+    self.Tips.TextSize = 28
+    self.Tips.TextColor3 = Color3.new(1, 1, 1)
+    Node("UISizeConstraint", "MaxWidth", self.Tips, { MaxSize = Vector2.new(900, 120) })
+    Node("UIStroke", "TextStroke", self.Tips, {
+        ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual,
+        Color = Color3.new(0, 0, 0),
+        Thickness = 2,
+    })
+    local fade = NumberSequence.new({
+        NumberSequenceKeypoint.new(0, 1),
+        NumberSequenceKeypoint.new(0.15, 0),
+        NumberSequenceKeypoint.new(0.85, 0),
+        NumberSequenceKeypoint.new(1, 1),
+    })
+    Node("UIGradient", "EdgeFade", self.Tips, { Transparency = fade })
+    for index, position in ipairs({UDim2.new(), UDim2.new(0, 0, 1, -2)}) do
+        local line = Node("Frame", "Line" .. index, self.Tips, {
+            Position = position,
+            Size = UDim2.new(1, 0, 0, 2),
+            BackgroundColor3 = Color3.fromRGB(20, 24, 30),
+            BackgroundTransparency = 0.3,
+            BorderSizePixel = 0,
+            ZIndex = 10,
+        })
+        Node("UIGradient", "EdgeFade", line, { Transparency = fade })
+    end
     -- 全屏按钮消费遮罩区域的鼠标/触摸输入，避免弹窗后方的场景被点击。
     self.Modal = Text("TextButton", "Modal", self.Root, {
         Size = UDim2.fromScale(1, 1),
@@ -125,14 +150,40 @@ function UI:ShowDeveloperBuyUI(productId)
     return true
 end
 
--- 后一次提示替换前一次；销毁组件时取消计时器。
+--- 清理本次提示的动画和显示节点，保留隐藏模板供下次克隆。
+function UI:_ClearTip()
+    if self._tipGroup then
+        FC.UIAnim:StopProgress(self._tipGroup)
+        self._tipGroup:Destroy()
+        self._tipGroup = nil
+        self._tipLabel = nil
+    end
+end
+
+--- 提示固定在原位，默认显示 2 秒后用 1 秒整组淡出并销毁。
+--- @param message string 已准备好的提示文案。
+--- @param duration number? 淡出前的显示时长，默认 2 秒。
 function UI:ShowTips(message, duration)
-    FX.Task:Cancel(self._tipTask)
-    self.Tips.Text, self.Tips.Visible = tostring(message), true
-    self._tipTask = task.delay(duration or 1.5, function()
-        self._tipTask = nil
-        self.Tips.Visible = false
-    end)
+    self:_ClearTip()
+    local group = Node("CanvasGroup", "ActiveTip", self.Tips.Parent, {
+        AnchorPoint = self.Tips.AnchorPoint,
+        Position = self.Tips.Position,
+        Size = self.Tips.Size,
+        BackgroundTransparency = 1,
+        ZIndex = self.Tips.ZIndex,
+    })
+    self.Tips.MaxWidth:Clone().Parent = group
+    local label = self.Tips:Clone()
+    label.AnchorPoint = Vector2.zero
+    label.Position = UDim2.new()
+    label.Size = UDim2.fromScale(1, 1)
+    label.Text = tostring(message)
+    label.Visible = true
+    label.Parent = group
+    self._tipGroup, self._tipLabel = group, label
+    FC.UIAnim:FadeOut(group, function()
+        self:_ClearTip()
+    end, 1, duration or 2)
 end
 
 -- 保留 Y3 参数：Desc、ConfirmBtnTxt、ConfirmCB；新增可选取消按钮与回调。
@@ -186,11 +237,11 @@ function UI:HideTooltips()
     self._previousSelection = nil
 end
 
---- 释放组件拥有的协议回调、提示计时器和 UI 节点。
+--- 释放组件拥有的协议回调、提示动画和 UI 节点。
 function UI:Dtor()
     FX.Network:UnRegServerMsgCallback("S2C_ShowTips")
     FX.Network:UnRegServerMsgCallback("S2C_ShowDeveloperBuyUI")
-    FX.Task:Cancel(self._tipTask)
+    self:_ClearTip()
     self:HideTooltips()
     UI.Super.Dtor(self)
     self.Root:Destroy()
