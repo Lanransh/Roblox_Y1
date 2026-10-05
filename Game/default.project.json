@@ -5,46 +5,61 @@
   "globIgnorePaths": ["**/.gitkeep"],
   "tree": {
     "$className": "DataModel",
+    "$ignoreUnknownInstances": true,
     "Workspace": {
       "$className": "Workspace",
-      "$path": "Workspace",
       "$ignoreUnknownInstances": true
     },
     "ReplicatedStorage": {
       "$className": "ReplicatedStorage",
       "$ignoreUnknownInstances": true,
-      "Assets": {
-        "$path": "ReplicatedStorage/Assets"
-      },
-      "Nodes": {
-        "$path": "ReplicatedStorage/Nodes",
-        "$ignoreUnknownInstances": true
-      },
       "Scripts": {
-        "$path": "ReplicatedStorage/Scripts"
+        "$path": "ReplicatedStorage/Scripts",
+        "$ignoreUnknownInstances": false
       }
     },
     "ServerScriptService": {
       "$className": "ServerScriptService",
-      "$path": "ServerScriptService",
-      "$ignoreUnknownInstances": true
+      "$ignoreUnknownInstances": true,
+      "Server": {
+        "$path": "ServerScriptService/Server",
+        "$ignoreUnknownInstances": false
+      }
     },
     "ServerStorage": {
       "$className": "ServerStorage",
-      "$path": "ServerStorage",
       "$ignoreUnknownInstances": true
     },
     "StarterGui": {
       "$className": "StarterGui",
       "$ignoreUnknownInstances": true,
-      "ScreenGui": { "$path": "StarterGui/ScreenGui" }
+      "ScreenGui": {
+        "$className": "ScreenGui",
+        "$ignoreUnknownInstances": true,
+        "$properties": {
+          "Enabled": true,
+          "DisplayOrder": 1,
+          "ResetOnSpawn": false,
+          "ScreenInsets": "CoreUISafeInsets",
+          "ClipToDeviceSafeArea": true,
+          "SafeAreaCompatibility": "None",
+          "ZIndexBehavior": "Sibling"
+        },
+        "CanvasAdapter": {
+          "$path": "StarterGui/ScreenGui/CanvasAdapter.client.lua"
+        }
+      }
     },
     "StarterPlayer": {
       "$className": "StarterPlayer",
+      "$ignoreUnknownInstances": true,
       "StarterPlayerScripts": {
         "$className": "StarterPlayerScripts",
-        "$path": "StarterPlayer/StarterPlayerScripts",
-        "$ignoreUnknownInstances": true
+        "$ignoreUnknownInstances": true,
+        "Client": {
+          "$path": "StarterPlayer/StarterPlayerScripts/Client",
+          "$ignoreUnknownInstances": false
+        }
       }
     }
   }
