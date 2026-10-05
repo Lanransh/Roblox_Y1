@@ -87,6 +87,12 @@
 - 不要主动引入额外功能、额外抽象或面向未来的扩展，除非用户明确提出。
 - 如果你判断额外功能确实有必要或有明显收益，先告知用户，再等待确认后再添加。
 
+## FXLoader 节点与模块加载
+
+- 框架初始化完成后的业务代码，加载必需的固定路径节点或模块时，优先使用 `FX.Loader` 简化连续 `WaitForChild` 和 `require(...:WaitForChild(...))`；不要再封装一套路径加载工具。具体 API 与示例见 `.agents/skills/roblox-luau-standards/reference-rules.md` 的 FXLoader 章节。
+- 使用 `local FX = _G.FX`（或合并进已有 FX/FC/FS 声明）和 `local FXLoader = FX.Loader`；不要把 `require(FXLoader 模块)` 的返回值当作加载器，该模块返回 `true`。
+- FXLoader 仍逐层等待复制节点，默认每层超时 10 秒，缺失会报错。框架初始化前、需要无限等待或超时返回 `nil` 的调用保留原生 `WaitForChild`；可选或动态节点使用 `FindFirstChild` 或 `FXLoader:Find` 并处理缺失。不要机械替换或借此修改无关代码。
+
 ## 数值文案显示
 
 - 力量、货币、经验、价格、收益等数量文案，统一调用 `ReplicatedStorage/Scripts/Game/Shared/GameUtility.lua` 的 `GameUtility.NumberToText`；不要在各 UI 中重复实现单位换算或小数格式化。
