@@ -287,12 +287,12 @@ function Component:PickupDrop(key)
     local capacity = inventory:GetTotalCapacity()
     if inventoryCount + #loot >= capacity then
         drop.Picking = false
-        self:ShowTips(string.format("背包已满，正式背包和战利品合计最多 %d 件，请先清理背包", capacity))
+        self:GetPlayerObject():ShowLocalizedTips("Loot.InventoryFull", {capacity = capacity})
         return
     end
     if #loot >= RockLevel.LootCapacity then
         drop.Picking = false
-        self:ShowTips("战利品背包已满，请返回基地存放")
+        self:GetPlayerObject():ShowLocalizedTips("Loot.BagFull")
         return
     end
     table.insert(loot, {TemplateName = drop.Template.Name, Price = drop.Price,
@@ -325,10 +325,10 @@ function Component:DepositLoot()
     end
     if deposited > 0 then
         self:SetTable(Fields.RockLoot, loot)
-        self:ShowTips(string.format("已将 %d 件战利品存入背包", deposited))
+        self:GetPlayerObject():ShowLocalizedTips("Loot.Deposited", {count = deposited})
     end
     if #loot > 0 and not self._depositFull then
-        self:ShowTips("背包已满，剩余道具保留在战利品背包")
+        self:GetPlayerObject():ShowLocalizedTips("Loot.DepositFull")
     end
     self._depositFull = #loot > 0
 end

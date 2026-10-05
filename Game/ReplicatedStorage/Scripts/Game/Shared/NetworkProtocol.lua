@@ -11,6 +11,8 @@ return {
         "C2S_RequestRockRound",
     },
     ServerMsgID = {
+        -- key: string、arguments: table?、duration: number?，项目提示在客户端翻译，单向消息。
+        "S2C_ShowLocalizedTips",
         -- gain: number，服务端实际走路及击打总收益；点击图标由客户端立即播放，无需回包。
         "S2C_TrainingEffect",
         -- round: number，当前开奖轮次；客户端清空本地血量与旧命中预测。

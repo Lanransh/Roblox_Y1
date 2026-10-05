@@ -22,6 +22,14 @@ function Component:OnReady()
     local top = FXLoader:Here(self._rootNode, "TopCenter")
     self._bar = FXLoader:Here(top, "LevelProgressBar")
     self._strength = FXLoader:Here(top, "Strength/Value")
+    self._commonUI = self:GetPlayerObject():RequireComponent("FCCommonUIComp")
+    self._localization = self._commonUI.Localization
+    self._strength.AutoLocalize = false
+    self._bar.ProgressLabel.AutoLocalize = false
+    --- 翻译就绪或语言切换时刷新主界面及当前战利品弹窗。
+    self:TrackConnection(self._localization.Changed:Connect(function()
+        self:RefreshLocalization()
+    end))
     self._leftDown = FXLoader:Here(self._rootNode, "LeftDown")
     self._effects = {}
     self._lastClick = -math.huge
@@ -105,23 +113,38 @@ function Component:BindButtons()
     lootButton.ZIndex = 10
     lootButton.Parent = FXLoader:Here(self._leftDown, "BackpackStat")
     self._lootButton = lootButton
+    --- 弹窗内容在显示时按当前语言生成。
     self:TrackConnection(lootButton.Activated:Connect(function()
-        local lines = {"战利品背包（返回基地自动存放）"}
-        for index, entry in ipairs(self:GetTable(Fields.RockLoot)) do
-            table.insert(lines, string.format("%s  $%s", entry.DisplayName, GameUtility.NumberToText(entry.Price)))
-        end
-        if #lines == 1 then
-            table.insert(lines, "暂无战利品")
-        end
-        self:GetPlayerObject():RequireComponent("FCCommonUIComp"):ShowTooltips({
-            Desc = table.concat(lines, "\n"), ConfirmBtnTxt = "关闭",
-        })
+        self:ShowLoot()
     end))
+end
+
+--- 翻译弹窗固定文案；收藏品名称保留现有数据，待物品文案独立迁移。
+function Component:ShowLoot()
+    local lines = {self._localization:FormatByKey("Loot.Title")}
+    for index, entry in ipairs(self:GetTable(Fields.RockLoot)) do
+        table.insert(lines, string.format("%s  $%s", entry.DisplayName, GameUtility.NumberToText(entry.Price)))
+    end
+    if #lines == 1 then
+        table.insert(lines, self._localization:FormatByKey("Loot.Empty"))
+    end
+    self._lootParams = {
+        Desc = table.concat(lines, "\n"), ConfirmKey = "Common.Close",
+    }
+    self._commonUI:ShowTooltips(self._lootParams)
+end
+
+--- 语言变化只刷新当前数据显示，不播放训练收益动画或重新打开已关闭弹窗。
+function Component:RefreshLocalization()
+    self:RefreshProgress(self:GetNumber(Fields.RockTrainingValue))
+    if self._lootParams and self._commonUI.TooltipParams == self._lootParams then
+        self:ShowLoot()
+    end
 end
 
 --- 未实现的入口统一走现有通用提示，不伪造购买或奖励成功。
 function Component:ShowDeveloping()
-    self:GetPlayerObject():RequireComponent("FCCommonUIComp"):ShowTips("开发中")
+    self._commonUI:ShowLocalizedTips("Common.InDevelopment")
 end
 
 --- 金币余额随服务端同步刷新，保留货币前缀并统一使用数量格式。
@@ -157,10 +180,10 @@ function Component:RefreshProgress(value, oldValue)
     self._bar.LevelLabel.Text = string.format("Lv.%d", level)
     self._bar.ProgressLabel.Text = string.format("%s/%s",
         GameUtility.NumberToText(math.min(progressValue, required)), GameUtility.NumberToText(required))
-    self._strength.Text = string.format("力量:%s", GameUtility.NumberToText(strength))
+    self._strength.Text = self._localization:FormatByKey("Main.Strength", {value = GameUtility.NumberToText(strength)})
     if level >= RockLevel.MaxLevel then
         progress = 1
-        self._bar.ProgressLabel.Text = "已满级"
+        self._bar.ProgressLabel.Text = self._localization:FormatByKey("Main.MaxLevel")
     end
     local size = UDim2.new(progress, 0, 1, 0)
     if self._progressTween then

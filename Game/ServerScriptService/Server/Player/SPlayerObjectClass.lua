@@ -175,6 +175,14 @@ function Player:Ctor(id)
     self:AddComponent("SRockLevelCompClass")
 end
 
+--- 服务端仅发送文案 Key 和业务参数，不按服务器语言提前生成提示。
+--- @param key string 本地文案表中的提示 Key。
+--- @param arguments table? 提示模板参数。
+--- @param duration number? 显示时长，单位为秒。
+function Player:ShowLocalizedTips(key, arguments, duration)
+    FX.Network:SendMsgToClient(self:GetPlayerId(), "S2C_ShowLocalizedTips", key, arguments, duration)
+end
+
 --- @param version number 已保存的数据版本；新增迁移在此顺序执行。
 function Player:MigrateData(version)
     assert(version <= GameConfig.DataVersion, "Saved data is newer than this server")
