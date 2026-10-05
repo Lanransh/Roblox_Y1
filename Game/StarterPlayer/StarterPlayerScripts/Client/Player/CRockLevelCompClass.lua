@@ -28,6 +28,9 @@ function Component:Ctor(owner)
     self._sparkPool = {}
     self._hitReactions = {}
     self._nextChunkCheck = 0
+    self._lastAttack = -math.huge
+    self._nextAttackCheck = 0
+    self._pendingHits = {}
 end
 
 --- 返回项目关卡组件协作名称。
@@ -36,7 +39,7 @@ function Component:GetCompName()
     return "CRockLevelComp"
 end
 
---- 同步握手后加载受击资源，为石头模板建立独立方块碰撞体，构造 6×6 块索引并订阅血量。
+--- 同步握手后加载受击资源及个人石头，订阅轮次和命中校验结果，血量保存在本组件。
 function Component:OnReady()
     local assets = ReplicatedStorage:WaitForChild("Assets")
     local effects = assets:WaitForChild("Effects"):WaitForChild("ROCK")
@@ -107,40 +110,284 @@ function Component:OnReady()
             end
         end
     end
-    self:WatchDataChanged(Fields.RockHealth, self.RefreshHealth, self)
+    FX.Network:RegServerMsgCallback("S2C_RockReset", self.ResetRound, self)
+    FX.Network:RegServerMsgCallback("S2C_RockHitResult", self.OnHitResult, self)
+    FX.Network:SendMsgToServer("C2S_RequestRockRound")
     self:TrackConnection(RunService.Heartbeat:Connect(function()
         self:UpdateVisuals()
     end))
 end
 
---- 为实际扣血播放特效；观察到击破后请求服务器弹出该石头的道具。
-function Component:RefreshHealth()
-    local health = self:GetTable(Fields.RockHealth)
-    for key, value in pairs(health) do
-        if value == 0 and self._health[key] ~= 0 then
-            FX.Network:SendMsgToServer("C2S_RequestRockDrop", key)
-        end
+--- 服务端轮次推进时取消旧挥镐和预测，恢复本地石头；初始请求可重复回放当前轮次。
+--- @param round number 服务器当前关卡轮次。
+function Component:ResetRound(round)
+    if self._round and round <= self._round then
+        return
     end
-    for key, oldValue in pairs(self._health) do
-        if health[key] == nil or health[key] > oldValue then
-            self:ResetVisuals()
+    self:StopSwing()
+    self._round = round
+    self._health = {}
+    self._pendingHits = {}
+    self._lastAttack = -math.huge
+    self:ResetVisuals()
+end
+
+--- 校验结果只决定是否认可本次预测，服务器不发送或保存剩余血量。
+--- @param key string 本次命中的格号。
+--- @param round number 本次命中所属轮次。
+--- @param accepted boolean 是否通过服务端位置、装备及频率校验。
+function Component:OnHitResult(key, round, accepted)
+    local pending = self._pendingHits[key]
+    if not pending or round ~= self._round or pending.Round ~= round then
+        return
+    end
+    self._pendingHits[key] = nil
+    if pending.Character ~= self:GetPlayerCharacter() then
+        return
+    end
+    if not accepted then
+        self._health[key] = pending.Health
+        self:ResetVisuals()
+    elseif self._health[key] == 0 then
+        FX.Network:SendMsgToServer("C2S_RequestRockDrop", key, round)
+    end
+    self._refreshRocks = true
+end
+
+--- 本地即时扣血并播放特效，命中记录交给服务器校验，击破须等待认可后申请开奖。
+--- @param key string 已经过本地目标检查的格号。
+--- @param area table 目标所属关卡。
+function Component:ApplyHit(key, area)
+    if not self._round or self._pendingHits[key] then
+        return
+    end
+    local oldValue = self._health[key] or RockLevel.HP[area.Index]
+    local damage = RockLevel.GetDamage(self:GetNumber(Fields.RockTrainingLevel), area.Index)
+    if oldValue <= 0 or damage <= 0 then
+        return
+    end
+    local value = math.max(0, oldValue - damage)
+    self._health[key] = value
+    self._pendingHits[key] = {Round = self._round, Health = oldValue, Character = self:GetPlayerCharacter()}
+    for index, chunk in ipairs(self._chunks) do
+        local rock = chunk.Rocks and chunk.Rocks[key]
+        if rock then
+            self:PlayHitEffect(rock, value == 0)
             break
         end
     end
-    for index = 1, #self._chunks do
-        local chunk = self._chunks[index]
-        if chunk.Rocks then
-            for key, rock in pairs(chunk.Rocks) do
-                local oldValue = self._health[key] or RockLevel.HP[chunk.Area.Index]
-                local value = health[key] or RockLevel.HP[chunk.Area.Index]
-                if value < oldValue then
-                    self:PlayHitEffect(rock, value <= 0)
-                end
+    self._refreshRocks = true
+    FX.Network:SendMsgToServer("C2S_RockHit", key, self._round)
+end
+
+--- 从服务器发放的镐子绑定本地轨道和拖尾，不创建或发放新的 Tool。
+--- @param character Model 当前本地角色。
+--- @param humanoid Humanoid 当前角色的 Humanoid。
+--- @return boolean 镐子及动画资源是否已复制到达。
+function Component:BindPickaxe(character, humanoid)
+    local pickaxe = character:FindFirstChild("免费镐子")
+    local handle = pickaxe and pickaxe:FindFirstChild("Handle")
+    local trail = handle and handle:FindFirstChild("PickaxeSwingTrail")
+    local animation = pickaxe and pickaxe:FindFirstChild("RockUpperBodySwing")
+    local animator = humanoid:FindFirstChildOfClass("Animator")
+    if not trail or (humanoid.RigType == Enum.HumanoidRigType.R15 and (not animation or not animator)) then
+        return false
+    end
+    if self._pickaxe == pickaxe then
+        return true
+    end
+    self:StopSwing()
+    if self._swingTrack then
+        self._swingTrack:Destroy()
+        self._swingTrack = nil
+    end
+    self._pickaxe = pickaxe
+    self._swingTrail = trail
+    if humanoid.RigType == Enum.HumanoidRigType.R15 then
+        self._swingTrack = animator:LoadAnimation(animation)
+        self._swingTrack.Priority = Enum.AnimationPriority.Action
+        self._swingTrack.Looped = false
+    end
+    return true
+end
+
+--- 中断时关闭并清空拖尾，淡出上半身轨道、恢复关节，取消延迟伤害。
+function Component:StopSwing()
+    if self._swingTrail then
+        self._swingTrail.Enabled = false
+        self._swingTrail:Clear()
+    end
+    if self._swingTask then
+        task.cancel(self._swingTask)
+        self._swingTask = nil
+    end
+    if self._swingTrack and self._swingTrack.IsPlaying then
+        self._swingTrack:Stop(0.08)
+    end
+    for joint, pose in pairs(self._swingJoints or {}) do
+        if pose.Tween then
+            pose.Tween:Cancel()
+        end
+        if joint.Parent then
+            joint.C0 = pose.Base
+        end
+    end
+    self._swingJoints = nil
+end
+
+--- 在原始关节上叠加躯干坐标系旋转，兼容 R6 肩轴方向并保留行走动画。
+--- @param duration number 当前阶段持续秒数。
+--- @param armAngle number 持镐手臂俯仰角度。
+--- @param bodyAngle number 躯干俯仰角度。
+--- @param direction Enum.EasingDirection 蓄力减速或下砸加速。
+function Component:PoseSwing(duration, armAngle, bodyAngle, direction)
+    for joint, pose in pairs(self._swingJoints) do
+        local angle = pose.Body and bodyAngle or armAngle
+        local base = pose.Base
+        local target = CFrame.new(base.Position) * CFrame.Angles(math.rad(angle), 0, 0) * base.Rotation
+        pose.Tween = TweenService:Create(joint, TweenInfo.new(duration, Enum.EasingStyle.Quad, direction), {C0 = target})
+        pose.Tween:Play()
+    end
+end
+
+--- 本地下砸时重验存活、装备、朝向和目标，取消已失效的挥镐伤害。
+--- @param character Model 起手时的角色。
+--- @param key string 起手时锁定的石头格子。
+--- @param area table 目标所属关卡。
+function Component:ResolvePickaxeHit(character, key, area)
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    local root = character:FindFirstChild("HumanoidRootPart")
+    if self:GetPlayerCharacter() ~= character or not humanoid or humanoid.Health <= 0
+        or not root or self._pickaxe.Parent ~= character
+        or math.abs(root.Position.Y - area.FloorY) >= 12 then
+        return
+    end
+    local cells = RockLevel.GetFrontCells(area, root.Position, root.CFrame.LookVector)
+    local health = self._health[key] or RockLevel.HP[area.Index]
+    local damage = RockLevel.GetDamage(self:GetNumber(Fields.RockTrainingLevel), area.Index)
+    if not table.find(cells, key) or health <= 0 or damage <= 0 then
+        return
+    end
+    self:ApplyHit(key, area)
+end
+
+--- 拖尾仅覆盖下砸阶段；R15 保留 1.25 倍速轨道和原伤害时点，R6 保留原补间。
+--- @param humanoid Humanoid 当前执行敲击的角色。
+--- @param key string 本次锁定的石头格子。
+--- @param area table 石头所属关卡。
+function Component:SwingPickaxe(humanoid, key, area)
+    self:StopSwing()
+    local character = self._character
+    if humanoid.RigType == Enum.HumanoidRigType.R15 then
+        self._swingTrack:Play(0.08, 1, 1.25)
+        -- 原动画加速后在 0.2 秒举起、0.4 秒砸下；0.72 秒开始淡出，0.8 秒前结束。
+        self._swingTask = task.spawn(function()
+            task.wait(0.2)
+            self._swingTrail.Enabled = true
+            task.wait(0.2)
+            self:ResolvePickaxeHit(character, key, area)
+            task.wait(0.06)
+            self._swingTrail.Enabled = false
+            task.wait(0.26)
+            self._swingTask = nil
+            self:StopSwing()
+        end)
+        return
+    end
+    self._swingJoints = {}
+    for nodeIndex, joint in ipairs(character:GetDescendants()) do
+        if joint:IsA("Motor6D") and joint.Part1 then
+            local name = joint.Part1.Name
+            if name == "RightUpperArm" or name == "Right Arm" or name == "UpperTorso" then
+                self._swingJoints[joint] = {Base = joint.C0, Body = name == "UpperTorso"}
             end
         end
     end
-    self._health = health
-    self._refreshRocks = true
+    self._swingTask = task.spawn(function()
+        self:PoseSwing(0.22, 85, 12, Enum.EasingDirection.Out)
+        task.wait(0.22)
+        self._swingTrail.Enabled = true
+        self:PoseSwing(0.1, -40, -18, Enum.EasingDirection.In)
+        task.wait(0.1)
+        self:ResolvePickaxeHit(character, key, area)
+        task.wait(0.08)
+        self._swingTrail.Enabled = false
+        self:PoseSwing(0.28, 0, 0, Enum.EasingDirection.Out)
+        task.wait(0.28)
+        self._swingTask = nil
+        self:StopSwing()
+    end)
+end
+
+--- 本地每 0.1 秒选取近身目标，普通挥镐间隔 0.8 秒，秒杀时即时扣血并允许穿行。
+function Component:UpdateAttacks()
+    local character = self:GetPlayerCharacter()
+    local root = character and character:FindFirstChild("HumanoidRootPart")
+    local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+    if not root or not humanoid or humanoid.Health <= 0 then
+        self:StopSwing()
+        return
+    end
+    if self._character ~= character then
+        self:StopSwing()
+        self._character = character
+        self._health = {}
+        self._pendingHits = {}
+        self._lastAttack = -math.huge
+        self:ResetVisuals()
+        FX.Network:SendMsgToServer("C2S_RequestRockRound")
+    end
+    local now = os.clock()
+    if now < self._nextAttackCheck then
+        return
+    end
+    self._nextAttackCheck = now + 0.1
+    if not self._round or not self:BindPickaxe(character, humanoid) then
+        self:StopSwing()
+        return
+    end
+    local position = root.Position
+    local regularAttack = now - self._lastAttack >= 0.8
+    local targetFound = false
+    local level = self:GetNumber(Fields.RockTrainingLevel)
+    for index = 1, #self._areas do
+        local area = self._areas[index]
+        if math.abs(position.Y - area.FloorY) < 12
+            and position.X >= area.MinX - 8 and position.X < area.MinX + area.Node.Size.X + 8
+            and position.Z >= area.MinZ - 8 and position.Z < area.MinZ + area.Node.Size.Z + 8 then
+            local damage = RockLevel.GetDamage(level, index)
+            local cells = RockLevel.GetFrontCells(area, position, root.CFrame.LookVector)
+            local instantBreak = damage >= RockLevel.HP[index]
+            if instantBreak then
+                -- 穿行时先检查脚下，避免玩家越过前方格子后石头仍留在身后。
+                local column = math.floor((position.X - area.MinX) / RockLevel.CellSize)
+                local row = math.floor((position.Z - area.MinZ) / RockLevel.CellSize)
+                if column >= 0 and column < area.Columns and row >= 0 and row < area.Rows then
+                    table.insert(cells, 1, index .. ":" .. (row * area.Columns + column + 1))
+                end
+            end
+            for cellIndex = 1, #cells do
+                local key = cells[cellIndex]
+                local health = self._health[key] or RockLevel.HP[index]
+                if health > 0 and not self._pendingHits[key] then
+                    targetFound = true
+                    if instantBreak then
+                        self:StopSwing()
+                        self:ApplyHit(key, area)
+                    elseif damage > 0 and regularAttack then
+                        self:SwingPickaxe(humanoid, key, area)
+                    end
+                    break
+                end
+            end
+        end
+        if targetFound then
+            break
+        end
+    end
+    if regularAttack then
+        self._lastAttack = now
+    end
 end
 
 --- 每次命中均显示少量碎屑与金色短火花，仅击破时从石头中心散出较大烟尘。
@@ -394,7 +641,7 @@ function Component:RecycleRock(rock)
     table.insert(self._pool[rock:GetAttribute("Variant")], rock)
 end
 
---- 仅切换独立方块的碰撞；满血可一击击破的关卡允许穿行，由服务端即时破坏近身石头。
+--- 仅切换独立方块的碰撞；满血可一击击破的关卡允许穿行，由客户端即时破坏近身石头。
 --- @param rock Model 本组件创建的石头。
 --- @param canCollide boolean 是否阻挡玩家。
 function Component:SetRockState(rock, canCollide)
@@ -441,6 +688,7 @@ end
 function Component:UpdateVisuals()
     self:UpdateFragments()
     self:UpdateSparks()
+    self:UpdateAttacks()
     local character = self:GetPlayerCharacter()
     local root = character and character:FindFirstChild("HumanoidRootPart")
     if not root then
@@ -547,6 +795,13 @@ end
 
 --- 恢复角色攀爬设置，停止火花补间并释放场景、模板及全部对象池，基类负责断开监听。
 function Component:Dtor()
+    FX.Network:UnRegServerMsgCallback("S2C_RockReset")
+    FX.Network:UnRegServerMsgCallback("S2C_RockHitResult")
+    self:StopSwing()
+    if self._swingTrack then
+        self._swingTrack:Destroy()
+        self._swingTrack = nil
+    end
     if self._climbHumanoid and self._climbHumanoid.Parent then
         self._climbHumanoid:SetStateEnabled(Enum.HumanoidStateType.Climbing, self._originalClimbingEnabled)
     end

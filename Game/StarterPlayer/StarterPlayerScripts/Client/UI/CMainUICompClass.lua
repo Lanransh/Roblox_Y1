@@ -35,6 +35,8 @@ function Component:OnReady()
         self:ShowTrainingEffect(gain)
     end)
     self:WatchDataChanged(Fields.RockTrainingValue, self.RefreshProgress, self)
+    self:WatchDataChanged(Fields.Coins, self.RefreshCoins, self)
+    self:WatchDataChanged(Fields.RebirthCount, self.RefreshRebirthCount, self)
     self:WatchDataChanged(Fields.Diamonds, self.RefreshDiamonds, self)
     self:WatchDataChanged(Fields.RockLoot, self.RefreshLoot, self)
     --- 鼠标只在未被按钮、背包等 UI 消耗时播放点击图标。
@@ -119,6 +121,18 @@ end
 --- 未实现的入口统一走现有通用提示，不伪造购买或奖励成功。
 function Component:ShowDeveloping()
     self:GetPlayerObject():RequireComponent("FCCommonUIComp"):ShowTips("开发中")
+end
+
+--- 金币余额随服务端同步刷新，保留货币前缀并统一使用数量格式。
+--- @param value number 同步后的金币余额。
+function Component:RefreshCoins(value)
+    self._leftDown:WaitForChild("CashStat"):WaitForChild("Value").Text = "$" .. GameUtility.NumberToText(value)
+end
+
+--- 重生次数随持久字段刷新，按次数语义显示整数。
+--- @param value number 同步后的累计重生次数。
+function Component:RefreshRebirthCount(value)
+    self._leftDown:WaitForChild("RebirthStat"):WaitForChild("Value").Text = string.format("%d", value)
 end
 
 --- 钻石读取持久字段并使用通用数量格式，默认 500 由服务端字段定义提供。

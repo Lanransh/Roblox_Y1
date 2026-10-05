@@ -10,13 +10,15 @@ function Inventory:Ctor(owner)
     self._tools = {}
 end
 
+--- 原生快捷栏与背包共用总容量，快捷栏格子不额外增加可持有道具数量。
 --- @return table 背包容量与持久字段。
 function Inventory:GetConfig()
     local config = _G.Provider:GetNativeBackpackConfig()
+    local shortcutCapacity = config.ShortcutEnabled and math.min(10, config.InventoryCapacity) or 0
     return {
         storeTableVarEnum = PlayerDataConfig.Inventory,
-        shortcutCapacity = config.ShortcutEnabled and 10 or 0,
-        inventoryCapacity = config.InventoryCapacity,
+        shortcutCapacity = shortcutCapacity,
+        inventoryCapacity = config.InventoryCapacity - shortcutCapacity,
     }
 end
 

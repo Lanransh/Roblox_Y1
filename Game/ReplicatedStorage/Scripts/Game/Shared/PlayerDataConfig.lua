@@ -9,69 +9,104 @@ _G.PlayerKVEnum = {
 local PlayerKVEnum = _G.PlayerKVEnum
 
 return {
+    -- 金币余额。
+    Coins = {
+        Type = "number",
+        Key = "Coins",
+        DefVal = 0,
+        KVTable = PlayerKVEnum.ePlayerData,
+        Sync = true,
+    },
+    -- 累计重生次数。
+    RebirthCount = {
+        Type = "number",
+        Key = "RebirthCount",
+        DefVal = 0,
+        KVTable = PlayerKVEnum.ePlayerData,
+        Sync = true,
+    },
+    -- 钻石余额，新玩家默认拥有 500 钻石。
     Diamonds = {
-        Type = "number", Key = "Diamonds", DefVal = 500,
-        KVTable = PlayerKVEnum.ePlayerData, Sync = true,
+        Type = "number",
+        Key = "Diamonds",
+        DefVal = 500,
+        KVTable = PlayerKVEnum.ePlayerData,
+        Sync = true,
     },
+    -- 当前携带且尚未返回基地存入正式背包的战利品。
     RockLoot = {
-        Type = "table", Key = "RockLoot", DefVal = {},
-        KVTable = PlayerKVEnum.ePlayerData, Sync = true,
+        Type = "table",
+        Key = "RockLoot",
+        DefVal = {},
+        KVTable = PlayerKVEnum.ePlayerData,
+        Sync = true,
     },
+    -- 累计训练值，用于计算训练等级和力量。
     RockTrainingValue = {
-        Type = "number", Key = "RockTrainingValue", DefVal = 0,
-        KVTable = PlayerKVEnum.ePlayerData, Sync = true,
+        Type = "number",
+        Key = "RockTrainingValue",
+        DefVal = 0,
+        KVTable = PlayerKVEnum.ePlayerData,
+        Sync = true,
     },
+    -- 由累计训练值计算的当前训练等级，不单独存档。
     RockTrainingLevel = {
-        Type = "number", Key = "RockTrainingLevel", DefVal = 1, Sync = true,
+        Type = "number",
+        Key = "RockTrainingLevel",
+        DefVal = 1,
+        Sync = true,
     },
-    RockHealth = {
-        Type = "table", Key = "RockHealth", DefVal = {}, Sync = true,
-    },
+    -- 玩家存档版本号，用于检查和迁移旧存档。
     DataVersion = {
         Type = "number",
         DefVal = 0,
         Key = "DataVersion",
         KVTable = PlayerKVEnum.ePlayerData,
-        Sync = false
+        Sync = false,
     },
+    -- 正式背包的道具存档数据，仅供服务端读取。
     Inventory = {
         Type = "table",
         DefVal = {},
         Key = "Inventory",
         KVTable = PlayerKVEnum.ePlayerData,
-        Sync = false
+        Sync = false,
     },
+    -- 玩家引导状态，包含当前引导、引导进度和目标。
     Guide = {
         Type = "table",
         DefVal = {
             activeGuideId = "",
             guideMap = {},
             target = {
-                type = "None"
-            }
+                type = "None",
+            },
         },
         Key = "Guide",
         KVTable = PlayerKVEnum.ePlayerData,
-        Sync = true
+        Sync = true,
     },
+    -- 商品购买记录，保存在静态数据域。
     GoodsBuyInfo = {
         Type = "table",
         DefVal = {},
         Key = "GoodsBuyInfo",
         KVTable = PlayerKVEnum.eStaticData,
-        Sync = false
+        Sync = false,
     },
+    -- 当前手持道具的背包格索引，-1 表示未选中。
     HandItemGridIndex = {
         Type = "number",
         DefVal = -1,
         Key = "HandItemGridIndex",
-        Sync = true
+        Sync = true,
     },
+    -- 首次登录标记，默认 true，保存在静态数据域。
     FirstLogin = {
         Type = "boolean",
         DefVal = true,
         Key = "FirstLogin",
         KVTable = PlayerKVEnum.eStaticData,
-        Sync = true
+        Sync = true,
     },
 }

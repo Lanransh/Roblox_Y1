@@ -6,15 +6,17 @@ local RockLevel = require(game:GetService("ReplicatedStorage").Scripts.Game.Shar
 local Collectible = require(script.Parent.RockCollectible)
 local Component = FX.Class("SRockLevelCompClass", "FSPlayerCompClass")
 
---- 玩家各自持有石头、随机掉落及其场景节点，避免请求跨玩家领取。
+--- 每个玩家独立持有命中凭据、开奖轮次和掉落，血量由客户端维护。
 --- @param owner FSPlayerObjectClass 已加载的玩家对象。
 function Component:Ctor(owner)
     Component.Super.Ctor(self, owner)
-    self._health = {}
+    self._attackRecords = {}
+    self._claimed = {}
+    self._round = 1
+    self._nextHit = 0
     self._dropResults = {}
     self._dropNodes = {}
     self._random = Random.new()
-    self._lastAttack = -1
     self._lastGrowth = os.clock()
     self._hit = false
 end
@@ -67,18 +69,104 @@ function Component:RefreshProgress()
     self._strengthStat.Value = strength
 end
 
---- 在出生或回到安全区时恢复个人石头，并清理上一轮尚未拾取的道具。
-function Component:RestoreRocks()
-    self:StopSwing()
-    if next(self._health) ~= nil then
+--- 出生或回到安全区时结束开奖轮次，通知客户端恢复个人石头。
+--- @param force boolean? 重生时强制切换轮次，即使上一轮未记录命中。
+function Component:RestoreRocks(force)
+    if force or next(self._attackRecords) ~= nil or next(self._claimed) ~= nil then
         self:ClearDrops()
-        self._health = {}
-        self:SetTable(Fields.RockHealth, self._health)
+        self._attackRecords = {}
+        self._claimed = {}
+        self._round += 1
+        self._nextHit = 0
+        self._hitInterval = nil
+        self:SendRockRound()
     end
     self._hit = false
 end
 
---- 击破时在服务器确定随机结果；客户端重复请求不会重抽道具或价格。
+--- 提供当前轮次，客户端准备完成后主动请求，避免错过初始重置消息。
+function Component:SendRockRound()
+    FX.Network:SendMsgToClient(self:GetPlayerId(), "S2C_RockReset", self._round)
+end
+
+--- 命中记录仅保存服务端认可的等级与次数；剩余血量完全由客户端维护。
+--- @param key string 客户端命中的石头格号。
+--- @param round number 客户端当前关卡轮次。
+--- @return boolean 是否认可本次命中，可用于回滚客户端预测。
+function Component:RecordHit(key, round)
+    if not self._areas or round ~= self._round or type(key) ~= "string" or #key > 40 or self._claimed[key] then
+        return false
+    end
+    local areaIndex, cellIndex = string.match(key, "^(%d+):(%d+)$")
+    local area = self._areas[tonumber(areaIndex)]
+    local cell = tonumber(cellIndex)
+    if not area or not cell or cell < 1 or cell > area.Columns * area.Rows
+        or key ~= area.Index .. ":" .. cell then
+        return false
+    end
+    local character = self:GetPlayerCharacter()
+    local root = character and character:FindFirstChild("HumanoidRootPart")
+    local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+    if character ~= self._character or not root or not humanoid or humanoid.Health <= 0 or not self._pickaxe
+        or self._pickaxe.Parent ~= character or math.abs(root.Position.Y - area.FloorY) >= 12 then
+        return false
+    end
+    local level = self:GetNumber(Fields.RockTrainingLevel)
+    local damage = RockLevel.GetDamage(level, area.Index)
+    if damage <= 0 then
+        return false
+    end
+    local instantBreak = damage >= RockLevel.HP[area.Index]
+    local cells = RockLevel.GetFrontCells(area, root.Position, root.CFrame.LookVector)
+    if instantBreak then
+        local column = math.floor((root.Position.X - area.MinX) / RockLevel.CellSize)
+        local row = math.floor((root.Position.Z - area.MinZ) / RockLevel.CellSize)
+        if column >= 0 and column < area.Columns and row >= 0 and row < area.Rows then
+            table.insert(cells, 1, area.Index .. ":" .. (row * area.Columns + column + 1))
+        end
+    end
+    local now = os.clock()
+    local interval = instantBreak and 0.1 or 0.8
+    local nextHit = self._nextHit
+    if self._hitInterval then
+        nextHit += interval - self._hitInterval
+    end
+    if not table.find(cells, key) or now < nextHit - 0.1 then
+        return false
+    end
+    -- 小幅网络到达抖动不丢正常命中；累计时间预算仍限制持续攻击速率。
+    self._nextHit = math.max(now, nextHit) + interval
+    self._hitInterval = interval
+    -- 客户端等级复制稍晚时允许其继续补完本地表现，但已具备开奖资格的格子不再产生训练收益。
+    if self:GetRecordedDamage(key, area) >= RockLevel.HP[area.Index] then
+        return true
+    end
+    local record = self._attackRecords[key]
+    if not record then
+        record = {Hits = {}, Character = character}
+        self._attackRecords[key] = record
+    end
+    record.Hits[level] = (record.Hits[level] or 0) + 1
+    self._hit = true
+    return true
+end
+
+--- 根据命中时的服务端等级回算有效伤害，不接受客户端上报的血量或伤害。
+--- @param key string 已校验的石头格号。
+--- @param area table 石头所属关卡。
+--- @return number 有效命中记录能够证明的累计伤害。
+function Component:GetRecordedDamage(key, area)
+    local record = self._attackRecords[key]
+    local totalDamage = 0
+    if record then
+        for level, count in pairs(record.Hits) do
+            totalDamage += RockLevel.GetDamage(level, area.Index) * count
+        end
+    end
+    return totalDamage
+end
+
+--- 开奖资格通过后在服务器确定随机结果；重复请求不会重抽道具或价格。
 --- @param key string 本次刚击破的格号。
 --- @param area table 服务器已验证的关卡边界。
 function Component:RollDrop(key, area)
@@ -94,12 +182,25 @@ function Component:RollDrop(key, area)
     }
 end
 
---- 弹出已确认击破的个人石头道具，随后连同 ItemHUD 持续漂浮，长按 E 0.5 秒拾取。
+--- 开奖时按有效命中的等级和次数校验击破资格，每轮每格只抽一次，包括未中奖结果。
 --- @param key string 客户端提交的石头格号，不接受其位置或奖励数据。
-function Component:RequestDrop(key)
-    if type(key) ~= "string" or #key > 40 or self._health[key] ~= 0 then
+--- @param round number 客户端当前关卡轮次，拒绝旧轮次请求。
+function Component:RequestDrop(key, round)
+    if round ~= self._round or type(key) ~= "string" or #key > 40 or self._claimed[key] then
         return
     end
+    local record = self._attackRecords[key]
+    local character = self:GetPlayerCharacter()
+    local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+    if not record or record.Character ~= character or not humanoid or humanoid.Health <= 0 then
+        return
+    end
+    local area = self._areas[tonumber(string.match(key, "^(%d+):"))]
+    if self:GetRecordedDamage(key, area) < RockLevel.HP[area.Index] then
+        return
+    end
+    self._claimed[key] = true
+    self:RollDrop(key, area)
     local result = self._dropResults[key]
     if not result then
         return
@@ -162,7 +263,7 @@ function Component:RequestDrop(key)
     end)
 end
 
---- 校验存活、距离和一次性状态；满包保留漂浮道具，入包成功后停止动画并移除掉落。
+--- 校验存活、距离和总占用；战利品与正式背包合计不超容量，满包保留漂浮道具并提示。
 --- @param key string 当前玩家掉落记录的格号。
 function Component:PickupDrop(key)
     local drop = self._dropNodes[key]
@@ -178,6 +279,17 @@ function Component:PickupDrop(key)
     end
     drop.Picking = true
     local loot = self:GetTable(Fields.RockLoot)
+    local inventory = self:GetPlayerObject():RequireComponent("FSInventoryComp")
+    local inventoryCount = 0
+    for gridIndex in pairs(inventory:GetData()) do
+        inventoryCount += 1
+    end
+    local capacity = inventory:GetTotalCapacity()
+    if inventoryCount + #loot >= capacity then
+        drop.Picking = false
+        self:ShowTips(string.format("背包已满，正式背包和战利品合计最多 %d 件，请先清理背包", capacity))
+        return
+    end
     if #loot >= RockLevel.LootCapacity then
         drop.Picking = false
         self:ShowTips("战利品背包已满，请返回基地存放")
@@ -237,13 +349,9 @@ function Component:ClearDrops()
     self._dropNodes = {}
 end
 
---- 出生与重生时发放带短拖尾的默认镐子，并为当前 R15 角色缓存上半身攻击轨道。
+--- 出生与重生时发放带短拖尾的默认镐子，动画和拖尾由客户端控制。
 --- @param humanoid Humanoid 当前存活角色的 Humanoid。
 function Component:EquipPickaxe(humanoid)
-    if self._swingTrack then
-        self._swingTrack:Destroy()
-        self._swingTrack = nil
-    end
     if self._pickaxe then
         self._pickaxe:Destroy()
     end
@@ -283,135 +391,15 @@ function Component:EquipPickaxe(humanoid)
         -- 06 号预览的 Roblox 官方动画：仅双臂和手腕有权重，不覆盖腰、根节点和腿部。
         animation.AnimationId = "rbxassetid://2850678159"
         animation.Parent = self._pickaxe
-        self._swingTrack = animator:LoadAnimation(animation)
-        self._swingTrack.Priority = Enum.AnimationPriority.Action
-        self._swingTrack.Looped = false
     end
 end
 
---- 中断时关闭并清空拖尾，淡出上半身轨道、恢复关节，取消延迟伤害。
-function Component:StopSwing()
-    if self._swingTrail then
-        self._swingTrail.Enabled = false
-        self._swingTrail:Clear()
-    end
-    if self._swingTask then
-        task.cancel(self._swingTask)
-        self._swingTask = nil
-    end
-    if self._swingTrack and self._swingTrack.IsPlaying then
-        self._swingTrack:Stop(0.08)
-    end
-    for joint, pose in pairs(self._swingJoints or {}) do
-        if pose.Tween then
-            pose.Tween:Cancel()
-        end
-        if joint.Parent then
-            joint.C0 = pose.Base
-        end
-    end
-    self._swingJoints = nil
-end
-
---- 在原始关节上叠加躯干坐标系旋转，兼容 R6 肩轴方向并保留行走动画。
---- @param duration number 当前阶段持续秒数。
---- @param armAngle number 持镐手臂俯仰角度。
---- @param bodyAngle number 躯干俯仰角度。
---- @param direction Enum.EasingDirection 蓄力减速或下砸加速。
-function Component:PoseSwing(duration, armAngle, bodyAngle, direction)
-    for joint, pose in pairs(self._swingJoints) do
-        local angle = pose.Body and bodyAngle or armAngle
-        local base = pose.Base
-        local target = CFrame.new(base.Position) * CFrame.Angles(math.rad(angle), 0, 0) * base.Rotation
-        pose.Tween = TweenService:Create(joint, TweenInfo.new(duration, Enum.EasingStyle.Quad, direction), {C0 = target})
-        pose.Tween:Play()
-    end
-end
-
---- 下砸时重验存活、装备、朝向和目标；击破时先确定掉落，再同步血量通知客户端。
---- @param character Model 起手时的角色。
---- @param key string 起手时锁定的石头格子。
---- @param area table 目标所属关卡。
-function Component:ResolvePickaxeHit(character, key, area)
-    local humanoid = character:FindFirstChildOfClass("Humanoid")
-    local root = character:FindFirstChild("HumanoidRootPart")
-    if self:GetPlayerCharacter() ~= character or not humanoid or humanoid.Health <= 0
-        or not root or self._pickaxe.Parent ~= character
-        or math.abs(root.Position.Y - area.FloorY) >= 12 then
-        return
-    end
-    local cells = RockLevel.GetFrontCells(area, root.Position, root.CFrame.LookVector)
-    local health = self._health[key] or RockLevel.HP[area.Index]
-    local damage = RockLevel.GetDamage(self:GetNumber(Fields.RockTrainingLevel), area.Index)
-    if not table.find(cells, key) or health <= 0 or damage <= 0 then
-        return
-    end
-    self._health[key] = math.max(0, health - damage)
-    if self._health[key] == 0 then
-        self:RollDrop(key, area)
-    end
-    self._hit = true
-    self:SetTable(Fields.RockHealth, self._health)
-end
-
---- 拖尾仅覆盖下砸阶段；R15 保留 1.25 倍速轨道和原伤害时点，R6 保留原补间。
---- @param humanoid Humanoid 当前执行敲击的角色。
---- @param key string 本次锁定的石头格子。
---- @param area table 石头所属关卡。
-function Component:SwingPickaxe(humanoid, key, area)
-    self:StopSwing()
-    if self._pickaxe.Parent ~= self._character then
-        humanoid:EquipTool(self._pickaxe)
-    end
-    local character = self._character
-    if humanoid.RigType == Enum.HumanoidRigType.R15 then
-        self._swingTrack:Play(0.08, 1, 1.25)
-        -- 原动画加速后在 0.2 秒举起、0.4 秒砸下；0.72 秒开始淡出，0.8 秒前结束。
-        self._swingTask = task.spawn(function()
-            task.wait(0.2)
-            self._swingTrail.Enabled = true
-            task.wait(0.2)
-            self:ResolvePickaxeHit(character, key, area)
-            task.wait(0.06)
-            self._swingTrail.Enabled = false
-            task.wait(0.26)
-            self._swingTask = nil
-            self:StopSwing()
-        end)
-        return
-    end
-    self._swingJoints = {}
-    for nodeIndex, joint in ipairs(character:GetDescendants()) do
-        if joint:IsA("Motor6D") and joint.Part1 then
-            local name = joint.Part1.Name
-            if name == "RightUpperArm" or name == "Right Arm" or name == "UpperTorso" then
-                self._swingJoints[joint] = {Base = joint.C0, Body = name == "UpperTorso"}
-            end
-        end
-    end
-    self._swingTask = task.spawn(function()
-        self:PoseSwing(0.22, 85, 12, Enum.EasingDirection.Out)
-        task.wait(0.22)
-        self._swingTrail.Enabled = true
-        self:PoseSwing(0.1, -40, -18, Enum.EasingDirection.In)
-        task.wait(0.1)
-        self:ResolvePickaxeHit(character, key, area)
-        task.wait(0.08)
-        self._swingTrail.Enabled = false
-        self:PoseSwing(0.28, 0, 0, Enum.EasingDirection.Out)
-        task.wait(0.28)
-        self._swingTask = nil
-        self:StopSwing()
-    end)
-end
-
---- 满血可秒杀时即时破坏脚下或前方石头，其余沿用挥镐；训练收益仍每秒最多结算一次。
+--- 服务端仅处理角色发镐、轮次重置、入库及训练结算，攻击与血量交由客户端。
 function Component:Tick()
     local character = self:GetPlayerCharacter()
     local root = character and character:FindFirstChild("HumanoidRootPart")
     local humanoid = character and character:FindFirstChildOfClass("Humanoid")
     if not root or not humanoid or humanoid.Health <= 0 then
-        self:StopSwing()
         self._lastGrowth = os.clock()
         self._hit = false
         return
@@ -419,9 +407,9 @@ function Component:Tick()
     local now = os.clock()
     local position = root.Position
     if self._character ~= character then
+        self:RestoreRocks(self._character ~= nil)
         self._character = character
         self._lastGrowth = now
-        self:RestoreRocks()
         self:EquipPickaxe(humanoid)
     end
     local firstArea = self._areas[1]
@@ -434,53 +422,6 @@ function Component:Tick()
         self:DepositLoot()
     else
         self._depositFull = false
-    end
-    local regularAttack = now - self._lastAttack >= 0.8
-    local targetFound = false
-    local level = self:GetNumber(Fields.RockTrainingLevel)
-    for index = 1, #self._areas do
-        local area = self._areas[index]
-        if math.abs(position.Y - area.FloorY) < 12
-            and position.X >= area.MinX - 8 and position.X < area.MinX + area.Node.Size.X + 8
-            and position.Z >= area.MinZ - 8 and position.Z < area.MinZ + area.Node.Size.Z + 8 then
-            local damage = RockLevel.GetDamage(level, index)
-            local cells = RockLevel.GetFrontCells(area, position, root.CFrame.LookVector)
-            local instantBreak = damage >= RockLevel.HP[index]
-            if instantBreak then
-                -- 穿行时先检查脚下，避免玩家越过前方格子后石头仍留在身后。
-                local column = math.floor((position.X - area.MinX) / RockLevel.CellSize)
-                local row = math.floor((position.Z - area.MinZ) / RockLevel.CellSize)
-                if column >= 0 and column < area.Columns and row >= 0 and row < area.Rows then
-                    table.insert(cells, 1, index .. ":" .. (row * area.Columns + column + 1))
-                end
-            end
-            for cellIndex = 1, #cells do
-                local key = cells[cellIndex]
-                local health = self._health[key] or RockLevel.HP[index]
-                if health > 0 then
-                    targetFound = true
-                    if instantBreak then
-                        self:StopSwing()
-                        if self._pickaxe.Parent ~= character then
-                            humanoid:EquipTool(self._pickaxe)
-                        end
-                        self._health[key] = 0
-                        self:RollDrop(key, area)
-                        self._hit = true
-                        self:SetTable(Fields.RockHealth, self._health)
-                    elseif damage > 0 and regularAttack then
-                        self:SwingPickaxe(humanoid, key, area)
-                    end
-                    break
-                end
-            end
-        end
-        if targetFound then
-            break
-        end
-    end
-    if regularAttack then
-        self._lastAttack = now
     end
     if now - self._lastGrowth >= 1 then
         -- 按服务端观察到的水平速度判断移动，站立、腾空和坐下均不发走路收益。
@@ -499,21 +440,18 @@ function Component:Tick()
     end
 end
 
---- 离服释放掉落、结算任务、当前角色轨道和镐子，并解除拖尾引用。
+--- 离服释放掉落、结算任务和镐子，清空开奖校验记录。
 function Component:OnPlayerLogout()
     self:ClearDrops()
-    self:StopSwing()
     FX.Task:Cancel(self._timer)
     self._timer = nil
-    if self._swingTrack then
-        self._swingTrack:Destroy()
-        self._swingTrack = nil
-    end
     if self._pickaxe then
         self._pickaxe:Destroy()
         self._pickaxe = nil
     end
     self._swingTrail = nil
+    self._attackRecords = {}
+    self._claimed = {}
 end
 
 --- 析构也释放任务，覆盖初始化中断的生命周期。
