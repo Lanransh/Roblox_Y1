@@ -14,3 +14,5 @@ AgentWorkspace/FigmaEggy/*
 /Run.bat
 .studiogametoolkit/figma-roblox/
 Build/FigmaRoblox/
+!/.studiogametoolkit/
+!/.studiogametoolkit/figma-roblox-assets.json
