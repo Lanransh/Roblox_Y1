@@ -1,4 +1,5 @@
 local FX, FC = _G.FX, _G.FC
+local ButtonHover = FX.Loader:Require(script.Parent.Parent, "FCButtonHover")
 local UI = FX.Class("FCCommonUICompClass", "FCPlayerCompClass")
 FC.CommonUICompClass = UI
 
@@ -21,7 +22,7 @@ local function Text(className, name, parent, properties)
     return Node(className, name, parent, properties)
 end
 
---- 初始化通用 UI，并在客户端就绪前注册提示与购买协议。
+--- 初始化通用 UI 和全局按钮悬停，并在客户端就绪前注册提示与购买协议。
 --- @param owner table 所属客户端玩家对象。
 function UI:Ctor(owner)
     UI.Super.Ctor(self, owner)
@@ -108,6 +109,9 @@ function UI:Ctor(owner)
         self:GetPlayerObject():PublishEvent("ShowTips", message, duration)
     end)
     FX.Network:RegServerMsgCallback("S2C_ShowDeveloperBuyUI", self.ShowDeveloperBuyUI, self)
+    -- 全屏输入遮罩不参与缩放，通用组件统一覆盖所属 PlayerGui 的按钮。
+    self.Modal:SetAttribute("HoverEnabled", false)
+    self._buttonHover = ButtonHover.New(self.Root.Parent)
 end
 
 function UI:GetCompName()
@@ -186,8 +190,9 @@ function UI:HideTooltips()
     self._previousSelection = nil
 end
 
---- 释放组件拥有的协议回调、提示计时器和 UI 节点。
+--- 释放全局按钮悬停、协议回调、提示计时器和 UI 节点。
 function UI:Dtor()
+    self._buttonHover:Destroy()
     FX.Network:UnRegServerMsgCallback("S2C_ShowTips")
     FX.Network:UnRegServerMsgCallback("S2C_ShowDeveloperBuyUI")
     FX.Task:Cancel(self._tipTask)
