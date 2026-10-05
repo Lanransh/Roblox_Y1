@@ -1,4 +1,5 @@
 local FX, FS = _G.FX, _G.FS
+local FXLoader = FX.Loader
 local Fields = _G.PlayerDataConfig
 local ServerStorage = game:GetService("ServerStorage")
 local TweenService = game:GetService("TweenService")
@@ -29,11 +30,10 @@ end
 
 --- 读档后从公共模型目录准备收藏品模板、同步地板颜色并启动位置检查。
 function Component:OnPlayerLogin()
-    self._dropTemplates = game:GetService("ReplicatedStorage"):WaitForChild("Assets")
-        :WaitForChild("Models"):WaitForChild("Collectibles167"):GetChildren()
-    self._itemHUD = game:GetService("ReplicatedStorage"):WaitForChild("Nodes"):WaitForChild("ItemHUD")
+    self._dropTemplates = FXLoader:Shared("Assets/Models/Collectibles167"):GetChildren()
+    self._itemHUD = FXLoader:Shared("Nodes/ItemHUD")
     self._areas = RockLevel.GetAreas()
-    local grounds = workspace:WaitForChild("BlockMeshs"):WaitForChild("世界1"):WaitForChild("GuanQia")
+    local grounds = FXLoader:Workspace("BlockMeshs/世界1/GuanQia")
     for index, area in ipairs(self._areas) do
         local ground = grounds:WaitForChild("Ground" .. index)
         area.Node.Color = ground.Color

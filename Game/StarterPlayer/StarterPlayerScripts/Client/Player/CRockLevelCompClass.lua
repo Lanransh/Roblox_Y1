@@ -1,4 +1,5 @@
 local FX = _G.FX
+local FXLoader = FX.Loader
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 local Debris = game:GetService("Debris")
@@ -41,11 +42,11 @@ end
 
 --- 同步握手后加载受击资源及个人石头，订阅轮次和命中校验结果，血量保存在本组件。
 function Component:OnReady()
-    local assets = ReplicatedStorage:WaitForChild("Assets")
-    local effects = assets:WaitForChild("Effects"):WaitForChild("ROCK")
-    self._fragmentTemplate = effects:WaitForChild("Fragment"):Clone()
-    self._smokeTemplate = effects:WaitForChild("Smoke")
-    self._breakSound = assets:WaitForChild("Sounds"):WaitForChild("RockBreak")
+    local assets = FXLoader:Shared("Assets")
+    local effects = FXLoader:Here(assets, "Effects/ROCK")
+    self._fragmentTemplate = FXLoader:Here(effects, "Fragment"):Clone()
+    self._smokeTemplate = FXLoader:Here(effects, "Smoke")
+    self._breakSound = FXLoader:Here(assets, "Sounds/RockBreak")
     -- 本地模型同步后补齐网格数据，保证碎石缩放使用原网格尺寸。
     if self._fragmentTemplate.MeshSize.Magnitude == 0 then
         local size = self._fragmentTemplate.Size
@@ -54,7 +55,7 @@ function Component:OnReady()
         self._fragmentTemplate.Size = size
         mesh:Destroy()
     end
-    local sources = assets:WaitForChild("Models"):WaitForChild("SyntyRocks")
+    local sources = FXLoader:Here(assets, "Models/SyntyRocks")
     for index, name in ipairs(RockNames) do
         local source = sources:WaitForChild(name)
         local part = source:Clone()

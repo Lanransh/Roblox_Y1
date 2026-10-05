@@ -1,4 +1,5 @@
 local FX = _G.FX
+local FXLoader = FX.Loader
 local UI = FX.Class("CCommonUICompClass", "FCCommonUICompClass")
 
 --- 将通用提示接入项目设计画布，随画布等比缩放。
@@ -6,7 +7,7 @@ local UI = FX.Class("CCommonUICompClass", "FCCommonUICompClass")
 function UI:Ctor(owner)
     UI.Super.Ctor(self, owner)
     local playerGui = self:GetPlayerNode():WaitForChild("PlayerGui")
-    local canvas = playerGui:WaitForChild("ScreenGui"):WaitForChild("Canvas")
+    local canvas = FXLoader:Here(playerGui, "ScreenGui/Canvas")
     self.Tips.TextSize = 28
     self.Tips.Parent = canvas
 end

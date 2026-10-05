@@ -1,4 +1,5 @@
 local FX = _G.FX
+local FXLoader = FX.Loader
 local Fields = _G.PlayerDataConfig
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
@@ -16,16 +17,16 @@ end
 --- 服务端就绪后绑定并显示长生命周期主界面，初始同步不播放收益动画。
 function Component:OnReady()
     self._playerGui = self:GetPlayerNode():WaitForChild("PlayerGui")
-    self._rootNode = self._playerGui:WaitForChild("MainUI")
+    self._rootNode = FXLoader:Here(self._playerGui, "MainUI")
     self._rootNode.ResetOnSpawn = false
-    local top = self._rootNode:WaitForChild("TopCenter")
-    self._bar = top:WaitForChild("LevelProgressBar")
-    self._strength = top:WaitForChild("Strength"):WaitForChild("Value")
-    self._leftDown = self._rootNode:WaitForChild("LeftDown")
+    local top = FXLoader:Here(self._rootNode, "TopCenter")
+    self._bar = FXLoader:Here(top, "LevelProgressBar")
+    self._strength = FXLoader:Here(top, "Strength/Value")
+    self._leftDown = FXLoader:Here(self._rootNode, "LeftDown")
     self._effects = {}
     self._lastClick = -math.huge
     -- 复用 Rojo 管理的 ScreenGui，飘字直属该节点，不受 Canvas 缩放影响。
-    self._effectGui = self._playerGui:WaitForChild("ScreenGui")
+    self._effectGui = FXLoader:Here(self._playerGui, "ScreenGui")
     self._pulseScale = Instance.new("UIScale")
     self._pulseScale.Parent = self._strength
     self:BindButtons()
@@ -71,7 +72,7 @@ end
 
 --- 所有现有主界面按钮均有响应；已存在重生界面可打开，其余显示开发中。
 function Component:BindButtons()
-    local rebirth = self._playerGui:WaitForChild("RebirthUI")
+    local rebirth = FXLoader:Here(self._playerGui, "RebirthUI")
     rebirth.ResetOnSpawn = false
     rebirth.Enabled = false
     for index, node in ipairs(rebirth:GetDescendants()) do
@@ -102,7 +103,7 @@ function Component:BindButtons()
     lootButton.BackgroundTransparency = 1
     lootButton.Size = UDim2.fromScale(1, 1)
     lootButton.ZIndex = 10
-    lootButton.Parent = self._leftDown:WaitForChild("BackpackStat")
+    lootButton.Parent = FXLoader:Here(self._leftDown, "BackpackStat")
     self._lootButton = lootButton
     self:TrackConnection(lootButton.Activated:Connect(function()
         local lines = {"战利品背包（返回基地自动存放）"}
@@ -126,19 +127,19 @@ end
 --- 金币余额随服务端同步刷新，保留货币前缀并统一使用数量格式。
 --- @param value number 同步后的金币余额。
 function Component:RefreshCoins(value)
-    self._leftDown:WaitForChild("CashStat"):WaitForChild("Value").Text = "$" .. GameUtility.NumberToText(value)
+    FXLoader:Here(self._leftDown, "CashStat/Value").Text = "$" .. GameUtility.NumberToText(value)
 end
 
 --- 重生次数随持久字段刷新，按次数语义显示整数。
 --- @param value number 同步后的累计重生次数。
 function Component:RefreshRebirthCount(value)
-    self._leftDown:WaitForChild("RebirthStat"):WaitForChild("Value").Text = string.format("%d", value)
+    FXLoader:Here(self._leftDown, "RebirthStat/Value").Text = string.format("%d", value)
 end
 
 --- 钻石读取持久字段并使用通用数量格式，默认 500 由服务端字段定义提供。
 --- @param value number 同步后的钻石数量。
 function Component:RefreshDiamonds(value)
-    self._leftDown:WaitForChild("DiamondStat"):WaitForChild("Value").Text = GameUtility.NumberToText(value)
+    FXLoader:Here(self._leftDown, "DiamondStat/Value").Text = GameUtility.NumberToText(value)
 end
 
 --- 战利品与原生背包分别显示，拾取后可以直接确认当前携带数量。

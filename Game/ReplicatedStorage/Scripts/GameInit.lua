@@ -18,9 +18,12 @@ _G.GameEnum = require(GameShared:WaitForChild("GameEnum"))
 require(script.Parent:WaitForChild("SetupProvider"))
 require(script.Parent:WaitForChild("Framework"):WaitForChild("FrameworkInit"))
 
+local FX = _G.FX
+local FXLoader = FX.Loader
+
 return {
     GameEnum = _G.GameEnum,
-    GameUtility = require(GameShared:WaitForChild("GameUtility")),
-    GameFormula = require(GameShared:WaitForChild("GameFormula")),
-    GameFunction = require(GameShared:WaitForChild("GameFunction")),
+    GameUtility = FXLoader:Require(GameShared, "GameUtility"),
+    GameFormula = FXLoader:Require(GameShared, "GameFormula"),
+    GameFunction = FXLoader:Require(GameShared, "GameFunction"),
 }

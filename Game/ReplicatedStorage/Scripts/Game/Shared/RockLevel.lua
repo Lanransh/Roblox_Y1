@@ -1,6 +1,8 @@
 -- 从 Studio_Y3 的世界 1 关卡和 NumericalConfig.levelCurves 迁入；100 原单位 = 4 studs。
 local NumericalConfig = _G.NumericalConfig
-local CurveSampler = _G.FX.CurveSampler
+local FX = _G.FX
+local FXLoader = FX.Loader
+local CurveSampler = FX.CurveSampler
 local RockLevel = {
     CellSize = 8, -- 每块石头占原来的 2×2 格。
     LoadDistance = 64,
@@ -55,7 +57,7 @@ end
 --- 关卡标记位于 Persistent 模型内，不受距离流出影响；等待初始复制完成后读取边界。
 --- @return table 按关卡顺序排列的区域。
 function RockLevel.GetAreas()
-    local world = workspace:WaitForChild("GameLevelList"):WaitForChild("World1")
+    local world = FXLoader:Workspace("GameLevelList/World1")
     local areas = {}
     for index = 1, #RockLevel.HP do
         local node = world:WaitForChild("Level_" .. index)

@@ -1,4 +1,5 @@
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local FX = _G.FX
+local FXLoader = FX.Loader
 local Collectible = {}
 
 Collectible.ItemId = 1003
@@ -40,8 +41,7 @@ function Collectible.CreateTool(extraData)
         or type(extraData.Price) ~= "number" then
         return nil
     end
-    local template = ReplicatedStorage:WaitForChild("Assets"):WaitForChild("Models")
-        :WaitForChild("Collectibles167"):FindFirstChild(extraData.TemplateName)
+    local template = FXLoader:Shared("Assets/Models/Collectibles167"):FindFirstChild(extraData.TemplateName)
     if not template or not template:IsA("Model") or not template.PrimaryPart then
         return nil
     end
