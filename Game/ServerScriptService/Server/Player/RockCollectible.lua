@@ -1,4 +1,4 @@
-local ServerStorage = game:GetService("ServerStorage")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Collectible = {}
 
 Collectible.ItemId = 1003
@@ -32,7 +32,7 @@ function Collectible.CreateModel(template)
     return model
 end
 
---- 用存档中的模板名重建真实收藏品，随机价格不在重生或重登时重抽。
+--- 按存档模板名从公共模型目录重建收藏品，随机价格不在重生或重登时重抽。
 --- @param extraData table 背包保存的 TemplateName 和 Price。
 --- @return Tool|nil 模板仍有效时返回收藏品 Tool。
 function Collectible.CreateTool(extraData)
@@ -40,7 +40,8 @@ function Collectible.CreateTool(extraData)
         or type(extraData.Price) ~= "number" then
         return nil
     end
-    local template = ServerStorage:WaitForChild("Collectibles208"):FindFirstChild(extraData.TemplateName)
+    local template = ReplicatedStorage:WaitForChild("Assets"):WaitForChild("Models")
+        :WaitForChild("Collectibles167"):FindFirstChild(extraData.TemplateName)
     if not template or not template:IsA("Model") or not template.PrimaryPart then
         return nil
     end

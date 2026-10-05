@@ -25,9 +25,10 @@ function Component:GetCompName()
     return "SRockLevelComp"
 end
 
---- 读档后准备掉落模板、同步地板颜色并启动位置检查。
+--- 读档后从公共模型目录准备收藏品模板、同步地板颜色并启动位置检查。
 function Component:OnPlayerLogin()
-    self._dropTemplates = ServerStorage:WaitForChild("Collectibles208"):GetChildren()
+    self._dropTemplates = game:GetService("ReplicatedStorage"):WaitForChild("Assets")
+        :WaitForChild("Models"):WaitForChild("Collectibles167"):GetChildren()
     self._itemHUD = game:GetService("ReplicatedStorage"):WaitForChild("Nodes"):WaitForChild("ItemHUD")
     self._areas = RockLevel.GetAreas()
     local grounds = workspace:WaitForChild("BlockMeshs"):WaitForChild("世界1"):WaitForChild("GuanQia")
