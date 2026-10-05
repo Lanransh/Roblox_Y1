@@ -42,7 +42,10 @@ function UI:Ctor(owner)
     })
     self.Tips.Font = Enum.Font.GothamBlack
     self.Tips.TextSize = 28
+    self.Tips.TextScaled = true
+    self.Tips.TextWrapped = false
     self.Tips.TextColor3 = Color3.new(1, 1, 1)
+    Node("UITextSizeConstraint", "TextSizeLimit", self.Tips, { MaxTextSize = 28 })
     Node("UISizeConstraint", "MaxWidth", self.Tips, { MaxSize = Vector2.new(900, 120) })
     Node("UIStroke", "TextStroke", self.Tips, {
         ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual,
