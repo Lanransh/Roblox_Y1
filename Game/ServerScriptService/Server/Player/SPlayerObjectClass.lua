@@ -2,7 +2,6 @@ local FX, FS = _G.FX, _G.FS
 local GameConfig = _G.GameConfig
 local PlayerDataConfig, ItemConfig = _G.PlayerDataConfig, _G.ItemConfig
 local TutorialGuideConfig = _G.TutorialGuideConfig
-local RunService = game:GetService("RunService")
 local Collectible = require(script.Parent.RockCollectible)
 local Inventory = FX.Class("SInventoryCompClass", "FSInventoryCompClass")
 
@@ -38,10 +37,6 @@ function Inventory:OnPlayerLogin()
         end
     end))
 
-    -- 试玩时给空存档发测试道具；正式服务器只显示已保存或业务发放的物品。
-    if RunService:IsStudio() and next(self:GetData()) == nil then
-        self:AddItems({ FS.ItemClass.New(1001, 1), FS.ItemClass.New(1002, 3) })
-    end
     self:SyncTools()
 end
 
