@@ -20,6 +20,17 @@ local RockLevel = {
 }
 local thresholds = {0}
 
+--- 缓存达到指定等级的累计经验，供重生封顶与追赶结算共用。
+--- @param level number 目标等级。
+--- @return number 达到目标等级需要的累计经验。
+function RockLevel.GetTrainingValueByLevel(level)
+    level = math.clamp(level, 1, RockLevel.MaxLevel)
+    for index = #thresholds, level - 1 do
+        thresholds[index + 1] = thresholds[index] + RockLevel.GetNextExperience(index)
+    end
+    return thresholds[level]
+end
+
 --- 沿用原曲线的区间插值和四舍五入，区间外使用端点。
 --- @param level number 当前训练等级。
 --- @return number 升到下一级需要的训练值。
@@ -29,13 +40,14 @@ end
 
 --- 累计配置中的升级门槛，力量使用同一份 levelCurves 采样。
 --- @param value number 服务端持久化的累计训练值。
+--- @param maxLevel number? 当前重生阶段允许达到的等级。
 --- @return number 训练等级。
 --- @return number 对应力量。
 --- @return number 当前等级内的训练进度。
 --- @return number 当前等级升级需求。
-function RockLevel.GetProgress(value)
+function RockLevel.GetProgress(value, maxLevel)
     local level = 1
-    while level < RockLevel.MaxLevel do
+    while level < (maxLevel or RockLevel.MaxLevel) do
         if thresholds[level + 1] == nil then
             thresholds[level + 1] = thresholds[level] + RockLevel.GetNextExperience(level)
         end

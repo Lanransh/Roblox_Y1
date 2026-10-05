@@ -12,3 +12,7 @@ Loot.InventoryFull,Your inventory is full. You can carry up to {capacity:int} it
 Loot.BagFull,Your loot bag is full. Return to your base to store your items.,,
 Loot.Deposited,Loot stored: {count:int},,count=3
 Loot.DepositFull,Your inventory is full. Remaining items stay in your loot bag.,,
+Rebirth.Confirm,Rebirth,,
+Rebirth.Progress,Level {level:int} / {required:int},,level=1;required=15
+Rebirth.RequiredLevel,Reach level {level:int} to rebirth.,,level=15
+Rebirth.Success,Rebirth complete! Your level has reset to 1.,,

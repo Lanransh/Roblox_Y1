@@ -2,6 +2,8 @@
 -- 框架已有的 Ready、玩家数据和服务器数据同步协议继续由 FrameworkInit 声明。
 return {
     ClientMsgID = {
+        -- 无参数，服务端校验请求者当前等级与重生次数，单向请求。
+        "C2S_Rebirth",
         -- key: string、round: number，击破格号与轮次；服务器按有效命中记录校验并只开奖一次。
         -- 单向请求，不接受客户端提供道具、价格、位置或玩家身份。
         "C2S_RequestRockDrop",

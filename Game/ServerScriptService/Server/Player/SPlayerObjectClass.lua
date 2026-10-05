@@ -173,6 +173,7 @@ function Player:Ctor(id)
     self:AddComponent("FSRewardCompClass")
     self:AddComponent("STutorialGuideCompClass")
     self:AddComponent("SRockLevelCompClass")
+    self:AddComponent("SMiscCompClass")
 end
 
 --- 服务端仅发送文案 Key 和业务参数，不按服务器语言提前生成提示。

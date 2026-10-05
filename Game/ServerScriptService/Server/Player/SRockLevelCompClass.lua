@@ -18,8 +18,6 @@ function Component:Ctor(owner)
     self._dropResults = {}
     self._dropNodes = {}
     self._random = Random.new()
-    self._lastGrowth = os.clock()
-    self._hit = false
 end
 
 --- 返回项目组件协作名称。
@@ -38,35 +36,9 @@ function Component:OnPlayerLogin()
         local ground = grounds:WaitForChild("Ground" .. index)
         area.Node.Color = ground.Color
     end
-    local player = self:GetPlayerNode()
-    self._stats = player:FindFirstChild("leaderstats")
-    self._ownsStats = self._stats == nil
-    if self._ownsStats then
-        self._stats = Instance.new("Folder")
-        self._stats.Name = "leaderstats"
-        self._stats.Parent = player
-    end
-    self._levelStat = Instance.new("IntValue")
-    self._levelStat.Name = "训练等级"
-    self._levelStat.Parent = self._stats
-    self._strengthStat = Instance.new("NumberValue")
-    self._strengthStat.Name = "力量"
-    self._strengthStat.Parent = self._stats
-    self:RefreshProgress()
     self._timer = FX.Task:Interval(0.1, function()
         self:Tick()
     end)
-end
-
---- 将持久训练值派生为同步等级，并暴露原生玩家属性便于检查。
-function Component:RefreshProgress()
-    local level, strength = RockLevel.GetProgress(self:GetNumber(Fields.RockTrainingValue))
-    self:SetNumber(Fields.RockTrainingLevel, level)
-    local player = self:GetPlayerNode()
-    player:SetAttribute("TrainingLevel", level)
-    player:SetAttribute("Strength", strength)
-    self._levelStat.Value = level
-    self._strengthStat.Value = strength
 end
 
 --- 出生或回到安全区时结束开奖轮次，通知客户端恢复个人石头。
@@ -81,7 +53,7 @@ function Component:RestoreRocks(force)
         self._hitInterval = nil
         self:SendRockRound()
     end
-    self._hit = false
+    self:PublishEvent("RockRoundReset")
 end
 
 --- 提供当前轮次，客户端准备完成后主动请求，避免错过初始重置消息。
@@ -147,7 +119,7 @@ function Component:RecordHit(key, round)
         self._attackRecords[key] = record
     end
     record.Hits[level] = (record.Hits[level] or 0) + 1
-    self._hit = true
+    self:PublishEvent("RockTrainingHit")
     return true
 end
 
@@ -394,22 +366,18 @@ function Component:EquipPickaxe(humanoid)
     end
 end
 
---- 服务端仅处理角色发镐、轮次重置、入库及训练结算，攻击与血量交由客户端。
+--- 服务端处理角色发镐、轮次重置与入库，攻击与血量交由客户端。
 function Component:Tick()
     local character = self:GetPlayerCharacter()
     local root = character and character:FindFirstChild("HumanoidRootPart")
     local humanoid = character and character:FindFirstChildOfClass("Humanoid")
     if not root or not humanoid or humanoid.Health <= 0 then
-        self._lastGrowth = os.clock()
-        self._hit = false
         return
     end
-    local now = os.clock()
     local position = root.Position
     if self._character ~= character then
         self:RestoreRocks(self._character ~= nil)
         self._character = character
-        self._lastGrowth = now
         self:EquipPickaxe(humanoid)
     end
     local firstArea = self._areas[1]
@@ -423,24 +391,9 @@ function Component:Tick()
     else
         self._depositFull = false
     end
-    if now - self._lastGrowth >= 1 then
-        -- 按服务端观察到的水平速度判断移动，站立、腾空和坐下均不发走路收益。
-        local velocity = root.AssemblyLinearVelocity
-        local walking = humanoid.FloorMaterial ~= Enum.Material.Air and not humanoid.Sit
-            and Vector3.new(velocity.X, 0, velocity.Z).Magnitude > 0.5
-        local gain = (walking and RockLevel.WalkTraining or 0) + (self._hit and 2 or 0)
-        if gain > 0 then
-            self:AddNumber(Fields.RockTrainingValue, gain)
-            self:RefreshProgress()
-            FX.Network:SendMsgToClient(self:GetPlayerId(), "S2C_TrainingEffect", gain)
-        end
-        -- 不按积压秒数补发，避免卡顿恢复时把无法确认的移动时长算作走路收益。
-        self._lastGrowth = now
-        self._hit = false
-    end
 end
 
---- 离服释放掉落、结算任务和镐子，清空开奖校验记录。
+--- 离服释放掉落、关卡任务和镐子，清空开奖校验记录。
 function Component:OnPlayerLogout()
     self:ClearDrops()
     FX.Task:Cancel(self._timer)
@@ -457,16 +410,6 @@ end
 --- 析构也释放任务，覆盖初始化中断的生命周期。
 function Component:Dtor()
     self:OnPlayerLogout()
-    if self._ownsStats then
-        self._stats:Destroy()
-    else
-        if self._levelStat then
-            self._levelStat:Destroy()
-        end
-        if self._strengthStat then
-            self._strengthStat:Destroy()
-        end
-    end
     Component.Super.Dtor(self)
 end
 

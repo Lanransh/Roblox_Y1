@@ -1,5 +1,6 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
+local Rebirth = FXLoader:RequireShared("Scripts/Game/Shared/Rebirth")
 local Fields = _G.PlayerDataConfig
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
@@ -22,6 +23,8 @@ function Component:OnReady()
     local top = FXLoader:Here(self._rootNode, "TopCenter")
     self._bar = FXLoader:Here(top, "LevelProgressBar")
     self._strength = FXLoader:Here(top, "Strength/Value")
+    self._rebirthBadge = FXLoader:Here(self._rootNode, "LeftCenter/RebirthButton/Badge")
+    self._rebirthBadge.AutoLocalize = false
     self._commonUI = self:GetPlayerObject():RequireComponent("FCCommonUIComp")
     self._localization = self._commonUI.Localization
     self._strength.AutoLocalize = false
@@ -44,6 +47,9 @@ function Component:OnReady()
         self:ShowTrainingEffect(gain)
     end)
     self:WatchDataChanged(Fields.RockTrainingValue, self.RefreshProgress, self)
+    self:WatchDataChanged(Fields.RebirthCount, function()
+        self:RefreshProgress(self:GetNumber(Fields.RockTrainingValue))
+    end, self)
     self:WatchDataChanged(Fields.Coins, self.RefreshCoins, self)
     self:WatchDataChanged(Fields.RebirthCount, self.RefreshRebirthCount, self)
     self:WatchDataChanged(Fields.Diamonds, self.RefreshDiamonds, self)
@@ -78,27 +84,13 @@ function Component:ShowClickTrainingEffect(position)
     self:ShowTrainingEffect(RockLevel.ClickEffectValue, position)
 end
 
---- 所有现有主界面按钮均有响应；已存在重生界面可打开，其余显示开发中。
+--- 重生入口交给独立 UI 组件，其余未实现按钮显示开发中。
 function Component:BindButtons()
-    local rebirth = FXLoader:Here(self._playerGui, "RebirthUI")
-    rebirth.ResetOnSpawn = false
-    rebirth.Enabled = false
-    for index, node in ipairs(rebirth:GetDescendants()) do
-        if node:IsA("GuiButton") then
-            self:TrackConnection(node.Activated:Connect(function()
-                if node.Name == "CloseBtn" then
-                    rebirth.Enabled = false
-                else
-                    self:ShowDeveloping()
-                end
-            end))
-        end
-    end
     for index, node in ipairs(self._rootNode:GetDescendants()) do
         if node:IsA("GuiButton") then
             self:TrackConnection(node.Activated:Connect(function()
                 if node.Name == "RebirthButton" then
-                    rebirth.Enabled = true
+                    self:GetPlayerObject():RequireComponent("CRebirthUIComp"):Show()
                 else
                     self:ShowDeveloping()
                 end
@@ -173,11 +165,13 @@ function Component:RefreshLoot(loot)
     self._leftDown.BackpackStat.Value.Text = string.format("%d/%d", #loot, RockLevel.LootCapacity)
 end
 
---- 经验与力量使用通用数量格式；进度仍按真实数值计算，并以 0.3 秒 Quad Out 平滑填充。
+--- 刷新经验、力量与整数重生百分比；经验条以 0.3 秒 Quad Out 平滑填充。
 --- @param value number 同步后的累计训练值。
 --- @param oldValue number? 上一次训练值，首次回放为 nil。
 function Component:RefreshProgress(value, oldValue)
-    local level, strength, progressValue, required = RockLevel.GetProgress(value)
+    local rebirthRequiredLevel = Rebirth.GetRequiredLevel(self:GetNumber(Fields.RebirthCount))
+    local level, strength, progressValue, required = RockLevel.GetProgress(value, rebirthRequiredLevel)
+    self._rebirthBadge.Text = string.format("%d%%", math.floor(math.clamp(level / rebirthRequiredLevel, 0, 1) * 100))
     local progress = math.clamp(progressValue / required, 0, 1)
     self._bar.LevelLabel.Text = string.format("Lv.%d", level)
     self._bar.ProgressLabel.Text = string.format("%s/%s",

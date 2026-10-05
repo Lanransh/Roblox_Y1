@@ -2,11 +2,26 @@ local FX = _G.FX
 local Manager = FX.Class("SPlayerObjectManagerClass", "FSPlayerObjectManagerClass")
 _G.SPlayerObjectManagerClass = Manager
 
---- 使用项目玩家类构建服务端管理器，并统一注册背包与石头掉落协议。
+--- 使用项目玩家类构建服务端管理器，并统一注册玩家业务协议。
 function Manager:Ctor()
     Manager.Super.Ctor(self, "SPlayerObjectClass")
     self:RegForwardFrameworkClientMsg()
+    self:RegMiscMsg()
     self:RegRockDropMsg()
+end
+
+--- 简单玩家请求直接转发到杂项组件，不在管理器内执行结算。
+function Manager:RegMiscMsg()
+    --- 只操作引擎认证玩家自身的数据，忽略未加载或已离服的玩家。
+    --- @param userId number 引擎认证的玩家身份。
+    local function rebirth(userId)
+        local player = self:GetPlayerObject(userId)
+        local misc = player and player:GetComponent("SMiscComp")
+        if misc then
+            misc:HandleRebirth()
+        end
+    end
+    FX.Network:RegClientMsgCallback("C2S_Rebirth", rebirth)
 end
 
 --- 按引擎认证身份转发命中、开奖和轮次请求，未登录或已离服时忽略。

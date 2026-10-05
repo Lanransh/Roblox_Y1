@@ -7,6 +7,7 @@ local Player = script.Parent.Player
 local Service = script.Parent.Service
 
 require(Player.SRockLevelCompClass)
+require(Player.SMiscCompClass)
 require(Player.SPlayerObjectClass)
 local ManagerClass = require(Player.SPlayerObjectManagerClass)
 local RankingClass = require(Service.SRankingServiceClass)
