@@ -7,6 +7,7 @@ Collectible.DropChance = 0.5
 Collectible.MinPrice = 10
 Collectible.MaxPrice = 1000
 Collectible.PickupDistance = 10
+Collectible.DropLifetime = 10
 
 --- 将静态收藏品焊接为单个装配，供掉落补间和背包手持共用。
 --- @param template Model 已导入的收藏品模板。

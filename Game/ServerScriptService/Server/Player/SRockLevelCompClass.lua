@@ -3,6 +3,7 @@ local FXLoader = FX.Loader
 local Fields = _G.PlayerDataConfig
 local ServerStorage = game:GetService("ServerStorage")
 local TweenService = game:GetService("TweenService")
+local HttpService = game:GetService("HttpService")
 local RockLevel = require(game:GetService("ReplicatedStorage").Scripts.Game.Shared.RockLevel)
 local Collectible = require(script.Parent.RockCollectible)
 local Component = FX.Class("SRockLevelCompClass", "FSPlayerCompClass")
@@ -186,13 +187,19 @@ function Component:RequestDrop(key, round)
     model:PivotTo(model:GetPivot() - Vector3.new(0, 0.5, 0))
     model:SetAttribute("OwnerUserId", self:GetPlayerId())
     model:SetAttribute("Price", result.Price)
+    local dropId = HttpService:GenerateGUID(false)
+    model:SetAttribute("DropId", dropId)
+    local expiresAt = workspace:GetServerTimeNow() + Collectible.DropLifetime
+    model:SetAttribute("DropExpiresAt", expiresAt)
     local hud = self._itemHUD:Clone()
     hud.Adornee = root
     hud.StudsOffsetWorldSpace = Vector3.new(0, size.Y / 2 + 1.5, 0)
     hud.Frame.ItemName.Text = result.Template:GetAttribute("DisplayName")
     hud.Frame.Rarity.Text = result.Template:GetAttribute("ValueTier")
     hud.Frame.Price.Text = string.format("$%d", result.Price)
-    hud.Frame.Timer.Visible = false
+    hud.Frame.Timer.Text = string.format("%ds", Collectible.DropLifetime)
+    hud.Frame.Timer.AutoLocalize = false
+    hud.Frame.Timer.Visible = true
     hud.Parent = root
     local prompt = Instance.new("ProximityPrompt")
     -- 原生拾取提示只显示操作文案，复用英文源表并交给 Roblox 自动本地化。
@@ -206,16 +213,18 @@ function Component:RequestDrop(key, round)
     prompt.RequiresLineOfSight = false
     prompt.Enabled = false
     prompt.Parent = root
-    local drop = {Model = model, Prompt = prompt, Price = result.Price, Template = result.Template}
-    self._dropNodes[key] = drop
+    -- 奖励与有效期只读取服务器记录，实例属性仅供客户端展示和识别。
+    local drop = {Model = model, Prompt = prompt, Price = result.Price, Template = result.Template,
+        ExpiresAt = expiresAt}
+    self._dropNodes[dropId] = drop
     --- 原生提示回调只允许该石头的拥有者发起拾取。
     --- @param player Player 引擎报告的实际触发玩家。
     local function pickup(player)
         if player == self:GetPlayerNode() then
-            self:PickupDrop(key)
+            self:PickupDrop(dropId)
         end
     end
-    prompt.Triggered:Connect(pickup)
+    drop.Connection = prompt.Triggered:Connect(pickup)
     model.Parent = workspace
     --- 弹起结束后进入往返漂浮并开放拾取，清理关卡时取消任务和补间。
     drop.Task = task.spawn(function()
@@ -238,10 +247,14 @@ function Component:RequestDrop(key, round)
     end)
 end
 
---- 校验存活、距离和总占用；战利品与正式背包合计不超容量，满包保留漂浮道具并提示。
---- @param key string 当前玩家掉落记录的格号。
-function Component:PickupDrop(key)
-    local drop = self._dropNodes[key]
+--- 按服务端掉落 ID 校验有效期、存活、距离和容量，仅使用记录中的真实奖励。
+--- @param dropId string 当前玩家的服务器掉落 ID。
+function Component:PickupDrop(dropId)
+    local drop = self._dropNodes[dropId]
+    if drop and workspace:GetServerTimeNow() >= drop.ExpiresAt then
+        self:RemoveDrop(dropId)
+        return
+    end
     if not drop or drop.Picking or not drop.Prompt.Enabled then
         return
     end
@@ -273,10 +286,7 @@ function Component:PickupDrop(key)
     table.insert(loot, {TemplateName = drop.Template.Name, Price = drop.Price,
         DisplayName = drop.Template:GetAttribute("DisplayName")})
     self:SetTable(Fields.RockLoot, loot)
-    self._dropNodes[key] = nil
-    drop.Tween:Cancel()
-    drop.Tween:Destroy()
-    drop.Model:Destroy()
+    self:RemoveDrop(dropId)
     self:ShowTips("拾取了" .. drop.Template:GetAttribute("DisplayName"))
 end
 
@@ -308,18 +318,27 @@ function Component:DepositLoot()
     self._depositFull = #loot > 0
 end
 
---- 结束个人关卡轮次时释放掉落、提示连接和仍在播放的补间任务。
+--- 先注销掉落 ID，再释放实例、连接和动画，避免超时或重复拾取后继续领奖。
+--- @param dropId string 已登记的服务器掉落 ID。
+function Component:RemoveDrop(dropId)
+    local drop = self._dropNodes[dropId]
+    self._dropNodes[dropId] = nil
+    drop.Connection:Disconnect()
+    if drop.Task then
+        task.cancel(drop.Task)
+    end
+    if drop.Tween then
+        drop.Tween:Cancel()
+        drop.Tween:Destroy()
+    end
+    drop.Model:Destroy()
+end
+
+--- 结束个人关卡轮次时注销全部掉落 ID，并释放提示连接和仍在播放的补间任务。
 function Component:ClearDrops()
     self._dropResults = {}
-    for key, drop in pairs(self._dropNodes) do
-        if drop.Task then
-            task.cancel(drop.Task)
-        end
-        if drop.Tween then
-            drop.Tween:Cancel()
-            drop.Tween:Destroy()
-        end
-        drop.Model:Destroy()
+    for dropId in pairs(self._dropNodes) do
+        self:RemoveDrop(dropId)
     end
     self._dropNodes = {}
 end
@@ -369,8 +388,14 @@ function Component:EquipPickaxe(humanoid)
     end
 end
 
---- 服务端处理角色发镐、轮次重置与入库，攻击与血量交由客户端。
+--- 服务端回收超时道具并处理角色与入库，倒计时文字由客户端刷新，死亡期间仍正常回收。
 function Component:Tick()
+    local now = workspace:GetServerTimeNow()
+    for dropId, drop in pairs(self._dropNodes) do
+        if now >= drop.ExpiresAt then
+            self:RemoveDrop(dropId)
+        end
+    end
     local character = self:GetPlayerCharacter()
     local root = character and character:FindFirstChild("HumanoidRootPart")
     local humanoid = character and character:FindFirstChildOfClass("Humanoid")

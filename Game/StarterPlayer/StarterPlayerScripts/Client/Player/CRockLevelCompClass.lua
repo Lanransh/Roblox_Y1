@@ -30,6 +30,7 @@ function Component:Ctor(owner)
     self._lastAttack = -math.huge
     self._nextAttackCheck = 0
     self._pendingHits = {}
+    self._nextDropTimerCheck = 0
 end
 
 --- 返回项目关卡组件协作名称。
@@ -113,8 +114,32 @@ function Component:OnReady()
     FX.Network:RegServerMsgCallback("S2C_RockHitResult", self.OnHitResult, self)
     FX.Network:SendMsgToServer("C2S_RequestRockRound")
     self:TrackConnection(RunService.Heartbeat:Connect(function()
+        self:UpdateDropTimers()
         self:UpdateVisuals()
     end))
+end
+
+--- 按复制的服务器到期时间刷新掉落 HUD，延迟到达的模型和 HUD 在后续检查补齐。
+function Component:UpdateDropTimers()
+    local now = workspace:GetServerTimeNow()
+    if now < self._nextDropTimerCheck then
+        return
+    end
+    self._nextDropTimerCheck = now + 0.1
+    for index, model in ipairs(workspace:GetChildren()) do
+        local expiresAt = model:GetAttribute("DropExpiresAt")
+        if model:IsA("Model") and model:GetAttribute("DropId") and type(expiresAt) == "number" then
+            local root = model.PrimaryPart
+            local hud = root and root:FindFirstChild("ItemHUD")
+            local timer = hud and FXLoader:Find(hud, "Frame/Timer")
+            if timer then
+                local text = string.format("%ds", math.max(0, math.ceil(expiresAt - now)))
+                if timer.Text ~= text then
+                    timer.Text = text
+                end
+            end
+        end
+    end
 end
 
 --- 服务端轮次推进时取消旧挥镐和预测，恢复本地石头；初始请求可重复回放当前轮次。
