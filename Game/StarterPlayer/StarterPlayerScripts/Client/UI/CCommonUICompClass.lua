@@ -1,6 +1,7 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
 local Localization = FXLoader:Require(script.Parent.Parent, "Localization")
+local ButtonHover = FXLoader:RequireFromParent(script, "ButtonHover")
 local UI = FX.Class("CCommonUICompClass", "FCCommonUICompClass")
 
 --- 将通用提示接入项目设计画布，随画布等比缩放。
@@ -19,6 +20,9 @@ function UI:Ctor(owner)
     FX.Network:RegServerMsgCallback("S2C_ShowLocalizedTips", self.ShowLocalizedTips, self)
     self:RefreshLocalization()
     local playerGui = self:GetPlayerNode():WaitForChild("PlayerGui")
+    -- 全屏输入遮罩不参与按钮缩放，避免连带放大弹窗内容。
+    self.Modal:SetAttribute("HoverEnabled", false)
+    self._buttonHover = ButtonHover.New(playerGui)
     local canvas = FXLoader:Here(playerGui, "ScreenGui/Canvas")
     self.Tips.TextSize = 28
     self.Tips.Parent = canvas
@@ -85,6 +89,7 @@ end
 
 --- 提示已移出框架根节点，需要单独释放，保留项目共享画布。
 function UI:Dtor()
+    self._buttonHover:Destroy()
     FX.Network:UnRegServerMsgCallback("S2C_ShowLocalizedTips")
     self.Localization:Destroy()
     UI.Super.Dtor(self)

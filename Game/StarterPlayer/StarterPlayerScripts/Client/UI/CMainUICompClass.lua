@@ -111,6 +111,8 @@ function Component:BindButtons()
     lootButton.BackgroundTransparency = 1
     lootButton.Size = UDim2.fromScale(1, 1)
     lootButton.ZIndex = 10
+    -- 透明点击区放大背包整块可视内容，而不是只改变空白按钮。
+    lootButton:SetAttribute("HoverTargetParent", true)
     lootButton.Parent = FXLoader:Here(self._leftDown, "BackpackStat")
     self._lootButton = lootButton
     --- 弹窗内容在显示时按当前语言生成。
