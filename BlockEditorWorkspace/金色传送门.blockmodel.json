@@ -1,0 +1,4038 @@
+{
+  "version": 9,
+  "guid": "1c308efd-ca49-498e-9c78-f1f3eb45bafe",
+  "rootNodeId": "asset-root",
+  "nodes": [
+    {
+      "id": "asset-root",
+      "name": "金色传送门 资产根",
+      "parentId": null,
+      "type": "Transform",
+      "transform": {
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "ai-node-1",
+      "name": "金色传送门",
+      "parentId": "asset-root",
+      "type": "Transform",
+      "transform": {
+        "position": [
+          67.2,
+          -2,
+          58.6
+        ],
+        "rotation": [
+          0,
+          45,
+          0
+        ],
+        "scale": [
+          0.9,
+          0.9,
+          0.9
+        ]
+      }
+    },
+    {
+      "id": "ai-node-2",
+      "name": "阶梯金环",
+      "parentId": "ai-node-1",
+      "type": "Group",
+      "transform": {
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "ai-node-3",
+      "name": "祭坛底座",
+      "parentId": "ai-node-1",
+      "type": "Group",
+      "transform": {
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "ai-node-4",
+      "name": "金色晶饰",
+      "parentId": "ai-node-1",
+      "type": "Group",
+      "transform": {
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "ai-node-5",
+      "name": "古铜底层",
+      "parentId": "ai-node-3",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.75,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          32,
+          1.5,
+          17
+        ],
+        "color": "#785024",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-6",
+      "name": "黄金中层",
+      "parentId": "ai-node-3",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          2.05,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          29,
+          1.1,
+          14
+        ],
+        "color": "#d99b27",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-7",
+      "name": "浅金顶层",
+      "parentId": "ai-node-3",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          3,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          26,
+          0.8,
+          11
+        ],
+        "color": "#f6cb57",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-8",
+      "name": "正面金边",
+      "parentId": "ai-node-3",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          1.5,
+          -8.5
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          30,
+          0.35,
+          0.45
+        ],
+        "color": "#ffe6a0",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-9",
+      "name": "前踏步",
+      "parentId": "ai-node-3",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.375,
+          -10
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          18,
+          0.75,
+          4
+        ],
+        "color": "#c58d32",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-10",
+      "name": "踏步亮边",
+      "parentId": "ai-node-3",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.75,
+          -11.7
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          18,
+          0.25,
+          0.5
+        ],
+        "color": "#ffe6a0",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-11",
+      "name": "门槛",
+      "parentId": "ai-node-3",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          3.7,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          17,
+          0.7,
+          5
+        ],
+        "color": "#a36d26",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-12",
+      "name": "门足-1",
+      "parentId": "ai-node-3",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -10.5,
+          4.7,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          5.5,
+          3,
+          6
+        ],
+        "color": "#b77b24",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-13",
+      "name": "门足金顶-1",
+      "parentId": "ai-node-3",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -10.5,
+          6.55,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          6.5,
+          0.7,
+          7
+        ],
+        "color": "#ffd76b",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-14",
+      "name": "门足纹饰-1",
+      "parentId": "ai-node-3",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -10.5,
+          4.8,
+          -3.2
+        ],
+        "rotation": [
+          0,
+          0,
+          45
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          2.3,
+          2.3,
+          0.4
+        ],
+        "color": "#fff0b5",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-15",
+      "name": "门足1",
+      "parentId": "ai-node-3",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          10.5,
+          4.7,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          5.5,
+          3,
+          6
+        ],
+        "color": "#b77b24",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-16",
+      "name": "门足金顶1",
+      "parentId": "ai-node-3",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          10.5,
+          6.55,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          6.5,
+          0.7,
+          7
+        ],
+        "color": "#ffd76b",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-17",
+      "name": "门足纹饰1",
+      "parentId": "ai-node-3",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          10.5,
+          4.8,
+          -3.2
+        ],
+        "rotation": [
+          0,
+          0,
+          45
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          2.3,
+          2.3,
+          0.4
+        ],
+        "color": "#fff0b5",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-18",
+      "name": "铜边_0",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          32,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          13.2,
+          3.2,
+          4.4
+        ],
+        "color": "#aa7020",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-19",
+      "name": "金环_0",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          32,
+          -0.2
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          12.5,
+          2.5,
+          4.65
+        ],
+        "color": "#ffd65a",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-20",
+      "name": "浅金镶线_0",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          32,
+          -2.68
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          10.8,
+          0.8,
+          0.3
+        ],
+        "color": "#ffe9a3",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-21",
+      "name": "铜边_1",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          5,
+          31,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          3.2,
+          5.2,
+          4.4
+        ],
+        "color": "#aa7020",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-22",
+      "name": "金环_1",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          5,
+          31,
+          -0.2
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          2.5,
+          4.5,
+          4.65
+        ],
+        "color": "#efb43a",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-23",
+      "name": "浅金镶线_1",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          5,
+          31,
+          -2.68
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.8,
+          2.8,
+          0.3
+        ],
+        "color": "#ffe9a3",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-24",
+      "name": "铜边_2",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          7,
+          30,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          7.2,
+          3.2,
+          4.4
+        ],
+        "color": "#aa7020",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-25",
+      "name": "金环_2",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          7,
+          30,
+          -0.2
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          6.5,
+          2.5,
+          4.65
+        ],
+        "color": "#efb43a",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-26",
+      "name": "浅金镶线_2",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          7,
+          30,
+          -2.68
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          4.8,
+          0.8,
+          0.3
+        ],
+        "color": "#ffe9a3",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-27",
+      "name": "铜边_3",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          9,
+          28,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          3.2,
+          7.2,
+          4.4
+        ],
+        "color": "#aa7020",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-28",
+      "name": "金环_3",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          9,
+          28,
+          -0.2
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          2.5,
+          6.5,
+          4.65
+        ],
+        "color": "#ffd65a",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-29",
+      "name": "浅金镶线_3",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          9,
+          28,
+          -2.68
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.8,
+          4.8,
+          0.3
+        ],
+        "color": "#ffe9a3",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-30",
+      "name": "铜边_4",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          10.5,
+          26,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          6.2,
+          3.2,
+          4.4
+        ],
+        "color": "#aa7020",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-31",
+      "name": "金环_4",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          10.5,
+          26,
+          -0.2
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          5.5,
+          2.5,
+          4.65
+        ],
+        "color": "#efb43a",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-32",
+      "name": "浅金镶线_4",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          10.5,
+          26,
+          -2.68
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          3.8,
+          0.8,
+          0.3
+        ],
+        "color": "#ffe9a3",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-33",
+      "name": "铜边_5",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          12,
+          19,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          3.2,
+          17.2,
+          4.4
+        ],
+        "color": "#aa7020",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-34",
+      "name": "金环_5",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          12,
+          19,
+          -0.2
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          2.5,
+          16.5,
+          4.65
+        ],
+        "color": "#efb43a",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-35",
+      "name": "浅金镶线_5",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          12,
+          19,
+          -2.68
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.8,
+          14.8,
+          0.3
+        ],
+        "color": "#ffe9a3",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-36",
+      "name": "铜边_6",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          10.5,
+          12,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          6.2,
+          3.2,
+          4.4
+        ],
+        "color": "#aa7020",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-37",
+      "name": "金环_6",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          10.5,
+          12,
+          -0.2
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          5.5,
+          2.5,
+          4.65
+        ],
+        "color": "#ffd65a",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-38",
+      "name": "浅金镶线_6",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          10.5,
+          12,
+          -2.68
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          3.8,
+          0.8,
+          0.3
+        ],
+        "color": "#ffe9a3",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-39",
+      "name": "铜边_7",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          9,
+          10,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          3.2,
+          7.2,
+          4.4
+        ],
+        "color": "#aa7020",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-40",
+      "name": "金环_7",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          9,
+          10,
+          -0.2
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          2.5,
+          6.5,
+          4.65
+        ],
+        "color": "#efb43a",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-41",
+      "name": "浅金镶线_7",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          9,
+          10,
+          -2.68
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.8,
+          4.8,
+          0.3
+        ],
+        "color": "#ffe9a3",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-42",
+      "name": "铜边_8",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          7,
+          8,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          7.2,
+          3.2,
+          4.4
+        ],
+        "color": "#aa7020",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-43",
+      "name": "金环_8",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          7,
+          8,
+          -0.2
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          6.5,
+          2.5,
+          4.65
+        ],
+        "color": "#efb43a",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-44",
+      "name": "浅金镶线_8",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          7,
+          8,
+          -2.68
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          4.8,
+          0.8,
+          0.3
+        ],
+        "color": "#ffe9a3",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-45",
+      "name": "铜边_9",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          5,
+          7,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          3.2,
+          5.2,
+          4.4
+        ],
+        "color": "#aa7020",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-46",
+      "name": "金环_9",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          5,
+          7,
+          -0.2
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          2.5,
+          4.5,
+          4.65
+        ],
+        "color": "#ffd65a",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-47",
+      "name": "浅金镶线_9",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          5,
+          7,
+          -2.68
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.8,
+          2.8,
+          0.3
+        ],
+        "color": "#ffe9a3",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-48",
+      "name": "铜边_10",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          6,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          13.2,
+          3.2,
+          4.4
+        ],
+        "color": "#aa7020",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-49",
+      "name": "金环_10",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          6,
+          -0.2
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          12.5,
+          2.5,
+          4.65
+        ],
+        "color": "#efb43a",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-50",
+      "name": "浅金镶线_10",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          6,
+          -2.68
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          10.8,
+          0.8,
+          0.3
+        ],
+        "color": "#ffe9a3",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-51",
+      "name": "铜边_11",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -5,
+          7,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          3.2,
+          5.2,
+          4.4
+        ],
+        "color": "#aa7020",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-52",
+      "name": "金环_11",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -5,
+          7,
+          -0.2
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          2.5,
+          4.5,
+          4.65
+        ],
+        "color": "#efb43a",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-53",
+      "name": "浅金镶线_11",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -5,
+          7,
+          -2.68
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.8,
+          2.8,
+          0.3
+        ],
+        "color": "#ffe9a3",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-54",
+      "name": "铜边_12",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -7,
+          8,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          7.2,
+          3.2,
+          4.4
+        ],
+        "color": "#aa7020",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-55",
+      "name": "金环_12",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -7,
+          8,
+          -0.2
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          6.5,
+          2.5,
+          4.65
+        ],
+        "color": "#ffd65a",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-56",
+      "name": "浅金镶线_12",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -7,
+          8,
+          -2.68
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          4.8,
+          0.8,
+          0.3
+        ],
+        "color": "#ffe9a3",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-57",
+      "name": "铜边_13",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -9,
+          10,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          3.2,
+          7.2,
+          4.4
+        ],
+        "color": "#aa7020",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-58",
+      "name": "金环_13",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -9,
+          10,
+          -0.2
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          2.5,
+          6.5,
+          4.65
+        ],
+        "color": "#efb43a",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-59",
+      "name": "浅金镶线_13",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -9,
+          10,
+          -2.68
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.8,
+          4.8,
+          0.3
+        ],
+        "color": "#ffe9a3",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-60",
+      "name": "铜边_14",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -10.5,
+          12,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          6.2,
+          3.2,
+          4.4
+        ],
+        "color": "#aa7020",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-61",
+      "name": "金环_14",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -10.5,
+          12,
+          -0.2
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          5.5,
+          2.5,
+          4.65
+        ],
+        "color": "#efb43a",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-62",
+      "name": "浅金镶线_14",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -10.5,
+          12,
+          -2.68
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          3.8,
+          0.8,
+          0.3
+        ],
+        "color": "#ffe9a3",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-63",
+      "name": "铜边_15",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -12,
+          19,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          3.2,
+          17.2,
+          4.4
+        ],
+        "color": "#aa7020",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-64",
+      "name": "金环_15",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -12,
+          19,
+          -0.2
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          2.5,
+          16.5,
+          4.65
+        ],
+        "color": "#ffd65a",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-65",
+      "name": "浅金镶线_15",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -12,
+          19,
+          -2.68
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.8,
+          14.8,
+          0.3
+        ],
+        "color": "#ffe9a3",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-66",
+      "name": "铜边_16",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -10.5,
+          26,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          6.2,
+          3.2,
+          4.4
+        ],
+        "color": "#aa7020",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-67",
+      "name": "金环_16",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -10.5,
+          26,
+          -0.2
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          5.5,
+          2.5,
+          4.65
+        ],
+        "color": "#efb43a",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-68",
+      "name": "浅金镶线_16",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -10.5,
+          26,
+          -2.68
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          3.8,
+          0.8,
+          0.3
+        ],
+        "color": "#ffe9a3",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-69",
+      "name": "铜边_17",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -9,
+          28,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          3.2,
+          7.2,
+          4.4
+        ],
+        "color": "#aa7020",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-70",
+      "name": "金环_17",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -9,
+          28,
+          -0.2
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          2.5,
+          6.5,
+          4.65
+        ],
+        "color": "#efb43a",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-71",
+      "name": "浅金镶线_17",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -9,
+          28,
+          -2.68
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.8,
+          4.8,
+          0.3
+        ],
+        "color": "#ffe9a3",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-72",
+      "name": "铜边_18",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -7,
+          30,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          7.2,
+          3.2,
+          4.4
+        ],
+        "color": "#aa7020",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-73",
+      "name": "金环_18",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -7,
+          30,
+          -0.2
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          6.5,
+          2.5,
+          4.65
+        ],
+        "color": "#ffd65a",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-74",
+      "name": "浅金镶线_18",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -7,
+          30,
+          -2.68
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          4.8,
+          0.8,
+          0.3
+        ],
+        "color": "#ffe9a3",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-75",
+      "name": "铜边_19",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -5,
+          31,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          3.2,
+          5.2,
+          4.4
+        ],
+        "color": "#aa7020",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-76",
+      "name": "金环_19",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -5,
+          31,
+          -0.2
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          2.5,
+          4.5,
+          4.65
+        ],
+        "color": "#efb43a",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-77",
+      "name": "浅金镶线_19",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -5,
+          31,
+          -2.68
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.8,
+          2.8,
+          0.3
+        ],
+        "color": "#ffe9a3",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-78",
+      "name": "冠饰铜托",
+      "parentId": "ai-node-4",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          33,
+          -0.5
+        ],
+        "rotation": [
+          0,
+          0,
+          45
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          4.8,
+          4.8,
+          1.1
+        ],
+        "color": "#a66d21",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-79",
+      "name": "冠饰金晶",
+      "parentId": "ai-node-4",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          33,
+          -1.3
+        ],
+        "rotation": [
+          0,
+          0,
+          45
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          3.3,
+          3.3,
+          1.3
+        ],
+        "color": "#fff0aa",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-80",
+      "name": "侧翼金晶-1",
+      "parentId": "ai-node-4",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -12,
+          19,
+          -2.7
+        ],
+        "rotation": [
+          0,
+          0,
+          45
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          2.6,
+          2.6,
+          1
+        ],
+        "color": "#fff0aa",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-81",
+      "name": "底座符文-1_0",
+      "parentId": "ai-node-4",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -5,
+          3.45,
+          -3.8
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.55,
+          0.5,
+          1.8
+        ],
+        "color": "#fff0aa",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-82",
+      "name": "底座符文-1_1",
+      "parentId": "ai-node-4",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -7.5,
+          3.45,
+          -3.8
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.55,
+          0.5,
+          1.8
+        ],
+        "color": "#fff0aa",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-83",
+      "name": "底座符文-1_2",
+      "parentId": "ai-node-4",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -10,
+          3.45,
+          -3.8
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.55,
+          0.5,
+          1.8
+        ],
+        "color": "#fff0aa",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-84",
+      "name": "侧翼金晶1",
+      "parentId": "ai-node-4",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          12,
+          19,
+          -2.7
+        ],
+        "rotation": [
+          0,
+          0,
+          45
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          2.6,
+          2.6,
+          1
+        ],
+        "color": "#fff0aa",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-85",
+      "name": "底座符文1_0",
+      "parentId": "ai-node-4",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          5,
+          3.45,
+          -3.8
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.55,
+          0.5,
+          1.8
+        ],
+        "color": "#fff0aa",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-86",
+      "name": "底座符文1_1",
+      "parentId": "ai-node-4",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          7.5,
+          3.45,
+          -3.8
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.55,
+          0.5,
+          1.8
+        ],
+        "color": "#fff0aa",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-87",
+      "name": "底座符文1_2",
+      "parentId": "ai-node-4",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          10,
+          3.45,
+          -3.8
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.55,
+          0.5,
+          1.8
+        ],
+        "color": "#fff0aa",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-88",
+      "name": "悬浮晶块_0",
+      "parentId": "ai-node-4",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -6,
+          18,
+          -3.5
+        ],
+        "rotation": [
+          0,
+          0,
+          45
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.1,
+          1.1,
+          1.1
+        ],
+        "color": "#ffe9a3",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-89",
+      "name": "悬浮晶块_1",
+      "parentId": "ai-node-4",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          5,
+          24,
+          -4.5
+        ],
+        "rotation": [
+          0,
+          0,
+          45
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.7,
+          0.7,
+          0.7
+        ],
+        "color": "#ffe9a3",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-90",
+      "name": "悬浮晶块_2",
+      "parentId": "ai-node-4",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -3,
+          28,
+          -5.5
+        ],
+        "rotation": [
+          0,
+          0,
+          45
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.6,
+          0.6,
+          0.6
+        ],
+        "color": "#ffe9a3",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-91",
+      "name": "悬浮晶块_3",
+      "parentId": "ai-node-4",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          6,
+          11,
+          -3.5
+        ],
+        "rotation": [
+          0,
+          0,
+          45
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.9,
+          0.9,
+          0.9
+        ],
+        "color": "#ffe9a3",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-92",
+      "name": "悬浮晶块_4",
+      "parentId": "ai-node-4",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -15,
+          25,
+          -4.5
+        ],
+        "rotation": [
+          0,
+          0,
+          45
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.6,
+          0.6,
+          0.6
+        ],
+        "color": "#ffe9a3",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-93",
+      "name": "悬浮晶块_5",
+      "parentId": "ai-node-4",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          16,
+          16,
+          -5.5
+        ],
+        "rotation": [
+          0,
+          0,
+          45
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.8,
+          0.8,
+          0.8
+        ],
+        "color": "#ffe9a3",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-94",
+      "name": "悬浮晶块_6",
+      "parentId": "ai-node-4",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -17,
+          10,
+          -3.5
+        ],
+        "rotation": [
+          0,
+          0,
+          45
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "color": "#ffe9a3",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-95",
+      "name": "悬浮晶块_7",
+      "parentId": "ai-node-4",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          14,
+          30,
+          -4.5
+        ],
+        "rotation": [
+          0,
+          0,
+          45
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "color": "#ffe9a3",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    }
+  ],
+  "prefabFolders": [],
+  "prefabs": [],
+  "externalPrefabAliases": []
+}

@@ -6,9 +6,34 @@
   "tree": {
     "$className": "DataModel",
     "$ignoreUnknownInstances": true,
+    "Lighting": {
+      "$className": "Lighting",
+      "$ignoreUnknownInstances": true,
+      "Obby Sky": {
+        "$className": "Sky",
+        "$properties": {
+          "SkyboxBk": "rbxassetid://16573631102",
+          "SkyboxDn": "rbxassetid://16573631950",
+          "SkyboxFt": "rbxassetid://16573632795",
+          "SkyboxLf": "rbxassetid://16573633258",
+          "SkyboxRt": "rbxassetid://16573633908",
+          "SkyboxUp": "rbxassetid://16573634370",
+          "CelestialBodiesShown": true,
+          "SunTextureId": "rbxasset://sky/sun.jpg",
+          "MoonTextureId": "rbxasset://sky/moon.jpg",
+          "SunAngularSize": 21,
+          "MoonAngularSize": 11,
+          "StarCount": 3000
+        }
+      }
+    },
     "Workspace": {
       "$className": "Workspace",
-      "$ignoreUnknownInstances": true
+      "$ignoreUnknownInstances": true,
+      "BlockMeshs": {
+        "$className": "Folder",
+        "$path": "Workspace/BlockMeshs"
+      }
     },
     "ReplicatedStorage": {
       "$className": "ReplicatedStorage",
