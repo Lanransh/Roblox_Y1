@@ -20,6 +20,7 @@ function Component:OnReady()
     self._panel = FXLoader:Here(self._rootNode, "PopupPanelImg")
     self:SetOpenAnimation(self._panel)
     self._commonUI = self:GetPlayerObject():RequireComponent("FCCommonUIComp")
+    self._commonUI:RegisterTrainingClickModal(self._rootNode)
     self._localization = self._commonUI.Localization
     local labels = {
         ["TitleBox/TitleTxt"] = "Rebirth",

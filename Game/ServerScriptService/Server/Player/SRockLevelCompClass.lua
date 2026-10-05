@@ -195,8 +195,11 @@ function Component:RequestDrop(key, round)
     hud.Frame.Timer.Visible = false
     hud.Parent = root
     local prompt = Instance.new("ProximityPrompt")
-    prompt.ActionText = "拾取"
-    prompt.ObjectText = hud.Frame.ItemName.Text
+    -- 原生拾取提示只显示操作文案，复用英文源表并交给 Roblox 自动本地化。
+    prompt.ActionText = "Pick Up"
+    prompt.ObjectText = ""
+    prompt.AutoLocalize = true
+    prompt.RootLocalizationTable = FXLoader:Shared("Scripts/Game/Shared/Localization")
     prompt.KeyboardKeyCode = Enum.KeyCode.E
     prompt.HoldDuration = 0.5
     prompt.MaxActivationDistance = Collectible.PickupDistance

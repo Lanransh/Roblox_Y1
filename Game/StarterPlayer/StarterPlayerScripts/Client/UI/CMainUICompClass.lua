@@ -73,21 +73,57 @@ function Component:OnReady()
     self:Show()
 end
 
---- 本地限速后立即播放点击图标，仅做表现，不发送请求或增加训练值。
+--- 只按显式禁点标记判断 UI 占用，弹窗状态由通用 UI 统一查询。
+--- @param position Vector2 本次点击或轻触的屏幕像素坐标。
+--- @return boolean 是否为可点击的主界面空白区域。
+function Component:IsBlankMainArea(position)
+    if not self._rootNode.Enabled or self._commonUI:IsTrainingClickBlocked() then
+        return false
+    end
+    for index, node in ipairs(self._playerGui:GetGuiObjectsAtPosition(position.X, position.Y)) do
+        local visible = true
+        local blocked = false
+        local ancestor = node
+        while ancestor and ancestor ~= self._playerGui do
+            if self._effects[ancestor]
+                or (ancestor:IsA("GuiObject") and not ancestor.Visible)
+                or (ancestor:IsA("ScreenGui") and not ancestor.Enabled) then
+                visible = false
+                break
+            end
+            if ancestor:GetAttribute("BlocksTrainingClick") == true then
+                blocked = true
+            end
+            ancestor = ancestor.Parent
+        end
+        if visible and blocked then
+            return false
+        end
+    end
+    return true
+end
+
+--- 主界面空白区域本地限速后播放点击图标，仅做表现，不发送请求或增加训练值。
 --- @param position Vector2 本次点击或轻触的屏幕像素坐标。
 function Component:ShowClickTrainingEffect(position)
     local now = os.clock()
-    if UserInputService:GetFocusedTextBox() or now - self._lastClick < RockLevel.ClickInterval then
+    if UserInputService:GetFocusedTextBox() or now - self._lastClick < RockLevel.ClickInterval
+        or not self:IsBlankMainArea(position) then
         return
     end
     self._lastClick = now
     self:ShowTrainingEffect(RockLevel.ClickEffectValue, position)
 end
 
---- 重生入口交给独立 UI 组件，其余未实现按钮显示开发中。
+--- 标记主界面实际内容区域；重生入口交给独立 UI 组件，其余按钮显示开发中。
 function Component:BindButtons()
+    for index, path in ipairs({"TopCenter/LevelProgressBar", "TopCenter/Strength",
+        "LeftDown/RebirthStat", "LeftDown/BackpackStat", "LeftDown/CashStat", "LeftDown/DiamondStat"}) do
+        FXLoader:Here(self._rootNode, path):SetAttribute("BlocksTrainingClick", true)
+    end
     for index, node in ipairs(self._rootNode:GetDescendants()) do
         if node:IsA("GuiButton") then
+            node:SetAttribute("BlocksTrainingClick", true)
             self:TrackConnection(node.Activated:Connect(function()
                 if node.Name == "RebirthButton" then
                     self:GetPlayerObject():RequireComponent("CRebirthUIComp"):Show()
@@ -98,6 +134,7 @@ function Component:BindButtons()
         end
     end
     local lootButton = Instance.new("TextButton")
+    lootButton:SetAttribute("BlocksTrainingClick", true)
     lootButton.Name = "OpenLoot"
     lootButton.Text = ""
     lootButton.BackgroundTransparency = 1

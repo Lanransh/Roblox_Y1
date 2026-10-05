@@ -8,6 +8,7 @@ Main.Strength,Strength: {value},,value=1.25K
 Main.MaxLevel,MAX LEVEL,,
 Loot.Title,Loot Bag (return to your base to store items),,
 Loot.Empty,No loot yet.,,
+Loot.PickUp,Pick Up,,
 Loot.InventoryFull,Your inventory is full. You can carry up to {capacity:int} items in total. Clear some space first.,,capacity=12
 Loot.BagFull,Your loot bag is full. Return to your base to store your items.,,
 Loot.Deposited,Loot stored: {count:int},,count=3

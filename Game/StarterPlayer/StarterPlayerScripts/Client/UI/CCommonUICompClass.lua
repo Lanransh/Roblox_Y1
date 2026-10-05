@@ -20,12 +20,55 @@ function UI:Ctor(owner)
     FX.Network:RegServerMsgCallback("S2C_ShowLocalizedTips", self.ShowLocalizedTips, self)
     self:RefreshLocalization()
     local playerGui = self:GetPlayerNode():WaitForChild("PlayerGui")
+    self._trainingClickModals = {}
+    self:RegisterTrainingClickModal(self.Modal)
+    -- 出售界面目前只有可选模板，登记其显示状态，避免主界面依赖弹窗名称。
+    local lootSellUI = playerGui:FindFirstChild("LootSellUI")
+    if lootSellUI then
+        self:RegisterTrainingClickModal(lootSellUI)
+    end
+    self.Tips:SetAttribute("BlocksTrainingClick", true)
     -- 全屏输入遮罩不参与按钮缩放，避免连带放大弹窗内容。
     self.Modal:SetAttribute("HoverEnabled", false)
     self._buttonHover = ButtonHover.New(playerGui)
     local canvas = FXLoader:Here(playerGui, "ScreenGui/Canvas")
     self.Tips.TextSize = 28
     self.Tips.Parent = canvas
+end
+
+--- 登记需要暂停空白区域点击的弹窗根节点，实际隐藏后才解除禁点。
+--- @param root ScreenGui|GuiObject 弹窗根节点；节点销毁时自动移除登记。
+function UI:RegisterTrainingClickModal(root)
+    if self._trainingClickModals[root] then
+        return
+    end
+    self._trainingClickModals[root] = true
+    --- 弹窗根节点销毁后不再参与显示状态查询。
+    self:TrackConnection(root.Destroying:Connect(function()
+        self._trainingClickModals[root] = nil
+    end))
+end
+
+--- 按登记节点及祖先的实际显示状态判断，支持多个弹窗与关闭动画。
+--- @return boolean 是否有可见弹窗暂停训练点击。
+function UI:IsTrainingClickBlocked()
+    local playerGui = self:GetPlayerNode().PlayerGui
+    for root in pairs(self._trainingClickModals) do
+        local visible = true
+        local node = root
+        while node and node ~= playerGui do
+            if (node:IsA("ScreenGui") and not node.Enabled)
+                or (node:IsA("GuiObject") and not node.Visible) then
+                visible = false
+                break
+            end
+            node = node.Parent
+        end
+        if visible then
+            return true
+        end
+    end
+    return false
 end
 
 --- 保留原有字符串提示入口，替换提示时清除旧 Key，避免语言变化恢复旧提示。
