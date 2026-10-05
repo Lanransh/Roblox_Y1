@@ -97,10 +97,15 @@ function ButtonHover:_Bind(button)
     if ownsScale then
         scale = Instance.new("UIScale")
         scale.Name = "ButtonHoverScale"
+        -- 临时悬停比例不能随按钮克隆，否则副本会将放大状态当成原比例。
+        scale.Archivable = false
         scale.Parent = target
     end
+    -- 设计自带的 UIScale 仍会被克隆，保留原比例供副本绑定时恢复。
+    local baseScale = scale:GetAttribute("ButtonHoverBaseScale") or scale.Scale
+    scale:SetAttribute("ButtonHoverBaseScale", baseScale)
     local state = {
-        scale = scale, baseScale = scale.Scale, ownsScale = ownsScale,
+        scale = scale, baseScale = baseScale, ownsScale = ownsScale,
         connections = {}, visibilityConnections = {},
     }
     self._buttons[button] = state
@@ -135,6 +140,7 @@ function ButtonHover:_Unbind(button)
     Disconnect(state.connections)
     Disconnect(state.visibilityConnections)
     Reset(state)
+    state.scale:SetAttribute("ButtonHoverBaseScale", nil)
     if state.ownsScale then
         state.scale:Destroy()
     end
