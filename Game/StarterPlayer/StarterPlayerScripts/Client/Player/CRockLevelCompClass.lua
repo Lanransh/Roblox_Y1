@@ -25,8 +25,6 @@ function Component:Ctor(owner)
     self._health = {}
     self._fragments = {}
     self._fragmentPool = {}
-    self._sparks = {}
-    self._sparkPool = {}
     self._hitReactions = {}
     self._nextChunkCheck = 0
     self._lastAttack = -math.huge
@@ -391,7 +389,7 @@ function Component:UpdateAttacks()
     end
 end
 
---- 每次命中均显示少量碎屑与金色短火花，仅击破时从石头中心散出较大烟尘。
+--- 每次命中以配置颜色爆发粒子闪光、光环及火星；仅击破时散出较大烟尘。
 --- @param rock Model 当前受击且仍在场景中的石头。
 --- @param broken boolean 本次扣血是否击破石头。
 function Component:PlayHitEffect(rock, broken)
@@ -440,7 +438,9 @@ function Component:PlayHitEffect(rock, broken)
         dust.Parent = dustOrigin
         dust:Emit(3)
     end
-    self:PlayImpactSparks(effect, broken)
+    local effectColor = RockLevel.HitEffectColors[math.random(1, #RockLevel.HitEffectColors)]
+    local radius = math.clamp(math.max(rock.Root.Size.X, rock.Root.Size.Y, rock.Root.Size.Z) * 0.55, 1.5, 4)
+    self:PlayImpactParticles(effect, radius, broken, effectColor)
     sound:Play()
     local away = Vector3.new(direction.X, 0, direction.Z)
     if away.Magnitude < 0.01 then
@@ -455,52 +455,70 @@ function Component:PlayHitEffect(rock, broken)
     Debris:AddItem(effect, math.max(3, sound.TimeLength + 0.1))
 end
 
---- 从火花池取得金色亮条并重置表现；独立于音效容器持有，避免容器销毁误删池中节点。
+--- 使用紧凑的中心闪光、柔边冲击波和飞散火星，限制亮度与叠加以免遮住角色和石头。
 --- @param effect BasePart 位于接触点且朝向表面外侧的特效容器。
---- @param broken boolean 击破时增加火花数量。
-function Component:PlayImpactSparks(effect, broken)
-    local count = broken and 6 or 4
-    local phase = math.random() * math.pi * 2
-    for index = 1, count do
-        local angle = phase + (index - 1) * math.pi * 2 / count
-        local direction = effect.CFrame:VectorToWorldSpace(Vector3.new(math.cos(angle), math.sin(angle), -0.65)).Unit
-        local position = effect.Position + direction * 0.5
-        local spark = table.remove(self._sparkPool) or Instance.new("Part")
-        spark.Name = "RockImpactSpark"
-        spark.Material = Enum.Material.Neon
-        spark.Color = Color3.fromRGB(255, 205, 35)
-        spark.Size = Vector3.new(0.22, 0.22, 1.5)
-        spark.CFrame = CFrame.lookAt(position, position + direction)
-        spark.Anchored = true
-        spark.CanCollide = false
-        spark.CanTouch = false
-        spark.CanQuery = false
-        spark.CastShadow = false
-        spark.Transparency = 0
-        spark.Parent = self._folder
-        local lifetime = 0.22 + math.random() * 0.04
-        local tween = TweenService:Create(spark, TweenInfo.new(lifetime, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
-            CFrame = spark.CFrame + direction * 1.2,
-            Size = Vector3.new(0.05, 0.05, 0.45), Transparency = 1,
-        })
-        table.insert(self._sparks, {Part = spark, Tween = tween, Expires = os.clock() + lifetime + 0.02})
-        tween:Play()
-    end
-end
+--- @param radius number 按受击石头尺寸确定的光环半径。
+--- @param broken boolean 击破时增加火星数量和爆闪尺寸。
+--- @param color Color3 配置中的光效颜色，当前统一为金色。
+function Component:PlayImpactParticles(effect, radius, broken, color)
+    local origin = Instance.new("Attachment")
+    origin.Name = "ImpactOrigin"
+    origin.Parent = effect
+    local flash = Instance.new("ParticleEmitter")
+    flash.Name = "ImpactFlash"
+    flash.Texture = "rbxasset://textures/particles/sparkles_main.dds"
+    flash.Enabled = false
+    flash.Rate = 0
+    flash.Color = ColorSequence.new(color)
+    flash.LightEmission = 0.65
+    flash.LightInfluence = 0
+    flash.Brightness = 1
+    flash.Orientation = Enum.ParticleOrientation.FacingCamera
+    flash.EmissionDirection = Enum.NormalId.Front
+    flash.Speed = NumberRange.new(0)
+    flash.Rotation = NumberRange.new(0, 360)
+    flash.Lifetime = NumberRange.new(0.14)
+    local burstSize = math.min(radius * (broken and 1.1 or 0.85), 3.2)
+    flash.Size = NumberSequence.new({
+        NumberSequenceKeypoint.new(0, burstSize * 0.45),
+        NumberSequenceKeypoint.new(0.15, burstSize),
+        NumberSequenceKeypoint.new(1, burstSize * 0.65),
+    })
+    flash.Transparency = NumberSequence.new({
+        NumberSequenceKeypoint.new(0, 0.3),
+        NumberSequenceKeypoint.new(0.3, 0.45),
+        NumberSequenceKeypoint.new(1, 1),
+    })
+    flash.Parent = origin
 
---- 火花寿命结束后先停止并释放补间，再移出场景归池；角色缺失时也正常回收。
-function Component:UpdateSparks()
-    local now = os.clock()
-    for index = #self._sparks, 1, -1 do
-        local spark = self._sparks[index]
-        if now >= spark.Expires then
-            spark.Tween:Cancel()
-            spark.Tween:Destroy()
-            spark.Part.Parent = nil
-            table.insert(self._sparkPool, spark.Part)
-            table.remove(self._sparks, index)
-        end
-    end
+    local ring = flash:Clone()
+    ring.Name = "ImpactShockwave"
+    ring.Texture = "rbxasset://textures/particles/explosion01_shockwave_main.dds"
+    ring.Lifetime = NumberRange.new(0.32)
+    ring.Size = NumberSequence.new({
+        NumberSequenceKeypoint.new(0, radius * 0.5),
+        NumberSequenceKeypoint.new(0.35, radius * 2),
+        NumberSequenceKeypoint.new(1, radius * 3),
+    })
+    ring.Parent = origin
+
+    local sparks = flash:Clone()
+    sparks.Name = "ImpactSparks"
+    sparks.Lifetime = NumberRange.new(0.25, 0.45)
+    sparks.Speed = NumberRange.new(radius * 3, radius * 6)
+    sparks.SpreadAngle = Vector2.new(85, 85)
+    sparks.Drag = 3
+    sparks.Acceleration = Vector3.new(0, -12, 0)
+    sparks.RotSpeed = NumberRange.new(-180, 180)
+    sparks.Size = NumberSequence.new({
+        NumberSequenceKeypoint.new(0, 0.65, 0.2),
+        NumberSequenceKeypoint.new(0.4, 0.4, 0.1),
+        NumberSequenceKeypoint.new(1, 0),
+    })
+    sparks.Parent = origin
+    flash:Emit(1)
+    ring:Emit(1)
+    sparks:Emit(broken and 28 or 18)
 end
 
 --- 优先复用碎石，普通命中喷出三块小碎屑，击破爆散四块；重置透明度避免复用时不可见。
@@ -688,7 +706,6 @@ end
 --- 每 0.1 秒检查分块及攀爬限制，每帧最多生成 6 块石头；血量与等级变化及时刷新。
 function Component:UpdateVisuals()
     self:UpdateFragments()
-    self:UpdateSparks()
     self:UpdateAttacks()
     local character = self:GetPlayerCharacter()
     local root = character and character:FindFirstChild("HumanoidRootPart")
@@ -794,7 +811,7 @@ function Component:ResetVisuals()
     end
 end
 
---- 恢复角色攀爬设置，停止火花补间并释放场景、模板及全部对象池，基类负责断开监听。
+--- 恢复角色攀爬设置并释放场景、粒子容器、模板及全部对象池，基类负责断开监听。
 function Component:Dtor()
     FX.Network:UnRegServerMsgCallback("S2C_RockReset")
     FX.Network:UnRegServerMsgCallback("S2C_RockHitResult")
@@ -812,19 +829,10 @@ function Component:Dtor()
     for index, template in ipairs(self._templates) do
         template:Destroy()
     end
-    for index, spark in ipairs(self._sparks) do
-        spark.Tween:Cancel()
-        spark.Tween:Destroy()
-    end
-    self._sparks = {}
     for index, fragment in ipairs(self._fragmentPool) do
         fragment:Destroy()
     end
     self._fragmentPool = {}
-    for index, spark in ipairs(self._sparkPool) do
-        spark:Destroy()
-    end
-    self._sparkPool = {}
     if self._folder then
         self._folder:Destroy()
     end

@@ -7,6 +7,10 @@ local RockLevel = {
     CellSize = 8, -- 每块石头占原来的 2×2 格。
     LoadDistance = 64,
     HideDistance = 72,
+    -- 当前统一使用金色光效；列表至少保留一项，可调整 RGB。
+    HitEffectColors = {
+        Color3.fromRGB(255, 205, 35), -- 金。
+    },
     MaxLevel = NumericalConfig.levelCurves.input.max,
     WalkTraining = NumericalConfig.trainingSettlementsPerSecond,
     ClickEffectValue = 2, -- 仅用于客户端点击图标文案，不发放实际收益。
