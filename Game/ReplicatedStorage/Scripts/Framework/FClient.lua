@@ -26,6 +26,8 @@ end
 
 local FX, FC = _G.FX, _G.FC
 
+FC.Localization = require(root:WaitForChild("FCLocalization"))
+
 FC.NativeBackpack = require(root:WaitForChild("FCNativeBackpack"))
 FC.NativeBackpack.Start(game:GetService("Players").LocalPlayer, FX.Network, _G.Provider:GetNativeBackpackConfig())
 
