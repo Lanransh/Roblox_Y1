@@ -228,13 +228,13 @@ function Component:StopSwing()
             pose.Tween:Cancel()
         end
         if joint.Parent then
-            joint[pose.Property or "C0"] = pose.Base
+            joint.C0 = pose.Base
         end
     end
     self._swingJoints = nil
 end
 
---- 在原始关节或腰部连接点上叠加旋转，兼容两类 R15 骨架并保留腿部姿态。
+--- 在原始关节上叠加躯干坐标系旋转，兼容 R6 肩轴方向并保留行走动画。
 --- @param duration number 当前阶段持续秒数。
 --- @param armAngle number 持镐手臂俯仰角度。
 --- @param bodyAngle number 躯干俯仰角度。
@@ -244,9 +244,7 @@ function Component:PoseSwing(duration, armAngle, bodyAngle, direction)
         local angle = pose.Body and bodyAngle or armAngle
         local base = pose.Base
         local target = CFrame.new(base.Position) * CFrame.Angles(math.rad(angle), 0, 0) * base.Rotation
-        pose.Tween = TweenService:Create(joint, TweenInfo.new(duration, Enum.EasingStyle.Quad, direction), {
-            [pose.Property or "C0"] = target,
-        })
+        pose.Tween = TweenService:Create(joint, TweenInfo.new(duration, Enum.EasingStyle.Quad, direction), {C0 = target})
         pose.Tween:Play()
     end
 end
@@ -272,7 +270,7 @@ function Component:ResolvePickaxeHit(character, key, area)
     self:ApplyHit(key, area)
 end
 
---- R15 蓄力后快速弯腰下砸，仅叠加腰关节以保持双脚原位；伤害仍在 0.4 秒结算。
+--- 拖尾仅覆盖下砸阶段；R15 保留 1.25 倍速轨道和原伤害时点，R6 保留原补间。
 --- @param humanoid Humanoid 当前执行敲击的角色。
 --- @param key string 本次锁定的石头格子。
 --- @param area table 石头所属关卡。
@@ -280,29 +278,15 @@ function Component:SwingPickaxe(humanoid, key, area)
     self:StopSwing()
     local character = self._character
     if humanoid.RigType == Enum.HumanoidRigType.R15 then
-        local upperTorso = character:FindFirstChild("UpperTorso")
-        local waist = upperTorso and upperTorso:FindFirstChild("Waist")
-        self._swingJoints = {}
-        if waist and waist:IsA("Motor6D") then
-            self._swingJoints[waist] = {Base = waist.C0, Body = true}
-        elseif waist and waist:IsA("AnimationConstraint") and waist.Attachment0 then
-            local attachment = waist.Attachment0
-            self._swingJoints[attachment] = {Base = attachment.CFrame, Body = true, Property = "CFrame"}
-        end
-        -- 原轨道 0.25 秒举镐、0.5 秒命中：延长蓄力、压缩下砸，保持总命中时点。
-        self._swingTrack:Play(0.08, 1, 0.25 / 0.26)
+        self._swingTrack:Play(0.08, 1, 1.25)
+        -- 原动画加速后在 0.2 秒举起、0.4 秒砸下；0.72 秒开始淡出，0.8 秒前结束。
         self._swingTask = task.spawn(function()
-            self:PoseSwing(0.26, 0, 10, Enum.EasingDirection.Out)
-            task.wait(0.26)
-            self._swingTrack:AdjustSpeed(0.25 / 0.14)
+            task.wait(0.2)
             self._swingTrail.Enabled = true
-            self:PoseSwing(0.14, 0, -38, Enum.EasingDirection.In)
-            task.wait(0.14)
-            self._swingTrack:AdjustSpeed(1.25)
+            task.wait(0.2)
             self:ResolvePickaxeHit(character, key, area)
             task.wait(0.06)
             self._swingTrail.Enabled = false
-            self:PoseSwing(0.26, 0, 0, Enum.EasingDirection.Out)
             task.wait(0.26)
             self._swingTask = nil
             self:StopSwing()
