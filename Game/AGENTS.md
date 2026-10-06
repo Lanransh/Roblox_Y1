@@ -57,7 +57,13 @@
 
 ## 明确的禁止(必须遵守)
 - 禁止一次性读取 `ReplicatedStorage/Scripts/Game/Configs/` 和 `ReplicatedStorage/Scripts/Game/Shared/` 整个目录；先使用 `rg` 定位目标配置和行号，再只读取完成任务所需的最小文件片段。
+- 手工或 AI 制作的模型禁止放入 `game.Workspace.BlockMeshs` 和 `game.ReplicatedStorage.Assets.BlockMeshs`，包括它们的子目录；这两个目录专供地图块编辑器管理，对应本地目录也不得用于保存此类模型。
 
+## 制作模型的存放规则
+
+- 场景中直接摆放的模型统一放入 `game.Workspace.Decorations`，本地源文件保存到 `Workspace/Decorations/`。
+- 供运行时克隆的可复用模型模板统一放入 `game.ReplicatedStorage.Assets.Decorations`，本地源文件保存到 `ReplicatedStorage/Assets/Decorations/`。
+- 新建上述目录或保存模型源文件时，确认 `default.project.json` 已配置对应的 Rojo 映射；不要为了沿用现有映射而将模型放进 BlockMeshs。
 
 ## 补充说明
 - 需要读取场景、存储或 UI 节点时，直接使用 Roblox MCP：先用 `list_roblox_studios` 确定目标 Studio，再用 `get_studio_state` 确认当前模式和可用 DataModel。
