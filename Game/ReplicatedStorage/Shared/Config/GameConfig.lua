@@ -169,7 +169,7 @@ return {
         [1] = {
             Index = 1,
             SlicerId = 101,
-            Name = [[荒木战棍]],
+            Name = [[Wildwood Club]],
             Price = 0,
             TrainingRate = 1,
             DevGoodId = nil,
@@ -180,7 +180,7 @@ return {
         [2] = {
             Index = 2,
             SlicerId = 102,
-            Name = [[铁木战斧]],
+            Name = [[Ironwood Battle Axe]],
             Price = 25,
             TrainingRate = 39,
             DevGoodId = nil,
@@ -191,7 +191,7 @@ return {
         [3] = {
             Index = 3,
             SlicerId = 103,
-            Name = [[霜钢剑]],
+            Name = [[Froststeel Sword]],
             Price = 450,
             TrainingRate = 450,
             DevGoodId = nil,
@@ -202,7 +202,7 @@ return {
         [4] = {
             Index = 4,
             SlicerId = 104,
-            Name = [[黑曜石手斧]],
+            Name = [[Obsidian Hatchet]],
             Price = 4375,
             TrainingRate = 3282,
             DevGoodId = nil,
@@ -213,7 +213,7 @@ return {
         [5] = {
             Index = 5,
             SlicerId = 105,
-            Name = [[绯红晶格法杖]],
+            Name = [[Crimson Crystal Staff]],
             Price = 35000,
             TrainingRate = 19000,
             DevGoodId = nil,
@@ -224,7 +224,7 @@ return {
         [6] = {
             Index = 6,
             SlicerId = 106,
-            Name = [[夜影战斧]],
+            Name = [[Nightshadow Battle Axe]],
             Price = 253000,
             TrainingRate = 95500,
             DevGoodId = nil,
@@ -235,7 +235,7 @@ return {
         [7] = {
             Index = 7,
             SlicerId = 107,
-            Name = [[符文战锤]],
+            Name = [[Runic Warhammer]],
             Price = 1.89e+6,
             TrainingRate = 442000,
             DevGoodId = nil,
@@ -246,7 +246,7 @@ return {
         [8] = {
             Index = 8,
             SlicerId = 108,
-            Name = [[暗角钉头锤]],
+            Name = [[Darkhorn Mace]],
             Price = 1.22e+7,
             TrainingRate = 1.93e+6,
             DevGoodId = nil,
@@ -257,7 +257,7 @@ return {
         [9] = {
             Index = 9,
             SlicerId = 109,
-            Name = [[白银匕首]],
+            Name = [[Silver Dagger]],
             Price = 7.62e+7,
             TrainingRate = 8.1e+6,
             DevGoodId = nil,
@@ -268,7 +268,7 @@ return {
         [10] = {
             Index = 10,
             SlicerId = 110,
-            Name = [[金辉日刃]],
+            Name = [[Golden Sunblade]],
             Price = 4.65e+8,
             TrainingRate = 3.31e+7,
             DevGoodId = nil,
@@ -279,7 +279,7 @@ return {
         [11] = {
             Index = 11,
             SlicerId = 111,
-            Name = [[星界霜刃]],
+            Name = [[Astral Frostblade]],
             Price = 2.78e+9,
             TrainingRate = 1.33e+8,
             DevGoodId = nil,
@@ -290,7 +290,7 @@ return {
         [12] = {
             Index = 12,
             SlicerId = 112,
-            Name = [[炼狱弯刀]],
+            Name = [[Infernal Scimitar]],
             Price = 1.64e+10,
             TrainingRate = 5.25e+8,
             DevGoodId = nil,
@@ -301,7 +301,7 @@ return {
         [13] = {
             Index = 13,
             SlicerId = 113,
-            Name = [[翠毒刃]],
+            Name = [[Emerald Venomblade]],
             Price = 9.55e+10,
             TrainingRate = 2.05e+9,
             DevGoodId = nil,
@@ -312,7 +312,7 @@ return {
         [14] = {
             Index = 14,
             SlicerId = 114,
-            Name = [[翠绿三叉戟]],
+            Name = [[Emerald Trident]],
             Price = 5.49e+11,
             TrainingRate = 7.99e+9,
             DevGoodId = nil,
@@ -323,7 +323,7 @@ return {
         [15] = {
             Index = 15,
             SlicerId = 115,
-            Name = [[紫晶碎星枪]],
+            Name = [[Amethyst Starbreaker Spear]],
             Price = 3.13e+12,
             TrainingRate = 3.1e+10,
             DevGoodId = nil,
@@ -334,7 +334,7 @@ return {
         [16] = {
             Index = 16,
             SlicerId = 116,
-            Name = [[霜晶巨剑]],
+            Name = [[Frostcrystal Greatsword]],
             Price = 1.77e+13,
             TrainingRate = 1.2e+11,
             DevGoodId = nil,
@@ -345,7 +345,7 @@ return {
         [17] = {
             Index = 17,
             SlicerId = 117,
-            Name = [[熔岩裂地斧]],
+            Name = [[Lava Earthsplitter Axe]],
             Price = 9.93e+13,
             TrainingRate = 4.62e+11,
             DevGoodId = nil,
@@ -356,7 +356,7 @@ return {
         [18] = {
             Index = 18,
             SlicerId = 118,
-            Name = [[烈焰之羽]],
+            Name = [[Flame Feather]],
             Price = 5.54e+14,
             TrainingRate = 1.78e+12,
             DevGoodId = nil,
@@ -367,7 +367,7 @@ return {
         [19] = {
             Index = 19,
             SlicerId = 119,
-            Name = [[耀阳权杖]],
+            Name = [[Sunlight Scepter]],
             Price = 3.07e+15,
             TrainingRate = 6.9e+12,
             DevGoodId = nil,
@@ -378,7 +378,7 @@ return {
         [20] = {
             Index = 20,
             SlicerId = 120,
-            Name = [[辉光天翼剑]],
+            Name = [[Radiant Skywing Sword]],
             Price = 1.69e+16,
             TrainingRate = 2.67e+13,
             DevGoodId = nil,
@@ -389,7 +389,7 @@ return {
         [21] = {
             Index = 21,
             SlicerId = 121,
-            Name = [[凤凰翼剑]],
+            Name = [[Phoenix Wing Sword]],
             Price = 9.3e+16,
             TrainingRate = 1.04e+14,
             DevGoodId = nil,
@@ -400,7 +400,7 @@ return {
         [22] = {
             Index = 22,
             SlicerId = 122,
-            Name = [[时轮齿刃]],
+            Name = [[Clockwork Blade]],
             Price = 5.08e+17,
             TrainingRate = 4.03e+14,
             DevGoodId = nil,
@@ -411,7 +411,7 @@ return {
         [23] = {
             Index = 23,
             SlicerId = 123,
-            Name = [[裂魂镰刀]],
+            Name = [[Soulreaper Scythe]],
             Price = 2.77e+18,
             TrainingRate = 1.57e+15,
             DevGoodId = nil,
@@ -422,7 +422,7 @@ return {
         [24] = {
             Index = 24,
             SlicerId = 124,
-            Name = [[炼狱龙刃]],
+            Name = [[Infernal Dragonblade]],
             Price = 1.45e+19,
             TrainingRate = 6.16e+15,
             DevGoodId = nil,
@@ -433,7 +433,7 @@ return {
         [25] = {
             Index = 25,
             SlicerId = 125,
-            Name = [[虚空裂隙刃]],
+            Name = [[Void Riftblade]],
             Price = 7.84e+19,
             TrainingRate = 2.42e+16,
             DevGoodId = nil,
@@ -444,7 +444,7 @@ return {
         [26] = {
             Index = 26,
             SlicerId = 126,
-            Name = [[噬界魔刃]],
+            Name = [[World-Eater Blade]],
             Price = 4.23e+20,
             TrainingRate = 9.54e+16,
             DevGoodId = nil,
@@ -455,7 +455,7 @@ return {
         [27] = {
             Index = 27,
             SlicerId = 127,
-            Name = [[赤影刃]],
+            Name = [[Crimson Shadowblade]],
             Price = 2.28e+21,
             TrainingRate = 1.5e+17,
             DevGoodId = nil,
@@ -466,7 +466,7 @@ return {
         [28] = {
             Index = 28,
             SlicerId = 128,
-            Name = [[星渊圣锋]],
+            Name = [[Star Abyss Holy Blade]],
             Price = 1.22e+22,
             TrainingRate = 3e+17,
             DevGoodId = nil,
@@ -477,7 +477,7 @@ return {
         [29] = {
             Index = 29,
             SlicerId = 129,
-            Name = [[血月魔剑]],
+            Name = [[Blood Moon Sword]],
             Price = 6.3499999999999996854272e+22,
             TrainingRate = 5.94e+17,
             DevGoodId = nil,
@@ -488,7 +488,7 @@ return {
         [30] = {
             Index = 30,
             SlicerId = 130,
-            Name = [[紫晶灾厄]],
+            Name = [[Amethyst Calamity]],
             Price = 3.29000000000000006291456e+23,
             TrainingRate = 1.17e+18,
             DevGoodId = nil,
@@ -499,7 +499,7 @@ return {
         [31] = {
             Index = 31,
             SlicerId = 131,
-            Name = [[天穹裁决]],
+            Name = [[Sky Judgment]],
             Price = 1.700000000000000025165824e+24,
             TrainingRate = 2.27e+18,
             DevGoodId = nil,
@@ -510,7 +510,7 @@ return {
         [32] = {
             Index = 32,
             SlicerId = 132,
-            Name = [[赤焰龙牙]],
+            Name = [[Crimson Dragonfang]],
             Price = 8.810000000000000297795584e+24,
             TrainingRate = 4.37e+18,
             DevGoodId = nil,
@@ -521,7 +521,7 @@ return {
         [33] = {
             Index = 33,
             SlicerId = 133,
-            Name = [[幽影月镰]],
+            Name = [[Shadowmoon Scythe]],
             Price = 4.5499999999999999505072128e+25,
             TrainingRate = 8.38e+18,
             DevGoodId = nil,
@@ -532,7 +532,7 @@ return {
         [34] = {
             Index = 34,
             SlicerId = 134,
-            Name = [[曜金帝剑]],
+            Name = [[Golden Imperial Sword]],
             Price = 2.3499999999999998800429056e+26,
             TrainingRate = 1.59e+19,
             DevGoodId = nil,
@@ -543,7 +543,7 @@ return {
         [35] = {
             Index = 35,
             SlicerId = 135,
-            Name = [[苍蓝龙魂]],
+            Name = [[Azure Dragon Soul]],
             Price = 1.20999999999999995285602304e+27,
             TrainingRate = 3.01e+19,
             DevGoodId = nil,
@@ -554,7 +554,7 @@ return {
         [36] = {
             Index = 36,
             SlicerId = 136,
-            Name = [[暮光巨刃]],
+            Name = [[Twilight Greatblade]],
             Price = 6.230000000000000085530247168e+27,
             TrainingRate = 5.66e+19,
             DevGoodId = nil,
@@ -565,7 +565,7 @@ return {
         [37] = {
             Index = 37,
             SlicerId = 137,
-            Name = [[血族王锋]],
+            Name = [[Vampire King Blade]],
             Price = 3.2000000000000000425201762304e+28,
             TrainingRate = 1.06e+20,
             DevGoodId = nil,
@@ -576,7 +576,7 @@ return {
         [38] = {
             Index = 38,
             SlicerId = 138,
-            Name = [[绯翼魔剑]],
+            Name = [[Crimson Wing Sword]],
             Price = 1.64999999999999992021964029952e+29,
             TrainingRate = 1.97e+20,
             DevGoodId = nil,
@@ -587,7 +587,7 @@ return {
         [39] = {
             Index = 39,
             SlicerId = 139,
-            Name = [[灰烬锯刃]],
+            Name = [[Ash Sawblade]],
             Price = 8.19000000000000067232478527488e+29,
             TrainingRate = 3.64e+20,
             DevGoodId = nil,
@@ -598,7 +598,7 @@ return {
         [40] = {
             Index = 40,
             SlicerId = 140,
-            Name = [[断魂鬼剑]],
+            Name = [[Soulbreaker Sword]],
             Price = 4.200000000000000027220428980224e+30,
             TrainingRate = 6.71e+20,
             DevGoodId = nil,
@@ -609,7 +609,7 @@ return {
         [41] = {
             Index = 41,
             SlicerId = 141,
-            Name = [[绯樱蛇影]],
+            Name = [[Crimson Blossom Serpent]],
             Price = 2.2299999999999999233084734046208e+31,
             TrainingRate = 9.25e+20,
             DevGoodId = nil,
@@ -620,7 +620,7 @@ return {
         [42] = {
             Index = 42,
             SlicerId = 142,
-            Name = [[黑曜裁决]],
+            Name = [[Obsidian Judgment]],
             Price = 1.13999999999999994948497837129728e+32,
             TrainingRate = 1.27e+21,
             DevGoodId = nil,
@@ -631,7 +631,7 @@ return {
         [43] = {
             Index = 43,
             SlicerId = 143,
-            Name = [[苍穹圣裁]],
+            Name = [[Heavenly Judgment]],
             Price = 6.04000000000000008632613682020352e+32,
             TrainingRate = 1.72e+21,
             DevGoodId = nil,
@@ -642,7 +642,7 @@ return {
         [44] = {
             Index = 44,
             SlicerId = 144,
-            Name = [[天翼辉光]],
+            Name = [[Skywing Radiance]],
             Price = 3.19000000000000021261369089196032e+33,
             TrainingRate = 2.32e+21,
             DevGoodId = nil,
@@ -653,7 +653,7 @@ return {
         [45] = {
             Index = 45,
             SlicerId = 145,
-            Name = [[碧海云霄]],
+            Name = [[Ocean Skyblade]],
             Price = 1.6300000000000000208151694465302528e+34,
             TrainingRate = 3.1e+21,
             DevGoodId = nil,
@@ -664,7 +664,7 @@ return {
         [46] = {
             Index = 46,
             SlicerId = 146,
-            Name = [[王权天谴]],
+            Name = [[Royal Wrath]],
             Price = 8.5999999999999998778234378706223104e+34,
             TrainingRate = 4.13e+21,
             DevGoodId = nil,
@@ -675,7 +675,7 @@ return {
         [47] = {
             Index = 47,
             SlicerId = 147,
-            Name = [[寒渊狼牙]],
+            Name = [[Frozen Wolf Fang]],
             Price = 4.39999999999999971441415615871451136e+35,
             TrainingRate = 5.46e+21,
             DevGoodId = nil,
@@ -686,7 +686,7 @@ return {
         [48] = {
             Index = 48,
             SlicerId = 148,
-            Name = [[熔狱断罪]],
+            Name = [[Infernal Condemnation]],
             Price = 2.30999999999999996074789642558242816e+36,
             TrainingRate = 7.18e+21,
             DevGoodId = nil,
@@ -697,7 +697,7 @@ return {
         [49] = {
             Index = 49,
             SlicerId = 149,
-            Name = [[鸿运镇岳]],
+            Name = [[Fortune Mountaincrusher]],
             Price = 1.2199999999999999838691594050507636736e+37,
             TrainingRate = 9.390000000000000524288e+21,
             DevGoodId = nil,
@@ -708,7 +708,7 @@ return {
         [50] = {
             Index = 50,
             SlicerId = 150,
-            Name = [[影月血牙]],
+            Name = [[Shadowmoon Bloodfang]],
             Price = 6.2000000000000003515523232727172120576e+37,
             TrainingRate = 1.22e+22,
             DevGoodId = nil,
@@ -719,7 +719,7 @@ return {
         [51] = {
             Index = 51,
             SlicerId = 151,
-            Name = [[幽冥锁刃]],
+            Name = [[Nether Chainblade]],
             Price = 3.25000000000000006850731374841046237184e+38,
             TrainingRate = 1.58e+22,
             DevGoodId = nil,
@@ -730,7 +730,7 @@ return {
         [52] = {
             Index = 52,
             SlicerId = 152,
-            Name = [[赤焰龙魂]],
+            Name = [[Crimson Dragon Soul]],
             Price = 1.699999999999999942840301067273997647872e+39,
             TrainingRate = 2.0300000000000001048576e+22,
             DevGoodId = nil,
@@ -741,7 +741,7 @@ return {
         [53] = {
             Index = 53,
             SlicerId = 153,
-            Name = [[曜金赤锋]],
+            Name = [[Golden Crimsonblade]],
             Price = 8.68999999999999940202594931783558496256e+39,
             TrainingRate = 2.6e+22,
             DevGoodId = nil,
@@ -811,7 +811,7 @@ return {
         [1] = {
             Index = 1,
             TrailId = 101,
-            Name = [[1星拖尾]],
+            Name = [[1-Star Trail]],
             Price = 3750,
             TrainingRate = 1.5,
             DevGoodId = nil,
@@ -821,7 +821,7 @@ return {
         [2] = {
             Index = 2,
             TrailId = 102,
-            Name = [[2星拖尾]],
+            Name = [[2-Star Trail]],
             Price = 1.38e+6,
             TrainingRate = 2.5,
             DevGoodId = nil,
@@ -831,7 +831,7 @@ return {
         [3] = {
             Index = 3,
             TrailId = 103,
-            Name = [[3星拖尾]],
+            Name = [[3-Star Trail]],
             Price = 3.32e+8,
             TrainingRate = 3.5,
             DevGoodId = nil,
@@ -841,7 +841,7 @@ return {
         [4] = {
             Index = 4,
             TrailId = 104,
-            Name = [[4星拖尾]],
+            Name = [[4-Star Trail]],
             Price = 7.3e+10,
             TrainingRate = 4.5,
             DevGoodId = nil,
@@ -851,7 +851,7 @@ return {
         [5] = {
             Index = 5,
             TrailId = 105,
-            Name = [[5星拖尾]],
+            Name = [[5-Star Trail]],
             Price = 1.42e+13,
             TrainingRate = 5.5,
             DevGoodId = nil,
@@ -861,7 +861,7 @@ return {
         [6] = {
             Index = 6,
             TrailId = 106,
-            Name = [[6星拖尾]],
+            Name = [[6-Star Trail]],
             Price = 2.67e+15,
             TrainingRate = 6.5,
             DevGoodId = nil,
@@ -871,7 +871,7 @@ return {
         [7] = {
             Index = 7,
             TrailId = 107,
-            Name = [[7星拖尾]],
+            Name = [[7-Star Trail]],
             Price = 4.69e+17,
             TrainingRate = 7.5,
             DevGoodId = nil,
@@ -881,7 +881,7 @@ return {
         [8] = {
             Index = 8,
             TrailId = 108,
-            Name = [[8星拖尾]],
+            Name = [[8-Star Trail]],
             Price = 7.56e+19,
             TrainingRate = 8.5,
             DevGoodId = nil,
@@ -891,7 +891,7 @@ return {
         [9] = {
             Index = 9,
             TrailId = 109,
-            Name = [[9星拖尾]],
+            Name = [[9-Star Trail]],
             Price = 1.18e+22,
             TrainingRate = 9.5,
             DevGoodId = nil,
@@ -901,7 +901,7 @@ return {
         [10] = {
             Index = 10,
             TrailId = 110,
-            Name = [[10星拖尾]],
+            Name = [[10-Star Trail]],
             Price = 1.649999999999999945474048e+24,
             TrainingRate = 12.5,
             DevGoodId = nil,
@@ -911,7 +911,7 @@ return {
         [11] = {
             Index = 11,
             TrailId = 111,
-            Name = [[11星拖尾]],
+            Name = [[11-Star Trail]],
             Price = 2.27000000000000009613344768e+26,
             TrainingRate = 15.9,
             DevGoodId = nil,
@@ -921,7 +921,7 @@ return {
         [12] = {
             Index = 12,
             TrailId = 112,
-            Name = [[12星拖尾]],
+            Name = [[12-Star Trail]],
             Price = 3.0000000000000000948382466048e+28,
             TrainingRate = 19.7,
             DevGoodId = nil,
@@ -931,7 +931,7 @@ return {
         [13] = {
             Index = 13,
             TrailId = 113,
-            Name = [[13星拖尾]],
+            Name = [[13-Star Trail]],
             Price = 2.2299999999999999233084734046208e+31,
             TrainingRate = 21.3,
             DevGoodId = nil,
@@ -941,7 +941,7 @@ return {
         [14] = {
             Index = 14,
             TrailId = 114,
-            Name = [[14星拖尾]],
+            Name = [[14-Star Trail]],
             Price = 3.28999999999999980364868737826816e+33,
             TrainingRate = 22.9,
             DevGoodId = nil,
@@ -951,7 +951,7 @@ return {
         [15] = {
             Index = 15,
             TrailId = 115,
-            Name = [[15星拖尾]],
+            Name = [[15-Star Trail]],
             Price = 4.78000000000000000502155017763946496e+35,
             TrainingRate = 24.5,
             DevGoodId = nil,
@@ -961,7 +961,7 @@ return {
         [16] = {
             Index = 16,
             TrailId = 116,
-            Name = [[16星拖尾]],
+            Name = [[16-Star Trail]],
             Price = 6.7200000000000001433956886673113481216e+37,
             TrainingRate = 26.1,
             DevGoodId = nil,
@@ -971,7 +971,7 @@ return {
         [17] = {
             Index = 17,
             TrailId = 117,
-            Name = [[17星拖尾]],
+            Name = [[17-Star Trail]],
             Price = 9.610000000000000053779986854268576464896e+39,
             TrainingRate = 27.7,
             DevGoodId = nil,
@@ -2181,7 +2181,7 @@ return {
         [1] = {
             Index = 1,
             Id = 1,
-            Name = [[打火机]],
+            Name = [[Lighter]],
             Pirce = 3,
             Quality = 1,
             IconId = [[sandboxId://Model/Item/png/046_Zippo.png]],
@@ -2191,7 +2191,7 @@ return {
         [2] = {
             Index = 2,
             Id = 2,
-            Name = [[矿泉水]],
+            Name = [[Mineral Water]],
             Pirce = 4,
             Quality = 1,
             IconId = [[sandboxId://Model/Item/png/016_Water01.png]],
@@ -2201,7 +2201,7 @@ return {
         [3] = {
             Index = 3,
             Id = 3,
-            Name = [[纯净水]],
+            Name = [[Purified Water]],
             Pirce = 6,
             Quality = 1,
             IconId = [[sandboxId://Model/Item/png/017_Water02.png]],
@@ -2211,7 +2211,7 @@ return {
         [4] = {
             Index = 4,
             Id = 4,
-            Name = [[苏打水]],
+            Name = [[Soda Water]],
             Pirce = 8,
             Quality = 1,
             IconId = [[sandboxId://Model/Item/png/018_Water03.png]],
@@ -2221,7 +2221,7 @@ return {
         [5] = {
             Index = 5,
             Id = 5,
-            Name = [[水桶]],
+            Name = [[Bucket]],
             Pirce = 13,
             Quality = 2,
             IconId = [[sandboxId://Model/Item/png/081_Drum01.png]],
@@ -2231,7 +2231,7 @@ return {
         [6] = {
             Index = 6,
             Id = 6,
-            Name = [[玻璃瓶]],
+            Name = [[Glass Bottle]],
             Pirce = 20,
             Quality = 2,
             IconId = [[sandboxId://Model/Item/png/021_Bottle01.png]],
@@ -2241,7 +2241,7 @@ return {
         [7] = {
             Index = 7,
             Id = 7,
-            Name = [[啤酒瓶]],
+            Name = [[Beer Bottle]],
             Pirce = 30,
             Quality = 2,
             IconId = [[sandboxId://Model/Item/png/022_Bottle02.png]],
@@ -2251,7 +2251,7 @@ return {
         [8] = {
             Index = 8,
             Id = 8,
-            Name = [[红酒瓶]],
+            Name = [[Wine Bottle]],
             Pirce = 38,
             Quality = 2,
             IconId = [[sandboxId://Model/Item/png/023_Bottle03.png]],
@@ -2261,7 +2261,7 @@ return {
         [9] = {
             Index = 9,
             Id = 9,
-            Name = [[香槟瓶]],
+            Name = [[Champagne Bottle]],
             Pirce = 63,
             Quality = 3,
             IconId = [[sandboxId://Model/Item/png/024_Bottle04.png]],
@@ -2271,7 +2271,7 @@ return {
         [10] = {
             Index = 10,
             Id = 10,
-            Name = [[收藏酒瓶]],
+            Name = [[Collectible Wine Bottle]],
             Pirce = 100,
             Quality = 3,
             IconId = [[sandboxId://Model/Item/png/025_Bottle05.png]],
@@ -2281,7 +2281,7 @@ return {
         [11] = {
             Index = 11,
             Id = 11,
-            Name = [[钢钉]],
+            Name = [[Steel Nail]],
             Pirce = 150,
             Quality = 3,
             IconId = [[sandboxId://Model/Item/png/001_Nail.png]],
@@ -2291,7 +2291,7 @@ return {
         [12] = {
             Index = 12,
             Id = 12,
-            Name = [[药片]],
+            Name = [[Tablet]],
             Pirce = 188,
             Quality = 3,
             IconId = [[sandboxId://Model/Item/png/002_Pill.png]],
@@ -2301,7 +2301,7 @@ return {
         [13] = {
             Index = 13,
             Id = 13,
-            Name = [[曲奇]],
+            Name = [[Cookie]],
             Pirce = 313,
             Quality = 4,
             IconId = [[sandboxId://Model/Item/png/006_Biscuit01.png]],
@@ -2311,7 +2311,7 @@ return {
         [14] = {
             Index = 14,
             Id = 14,
-            Name = [[苏打饼]],
+            Name = [[Soda Cracker]],
             Pirce = 500,
             Quality = 4,
             IconId = [[sandboxId://Model/Item/png/007_Biscuit02.png]],
@@ -2321,7 +2321,7 @@ return {
         [15] = {
             Index = 15,
             Id = 15,
-            Name = [[夹心饼]],
+            Name = [[Sandwich Cookie]],
             Pirce = 750,
             Quality = 4,
             IconId = [[sandboxId://Model/Item/png/008_Biscuit03.png]],
@@ -2331,7 +2331,7 @@ return {
         [16] = {
             Index = 16,
             Id = 16,
-            Name = [[黑巧克力]],
+            Name = [[Dark Chocolate]],
             Pirce = 938,
             Quality = 4,
             IconId = [[sandboxId://Model/Item/png/009_Chocolate01.png]],
@@ -2341,7 +2341,7 @@ return {
         [17] = {
             Index = 17,
             Id = 17,
-            Name = [[牛奶巧克力]],
+            Name = [[Milk Chocolate]],
             Pirce = 1563,
             Quality = 5,
             IconId = [[sandboxId://Model/Item/png/010_Chocolate02.png]],
@@ -2351,7 +2351,7 @@ return {
         [18] = {
             Index = 18,
             Id = 18,
-            Name = [[可可饮料]],
+            Name = [[Cocoa Drink]],
             Pirce = 2500,
             Quality = 5,
             IconId = [[sandboxId://Model/Item/png/011_Chocolate_Drink.png]],
@@ -2361,7 +2361,7 @@ return {
         [19] = {
             Index = 19,
             Id = 19,
-            Name = [[蜂蜜]],
+            Name = [[Honey]],
             Pirce = 3750,
             Quality = 5,
             IconId = [[sandboxId://Model/Item/png/012_Honey01.png]],
@@ -2371,7 +2371,7 @@ return {
         [20] = {
             Index = 20,
             Id = 20,
-            Name = [[野蜂蜜]],
+            Name = [[Wild Honey]],
             Pirce = 4688,
             Quality = 5,
             IconId = [[sandboxId://Model/Item/png/013_Honey02.png]],
@@ -2381,7 +2381,7 @@ return {
         [21] = {
             Index = 21,
             Id = 21,
-            Name = [[草莓酱]],
+            Name = [[Strawberry Jam]],
             Pirce = 7800,
             Quality = 6,
             IconId = [[sandboxId://Model/Item/png/014_Jam01.png]],
@@ -2391,7 +2391,7 @@ return {
         [22] = {
             Index = 22,
             Id = 22,
-            Name = [[蓝莓酱]],
+            Name = [[Blueberry Jam]],
             Pirce = 12480,
             Quality = 6,
             IconId = [[sandboxId://Model/Item/png/015_Jam02.png]],
@@ -2401,7 +2401,7 @@ return {
         [23] = {
             Index = 23,
             Id = 23,
-            Name = [[肉罐头]],
+            Name = [[Canned Meat]],
             Pirce = 18720,
             Quality = 6,
             IconId = [[sandboxId://Model/Item/png/026_Can01.png]],
@@ -2411,7 +2411,7 @@ return {
         [24] = {
             Index = 24,
             Id = 24,
-            Name = [[鱼罐头]],
+            Name = [[Canned Fish]],
             Pirce = 23400,
             Quality = 6,
             IconId = [[sandboxId://Model/Item/png/027_Can02.png]],
@@ -2421,7 +2421,7 @@ return {
         [25] = {
             Index = 25,
             Id = 25,
-            Name = [[水果罐头]],
+            Name = [[Canned Fruit]],
             Pirce = 39050,
             Quality = 7,
             IconId = [[sandboxId://Model/Item/png/028_Can03.png]],
@@ -2431,7 +2431,7 @@ return {
         [26] = {
             Index = 26,
             Id = 26,
-            Name = [[午餐肉]],
+            Name = [[Luncheon Meat]],
             Pirce = 62480,
             Quality = 7,
             IconId = [[sandboxId://Model/Item/png/029_Can04.png]],
@@ -2441,7 +2441,7 @@ return {
         [27] = {
             Index = 27,
             Id = 27,
-            Name = [[豆子罐头]],
+            Name = [[Canned Beans]],
             Pirce = 93720,
             Quality = 7,
             IconId = [[sandboxId://Model/Item/png/030_Can05.png]],
@@ -2451,7 +2451,7 @@ return {
         [28] = {
             Index = 28,
             Id = 28,
-            Name = [[军粮罐头]],
+            Name = [[Canned Rations]],
             Pirce = 117150,
             Quality = 7,
             IconId = [[sandboxId://Model/Item/png/031_Can06.png]],
@@ -2461,7 +2461,7 @@ return {
         [29] = {
             Index = 29,
             Id = 29,
-            Name = [[高级罐头]],
+            Name = [[Premium Canned Food]],
             Pirce = 195500,
             Quality = 8,
             IconId = [[sandboxId://Model/Item/png/032_Can07.png]],
@@ -2471,7 +2471,7 @@ return {
         [30] = {
             Index = 30,
             Id = 30,
-            Name = [[清洁剂]],
+            Name = [[Detergent]],
             Pirce = 312800,
             Quality = 8,
             IconId = [[sandboxId://Model/Item/png/042_Detergent.png]],
@@ -2481,7 +2481,7 @@ return {
         [31] = {
             Index = 31,
             Id = 31,
-            Name = [[漂白水]],
+            Name = [[Bleach]],
             Pirce = 469200,
             Quality = 8,
             IconId = [[sandboxId://Model/Item/png/043_Bleach.png]],
@@ -2491,7 +2491,7 @@ return {
         [32] = {
             Index = 32,
             Id = 32,
-            Name = [[润滑油]],
+            Name = [[Lubricating Oil]],
             Pirce = 586500,
             Quality = 8,
             IconId = [[sandboxId://Model/Item/png/044_WD40.png]],
@@ -2501,7 +2501,7 @@ return {
         [33] = {
             Index = 33,
             Id = 33,
-            Name = [[小油壶]],
+            Name = [[Small Oil Can]],
             Pirce = 975000,
             Quality = 9,
             IconId = [[sandboxId://Model/Item/png/047_Oilcan01.png]],
@@ -2511,7 +2511,7 @@ return {
         [34] = {
             Index = 34,
             Id = 34,
-            Name = [[运动水壶]],
+            Name = [[Sports Bottle]],
             Pirce = 1.56e+6,
             Quality = 6,
             IconId = [[sandboxId://Model/Item/png/019_Waterbottle01.png]],
@@ -2521,7 +2521,7 @@ return {
         [35] = {
             Index = 35,
             Id = 35,
-            Name = [[军用水壶]],
+            Name = [[Military Canteen]],
             Pirce = 2.34e+6,
             Quality = 7,
             IconId = [[sandboxId://Model/Item/png/020_Waterbottle02.png]],
@@ -2531,7 +2531,7 @@ return {
         [36] = {
             Index = 36,
             Id = 36,
-            Name = [[机油壶]],
+            Name = [[Motor Oil Can]],
             Pirce = 2.925e+6,
             Quality = 9,
             IconId = [[sandboxId://Model/Item/png/048_Oilcan02.png]],
@@ -2541,7 +2541,7 @@ return {
         [37] = {
             Index = 37,
             Id = 37,
-            Name = [[燃油罐]],
+            Name = [[Fuel Can]],
             Pirce = 4.885e+6,
             Quality = 10,
             IconId = [[sandboxId://Model/Item/png/049_Oilcan03.png]],
@@ -2551,7 +2551,7 @@ return {
         [38] = {
             Index = 38,
             Id = 38,
-            Name = [[礼帽]],
+            Name = [[Top Hat]],
             Pirce = 7.816e+6,
             Quality = 10,
             IconId = [[sandboxId://Model/Item/png/055_Hat.png]],
@@ -2561,7 +2561,7 @@ return {
         [39] = {
             Index = 39,
             Id = 39,
-            Name = [[棒球帽]],
+            Name = [[Baseball Cap]],
             Pirce = 1.1724e+7,
             Quality = 10,
             IconId = [[sandboxId://Model/Item/png/056_Cap_A_0.png]],
@@ -2571,7 +2571,7 @@ return {
         [40] = {
             Index = 40,
             Id = 40,
-            Name = [[墨镜]],
+            Name = [[Dark Glasses]],
             Pirce = 1.4655e+7,
             Quality = 10,
             IconId = [[sandboxId://Model/Item/png/057_Sunglass01.png]],
@@ -2581,7 +2581,7 @@ return {
         [41] = {
             Index = 41,
             Id = 41,
-            Name = [[太阳镜]],
+            Name = [[Sunglasses]],
             Pirce = 2.44e+7,
             Quality = 11,
             IconId = [[sandboxId://Model/Item/png/058_Sunglass02.png]],
@@ -2591,7 +2591,7 @@ return {
         [42] = {
             Index = 42,
             Id = 42,
-            Name = [[护目镜]],
+            Name = [[Safety Goggles]],
             Pirce = 3.904e+7,
             Quality = 11,
             IconId = [[sandboxId://Model/Item/png/059_Goggle.png]],
@@ -2601,7 +2601,7 @@ return {
         [43] = {
             Index = 43,
             Id = 43,
-            Name = [[战术风镜]],
+            Name = [[Tactical Goggles]],
             Pirce = 5.856e+7,
             Quality = 11,
             IconId = [[sandboxId://Model/Item/png/060_GoggleA.png]],
@@ -2611,7 +2611,7 @@ return {
         [44] = {
             Index = 44,
             Id = 44,
-            Name = [[口罩]],
+            Name = [[Face Mask]],
             Pirce = 7.32e+7,
             Quality = 11,
             IconId = [[sandboxId://Model/Item/png/061_MaskA.png]],
@@ -2621,7 +2621,7 @@ return {
         [45] = {
             Index = 45,
             Id = 45,
-            Name = [[防毒面具]],
+            Name = [[Gas Mask]],
             Pirce = 1.22e+8,
             Quality = 12,
             IconId = [[sandboxId://Model/Item/png/062_GasMask01.png]],
@@ -2631,7 +2631,7 @@ return {
         [46] = {
             Index = 46,
             Id = 46,
-            Name = [[战术面具]],
+            Name = [[Tactical Mask]],
             Pirce = 1.952e+8,
             Quality = 12,
             IconId = [[sandboxId://Model/Item/png/063_GasMask02.png]],
@@ -2641,7 +2641,7 @@ return {
         [47] = {
             Index = 47,
             Id = 47,
-            Name = [[皮靴]],
+            Name = [[Leather Boots]],
             Pirce = 2.928e+8,
             Quality = 12,
             IconId = [[sandboxId://Model/Item/png/064_Boots01.png]],
@@ -2651,7 +2651,7 @@ return {
         [48] = {
             Index = 48,
             Id = 48,
-            Name = [[雨靴]],
+            Name = [[Rain Boots]],
             Pirce = 3.66e+8,
             Quality = 12,
             IconId = [[sandboxId://Model/Item/png/065_Boots02.png]],
@@ -2661,7 +2661,7 @@ return {
         [49] = {
             Index = 49,
             Id = 49,
-            Name = [[登山靴]],
+            Name = [[Hiking Boots]],
             Pirce = 6.1e+8,
             Quality = 13,
             IconId = [[sandboxId://Model/Item/png/066_Boots03.png]],
@@ -2671,7 +2671,7 @@ return {
         [50] = {
             Index = 50,
             Id = 50,
-            Name = [[军靴]],
+            Name = [[Military Boots]],
             Pirce = 9.76e+8,
             Quality = 13,
             IconId = [[sandboxId://Model/Item/png/067_Boots04.png]],
@@ -2681,7 +2681,7 @@ return {
         [51] = {
             Index = 51,
             Id = 51,
-            Name = [[防弹背心]],
+            Name = [[Bulletproof Vest]],
             Pirce = 1.464e+9,
             Quality = 13,
             IconId = [[sandboxId://Model/Item/png/068_BulletproofJacket01.png]],
@@ -2691,7 +2691,7 @@ return {
         [52] = {
             Index = 52,
             Id = 52,
-            Name = [[重型护甲]],
+            Name = [[Heavy Armor]],
             Pirce = 1.83e+9,
             Quality = 13,
             IconId = [[sandboxId://Model/Item/png/069_BulletproofJacket02.png]],
@@ -2701,7 +2701,7 @@ return {
         [53] = {
             Index = 53,
             Id = 53,
-            Name = [[工地头盔]],
+            Name = [[Hard Hat]],
             Pirce = 3.05e+9,
             Quality = 14,
             IconId = [[sandboxId://Model/Item/png/070_Helmet01.png]],
@@ -2711,7 +2711,7 @@ return {
         [54] = {
             Index = 54,
             Id = 54,
-            Name = [[骑行头盔]],
+            Name = [[Cycling Helmet]],
             Pirce = 4.88e+9,
             Quality = 14,
             IconId = [[sandboxId://Model/Item/png/071_Helmet02.png]],
@@ -2721,7 +2721,7 @@ return {
         [55] = {
             Index = 55,
             Id = 55,
-            Name = [[防暴头盔]],
+            Name = [[Riot Helmet]],
             Pirce = 7.32e+9,
             Quality = 14,
             IconId = [[sandboxId://Model/Item/png/072_Helmet03.png]],
@@ -2731,7 +2731,7 @@ return {
         [56] = {
             Index = 56,
             Id = 56,
-            Name = [[战术头盔]],
+            Name = [[Tactical Helmet]],
             Pirce = 9.15e+9,
             Quality = 14,
             IconId = [[sandboxId://Model/Item/png/073_Helmet04.png]],
@@ -2741,7 +2741,7 @@ return {
         [57] = {
             Index = 57,
             Id = 57,
-            Name = [[小背包]],
+            Name = [[Small Backpack]],
             Pirce = 1.525e+10,
             Quality = 15,
             IconId = [[sandboxId://Model/Item/png/074_Bag01.png]],
@@ -2751,7 +2751,7 @@ return {
         [58] = {
             Index = 58,
             Id = 58,
-            Name = [[登山包]],
+            Name = [[Hiking Backpack]],
             Pirce = 2.44e+10,
             Quality = 15,
             IconId = [[sandboxId://Model/Item/png/075_Bag02.png]],
@@ -2761,7 +2761,7 @@ return {
         [59] = {
             Index = 59,
             Id = 59,
-            Name = [[军用背包]],
+            Name = [[Military Backpack]],
             Pirce = 3.66e+10,
             Quality = 15,
             IconId = [[sandboxId://Model/Item/png/076_Bag03.png]],
@@ -2771,7 +2771,7 @@ return {
         [60] = {
             Index = 60,
             Id = 60,
-            Name = [[铁锅]],
+            Name = [[Iron Pot]],
             Pirce = 4.575e+10,
             Quality = 15,
             IconId = [[sandboxId://Model/Item/png/080_Pot01.png]],
@@ -2781,7 +2781,7 @@ return {
         [61] = {
             Index = 61,
             Id = 61,
-            Name = [[木锤]],
+            Name = [[Wooden Mallet]],
             Pirce = 7.65e+10,
             Quality = 16,
             IconId = [[sandboxId://Model/Item/png/096_Hammer01.png]],
@@ -2791,7 +2791,7 @@ return {
         [62] = {
             Index = 62,
             Id = 62,
-            Name = [[铁锤]],
+            Name = [[Iron Hammer]],
             Pirce = 1.224e+11,
             Quality = 16,
             IconId = [[sandboxId://Model/Item/png/097_Hammer02.png]],
@@ -2801,7 +2801,7 @@ return {
         [63] = {
             Index = 63,
             Id = 63,
-            Name = [[大锤]],
+            Name = [[Sledgehammer]],
             Pirce = 1.836e+11,
             Quality = 16,
             IconId = [[sandboxId://Model/Item/png/098_Hammer03.png]],
@@ -2811,7 +2811,7 @@ return {
         [64] = {
             Index = 64,
             Id = 64,
-            Name = [[扳手]],
+            Name = [[Wrench]],
             Pirce = 2.295e+11,
             Quality = 16,
             IconId = [[sandboxId://Model/Item/png/099_Wrench01.png]],
@@ -2821,7 +2821,7 @@ return {
         [65] = {
             Index = 65,
             Id = 65,
-            Name = [[活动扳手]],
+            Name = [[Adjustable Wrench]],
             Pirce = 3.815e+11,
             Quality = 17,
             IconId = [[sandboxId://Model/Item/png/100_Wrench02.png]],
@@ -2831,7 +2831,7 @@ return {
         [66] = {
             Index = 66,
             Id = 66,
-            Name = [[管钳]],
+            Name = [[Pipe Wrench]],
             Pirce = 6.104e+11,
             Quality = 17,
             IconId = [[sandboxId://Model/Item/png/101_Wrench03.png]],
@@ -2841,7 +2841,7 @@ return {
         [67] = {
             Index = 67,
             Id = 67,
-            Name = [[工兵铲]],
+            Name = [[Entrenching Shovel]],
             Pirce = 9.156e+11,
             Quality = 17,
             IconId = [[sandboxId://Model/Item/png/102_Shovel01.png]],
@@ -2851,7 +2851,7 @@ return {
         [68] = {
             Index = 68,
             Id = 68,
-            Name = [[铁锹]],
+            Name = [[Shovel]],
             Pirce = 1.1445e+12,
             Quality = 17,
             IconId = [[sandboxId://Model/Item/png/103_Shovel02.png]],
@@ -2861,7 +2861,7 @@ return {
         [69] = {
             Index = 69,
             Id = 69,
-            Name = [[十字镐]],
+            Name = [[Pickaxe]],
             Pirce = 1.905e+12,
             Quality = 18,
             IconId = [[sandboxId://Model/Item/png/104_Pickax.png]],
@@ -2871,7 +2871,7 @@ return {
         [70] = {
             Index = 70,
             Id = 70,
-            Name = [[胶囊]],
+            Name = [[Capsule]],
             Pirce = 3.048e+12,
             Quality = 15,
             IconId = [[sandboxId://Model/Item/png/003_Capsule.png]],
@@ -2881,7 +2881,7 @@ return {
         [71] = {
             Index = 71,
             Id = 71,
-            Name = [[干电池]],
+            Name = [[Battery]],
             Pirce = 4.572e+12,
             Quality = 16,
             IconId = [[sandboxId://Model/Item/png/004_Battery01.png]],
@@ -2891,7 +2891,7 @@ return {
         [72] = {
             Index = 72,
             Id = 72,
-            Name = [[强力电池]],
+            Name = [[High-Power Battery]],
             Pirce = 5.715e+12,
             Quality = 16,
             IconId = [[sandboxId://Model/Item/png/005_Battery02.png]],
@@ -2901,7 +2901,7 @@ return {
         [73] = {
             Index = 73,
             Id = 73,
-            Name = [[药瓶]],
+            Name = [[Medicine Bottle]],
             Pirce = 9.55e+12,
             Quality = 16,
             IconId = [[sandboxId://Model/Item/png/033_Medicine_bottle01.png]],
@@ -2911,7 +2911,7 @@ return {
         [74] = {
             Index = 74,
             Id = 74,
-            Name = [[急救药瓶]],
+            Name = [[First Aid Medicine]],
             Pirce = 1.528e+13,
             Quality = 16,
             IconId = [[sandboxId://Model/Item/png/034_Medicine_bottle02.png]],
@@ -2921,7 +2921,7 @@ return {
         [75] = {
             Index = 75,
             Id = 75,
-            Name = [[注射器]],
+            Name = [[Syringe]],
             Pirce = 2.292e+13,
             Quality = 17,
             IconId = [[sandboxId://Model/Item/png/035_Injection.png]],
@@ -2931,7 +2931,7 @@ return {
         [76] = {
             Index = 76,
             Id = 76,
-            Name = [[强化针]],
+            Name = [[Boost Injector]],
             Pirce = 2.865e+13,
             Quality = 17,
             IconId = [[sandboxId://Model/Item/png/036_InjectionA.png]],
@@ -2941,7 +2941,7 @@ return {
         [77] = {
             Index = 77,
             Id = 77,
-            Name = [[医用绷带]],
+            Name = [[Medical Bandage]],
             Pirce = 4.77e+13,
             Quality = 17,
             IconId = [[sandboxId://Model/Item/png/037_First_aid_Kit_Bandage.png]],
@@ -2951,7 +2951,7 @@ return {
         [78] = {
             Index = 78,
             Id = 78,
-            Name = [[绿色徽章]],
+            Name = [[Green Badge]],
             Pirce = 7.632e+13,
             Quality = 17,
             IconId = [[sandboxId://Model/Item/png/038_Lv.png]],
@@ -2961,7 +2961,7 @@ return {
         [79] = {
             Index = 79,
             Id = 79,
-            Name = [[急救包]],
+            Name = [[First Aid Kit]],
             Pirce = 1.1448e+14,
             Quality = 18,
             IconId = [[sandboxId://Model/Item/png/039_First_aid_Kit01.png]],
@@ -2971,7 +2971,7 @@ return {
         [80] = {
             Index = 80,
             Id = 80,
-            Name = [[医疗箱]],
+            Name = [[Medical Kit]],
             Pirce = 1.431e+14,
             Quality = 18,
             IconId = [[sandboxId://Model/Item/png/040_First_aid_Kit02.png]],
@@ -2981,7 +2981,7 @@ return {
         [81] = {
             Index = 81,
             Id = 81,
-            Name = [[高级医疗箱]],
+            Name = [[Advanced Medical Kit]],
             Pirce = 2.385e+14,
             Quality = 18,
             IconId = [[sandboxId://Model/Item/png/041_First_aid_Kit03.png]],
@@ -2991,7 +2991,7 @@ return {
         [82] = {
             Index = 82,
             Id = 82,
-            Name = [[钢管]],
+            Name = [[Steel Pipe]],
             Pirce = 3.816e+14,
             Quality = 18,
             IconId = [[sandboxId://Model/Item/png/045_Pipe.png]],
@@ -3001,7 +3001,7 @@ return {
         [83] = {
             Index = 83,
             Id = 83,
-            Name = [[手机]],
+            Name = [[Phone]],
             Pirce = 5.724e+14,
             Quality = 19,
             IconId = [[sandboxId://Model/Item/png/050_Mobilephone.png]],
@@ -3011,7 +3011,7 @@ return {
         [84] = {
             Index = 84,
             Id = 84,
-            Name = [[手表]],
+            Name = [[Watch]],
             Pirce = 7.155e+14,
             Quality = 19,
             IconId = [[sandboxId://Model/Item/png/051_Watch01.png]],
@@ -3021,7 +3021,7 @@ return {
         [85] = {
             Index = 85,
             Id = 85,
-            Name = [[身份牌]],
+            Name = [[ID Tag]],
             Pirce = 1.19e+15,
             Quality = 19,
             IconId = [[sandboxId://Model/Item/png/052_IdentificationTag.png]],
@@ -3031,7 +3031,7 @@ return {
         [86] = {
             Index = 86,
             Id = 86,
-            Name = [[指南针]],
+            Name = [[Compass]],
             Pirce = 1.904e+15,
             Quality = 19,
             IconId = [[sandboxId://Model/Item/png/053_Compass.png]],
@@ -3041,7 +3041,7 @@ return {
         [87] = {
             Index = 87,
             Id = 87,
-            Name = [[军用罗盘]],
+            Name = [[Military Compass]],
             Pirce = 2.856e+15,
             Quality = 20,
             IconId = [[sandboxId://Model/Item/png/054_CompassA.png]],
@@ -3051,7 +3051,7 @@ return {
         [88] = {
             Index = 88,
             Id = 88,
-            Name = [[木箱]],
+            Name = [[Wooden Crate]],
             Pirce = 3.57e+15,
             Quality = 20,
             IconId = [[sandboxId://Model/Item/png/077_Box01.png]],
@@ -3061,7 +3061,7 @@ return {
         [89] = {
             Index = 89,
             Id = 89,
-            Name = [[工具箱]],
+            Name = [[Toolbox]],
             Pirce = 5.95e+15,
             Quality = 20,
             IconId = [[sandboxId://Model/Item/png/078_Box02.png]],
@@ -3071,7 +3071,7 @@ return {
         [90] = {
             Index = 90,
             Id = 90,
-            Name = [[补给箱]],
+            Name = [[Supply Crate]],
             Pirce = 9.52e+15,
             Quality = 20,
             IconId = [[sandboxId://Model/Item/png/079_Box03.png]],
@@ -3081,7 +3081,7 @@ return {
         [91] = {
             Index = 91,
             Id = 91,
-            Name = [[油桶]],
+            Name = [[Oil Drum]],
             Pirce = 1.428e+16,
             Quality = 21,
             IconId = [[sandboxId://Model/Item/png/082_Drum02.png]],
@@ -3091,7 +3091,7 @@ return {
         [92] = {
             Index = 92,
             Id = 92,
-            Name = [[储物桶]],
+            Name = [[Storage Barrel]],
             Pirce = 1.785e+16,
             Quality = 21,
             IconId = [[sandboxId://Model/Item/png/083_Drum03.png]],
@@ -3101,7 +3101,7 @@ return {
         [93] = {
             Index = 93,
             Id = 93,
-            Name = [[密封桶]],
+            Name = [[Sealed Barrel]],
             Pirce = 2.98e+16,
             Quality = 21,
             IconId = [[sandboxId://Model/Item/png/084_Drum04.png]],
@@ -3111,7 +3111,7 @@ return {
         [94] = {
             Index = 94,
             Id = 94,
-            Name = [[大铁桶]],
+            Name = [[Large Iron Drum]],
             Pirce = 4.768e+16,
             Quality = 21,
             IconId = [[sandboxId://Model/Item/png/085_Drum05.png]],
@@ -3121,7 +3121,7 @@ return {
         [95] = {
             Index = 95,
             Id = 95,
-            Name = [[煤气罐]],
+            Name = [[Gas Cylinder]],
             Pirce = 7.152e+16,
             Quality = 22,
             IconId = [[sandboxId://Model/Item/png/086_Propane.png]],
@@ -3131,7 +3131,7 @@ return {
         [96] = {
             Index = 96,
             Id = 96,
-            Name = [[粗绳]],
+            Name = [[Thick Rope]],
             Pirce = 8.94e+16,
             Quality = 22,
             IconId = [[sandboxId://Model/Item/png/087_RopeA.png]],
@@ -3141,7 +3141,7 @@ return {
         [97] = {
             Index = 97,
             Id = 97,
-            Name = [[电线]],
+            Name = [[Wire]],
             Pirce = 1.49e+17,
             Quality = 22,
             IconId = [[sandboxId://Model/Item/png/088_Wire.png]],
@@ -3151,7 +3151,7 @@ return {
         [98] = {
             Index = 98,
             Id = 98,
-            Name = [[对讲机]],
+            Name = [[Walkie-Talkie]],
             Pirce = 2.384e+17,
             Quality = 22,
             IconId = [[sandboxId://Model/Item/png/089_Walkie_Talkie.png]],
@@ -3161,7 +3161,7 @@ return {
         [99] = {
             Index = 99,
             Id = 99,
-            Name = [[军用电台]],
+            Name = [[Military Radio]],
             Pirce = 3.576e+17,
             Quality = 23,
             IconId = [[sandboxId://Model/Item/png/090_Walkie_TalkieA.png]],
@@ -3171,7 +3171,7 @@ return {
         [100] = {
             Index = 100,
             Id = 100,
-            Name = [[手电筒]],
+            Name = [[Flashlight]],
             Pirce = 4.47e+17,
             Quality = 23,
             IconId = [[sandboxId://Model/Item/png/091_Flashlight01.png]],
@@ -3181,7 +3181,7 @@ return {
         [101] = {
             Index = 101,
             Id = 101,
-            Name = [[头灯]],
+            Name = [[Headlamp]],
             Pirce = 7.45e+17,
             Quality = 23,
             IconId = [[sandboxId://Model/Item/png/092_HeadLantern.png]],
@@ -3191,7 +3191,7 @@ return {
         [102] = {
             Index = 102,
             Id = 102,
-            Name = [[提灯]],
+            Name = [[Lantern]],
             Pirce = 1.192e+18,
             Quality = 23,
             IconId = [[sandboxId://Model/Item/png/093_Lantern.png]],
@@ -3201,7 +3201,7 @@ return {
         [103] = {
             Index = 103,
             Id = 103,
-            Name = [[望远镜]],
+            Name = [[Binoculars]],
             Pirce = 1.788e+18,
             Quality = 24,
             IconId = [[sandboxId://Model/Item/png/094_Telescope01.png]],
@@ -3211,7 +3211,7 @@ return {
         [104] = {
             Index = 104,
             Id = 104,
-            Name = [[高倍望远镜]],
+            Name = [[High-Power Binoculars]],
             Pirce = 2.235e+18,
             Quality = 24,
             IconId = [[sandboxId://Model/Item/png/095_Telescope02.png]],
@@ -3221,7 +3221,7 @@ return {
         [105] = {
             Index = 105,
             Id = 105,
-            Name = [[高尔夫球杆]],
+            Name = [[Golf Club]],
             Pirce = 3.725e+18,
             Quality = 24,
             IconId = [[sandboxId://Model/Item/png/105_GolfClub.png]],
@@ -3231,7 +3231,7 @@ return {
         [106] = {
             Index = 106,
             Id = 106,
-            Name = [[冰球杆]],
+            Name = [[Hockey Stick]],
             Pirce = 5.96e+18,
             Quality = 24,
             IconId = [[sandboxId://Model/Item/png/106_Hockey.png]],
@@ -3241,7 +3241,7 @@ return {
         [107] = {
             Index = 107,
             Id = 107,
-            Name = [[木棒]],
+            Name = [[Wooden Stick]],
             Pirce = 8.94e+18,
             Quality = 25,
             IconId = [[sandboxId://Model/Item/png/107_Bat01.png]],
@@ -3251,7 +3251,7 @@ return {
         [108] = {
             Index = 108,
             Id = 108,
-            Name = [[球棒]],
+            Name = [[Baseball Bat]],
             Pirce = 1.1175e+19,
             Quality = 25,
             IconId = [[sandboxId://Model/Item/png/108_Bat02.png]],
@@ -3261,7 +3261,7 @@ return {
         [109] = {
             Index = 109,
             Id = 109,
-            Name = [[铁棒]],
+            Name = [[Iron Rod]],
             Pirce = 1.865e+19,
             Quality = 25,
             IconId = [[sandboxId://Model/Item/png/109_Bat03.png]],
@@ -3271,7 +3271,7 @@ return {
         [110] = {
             Index = 110,
             Id = 110,
-            Name = [[战术棍]],
+            Name = [[Tactical Baton]],
             Pirce = 2.984e+19,
             Quality = 25,
             IconId = [[sandboxId://Model/Item/png/110_Bat04.png]],
@@ -3281,7 +3281,7 @@ return {
         [111] = {
             Index = 111,
             Id = 111,
-            Name = [[电锯]],
+            Name = [[Chainsaw]],
             Pirce = 4.476e+19,
             Quality = 26,
             IconId = [[sandboxId://Model/Item/png/111_ElectricSaw.png]],
@@ -3291,7 +3291,7 @@ return {
         [112] = {
             Index = 112,
             Id = 112,
-            Name = [[木斧]],
+            Name = [[Wood Axe]],
             Pirce = 5.595e+19,
             Quality = 26,
             IconId = [[sandboxId://Model/Item/png/112_Ax01.png]],
@@ -3301,7 +3301,7 @@ return {
         [113] = {
             Index = 113,
             Id = 113,
-            Name = [[消防斧]],
+            Name = [[Fire Axe]],
             Pirce = 9.3e+19,
             Quality = 26,
             IconId = [[sandboxId://Model/Item/png/113_Ax02.png]],
@@ -3311,7 +3311,7 @@ return {
         [114] = {
             Index = 114,
             Id = 114,
-            Name = [[战斧]],
+            Name = [[Battle Axe]],
             Pirce = 1.488e+20,
             Quality = 26,
             IconId = [[sandboxId://Model/Item/png/114_Ax03.png]],
@@ -3321,7 +3321,7 @@ return {
         [115] = {
             Index = 115,
             Id = 115,
-            Name = [[小刀]],
+            Name = [[Small Knife]],
             Pirce = 2.232e+20,
             Quality = 27,
             IconId = [[sandboxId://Model/Item/png/115_Knife01.png]],
@@ -3331,7 +3331,7 @@ return {
         [116] = {
             Index = 116,
             Id = 116,
-            Name = [[猎刀]],
+            Name = [[Hunting Knife]],
             Pirce = 2.79e+20,
             Quality = 27,
             IconId = [[sandboxId://Model/Item/png/116_Knife02.png]],
@@ -3341,7 +3341,7 @@ return {
         [117] = {
             Index = 117,
             Id = 117,
-            Name = [[军刀]],
+            Name = [[Military Knife]],
             Pirce = 4.655e+20,
             Quality = 27,
             IconId = [[sandboxId://Model/Item/png/117_Knife03.png]],
@@ -3351,7 +3351,7 @@ return {
         [118] = {
             Index = 118,
             Id = 118,
-            Name = [[开山刀]],
+            Name = [[Machete]],
             Pirce = 7.448e+20,
             Quality = 27,
             IconId = [[sandboxId://Model/Item/png/118_Knife04.png]],
@@ -3361,7 +3361,7 @@ return {
         [119] = {
             Index = 119,
             Id = 119,
-            Name = [[匕首]],
+            Name = [[Dagger]],
             Pirce = 1.1172e+21,
             Quality = 28,
             IconId = [[sandboxId://Model/Item/png/119_Knife05.png]],
@@ -3371,7 +3371,7 @@ return {
         [120] = {
             Index = 120,
             Id = 120,
-            Name = [[战术刀]],
+            Name = [[Tactical Knife]],
             Pirce = 1.396499999999999868928e+21,
             Quality = 28,
             IconId = [[sandboxId://Model/Item/png/120_Knife06.png]],
@@ -3381,7 +3381,7 @@ return {
         [121] = {
             Index = 121,
             Id = 121,
-            Name = [[狼牙棒]],
+            Name = [[Spiked Club]],
             Pirce = 2.33e+21,
             Quality = 28,
             IconId = [[sandboxId://Model/Item/png/121_Ironmace.png]],
@@ -3391,7 +3391,7 @@ return {
         [122] = {
             Index = 122,
             Id = 122,
-            Name = [[炸药罐]],
+            Name = [[Explosive Canister]],
             Pirce = 3.728e+21,
             Quality = 28,
             IconId = [[sandboxId://Model/Item/png/122_Dynamite01.png]],
@@ -3401,7 +3401,7 @@ return {
         [123] = {
             Index = 123,
             Id = 123,
-            Name = [[捆装炸药]],
+            Name = [[Bundle of Dynamite]],
             Pirce = 5.592e+21,
             Quality = 29,
             IconId = [[sandboxId://Model/Item/png/123_Dynamite02.png]],
@@ -3411,7 +3411,7 @@ return {
         [124] = {
             Index = 124,
             Id = 124,
-            Name = [[遥控炸弹]],
+            Name = [[Remote Bomb]],
             Pirce = 6.990000000000000524288e+21,
             Quality = 29,
             IconId = [[sandboxId://Model/Item/png/124_Dynamite03.png]],
@@ -3421,7 +3421,7 @@ return {
         [125] = {
             Index = 125,
             Id = 125,
-            Name = [[圆形手雷]],
+            Name = [[Round Grenade]],
             Pirce = 1.1649999999999999475712e+22,
             Quality = 29,
             IconId = [[sandboxId://Model/Item/png/125_Grenade01.png]],
@@ -3431,7 +3431,7 @@ return {
         [126] = {
             Index = 126,
             Id = 126,
-            Name = [[高爆手雷]],
+            Name = [[High-Explosive Grenade]],
             Pirce = 1.864e+22,
             Quality = 29,
             IconId = [[sandboxId://Model/Item/png/126_Grenade02.png]],
@@ -3441,7 +3441,7 @@ return {
         [127] = {
             Index = 127,
             Id = 127,
-            Name = [[等离子手雷]],
+            Name = [[Plasma Grenade]],
             Pirce = 2.7960000000000002097152e+22,
             Quality = 30,
             IconId = [[sandboxId://Model/Item/png/127_Grenade03.png]],
@@ -3451,7 +3451,7 @@ return {
         [128] = {
             Index = 128,
             Id = 128,
-            Name = [[感应地雷]],
+            Name = [[Proximity Mine]],
             Pirce = 3.4949999999999998427136e+22,
             Quality = 30,
             IconId = [[sandboxId://Model/Item/png/128_Mine.png]],
@@ -3461,7 +3461,7 @@ return {
         [129] = {
             Index = 129,
             Id = 129,
-            Name = [[捕兽夹]],
+            Name = [[Bear Trap]],
             Pirce = 5.7999999999999995805696e+22,
             Quality = 30,
             IconId = [[sandboxId://Model/Item/png/129_Trap.png]],
@@ -3471,7 +3471,7 @@ return {
         [130] = {
             Index = 130,
             Id = 130,
-            Name = [[手枪子弹]],
+            Name = [[Pistol Bullet]],
             Pirce = 9.28e+22,
             Quality = 30,
             IconId = [[sandboxId://Model/Item/png/130_Bullet01.png]],
@@ -3481,7 +3481,7 @@ return {
         [131] = {
             Index = 131,
             Id = 131,
-            Name = [[手枪弹药]],
+            Name = [[Pistol Ammo]],
             Pirce = 1.392e+23,
             Quality = 31,
             IconId = [[sandboxId://Model/Item/png/131_Bullet02.png]],
@@ -3491,7 +3491,7 @@ return {
         [132] = {
             Index = 132,
             Id = 132,
-            Name = [[整箱弹药]],
+            Name = [[Ammo Crate]],
             Pirce = 1.73999999999999987417088e+23,
             Quality = 31,
             IconId = [[sandboxId://Model/Item/png/132_Bullet03.png]],
@@ -3501,7 +3501,7 @@ return {
         [133] = {
             Index = 133,
             Id = 133,
-            Name = [[盒装弹药]],
+            Name = [[Boxed Ammo]],
             Pirce = 2.91000000000000002097152e+23,
             Quality = 31,
             IconId = [[sandboxId://Model/Item/png/133_Bullet04.png]],
@@ -3511,7 +3511,7 @@ return {
         [134] = {
             Index = 134,
             Id = 134,
-            Name = [[直式弹匣]],
+            Name = [[Straight Magazine]],
             Pirce = 4.65600000000000016777216e+23,
             Quality = 31,
             IconId = [[sandboxId://Model/Item/png/134_Bullet05.png]],
@@ -3521,7 +3521,7 @@ return {
         [135] = {
             Index = 135,
             Id = 135,
-            Name = [[弯式弹匣]],
+            Name = [[Curved Magazine]],
             Pirce = 6.98400000000000058720256e+23,
             Quality = 32,
             IconId = [[sandboxId://Model/Item/png/135_Bullet06.png]],
@@ -3531,7 +3531,7 @@ return {
         [136] = {
             Index = 136,
             Id = 136,
-            Name = [[霰弹盒]],
+            Name = [[Shotgun Shell Box]],
             Pirce = 8.73000000000000006291456e+23,
             Quality = 32,
             IconId = [[sandboxId://Model/Item/png/136_Bullet07.png]],
@@ -3541,7 +3541,7 @@ return {
         [137] = {
             Index = 137,
             Id = 137,
-            Name = [[军用弹药箱]],
+            Name = [[Military Ammo Box]],
             Pirce = 1.45500000000000001048576e+24,
             Quality = 32,
             IconId = [[sandboxId://Model/Item/png/137_Cartridge.png]],
@@ -3551,7 +3551,7 @@ return {
         [138] = {
             Index = 138,
             Id = 138,
-            Name = [[左轮手枪]],
+            Name = [[Revolver]],
             Pirce = 2.328000000000000016777216e+24,
             Quality = 32,
             IconId = [[sandboxId://Model/Item/png/138_Gun01.png]],
@@ -3561,7 +3561,7 @@ return {
         [139] = {
             Index = 139,
             Id = 139,
-            Name = [[单发手枪]],
+            Name = [[Single-Shot Pistol]],
             Pirce = 3.492000000000000025165824e+24,
             Quality = 33,
             IconId = [[sandboxId://Model/Item/png/139_Gun02.png]],
@@ -3571,7 +3571,7 @@ return {
         [140] = {
             Index = 140,
             Id = 140,
-            Name = [[短管突击步枪]],
+            Name = [[Short-Barrel Assault Rifle]],
             Pirce = 4.364999999999999763021824e+24,
             Quality = 33,
             IconId = [[sandboxId://Model/Item/png/140_Rifle01.png]],
@@ -3581,7 +3581,7 @@ return {
         [141] = {
             Index = 141,
             Id = 141,
-            Name = [[战术突击步枪]],
+            Name = [[Tactical Assault Rifle]],
             Pirce = 7.299999999999999823839232e+24,
             Quality = 33,
             IconId = [[sandboxId://Model/Item/png/141_Rifle02.png]],
@@ -3591,7 +3591,7 @@ return {
         [142] = {
             Index = 142,
             Id = 142,
-            Name = [[木托突击步枪]],
+            Name = [[Wood-Stock Assault Rifle]],
             Pirce = 1.168000000000000100663296e+25,
             Quality = 33,
             IconId = [[sandboxId://Model/Item/png/142_Rifle03.png]],
@@ -3601,7 +3601,7 @@ return {
         [143] = {
             Index = 143,
             Id = 143,
-            Name = [[战斗霰弹枪]],
+            Name = [[Combat Shotgun]],
             Pirce = 1.7520000000000000436207616e+25,
             Quality = 34,
             IconId = [[sandboxId://Model/Item/png/143_Rifle04.png]],
@@ -3611,7 +3611,7 @@ return {
         [144] = {
             Index = 144,
             Id = 144,
-            Name = [[狙击步枪]],
+            Name = [[Sniper Rifle]],
             Pirce = 2.190000000000000054525952e+25,
             Quality = 34,
             IconId = [[sandboxId://Model/Item/png/144_Rifle05.png]],
@@ -3621,7 +3621,7 @@ return {
         [145] = {
             Index = 145,
             Id = 145,
-            Name = [[冲锋枪]],
+            Name = [[SMG]],
             Pirce = 3.6399999999999997886070784e+25,
             Quality = 34,
             IconId = [[sandboxId://Model/Item/png/145_MachineGun01.png]],
@@ -3631,7 +3631,7 @@ return {
         [146] = {
             Index = 146,
             Id = 146,
-            Name = [[消音冲锋枪]],
+            Name = [[Silenced SMG]],
             Pirce = 5.8240000000000003489660928e+25,
             Quality = 34,
             IconId = [[sandboxId://Model/Item/png/146_MachineGun02.png]],
@@ -3641,7 +3641,7 @@ return {
         [147] = {
             Index = 147,
             Id = 147,
-            Name = [[微型冲锋枪]],
+            Name = [[Micro SMG]],
             Pirce = 8.7360000000000005234491392e+25,
             Quality = 35,
             IconId = [[sandboxId://Model/Item/png/147_MachineGun03.png]],
@@ -3651,7 +3651,7 @@ return {
         [148] = {
             Index = 148,
             Id = 148,
-            Name = [[木托冲锋枪]],
+            Name = [[Wood-Stock SMG]],
             Pirce = 1.09200000000000002248146944e+26,
             Quality = 35,
             IconId = [[sandboxId://Model/Item/png/148_MachineGun04.png]],
@@ -3661,7 +3661,7 @@ return {
         [149] = {
             Index = 149,
             Id = 149,
-            Name = [[石斧]],
+            Name = [[Stone Axe]],
             Pirce = 1.81999999999999998020288512e+26,
             Quality = 35,
             IconId = [[sandboxId://Model/Aex/Png/axe_01.png]],
@@ -3671,7 +3671,7 @@ return {
         [150] = {
             Index = 150,
             Id = 150,
-            Name = [[铜斧]],
+            Name = [[Copper Axe]],
             Pirce = 2.91199999999999983088566272e+26,
             Quality = 35,
             IconId = [[sandboxId://Model/Aex/Png/axe_02.png]],
@@ -3681,7 +3681,7 @@ return {
         [151] = {
             Index = 151,
             Id = 151,
-            Name = [[银斧]],
+            Name = [[Silver Axe]],
             Pirce = 4.36800000000000008992587776e+26,
             Quality = 36,
             IconId = [[sandboxId://Model/Aex/Png/axe_03.png]],
@@ -3691,7 +3691,7 @@ return {
         [152] = {
             Index = 152,
             Id = 152,
-            Name = [[金斧]],
+            Name = [[Gold Axe]],
             Pirce = 5.45999999999999994060865536e+26,
             Quality = 36,
             IconId = [[sandboxId://Model/Aex/Png/axe_04.png]],
@@ -3701,7 +3701,7 @@ return {
         [153] = {
             Index = 153,
             Id = 153,
-            Name = [[神圣斧]],
+            Name = [[Holy Axe]],
             Pirce = 9.10000000000000058820919296e+26,
             Quality = 36,
             IconId = [[sandboxId://Model/Aex/Png/axe_05.png]],
@@ -3711,7 +3711,7 @@ return {
         [154] = {
             Index = 154,
             Id = 154,
-            Name = [[幻影斧]],
+            Name = [[Phantom Axe]],
             Pirce = 1.455999999999999984162308096e+27,
             Quality = 36,
             IconId = [[sandboxId://Model/Aex/Png/axe_06.png]],
@@ -3721,7 +3721,7 @@ return {
         [155] = {
             Index = 155,
             Id = 155,
-            Name = [[骷髅斧]],
+            Name = [[Skull Axe]],
             Pirce = 2.183999999999999976243462144e+27,
             Quality = 37,
             IconId = [[sandboxId://Model/Aex/Png/axe_07.png]],
@@ -3731,7 +3731,7 @@ return {
         [156] = {
             Index = 156,
             Id = 156,
-            Name = [[符文斧]],
+            Name = [[Runic Axe]],
             Pirce = 2.729999999999999901584850944e+27,
             Quality = 37,
             IconId = [[sandboxId://Model/Aex/Png/axe_08.png]],
@@ -3741,7 +3741,7 @@ return {
         [157] = {
             Index = 157,
             Id = 157,
-            Name = [[黄绒鸡]],
+            Name = [[Yellow Chicken]],
             Pirce = 4.545000000000000174466269184e+27,
             Quality = 37,
             IconId = [[sandboxId://UI/Icon/Animals/1.png]],
@@ -3751,7 +3751,7 @@ return {
         [158] = {
             Index = 158,
             Id = 158,
-            Name = [[小鸡仔]],
+            Name = [[Chick]],
             Pirce = 7.271999999999999839341379584e+27,
             Quality = 37,
             IconId = [[sandboxId://UI/Icon/Animals/2.png]],
@@ -3761,7 +3761,7 @@ return {
         [159] = {
             Index = 159,
             Id = 159,
-            Name = [[绿头鸭]],
+            Name = [[Mallard Duck]],
             Pirce = 1.0908000000000000858523697152e+28,
             Quality = 38,
             IconId = [[sandboxId://UI/Icon/Animals/3.png]],
@@ -3771,7 +3771,7 @@ return {
         [160] = {
             Index = 160,
             Id = 160,
-            Name = [[白兔]],
+            Name = [[White Rabbit]],
             Pirce = 1.3634999999999999423887179776e+28,
             Quality = 38,
             IconId = [[sandboxId://UI/Icon/Animals/4.png]],
@@ -3781,7 +3781,7 @@ return {
         [161] = {
             Index = 161,
             Id = 161,
-            Name = [[棕兔]],
+            Name = [[Brown Rabbit]],
             Pirce = 2.2749999999999998446866006016e+28,
             Quality = 38,
             IconId = [[sandboxId://UI/Icon/Animals/5.png]],
@@ -3791,7 +3791,7 @@ return {
         [162] = {
             Index = 162,
             Id = 162,
-            Name = [[白绵羊]],
+            Name = [[White Sheep]],
             Pirce = 3.6400000000000000153813516288e+28,
             Quality = 38,
             IconId = [[sandboxId://UI/Icon/Animals/6.png]],
@@ -3801,7 +3801,7 @@ return {
         [163] = {
             Index = 163,
             Id = 163,
-            Name = [[粉绵羊]],
+            Name = [[Pink Sheep]],
             Pirce = 5.459999999999999803169701888e+28,
             Quality = 39,
             IconId = [[sandboxId://UI/Icon/Animals/7.png]],
@@ -3811,7 +3811,7 @@ return {
         [164] = {
             Index = 164,
             Id = 164,
-            Name = [[黑绵羊]],
+            Name = [[Black Sheep]],
             Pirce = 6.8249999999999999738644529152e+28,
             Quality = 39,
             IconId = [[sandboxId://UI/Icon/Animals/8.png]],
@@ -3821,7 +3821,7 @@ return {
         [165] = {
             Index = 165,
             Id = 165,
-            Name = [[粉猪]],
+            Name = [[Pink Pig]],
             Pirce = 1.1350000000000000549386715136e+29,
             Quality = 39,
             IconId = [[sandboxId://UI/Icon/Animals/9.png]],
@@ -3831,7 +3831,7 @@ return {
         [166] = {
             Index = 166,
             Id = 166,
-            Name = [[白羊驼]],
+            Name = [[White Alpaca]],
             Pirce = 1.81600000000000008790187442176e+29,
             Quality = 39,
             IconId = [[sandboxId://UI/Icon/Animals/10.png]],
@@ -3841,7 +3841,7 @@ return {
         [167] = {
             Index = 167,
             Id = 167,
-            Name = [[黑羊驼]],
+            Name = [[Black Alpaca]],
             Pirce = 2.72400000000000013185281163264e+29,
             Quality = 40,
             IconId = [[sandboxId://UI/Icon/Animals/11.png]],
@@ -3851,7 +3851,7 @@ return {
         [168] = {
             Index = 168,
             Id = 168,
-            Name = [[白马]],
+            Name = [[White Horse]],
             Pirce = 3.40499999999999981297229365248e+29,
             Quality = 40,
             IconId = [[sandboxId://UI/Icon/Animals/12.png]],
@@ -3861,7 +3861,7 @@ return {
         [169] = {
             Index = 169,
             Id = 169,
-            Name = [[棕马]],
+            Name = [[Brown Horse]],
             Pirce = 5.69999999999999991630987788288e+29,
             Quality = 40,
             IconId = [[sandboxId://UI/Icon/Animals/13.png]],
@@ -3871,7 +3871,7 @@ return {
         [170] = {
             Index = 170,
             Id = 170,
-            Name = [[黑山羊]],
+            Name = [[Black Goat]],
             Pirce = 9.12000000000000042904575803392e+29,
             Quality = 40,
             IconId = [[sandboxId://UI/Icon/Animals/14.png]],
@@ -3881,7 +3881,7 @@ return {
         [171] = {
             Index = 171,
             Id = 171,
-            Name = [[黄羚羊]],
+            Name = [[Yellow Antelope]],
             Pirce = 1.36799999999999992361937534976e+30,
             Quality = 41,
             IconId = [[sandboxId://UI/Icon/Animals/15.png]],
@@ -3891,7 +3891,7 @@ return {
         [172] = {
             Index = 172,
             Id = 172,
-            Name = [[角山羊]],
+            Name = [[Horned Goat]],
             Pirce = 1.710000000000000115630451720192e+30,
             Quality = 41,
             IconId = [[sandboxId://UI/Icon/Animals/16.png]],
@@ -3901,7 +3901,7 @@ return {
         [173] = {
             Index = 173,
             Id = 173,
-            Name = [[奶牛]],
+            Name = [[Cow]],
             Pirce = 2.839999999999999820033354104832e+30,
             Quality = 41,
             IconId = [[sandboxId://UI/Icon/Animals/17.png]],
@@ -3911,7 +3911,7 @@ return {
         [174] = {
             Index = 174,
             Id = 174,
-            Name = [[公牛]],
+            Name = [[Bull]],
             Pirce = 4.543999999999999937233347936256e+30,
             Quality = 41,
             IconId = [[sandboxId://UI/Icon/Animals/18.png]],
@@ -3921,7 +3921,7 @@ return {
         [175] = {
             Index = 175,
             Id = 175,
-            Name = [[水牛]],
+            Name = [[Buffalo]],
             Pirce = 6.816000000000000468799975325696e+30,
             Quality = 42,
             IconId = [[sandboxId://UI/Icon/Animals/19.png]],
@@ -3931,7 +3931,7 @@ return {
         [176] = {
             Index = 176,
             Id = 176,
-            Name = [[棕鸭嘴兽]],
+            Name = [[Brown Platypus]],
             Pirce = 8.520000000000000023050015735808e+30,
             Quality = 42,
             IconId = [[sandboxId://UI/Icon/Animals/20.png]],
@@ -3941,7 +3941,7 @@ return {
         [177] = {
             Index = 177,
             Id = 177,
-            Name = [[浅鸭嘴兽]],
+            Name = [[Light Platypus]],
             Pirce = 1.4199999999999999663116723945472e+31,
             Quality = 42,
             IconId = [[sandboxId://UI/Icon/Animals/21.png]],
@@ -3951,7 +3951,7 @@ return {
         [178] = {
             Index = 178,
             Id = 178,
-            Name = [[刺猬]],
+            Name = [[Hedgehog]],
             Pirce = 2.2719999999999998560266832838656e+31,
             Quality = 42,
             IconId = [[sandboxId://UI/Icon/Animals/22.png]],
@@ -3961,7 +3961,7 @@ return {
         [179] = {
             Index = 179,
             Id = 179,
-            Name = [[臭鼬]],
+            Name = [[Skunk]],
             Pirce = 3.4080000000000000092200062943232e+31,
             Quality = 43,
             IconId = [[sandboxId://UI/Icon/Animals/23.png]],
@@ -3971,7 +3971,7 @@ return {
         [180] = {
             Index = 180,
             Id = 180,
-            Name = [[条纹花栗鼠]],
+            Name = [[Striped Chipmunk]],
             Pirce = 4.2600000000000001241149985521664e+31,
             Quality = 43,
             IconId = [[sandboxId://UI/Icon/Animals/24.png]],
@@ -3981,7 +3981,7 @@ return {
         [181] = {
             Index = 181,
             Id = 181,
-            Name = [[红松鼠]],
+            Name = [[Red Squirrel]],
             Pirce = 7.0999999999999996063783806042112e+31,
             Quality = 43,
             IconId = [[sandboxId://UI/Icon/Animals/25.png]],
@@ -3991,7 +3991,7 @@ return {
         [182] = {
             Index = 182,
             Id = 182,
-            Name = [[灰毛驴]],
+            Name = [[Gray Donkey]],
             Pirce = 1.13599999999999997304933791563776e+32,
             Quality = 43,
             IconId = [[sandboxId://UI/Icon/Animals/26.png]],
@@ -4001,7 +4001,7 @@ return {
         [183] = {
             Index = 183,
             Id = 183,
-            Name = [[棕毛驴]],
+            Name = [[Brown Donkey]],
             Pirce = 1.70400000000000004964599942086656e+32,
             Quality = 44,
             IconId = [[sandboxId://UI/Icon/Animals/27.png]],
@@ -4011,7 +4011,7 @@ return {
         [184] = {
             Index = 184,
             Id = 184,
-            Name = [[鸵鸟]],
+            Name = [[Ostrich]],
             Pirce = 2.13000000000000015212949182349312e+32,
             Quality = 44,
             IconId = [[sandboxId://UI/Icon/Animals/28.png]],
@@ -4021,7 +4021,7 @@ return {
         [185] = {
             Index = 185,
             Id = 185,
-            Name = [[狐獴]],
+            Name = [[Meerkat]],
             Pirce = 3.55499999999999972869774459797504e+32,
             Quality = 44,
             IconId = [[sandboxId://UI/Icon/Animals/29.png]],
@@ -4031,7 +4031,7 @@ return {
         [186] = {
             Index = 186,
             Id = 186,
-            Name = [[浣熊]],
+            Name = [[Raccoon]],
             Pirce = 5.68799999999999999826195558432768e+32,
             Quality = 44,
             IconId = [[sandboxId://UI/Icon/Animals/30.png]],
@@ -4041,7 +4041,7 @@ return {
         [187] = {
             Index = 187,
             Id = 187,
-            Name = [[赤狐]],
+            Name = [[Red Fox]],
             Pirce = 8.53199999999999963710496318685184e+32,
             Quality = 45,
             IconId = [[sandboxId://UI/Icon/Animals/31.png]],
@@ -4051,7 +4051,7 @@ return {
         [188] = {
             Index = 188,
             Id = 188,
-            Name = [[考拉]],
+            Name = [[Koala]],
             Pirce = 1.066499999999999990666917417320448e+33,
             Quality = 45,
             IconId = [[sandboxId://UI/Icon/Animals/32.png]],
@@ -4061,7 +4061,7 @@ return {
         [189] = {
             Index = 189,
             Id = 189,
-            Name = [[花豹]],
+            Name = [[Leopard]],
             Pirce = 1.77499999999999994663059142475776e+33,
             Quality = 45,
             IconId = [[sandboxId://UI/Icon/Animals/33.png]],
@@ -4071,7 +4071,7 @@ return {
         [190] = {
             Index = 190,
             Id = 190,
-            Name = [[雪豹]],
+            Name = [[Snow Leopard]],
             Pirce = 2.839999999999999914608946279612416e+33,
             Quality = 45,
             IconId = [[sandboxId://UI/Icon/Animals/34.png]],
@@ -4081,7 +4081,7 @@ return {
         [191] = {
             Index = 191,
             Id = 191,
-            Name = [[黑狼]],
+            Name = [[Black Wolf]],
             Pirce = 4.259999999999999871913419419418624e+33,
             Quality = 46,
             IconId = [[sandboxId://UI/Icon/Animals/35.png]],
@@ -4091,7 +4091,7 @@ return {
         [192] = {
             Index = 192,
             Id = 192,
-            Name = [[红耳狼]],
+            Name = [[Red-Eared Wolf]],
             Pirce = 5.325000000000000128122150425985024e+33,
             Quality = 46,
             IconId = [[sandboxId://UI/Icon/Animals/36.png]],
@@ -4101,7 +4101,7 @@ return {
         [193] = {
             Index = 193,
             Id = 193,
-            Name = [[棕野猪]],
+            Name = [[Brown Boar]],
             Pirce = 8.900000000000000495602834700500992e+33,
             Quality = 46,
             IconId = [[sandboxId://UI/Icon/Animals/37.png]],
@@ -4111,7 +4111,7 @@ return {
         [194] = {
             Index = 194,
             Id = 194,
-            Name = [[黑野猪]],
+            Name = [[Black Boar]],
             Pirce = 1.4239999999999999409458729992585216e+34,
             Quality = 46,
             IconId = [[sandboxId://UI/Icon/Animals/38.png]],
@@ -4121,7 +4121,7 @@ return {
         [195] = {
             Index = 195,
             Id = 195,
-            Name = [[棕猩猩]],
+            Name = [[Brown Gorilla]],
             Pirce = 2.13600000000000002671095995957248e+34,
             Quality = 47,
             IconId = [[sandboxId://UI/Icon/Animals/39.png]],
@@ -4131,7 +4131,7 @@ return {
         [196] = {
             Index = 196,
             Id = 196,
-            Name = [[银背猩猩]],
+            Name = [[Silverback Gorilla]],
             Pirce = 2.6700000000000001486808504101502976e+34,
             Quality = 47,
             IconId = [[sandboxId://UI/Icon/Animals/40.png]],
@@ -4141,7 +4141,7 @@ return {
         [197] = {
             Index = 197,
             Id = 197,
-            Name = [[白狼]],
+            Name = [[White Wolf]],
             Pirce = 4.440000000000000288697917701619712e+34,
             Quality = 47,
             IconId = [[sandboxId://UI/Icon/Animals/41.png]],
@@ -4151,7 +4151,7 @@ return {
         [198] = {
             Index = 198,
             Id = 198,
-            Name = [[黑狼]],
+            Name = [[Black Wolf]],
             Pirce = 7.1039999999999995395794646371139584e+34,
             Quality = 47,
             IconId = [[sandboxId://UI/Icon/Animals/42.png]],
@@ -4161,7 +4161,7 @@ return {
         [199] = {
             Index = 199,
             Id = 199,
-            Name = [[白熊]],
+            Name = [[Polar Bear]],
             Pirce = 1.06560000000000006928750024838873088e+35,
             Quality = 48,
             IconId = [[sandboxId://UI/Icon/Animals/43.png]],
@@ -4171,7 +4171,7 @@ return {
         [200] = {
             Index = 200,
             Id = 200,
-            Name = [[老虎]],
+            Name = [[Tiger]],
             Pirce = 1.3320000000000000866093753104859136e+35,
             Quality = 48,
             IconId = [[sandboxId://UI/Icon/Animals/44.png]],
@@ -4181,7 +4181,7 @@ return {
         [201] = {
             Index = 201,
             Id = 201,
-            Name = [[肌肉灰熊]],
+            Name = [[Muscular Grizzly]],
             Pirce = 2.220000000000000144348958850809856e+35,
             Quality = 48,
             IconId = [[sandboxId://UI/Icon/Animals/45.png]],
@@ -4191,7 +4191,7 @@ return {
         [202] = {
             Index = 202,
             Id = 202,
-            Name = [[至臻肌肉棕熊]],
+            Name = [[Elite Muscular Brown Bear]],
             Pirce = 3.5520000000000002309583341612957696e+35,
             Quality = 48,
             IconId = [[sandboxId://UI/Icon/Animals/46.png]],
@@ -4201,7 +4201,7 @@ return {
         [203] = {
             Index = 203,
             Id = 203,
-            Name = [[白色独角兽]],
+            Name = [[White Unicorn]],
             Pirce = 5.3280000000000003464375012419436544e+35,
             Quality = 49,
             IconId = [[sandboxId://UI/Icon/Animals/47.png]],
@@ -4211,7 +4211,7 @@ return {
         [204] = {
             Index = 204,
             Id = 204,
-            Name = [[独角兽]],
+            Name = [[Unicorn]],
             Pirce = 6.65999999999999969517711360404750336e+35,
             Quality = 49,
             IconId = [[sandboxId://UI/Icon/Animals/48.png]],
@@ -4221,7 +4221,7 @@ return {
         [205] = {
             Index = 205,
             Id = 205,
-            Name = [[小灰羊]],
+            Name = [[Gray Lamb]],
             Pirce = 1.109999999999999998387503130566721536e+36,
             Quality = 49,
             IconId = [[sandboxId://UI/Icon/Island5Animal/XiaoYang1.png]],
@@ -4231,7 +4231,7 @@ return {
         [206] = {
             Index = 206,
             Id = 206,
-            Name = [[小黄羊]],
+            Name = [[Yellow Lamb]],
             Pirce = 1.7760000000000001154791670806478848e+36,
             Quality = 49,
             IconId = [[sandboxId://UI/Icon/Island5Animal/XiaoHuangYang1.png]],
@@ -4241,7 +4241,7 @@ return {
         [207] = {
             Index = 207,
             Id = 207,
-            Name = [[小猪]],
+            Name = [[Piglet]],
             Pirce = 2.663999999999999878070845441619001344e+36,
             Quality = 50,
             IconId = [[sandboxId://UI/Icon/Island5Animal/XiaoZhu.png]],
@@ -4251,7 +4251,7 @@ return {
         [208] = {
             Index = 208,
             Id = 208,
-            Name = [[小白狗]],
+            Name = [[White Puppy]],
             Pirce = 3.32999999999999984758855680202375168e+36,
             Quality = 50,
             IconId = [[sandboxId://UI/Icon/Island5Animal/XiaoBaiGou1.png]],

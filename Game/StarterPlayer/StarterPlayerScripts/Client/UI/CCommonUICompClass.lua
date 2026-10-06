@@ -2,6 +2,7 @@ local FX = _G.FX
 local FXLoader = FX.Loader
 local Localization = FXLoader:Require(script.Parent.Parent, "Localization")
 local ButtonHover = FXLoader:RequireFromParent(script, "ButtonHover")
+local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local UI = FX.Class("CCommonUICompClass", "FCCommonUICompClass")
 
 --- 将通用提示接入项目设计画布，随画布等比缩放。
@@ -19,6 +20,21 @@ function UI:Ctor(owner)
     end))
     FX.Network:RegServerMsgCallback("S2C_ShowLocalizedTips", self.ShowLocalizedTips, self)
     self:RefreshLocalization()
+    --- 新复制或在角色与背包之间移动的 Tool 按当前语言更新显示名。
+    --- @param node Instance 玩家子树中新复制的节点，包含 Backpack 内的 Tool。
+    self:TrackConnection(self:GetPlayerNode().DescendantAdded:Connect(function(node)
+        if node:IsA("Tool") then
+            self:LocalizeTool(node)
+        end
+    end))
+    --- 角色不在 Player 子树内，装备时需单独监听其 Tool。
+    --- @param character Model 引擎创建的当前玩家角色。
+    self:TrackConnection(self:GetPlayerNode().CharacterAdded:Connect(function(character)
+        self:BindCharacterTools(character)
+    end))
+    if self:GetPlayerNode().Character then
+        self:BindCharacterTools(self:GetPlayerNode().Character)
+    end
     local playerGui = self:GetPlayerNode():WaitForChild("PlayerGui")
     self._trainingClickModals = {}
     self:RegisterTrainingClickModal(self.Modal)
@@ -116,6 +132,19 @@ end
 
 --- 翻译加载完成或玩家切换语言时更新当前文案，不重置提示关闭计时。
 function UI:RefreshLocalization()
+    for index, node in ipairs(self:GetPlayerNode():GetDescendants()) do
+        if node:IsA("Tool") then
+            self:LocalizeTool(node)
+        end
+    end
+    local character = self:GetPlayerNode().Character
+    if character then
+        for index, node in ipairs(character:GetChildren()) do
+            if node:IsA("Tool") then
+                self:LocalizeTool(node)
+            end
+        end
+    end
     if self._tipKey and self._tipLabel then
         self._tipLabel.Text = self.Localization:FormatByKey(self._tipKey, self._tipArguments)
     end
@@ -130,8 +159,48 @@ function UI:RefreshLocalization()
     end
 end
 
+--- 原生背包不依赖自动文本采集，显示名与查找属性、存档模板名分离。
+--- @param tool Tool 服务器已设置稳定文案 Key 的背包或装备道具。
+function UI:LocalizeTool(tool)
+    local key = tool:GetAttribute("DisplayNameKey")
+    if not key then
+        return
+    end
+    tool.Name = self.Localization:FormatByKey(key)
+    local price = tool:GetAttribute("Price")
+    if price then
+        tool.ToolTip = self.Localization:FormatByKey("Loot.Tooltip",
+            {itemKey = key, price = GameUtility.NumberToText(price)})
+    else
+        tool.ToolTip = tool.Name
+    end
+end
+
+--- 每次重生替换角色监听，确保云端加载前后及装备切换都能刷新道具文案。
+--- @param character Model 当前玩家的角色，旧角色的连接在重新绑定时释放。
+function UI:BindCharacterTools(character)
+    if self._characterToolConnection then
+        self._characterToolConnection:Disconnect()
+    end
+    --- Tool 已由服务器设置文案属性后才复制到角色。
+    --- @param node Instance 角色新增的直接子节点。
+    self._characterToolConnection = character.ChildAdded:Connect(function(node)
+        if node:IsA("Tool") then
+            self:LocalizeTool(node)
+        end
+    end)
+    for index, node in ipairs(character:GetChildren()) do
+        if node:IsA("Tool") then
+            self:LocalizeTool(node)
+        end
+    end
+end
+
 --- 提示已移出框架根节点，需要单独释放，保留项目共享画布。
 function UI:Dtor()
+    if self._characterToolConnection then
+        self._characterToolConnection:Disconnect()
+    end
     self._buttonHover:Destroy()
     FX.Network:UnRegServerMsgCallback("S2C_ShowLocalizedTips")
     self.Localization:Destroy()

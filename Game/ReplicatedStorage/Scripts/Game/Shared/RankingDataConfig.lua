@@ -2,7 +2,7 @@
 return {
     {
         Name = "Playtime",
-        DisplayName = "时长榜",
+        DisplayName = "Playtime",
         ResetType = "Monthly",
         ScoreFormat = "Duration",
         Ascending = false,

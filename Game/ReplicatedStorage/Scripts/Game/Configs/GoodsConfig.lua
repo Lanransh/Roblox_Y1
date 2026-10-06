@@ -3,7 +3,7 @@ return {
         [501] = {
             DevGoodsId = 501,
             BuyHandler = [[BuyPlank]],
-            Desc = [[购买木板]],
+            Desc = [[Buy Planks]],
             Price = 4,
             NumberArray = {
                 [1] = 1,
@@ -13,7 +13,7 @@ return {
         [502] = {
             DevGoodsId = 502,
             BuyHandler = [[BuyPlank]],
-            Desc = [[购买木板]],
+            Desc = [[Buy Planks]],
             Price = 18,
             NumberArray = {
                 [1] = 5,
@@ -23,7 +23,7 @@ return {
         [503] = {
             DevGoodsId = 503,
             BuyHandler = [[BuyPlank]],
-            Desc = [[购买木板]],
+            Desc = [[Buy Planks]],
             Price = 101,
             NumberArray = {
                 [1] = 10,

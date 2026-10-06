@@ -7,6 +7,7 @@ local TweenService = game:GetService("TweenService")
 local GuiService = game:GetService("GuiService")
 local RockLevel = require(game:GetService("ReplicatedStorage").Scripts.Game.Shared.RockLevel)
 local GameUtility = require(game:GetService("ReplicatedStorage").Scripts.Game.Shared.GameUtility)
+local CollectibleText = FXLoader:RequireShared("Scripts/Game/Shared/CollectibleText")
 local Component = FX.Class("CMainUICompClass", "FCUICompClass")
 
 --- 返回主界面业务组件名，供项目组件协作使用。
@@ -115,7 +116,7 @@ function Component:ShowClickTrainingEffect(position)
     self:ShowTrainingEffect(RockLevel.ClickEffectValue, position)
 end
 
---- 标记主界面实际内容区域；重生入口交给独立 UI 组件，其余按钮显示开发中。
+--- 标记主界面实际内容区域；重生和福利交给独立 UI 组件，其余按钮显示开发中。
 function Component:BindButtons()
     for index, path in ipairs({"TopCenter/LevelProgressBar", "TopCenter/Strength",
         "LeftDown/RebirthStat", "LeftDown/BackpackStat", "LeftDown/CashStat", "LeftDown/DiamondStat"}) do
@@ -127,6 +128,8 @@ function Component:BindButtons()
             self:TrackConnection(node.Activated:Connect(function()
                 if node.Name == "RebirthButton" then
                     self:GetPlayerObject():RequireComponent("CRebirthUIComp"):Show()
+                elseif node.Name == "RewardBtn" then
+                    self:GetPlayerObject():RequireComponent("CWelfareUIComp"):Show()
                 else
                     self:ShowDeveloping()
                 end
@@ -150,11 +153,13 @@ function Component:BindButtons()
     end))
 end
 
---- 翻译弹窗固定文案；收藏品名称保留现有数据，待物品文案独立迁移。
+--- 按稳定模板编号翻译收藏品名称，旧存档的中文 DisplayName 不作为显示文案。
 function Component:ShowLoot()
     local lines = {self._localization:FormatByKey("Loot.Title")}
     for index, entry in ipairs(self:GetTable(Fields.RockLoot)) do
-        table.insert(lines, string.format("%s  $%s", entry.DisplayName, GameUtility.NumberToText(entry.Price)))
+        local nameKey = CollectibleText.GetNameKey(entry.TemplateName)
+        table.insert(lines, self._localization:FormatByKey("Loot.Entry",
+            {itemKey = nameKey, price = GameUtility.NumberToText(entry.Price)}))
     end
     if #lines == 1 then
         table.insert(lines, self._localization:FormatByKey("Loot.Empty"))

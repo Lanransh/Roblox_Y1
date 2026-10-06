@@ -148,7 +148,7 @@
             },
             "BackgroundTransparency": 1,
             "BorderSizePixel": 0,
-            "Text": "大木桶01",
+            "Text": "Large Barrel",
             "TextColor3": {
               "Color3": [
                 1,
@@ -214,7 +214,7 @@
             },
             "BackgroundTransparency": 1,
             "BorderSizePixel": 0,
-            "Text": "神圣的",
+            "Text": "Rare Treasure",
             "TextColor3": {
               "Color3": [
                 1,

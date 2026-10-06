@@ -41,6 +41,7 @@ end
 
 --- 同步握手后加载受击资源及个人石头，订阅轮次和命中校验结果，血量保存在本组件。
 function Component:OnReady()
+    self._localization = self:GetPlayerObject():RequireComponent("FCCommonUIComp").Localization
     local assets = FXLoader:Shared("Assets")
     local effects = FXLoader:Here(assets, "Effects/ROCK")
     self._fragmentTemplate = FXLoader:Here(effects, "Fragment"):Clone()
@@ -119,7 +120,7 @@ function Component:OnReady()
     end))
 end
 
---- 按复制的服务器到期时间刷新掉落 HUD，延迟到达的模型和 HUD 在后续检查补齐。
+--- 按复制的到期时间和文案 Key 刷新掉落 HUD，云端加载或语言变化后同步显示。
 function Component:UpdateDropTimers()
     local now = workspace:GetServerTimeNow()
     if now < self._nextDropTimerCheck then
@@ -132,6 +133,14 @@ function Component:UpdateDropTimers()
             local root = model.PrimaryPart
             local hud = root and root:FindFirstChild("ItemHUD")
             local timer = hud and FXLoader:Find(hud, "Frame/Timer")
+            local nameLabel = hud and FXLoader:Find(hud, "Frame/ItemName")
+            local rarityLabel = hud and FXLoader:Find(hud, "Frame/Rarity")
+            local nameKey = hud and hud:GetAttribute("DisplayNameKey")
+            local rarityKey = hud and hud:GetAttribute("RarityKey")
+            if nameLabel and rarityLabel and nameKey and rarityKey then
+                nameLabel.Text = self._localization:FormatByKey(nameKey)
+                rarityLabel.Text = self._localization:FormatByKey(rarityKey)
+            end
             if timer then
                 local text = string.format("%ds", math.max(0, math.ceil(expiresAt - now)))
                 if timer.Text ~= text then
@@ -209,7 +218,13 @@ end
 --- @param humanoid Humanoid 当前角色的 Humanoid。
 --- @return boolean 镐子及动画资源是否已复制到达。
 function Component:BindPickaxe(character, humanoid)
-    local pickaxe = character:FindFirstChild("免费镐子")
+    local pickaxe
+    for index, node in ipairs(character:GetChildren()) do
+        if node:IsA("Tool") and node:GetAttribute("StarterPickaxe") then
+            pickaxe = node
+            break
+        end
+    end
     local handle = pickaxe and pickaxe:FindFirstChild("Handle")
     local trail = handle and handle:FindFirstChild("PickaxeSwingTrail")
     local animation = pickaxe and pickaxe:FindFirstChild("RockUpperBodySwing")

@@ -52,9 +52,14 @@ end
 
 --- 英文玩家使用本地源文案，其余读取 Roblox 云端译文；缺失时回退本地英文。
 --- @param key string 本地文案表中的稳定 Key。
---- @param arguments table? 模板参数；数量格式化后的字符串也可作为参数。
+--- @param arguments table? 模板参数；itemKey 在客户端按当前语言解析为 item，数量仍由调用方格式化。
 --- @return string 当前玩家语言的文案，未知 Key 显示通用英文提示。
 function Localization:FormatByKey(key, arguments)
+    if arguments and arguments.itemKey then
+        arguments = table.clone(arguments)
+        arguments.item = self:FormatByKey(arguments.itemKey)
+        arguments.itemKey = nil
+    end
     if not self._keys[key] then
         if not self._missingKeys[key] then
             self._missingKeys[key] = true

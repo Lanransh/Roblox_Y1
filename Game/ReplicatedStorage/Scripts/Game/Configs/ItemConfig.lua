@@ -2,7 +2,7 @@ return {
     Data = {
         [1003] = {
             Id = 1003, Type = "RockCollectible", MaxStack = 1,
-            Name = "石头收藏品",
+            Name = "Rock Collectible",
         },
     },
     Display = {},

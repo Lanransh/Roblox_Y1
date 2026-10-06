@@ -33,6 +33,13 @@
       "BlockMeshs": {
         "$className": "Folder",
         "$path": "Workspace/BlockMeshs"
+      },
+      "Decorations": {
+        "$className": "Folder",
+        "$path": "Workspace/Decorations"
+      },
+      "TrainingAreaSign": {
+        "$path": "Workspace/TrainingAreaSign.model.json"
       }
     },
     "ReplicatedStorage": {
@@ -63,6 +70,7 @@
         "$ignoreUnknownInstances": true,
         "$properties": {
           "Enabled": true,
+          "AutoLocalize": true,
           "DisplayOrder": 1,
           "ResetOnSpawn": false,
           "ScreenInsets": "CoreUISafeInsets",
@@ -73,6 +81,9 @@
         "CanvasAdapter": {
           "$path": "StarterGui/ScreenGui/CanvasAdapter.client.lua"
         }
+      },
+      "WelfareUI": {
+        "$path": "StarterGui/WelfareUI.rbxmx"
       }
     },
     "StarterPlayer": {

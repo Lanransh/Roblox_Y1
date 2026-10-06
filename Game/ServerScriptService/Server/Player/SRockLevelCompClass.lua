@@ -6,6 +6,8 @@ local TweenService = game:GetService("TweenService")
 local HttpService = game:GetService("HttpService")
 local RockLevel = require(game:GetService("ReplicatedStorage").Scripts.Game.Shared.RockLevel)
 local Collectible = require(script.Parent.RockCollectible)
+local CollectibleText = FXLoader:RequireShared("Scripts/Game/Shared/CollectibleText")
+local English = FXLoader:Shared("Scripts/Game/Shared/Localization"):GetTranslator("en-us")
 local Component = FX.Class("SRockLevelCompClass", "FSPlayerCompClass")
 
 --- 每个玩家独立持有命中凭据、开奖轮次和掉落，血量由客户端维护。
@@ -194,8 +196,14 @@ function Component:RequestDrop(key, round)
     local hud = self._itemHUD:Clone()
     hud.Adornee = root
     hud.StudsOffsetWorldSpace = Vector3.new(0, size.Y / 2 + 1.5, 0)
-    hud.Frame.ItemName.Text = result.Template:GetAttribute("DisplayName")
-    hud.Frame.Rarity.Text = result.Template:GetAttribute("ValueTier")
+    local nameKey = CollectibleText.GetNameKey(result.Template.Name)
+    local rarityKey = CollectibleText.RarityKeys[result.Template:GetAttribute("ValueTier")]
+    hud:SetAttribute("DisplayNameKey", nameKey)
+    hud:SetAttribute("RarityKey", rarityKey)
+    hud.Frame.ItemName.Text = English:FormatByKey(nameKey)
+    hud.Frame.Rarity.Text = English:FormatByKey(rarityKey)
+    hud.Frame.ItemName.AutoLocalize = false
+    hud.Frame.Rarity.AutoLocalize = false
     hud.Frame.Price.Text = string.format("$%d", result.Price)
     hud.Frame.Timer.Text = string.format("%ds", Collectible.DropLifetime)
     hud.Frame.Timer.AutoLocalize = false
@@ -284,10 +292,11 @@ function Component:PickupDrop(dropId)
         return
     end
     table.insert(loot, {TemplateName = drop.Template.Name, Price = drop.Price,
-        DisplayName = drop.Template:GetAttribute("DisplayName")})
+        DisplayName = English:FormatByKey(CollectibleText.GetNameKey(drop.Template.Name))})
     self:SetTable(Fields.RockLoot, loot)
     self:RemoveDrop(dropId)
-    self:ShowTips("拾取了" .. drop.Template:GetAttribute("DisplayName"))
+    self:GetPlayerObject():ShowLocalizedTips("Loot.PickedUp",
+        {itemKey = CollectibleText.GetNameKey(drop.Template.Name)})
 end
 
 --- 仅在基地调用，逐件入正式背包；满包时保留未转移战利品，避免丢失或重复发放。
@@ -350,7 +359,10 @@ function Component:EquipPickaxe(humanoid)
         self._pickaxe:Destroy()
     end
     self._pickaxe = ServerStorage:WaitForChild("StarterPickaxe"):Clone()
-    self._pickaxe.Name = "免费镐子"
+    self._pickaxe.Name = English:FormatByKey("Item.FreePickaxe")
+    self._pickaxe.ToolTip = self._pickaxe.Name
+    self._pickaxe:SetAttribute("StarterPickaxe", true)
+    self._pickaxe:SetAttribute("DisplayNameKey", "Item.FreePickaxe")
     local handle = self._pickaxe:WaitForChild("Handle")
     local start = Instance.new("Attachment")
     start.Name = "SwingTrailStart"

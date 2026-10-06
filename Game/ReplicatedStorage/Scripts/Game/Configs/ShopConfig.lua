@@ -3,7 +3,7 @@ return {
         [1] = {
             Index = 1,
             PageName = [[Privilege]],
-            Name = [[特权]],
+            Name = [[Perks]],
             ClassName = [[ShopPrivilegePageClass]],
             PageItemClassName = [[ShopPrivilegeItemClass]],
             ConfigName = [[PrivilegeData]]
@@ -13,8 +13,8 @@ return {
         [1] = {
             Index = 1,
             DevGoodsId = 201,
-            NameTxt = [[购买双倍木板]],
-            DescTxt = [[购买双倍木板]],
+            NameTxt = [[Double Planks]],
+            DescTxt = [[Get twice as many planks.]],
             IconId = [[sandboxId://UI/Icon/ConveyorBeltLuckPrivilege.png]]
         }
     }

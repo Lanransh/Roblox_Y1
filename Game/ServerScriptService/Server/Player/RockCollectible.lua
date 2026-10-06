@@ -1,6 +1,9 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
 local Collectible = {}
+local CollectibleText = FXLoader:RequireShared("Scripts/Game/Shared/CollectibleText")
+local English = FXLoader:Shared("Scripts/Game/Shared/Localization"):GetTranslator("en-us")
+local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 
 Collectible.ItemId = 1003
 Collectible.DropChance = 0.5
@@ -48,8 +51,11 @@ function Collectible.CreateTool(extraData)
     end
     local model = Collectible.CreateModel(template)
     local tool = Instance.new("Tool")
-    tool.Name = template:GetAttribute("DisplayName")
-    tool.ToolTip = string.format("%s · $%d", tool.Name, extraData.Price)
+    local nameKey = CollectibleText.GetNameKey(template.Name)
+    tool.Name = English:FormatByKey(nameKey)
+    tool.ToolTip = English:FormatByKey("Loot.Tooltip",
+        {item = tool.Name, price = GameUtility.NumberToText(extraData.Price)})
+    tool:SetAttribute("DisplayNameKey", nameKey)
     tool.CanBeDropped = false
     tool:SetAttribute("Price", extraData.Price)
     tool:SetAttribute("CollectibleTemplate", template.Name)

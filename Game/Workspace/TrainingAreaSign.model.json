@@ -1,0 +1,143 @@
+{
+  "ClassName": "Part",
+  "Properties": {
+    "Size": [
+      105.2,
+      21.8,
+      0.1
+    ],
+    "CFrame": [
+      2.8,
+      58.4,
+      -52.5,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1
+    ],
+    "Transparency": 1,
+    "Anchored": true,
+    "CanCollide": false,
+    "CanTouch": false,
+    "CanQuery": false,
+    "CastShadow": false
+  },
+  "Children": [
+    {
+      "Name": "TrainingAreaSurfaceGui",
+      "ClassName": "SurfaceGui",
+      "Properties": {
+        "Face": "Back",
+        "SizingMode": "FixedSize",
+        "CanvasSize": [
+          600,
+          125
+        ],
+        "AlwaysOnTop": false,
+        "LightInfluence": 0,
+        "MaxDistance": 500,
+        "AutoLocalize": true
+      },
+      "Children": [
+        {
+          "Name": "Title",
+          "ClassName": "TextLabel",
+          "Properties": {
+            "Position": {
+              "UDim2": [
+                [
+                  0.03,
+                  0
+                ],
+                [
+                  0.05,
+                  0
+                ]
+              ]
+            },
+            "Size": {
+              "UDim2": [
+                [
+                  0.94,
+                  0
+                ],
+                [
+                  0.9,
+                  0
+                ]
+              ]
+            },
+            "BackgroundTransparency": 1,
+            "BorderSizePixel": 0,
+            "Text": "Training Area",
+            "Font": "GothamBold",
+            "TextColor3": [
+              1,
+              1,
+              1
+            ],
+            "TextScaled": true,
+            "TextWrapped": true,
+            "AutoLocalize": true
+          },
+          "Children": [
+            {
+              "Name": "TextGradient",
+              "ClassName": "UIGradient",
+              "Properties": {
+                "Rotation": 90,
+                "Color": {
+                  "ColorSequence": {
+                    "keypoints": [
+                      {
+                        "time": 0,
+                        "color": [
+                          0.6499999761581421,
+                          1,
+                          1
+                        ]
+                      },
+                      {
+                        "time": 0.5,
+                        "color": [
+                          0.20000000298023224,
+                          0.699999988079071,
+                          1
+                        ]
+                      },
+                      {
+                        "time": 1,
+                        "color": [
+                          0.6499999761581421,
+                          0.4000000059604645,
+                          1
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "Name": "TextOutline",
+              "ClassName": "UIStroke",
+              "Properties": {
+                "Color": [
+                  0.08,
+                  0.16,
+                  0.12
+                ],
+                "Thickness": 3
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
