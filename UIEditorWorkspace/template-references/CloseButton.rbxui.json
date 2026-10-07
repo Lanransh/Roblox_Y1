@@ -9,45 +9,6 @@
   "root": {
     "children": [
       {
-        "children": [],
-        "className": "Frame",
-        "id": "874ed4e4-7c79-49ef-9756-bb57c2ea61a7",
-        "name": "BackgroundImg",
-        "properties": {
-          "AnchorPoint": {
-            "x": 0,
-            "y": 0
-          },
-          "BackgroundColor3": "#ffffff",
-          "BackgroundTransparency": 0,
-          "ClipsDescendants": false,
-          "LayoutOrder": 0,
-          "Position": {
-            "x": {
-              "offset": 0,
-              "scale": 0
-            },
-            "y": {
-              "offset": 0,
-              "scale": 0
-            }
-          },
-          "Rotation": 0,
-          "Size": {
-            "x": {
-              "offset": 1280,
-              "scale": 0
-            },
-            "y": {
-              "offset": 720,
-              "scale": 0
-            }
-          },
-          "Visible": true,
-          "ZIndex": 1
-        }
-      },
-      {
         "children": [
           {
             "children": [],
