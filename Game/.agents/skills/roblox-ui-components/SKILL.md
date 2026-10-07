@@ -5,6 +5,8 @@ description: 在 Roblox_Y1 的 FCUICompClass 中开发原生 ScreenGui、GuiObje
 
 # Roblox UI 组件
 
+编写 UI 代码前，先按 [reference-rules.md](reference-rules.md) 的「界面来源与生成脚本」确认目标界面来源。有对应 UIEditor 生成展示类时复用该类及共享基类，在 Generated 之外接入游戏业务；没有对应生成脚本的普通界面沿用 FCUICompClass 接法。不能因为仓库中存在 Generated 就把所有 UI 都按编辑器界面处理。
+
 需要读取 UI 节点时，按 Game/AGENTS.md 的 Roblox MCP 规则查询实际路径、ClassName、层级和属性；区分 StarterGui 模板与客户端 PlayerGui 界面。按当前任务读取：
 - 节点属性、按钮事件、列表：[reference-ui-node-access.md](reference-ui-node-access.md)。
 - 组件结构与生命周期：[reference-rules.md](reference-rules.md)。

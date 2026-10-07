@@ -1,5 +1,7 @@
 # UI 组件骨架
 
+以下骨架仅用于没有对应 UIEditor 生成展示类的普通界面。编辑器界面按 [reference-rules.md](reference-rules.md) 的「界面来源与生成脚本」继承对应展示类，不照抄这里的直接继承、节点初始化及关闭按钮绑定。
+
 这是待按需求创建的示例模板，不代表当前已有 ExampleUI。
 先在 StarterGui 创建 ScreenGui `ExampleUI`（ResetOnSpawn=false），子节点 CloseBtn 为 TextButton；
 通过 Roblox MCP 确认 StarterGui 模板的实际层级后才能用此骨架；需要检查运行时界面时查询客户端 PlayerGui。
