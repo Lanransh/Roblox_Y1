@@ -11,6 +11,7 @@ function Player:Ctor(playerId)
     self:AddComponent("CRockLevelCompClass")
     -- RebirthUI 模板补齐前暂不挂载，避免中断其他组件的 OnReady。
     self:AddComponent("CCollectionUICompClass")
+    self:AddComponent("CLootSellUICompClass")
     self:AddComponent("CMainUICompClass")
 end
 

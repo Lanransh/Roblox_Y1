@@ -6,6 +6,7 @@ require(script.Parent.Player.CRockLevelCompClass)
 require(script.Parent.UI.CMainUICompClass)
 -- RebirthUI 模板缺失，暂不加载和挂载重生界面。
 require(script.Parent.UI.CCollectionUICompClass)
+require(script.Parent.UI.CLootSellUICompClass)
 require(script.Parent.UI.CCommonUICompClass)
 local PlayerClass = require(script.Parent.Player.CPlayerObjectClass)
 

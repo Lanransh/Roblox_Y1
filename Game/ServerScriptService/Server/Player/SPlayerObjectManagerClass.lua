@@ -8,6 +8,24 @@ function Manager:Ctor()
     self:RegForwardFrameworkClientMsg()
     self:RegMiscMsg()
     self:RegRockDropMsg()
+    self:RegLootSellMsg()
+end
+
+--- 出售 RPC 只转发引擎认证玩家自身的请求，未就绪时不结算。
+function Manager:RegLootSellMsg()
+    --- 金额与库存由出售组件校验，不接受客户端指定玩家身份。
+    --- @param userId number 引擎认证的请求者。
+    --- @param entryIds table 客户端当前展示的收藏品实例 ID。
+    --- @param multiplier number 普通或临时免费双倍出售。
+    --- @return table 出售结果与英文文案 Key。
+    FX.Network:RegClientMsgCallback("C2S_SellLoot", function(userId, entryIds, multiplier)
+        local player = self:GetPlayerObject(userId)
+        local sell = player and player:GetComponent("SLootSellComp")
+        if not sell then
+            return {success = false, key = "Common.Unknown"}
+        end
+        return sell:SellLoot(entryIds, multiplier)
+    end)
 end
 
 --- 简单玩家请求直接转发到杂项组件，不在管理器内执行结算。

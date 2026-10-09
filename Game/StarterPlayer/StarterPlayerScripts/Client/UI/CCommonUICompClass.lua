@@ -5,7 +5,7 @@ local ButtonHover = FXLoader:RequireFromParent(script, "ButtonHover")
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local UI = FX.Class("CCommonUICompClass", "FCCommonUICompClass")
 
---- 将通用提示接入项目设计画布，随画布等比缩放。
+--- 使用项目英文提示与通用高层浮窗，避免被业务弹窗遮挡。
 --- @param owner table 所属客户端玩家对象。
 function UI:Ctor(owner)
     UI.Super.Ctor(self, owner)
@@ -47,9 +47,8 @@ function UI:Ctor(owner)
     -- 全屏输入遮罩不参与按钮缩放，避免连带放大弹窗内容。
     self.Modal:SetAttribute("HoverEnabled", false)
     self._buttonHover = ButtonHover.New(playerGui)
-    local canvas = FXLoader:Here(playerGui, "ScreenGui/Canvas")
     self.Tips.TextSize = 28
-    self.Tips.Parent = canvas
+    -- 提示保留在通用高层浮窗中，不能移到低层画布被出售等弹窗遮住。
 end
 
 --- 登记需要暂停空白区域点击的弹窗根节点，实际隐藏后才解除禁点。
@@ -201,7 +200,7 @@ function UI:BindCharacterTools(character)
     end
 end
 
---- 提示已移出框架根节点，需要单独释放，保留项目共享画布。
+--- 清理项目监听与翻译资源，提示和浮窗节点由父类统一释放。
 function UI:Dtor()
     if self._characterToolConnection then
         self._characterToolConnection:Disconnect()
@@ -210,7 +209,6 @@ function UI:Dtor()
     FX.Network:UnRegServerMsgCallback("S2C_ShowLocalizedTips")
     self.Localization:Destroy()
     UI.Super.Dtor(self)
-    self.Tips:Destroy()
 end
 
 return UI

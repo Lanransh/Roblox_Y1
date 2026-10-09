@@ -9,7 +9,7 @@ return {
     ExtraDataSchema = {
         RockCollectible = {
             ItemId = 0, DisplayModelId = "", TemplateName = "", Price = 0,
-            IsLucky = false, LuckRate = 1,
+            IsLucky = false, LuckRate = 1, SellId = "",
         },
         Animal = {
             level = 1,

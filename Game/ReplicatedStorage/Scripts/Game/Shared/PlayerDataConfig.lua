@@ -41,6 +41,13 @@ return {
         KVTable = PlayerKVEnum.ePlayerData,
         Sync = true,
     },
+    -- 正式背包中可出售收藏品的临时展示快照；实际库存仍为服务端私有字段。
+    LootSellEntries = {
+        Type = "table",
+        Key = "LootSellEntries",
+        DefVal = {},
+        Sync = true,
+    },
     -- 成功入库后永久激活的道具 ID；普通和幸运版本共用一条记录。
     CollectionEntries = {
         Type = "table",

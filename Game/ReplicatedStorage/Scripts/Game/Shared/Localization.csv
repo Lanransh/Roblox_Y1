@@ -39,6 +39,13 @@ Main.Strength,Strength: {value},,value=1.25K
 Main.MaxLevel,MAX LEVEL,,
 Loot.Title,Loot Bag (return to your base to store items),,
 Loot.Empty,No loot yet.,,
+LootSell.Empty,No items to sell.,,
+LootSell.Changed,Your inventory changed. Please try again.,,
+LootSell.Success,Sold {count:int} items for {value} Coins.,,count=3;value=1.25K
+LootSell.Gained,You earned {value} Coins.,,value=1.25K
+LootSell.Coins,{value} Coins,,value=1.25K
+LootSell.Count,Items: {count:int} / {capacity:int},,count=3;capacity=12
+LootSell.LuckyName,Lucky {item} · x{rate},,item=Nail;rate=2.5
 Loot.PickUp,Pick Up,,
 Loot.PickedUp,Picked up {item},,item=Bowling Pin
 Loot.LuckyPickedUp,Lucky find: {item} · x{rate},,item=Nail;rate=2.50

@@ -7,7 +7,6 @@ local TweenService = game:GetService("TweenService")
 local GuiService = game:GetService("GuiService")
 local RockLevel = require(game:GetService("ReplicatedStorage").Scripts.Game.Shared.RockLevel)
 local GameUtility = require(game:GetService("ReplicatedStorage").Scripts.Game.Shared.GameUtility)
-local CollectibleText = FXLoader:RequireShared("Scripts/Game/Shared/CollectibleText")
 local Component = FX.Class("CMainUICompClass", "FCUICompClass")
 
 --- 返回主界面业务组件名，供项目组件协作使用。
@@ -30,7 +29,7 @@ function Component:OnReady()
     self._localization = self._commonUI.Localization
     self._strength.AutoLocalize = false
     self._bar.ProgressLabel.AutoLocalize = false
-    --- 翻译就绪或语言切换时刷新主界面及当前战利品弹窗。
+    --- 翻译就绪或语言切换时刷新主界面，出售界面自行监听语言变化。
     self:TrackConnection(self._localization.Changed:Connect(function()
         self:RefreshLocalization()
     end))
@@ -54,7 +53,7 @@ function Component:OnReady()
     self:WatchDataChanged(Fields.Coins, self.RefreshCoins, self)
     self:WatchDataChanged(Fields.RebirthCount, self.RefreshRebirthCount, self)
     self:WatchDataChanged(Fields.Diamonds, self.RefreshDiamonds, self)
-    self:WatchDataChanged(Fields.RockLoot, self.RefreshLoot, self)
+    self:WatchDataChanged(Fields.LootSellEntries, self.RefreshLoot, self)
     --- 鼠标只在未被按钮、背包等 UI 消耗时播放点击图标。
     --- @param input InputObject 本次输入。
     --- @param processed boolean 是否已被引擎 UI 消耗。
@@ -134,51 +133,11 @@ function Component:BindButtons()
             end))
         end
     end
-    local lootButton = Instance.new("TextButton")
-    lootButton:SetAttribute("BlocksTrainingClick", true)
-    lootButton.Name = "OpenLoot"
-    lootButton.Text = ""
-    lootButton.BackgroundTransparency = 1
-    lootButton.Size = UDim2.fromScale(1, 1)
-    lootButton.ZIndex = 10
-    -- 透明点击区放大背包整块可视内容，而不是只改变空白按钮。
-    lootButton:SetAttribute("HoverTargetParent", true)
-    lootButton.Parent = FXLoader:Here(self._leftDown, "BackpackStat")
-    self._lootButton = lootButton
-    --- 弹窗内容在显示时按当前语言生成。
-    self:TrackConnection(lootButton.Activated:Connect(function()
-        self:ShowLoot()
-    end))
-end
-
---- 按稳定模板编号翻译收藏品名称，旧存档的中文 DisplayName 不作为显示文案。
-function Component:ShowLoot()
-    local lines = {self._localization:FormatByKey("Loot.Title")}
-    for index, entry in ipairs(self:GetTable(Fields.RockLoot)) do
-        local nameKey = CollectibleText.GetNameKey(entry.DisplayModelId or entry.TemplateName)
-        local arguments = {itemKey = nameKey, price = GameUtility.NumberToText(entry.Price)}
-        if entry.IsLucky == true then
-            arguments.rate = GameUtility.NumberToText(entry.LuckRate or 1)
-            table.insert(lines, self._localization:FormatByKey("Loot.LuckyEntry", arguments))
-        else
-            table.insert(lines, self._localization:FormatByKey("Loot.Entry", arguments))
-        end
-    end
-    if #lines == 1 then
-        table.insert(lines, self._localization:FormatByKey("Loot.Empty"))
-    end
-    self._lootParams = {
-        Desc = table.concat(lines, "\n"), ConfirmKey = "Common.Close",
-    }
-    self._commonUI:ShowTooltips(self._lootParams)
 end
 
 --- 语言变化只刷新当前数据显示，不播放训练收益动画或重新打开已关闭弹窗。
 function Component:RefreshLocalization()
     self:RefreshProgress(self:GetNumber(Fields.RockTrainingValue))
-    if self._lootParams and self._commonUI.TooltipParams == self._lootParams then
-        self:ShowLoot()
-    end
 end
 
 --- 未实现的入口统一走现有通用提示，不伪造购买或奖励成功。
@@ -204,10 +163,11 @@ function Component:RefreshDiamonds(value)
     FXLoader:Here(self._leftDown, "DiamondStat/Value").Text = GameUtility.NumberToText(value)
 end
 
---- 战利品与原生背包分别显示，拾取后可以直接确认当前携带数量。
---- @param loot table 当前尚未回基地存放的道具。
+--- 背包计数与出售列表使用同一正式库存快照，出售后同步腾出容量。
+--- @param loot table 正式背包中的可出售收藏品。
 function Component:RefreshLoot(loot)
-    self._leftDown.BackpackStat.Value.Text = string.format("%d/%d", #loot, RockLevel.LootCapacity)
+    self._leftDown.BackpackStat.Value.Text = string.format("%d/%d", #loot,
+        _G.Provider:GetNativeBackpackConfig().InventoryCapacity)
 end
 
 --- 刷新经验、力量与整数重生百分比；经验条以 0.3 秒 Quad Out 平滑填充。
@@ -346,7 +306,7 @@ function Component:Dtor()
         tween:Cancel()
         tween:Destroy()
     end
-    for name, node in pairs({Pulse = self._pulseScale, Loot = self._lootButton}) do
+    for name, node in pairs({Pulse = self._pulseScale}) do
         node:Destroy()
     end
     Component.Super.Dtor(self)
