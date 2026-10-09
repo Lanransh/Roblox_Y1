@@ -1,7 +1,7 @@
 # 添加客户端玩家组件
 
 位置：`StarterPlayer/StarterPlayerScripts/Client/Player/CExampleCompClass.lua`。
-UI 组件放 Client/UI 并继承 FCUICompClass。
+UI 业务组件放 Client/UI。目标界面有 UIEditor 生成展示类时，先加载并继承该类，在 Generated 之外提供真实数据和动作处理；没有对应生成脚本的普通界面才沿用 FCUICompClass 或项目已有 UI 基类。接入前按 [UI 接入规则](../../roblox-ui-components/reference-rules.md) 确认界面来源、数据契约和生命周期。
 
 ```lua
 local FX = _G.FX
@@ -21,7 +21,7 @@ end
 return CExampleCompClass
 ```
 
-在 Main.client.lua require FClient 之后、创建 PlayerClass.New 之前 require 模块，
+在 Main.client.lua 加载 Scripts/GameInit 完成框架初始化之后、创建 PlayerClass.New 之前 require 业务模块（UIEditor 界面由业务模块先加载对应生成展示类），
 然后在 `Client/Player/CPlayerObjectClass.lua` 的 Ctor 挂载：
 `self:AddComponent("CExampleCompClass")`。
 

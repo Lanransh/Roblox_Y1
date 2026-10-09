@@ -5,7 +5,7 @@
 - Sync=false 的字段不会传给客户端。当前 Inventory 是私有字段，原生 Tool 用服务端实例呈现。
 - GetTable 返回副本，修改后必须 SetTable 提交；nil 写入恢复默认值。日/周/月重置使用 KVResetType 和服务器 UTC。
 - WatchDataChanged 立即回放当前值，后续变化再通知。组件封装自动持有返回连接，直接从玩家对象订阅时自行清理。
-- 服务端继承 FSPlayerCompClass，客户端继承 FCPlayerCompClass，UI 继承 FCUICompClass。
+- 服务端继承 FSPlayerCompClass，客户端继承 FCPlayerCompClass。UI 有对应 UIEditor 生成展示类时，业务类继承该展示类；没有对应生成脚本的普通界面继承 FCUICompClass 或项目已有 UI 基类。界面来源与接入规则见 [UI 接入规则](../roblox-ui-components/reference-rules.md)。
 - GetCompName 是协作名称，和 AddComponent 的注册类名不同。
 - 覆盖 Ctor/Dtor 显式调用 Super；未覆盖时类系统自动调用基类。
 - 持有 RBXScriptConnection 可用 TrackConnection；任务、输入对象和自建实例仍需单独释放。
