@@ -41,6 +41,14 @@ return {
         KVTable = PlayerKVEnum.ePlayerData,
         Sync = true,
     },
+    -- 成功入库后永久激活的道具 ID；普通和幸运版本共用一条记录。
+    CollectionEntries = {
+        Type = "table",
+        Key = "CollectionEntries",
+        DefVal = {},
+        KVTable = PlayerKVEnum.ePlayerData,
+        Sync = true,
+    },
     -- 累计训练值，用于计算训练等级和力量。
     RockTrainingValue = {
         Type = "number",

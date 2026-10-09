@@ -116,7 +116,7 @@ function Component:ShowClickTrainingEffect(position)
     self:ShowTrainingEffect(RockLevel.ClickEffectValue, position)
 end
 
---- 标记主界面实际内容区域；重生交给独立 UI 组件，其余按钮显示开发中。
+--- 标记主界面实际内容区域；图鉴交给独立 UI 组件，重生模板缺失时显示开发中。
 function Component:BindButtons()
     for index, path in ipairs({"TopCenter/LevelProgressBar", "TopCenter/Strength",
         "LeftDown/RebirthStat", "LeftDown/BackpackStat", "LeftDown/CashStat", "LeftDown/DiamondStat"}) do
@@ -126,8 +126,8 @@ function Component:BindButtons()
         if node:IsA("GuiButton") then
             node:SetAttribute("BlocksTrainingClick", true)
             self:TrackConnection(node.Activated:Connect(function()
-                if node.Name == "RebirthButton" then
-                    self:GetPlayerObject():RequireComponent("CRebirthUIComp"):Show()
+                if node.Name == "CollectionBtn" then
+                    self:GetPlayerObject():RequireComponent("CCollectionUIComp"):Show()
                 else
                     self:ShowDeveloping()
                 end

@@ -4,7 +4,8 @@ require(ReplicatedStorage:WaitForChild("Scripts"):WaitForChild("GameInit"))
 local FC = _G.FC
 require(script.Parent.Player.CRockLevelCompClass)
 require(script.Parent.UI.CMainUICompClass)
-require(script.Parent.UI.CRebirthUICompClass)
+-- RebirthUI 模板缺失，暂不加载和挂载重生界面。
+require(script.Parent.UI.CCollectionUICompClass)
 require(script.Parent.UI.CCommonUICompClass)
 local PlayerClass = require(script.Parent.Player.CPlayerObjectClass)
 

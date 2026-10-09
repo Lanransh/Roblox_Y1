@@ -11,6 +11,8 @@ UI.RebirthTitle,REBIRTH,,
 UI.Shop,Shop,,
 UI.Reward,Reward,,
 UI.Collection,Collection,,
+Collection.Count,Activated {count:int} / {total:int},,count=10;total=148
+Collection.Rule,+{percent}% Training per {count:int} items,,percent=25;count=10
 UI.AutoClick,"<font color=""#00FF32"">OP</font> <font color=""#FFFF00"">Auto</font> <font color=""#FF20C8"">Click</font>",,
 UI.Off,OFF,,
 UI.On,ON,,

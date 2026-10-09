@@ -9,6 +9,7 @@ local Collectible = require(script.Parent.RockCollectible)
 local GameConfig = _G.GameConfig
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local CollectibleText = FXLoader:RequireShared("Scripts/Game/Shared/CollectibleText")
+local Collection = FXLoader:RequireShared("Scripts/Game/Shared/Collection")
 local English = FXLoader:Shared("Scripts/Game/Shared/Localization"):GetTranslator("en-us")
 local Component = FX.Class("SRockLevelCompClass", "FSPlayerCompClass")
 
@@ -567,7 +568,7 @@ function Component:PickupDrop(dropId)
     end
 end
 
---- 仅在基地调用，逐件入正式背包；满包时保留未转移战利品，避免丢失或重复发放。
+--- 仅在基地逐件入正式背包，成功后激活图鉴；满包不激活且保留未转移战利品。
 function Component:DepositLoot()
     local loot = self:GetTable(Fields.RockLoot)
     if #loot == 0 then
@@ -575,6 +576,8 @@ function Component:DepositLoot()
     end
     local inventory = self:GetPlayerObject():RequireComponent("FSInventoryComp")
     local deposited = 0
+    local entries = self:GetTable(Fields.CollectionEntries)
+    local collectionChanged = false
     while #loot > 0 do
         local entry = loot[1]
         local item = FS.ItemClass.New(Collectible.ItemId, 1,
@@ -583,11 +586,17 @@ function Component:DepositLoot()
         if not inventory:AddItems({item}) then
             break
         end
+        if Collection.Activate(entries, entry.ItemId) then
+            collectionChanged = true
+        end
         table.remove(loot, 1)
         deposited += 1
     end
     if deposited > 0 then
         self:SetTable(Fields.RockLoot, loot)
+        if collectionChanged then
+            self:SetTable(Fields.CollectionEntries, entries)
+        end
         self:GetPlayerObject():ShowLocalizedTips("Loot.Deposited", {count = deposited})
     end
     if #loot > 0 and not self._depositFull then
