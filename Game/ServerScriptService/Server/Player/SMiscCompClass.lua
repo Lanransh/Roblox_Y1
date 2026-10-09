@@ -13,6 +13,7 @@ function Component:Ctor(owner)
     self._hit = false
     self:SubscribeEvent("RockTrainingHit", self.RecordTrainingHit)
     self:SubscribeEvent("RockRoundReset", self.ClearTrainingHit)
+    self:SubscribeEvent("RockAttackReset", self.ClearTrainingHit)
 end
 
 --- 集中承接不需要独立系统组件的简单玩家业务。
@@ -91,7 +92,7 @@ function Component:RecordTrainingHit()
     self._hit = true
 end
 
---- 关卡轮次恢复时撤销尚未结算的击打，不影响正常走路结算。
+--- 凭据或轮次失效时撤销尚未结算的击打，不影响正常走路结算。
 function Component:ClearTrainingHit()
     self._hit = false
 end

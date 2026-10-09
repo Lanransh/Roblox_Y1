@@ -5,6 +5,7 @@ local RunService = game:GetService("RunService")
 local Debris = game:GetService("Debris")
 local TweenService = game:GetService("TweenService")
 local RockLevel = require(ReplicatedStorage.Scripts.Game.Shared.RockLevel)
+local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local Fields = _G.PlayerDataConfig
 local Component = FX.Class("CRockLevelCompClass", "FCPlayerCompClass")
 local ColliderHeight = 16
@@ -139,7 +140,11 @@ function Component:UpdateDropTimers()
             local rarityKey = hud and hud:GetAttribute("RarityKey")
             if nameLabel and rarityLabel and nameKey and rarityKey then
                 nameLabel.Text = self._localization:FormatByKey(nameKey)
-                rarityLabel.Text = self._localization:FormatByKey(rarityKey)
+                local rarityArguments = {level = hud:GetAttribute("RarityLevel")}
+                if hud:GetAttribute("IsLucky") == true then
+                    rarityArguments.rate = GameUtility.NumberToText(hud:GetAttribute("LuckRate") or 1)
+                end
+                rarityLabel.Text = self._localization:FormatByKey(rarityKey, rarityArguments)
             end
             if timer then
                 local text = string.format("%ds", math.max(0, math.ceil(expiresAt - now)))
@@ -151,10 +156,19 @@ function Component:UpdateDropTimers()
     end
 end
 
---- 服务端轮次推进时取消旧挥镐和预测，恢复本地石头；初始请求可重复回放当前轮次。
+--- 新轮时清除旧命中；同轮快照只补已击破格号，保留未击破石头的本地血量。
 --- @param round number 服务器当前关卡轮次。
-function Component:ResetRound(round)
-    if self._round and round <= self._round then
+--- @param brokenCells table? 本玩家当前轮次已通过服务端校验的格号。
+function Component:ResetRound(round, brokenCells)
+    if self._round and round < self._round then
+        return
+    end
+    if self._round == round then
+        for _, key in ipairs(brokenCells or {}) do
+            self._health[key] = 0
+            self._pendingHits[key] = nil
+        end
+        self._refreshRocks = true
         return
     end
     self:StopSwing()
@@ -162,6 +176,9 @@ function Component:ResetRound(round)
     self._health = {}
     self._pendingHits = {}
     self._lastAttack = -math.huge
+    for _, key in ipairs(brokenCells or {}) do
+        self._health[key] = 0
+    end
     self:ResetVisuals()
 end
 

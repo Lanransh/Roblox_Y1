@@ -1,0 +1,22 @@
+{
+  "ClassName": "Model",
+  "Children": [
+    {"Name":"ThirdClothWrap","ClassName":"Part","Properties":{"Size":[0.78,0.26,0.78],"Position":[914,-13.4,900],"Color":[0.73,0.6,0.38],"Material":"Fabric","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"GoldPommelBand","ClassName":"Part","Properties":{"Size":[0.83,0.22,0.83],"Position":[914,-14.02,900],"Color":[0.76,0.52,0.18],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"DarkTailCap","ClassName":"Part","Properties":{"Size":[0.92,0.32,0.92],"Position":[914,-14.32,900],"Color":[0.2,0.2,0.21],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"CompassGoldRim","ClassName":"Part","Properties":{"Size":[0.18,1.07,1.07],"Position":[914,-7.5,899.44],"Orientation":[0,90,0],"Shape":"Cylinder","Color":[0.88,0.66,0.3],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"LongBladeFacet","ClassName":"WedgePart","Properties":{"Size":[0.14,0.7,2.64],"Position":[911.07,-7.51,899.53],"Orientation":[0,90,0],"Color":[0.52,0.54,0.56],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"AnchorShoulder","ClassName":"WedgePart","Properties":{"Size":[0.76,0.68,0.63],"Position":[912.6,-6.93,900],"Orientation":[0,90,0],"Color":[0.4,0.42,0.44],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"GoldHeadBevel","ClassName":"WedgePart","Properties":{"Size":[2.9,0.2,0.25],"Position":[914,-7,899.68],"Color":[0.84,0.63,0.31],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"DeepWoodHandle","ClassName":"Part","Properties":{"Size":[0.62,6.8,0.62],"Position":[914,-11.1,900],"Color":[0.25,0.13,0.08],"Material":"Wood","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"SailclothWrapA","ClassName":"Part","Properties":{"Size":[0.78,0.26,0.78],"Position":[914,-12.68,900],"Color":[0.82,0.72,0.49],"Material":"Fabric","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"SailclothWrapB","ClassName":"Part","Properties":{"Size":[0.78,0.26,0.78],"Position":[914,-11.95,900],"Color":[0.82,0.72,0.49],"Material":"Fabric","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"AntiqueGoldSocket","ClassName":"Part","Properties":{"Size":[1.18,1.15,1],"Position":[914,-7.5,900],"Color":[0.69,0.48,0.16],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"AntiqueGoldHeadBeam","ClassName":"Part","Properties":{"Size":[3.4,0.72,0.82],"Position":[914,-7.42,900],"Color":[0.53,0.38,0.15],"Material":"Plastic","FrontSurface":"Studs","BackSurface":"Studs","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"DarkIronPick","ClassName":"WedgePart","Properties":{"Size":[0.86,1.0,2.84],"Position":[911.07,-7.45,900],"Orientation":[0,90,0],"Color":[0.29,0.3,0.31],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"DarkIronChisel","ClassName":"WedgePart","Properties":{"Size":[0.93,1.05,1.16],"Position":[916.08,-7.4,900],"Orientation":[0,-90,0],"Color":[0.39,0.4,0.41],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"CompassBadge","ClassName":"Part","Properties":{"Size":[0.16,0.85,0.85],"Position":[914,-7.5,899.31],"Orientation":[0,90,0],"Shape":"Cylinder","Color":[0.04,0.44,0.68],"Material":"SmoothPlastic","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"CompassNeedle","ClassName":"Part","Properties":{"Size":[0.16,0.57,0.1],"Position":[914,-7.5,899.19],"Orientation":[0,0,25],"Color":[0.95,0.86,0.59],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"GoldBand","ClassName":"Part","Properties":{"Size":[0.78,0.28,0.8],"Position":[914,-8.12,900],"Color":[0.8,0.58,0.22],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}}
+  ]
+}

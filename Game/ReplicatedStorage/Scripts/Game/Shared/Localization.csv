@@ -39,6 +39,11 @@ Loot.Title,Loot Bag (return to your base to store items),,
 Loot.Empty,No loot yet.,,
 Loot.PickUp,Pick Up,,
 Loot.PickedUp,Picked up {item},,item=Bowling Pin
+Loot.LuckyPickedUp,Lucky find: {item} · x{rate},,item=Nail;rate=2.50
+Loot.LuckyEntry,{item}  ${price} · Lucky x{rate},,item=Nail;price=8;rate=2.50
+Loot.LuckyTooltip,Lucky {item} · x{rate} · ${price},,item=Nail;rate=2.50;price=8
+Loot.LuckyRarity,Lucky · Quality {level:int} · x{rate},,level=1;rate=2.50
+Rarity.Quality,Quality {level:int},,level=1
 Item.FreePickaxe,Free Pickaxe,,
 Item.Collectible,Rock Collectible,,
 Loot.Tooltip,{item} · ${price},,item=Bowling Pin;price=252

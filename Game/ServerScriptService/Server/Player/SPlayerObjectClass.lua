@@ -1,5 +1,4 @@
 local FX, FS = _G.FX, _G.FS
-local GameConfig = _G.GameConfig
 local PlayerDataConfig, ItemConfig = _G.PlayerDataConfig, _G.ItemConfig
 local TutorialGuideConfig = _G.TutorialGuideConfig
 local Collectible = require(script.Parent.RockCollectible)
@@ -71,7 +70,11 @@ function Inventory:SyncTools()
             or tool:GetAttribute("FrameworkItemId") ~= item.itemId
             or (item.itemId == Collectible.ItemId and (not item.extraData
                 or tool:GetAttribute("CollectibleTemplate") ~= item.extraData.TemplateName
-                or tool:GetAttribute("Price") ~= item.extraData.Price)) then
+                or tool:GetAttribute("Price") ~= item.extraData.Price
+                or tool:GetAttribute("ItemId") ~= item.extraData.ItemId
+                or tool:GetAttribute("DisplayModelId") ~= item.extraData.DisplayModelId
+                or tool:GetAttribute("IsLucky") ~= (item.extraData.IsLucky == true)
+                or tool:GetAttribute("LuckRate") ~= (item.extraData.LuckRate or 1))) then
             tool:Destroy()
             self._tools[gridIndex] = nil
         end
@@ -184,10 +187,9 @@ function Player:ShowLocalizedTips(key, arguments, duration)
     FX.Network:SendMsgToClient(self:GetPlayerId(), "S2C_ShowLocalizedTips", key, arguments, duration)
 end
 
---- @param version number 已保存的数据版本；新增迁移在此顺序执行。
+--- 项目不使用存档版本检查或迁移，保留框架要求的入口以完成玩家初始化。
+--- @param version number 框架传入的旧存档字段，本项目不使用。
 function Player:MigrateData(version)
-    assert(version <= GameConfig.DataVersion, "Saved data is newer than this server")
-    self:SetNumber(PlayerDataConfig.DataVersion, GameConfig.DataVersion)
 end
 
 --- 先同步初始数据，再向玩家组件发布登录事件。

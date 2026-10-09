@@ -38,6 +38,10 @@
         "$className": "Folder",
         "$path": "Workspace/Decorations"
       },
+      "Pickaxes": {
+        "$className": "Folder",
+        "$path": "Workspace/Pickaxes"
+      },
       "TrainingAreaSign": {
         "$path": "Workspace/TrainingAreaSign.model.json"
       }
@@ -45,6 +49,15 @@
     "ReplicatedStorage": {
       "$className": "ReplicatedStorage",
       "$ignoreUnknownInstances": true,
+      "Shared": {
+        "$className": "Folder",
+        "Config": {
+          "$className": "Folder",
+          "GameConfig": {
+            "$path": "ReplicatedStorage/Shared/Config/GameConfig.lua"
+          }
+        }
+      },
       "Scripts": {
         "$path": "ReplicatedStorage/Scripts",
         "$ignoreUnknownInstances": false
@@ -81,9 +94,6 @@
         "CanvasAdapter": {
           "$path": "StarterGui/ScreenGui/CanvasAdapter.client.lua"
         }
-      },
-      "WelfareUI": {
-        "$path": "StarterGui/WelfareUI.rbxmx"
       }
     },
     "StarterPlayer": {

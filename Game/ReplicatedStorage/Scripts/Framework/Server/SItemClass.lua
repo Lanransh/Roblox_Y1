@@ -4,6 +4,9 @@ local FXTable = FX.Table
 local FSItemClass = FX.Class("FSItemClass")
 FS.ItemClass = FSItemClass
 
+--- 按字段是否声明校验额外数据，允许 Schema 使用 false 作为默认值。
+--- @param itemId number 用于查找物品类型及其 Schema 的物品 ID。
+--- @param extraData table? 待校验的物品额外数据。
 local function ValidateExtraData(itemId, extraData)
     if not FX.IsDebugMode() then
         return
@@ -19,7 +22,7 @@ local function ValidateExtraData(itemId, extraData)
     FX.DebugAssert(itemExtraDataSchema ~= nil, "Item extra data schema not found for item type: " .. itemType)
     for key, value in pairs(extraData) do
         FX.DebugAssert(
-            itemExtraDataSchema[key],
+            itemExtraDataSchema[key] ~= nil,
             "Item extra data schema not found for item type: " .. itemType .. " key: " .. tostring(key)
         )
     end

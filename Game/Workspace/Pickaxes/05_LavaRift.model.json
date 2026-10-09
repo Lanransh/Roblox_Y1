@@ -1,0 +1,21 @@
+{
+  "ClassName": "Model",
+  "Children": [
+    {"Name":"HeavyRockSocket","ClassName":"Part","Properties":{"Size":[1.42,1.3,1.35],"Position":[882,-7.85,900],"Color":[0.17,0.16,0.17],"Material":"Rock","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"ThickNeckGuard","ClassName":"Part","Properties":{"Size":[0.96,0.8,0.96],"Position":[882,-8.65,900],"Color":[0.09,0.08,0.1],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"RedGripSleeve","ClassName":"Part","Properties":{"Size":[0.73,0.86,0.73],"Position":[882,-12.33,900],"Color":[0.27,0.05,0.04],"Material":"SmoothPlastic","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"BlackPommel","ClassName":"Part","Properties":{"Size":[0.92,0.42,0.92],"Position":[882,-14.25,900],"Color":[0.09,0.08,0.1],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"RockBladeFacet","ClassName":"WedgePart","Properties":{"Size":[0.18,0.98,2.12],"Position":[879.3,-7.9,899.33],"Orientation":[0,90,0],"Color":[0.35,0.31,0.3],"Material":"Rock","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"HammerFace","ClassName":"Part","Properties":{"Size":[0.68,0.95,0.14],"Position":[884.48,-7.8,899.32],"Color":[0.35,0.29,0.27],"Material":"Rock","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"CoreHotFacet","ClassName":"Part","Properties":{"Size":[0.36,0.36,0.12],"Position":[882,-7.82,899.17],"Orientation":[0,0,45],"Color":[1,0.7,0.08],"Material":"SmoothPlastic","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"CharcoalHandle","ClassName":"Part","Properties":{"Size":[0.7,6,0.7],"Position":[882,-11.5,900],"Color":[0.13,0.14,0.16],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"RedGripA","ClassName":"Part","Properties":{"Size":[0.78,0.28,0.78],"Position":[882,-12.7,900],"Color":[0.48,0.08,0.06],"Material":"SmoothPlastic","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"RedGripB","ClassName":"Part","Properties":{"Size":[0.78,0.28,0.78],"Position":[882,-11.95,900],"Color":[0.48,0.08,0.06],"Material":"SmoothPlastic","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"VolcanicHead","ClassName":"Part","Properties":{"Size":[3.6,1.15,1.3],"Position":[882,-7.72,900],"Color":[0.14,0.15,0.17],"Material":"Plastic","FrontSurface":"Studs","BackSurface":"Studs","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"LongRockPoint","ClassName":"WedgePart","Properties":{"Size":[1.28,1.4,2.4],"Position":[879.3,-7.85,900],"Orientation":[0,90,0],"Color":[0.23,0.24,0.25],"Material":"Rock","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"RockHammer","ClassName":"Part","Properties":{"Size":[1.35,1.6,1.3],"Position":[884.25,-7.8,900],"Color":[0.2,0.21,0.23],"Material":"Plastic","TopSurface":"Studs","BackSurface":"Studs","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"LavaCore","ClassName":"Part","Properties":{"Size":[0.72,0.72,0.2],"Position":[882,-7.82,899.27],"Orientation":[0,0,45],"Color":[1,0.28,0.03],"Material":"SmoothPlastic","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"LavaSeamLeft","ClassName":"Part","Properties":{"Size":[0.85,0.2,0.12],"Position":[880.9,-7.35,899.32],"Orientation":[0,0,25],"Color":[1,0.58,0.04],"Material":"SmoothPlastic","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"LavaSeamRight","ClassName":"Part","Properties":{"Size":[0.72,0.2,0.12],"Position":[883.05,-8.02,899.32],"Orientation":[0,0,-35],"Color":[0.94,0.12,0.02],"Material":"SmoothPlastic","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}}
+  ]
+}

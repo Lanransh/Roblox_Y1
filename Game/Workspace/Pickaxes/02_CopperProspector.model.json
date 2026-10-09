@@ -1,0 +1,21 @@
+{
+  "ClassName": "Model",
+  "Children": [
+    {"Name":"HandleGuard","ClassName":"Part","Properties":{"Size":[0.78,0.65,0.78],"Position":[858,-8.55,900],"Color":[0.24,0.25,0.27],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"ThirdWrap","ClassName":"Part","Properties":{"Size":[0.72,0.25,0.72],"Position":[858,-13.35,900],"Color":[0.73,0.58,0.34],"Material":"Fabric","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"CopperTailCap","ClassName":"Part","Properties":{"Size":[0.76,0.3,0.76],"Position":[858,-14.32,900],"Color":[0.85,0.4,0.15],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"SocketDarkInset","ClassName":"Part","Properties":{"Size":[0.84,0.85,0.12],"Position":[858,-7.85,899.5],"Color":[0.47,0.2,0.09],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"CopperTopBevel","ClassName":"WedgePart","Properties":{"Size":[2.9,0.22,0.28],"Position":[858,-7.21,899.65],"Color":[1,0.64,0.3],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"HeadBackPlate","ClassName":"Part","Properties":{"Size":[2.95,0.55,0.12],"Position":[858,-7.75,900.44],"Color":[0.55,0.22,0.09],"Material":"Plastic","BackSurface":"Studs","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"CopperBladeFacet","ClassName":"WedgePart","Properties":{"Size":[0.14,0.68,1.85],"Position":[855.55,-7.79,899.56],"Orientation":[0,90,0],"Color":[1,0.64,0.32],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"DarkWoodHandle","ClassName":"Part","Properties":{"Size":[0.58,6.3,0.58],"Position":[858,-11.35,900],"Color":[0.31,0.17,0.1],"Material":"Wood","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"GripWrapA","ClassName":"Part","Properties":{"Size":[0.72,0.25,0.72],"Position":[858,-12.7,900],"Color":[0.78,0.65,0.4],"Material":"Fabric","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"GripWrapB","ClassName":"Part","Properties":{"Size":[0.72,0.25,0.72],"Position":[858,-12.05,900],"Color":[0.78,0.65,0.4],"Material":"Fabric","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"CopperHead","ClassName":"Part","Properties":{"Size":[3.3,0.9,0.82],"Position":[858,-7.7,900],"Color":[0.78,0.34,0.14],"Material":"Plastic","FrontSurface":"Studs","TopSurface":"Studs","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"CopperSocket","ClassName":"Part","Properties":{"Size":[1.15,1.15,1.0],"Position":[858,-7.85,900],"Color":[0.9,0.48,0.19],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"LongCopperPick","ClassName":"WedgePart","Properties":{"Size":[0.82,0.95,2.05],"Position":[855.55,-7.76,900],"Orientation":[0,90,0],"Color":[0.88,0.43,0.18],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"CopperChisel","ClassName":"WedgePart","Properties":{"Size":[0.95,0.95,1.1],"Position":[860.1,-7.7,900],"Orientation":[0,-90,0],"Color":[0.69,0.25,0.12],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"OxidizedInset","ClassName":"Part","Properties":{"Size":[0.48,0.48,0.16],"Position":[858,-7.85,899.5],"Color":[0.14,0.59,0.48],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+    {"Name":"SocketBolt","ClassName":"Part","Properties":{"Size":[0.24,0.24,0.15],"Position":[858,-7.25,899.5],"Color":[0.34,0.35,0.36],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}}
+  ]
+}

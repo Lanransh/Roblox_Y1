@@ -5,7 +5,6 @@ local FC = _G.FC
 require(script.Parent.Player.CRockLevelCompClass)
 require(script.Parent.UI.CMainUICompClass)
 require(script.Parent.UI.CRebirthUICompClass)
-require(script.Parent.UI.CWelfareUICompClass)
 require(script.Parent.UI.CCommonUICompClass)
 local PlayerClass = require(script.Parent.Player.CPlayerObjectClass)
 

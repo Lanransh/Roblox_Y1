@@ -169,8 +169,13 @@ function UI:LocalizeTool(tool)
     tool.Name = self.Localization:FormatByKey(key)
     local price = tool:GetAttribute("Price")
     if price then
-        tool.ToolTip = self.Localization:FormatByKey("Loot.Tooltip",
-            {itemKey = key, price = GameUtility.NumberToText(price)})
+        local arguments = {itemKey = key, price = GameUtility.NumberToText(price)}
+        if tool:GetAttribute("IsLucky") == true then
+            arguments.rate = GameUtility.NumberToText(tool:GetAttribute("LuckRate") or 1)
+            tool.ToolTip = self.Localization:FormatByKey("Loot.LuckyTooltip", arguments)
+        else
+            tool.ToolTip = self.Localization:FormatByKey("Loot.Tooltip", arguments)
+        end
     else
         tool.ToolTip = tool.Name
     end

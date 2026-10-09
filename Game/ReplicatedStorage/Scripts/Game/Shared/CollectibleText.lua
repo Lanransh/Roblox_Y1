@@ -1,18 +1,11 @@
 local Text = {}
 
-Text.RarityKeys = {
-    ["便宜货"] = "Rarity.Junk",
-    ["普通物品"] = "Rarity.Common",
-    ["水晶宝石"] = "Rarity.Crystal",
-    ["枪械"] = "Rarity.Weapon",
-    ["稀有珍品"] = "Rarity.Rare",
-}
-
---- 使用模板的稳定编号获取显示文案，保留模型路径和旧存档标识。
---- @param templateName string Studio 中已有的收藏品模板名。
+--- 使用展示模型的稳定编号获取显示文案，兼容旧模型名和存档模板名。
+--- @param templateName string Studio 模型名或 GameConfig 展示模型路径。
 --- @return string 英文源表和云端翻译共用的文案 Key。
 function Text.GetNameKey(templateName)
-    return "Collectible." .. string.match(templateName, "^%d+")
+    local number = string.match(templateName, "Y1_(%d+)") or string.match(templateName, "^(%d+)")
+    return number and "Collectible." .. number or "Common.Unknown"
 end
 
 return Text
