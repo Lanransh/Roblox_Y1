@@ -220,6 +220,7 @@
                   },
                   "Rotation": 0,
                   "ScrollBarThickness": 4,
+                  "ScrollingDirection": "XY",
                   "Size": {
                     "x": {
                       "offset": 792,
@@ -458,6 +459,7 @@
                   },
                   "Rotation": 0,
                   "ScrollBarThickness": 4,
+                  "ScrollingDirection": "XY",
                   "Size": {
                     "x": {
                       "offset": 792,
@@ -696,6 +698,7 @@
                   },
                   "Rotation": 0,
                   "ScrollBarThickness": 4,
+                  "ScrollingDirection": "XY",
                   "Size": {
                     "x": {
                       "offset": 796,
@@ -714,6 +717,1205 @@
             "className": "Frame",
             "id": "6a07e1bb-3af0-4ac3-ab95-1554e027d2be",
             "name": "TasksBox",
+            "properties": {
+              "AnchorPoint": {
+                "x": 0,
+                "y": 0
+              },
+              "BackgroundColor3": "#ffffff",
+              "BackgroundTransparency": 1,
+              "ClipsDescendants": false,
+              "LayoutOrder": 0,
+              "Position": {
+                "x": {
+                  "offset": 16,
+                  "scale": 0
+                },
+                "y": {
+                  "offset": 16,
+                  "scale": 0
+                }
+              },
+              "Rotation": 0,
+              "Size": {
+                "x": {
+                  "offset": 788,
+                  "scale": 0
+                },
+                "y": {
+                  "offset": 418,
+                  "scale": 0
+                }
+              },
+              "Visible": false,
+              "ZIndex": 6
+            }
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "a14ba247-34b4-465f-aba1-e8f0ebe609ed",
+                    "name": "TextStroke",
+                    "properties": {
+                      "Color": "#20231c",
+                      "Enabled": true,
+                      "Thickness": 1,
+                      "Transparency": 0
+                    }
+                  }
+                ],
+                "className": "TextLabel",
+                "id": "e9999df2-39cc-4742-9f5d-0c1185087913",
+                "name": "HeadingTxt",
+                "properties": {
+                  "AnchorPoint": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "BackgroundColor3": "#ffffff",
+                  "BackgroundTransparency": 1,
+                  "ClipsDescendants": false,
+                  "Font": "GothamBold",
+                  "LayoutOrder": 0,
+                  "Position": {
+                    "x": {
+                      "offset": 0,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 0,
+                      "scale": 0
+                    }
+                  },
+                  "Rotation": 0,
+                  "Size": {
+                    "x": {
+                      "offset": 788,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 38,
+                      "scale": 0
+                    }
+                  },
+                  "Text": "DAILY DIAMONDS",
+                  "TextColor3": "#ffffff",
+                  "TextScaled": false,
+                  "TextSize": 24,
+                  "TextTransparency": 0,
+                  "TextWrapped": true,
+                  "TextXAlignment": "Center",
+                  "TextYAlignment": "Center",
+                  "Visible": true,
+                  "ZIndex": 9
+                }
+              },
+              {
+                "children": [],
+                "className": "TextLabel",
+                "id": "0f0e0c62-09b9-4cbb-9d54-f61c42d894f9",
+                "name": "SubtitleTxt",
+                "properties": {
+                  "AnchorPoint": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "BackgroundColor3": "#ffffff",
+                  "BackgroundTransparency": 1,
+                  "ClipsDescendants": false,
+                  "Font": "GothamBold",
+                  "LayoutOrder": 0,
+                  "Position": {
+                    "x": {
+                      "offset": 0,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 40,
+                      "scale": 0
+                    }
+                  },
+                  "Rotation": 0,
+                  "Size": {
+                    "x": {
+                      "offset": 788,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 28,
+                      "scale": 0
+                    }
+                  },
+                  "Text": "Collect your free diamonds every day",
+                  "TextColor3": "#d6ddda",
+                  "TextScaled": false,
+                  "TextSize": 18,
+                  "TextTransparency": 0,
+                  "TextWrapped": true,
+                  "TextXAlignment": "Center",
+                  "TextYAlignment": "Center",
+                  "Visible": true,
+                  "ZIndex": 9
+                }
+              },
+              {
+                "children": [],
+                "className": "TextLabel",
+                "id": "597522ab-8e23-4783-93cd-7c617c4557f6",
+                "name": "AvailableTxt",
+                "properties": {
+                  "AnchorPoint": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "BackgroundColor3": "#ffffff",
+                  "BackgroundTransparency": 1,
+                  "ClipsDescendants": false,
+                  "Font": "GothamBold",
+                  "LayoutOrder": 0,
+                  "Position": {
+                    "x": {
+                      "offset": 70,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 92,
+                      "scale": 0
+                    }
+                  },
+                  "Rotation": 0,
+                  "Size": {
+                    "x": {
+                      "offset": 320,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 28,
+                      "scale": 0
+                    }
+                  },
+                  "Text": "Available Today",
+                  "TextColor3": "#ffffff",
+                  "TextScaled": false,
+                  "TextSize": 18,
+                  "TextTransparency": 0,
+                  "TextWrapped": true,
+                  "TextXAlignment": "Center",
+                  "TextYAlignment": "Center",
+                  "Visible": true,
+                  "ZIndex": 9
+                }
+              },
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "6f9a8872-7552-472e-841f-54d06df14afa",
+                    "name": "TextStroke",
+                    "properties": {
+                      "Color": "#20231c",
+                      "Enabled": true,
+                      "Thickness": 2,
+                      "Transparency": 0
+                    }
+                  }
+                ],
+                "className": "TextLabel",
+                "id": "5780749e-2a38-4ec1-a67a-d5631a3c7dc3",
+                "name": "AmountTxt",
+                "properties": {
+                  "AnchorPoint": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "BackgroundColor3": "#ffffff",
+                  "BackgroundTransparency": 1,
+                  "ClipsDescendants": false,
+                  "Font": "GothamBold",
+                  "LayoutOrder": 0,
+                  "Position": {
+                    "x": {
+                      "offset": 50,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 124,
+                      "scale": 0
+                    }
+                  },
+                  "Rotation": 0,
+                  "Size": {
+                    "x": {
+                      "offset": 360,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 48,
+                      "scale": 0
+                    }
+                  },
+                  "Text": "×250 Diamonds",
+                  "TextColor3": "#67ed14",
+                  "TextScaled": false,
+                  "TextSize": 32,
+                  "TextTransparency": 0,
+                  "TextWrapped": true,
+                  "TextXAlignment": "Center",
+                  "TextYAlignment": "Center",
+                  "Visible": true,
+                  "ZIndex": 9
+                }
+              },
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UICorner",
+                    "id": "d2eabce6-acfa-41e7-a191-3c08bc9b51db",
+                    "name": "UICorner",
+                    "properties": {
+                      "CornerRadius": {
+                        "offset": 6,
+                        "scale": 0
+                      }
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "cec8a4f5-ec5d-41e6-a344-0278fdd17f3e",
+                    "name": "UIStroke",
+                    "properties": {
+                      "Color": "#000000",
+                      "Enabled": true,
+                      "Thickness": 3,
+                      "Transparency": 0
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "Frame",
+                    "id": "78571240-fcb6-46bd-9704-ed100a63d66e",
+                    "name": "TopHighlightImg",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 0.58,
+                      "ClipsDescendants": false,
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 0,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 0,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "Size": {
+                        "x": {
+                          "offset": 220,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 2,
+                          "scale": 0
+                        }
+                      },
+                      "Visible": true,
+                      "ZIndex": 8
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "Frame",
+                    "id": "9949161c-59dc-4192-aeae-94d64dd40cf9",
+                    "name": "BottomEdgeImg",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "BackgroundColor3": "#225a07",
+                      "BackgroundTransparency": 0.2,
+                      "ClipsDescendants": false,
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 0,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 54,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "Size": {
+                        "x": {
+                          "offset": 220,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 4,
+                          "scale": 0
+                        }
+                      },
+                      "Visible": true,
+                      "ZIndex": 8
+                    }
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [],
+                        "className": "UIStroke",
+                        "id": "88ad82ae-33df-424b-80ca-deb80cd56a7b",
+                        "name": "TextStroke",
+                        "properties": {
+                          "Color": "#20231c",
+                          "Enabled": true,
+                          "Thickness": 2,
+                          "Transparency": 0
+                        }
+                      }
+                    ],
+                    "className": "TextLabel",
+                    "id": "e2af44f5-f539-4e5c-9445-357d278d251f",
+                    "name": "ButtonTxt",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 1,
+                      "ClipsDescendants": false,
+                      "Font": "GothamBold",
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 0,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": -2,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "Size": {
+                        "x": {
+                          "offset": 0,
+                          "scale": 1
+                        },
+                        "y": {
+                          "offset": 0,
+                          "scale": 1
+                        }
+                      },
+                      "Text": "Claim",
+                      "TextColor3": "#ffffff",
+                      "TextScaled": false,
+                      "TextSize": 24,
+                      "TextTransparency": 0,
+                      "TextWrapped": true,
+                      "TextXAlignment": "Center",
+                      "TextYAlignment": "Center",
+                      "Visible": true,
+                      "ZIndex": 9
+                    }
+                  }
+                ],
+                "className": "ImageButton",
+                "id": "816c61ca-2b66-4925-8978-6e28663a8f41",
+                "name": "ClaimBtn",
+                "previewImage": {
+                  "dataUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAACXBIWXMAACE4AAAhOAFFljFgAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAAAgdJREFUeAHt3M1KAlEUwPFjn7TpA6woq0WLFkLv5ELwxXyOniFoIZkaWpGbwijCSpvObUaI0Ijo3nOV/w8OTbNR599c29wRAQAAAAAAAAAAAAAAADBrchJIkiTutZZ1jnQOdRYkLgOdK52zXC73KoEECaAXf05/rEp68Q8kbpc6TZ0HDZGIZ3MSxmr2WjsSv31J3+tadtd65X0Z0A+xJOmScyDxLTs/cRHcktkXj0LcAccS55o/ye2X40XxLMRF2ZPp8KZzLel3wMhMBJj0IU4kMpVKZaterxfdcaFQuK9Wq13xbJrWZK9KpdJOq9XKj37vdDqbGuRdD+/Fo1D/BUWv3W5vfD+nd0NePCNAZjgczv/m3H8jgDECGCOAMQIYI4AxAhgjgDECGCOAMQIYI4AxAhgjgDECGCOAMQIYI4AxAhgjgDECGCOAMQIYI4AxAhgjgDECGCOAMQIYI4AxAhgjgDECGAuxRcltfvu+T8ztSh/tycqH2AgRqxB3wOWYc7duT1atVtuO+eInSfIknoUIUNfpSHonuHFBLsbtyYpNt9vtiWchlqAXnXOdhkyRwWDw1mg0rsQz73dA9sCLR53h1/PFYvFOIuUuvt6hp3ro/akpwR5X42TPjVjR+Vz3y+XybrPZXI/le6Df7z/re7zr9Xo3+tf/IgAAAAAAAAAAAAAAAADwBx/xiIkJsM5B3AAAAABJRU5ErkJggg==",
+                  "name": "StudTile.png"
+                },
+                "properties": {
+                  "AnchorPoint": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "BackgroundColor3": "#67ed14",
+                  "BackgroundTransparency": 0,
+                  "ClipsDescendants": false,
+                  "Image": "rbxassetid://82793028306773",
+                  "ImageColor3": "#ffffff",
+                  "ImageTransparency": 0,
+                  "LayoutOrder": 0,
+                  "Position": {
+                    "x": {
+                      "offset": 474,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 114,
+                      "scale": 0
+                    }
+                  },
+                  "Rotation": 0,
+                  "ScaleType": "Tile",
+                  "Size": {
+                    "x": {
+                      "offset": 220,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 58,
+                      "scale": 0
+                    }
+                  },
+                  "TileSize": {
+                    "x": {
+                      "offset": 28,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 28,
+                      "scale": 0
+                    }
+                  },
+                  "Visible": true,
+                  "ZIndex": 7
+                }
+              },
+              {
+                "children": [],
+                "className": "TextLabel",
+                "id": "c76e6593-aa96-416f-9272-f741d8a2ebfa",
+                "name": "StatusTxt",
+                "properties": {
+                  "AnchorPoint": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "BackgroundColor3": "#ffffff",
+                  "BackgroundTransparency": 1,
+                  "ClipsDescendants": false,
+                  "Font": "GothamBold",
+                  "LayoutOrder": 0,
+                  "Position": {
+                    "x": {
+                      "offset": 0,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 182,
+                      "scale": 0
+                    }
+                  },
+                  "Rotation": 0,
+                  "Size": {
+                    "x": {
+                      "offset": 788,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 30,
+                      "scale": 0
+                    }
+                  },
+                  "Text": "Ready to claim",
+                  "TextColor3": "#d6ddda",
+                  "TextScaled": false,
+                  "TextSize": 16,
+                  "TextTransparency": 0,
+                  "TextWrapped": true,
+                  "TextXAlignment": "Center",
+                  "TextYAlignment": "Center",
+                  "Visible": true,
+                  "ZIndex": 9
+                }
+              },
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UICorner",
+                    "id": "1802a45a-29ae-4277-8170-937d25fe417f",
+                    "name": "UICorner",
+                    "properties": {
+                      "CornerRadius": {
+                        "offset": 6,
+                        "scale": 0
+                      }
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "c43ba07f-a195-4c53-94e4-deacf701b612",
+                    "name": "UIStroke",
+                    "properties": {
+                      "Color": "#000000",
+                      "Enabled": true,
+                      "Thickness": 2,
+                      "Transparency": 0
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "TextLabel",
+                    "id": "95270e3c-3b80-4742-b93f-0d8d248b1a11",
+                    "name": "TitleTxt",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 1,
+                      "ClipsDescendants": false,
+                      "Font": "GothamBold",
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 8,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 10,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "Size": {
+                        "x": {
+                          "offset": 236,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 28,
+                          "scale": 0
+                        }
+                      },
+                      "Text": "Login Bonus",
+                      "TextColor3": "#ffffff",
+                      "TextScaled": false,
+                      "TextSize": 20,
+                      "TextTransparency": 0,
+                      "TextWrapped": true,
+                      "TextXAlignment": "Center",
+                      "TextYAlignment": "Center",
+                      "Visible": true,
+                      "ZIndex": 9
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "TextLabel",
+                    "id": "c1d57a5d-891f-4dc7-8f44-d7fa57952c0e",
+                    "name": "AmountTxt",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 1,
+                      "ClipsDescendants": false,
+                      "Font": "GothamBold",
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 8,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 45,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "Size": {
+                        "x": {
+                          "offset": 236,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 30,
+                          "scale": 0
+                        }
+                      },
+                      "Text": "+100 Diamonds",
+                      "TextColor3": "#67ed14",
+                      "TextScaled": false,
+                      "TextSize": 22,
+                      "TextTransparency": 0,
+                      "TextWrapped": true,
+                      "TextXAlignment": "Center",
+                      "TextYAlignment": "Center",
+                      "Visible": true,
+                      "ZIndex": 9
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "TextLabel",
+                    "id": "5d2eaff6-7174-46b7-b228-aa870dbdac1f",
+                    "name": "HintTxt",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 1,
+                      "ClipsDescendants": false,
+                      "Font": "GothamBold",
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 8,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 86,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "Size": {
+                        "x": {
+                          "offset": 236,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 28,
+                          "scale": 0
+                        }
+                      },
+                      "Text": "Daily login reward",
+                      "TextColor3": "#d6ddda",
+                      "TextScaled": false,
+                      "TextSize": 16,
+                      "TextTransparency": 0,
+                      "TextWrapped": true,
+                      "TextXAlignment": "Center",
+                      "TextYAlignment": "Center",
+                      "Visible": true,
+                      "ZIndex": 9
+                    }
+                  }
+                ],
+                "className": "Frame",
+                "id": "cd345986-ae87-4727-8c76-4b5f9f50086c",
+                "name": "LoginBonusImg",
+                "properties": {
+                  "AnchorPoint": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "BackgroundColor3": "#105464",
+                  "BackgroundTransparency": 0,
+                  "ClipsDescendants": false,
+                  "LayoutOrder": 0,
+                  "Position": {
+                    "x": {
+                      "offset": 8,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 234,
+                      "scale": 0
+                    }
+                  },
+                  "Rotation": 0,
+                  "Size": {
+                    "x": {
+                      "offset": 252,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 124,
+                      "scale": 0
+                    }
+                  },
+                  "Visible": true,
+                  "ZIndex": 7
+                }
+              },
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UICorner",
+                    "id": "207a326a-7fdf-4f2f-9bb7-ab345e5d86de",
+                    "name": "UICorner",
+                    "properties": {
+                      "CornerRadius": {
+                        "offset": 6,
+                        "scale": 0
+                      }
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "4eda38f9-0e39-41e2-885b-5d7745360a19",
+                    "name": "UIStroke",
+                    "properties": {
+                      "Color": "#000000",
+                      "Enabled": true,
+                      "Thickness": 2,
+                      "Transparency": 0
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "TextLabel",
+                    "id": "bc40dbb0-6aee-4807-8691-1e6a8fb35e0e",
+                    "name": "TitleTxt",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 1,
+                      "ClipsDescendants": false,
+                      "Font": "GothamBold",
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 8,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 10,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "Size": {
+                        "x": {
+                          "offset": 236,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 28,
+                          "scale": 0
+                        }
+                      },
+                      "Text": "Premium Bonus",
+                      "TextColor3": "#ffffff",
+                      "TextScaled": false,
+                      "TextSize": 20,
+                      "TextTransparency": 0,
+                      "TextWrapped": true,
+                      "TextXAlignment": "Center",
+                      "TextYAlignment": "Center",
+                      "Visible": true,
+                      "ZIndex": 9
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "TextLabel",
+                    "id": "a5b23164-ee1b-4aa6-9508-9deeefa1bf9c",
+                    "name": "AmountTxt",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 1,
+                      "ClipsDescendants": false,
+                      "Font": "GothamBold",
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 8,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 45,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "Size": {
+                        "x": {
+                          "offset": 236,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 30,
+                          "scale": 0
+                        }
+                      },
+                      "Text": "+50 Diamonds",
+                      "TextColor3": "#67ed14",
+                      "TextScaled": false,
+                      "TextSize": 22,
+                      "TextTransparency": 0,
+                      "TextWrapped": true,
+                      "TextXAlignment": "Center",
+                      "TextYAlignment": "Center",
+                      "Visible": true,
+                      "ZIndex": 9
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "TextLabel",
+                    "id": "a33d3103-8cd9-479c-9b55-3092a0c37a4a",
+                    "name": "HintTxt",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 1,
+                      "ClipsDescendants": false,
+                      "Font": "GothamBold",
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 8,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 86,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "Size": {
+                        "x": {
+                          "offset": 236,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 28,
+                          "scale": 0
+                        }
+                      },
+                      "Text": "Roblox Premium",
+                      "TextColor3": "#d6ddda",
+                      "TextScaled": false,
+                      "TextSize": 16,
+                      "TextTransparency": 0,
+                      "TextWrapped": true,
+                      "TextXAlignment": "Center",
+                      "TextYAlignment": "Center",
+                      "Visible": true,
+                      "ZIndex": 9
+                    }
+                  }
+                ],
+                "className": "Frame",
+                "id": "61dc2a1a-28ce-4459-8eb0-c53131974c57",
+                "name": "PremiumBonusImg",
+                "properties": {
+                  "AnchorPoint": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "BackgroundColor3": "#193e73",
+                  "BackgroundTransparency": 0,
+                  "ClipsDescendants": false,
+                  "LayoutOrder": 0,
+                  "Position": {
+                    "x": {
+                      "offset": 268,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 234,
+                      "scale": 0
+                    }
+                  },
+                  "Rotation": 0,
+                  "Size": {
+                    "x": {
+                      "offset": 252,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 124,
+                      "scale": 0
+                    }
+                  },
+                  "Visible": true,
+                  "ZIndex": 7
+                }
+              },
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UICorner",
+                    "id": "273708b8-c795-4aa0-801c-e731d608d107",
+                    "name": "UICorner",
+                    "properties": {
+                      "CornerRadius": {
+                        "offset": 6,
+                        "scale": 0
+                      }
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "b8937005-7204-441b-ba85-209daa38a62f",
+                    "name": "UIStroke",
+                    "properties": {
+                      "Color": "#000000",
+                      "Enabled": true,
+                      "Thickness": 2,
+                      "Transparency": 0
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "TextLabel",
+                    "id": "238ad558-c4ab-43ad-81d7-73ff9f396284",
+                    "name": "TitleTxt",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 1,
+                      "ClipsDescendants": false,
+                      "Font": "GothamBold",
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 8,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 10,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "Size": {
+                        "x": {
+                          "offset": 236,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 28,
+                          "scale": 0
+                        }
+                      },
+                      "Text": "Friends Bonus",
+                      "TextColor3": "#ffffff",
+                      "TextScaled": false,
+                      "TextSize": 20,
+                      "TextTransparency": 0,
+                      "TextWrapped": true,
+                      "TextXAlignment": "Center",
+                      "TextYAlignment": "Center",
+                      "Visible": true,
+                      "ZIndex": 9
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "TextLabel",
+                    "id": "5f4eaad6-9b0e-4ee2-8783-5f6f9729b26e",
+                    "name": "AmountTxt",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 1,
+                      "ClipsDescendants": false,
+                      "Font": "GothamBold",
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 8,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 45,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "Size": {
+                        "x": {
+                          "offset": 236,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 30,
+                          "scale": 0
+                        }
+                      },
+                      "Text": "+10 per friend",
+                      "TextColor3": "#67ed14",
+                      "TextScaled": false,
+                      "TextSize": 22,
+                      "TextTransparency": 0,
+                      "TextWrapped": true,
+                      "TextXAlignment": "Center",
+                      "TextYAlignment": "Center",
+                      "Visible": true,
+                      "ZIndex": 9
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "TextLabel",
+                    "id": "8eeccb75-e846-4cc0-b48b-fc9f891074a5",
+                    "name": "HintTxt",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 1,
+                      "ClipsDescendants": false,
+                      "Font": "GothamBold",
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 8,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 86,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "Size": {
+                        "x": {
+                          "offset": 236,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 28,
+                          "scale": 0
+                        }
+                      },
+                      "Text": "Up to +100 Diamonds",
+                      "TextColor3": "#d6ddda",
+                      "TextScaled": false,
+                      "TextSize": 16,
+                      "TextTransparency": 0,
+                      "TextWrapped": true,
+                      "TextXAlignment": "Center",
+                      "TextYAlignment": "Center",
+                      "Visible": true,
+                      "ZIndex": 9
+                    }
+                  }
+                ],
+                "className": "Frame",
+                "id": "092e87d7-a8b5-4085-b75d-b7b6510fec94",
+                "name": "FriendsBonusImg",
+                "properties": {
+                  "AnchorPoint": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "BackgroundColor3": "#7d400d",
+                  "BackgroundTransparency": 0,
+                  "ClipsDescendants": false,
+                  "LayoutOrder": 0,
+                  "Position": {
+                    "x": {
+                      "offset": 528,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 234,
+                      "scale": 0
+                    }
+                  },
+                  "Rotation": 0,
+                  "Size": {
+                    "x": {
+                      "offset": 252,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 124,
+                      "scale": 0
+                    }
+                  },
+                  "Visible": true,
+                  "ZIndex": 7
+                }
+              },
+              {
+                "children": [],
+                "className": "TextLabel",
+                "id": "e2862cb0-c402-411d-a281-651cd0731ed4",
+                "name": "FooterTxt",
+                "properties": {
+                  "AnchorPoint": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "BackgroundColor3": "#ffffff",
+                  "BackgroundTransparency": 1,
+                  "ClipsDescendants": false,
+                  "Font": "GothamBold",
+                  "LayoutOrder": 0,
+                  "Position": {
+                    "x": {
+                      "offset": 0,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 378,
+                      "scale": 0
+                    }
+                  },
+                  "Rotation": 0,
+                  "Size": {
+                    "x": {
+                      "offset": 788,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 28,
+                      "scale": 0
+                    }
+                  },
+                  "Text": "Resets daily · Rewards are confirmed by the server",
+                  "TextColor3": "#d6ddda",
+                  "TextScaled": false,
+                  "TextSize": 16,
+                  "TextTransparency": 0,
+                  "TextWrapped": true,
+                  "TextXAlignment": "Center",
+                  "TextYAlignment": "Center",
+                  "Visible": true,
+                  "ZIndex": 9
+                }
+              }
+            ],
+            "className": "Frame",
+            "id": "5114c293-89e4-4b25-a4de-8f17a6778f9f",
+            "name": "DiamondsBox",
             "properties": {
               "AnchorPoint": {
                 "x": 0,
@@ -959,7 +2161,7 @@
                     "x": 0,
                     "y": 0
                   },
-                  "BackgroundColor3": "#48246B",
+                  "BackgroundColor3": "#7d5b0b",
                   "BackgroundTransparency": 0.2,
                   "ClipsDescendants": false,
                   "LayoutOrder": 0,
@@ -997,7 +2199,7 @@
                 "x": 0,
                 "y": 0
               },
-              "BackgroundColor3": "#8A4DC2",
+              "BackgroundColor3": "#d9ab27",
               "BackgroundTransparency": 0,
               "ClipsDescendants": true,
               "LayoutOrder": 0,
@@ -1416,6 +2618,70 @@
                   "Visible": true,
                   "ZIndex": 9
                 }
+              },
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UICorner",
+                    "id": "72df7f9a-69e5-401a-bfe6-03103337905c",
+                    "name": "UICorner",
+                    "properties": {
+                      "CornerRadius": {
+                        "offset": 0,
+                        "scale": 0.5
+                      }
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "faab8a8f-9972-417e-b55a-b82d2005aa1d",
+                    "name": "UIStroke",
+                    "properties": {
+                      "Color": "#000000",
+                      "Enabled": true,
+                      "Thickness": 2,
+                      "Transparency": 0
+                    }
+                  }
+                ],
+                "className": "Frame",
+                "id": "b4e3bf9f-d158-494e-bd4f-b841df379c4b",
+                "name": "RedDotImg",
+                "properties": {
+                  "AnchorPoint": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "BackgroundColor3": "#df1a23",
+                  "BackgroundTransparency": 0,
+                  "ClipsDescendants": false,
+                  "LayoutOrder": 0,
+                  "Position": {
+                    "x": {
+                      "offset": -9,
+                      "scale": 1
+                    },
+                    "y": {
+                      "offset": -5,
+                      "scale": 0
+                    }
+                  },
+                  "Rotation": 0,
+                  "Size": {
+                    "x": {
+                      "offset": 16,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 16,
+                      "scale": 0
+                    }
+                  },
+                  "Visible": true,
+                  "ZIndex": 12
+                }
               }
             ],
             "className": "ImageButton",
@@ -1636,6 +2902,70 @@
                   "TextYAlignment": "Center",
                   "Visible": true,
                   "ZIndex": 9
+                }
+              },
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UICorner",
+                    "id": "ec201986-f6d1-4e87-a091-d46e8cdb7879",
+                    "name": "UICorner",
+                    "properties": {
+                      "CornerRadius": {
+                        "offset": 0,
+                        "scale": 0.5
+                      }
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "3d1d450f-5f24-45c7-a0ac-d0daabfd1306",
+                    "name": "UIStroke",
+                    "properties": {
+                      "Color": "#000000",
+                      "Enabled": true,
+                      "Thickness": 2,
+                      "Transparency": 0
+                    }
+                  }
+                ],
+                "className": "Frame",
+                "id": "85630924-232a-43f1-aa07-702f4a33e355",
+                "name": "RedDotImg",
+                "properties": {
+                  "AnchorPoint": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "BackgroundColor3": "#df1a23",
+                  "BackgroundTransparency": 0,
+                  "ClipsDescendants": false,
+                  "LayoutOrder": 0,
+                  "Position": {
+                    "x": {
+                      "offset": -9,
+                      "scale": 1
+                    },
+                    "y": {
+                      "offset": -5,
+                      "scale": 0
+                    }
+                  },
+                  "Rotation": 0,
+                  "Size": {
+                    "x": {
+                      "offset": 16,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 16,
+                      "scale": 0
+                    }
+                  },
+                  "Visible": true,
+                  "ZIndex": 12
                 }
               }
             ],
@@ -1858,6 +3188,70 @@
                   "Visible": true,
                   "ZIndex": 9
                 }
+              },
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UICorner",
+                    "id": "a8a81a01-4c1c-4a7b-be39-a36a5753ee98",
+                    "name": "UICorner",
+                    "properties": {
+                      "CornerRadius": {
+                        "offset": 0,
+                        "scale": 0.5
+                      }
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "9c53c56b-ad29-41bf-9ba4-24d2b420a720",
+                    "name": "UIStroke",
+                    "properties": {
+                      "Color": "#000000",
+                      "Enabled": true,
+                      "Thickness": 2,
+                      "Transparency": 0
+                    }
+                  }
+                ],
+                "className": "Frame",
+                "id": "9eb9e009-0843-47b9-af12-d23de666f299",
+                "name": "RedDotImg",
+                "properties": {
+                  "AnchorPoint": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "BackgroundColor3": "#df1a23",
+                  "BackgroundTransparency": 0,
+                  "ClipsDescendants": false,
+                  "LayoutOrder": 0,
+                  "Position": {
+                    "x": {
+                      "offset": -9,
+                      "scale": 1
+                    },
+                    "y": {
+                      "offset": -5,
+                      "scale": 0
+                    }
+                  },
+                  "Rotation": 0,
+                  "Size": {
+                    "x": {
+                      "offset": 16,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 16,
+                      "scale": 0
+                    }
+                  },
+                  "Visible": true,
+                  "ZIndex": 12
+                }
               }
             ],
             "className": "ImageButton",
@@ -1886,6 +3280,291 @@
                 },
                 "y": {
                   "offset": 148,
+                  "scale": 0
+                }
+              },
+              "Rotation": 0,
+              "ScaleType": "Tile",
+              "Size": {
+                "x": {
+                  "offset": 154,
+                  "scale": 0
+                },
+                "y": {
+                  "offset": 58,
+                  "scale": 0
+                }
+              },
+              "TileSize": {
+                "x": {
+                  "offset": 28,
+                  "scale": 0
+                },
+                "y": {
+                  "offset": 28,
+                  "scale": 0
+                }
+              },
+              "Visible": true,
+              "ZIndex": 7
+            }
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "className": "UICorner",
+                "id": "88d2787c-b313-4c7f-bad9-e96b9b693b77",
+                "name": "UICorner",
+                "properties": {
+                  "CornerRadius": {
+                    "offset": 6,
+                    "scale": 0
+                  }
+                }
+              },
+              {
+                "children": [],
+                "className": "UIStroke",
+                "id": "d2dc0f3d-090d-4109-824f-089a3e805891",
+                "name": "UIStroke",
+                "properties": {
+                  "Color": "#000000",
+                  "Enabled": true,
+                  "Thickness": 3,
+                  "Transparency": 0
+                }
+              },
+              {
+                "children": [],
+                "className": "Frame",
+                "id": "1bcdd5de-2b67-4cc7-a88d-95a9ccafe2c1",
+                "name": "TopHighlightImg",
+                "properties": {
+                  "AnchorPoint": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "BackgroundColor3": "#ffffff",
+                  "BackgroundTransparency": 0.58,
+                  "ClipsDescendants": false,
+                  "LayoutOrder": 0,
+                  "Position": {
+                    "x": {
+                      "offset": 0,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 0,
+                      "scale": 0
+                    }
+                  },
+                  "Rotation": 0,
+                  "Size": {
+                    "x": {
+                      "offset": 154,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 2,
+                      "scale": 0
+                    }
+                  },
+                  "Visible": true,
+                  "ZIndex": 8
+                }
+              },
+              {
+                "children": [],
+                "className": "Frame",
+                "id": "557741c3-4926-4358-9235-5ad75715437b",
+                "name": "BottomEdgeImg",
+                "properties": {
+                  "AnchorPoint": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "BackgroundColor3": "#263e36",
+                  "BackgroundTransparency": 0.2,
+                  "ClipsDescendants": false,
+                  "LayoutOrder": 0,
+                  "Position": {
+                    "x": {
+                      "offset": 0,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 54,
+                      "scale": 0
+                    }
+                  },
+                  "Rotation": 0,
+                  "Size": {
+                    "x": {
+                      "offset": 154,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 4,
+                      "scale": 0
+                    }
+                  },
+                  "Visible": true,
+                  "ZIndex": 8
+                }
+              },
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "ebed95a6-ce74-4c2c-87f6-4fe267b157d3",
+                    "name": "TextStroke",
+                    "properties": {
+                      "Color": "#20231c",
+                      "Enabled": true,
+                      "Thickness": 2,
+                      "Transparency": 0
+                    }
+                  }
+                ],
+                "className": "TextLabel",
+                "id": "9ae95a75-cdba-4eeb-b432-8a7111988f72",
+                "name": "ButtonTxt",
+                "properties": {
+                  "AnchorPoint": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "BackgroundColor3": "#ffffff",
+                  "BackgroundTransparency": 1,
+                  "ClipsDescendants": false,
+                  "Font": "GothamBold",
+                  "LayoutOrder": 0,
+                  "Position": {
+                    "x": {
+                      "offset": 0,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": -2,
+                      "scale": 0
+                    }
+                  },
+                  "Rotation": 0,
+                  "Size": {
+                    "x": {
+                      "offset": 0,
+                      "scale": 1
+                    },
+                    "y": {
+                      "offset": 0,
+                      "scale": 1
+                    }
+                  },
+                  "Text": "Diamonds",
+                  "TextColor3": "#ffffff",
+                  "TextScaled": false,
+                  "TextSize": 24,
+                  "TextTransparency": 0,
+                  "TextWrapped": true,
+                  "TextXAlignment": "Center",
+                  "TextYAlignment": "Center",
+                  "Visible": true,
+                  "ZIndex": 9
+                }
+              },
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UICorner",
+                    "id": "5aaeb2c9-4092-4262-811d-24104860a52e",
+                    "name": "UICorner",
+                    "properties": {
+                      "CornerRadius": {
+                        "offset": 0,
+                        "scale": 0.5
+                      }
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "df0c937f-9365-4d3a-a56e-9e19e012722c",
+                    "name": "UIStroke",
+                    "properties": {
+                      "Color": "#000000",
+                      "Enabled": true,
+                      "Thickness": 2,
+                      "Transparency": 0
+                    }
+                  }
+                ],
+                "className": "Frame",
+                "id": "28bfa65f-cd3d-4711-84c4-ca90d8282143",
+                "name": "RedDotImg",
+                "properties": {
+                  "AnchorPoint": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "BackgroundColor3": "#df1a23",
+                  "BackgroundTransparency": 0,
+                  "ClipsDescendants": false,
+                  "LayoutOrder": 0,
+                  "Position": {
+                    "x": {
+                      "offset": -9,
+                      "scale": 1
+                    },
+                    "y": {
+                      "offset": -5,
+                      "scale": 0
+                    }
+                  },
+                  "Rotation": 0,
+                  "Size": {
+                    "x": {
+                      "offset": 16,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 16,
+                      "scale": 0
+                    }
+                  },
+                  "Visible": true,
+                  "ZIndex": 12
+                }
+              }
+            ],
+            "className": "ImageButton",
+            "id": "652a91bd-89a4-4b64-a4de-fde77463cb36",
+            "name": "DiamondsTabBtn",
+            "previewImage": {
+              "dataUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAACXBIWXMAACE4AAAhOAFFljFgAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAAAgdJREFUeAHt3M1KAlEUwPFjn7TpA6woq0WLFkLv5ELwxXyOniFoIZkaWpGbwijCSpvObUaI0Ijo3nOV/w8OTbNR599c29wRAQAAAAAAAAAAAAAAADBrchJIkiTutZZ1jnQOdRYkLgOdK52zXC73KoEECaAXf05/rEp68Q8kbpc6TZ0HDZGIZ3MSxmr2WjsSv31J3+tadtd65X0Z0A+xJOmScyDxLTs/cRHcktkXj0LcAccS55o/ye2X40XxLMRF2ZPp8KZzLel3wMhMBJj0IU4kMpVKZaterxfdcaFQuK9Wq13xbJrWZK9KpdJOq9XKj37vdDqbGuRdD+/Fo1D/BUWv3W5vfD+nd0NePCNAZjgczv/m3H8jgDECGCOAMQIYI4AxAhgjgDECGCOAMQIYI4AxAhgjgDECGCOAMQIYI4AxAhgjgDECGCOAMQIYI4AxAhgjgDECGCOAMQIYI4AxAhgjgDECGAuxRcltfvu+T8ztSh/tycqH2AgRqxB3wOWYc7duT1atVtuO+eInSfIknoUIUNfpSHonuHFBLsbtyYpNt9vtiWchlqAXnXOdhkyRwWDw1mg0rsQz73dA9sCLR53h1/PFYvFOIuUuvt6hp3ro/akpwR5X42TPjVjR+Vz3y+XybrPZXI/le6Df7z/re7zr9Xo3+tf/IgAAAAAAAAAAAAAAAADwBx/xiIkJsM5B3AAAAABJRU5ErkJggg==",
+              "name": "StudTile.png"
+            },
+            "properties": {
+              "AnchorPoint": {
+                "x": 0,
+                "y": 0
+              },
+              "BackgroundColor3": "#638079",
+              "BackgroundTransparency": 0,
+              "ClipsDescendants": false,
+              "Image": "rbxassetid://82793028306773",
+              "ImageColor3": "#ffffff",
+              "ImageTransparency": 0,
+              "LayoutOrder": 0,
+              "Position": {
+                "x": {
+                  "offset": 0,
+                  "scale": 0
+                },
+                "y": {
+                  "offset": 222,
                   "scale": 0
                 }
               },
@@ -1945,7 +3624,7 @@
               "scale": 0
             },
             "y": {
-              "offset": 230,
+              "offset": 280,
               "scale": 0
             }
           },
@@ -4379,8 +6058,8 @@
     }
   },
   "scripts": {
-    "integration": "local FX = _G.FX\r\nlocal CWelfarePreview = FX.Class(\"CWelfarePreview\", \"CWelfareView\")\r\n\r\n-- 初始化隔离的模拟配置；修改数值可验证锁定、完成、超出目标和无效目标。\r\n-- @param owner table 编辑器组件宿主\r\nfunction CWelfarePreview:Ctor(owner)\r\n    CWelfarePreview.Super.Ctor(self, owner)\r\n    self.Config = {\r\n        groups = {\r\n            {\r\n                kind = \"online\", page = \"OnlineBox\", columns = 3, gapX = 20, gapY = 16,\r\n                items = {\r\n                    { id = \"online_5\", minutes = 5, reward = { type = \"Currency\", id = \"Gold\", amount = 100 }},\r\n                    { id = \"online_10\", minutes = 10, reward = { type = \"Currency\", id = \"Gold\", amount = 200 }},\r\n                    { id = \"online_15\", minutes = 15, reward = { type = \"Currency\", id = \"Diamond\", amount = 20 }},\r\n                    { id = \"online_30\", minutes = 30, reward = { type = \"Currency\", id = \"Gold\", amount = 500 }},\r\n                    { id = \"online_45\", minutes = 45, reward = { type = \"Currency\", id = \"Diamond\", amount = 50 }},\r\n                    { id = \"online_60\", minutes = 60, reward = { type = \"Item\", id = \"CommonEgg\", amount = 1 }}\r\n                }\r\n            },\r\n            {\r\n                kind = \"signin\", page = \"SignInBox\", columns = 3, gapX = 12, gapY = 16,\r\n                items = {\r\n                    { id = \"day_1\", day = 1, reward = { type = \"Currency\", id = \"Gold\", amount = 100 }},\r\n                    { id = \"day_2\", day = 2, reward = { type = \"Currency\", id = \"Gold\", amount = 200 }},\r\n                    { id = \"day_3\", day = 3, reward = { type = \"Item\", id = \"CommonEgg\", amount = 1 }},\r\n                    { id = \"day_4\", day = 4, reward = { type = \"Currency\", id = \"Diamond\", amount = 50 }},\r\n                    { id = \"day_5\", day = 5, reward = { type = \"Currency\", id = \"Gold\", amount = 500 }},\r\n                    { id = \"day_6\", day = 6, reward = { type = \"Currency\", id = \"Diamond\", amount = 100 }},\r\n                    { id = \"day_7\", day = 7, reward = { type = \"Item\", id = \"RareEgg\", amount = 1 }, featured = true, badge = \"Weekly Reward\", color = { 102, 80, 25 }}\r\n                }\r\n            },\r\n            {\r\n                kind = \"task\", page = \"TasksBox\", columns = 1, gapX = 0, gapY = 12,\r\n                items = {\r\n                    { id = \"collect_coins\", title = \"Collect 1,000 Coins\", target = 1000, previewValue = 1000, reward = { type = \"Currency\", id = \"Gold\", amount = 300 }},\r\n                    { id = \"play_matches\", title = \"Play 3 Matches\", target = 3, previewValue = 1, reward = { type = \"Currency\", id = \"Diamond\", amount = 30 }},\r\n                    { id = \"hatch_egg\", title = \"Hatch 1 Pet Egg\", target = 1, previewValue = 0, reward = { type = \"Currency\", id = \"Gold\", amount = 500 }},\r\n                    { id = \"win_matches\", title = \"Win 2 Matches\", target = 2, previewValue = 1, reward = { type = \"Currency\", id = \"Diamond\", amount = 40 }},\r\n                    { id = \"collect_gems\", title = \"Collect 50 Diamonds\", target = 50, previewValue = 20, reward = { type = \"Currency\", id = \"Gold\", amount = 600 }},\r\n                    { id = \"hatch_three\", title = \"Hatch 3 Pet Eggs\", target = 3, previewValue = 2, reward = { type = \"Currency\", id = \"Diamond\", amount = 60 }},\r\n                    { id = \"play_ten\", title = \"Play 10 Matches\", target = 10, previewValue = 10, reward = { type = \"Currency\", id = \"Gold\", amount = 1000 }}\r\n                }\r\n            }\r\n        }\r\n    }\r\n    self.State = { onlineMinutes = 12, signInDay = 1, entries = {} }\r\n    self.FailNextClaim = false\r\n    for _, group in ipairs(self.Config.groups) do\r\n        local entries = {}\r\n        self.State.entries[group.kind] = entries\r\n        for _, config in ipairs(group.items) do\r\n            local entry = { status = \"Locked\", pending = false, current = config.previewValue or 0 }\r\n            if group.kind == \"online\" and self.State.onlineMinutes >= config.minutes then\r\n                entry.status = \"Claimable\"\r\n            elseif group.kind == \"signin\" and config.day == self.State.signInDay then\r\n                entry.status = \"Claimable\"\r\n            elseif group.kind == \"task\" and config.target > 0 and entry.current >= config.target then\r\n                entry.status = \"Claimable\"\r\n            end\r\n            if group.kind == \"signin\" and config.day == self.State.signInDay + 1 then\r\n                entry.label = \"Tomorrow\"\r\n            end\r\n            entries[config.id] = entry\r\n        end\r\n    end\r\nend\r\n\r\n-- 模拟项目奖励配置查询，与游戏接入保持同一返回契约。\r\n-- @param reward table 奖励类型、ID 和原始数量\r\n-- @return table name 与模板图标类别\r\nfunction CWelfarePreview:GetRewardDisplay(reward)\r\n    local catalog = {\r\n        Currency = {\r\n            Gold = { name = \"Coins\", icon = \"Coin\" },\r\n            Diamond = { name = \"Diamonds\", icon = \"Gem\" },\r\n        },\r\n        Item = {\r\n            CommonEgg = { name = \"Common Egg\", icon = \"Egg\" },\r\n            RareEgg = { name = \"Rare Egg\", icon = \"Egg\" },\r\n        },\r\n    }\r\n    local group = catalog[reward.type]\r\n    return assert(group and group[reward.id], \"Missing simulated reward: \" .. tostring(reward.id))\r\nend\r\n\r\n-- 只模拟领取；拒绝重复和待处理请求，失败后允许重试。\r\n-- @param action string View 发出的动作\r\n-- @param payload table kind 与 rewardId\r\nfunction CWelfarePreview:OnUIAction(action, payload)\r\n    assert(action == \"Claim\", \"Unsupported welfare action: \" .. action)\r\n    local entries = self.State.entries[payload.kind]\r\n    local entry = entries and entries[payload.rewardId]\r\n    assert(entry, \"Unknown reward ID: \" .. tostring(payload.rewardId))\r\n    if entry.status ~= \"Claimable\" or entry.pending then\r\n        return\r\n    end\r\n    entry.pending, entry.error = true, nil\r\n    self:RefreshUI()\r\n    entry.pending = false\r\n    if self.FailNextClaim then\r\n        self.FailNextClaim = false\r\n        entry.error = \"Simulated request failure\"\r\n    else\r\n        entry.status = \"Claimed\"\r\n    end\r\n    self:RefreshUI()\r\nend\r\n\r\nreturn CWelfarePreview\r\n",
-    "source": "--[[\n福利界面接入契约（完整状态刷新，非增量）\nConfig.groups: 必填有序数组，含 online/signin/task 三组；items 数量可变，允许空数组。\n每组必填 kind: \"online\" | \"signin\" | \"task\"，分别对应 page:\n\"OnlineBox\" / \"SignInBox\" / \"TasksBox\"；columns: 正整数列数（task 为 1）；\ngapX/gapY: number，条目间距，单位像素；items: 有序配置数组。\nitems 每项必填 id: string，组内唯一稳定奖励/任务 ID；\nreward: { type: string, id: string, amount: number }，游戏奖励类型、物品 ID 和数量。\nonline 项必填 minutes: number（分钟）；signin 项必填 day: number（天序号）；\ntask 项必填 title: string、target: number（目标，<=0 显示空进度）。\nsignin 项可选 featured: boolean，默认 false；true 时必填 badge: string、\ncolor: {number, number, number}（RGB 0–255），显示双行大奖。\npreviewValue: number 仅模拟层读取，缺省 0，不属于游戏必需配置。\n\nState 必填 onlineMinutes: number（分钟）、signInDay: number（当前签到天）、\nentries: 按 kind 再按 Config.items.id 索引的字典；\nentries[kind][id] 必填 status: \"Locked\" | \"Claimable\" | \"Claimed\"；\ntask 项必填 current: number，单位与 target 相同。\n可选 pending: boolean（缺省 false）、error: string（缺省 nil，可领取时显示 Retry）、\nlabel: string（缺省 nil，Locked 时自定义按钮文字）。\n空组使用 items={}、entries[kind]={}；缺失配置对应状态会报错，不自动补齐。\nTemplates 永远隐藏；首次访问页签才克隆该页，按 ID 更新、移除及排序；\n任务数量不固定，CanvasSize 随实际内容计算，超出视口垂直滚动。\n\n初始化：接入 Ctor 先调父构造，再准备 Config/State；OnReady 先调父 OnReady，\n再 BindUIData()、Show()。GetUIConfig/GetUIState 默认读取 self.Config/self.State；\n数据变化后 self:RefreshUI()，Render 只读数据。异步加载完成前不 Show。\n最小完整示例：\nself.Config = { groups = {\n    { kind=\"online\", page=\"OnlineBox\", columns=3, gapX=20, gapY=16, items={} },\n    { kind=\"signin\", page=\"SignInBox\", columns=3, gapX=12, gapY=16, items={} },\n    { kind=\"task\", page=\"TasksBox\", columns=1, gapX=0, gapY=12, items={\n        { id=\"collect\", title=\"Collect Coins\", target=100,\n          reward={ type=\"Currency\", id=\"Gold\", amount=20 } }\n    } }\n} }\nself.State = { onlineMinutes=0, signInDay=1, entries={\n    online={}, signin={}, task={ collect={ status=\"Claimable\", current=100 } }\n} }\n\n必需覆写 GetRewardDisplay(reward)，返回 {name: string, icon: \"Coin\"|\"Gem\"|\"Egg\"}；\n当前图标是设计内几何占位，只用于展示，不作为物品身份。\n必需覆写 OnUIAction(action, payload)，无返回值：\naction=\"Claim\"，payload={kind: string, rewardId: string}，rewardId 对应 items.id。\n资格校验及发奖由游戏接入负责；请求期间 pending=true，成功改 Claimed，\n失败保留 Claimable 并设置 error；每次更新后 RefreshUI。\n可选覆写 FormatReward(name, amount)，默认返回名称与原始数量。\n模拟接入仅更新模拟状态，不实际发奖。\n]]\nlocal FX = _G.FX\nlocal Loader = FX.Loader\nlocal CWelfareView = FX.Class(\"CWelfareView\", \"CUIView\")\n\n-- 局部条目只管理自身克隆与连接，不执行整屏适配。\nlocal RewardRow = {}\nRewardRow.__index = RewardRow\n\n-- 绑定一个条目；点击时读取最新配置中的稳定业务 ID。\n-- @param view table 所属页面\n-- @param group table 分组配置\n-- @param root Instance 页面创建的克隆节点\n-- @return table 条目展示对象\nfunction RewardRow.Attach(view, group, root)\n    local row = setmetatable({ View = view, Kind = group.kind, Root = root }, RewardRow)\n    row.Button = Loader:Here(root, \"ClaimBtn\")\n    row.Connection = row.Button.Activated:Connect(function()\n        view:EmitUIAction(\"Claim\", { kind = row.Kind, rewardId = row.Config.id })\n    end)\n    return row\nend\n\n-- 使用项目查询结果展示奖励，按业务状态控制按钮，不判断真实领取资格。\n-- @param config table 当前条目配置\n-- @param state table 当前条目状态\nfunction RewardRow:Update(config, state)\n    self.Config = config\n    local root = self.Root\n    local display = self.View:GetRewardDisplay(config.reward)\n    local rewardText = self.View:FormatReward(display.name, config.reward.amount)\n    Loader:Here(root, \"RewardTxt\").Text = self.Kind == \"task\" and (\"Reward: \" .. rewardText) or rewardText\n    if self.Kind == \"task\" then\n        Loader:Here(root, \"TaskNameTxt\").Text = config.title\n        local bar = Loader:Here(root, \"ProgressBarImg\")\n        local target = config.target\n        local ratio = 0\n        if target > 0 then\n            ratio = math.clamp(state.current / target, 0, 1)\n        end\n        Loader:Here(bar, \"ProgressFillImg\").Size = UDim2.fromScale(ratio, 1)\n        Loader:Here(bar, \"ProgressTxt\").Text = target > 0 and (state.current .. \" / \" .. target) or \"—\"\n    else\n        local text = self.Kind == \"online\" and (config.minutes .. \" min\") or (\"Day \" .. config.day)\n        Loader:Here(root, self.Kind == \"online\" and \"TimeTxt\" or \"DayTxt\").Text = text\n        assert(display.icon == \"Coin\" or display.icon == \"Gem\" or display.icon == \"Egg\", \"Unsupported reward icon: \" .. tostring(display.icon))\n        for _, icon in ipairs({ \"Coin\", \"Gem\", \"Egg\" }) do\n            Loader:Here(root, icon .. \"IconBox\").Visible = display.icon == icon\n        end\n    end\n    local label = \"Locked\"\n    if state.pending then\n        label = \"Claiming...\"\n    elseif state.status == \"Claimed\" then\n        label = self.Kind == \"signin\" and \"Checked In\" or \"Claimed\"\n    elseif state.status == \"Claimable\" then\n        label = state.error and \"Retry\" or (self.Kind == \"signin\" and \"Check In\" or \"Claim\")\n    elseif state.status == \"Locked\" then\n        label = state.label or (self.Kind == \"task\" and \"In Progress\" or \"Locked\")\n    else\n        error(\"Unknown reward status: \" .. tostring(state.status))\n    end\n    self.View:RenderButton(self.Button, label, state.status == \"Claimable\" and not state.pending)\nend\n\n-- 释放条目拥有的事件与克隆根；不删除页面设计模板。\nfunction RewardRow:Destroy()\n    self.Connection:Disconnect()\n    self.Root:Destroy()\nend\n\n-- 绑定设计节点；页签和关闭由展示层维护，不发送业务请求。\nfunction CWelfareView:OnReady()\n    self.Root = Loader:PlayerGui(\"WelfareUI\")\n    self.Rows = {}\n    self.ActiveTab = \"online\"\n    local tabs = { { \"online\", \"OnlineTabBtn\" }, { \"signin\", \"SignInTabBtn\" }, { \"task\", \"TasksTabBtn\" } }\n    for _, tab in ipairs(tabs) do\n        self:TrackConnection(Loader:Here(self.Root, \"TabsBox.\" .. tab[2]).Activated:Connect(function()\n            self.ActiveTab = tab[1]\n            self:RefreshUI()\n        end))\n    end\n    self:TrackConnection(Loader:Here(self.Root, \"TitleBox.CloseSurfaceImg.CloseBtn\").Activated:Connect(function()\n        self:Hide()\n    end))\nend\n\n-- 每次打开显示最新接入数据，隐藏不丢失状态或重建事件。\nfunction CWelfareView:OnShow()\n    self:RefreshUI()\nend\n\n-- 游戏与模拟接入都必须提供奖励展示查询。\n-- @param reward table 原始奖励类型、ID 与数量\n-- @return table name 和当前模板支持的 icon（Coin/Gem/Egg）\nfunction CWelfareView:GetRewardDisplay(reward)\n    error(\"Welfare integration must implement GetRewardDisplay\")\nend\n\n-- 可选覆写的数量显示格式，不修改原始奖励数据。\n-- @param name string 奖励名称\n-- @param amount number 原始数量\n-- @return string 显示文本\nfunction CWelfareView:FormatReward(name, amount)\n    return name .. \" ×\" .. tostring(amount)\nend\n\n-- 领取动作必须由游戏或模拟接入实现。\n-- @param action string 动作名称\n-- @param payload table kind 和 rewardId\nfunction CWelfareView:OnUIAction(action, payload)\n    error(\"Welfare integration must implement OnUIAction\")\nend\n\n-- 按稳定 ID 增删、排序和更新条目；未变化条目保留节点与连接。\n-- @param group table 分组、布局和有序条目\n-- @param states table 以业务 ID 索引的展示状态\nfunction CWelfareView:SyncItems(group, states)\n    local page = Loader:Here(self.Root, \"PopupPanelImg.\" .. group.page)\n    local template = Loader:Here(self.Root, \"Templates.\" .. group.page .. \"TemplateImg\")\n    local container = Loader:Here(page, \"ItemsBox\")\n    template.Visible = false\n    local rows = self.Rows[group.kind] or {}\n    self.Rows[group.kind] = rows\n    local keep = {}\n    local width, height = template.Size.X.Offset, template.Size.Y.Offset\n    local normalIndex, bottom = 0, 0\n    for index, config in ipairs(group.items) do\n        assert(not keep[config.id], \"Duplicate reward ID: \" .. config.id)\n        keep[config.id] = true\n        local row = rows[config.id]\n        if row and row.Featured ~= (config.featured == true) then\n            row.Release()\n            rows[config.id] = nil\n            row = nil\n        end\n        if not row then\n            local root = template:Clone()\n            root.Name = \"Item_\" .. config.id .. \"Img\"\n            root.Parent = container\n            root.Visible = true\n            row = RewardRow.Attach(self, group, root)\n            row.Featured = config.featured == true\n            row.Release = self:TrackCleanup(function()\n                row:Destroy()\n            end)\n            rows[config.id] = row\n        end\n        local root = row.Root\n        local x = (normalIndex % group.columns) * (width + group.gapX)\n        local y = math.floor(normalIndex / group.columns) * (height + group.gapY)\n        if config.featured then\n            x, y = group.columns * (width + group.gapX), 0\n            root.Size = UDim2.fromOffset(width, height * 2 + group.gapY)\n            self:StyleFeatured(root, config)\n        else\n            normalIndex = normalIndex + 1\n        end\n        root.Position = UDim2.fromOffset(x + 2, y + 2)\n        root.LayoutOrder = index\n        bottom = math.max(bottom, y + root.Size.Y.Offset)\n        row:Update(config, assert(states[config.id], \"Missing reward state: \" .. group.kind .. \"/\" .. config.id))\n    end\n    for id, row in pairs(rows) do\n        if not keep[id] then\n            row.Release()\n            rows[id] = nil\n        end\n    end\n    container.CanvasSize = UDim2.fromOffset(container.Size.X.Offset - container.ScrollBarThickness, bottom + 4)\n    local maxScroll = math.max(0, bottom + 4 - container.Size.Y.Offset)\n    container.CanvasPosition = Vector2.new(0, math.min(container.CanvasPosition.Y, maxScroll))\nend\n\n-- 沿用设计模板的双行大奖布局。\n-- @param row Instance 克隆条目\n-- @param config table 大奖外观配置\nfunction CWelfareView:StyleFeatured(row, config)\n    row.BackgroundColor3 = Color3.fromRGB(config.color[1], config.color[2], config.color[3])\n    local label = Loader:Here(row, \"WeeklyTxt\")\n    label.Visible, label.Text = true, config.badge\n    local width = row.Size.X.Offset\n    for _, iconType in ipairs({ \"Coin\", \"Gem\", \"Egg\" }) do\n        local box = Loader:Here(row, iconType .. \"IconBox\")\n        local icon = Loader:Here(box, \"RewardIconImg\")\n        icon.Position = UDim2.fromOffset((width - 64) / 2, 92)\n        icon.Size = UDim2.fromOffset(64, 64)\n        for _, child in ipairs(box:GetChildren()) do\n            if child.Name == \"IconMarkTxt\" then\n                child.Position, child.Size = icon.Position, icon.Size\n            end\n        end\n    end\n    local reward = Loader:Here(row, \"RewardTxt\")\n    reward.Position, reward.Size = UDim2.fromOffset(0, 176), UDim2.fromOffset(width, 55)\n    local button = Loader:Here(row, \"ClaimBtn\")\n    button.Position = UDim2.fromOffset(button.Position.X.Offset, row.Size.Y.Offset - 48)\nend\n\n-- 保留风格按钮表面，只更新状态。\n-- @param button Instance 点击节点\n-- @param label string 显示文字\n-- @param enabled boolean 是否允许操作\nfunction CWelfareView:RenderButton(button, label, enabled)\n    self:SetButtonEnabled(button, enabled)\n    button.BackgroundColor3 = enabled and Color3.fromRGB(103, 237, 20) or Color3.fromRGB(99, 128, 121)\n    Loader:Here(button, \"ButtonTxt\").Text = label\n    Loader:Here(button, \"BottomEdgeImg\").BackgroundColor3 = enabled and Color3.fromRGB(34, 90, 7) or Color3.fromRGB(38, 62, 54)\nend\n\n-- 接入提供状态，View 只组织页面和条目展示，不改根节点的显隐。\n-- @param state table entries、onlineMinutes 与 signInDay\nfunction CWelfareView:Render(state)\n    local tabs = { online = \"OnlineTabBtn\", signin = \"SignInTabBtn\", task = \"TasksTabBtn\" }\n    local labels = { online = \"Online\\nRewards\", signin = \"Daily Login\", task = \"Tasks\" }\n    for _, group in ipairs(self:GetUIConfig().groups) do\n        Loader:Here(self.Root, \"PopupPanelImg.\" .. group.page).Visible = self.ActiveTab == group.kind\n        local button = Loader:Here(self.Root, \"TabsBox.\" .. tabs[group.kind])\n        self:RenderButton(button, labels[group.kind], true)\n        if self.ActiveTab ~= group.kind then\n            button.BackgroundColor3 = Color3.fromRGB(99, 128, 121)\n            Loader:Here(button, \"BottomEdgeImg\").BackgroundColor3 = Color3.fromRGB(38, 62, 54)\n        end\n        if self.ActiveTab == group.kind then\n            self:SyncItems(group, assert(state.entries[group.kind], \"Missing group state: \" .. group.kind))\n        end\n    end\n    Loader:Here(self.Root, \"PopupPanelImg.OnlineBox.SubtitleTxt\").Text = \"Online: \" .. state.onlineMinutes .. \" min · Resets daily\"\n    Loader:Here(self.Root, \"PopupPanelImg.SignInBox.HeadingTxt\").Text = \"Daily Login · Day \" .. state.signInDay\nend\n\nreturn CWelfareView\n"
+    "integration": "local FX = _G.FX\r\nlocal CWelfarePreview = FX.Class(\"CWelfarePreview\", \"CWelfareView\")\r\n\r\n-- 初始化隔离的模拟配置；修改数值可验证锁定、完成、超出目标和无效目标。\r\n-- @param owner table 编辑器组件宿主\r\nfunction CWelfarePreview:Ctor(owner)\r\n    CWelfarePreview.Super.Ctor(self, owner)\r\n    self.Config = {\r\n        groups = {\r\n            {\r\n                kind = \"online\", page = \"OnlineBox\", columns = 3, gapX = 20, gapY = 16,\r\n                items = {\r\n                    { id = \"online_5\", minutes = 5, reward = { type = \"Currency\", id = \"Gold\", amount = 100 }},\r\n                    { id = \"online_10\", minutes = 10, reward = { type = \"Currency\", id = \"Gold\", amount = 200 }},\r\n                    { id = \"online_15\", minutes = 15, reward = { type = \"Currency\", id = \"Diamond\", amount = 20 }},\r\n                    { id = \"online_30\", minutes = 30, reward = { type = \"Currency\", id = \"Gold\", amount = 500 }},\r\n                    { id = \"online_45\", minutes = 45, reward = { type = \"Currency\", id = \"Diamond\", amount = 50 }},\r\n                    { id = \"online_60\", minutes = 60, reward = { type = \"Item\", id = \"CommonEgg\", amount = 1 }}\r\n                }\r\n            },\r\n            {\r\n                kind = \"signin\", page = \"SignInBox\", columns = 3, gapX = 12, gapY = 16,\r\n                items = {\r\n                    { id = \"day_1\", day = 1, reward = { type = \"Currency\", id = \"Gold\", amount = 100 }},\r\n                    { id = \"day_2\", day = 2, reward = { type = \"Currency\", id = \"Gold\", amount = 200 }},\r\n                    { id = \"day_3\", day = 3, reward = { type = \"Item\", id = \"CommonEgg\", amount = 1 }},\r\n                    { id = \"day_4\", day = 4, reward = { type = \"Currency\", id = \"Diamond\", amount = 50 }},\r\n                    { id = \"day_5\", day = 5, reward = { type = \"Currency\", id = \"Gold\", amount = 500 }},\r\n                    { id = \"day_6\", day = 6, reward = { type = \"Currency\", id = \"Diamond\", amount = 100 }},\r\n                    { id = \"day_7\", day = 7, reward = { type = \"Item\", id = \"RareEgg\", amount = 1 }, featured = true, badge = \"Weekly Reward\", color = { 102, 80, 25 }}\r\n                }\r\n            },\r\n            {\r\n                kind = \"task\", page = \"TasksBox\", columns = 1, gapX = 0, gapY = 12,\r\n                items = {\r\n                    { id = \"collect_coins\", title = \"Collect 1,000 Coins\", target = 1000, previewValue = 1000, reward = { type = \"Currency\", id = \"Gold\", amount = 300 }},\r\n                    { id = \"play_matches\", title = \"Play 3 Matches\", target = 3, previewValue = 1, reward = { type = \"Currency\", id = \"Diamond\", amount = 30 }},\r\n                    { id = \"hatch_egg\", title = \"Hatch 1 Pet Egg\", target = 1, previewValue = 0, reward = { type = \"Currency\", id = \"Gold\", amount = 500 }},\r\n                    { id = \"win_matches\", title = \"Win 2 Matches\", target = 2, previewValue = 1, reward = { type = \"Currency\", id = \"Diamond\", amount = 40 }},\r\n                    { id = \"collect_gems\", title = \"Collect 50 Diamonds\", target = 50, previewValue = 20, reward = { type = \"Currency\", id = \"Gold\", amount = 600 }},\r\n                    { id = \"hatch_three\", title = \"Hatch 3 Pet Eggs\", target = 3, previewValue = 2, reward = { type = \"Currency\", id = \"Diamond\", amount = 60 }},\r\n                    { id = \"play_ten\", title = \"Play 10 Matches\", target = 10, previewValue = 10, reward = { type = \"Currency\", id = \"Gold\", amount = 1000 }}\r\n                }\r\n            }\r\n        }\r\n    }\r\n    self.Config.diamonds = {\n        rewardId = \"daily_diamonds\",\n        loginAmount = 100,\n        premiumAmount = 50,\n        friendAmount = 10,\n        friendCap = 100,\n    }\n    self.State = { onlineMinutes = 12, signInDay = 1, entries = {} }\n    self.State.diamonds = { amount = 250, status = \"Claimable\", pending = false }\r\n    self.FailNextClaim = false\r\n    for _, group in ipairs(self.Config.groups) do\r\n        local entries = {}\r\n        self.State.entries[group.kind] = entries\r\n        for _, config in ipairs(group.items) do\r\n            local entry = { status = \"Locked\", pending = false, current = config.previewValue or 0 }\r\n            if group.kind == \"online\" and self.State.onlineMinutes >= config.minutes then\r\n                entry.status = \"Claimable\"\r\n            elseif group.kind == \"signin\" and config.day == self.State.signInDay then\r\n                entry.status = \"Claimable\"\r\n            elseif group.kind == \"task\" and config.target > 0 and entry.current >= config.target then\r\n                entry.status = \"Claimable\"\r\n            end\r\n            if group.kind == \"signin\" and config.day == self.State.signInDay + 1 then\r\n                entry.label = \"Tomorrow\"\r\n            end\r\n            entries[config.id] = entry\r\n        end\r\n    end\r\nend\r\n\r\n-- 模拟项目奖励配置查询，与游戏接入保持同一返回契约。\r\n-- @param reward table 奖励类型、ID 和原始数量\r\n-- @return table name 与模板图标类别\r\nfunction CWelfarePreview:GetRewardDisplay(reward)\r\n    local catalog = {\r\n        Currency = {\r\n            Gold = { name = \"Coins\", icon = \"Coin\" },\r\n            Diamond = { name = \"Diamonds\", icon = \"Gem\" },\r\n        },\r\n        Item = {\r\n            CommonEgg = { name = \"Common Egg\", icon = \"Egg\" },\r\n            RareEgg = { name = \"Rare Egg\", icon = \"Egg\" },\r\n        },\r\n    }\r\n    local group = catalog[reward.type]\r\n    return assert(group and group[reward.id], \"Missing simulated reward: \" .. tostring(reward.id))\r\nend\r\n\r\n-- 只模拟领取；拒绝重复和待处理请求，失败后允许重试。\r\n-- @param action string View 发出的动作\r\n-- @param payload table kind 与 rewardId\r\nfunction CWelfarePreview:OnUIAction(action, payload)\n    if action == \"ClaimDiamonds\" then\n        assert(payload.rewardId == self.Config.diamonds.rewardId, \"Unknown diamond reward\")\n        local state = self.State.diamonds\n        if state.status ~= \"Claimable\" or state.pending then\n            return\n        end\n        state.pending = true\n        state.error = nil\n        self:RefreshUI()\n        state.pending = false\n        if self.FailNextClaim then\n            self.FailNextClaim = false\n            state.error = \"Simulated request failure\"\n        else\n            state.status = \"Claimed\"\n        end\n        self:RefreshUI()\n        return\n    end\n    assert(action == \"Claim\", \"Unsupported welfare action: \" .. action)\r\n    local entries = self.State.entries[payload.kind]\r\n    local entry = entries and entries[payload.rewardId]\r\n    assert(entry, \"Unknown reward ID: \" .. tostring(payload.rewardId))\r\n    if entry.status ~= \"Claimable\" or entry.pending then\r\n        return\r\n    end\r\n    entry.pending, entry.error = true, nil\r\n    self:RefreshUI()\r\n    entry.pending = false\r\n    if self.FailNextClaim then\r\n        self.FailNextClaim = false\r\n        entry.error = \"Simulated request failure\"\r\n    else\r\n        entry.status = \"Claimed\"\r\n    end\r\n    self:RefreshUI()\r\nend\r\n\r\nreturn CWelfarePreview\r\n",
+    "source": "-- 左侧页签单选；每次 Show 默认 online。红点读取完整状态，无新增业务字段。\n-- 仅配置内存在 status=\"Claimable\" 且 pending 不为 true 的奖励时显示；\n-- 已领取、锁定、空组与请求中不显示。浏览页签不清除红点，状态变化后 RefreshUI 更新。\n--[[\n每日钻石子页补充契约：\nConfig.diamonds 必填（无默认值）：\n  rewardId: string，稳定每日奖励业务 ID；\n  loginAmount / premiumAmount / friendAmount / friendCap: number，单位钻石，\n  分别为登录奖励、会员加成、每位好友加成及好友加成上限，仅用于说明。\nState.diamonds 必填完整状态（无默认值）：\n  amount: number，服务端确认的本日可领取钻石数量，View 不计算资格或叠加加成；\n  status: \"Locked\" | \"Claimable\" | \"Claimed\"；\n  pending: boolean 可选，缺省 false；error: string 可选，缺省 nil。\n  pending 禁用按钮；失败时显示 error 并在 Claimable 下允许重试。\n最小数据示例（与原有 groups / entries 同时提供）：\nself.Config.diamonds = {\n    rewardId = \"daily_diamonds\", loginAmount = 100, premiumAmount = 50,\n    friendAmount = 10, friendCap = 100,\n}\nself.State.diamonds = { amount = 250, status = \"Claimable\" }\n动作 ClaimDiamonds，payload = { rewardId: string }，对应 Config.diamonds.rewardId。\n原 OnUIAction 必需覆写现在也须处理该动作，返回值无；\n真实业务负责每日重置、资格校验、发奖及 pending/成功/失败刷新。\nOnReady 先调父方法，再 BindUIData、Show；数据更新后 RefreshUI。\n固定说明卡直接更新已有节点，不克隆；不新增图片占位。\n]]\n\n--[[\n福利界面接入契约（完整状态刷新，非增量）\nConfig.groups: 必填有序数组，含 online/signin/task 三组；items 数量可变，允许空数组。\n每组必填 kind: \"online\" | \"signin\" | \"task\"，分别对应 page:\n\"OnlineBox\" / \"SignInBox\" / \"TasksBox\"；columns: 正整数列数（task 为 1）；\ngapX/gapY: number，条目间距，单位像素；items: 有序配置数组。\nitems 每项必填 id: string，组内唯一稳定奖励/任务 ID；\nreward: { type: string, id: string, amount: number }，游戏奖励类型、物品 ID 和数量。\nonline 项必填 minutes: number（分钟）；signin 项必填 day: number（天序号）；\ntask 项必填 title: string、target: number（目标，<=0 显示空进度）。\nsignin 项可选 featured: boolean，默认 false；true 时必填 badge: string、\ncolor: {number, number, number}（RGB 0–255），显示双行大奖。\npreviewValue: number 仅模拟层读取，缺省 0，不属于游戏必需配置。\n\nState 必填 onlineMinutes: number（分钟）、signInDay: number（当前签到天）、\nentries: 按 kind 再按 Config.items.id 索引的字典；\nentries[kind][id] 必填 status: \"Locked\" | \"Claimable\" | \"Claimed\"；\ntask 项必填 current: number，单位与 target 相同。\n可选 pending: boolean（缺省 false）、error: string（缺省 nil，可领取时显示 Retry）、\nlabel: string（缺省 nil，Locked 时自定义按钮文字）。\n空组使用 items={}、entries[kind]={}；缺失配置对应状态会报错，不自动补齐。\nTemplates 永远隐藏；首次访问页签才克隆该页，按 ID 更新、移除及排序；\n任务数量不固定，CanvasSize 随实际内容计算，超出视口垂直滚动。\n\n初始化：接入 Ctor 先调父构造，再准备 Config/State；OnReady 先调父 OnReady，\n再 BindUIData()、Show()。GetUIConfig/GetUIState 默认读取 self.Config/self.State；\n数据变化后 self:RefreshUI()，Render 只读数据。异步加载完成前不 Show。\n最小完整示例：\nself.Config = { groups = {\n    { kind=\"online\", page=\"OnlineBox\", columns=3, gapX=20, gapY=16, items={} },\n    { kind=\"signin\", page=\"SignInBox\", columns=3, gapX=12, gapY=16, items={} },\n    { kind=\"task\", page=\"TasksBox\", columns=1, gapX=0, gapY=12, items={\n        { id=\"collect\", title=\"Collect Coins\", target=100,\n          reward={ type=\"Currency\", id=\"Gold\", amount=20 } }\n    } }\n} }\nself.State = { onlineMinutes=0, signInDay=1, entries={\n    online={}, signin={}, task={ collect={ status=\"Claimable\", current=100 } }\n} }\n\n必需覆写 GetRewardDisplay(reward)，返回 {name: string, icon: \"Coin\"|\"Gem\"|\"Egg\"}；\n当前图标是设计内几何占位，只用于展示，不作为物品身份。\n必需覆写 OnUIAction(action, payload)，无返回值：\naction=\"Claim\"，payload={kind: string, rewardId: string}，rewardId 对应 items.id。\n资格校验及发奖由游戏接入负责；请求期间 pending=true，成功改 Claimed，\n失败保留 Claimable 并设置 error；每次更新后 RefreshUI。\n可选覆写 FormatReward(name, amount)，默认返回名称与原始数量。\n模拟接入仅更新模拟状态，不实际发奖。\n]]\nlocal FX = _G.FX\nlocal Loader = FX.Loader\nlocal CWelfareView = FX.Class(\"CWelfareView\", \"CUIView\")\n\n-- 局部条目只管理自身克隆与连接，不执行整屏适配。\nlocal RewardRow = {}\nRewardRow.__index = RewardRow\n\n-- 绑定一个条目；点击时读取最新配置中的稳定业务 ID。\n-- @param view table 所属页面\n-- @param group table 分组配置\n-- @param root Instance 页面创建的克隆节点\n-- @return table 条目展示对象\nfunction RewardRow.Attach(view, group, root)\n    local row = setmetatable({ View = view, Kind = group.kind, Root = root }, RewardRow)\n    row.Button = Loader:Here(root, \"ClaimBtn\")\n    row.Connection = row.Button.Activated:Connect(function()\n        view:EmitUIAction(\"Claim\", { kind = row.Kind, rewardId = row.Config.id })\n    end)\n    return row\nend\n\n-- 使用项目查询结果展示奖励，按业务状态控制按钮，不判断真实领取资格。\n-- @param config table 当前条目配置\n-- @param state table 当前条目状态\nfunction RewardRow:Update(config, state)\n    self.Config = config\n    local root = self.Root\n    local display = self.View:GetRewardDisplay(config.reward)\n    local rewardText = self.View:FormatReward(display.name, config.reward.amount)\n    Loader:Here(root, \"RewardTxt\").Text = self.Kind == \"task\" and (\"Reward: \" .. rewardText) or rewardText\n    if self.Kind == \"task\" then\n        Loader:Here(root, \"TaskNameTxt\").Text = config.title\n        local bar = Loader:Here(root, \"ProgressBarImg\")\n        local target = config.target\n        local ratio = 0\n        if target > 0 then\n            ratio = math.clamp(state.current / target, 0, 1)\n        end\n        Loader:Here(bar, \"ProgressFillImg\").Size = UDim2.fromScale(ratio, 1)\n        Loader:Here(bar, \"ProgressTxt\").Text = target > 0 and (state.current .. \" / \" .. target) or \"—\"\n    else\n        local text = self.Kind == \"online\" and (config.minutes .. \" min\") or (\"Day \" .. config.day)\n        Loader:Here(root, self.Kind == \"online\" and \"TimeTxt\" or \"DayTxt\").Text = text\n        assert(display.icon == \"Coin\" or display.icon == \"Gem\" or display.icon == \"Egg\", \"Unsupported reward icon: \" .. tostring(display.icon))\n        for _, icon in ipairs({ \"Coin\", \"Gem\", \"Egg\" }) do\n            Loader:Here(root, icon .. \"IconBox\").Visible = display.icon == icon\n        end\n    end\n    local label = \"Locked\"\n    if state.pending then\n        label = \"Claiming...\"\n    elseif state.status == \"Claimed\" then\n        label = self.Kind == \"signin\" and \"Checked In\" or \"Claimed\"\n    elseif state.status == \"Claimable\" then\n        label = state.error and \"Retry\" or (self.Kind == \"signin\" and \"Check In\" or \"Claim\")\n    elseif state.status == \"Locked\" then\n        label = state.label or (self.Kind == \"task\" and \"In Progress\" or \"Locked\")\n    else\n        error(\"Unknown reward status: \" .. tostring(state.status))\n    end\n    self.View:RenderButton(self.Button, label, state.status == \"Claimable\" and not state.pending)\nend\n\n-- 释放条目拥有的事件与克隆根；不删除页面设计模板。\nfunction RewardRow:Destroy()\n    self.Connection:Disconnect()\n    self.Root:Destroy()\nend\n\n-- 绑定设计节点；页签和关闭由展示层维护，不发送业务请求。\nfunction CWelfareView:OnReady()\n    self.Root = Loader:PlayerGui(\"WelfareUI\")\n    self.Rows = {}\n    self.ActiveTab = \"online\"\n    local tabs = { { \"online\", \"OnlineTabBtn\" }, { \"signin\", \"SignInTabBtn\" }, { \"task\", \"TasksTabBtn\" }, { \"diamonds\", \"DiamondsTabBtn\" } }\n    for _, tab in ipairs(tabs) do\n        self:TrackConnection(Loader:Here(self.Root, \"TabsBox.\" .. tab[2]).Activated:Connect(function()\n            self.ActiveTab = tab[1]\n            self:RefreshUI()\n        end))\n    end\n    self:TrackConnection(Loader:Here(self.Root, \"PopupPanelImg.DiamondsBox.ClaimBtn\").Activated:Connect(function()\n        -- 点击发送稳定奖励 ID，数量与资格由业务层确认。\n        self:EmitUIAction(\"ClaimDiamonds\", { rewardId = self:GetUIConfig().diamonds.rewardId })\n    end))\n    self:TrackConnection(Loader:Here(self.Root, \"TitleBox.CloseSurfaceImg.CloseBtn\").Activated:Connect(function()\n        self:Hide()\n    end))\nend\n\n-- 每次打开默认选中在线奖励，显示最新数据，不重建事件。\nfunction CWelfareView:OnShow()\n    self.ActiveTab = \"online\"\n    self:RefreshUI()\nend\n\n-- 游戏与模拟接入都必须提供奖励展示查询。\n-- @param reward table 原始奖励类型、ID 与数量\n-- @return table name 和当前模板支持的 icon（Coin/Gem/Egg）\nfunction CWelfareView:GetRewardDisplay(reward)\n    error(\"Welfare integration must implement GetRewardDisplay\")\nend\n\n-- 可选覆写的数量显示格式，不修改原始奖励数据。\n-- @param name string 奖励名称\n-- @param amount number 原始数量\n-- @return string 显示文本\nfunction CWelfareView:FormatReward(name, amount)\n    return name .. \" ×\" .. tostring(amount)\nend\n\n-- 领取动作必须由游戏或模拟接入实现。\n-- @param action string 动作名称\n-- @param payload table kind 和 rewardId\nfunction CWelfareView:OnUIAction(action, payload)\n    error(\"Welfare integration must implement OnUIAction\")\nend\n\n-- 按稳定 ID 增删、排序和更新条目；未变化条目保留节点与连接。\n-- @param group table 分组、布局和有序条目\n-- @param states table 以业务 ID 索引的展示状态\nfunction CWelfareView:SyncItems(group, states)\n    local page = Loader:Here(self.Root, \"PopupPanelImg.\" .. group.page)\n    local template = Loader:Here(self.Root, \"Templates.\" .. group.page .. \"TemplateImg\")\n    local container = Loader:Here(page, \"ItemsBox\")\n    template.Visible = false\n    local rows = self.Rows[group.kind] or {}\n    self.Rows[group.kind] = rows\n    local keep = {}\n    local width, height = template.Size.X.Offset, template.Size.Y.Offset\n    local normalIndex, bottom = 0, 0\n    for index, config in ipairs(group.items) do\n        assert(not keep[config.id], \"Duplicate reward ID: \" .. config.id)\n        keep[config.id] = true\n        local row = rows[config.id]\n        if row and row.Featured ~= (config.featured == true) then\n            row.Release()\n            rows[config.id] = nil\n            row = nil\n        end\n        if not row then\n            local root = template:Clone()\n            root.Name = \"Item_\" .. config.id .. \"Img\"\n            root.Parent = container\n            root.Visible = true\n            row = RewardRow.Attach(self, group, root)\n            row.Featured = config.featured == true\n            row.Release = self:TrackCleanup(function()\n                row:Destroy()\n            end)\n            rows[config.id] = row\n        end\n        local root = row.Root\n        local x = (normalIndex % group.columns) * (width + group.gapX)\n        local y = math.floor(normalIndex / group.columns) * (height + group.gapY)\n        if config.featured then\n            x, y = group.columns * (width + group.gapX), 0\n            root.Size = UDim2.fromOffset(width, height * 2 + group.gapY)\n            self:StyleFeatured(root, config)\n        else\n            normalIndex = normalIndex + 1\n        end\n        root.Position = UDim2.fromOffset(x + 2, y + 2)\n        root.LayoutOrder = index\n        bottom = math.max(bottom, y + root.Size.Y.Offset)\n        row:Update(config, assert(states[config.id], \"Missing reward state: \" .. group.kind .. \"/\" .. config.id))\n    end\n    for id, row in pairs(rows) do\n        if not keep[id] then\n            row.Release()\n            rows[id] = nil\n        end\n    end\n    container.CanvasSize = UDim2.fromOffset(container.Size.X.Offset - container.ScrollBarThickness, bottom + 4)\n    local maxScroll = math.max(0, bottom + 4 - container.Size.Y.Offset)\n    container.CanvasPosition = Vector2.new(0, math.min(container.CanvasPosition.Y, maxScroll))\nend\n\n-- 沿用设计模板的双行大奖布局。\n-- @param row Instance 克隆条目\n-- @param config table 大奖外观配置\nfunction CWelfareView:StyleFeatured(row, config)\n    row.BackgroundColor3 = Color3.fromRGB(config.color[1], config.color[2], config.color[3])\n    local label = Loader:Here(row, \"WeeklyTxt\")\n    label.Visible, label.Text = true, config.badge\n    local width = row.Size.X.Offset\n    for _, iconType in ipairs({ \"Coin\", \"Gem\", \"Egg\" }) do\n        local box = Loader:Here(row, iconType .. \"IconBox\")\n        local icon = Loader:Here(box, \"RewardIconImg\")\n        icon.Position = UDim2.fromOffset((width - 64) / 2, 92)\n        icon.Size = UDim2.fromOffset(64, 64)\n        for _, child in ipairs(box:GetChildren()) do\n            if child.Name == \"IconMarkTxt\" then\n                child.Position, child.Size = icon.Position, icon.Size\n            end\n        end\n    end\n    local reward = Loader:Here(row, \"RewardTxt\")\n    reward.Position, reward.Size = UDim2.fromOffset(0, 176), UDim2.fromOffset(width, 55)\n    local button = Loader:Here(row, \"ClaimBtn\")\n    button.Position = UDim2.fromOffset(button.Position.X.Offset, row.Size.Y.Offset - 48)\nend\n\n-- 保留风格按钮表面，只更新状态。\n-- @param button Instance 点击节点\n-- @param label string 显示文字\n-- @param enabled boolean 是否允许操作\nfunction CWelfareView:RenderButton(button, label, enabled)\n    self:SetButtonEnabled(button, enabled)\n    button.BackgroundColor3 = enabled and Color3.fromRGB(103, 237, 20) or Color3.fromRGB(99, 128, 121)\n    Loader:Here(button, \"ButtonTxt\").Text = label\n    Loader:Here(button, \"BottomEdgeImg\").BackgroundColor3 = enabled and Color3.fromRGB(34, 90, 7) or Color3.fromRGB(38, 62, 54)\nend\n\n-- 每日钻石使用服务端完整状态；说明卡不参与奖励结算。\n-- @param state table amount、status 及可选 pending/error\nfunction CWelfareView:RenderDiamonds(state)\n    local config = self:GetUIConfig().diamonds\n    local page = Loader:Here(self.Root, \"PopupPanelImg.DiamondsBox\")\n    page.Visible = self.ActiveTab == \"diamonds\"\n    Loader:Here(page, \"AmountTxt\").Text = \"×\" .. tostring(state.amount) .. \" Diamonds\"\n    Loader:Here(page, \"LoginBonusImg.AmountTxt\").Text = \"+\" .. tostring(config.loginAmount) .. \" Diamonds\"\n    Loader:Here(page, \"PremiumBonusImg.AmountTxt\").Text = \"+\" .. tostring(config.premiumAmount) .. \" Diamonds\"\n    Loader:Here(page, \"FriendsBonusImg.AmountTxt\").Text = \"+\" .. tostring(config.friendAmount) .. \" per friend\"\n    Loader:Here(page, \"FriendsBonusImg.HintTxt\").Text = \"Up to +\" .. tostring(config.friendCap) .. \" Diamonds\"\n    local label = \"Locked\"\n    local hint = \"No diamonds available today\"\n    if state.pending then\n        label = \"Claiming...\"\n        hint = \"Confirming your reward...\"\n    elseif state.status == \"Claimed\" then\n        label = \"Claimed\"\n        hint = \"Today's diamonds claimed · Come back tomorrow\"\n    elseif state.status == \"Claimable\" then\n        label = \"Claim\"\n        hint = \"Ready to claim\"\n        if state.error then\n            label = \"Retry\"\n            hint = state.error\n        end\n    elseif state.status ~= \"Locked\" then\n        error(\"Unknown diamond status: \" .. tostring(state.status))\n    end\n    Loader:Here(page, \"StatusTxt\").Text = hint\n    self:RenderButton(Loader:Here(page, \"ClaimBtn\"), label, state.status == \"Claimable\" and not state.pending)\n    local tab = Loader:Here(self.Root, \"TabsBox.DiamondsTabBtn\")\n    Loader:Here(tab, \"RedDotImg\").Visible = state.status == \"Claimable\" and not state.pending\n    self:RenderButton(tab, \"Diamonds\", true)\n    if self.ActiveTab ~= \"diamonds\" then\n        tab.BackgroundColor3 = Color3.fromRGB(99, 128, 121)\n        Loader:Here(tab, \"BottomEdgeImg\").BackgroundColor3 = Color3.fromRGB(38, 62, 54)\n    end\nend\n\n-- 接入提供状态，View 只组织页面和条目展示，不改根节点的显隐。\n-- @param state table entries、onlineMinutes 与 signInDay\nfunction CWelfareView:Render(state)\n    self:RenderDiamonds(state.diamonds)\n    local tabs = { online = \"OnlineTabBtn\", signin = \"SignInTabBtn\", task = \"TasksTabBtn\" }\n    local labels = { online = \"Online\\nRewards\", signin = \"Daily Login\", task = \"Tasks\" }\n    for _, group in ipairs(self:GetUIConfig().groups) do\n        Loader:Here(self.Root, \"PopupPanelImg.\" .. group.page).Visible = self.ActiveTab == group.kind\n        local button = Loader:Here(self.Root, \"TabsBox.\" .. tabs[group.kind])\n        local hasClaimable = false\n        local entries = assert(state.entries[group.kind], \"Missing group state: \" .. group.kind)\n        for _, config in ipairs(group.items) do\n            local entry = assert(entries[config.id], \"Missing reward state: \" .. group.kind .. \"/\" .. config.id)\n            if entry.status == \"Claimable\" and not entry.pending then\n                hasClaimable = true\n                break\n            end\n        end\n        Loader:Here(button, \"RedDotImg\").Visible = hasClaimable\n        self:RenderButton(button, labels[group.kind], true)\n        if self.ActiveTab ~= group.kind then\n            button.BackgroundColor3 = Color3.fromRGB(99, 128, 121)\n            Loader:Here(button, \"BottomEdgeImg\").BackgroundColor3 = Color3.fromRGB(38, 62, 54)\n        end\n        if self.ActiveTab == group.kind then\n            self:SyncItems(group, assert(state.entries[group.kind], \"Missing group state: \" .. group.kind))\n        end\n    end\n    Loader:Here(self.Root, \"PopupPanelImg.OnlineBox.SubtitleTxt\").Text = \"Online: \" .. state.onlineMinutes .. \" min · Resets daily\"\n    Loader:Here(self.Root, \"PopupPanelImg.SignInBox.HeadingTxt\").Text = \"Daily Login · Day \" .. state.signInDay\nend\n\nreturn CWelfareView\n"
   },
   "version": 3
 }

@@ -31,7 +31,7 @@
 
 - 进行 Lua 编码、重构、风格修复或普通代码审查时，使用 `roblox-luau-standards`
 - 涉及框架结构、玩家数据、服务端逻辑、客户端玩家组件、协议链路或组件协作时，使用 `roblox-framework-dev`；纯 UI 表现修改不触发该 Skill
-- 修改客户端 UI 时，使用 `roblox-ui-components`
+- 修改客户端 UI 时，使用 `roblox-ui-components`；先检查目标界面是否有 UIEditor 导出的展示类。有对应生成类时，业务子类继承该类并复用展示与交互，不直接继承 FCUICompClass 重写；具体接入与不匹配处理见该技能的 reference-rules.md。
 - 涉及非 UI 引擎节点 API，例如 `Instance`、`BasePart`、`Model:PivotTo`、`Clone`、`Destroy` 或场景节点属性访问时，使用 `roblox-engine-nodes`；纯 UI 节点属性和事件由 `roblox-ui-components` 负责
 - 涉及框架类用法示例、组件内交互接法、交互生命周期清理时，使用 `game-examples`，并以该 Skill 自身的路由规则为唯一 reference 入口
 - 审查服务端安全漏洞、权限绕过、严重逻辑缺陷、崩溃风险或高危遗漏时，以 `server-code-critical-review` 为主；除非用户同时要求风格审查，否则不输出普通风格问题

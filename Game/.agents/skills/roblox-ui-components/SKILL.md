@@ -1,6 +1,6 @@
 ---
 name: roblox-ui-components
-description: 在 Roblox_Y1 的 FCUICompClass 中开发原生 ScreenGui、GuiObject、按钮、列表和界面动画，处理节点路径与事件清理。新增或修改 UI 组件及交互时使用。
+description: 在 Roblox_Y1 接入 UIEditor 导出的展示类，或开发普通原生 UI，处理业务数据、动作、节点路径与事件清理。新增或修改客户端 UI 组件及交互时使用。
 ---
 
 # Roblox UI 组件

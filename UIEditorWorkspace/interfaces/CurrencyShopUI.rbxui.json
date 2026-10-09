@@ -567,7 +567,7 @@
                   "scale": 0
                 }
               },
-              "Text": "暂无商品",
+              "Text": "No products available",
               "TextColor3": "#FFFFFF",
               "TextScaled": false,
               "TextSize": 24,
@@ -1513,7 +1513,7 @@
                       "scale": 0
                     }
                   },
-                  "Text": "商品标题",
+                  "Text": "Product",
                   "TextColor3": "#FFFFFF",
                   "TextScaled": false,
                   "TextSize": 24,
@@ -1561,7 +1561,7 @@
                       "scale": 0
                     }
                   },
-                  "Text": "商品描述",
+                  "Text": "Product description",
                   "TextColor3": "#D6DDDA",
                   "TextScaled": false,
                   "TextSize": 16,
@@ -1601,7 +1601,7 @@
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 94,
+                      "offset": 150,
                       "scale": 0
                     },
                     "y": {
@@ -1609,7 +1609,7 @@
                       "scale": 0
                     }
                   },
-                  "Text": "钻石",
+                  "Text": "Diamonds",
                   "TextColor3": "#FFFFFF",
                   "TextScaled": false,
                   "TextSize": 16,
@@ -1674,7 +1674,7 @@
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 232,
+                          "offset": 154,
                           "scale": 0
                         },
                         "y": {
@@ -1706,14 +1706,14 @@
                           "scale": 0
                         },
                         "y": {
-                          "offset": 32,
+                          "offset": 36,
                           "scale": 0
                         }
                       },
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 232,
+                          "offset": 154,
                           "scale": 0
                         },
                         "y": {
@@ -1766,20 +1766,20 @@
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 232,
+                          "offset": 154,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 36,
+                          "offset": 40,
                           "scale": 0
                         }
                       },
-                      "Text": "价格",
+                      "Text": "100",
                       "TextColor3": "#ffffff",
                       "TextScaled": false,
                       "TextSize": 24,
                       "TextTransparency": 0,
-                      "TextWrapped": true,
+                      "TextWrapped": false,
                       "TextXAlignment": "Center",
                       "TextYAlignment": "Center",
                       "Visible": true,
@@ -1808,11 +1808,11 @@
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
-                      "offset": 112,
+                      "offset": 190,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 130,
+                      "offset": 126,
                       "scale": 0
                     }
                   },
@@ -1820,11 +1820,11 @@
                   "ScaleType": "Tile",
                   "Size": {
                     "x": {
-                      "offset": 232,
+                      "offset": 154,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 36,
+                      "offset": 40,
                       "scale": 0
                     }
                   },
@@ -2038,7 +2038,7 @@
                       "scale": 0
                     }
                   },
-                  "Text": "商品标题",
+                  "Text": "Product",
                   "TextColor3": "#FFFFFF",
                   "TextScaled": false,
                   "TextSize": 24,
@@ -2086,7 +2086,7 @@
                       "scale": 0
                     }
                   },
-                  "Text": "商品描述",
+                  "Text": "Product description",
                   "TextColor3": "#D6DDDA",
                   "TextScaled": false,
                   "TextSize": 16,
@@ -2126,7 +2126,7 @@
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 94,
+                      "offset": 150,
                       "scale": 0
                     },
                     "y": {
@@ -2134,7 +2134,7 @@
                       "scale": 0
                     }
                   },
-                  "Text": "罗布币",
+                  "Text": "Robux",
                   "TextColor3": "#FFFFFF",
                   "TextScaled": false,
                   "TextSize": 16,
@@ -2199,7 +2199,7 @@
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 232,
+                          "offset": 154,
                           "scale": 0
                         },
                         "y": {
@@ -2221,7 +2221,7 @@
                         "x": 0,
                         "y": 0
                       },
-                      "BackgroundColor3": "#691582",
+                      "BackgroundColor3": "#105464",
                       "BackgroundTransparency": 0.2,
                       "ClipsDescendants": false,
                       "LayoutOrder": 0,
@@ -2231,14 +2231,14 @@
                           "scale": 0
                         },
                         "y": {
-                          "offset": 32,
+                          "offset": 36,
                           "scale": 0
                         }
                       },
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 232,
+                          "offset": 154,
                           "scale": 0
                         },
                         "y": {
@@ -2291,20 +2291,20 @@
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 232,
+                          "offset": 154,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 36,
+                          "offset": 40,
                           "scale": 0
                         }
                       },
-                      "Text": "价格",
+                      "Text": "100",
                       "TextColor3": "#ffffff",
                       "TextScaled": false,
                       "TextSize": 24,
                       "TextTransparency": 0,
-                      "TextWrapped": true,
+                      "TextWrapped": false,
                       "TextXAlignment": "Center",
                       "TextYAlignment": "Center",
                       "Visible": true,
@@ -2324,7 +2324,7 @@
                     "x": 0,
                     "y": 0
                   },
-                  "BackgroundColor3": "#d03bf2",
+                  "BackgroundColor3": "#249cb5",
                   "BackgroundTransparency": 0,
                   "ClipsDescendants": false,
                   "Image": "rbxassetid://82793028306773",
@@ -2333,11 +2333,11 @@
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
-                      "offset": 112,
+                      "offset": 190,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 130,
+                      "offset": 126,
                       "scale": 0
                     }
                   },
@@ -2345,11 +2345,11 @@
                   "ScaleType": "Tile",
                   "Size": {
                     "x": {
-                      "offset": 232,
+                      "offset": 154,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 36,
+                      "offset": 40,
                       "scale": 0
                     }
                   },
@@ -2453,8 +2453,8 @@
     }
   },
   "scripts": {
-    "integration": "local FX = _G.FX\nlocal CCurrencyShopPreview = FX.Class(\"CCurrencyShopPreview\", \"CCurrencyShopView\")\n\n-- 父构造后提供示例商品；所有价格与图标均待业务配置替换。\n-- @param owner table 编辑器组件宿主\nfunction CCurrencyShopPreview:Ctor(owner)\n    CCurrencyShopPreview.Super.Ctor(self, owner)\n    self.Config = {\n        products = {\n            { id = \"speed\", currency = \"Diamond\", title = \"Speed Potion\", description = \"短时间提升移动速度\", price = 100 },\n            { id = \"luck\", currency = \"Diamond\", title = \"Luck Potion\", description = \"为下一次冒险增添好运\", price = 250 },\n            { id = \"energy\", currency = \"Diamond\", title = \"Energy Pack\", description = \"补充探索所需的能量\", price = 150 },\n            { id = \"chest\", currency = \"Diamond\", title = \"Mystery Chest\", description = \"开启一份神秘的奖励\", price = 500 },\n            { id = \"trail\", currency = \"Diamond\", title = \"Star Trail\", description = \"留下闪亮的移动轨迹\", price = 800 },\n            { id = \"ticket\", currency = \"Diamond\", title = \"Challenge Ticket\", description = \"解锁一次额外挑战\", price = 200 },\n            { id = \"starter\", currency = \"Robux\", title = \"Starter Pack\", description = \"开启冒险的实用补给\", price = 49 },\n            { id = \"gem_pack\", currency = \"Robux\", title = \"Diamond Pack\", description = \"获得 1,000 颗钻石\", price = 99 },\n            { id = \"vip\", currency = \"Robux\", title = \"VIP Pass\", description = \"解锁专属身份与福利\", price = 199 },\n            { id = \"outfit\", currency = \"Robux\", title = \"Special Outfit\", description = \"打造属于你的独特造型\", price = 149 },\n            { id = \"deluxe\", currency = \"Robux\", title = \"Deluxe Pack\", description = \"收集更多冒险补给\", price = 299 },\n            { id = \"pet\", currency = \"Robux\", title = \"Companion Pack\", description = \"迎接一位新的冒险伙伴\", price = 249 },\n        },\n    }\n    self.State = { tab = \"Diamond\", open = true, pending = {} }\nend\n\n-- 父类完成节点绑定后显示商店。\nfunction CCurrencyShopPreview:OnReady()\n    CCurrencyShopPreview.Super.OnReady(self)\n    self:BindUIData()\n    self:Show()\nend\n\n-- 只切换模拟状态，购买不执行扣款或发奖。\n-- @param action string SelectTab、Purchase 或 Close\n-- @param payload table 符合 View 契约的动作参数\nfunction CCurrencyShopPreview:OnUIAction(action, payload)\n    if action == \"SelectTab\" then\n        self.State.tab = payload.tab\n        self.State.message = \"\"\n        self.List.CanvasPosition = Vector2.new(0, 0)\n    elseif action == \"Close\" then\n        self.State.open = false\n    elseif action == \"Purchase\" then\n        for index, product in ipairs(self.Config.products) do\n            if product.id == payload.productId then\n                self.State.message = \"预览购买：\" .. product.title .. \"（未实际支付）\"\n                break\n            end\n        end\n    end\n    self:RefreshUI()\nend\n\nreturn CCurrencyShopPreview",
-    "source": "--[[\n商店接入契约\nConfig.products: 必填数组；顺序为展示顺序，可为空。\n每项 { id: string 稳定商品 ID（全列表唯一）, currency: \"Diamond\"|\"Robux\",\ntitle: string, description: string, price: number 非负对应货币数量,\nicon: string 可选真实 Roblox Image ID，省略或空字符串显示问号占位 }。\nState: 完整输入，非增量：\ntab: \"Diamond\"|\"Robux\" 必填；open: boolean 必填；\npending: 字典[id]=boolean 可选，省略视为无请求；\nmessage: string 可选，省略显示空文字，用于业务结果提示。\n数据须在首次 Show 前准备，GetUIConfig/GetUIState 默认读取 self.Config/self.State；\n接入 OnReady 先调用父方法，再 BindUIData、Show。更新完整 State 后 RefreshUI。\n最小示例：\nself.Config = { products = { { id = \"speed\", currency = \"Diamond\",\ntitle = \"加速药水\", description = \"短时间提升移动速度\", price = 100 } } }\nself.State = { tab = \"Diamond\", open = true }\n动作：SelectTab { tab: \"Diamond\"|\"Robux\" }；\nPurchase { productId: string, currency: \"Diamond\"|\"Robux\" }；Close {}。\n必需覆写 OnUIAction(action, payload)，无返回值；无其他页面专用覆写。\n购买接入按 productId 查询真实商品并验证价格、余额和支付结果；\n请求期间 pending[id]=true，完成后更新状态和 message 再刷新。\nRender 不扣款或发奖。图标取 Config.products[].icon；\n空图清除上一商品图并显示问号占位，正式图标需由业务配置提供。\nTemplates 隐藏原型供两列动态列表克隆，按稳定 ID 更新、排序、删除和清理连接。\n空分组清理条目并显示“暂无商品”；异步未就绪时提供 products={}。\n]]\nlocal FX = _G.FX\nlocal FXLoader = FX.Loader\nlocal CCurrencyShopView = FX.Class(\"CCurrencyShopView\", \"CUIView\")\n\n-- 绑定已有节点与页签事件；每张商品卡只连接一次。\nfunction CCurrencyShopView:OnReady()\n    local root = FXLoader:PlayerGui(\"CurrencyShopUI\")\n    self.Root = root\n    self.List = FXLoader:Here(root, \"PopupPanelImg.ProductListBox\")\n    self.Empty = FXLoader:Here(root, \"PopupPanelImg.EmptyTxt\")\n    self.Status = FXLoader:Here(root, \"PopupPanelImg.StatusTxt\")\n    self.ContentTitle = FXLoader:Here(root, \"PopupPanelImg.ProductsContentImg.ProductsTitleTxt\")\n    self.DiamondTab = FXLoader:Here(root, \"PopupPanelImg.DiamondTabBtn\")\n    self.RobuxTab = FXLoader:Here(root, \"PopupPanelImg.RobuxTabBtn\")\n    self.Templates = {\n        Diamond = FXLoader:Here(root, \"Templates.DiamondCardImg\"),\n        Robux = FXLoader:Here(root, \"Templates.RobuxCardImg\"),\n    }\n    self.Cards = {}\n    -- 页签动作仅提交目标货币。\n    self:TrackConnection(self.DiamondTab.Activated:Connect(function()\n        self:EmitUIAction(\"SelectTab\", { tab = \"Diamond\" })\n    end))\n    self:TrackConnection(self.RobuxTab.Activated:Connect(function()\n        self:EmitUIAction(\"SelectTab\", { tab = \"Robux\" })\n    end))\n    local close = FXLoader:Here(root, \"TitleBox.CloseSurfaceImg.CloseBtn\")\n    -- 关闭动作交给接入层记录显隐状态。\n    self:TrackConnection(close.Activated:Connect(function()\n        self:EmitUIAction(\"Close\", {})\n    end))\nend\n\n-- 打开时刷新完整数据。\nfunction CCurrencyShopView:OnShow()\n    self:RefreshUI()\nend\n\n-- 创建原型副本并记录当前商品身份。\n-- @param product table Config.products 中的商品\n-- @return table 卡片节点、连接与清理函数\nfunction CCurrencyShopView:CreateCard(product)\n    local node = self.Templates[product.currency]:Clone()\n    node.Name = \"Product_\" .. product.id\n    node.Parent = self.List\n    node.Visible = true\n    local card = {\n        node = node,\n        title = FXLoader:Here(node, \"ProductTitleTxt\"),\n        description = FXLoader:Here(node, \"ProductDescriptionTxt\"),\n        icon = FXLoader:Here(node, \"ProductIconImg\"),\n        button = FXLoader:Here(node, \"PurchaseBtn\"),\n        price = FXLoader:Here(node, \"PurchaseBtn.ButtonTxt\"),\n        currency = product.currency,\n    }\n    -- 点击读取稳定 ID，货币由当前配置关联。\n    local connection = card.button.Activated:Connect(function()\n        self:EmitUIAction(\"Purchase\", {\n            productId = product.id,\n            currency = card.currency,\n        })\n    end)\n    card.release = self:TrackCleanup(function()\n        connection:Disconnect()\n        node:Destroy()\n    end)\n    return card\nend\n\n-- 用完整状态刷新两列商品，复用已有 ID 并清理已移除条目。\n-- @param state table 文件头定义的完整 State\nfunction CCurrencyShopView:Render(state)\n    self.Root.Enabled = state.open\n    self.Status.Text = state.message or \"\"\n    local diamondSelected = state.tab == \"Diamond\"\n    self.ContentTitle.Text = diamondSelected and \"DIAMOND SHOP\" or \"ROBUX SHOP\"\n    local diamondColor = \"#638079\"\n    local robuxColor = \"#638079\"\n    if diamondSelected then\n        diamondColor = \"#67ED14\"\n    else\n        robuxColor = \"#D03BF2\"\n    end\n    self.DiamondTab.BackgroundColor3 = diamondColor\n    self.RobuxTab.BackgroundColor3 = robuxColor\n    local diamondEdge = FXLoader:Here(self.DiamondTab, \"BottomEdgeImg\")\n    local robuxEdge = FXLoader:Here(self.RobuxTab, \"BottomEdgeImg\")\n    diamondEdge.BackgroundColor3 = diamondSelected and \"#225A07\" or \"#263E36\"\n    robuxEdge.BackgroundColor3 = diamondSelected and \"#263E36\" or \"#691582\"\n    local kept = {}\n    local count = 0\n    for index, product in ipairs(self:GetUIConfig().products) do\n        if product.currency == state.tab then\n            count = count + 1\n            local card = self.Cards[product.id]\n            if card and card.currency ~= product.currency then\n                card.release()\n                card = nil\n            end\n            if not card then\n                card = self:CreateCard(product)\n                self.Cards[product.id] = card\n            end\n            kept[product.id] = true\n            card.node.Position = UDim2.fromOffset(((count - 1) % 2) * 374, math.floor((count - 1) / 2) * 192)\n            card.title.Text = product.title\n            card.description.Text = product.description\n            card.icon.Image = product.icon or \"\"\n            local suffix = \" 钻石\"\n            if product.currency == \"Robux\" then\n                suffix = \" 罗布币\"\n            end\n            card.price.Text = tostring(product.price) .. suffix\n            self:SetButtonEnabled(card.button, not (state.pending and state.pending[product.id]))\n        end\n    end\n    for id, card in pairs(self.Cards) do\n        if not kept[id] then\n            card.release()\n            self.Cards[id] = nil\n        end\n    end\n    self.List.CanvasSize = UDim2.fromOffset(732, math.max(386, math.ceil(count / 2) * 192 - 12))\n    self.Empty.Visible = count == 0\nend\n\n-- 游戏与模拟接入必须处理声明的动作。\n-- @param action string SelectTab、Purchase 或 Close\n-- @param payload table 文件头定义的动作参数\nfunction CCurrencyShopView:OnUIAction(action, payload)\n    error(\"Currency shop integration must implement OnUIAction\")\nend\n\nreturn CCurrencyShopView"
+    "integration": "local FX = _G.FX\nlocal CCurrencyShopPreview = FX.Class(\"CCurrencyShopPreview\", \"CCurrencyShopView\")\n\n-- 父构造后提供示例商品；所有价格与图标均待业务配置替换。\n-- @param owner table 编辑器组件宿主\nfunction CCurrencyShopPreview:Ctor(owner)\n    CCurrencyShopPreview.Super.Ctor(self, owner)\n    self.Config = {\n        products = {\n            { id = \"speed\", currency = \"Diamond\", title = \"Speed Potion\", description = \"Boost your movement speed\", price = 100 },\n            { id = \"luck\", currency = \"Diamond\", title = \"Luck Potion\", description = \"Add luck to your next adventure\", price = 250 },\n            { id = \"energy\", currency = \"Diamond\", title = \"Energy Pack\", description = \"Refill your energy for exploring\", price = 150 },\n            { id = \"chest\", currency = \"Diamond\", title = \"Mystery Chest\", description = \"Discover a mystery reward\", price = 500 },\n            { id = \"trail\", currency = \"Diamond\", title = \"Star Trail\", description = \"Leave a sparkling trail\", price = 800 },\n            { id = \"ticket\", currency = \"Diamond\", title = \"Challenge Ticket\", description = \"Unlock an extra challenge\", price = 200 },\n            { id = \"starter\", currency = \"Robux\", title = \"Starter Pack\", description = \"Supplies to start your adventure\", price = 49 },\n            { id = \"gem_pack\", currency = \"Robux\", title = \"Diamond Pack\", description = \"Get 1,000 diamonds\", price = 99 },\n            { id = \"vip\", currency = \"Robux\", title = \"VIP Pass\", description = \"Unlock exclusive VIP perks\", price = 199 },\n            { id = \"outfit\", currency = \"Robux\", title = \"Special Outfit\", description = \"Create your own unique look\", price = 149 },\n            { id = \"deluxe\", currency = \"Robux\", title = \"Deluxe Pack\", description = \"Stock up on adventure supplies\", price = 299 },\n            { id = \"pet\", currency = \"Robux\", title = \"Companion Pack\", description = \"Meet your new adventure companion\", price = 249 },\n        },\n    }\n    self.State = { tab = \"Diamond\", open = true, pending = {} }\nend\n\n-- 父类完成节点绑定后显示商店。\nfunction CCurrencyShopPreview:OnReady()\n    CCurrencyShopPreview.Super.OnReady(self)\n    self:BindUIData()\n    self:Show()\nend\n\n-- 只切换模拟状态，购买不执行扣款或发奖。\n-- @param action string SelectTab、Purchase 或 Close\n-- @param payload table 符合 View 契约的动作参数\nfunction CCurrencyShopPreview:OnUIAction(action, payload)\n    if action == \"SelectTab\" then\n        self.State.tab = payload.tab\n        self.State.message = \"\"\n        self.List.CanvasPosition = Vector2.new(0, 0)\n    elseif action == \"Close\" then\n        self.State.open = false\n    elseif action == \"Purchase\" then\n        for index, product in ipairs(self.Config.products) do\n            if product.id == payload.productId then\n                self.State.message = \"Preview purchase: \" .. product.title .. \" (no charge)\"\n                break\n            end\n        end\n    end\n    self:RefreshUI()\nend\n\nreturn CCurrencyShopPreview",
+    "source": "--[[\n商店接入契约\nConfig.products: 必填数组；顺序为展示顺序，可为空。\n每项 { id: string 稳定商品 ID（全列表唯一）, currency: \"Diamond\"|\"Robux\",\ntitle: string, description: string, price: number 非负对应货币数量,\nicon: string 可选真实 Roblox Image ID，省略或空字符串显示问号占位 }。\nState: 完整输入，非增量：\ntab: \"Diamond\"|\"Robux\" 必填；open: boolean 必填；\npending: 字典[id]=boolean 可选，省略视为无请求；\nmessage: string 可选，省略显示空文字，用于业务结果提示。\n数据须在首次 Show 前准备，GetUIConfig/GetUIState 默认读取 self.Config/self.State；\n接入 OnReady 先调用父方法，再 BindUIData、Show。更新完整 State 后 RefreshUI。\n最小示例：\nself.Config = { products = { { id = \"speed\", currency = \"Diamond\",\ntitle = \"Speed Potion\", description = \"Boost your movement speed\", price = 100 } } }\nself.State = { tab = \"Diamond\", open = true }\n动作：SelectTab { tab: \"Diamond\"|\"Robux\" }；\nPurchase { productId: string, currency: \"Diamond\"|\"Robux\" }；Close {}。\n必需覆写 OnUIAction(action, payload)，无返回值；无其他页面专用覆写。\n购买接入按 productId 查询真实商品并验证价格、余额和支付结果；\n请求期间 pending[id]=true，完成后更新状态和 message 再刷新。\nRender 不扣款或发奖。图标取 Config.products[].icon；\n空图清除上一商品图并显示问号占位，正式图标需由业务配置提供。\nTemplates 隐藏原型供两列动态列表克隆，按稳定 ID 更新、排序、删除和清理连接。\n空分组清理条目并显示“No products available”；异步未就绪时提供 products={}。\n]]\nlocal FX = _G.FX\nlocal FXLoader = FX.Loader\nlocal CCurrencyShopView = FX.Class(\"CCurrencyShopView\", \"CUIView\")\n\n-- 绑定已有节点与页签事件；每张商品卡只连接一次。\nfunction CCurrencyShopView:OnReady()\n    local root = FXLoader:PlayerGui(\"CurrencyShopUI\")\n    self.Root = root\n    self.List = FXLoader:Here(root, \"PopupPanelImg.ProductListBox\")\n    self.Empty = FXLoader:Here(root, \"PopupPanelImg.EmptyTxt\")\n    self.Status = FXLoader:Here(root, \"PopupPanelImg.StatusTxt\")\n    self.ContentTitle = FXLoader:Here(root, \"PopupPanelImg.ProductsContentImg.ProductsTitleTxt\")\n    self.DiamondTab = FXLoader:Here(root, \"PopupPanelImg.DiamondTabBtn\")\n    self.RobuxTab = FXLoader:Here(root, \"PopupPanelImg.RobuxTabBtn\")\n    self.Templates = {\n        Diamond = FXLoader:Here(root, \"Templates.DiamondCardImg\"),\n        Robux = FXLoader:Here(root, \"Templates.RobuxCardImg\"),\n    }\n    self.Cards = {}\n    -- 页签动作仅提交目标货币。\n    self:TrackConnection(self.DiamondTab.Activated:Connect(function()\n        self:EmitUIAction(\"SelectTab\", { tab = \"Diamond\" })\n    end))\n    self:TrackConnection(self.RobuxTab.Activated:Connect(function()\n        self:EmitUIAction(\"SelectTab\", { tab = \"Robux\" })\n    end))\n    local close = FXLoader:Here(root, \"TitleBox.CloseSurfaceImg.CloseBtn\")\n    -- 关闭动作交给接入层记录显隐状态。\n    self:TrackConnection(close.Activated:Connect(function()\n        self:EmitUIAction(\"Close\", {})\n    end))\nend\n\n-- 打开时刷新完整数据。\nfunction CCurrencyShopView:OnShow()\n    self:RefreshUI()\nend\n\n-- 创建原型副本并记录当前商品身份。\n-- @param product table Config.products 中的商品\n-- @return table 卡片节点、连接与清理函数\nfunction CCurrencyShopView:CreateCard(product)\n    local node = self.Templates[product.currency]:Clone()\n    node.Name = \"Product_\" .. product.id\n    node.Parent = self.List\n    node.Visible = true\n    local card = {\n        node = node,\n        title = FXLoader:Here(node, \"ProductTitleTxt\"),\n        description = FXLoader:Here(node, \"ProductDescriptionTxt\"),\n        icon = FXLoader:Here(node, \"ProductIconImg\"),\n        button = FXLoader:Here(node, \"PurchaseBtn\"),\n        price = FXLoader:Here(node, \"PurchaseBtn.ButtonTxt\"),\n        currency = product.currency,\n    }\n    -- 点击读取稳定 ID，货币由当前配置关联。\n    local connection = card.button.Activated:Connect(function()\n        self:EmitUIAction(\"Purchase\", {\n            productId = product.id,\n            currency = card.currency,\n        })\n    end)\n    card.release = self:TrackCleanup(function()\n        connection:Disconnect()\n        node:Destroy()\n    end)\n    return card\nend\n\n-- 用完整状态刷新两列商品，复用已有 ID 并清理已移除条目。\n-- @param state table 文件头定义的完整 State\nfunction CCurrencyShopView:Render(state)\n    self.Root.Enabled = state.open\n    self.Status.Text = state.message or \"\"\n    local diamondSelected = state.tab == \"Diamond\"\n    self.ContentTitle.Text = diamondSelected and \"DIAMOND SHOP\" or \"ROBUX SHOP\"\n    local diamondColor = \"#638079\"\n    local robuxColor = \"#638079\"\n    if diamondSelected then\n        diamondColor = \"#67ED14\"\n    else\n        robuxColor = \"#249CB5\"\n    end\n    self.DiamondTab.BackgroundColor3 = diamondColor\n    self.RobuxTab.BackgroundColor3 = robuxColor\n    local diamondEdge = FXLoader:Here(self.DiamondTab, \"BottomEdgeImg\")\n    local robuxEdge = FXLoader:Here(self.RobuxTab, \"BottomEdgeImg\")\n    diamondEdge.BackgroundColor3 = diamondSelected and \"#225A07\" or \"#263E36\"\n    robuxEdge.BackgroundColor3 = diamondSelected and \"#263E36\" or \"#105464\"\n    local kept = {}\n    local count = 0\n    for index, product in ipairs(self:GetUIConfig().products) do\n        if product.currency == state.tab then\n            count = count + 1\n            local card = self.Cards[product.id]\n            if card and card.currency ~= product.currency then\n                card.release()\n                card = nil\n            end\n            if not card then\n                card = self:CreateCard(product)\n                self.Cards[product.id] = card\n            end\n            kept[product.id] = true\n            card.node.Position = UDim2.fromOffset(((count - 1) % 2) * 374, math.floor((count - 1) / 2) * 192)\n            card.title.Text = product.title\n            card.description.Text = product.description\n            card.icon.Image = product.icon or \"\"\n            card.price.Text = tostring(product.price)\n            self:SetButtonEnabled(card.button, not (state.pending and state.pending[product.id]))\n        end\n    end\n    for id, card in pairs(self.Cards) do\n        if not kept[id] then\n            card.release()\n            self.Cards[id] = nil\n        end\n    end\n    self.List.CanvasSize = UDim2.fromOffset(732, math.max(386, math.ceil(count / 2) * 192 - 12))\n    self.Empty.Visible = count == 0\nend\n\n-- 游戏与模拟接入必须处理声明的动作。\n-- @param action string SelectTab、Purchase 或 Close\n-- @param payload table 文件头定义的动作参数\nfunction CCurrencyShopView:OnUIAction(action, payload)\n    error(\"Currency shop integration must implement OnUIAction\")\nend\n\nreturn CCurrencyShopView"
   },
   "version": 3
 }
