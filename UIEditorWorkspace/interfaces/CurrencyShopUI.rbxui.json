@@ -850,6 +850,15 @@
               "Visible": true,
               "ZIndex": 2
             }
+          },
+          {
+            "children": [],
+            "className": "UIScale",
+            "id": "5a8cc5ad-279a-46db-ba9c-fc5e5781f74a",
+            "name": "WindowScale",
+            "properties": {
+              "Scale": 0.65
+            }
           }
         ],
         "className": "Frame",
@@ -866,11 +875,11 @@
           "LayoutOrder": 0,
           "Position": {
             "x": {
-              "offset": 130,
+              "offset": 309,
               "scale": 0
             },
             "y": {
-              "offset": 135,
+              "offset": 214,
               "scale": 0
             }
           },
@@ -1314,6 +1323,15 @@
               "Visible": true,
               "ZIndex": 6
             }
+          },
+          {
+            "children": [],
+            "className": "UIScale",
+            "id": "44e5b53f-c413-42cd-aa7a-b59b736a6f88",
+            "name": "WindowScale",
+            "properties": {
+              "Scale": 0.65
+            }
           }
         ],
         "className": "Frame",
@@ -1330,11 +1348,11 @@
           "LayoutOrder": 0,
           "Position": {
             "x": {
-              "offset": 130,
+              "offset": 309,
               "scale": 0
             },
             "y": {
-              "offset": 65,
+              "offset": 168,
               "scale": 0
             }
           },
@@ -1424,7 +1442,7 @@
                   "BackgroundColor3": "#172827",
                   "BackgroundTransparency": 1,
                   "ClipsDescendants": false,
-                  "Image": "",
+                  "Image": "rbxassetid://86795093617566",
                   "ImageColor3": "#ffffff",
                   "ImageTransparency": 0,
                   "LayoutOrder": 0,
@@ -1949,7 +1967,7 @@
                   "BackgroundColor3": "#172827",
                   "BackgroundTransparency": 1,
                   "ClipsDescendants": false,
-                  "Image": "",
+                  "Image": "rbxassetid://86795093617566",
                   "ImageColor3": "#ffffff",
                   "ImageTransparency": 0,
                   "LayoutOrder": 0,

@@ -52,7 +52,7 @@
               },
               "CanvasSize": {
                 "x": {
-                  "offset": 778,
+                  "offset": 898,
                   "scale": 0
                 },
                 "y": {
@@ -77,7 +77,7 @@
               "ScrollingDirection": "Y",
               "Size": {
                 "x": {
-                  "offset": 788,
+                  "offset": 908,
                   "scale": 0
                 },
                 "y": {
@@ -131,7 +131,7 @@
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 480,
+                      "offset": 600,
                       "scale": 0
                     },
                     "y": {
@@ -179,7 +179,7 @@
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 510,
+                      "offset": 630,
                       "scale": 0
                     },
                     "y": {
@@ -216,7 +216,7 @@
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
-                      "offset": 560,
+                      "offset": 680,
                       "scale": 0
                     },
                     "y": {
@@ -264,7 +264,7 @@
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
-                      "offset": 560,
+                      "offset": 680,
                       "scale": 0
                     },
                     "y": {
@@ -321,7 +321,7 @@
               "Rotation": 0,
               "Size": {
                 "x": {
-                  "offset": 788,
+                  "offset": 908,
                   "scale": 0
                 },
                 "y": {
@@ -331,6 +331,15 @@
               },
               "Visible": true,
               "ZIndex": 4
+            }
+          },
+          {
+            "children": [],
+            "className": "UIScale",
+            "id": "b40635c2-773f-4664-83ef-e8d8b40d5571",
+            "name": "WindowScale",
+            "properties": {
+              "Scale": 0.65
             }
           }
         ],
@@ -348,18 +357,18 @@
           "LayoutOrder": 0,
           "Position": {
             "x": {
-              "offset": 230,
+              "offset": 335,
               "scale": 0
             },
             "y": {
-              "offset": 170,
+              "offset": 237,
               "scale": 0
             }
           },
           "Rotation": 0,
           "Size": {
             "x": {
-              "offset": 820,
+              "offset": 940,
               "scale": 0
             },
             "y": {
@@ -483,7 +492,7 @@
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 820,
+                      "offset": 940,
                       "scale": 0
                     },
                     "y": {
@@ -561,7 +570,7 @@
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 820,
+                      "offset": 940,
                       "scale": 0
                     },
                     "y": {
@@ -599,7 +608,7 @@
               "Rotation": 0,
               "Size": {
                 "x": {
-                  "offset": 820,
+                  "offset": 940,
                   "scale": 0
                 },
                 "y": {
@@ -652,7 +661,7 @@
               "Rotation": 0,
               "Size": {
                 "x": {
-                  "offset": 480,
+                  "offset": 600,
                   "scale": 0
                 },
                 "y": {
@@ -774,7 +783,7 @@
               "LayoutOrder": 0,
               "Position": {
                 "x": {
-                  "offset": 758,
+                  "offset": 878,
                   "scale": 0
                 },
                 "y": {
@@ -814,7 +823,7 @@
               "LayoutOrder": 0,
               "Position": {
                 "x": {
-                  "offset": 552,
+                  "offset": 672,
                   "scale": 0
                 },
                 "y": {
@@ -844,6 +853,15 @@
               "Visible": true,
               "ZIndex": 6
             }
+          },
+          {
+            "children": [],
+            "className": "UIScale",
+            "id": "e932fe71-7440-43c1-bfe4-85821cca17c5",
+            "name": "WindowScale",
+            "properties": {
+              "Scale": 0.65
+            }
           }
         ],
         "className": "Frame",
@@ -860,18 +878,18 @@
           "LayoutOrder": 0,
           "Position": {
             "x": {
-              "offset": 230,
+              "offset": 335,
               "scale": 0
             },
             "y": {
-              "offset": 100,
+              "offset": 191,
               "scale": 0
             }
           },
           "Rotation": 0,
           "Size": {
             "x": {
-              "offset": 820,
+              "offset": 940,
               "scale": 0
             },
             "y": {
@@ -947,7 +965,7 @@
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
-                      "offset": 51,
+                      "offset": 66,
                       "scale": 0
                     },
                     "y": {
@@ -998,7 +1016,7 @@
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
-                      "offset": 51,
+                      "offset": 66,
                       "scale": 0
                     },
                     "y": {
@@ -1057,7 +1075,7 @@
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 158,
+                      "offset": 188,
                       "scale": 0
                     },
                     "y": {
@@ -1103,7 +1121,7 @@
               "Rotation": 0,
               "Size": {
                 "x": {
-                  "offset": 182,
+                  "offset": 212,
                   "scale": 0
                 },
                 "y": {
@@ -1164,7 +1182,7 @@
   },
   "scripts": {
     "integration": "local FX = _G.FX\nlocal FXLoader = FX.Loader\nlocal CCollectionPreview = FX.Class(\"CCollectionPreview\", \"CCollectionView\")\n\n-- 示例每激活一项增加 2% 力量，前三项已激活；不修改真实玩家数据。\n-- @param owner table 编辑器组件宿主\nfunction CCollectionPreview:Ctor(owner)\n    CCollectionPreview.Super.Ctor(self, owner)\n    self.Config = {\n        strengthPerEntryPercent = 2,\n        items = {\n            { id = \"wood_sword\", name = \"Wood Sword\" },\n            { id = \"iron_sword\", name = \"Iron Sword\" },\n            { id = \"crystal\", name = \"Crystal\" },\n            { id = \"flame\", name = \"Flame Blade\" },\n            { id = \"ice\", name = \"Ice Staff\" },\n            { id = \"star\", name = \"Star Gem\" },\n            { id = \"ruby\", name = \"Ruby\" },\n            { id = \"emerald\", name = \"Emerald\" },\n            { id = \"sapphire\", name = \"Sapphire\" },\n            { id = \"gold\", name = \"Gold Ring\" },\n            { id = \"silver\", name = \"Silver Ring\" },\n            { id = \"shield\", name = \"Shield\" },\n            { id = \"hammer\", name = \"Hammer\" },\n            { id = \"axe\", name = \"Axe\" },\n            { id = \"bow\", name = \"Bow\" },\n            { id = \"spear\", name = \"Spear\" },\n            { id = \"helmet\", name = \"Helmet\" },\n            { id = \"boots\", name = \"Boots\" },\n            { id = \"amulet\", name = \"Amulet\" },\n            { id = \"crown\", name = \"Crown\" },\n        },\n    }\n    self.State = {\n        open = true,\n        totalStrengthPercent = 6,\n        entries = {\n            wood_sword = { active = true },\n            iron_sword = { active = true },\n            crystal = { active = true },\n            flame = { active = false },\n            ice = { active = false },\n            star = { active = false },\n            ruby = { active = false },\n            emerald = { active = false },\n            sapphire = { active = false },\n            gold = { active = false },\n            silver = { active = false },\n            shield = { active = false },\n            hammer = { active = false },\n            axe = { active = false },\n            bow = { active = false },\n            spear = { active = false },\n            helmet = { active = false },\n            boots = { active = false },\n            amulet = { active = false },\n            crown = { active = false },\n        },\n    }\nend\n\n-- 绑定完成后加载数据并显示图鉴。\nfunction CCollectionPreview:OnReady()\n    CCollectionPreview.Super.OnReady(self)\n    self:BindUIData()\n    self:Show()\nend\n\n-- 模拟只响应关闭，不再提供领取或发奖行为。\n-- @param action string Close\n-- @param payload table 空表\nfunction CCollectionPreview:OnUIAction(action, payload)\n    assert(action == \"Close\", \"Unsupported collection action: \" .. tostring(action))\n    self.State.open = false\n    self:RefreshUI()\nend\n\nreturn CCollectionPreview",
-    "source": "--[[\n图鉴接入契约\nConfig.items: 必填数组，数组顺序为展示顺序，可为空。\n每项 { id: string 全列表唯一且不含点的稳定道具 ID, name: string 名称,\nicon: string 可选，真实 Roblox Image ID，省略或为空时清除旧图并显示问号 }。\nConfig.strengthPerEntryPercent: number 必填，每激活一个图鉴增加的力量百分比，\n例如 2 表示 +2%，不是倍率 0.02。此字段只负责规则展示。\nState 是完整输入，不合并增量：\nopen: boolean 必填，窗口显隐；\ntotalStrengthPercent: number 必填，游戏端提供的已生效累计力量百分比，\n例如 6 显示 +6%；展示层不修改玩家力量；\nentries: 字典[id] 必填，每个 Config.items ID 对应\n{ active: boolean 必填，true 为已激活，false 为未激活 }。\n未激活项隐藏真实名称与图标并显示 ???；激活由游戏发现道具时同步。\n不包含领取、奖励、pending、error 或逐项增益字段，也不发送激活动作。\n空列表或加载期间提供 items={}、entries={}、totalStrengthPercent=0。\n最小完整数据示例：\nself.Config = { strengthPerEntryPercent = 2,\nitems = { { id = \"sword\", name = \"Wood Sword\" } } }\nself.State = { open = true, totalStrengthPercent = 2,\nentries = { sword = { active = true } } }\nGetUIConfig/GetUIState 默认读取 self.Config/self.State；首次刷新前准备完整数据。\n接入 OnReady 先调用父方法，再 BindUIData、Show；更新完整 State 后 RefreshUI。\n必须覆写 OnUIAction(action, payload)，唯一动作 Close {}，无返回值。\n无其他页面专用必需或可选覆写。游戏端负责激活记录和力量计算，\n每次业务数据变化后更新 entries、totalStrengthPercent 并刷新。\nTemplates.ItemRowImg.ItemIconImg 为动态图占位，配置 items[].icon 替换；\nApp 动态资源预览、真实资源权限和设备显示需另验。\n]]\nlocal FX = _G.FX\nlocal FXLoader = FX.Loader\nlocal CCollectionView = FX.Class(\"CCollectionView\", \"CUIView\")\n\n-- 绑定窗口、统计与隐藏卡片原型，只连接关闭操作。\nfunction CCollectionView:OnReady()\n    local root = FXLoader:PlayerGui(\"CollectionUI\")\n    self.Root = root\n    self.List = FXLoader:Here(root, \"PopupPanelImg.ItemListBox\")\n    self.Count = FXLoader:Here(root, \"TitleBox.CountTxt\")\n    self.Boost = FXLoader:Here(root, \"PopupPanelImg.SummaryImg.BoostTxt\")\n    self.Rule = FXLoader:Here(root, \"PopupPanelImg.SummaryImg.StatusTxt\")\n    self.Template = FXLoader:Here(root, \"Templates.ItemRowImg\")\n    self.Rows = {}\n    local close = FXLoader:Here(root, \"TitleBox.CloseSurfaceImg.CloseBtn\")\n    -- 关闭由接入层更新显隐状态。\n    self:TrackConnection(close.Activated:Connect(function()\n        self:EmitUIAction(\"Close\", {})\n    end))\nend\n\n-- 打开时刷新完整业务数据。\nfunction CCollectionView:OnShow()\n    self:RefreshUI()\nend\n\n-- 新增稳定 ID 的卡片，仅保存图标、名称与清理方法。\n-- @param item table Config.items 中的道具配置\n-- @return table 卡片节点引用及释放方法\nfunction CCollectionView:CreateRow(item)\n    local node = self.Template:Clone()\n    node.Name = \"Item_\" .. item.id\n    node.Parent = self.List\n    node.Visible = true\n    local row = {\n        node = node,\n        name = FXLoader:Here(node, \"ItemNameTxt\"),\n        icon = FXLoader:Here(node, \"ItemIconImg\"),\n        unknown = FXLoader:Here(node, \"UnknownTxt\"),\n    }\n    row.release = self:TrackCleanup(function()\n        node:Destroy()\n    end)\n    return row\nend\n\n-- 刷新四列卡片及累计力量，复用已有 ID 并清理移除项。\n-- @param state table 文件头定义的完整 State\nfunction CCollectionView:Render(state)\n    self.Root.Enabled = state.open\n    local config = self:GetUIConfig()\n    self.Rule.Text = \"+\" .. tostring(config.strengthPerEntryPercent) .. \"% Strength\"\n    self.Boost.Text = \"+\" .. tostring(state.totalStrengthPercent) .. \"%\"\n    local kept = {}\n    local activeCount = 0\n    for index, item in ipairs(config.items) do\n        local entry = state.entries[item.id]\n        local row = self.Rows[item.id]\n        if not row then\n            row = self:CreateRow(item)\n            self.Rows[item.id] = row\n        end\n        kept[item.id] = true\n        row.node.Position = UDim2.fromOffset(\n            2 + ((index - 1) % 4) * 198,\n            2 + math.floor((index - 1) / 4) * 164\n        )\n        if entry.active then\n            activeCount = activeCount + 1\n        end\n        row.name.Text = entry.active and item.name or \"???\"\n        row.icon.Image = entry.active and (item.icon or \"\") or \"\"\n        row.unknown.Visible = not entry.active or not item.icon or item.icon == \"\"\n        row.icon.ImageTransparency = row.unknown.Visible and 1 or 0\n    end\n    for id, row in pairs(self.Rows) do\n        if not kept[id] then\n            row.release()\n            self.Rows[id] = nil\n        end\n    end\n    self.List.CanvasSize = UDim2.fromOffset(\n        778,\n        math.max(326, math.ceil(#config.items / 4) * 164 - 12)\n    )\n    self.Count.Text = \"Activated \" .. tostring(activeCount) .. \" / \" .. tostring(#config.items)\nend\n\n-- 模拟与游戏接入必须处理关闭操作。\n-- @param action string Close\n-- @param payload table 空表\nfunction CCollectionView:OnUIAction(action, payload)\n    error(\"Collection integration must implement OnUIAction\")\nend\n\nreturn CCollectionView"
+    "source": "--[[\n图鉴接入契约\nConfig.items: 必填数组，数组顺序为展示顺序，可为空。\n每项 { id: string 全列表唯一且不含点的稳定道具 ID, name: string 名称,\nicon: string 可选，真实 Roblox Image ID，省略或为空时清除旧图并显示问号 }。\nConfig.strengthPerEntryPercent: number 必填，每激活一个图鉴增加的力量百分比，\n例如 2 表示 +2%，不是倍率 0.02。此字段只负责规则展示。\nState 是完整输入，不合并增量：\nopen: boolean 必填，窗口显隐；\ntotalStrengthPercent: number 必填，游戏端提供的已生效累计力量百分比，\n例如 6 显示 +6%；展示层不修改玩家力量；\nentries: 字典[id] 必填，每个 Config.items ID 对应\n{ active: boolean 必填，true 为已激活，false 为未激活 }。\n未激活项隐藏真实名称与图标并显示 ???；激活由游戏发现道具时同步。\n不包含领取、奖励、pending、error 或逐项增益字段，也不发送激活动作。\n空列表或加载期间提供 items={}、entries={}、totalStrengthPercent=0。\n最小完整数据示例：\nself.Config = { strengthPerEntryPercent = 2,\nitems = { { id = \"sword\", name = \"Wood Sword\" } } }\nself.State = { open = true, totalStrengthPercent = 2,\nentries = { sword = { active = true } } }\nGetUIConfig/GetUIState 默认读取 self.Config/self.State；首次刷新前准备完整数据。\n接入 OnReady 先调用父方法，再 BindUIData、Show；更新完整 State 后 RefreshUI。\n必须覆写 OnUIAction(action, payload)，唯一动作 Close {}，无返回值。\n无其他页面专用必需或可选覆写。游戏端负责激活记录和力量计算，\n每次业务数据变化后更新 entries、totalStrengthPercent 并刷新。\nTemplates.ItemRowImg.ItemIconImg 为动态图占位，配置 items[].icon 替换；\nApp 动态资源预览、真实资源权限和设备显示需另验。\n]]\nlocal FX = _G.FX\nlocal FXLoader = FX.Loader\nlocal CCollectionView = FX.Class(\"CCollectionView\", \"CUIView\")\n\n-- 绑定窗口、统计与隐藏卡片原型，只连接关闭操作。\nfunction CCollectionView:OnReady()\n    local root = FXLoader:PlayerGui(\"CollectionUI\")\n    self.Root = root\n    self.List = FXLoader:Here(root, \"PopupPanelImg.ItemListBox\")\n    self.Count = FXLoader:Here(root, \"TitleBox.CountTxt\")\n    self.Boost = FXLoader:Here(root, \"PopupPanelImg.SummaryImg.BoostTxt\")\n    self.Rule = FXLoader:Here(root, \"PopupPanelImg.SummaryImg.StatusTxt\")\n    self.Template = FXLoader:Here(root, \"Templates.ItemRowImg\")\n    self.Rows = {}\n    local close = FXLoader:Here(root, \"TitleBox.CloseSurfaceImg.CloseBtn\")\n    -- 关闭由接入层更新显隐状态。\n    self:TrackConnection(close.Activated:Connect(function()\n        self:EmitUIAction(\"Close\", {})\n    end))\nend\n\n-- 打开时刷新完整业务数据。\nfunction CCollectionView:OnShow()\n    self:RefreshUI()\nend\n\n-- 新增稳定 ID 的卡片，仅保存图标、名称与清理方法。\n-- @param item table Config.items 中的道具配置\n-- @return table 卡片节点引用及释放方法\nfunction CCollectionView:CreateRow(item)\n    local node = self.Template:Clone()\n    node.Name = \"Item_\" .. item.id\n    node.Parent = self.List\n    node.Visible = true\n    local row = {\n        node = node,\n        name = FXLoader:Here(node, \"ItemNameTxt\"),\n        icon = FXLoader:Here(node, \"ItemIconImg\"),\n        unknown = FXLoader:Here(node, \"UnknownTxt\"),\n    }\n    row.release = self:TrackCleanup(function()\n        node:Destroy()\n    end)\n    return row\nend\n\n-- 刷新四列卡片及累计力量，复用已有 ID 并清理移除项。\n-- @param state table 文件头定义的完整 State\nfunction CCollectionView:Render(state)\n    self.Root.Enabled = state.open\n    local config = self:GetUIConfig()\n    self.Rule.Text = \"+\" .. tostring(config.strengthPerEntryPercent) .. \"% Strength\"\n    self.Boost.Text = \"+\" .. tostring(state.totalStrengthPercent) .. \"%\"\n    local kept = {}\n    local activeCount = 0\n    for index, item in ipairs(config.items) do\n        local entry = state.entries[item.id]\n        local row = self.Rows[item.id]\n        if not row then\n            row = self:CreateRow(item)\n            self.Rows[item.id] = row\n        end\n        kept[item.id] = true\n        row.node.Position = UDim2.fromOffset(\n            2 + ((index - 1) % 4) * 228,\n            2 + math.floor((index - 1) / 4) * 164\n        )\n        if entry.active then\n            activeCount = activeCount + 1\n        end\n        row.name.Text = entry.active and item.name or \"???\"\n        row.icon.Image = entry.active and (item.icon or \"\") or \"\"\n        row.unknown.Visible = not entry.active or not item.icon or item.icon == \"\"\n        row.icon.ImageTransparency = row.unknown.Visible and 1 or 0\n    end\n    for id, row in pairs(self.Rows) do\n        if not kept[id] then\n            row.release()\n            self.Rows[id] = nil\n        end\n    end\n    self.List.CanvasSize = UDim2.fromOffset(\n        898,\n        math.max(326, math.ceil(#config.items / 4) * 164 - 12)\n    )\n    self.Count.Text = \"Activated \" .. tostring(activeCount) .. \" / \" .. tostring(#config.items)\nend\n\n-- 模拟与游戏接入必须处理关闭操作。\n-- @param action string Close\n-- @param payload table 空表\nfunction CCollectionView:OnUIAction(action, payload)\n    error(\"Collection integration must implement OnUIAction\")\nend\n\nreturn CCollectionView"
   },
   "version": 3
 }

@@ -52,6 +52,164 @@
         "kind": "project",
         "projectGuid": "1ff405b8-a52e-4d7f-86ab-f3ee2dde4025"
       }
+    },
+    {
+      "id": "ai-node-1",
+      "name": "五个石头训练场地",
+      "parentId": "studio-block-models-root",
+      "type": "Transform",
+      "transform": {
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "prefab-node-b0467035-d55a-4c88-b49f-a02cfbe121bc",
+      "name": "训练场地01",
+      "parentId": "ai-node-1",
+      "type": "PrefabReference",
+      "transform": {
+        "position": [
+          -43,
+          -2,
+          -151
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "target": {
+        "kind": "project",
+        "projectGuid": "4ecb5e39-ea17-4a7b-a948-e88191426344"
+      }
+    },
+    {
+      "id": "prefab-node-489b4385-b618-4f67-9535-ef4c4608916e",
+      "name": "训练场地02",
+      "parentId": "ai-node-1",
+      "type": "PrefabReference",
+      "transform": {
+        "position": [
+          1,
+          -2,
+          -151
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "target": {
+        "kind": "project",
+        "projectGuid": "4ecb5e39-ea17-4a7b-a948-e88191426344"
+      }
+    },
+    {
+      "id": "prefab-node-3c493f40-5e98-4885-936b-c91ae792298a",
+      "name": "训练场地03",
+      "parentId": "ai-node-1",
+      "type": "PrefabReference",
+      "transform": {
+        "position": [
+          45,
+          -2,
+          -151
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "target": {
+        "kind": "project",
+        "projectGuid": "4ecb5e39-ea17-4a7b-a948-e88191426344"
+      }
+    },
+    {
+      "id": "prefab-node-430cd8d0-0f62-47ce-8df6-14b798323012",
+      "name": "训练场地04",
+      "parentId": "ai-node-1",
+      "type": "PrefabReference",
+      "transform": {
+        "position": [
+          -21,
+          -2,
+          -103
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "target": {
+        "kind": "project",
+        "projectGuid": "4ecb5e39-ea17-4a7b-a948-e88191426344"
+      }
+    },
+    {
+      "id": "prefab-node-13226086-93e6-4e85-8d47-c4926501366c",
+      "name": "训练场地05",
+      "parentId": "ai-node-1",
+      "type": "PrefabReference",
+      "transform": {
+        "position": [
+          23,
+          -2,
+          -103
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "target": {
+        "kind": "project",
+        "projectGuid": "4ecb5e39-ea17-4a7b-a948-e88191426344"
+      }
     }
   ],
   "prefabFolders": [],
@@ -64,6 +222,22 @@
     {
       "projectGuid": "1ff405b8-a52e-4d7f-86ab-f3ee2dde4025",
       "name": "世界1"
+    },
+    {
+      "projectGuid": "5296f341-b380-45f9-a485-39bd42659ddd",
+      "name": "正方形石头训练场地"
+    },
+    {
+      "projectGuid": "0464a8f1-5e5e-49f6-97d0-0ae53ebc36ad",
+      "name": "棱角金矿石训练场地"
+    },
+    {
+      "projectGuid": "2882eba8-29e9-4e0e-b20e-2ff0c5844c8e",
+      "name": "巨岩金矿训练场地"
+    },
+    {
+      "projectGuid": "4ecb5e39-ea17-4a7b-a948-e88191426344",
+      "name": "厚重裂隙金矿训练场地"
     }
   ]
 }

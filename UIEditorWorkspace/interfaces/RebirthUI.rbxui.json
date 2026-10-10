@@ -285,7 +285,7 @@
               "LayoutOrder": 0,
               "Position": {
                 "x": {
-                  "offset": 88,
+                  "offset": 118,
                   "scale": 0
                 },
                 "y": {
@@ -332,7 +332,7 @@
               "LayoutOrder": 0,
               "Position": {
                 "x": {
-                  "offset": 66,
+                  "offset": 96,
                   "scale": 0
                 },
                 "y": {
@@ -617,7 +617,7 @@
               "LayoutOrder": 0,
               "Position": {
                 "x": {
-                  "offset": 458,
+                  "offset": 548,
                   "scale": 0
                 },
                 "y": {
@@ -664,7 +664,7 @@
               "LayoutOrder": 0,
               "Position": {
                 "x": {
-                  "offset": 436,
+                  "offset": 526,
                   "scale": 0
                 },
                 "y": {
@@ -949,7 +949,7 @@
               "LayoutOrder": 0,
               "Position": {
                 "x": {
-                  "offset": 88,
+                  "offset": 118,
                   "scale": 0
                 },
                 "y": {
@@ -996,7 +996,7 @@
               "LayoutOrder": 0,
               "Position": {
                 "x": {
-                  "offset": 66,
+                  "offset": 96,
                   "scale": 0
                 },
                 "y": {
@@ -1281,7 +1281,7 @@
               "LayoutOrder": 0,
               "Position": {
                 "x": {
-                  "offset": 458,
+                  "offset": 548,
                   "scale": 0
                 },
                 "y": {
@@ -1328,7 +1328,7 @@
               "LayoutOrder": 0,
               "Position": {
                 "x": {
-                  "offset": 436,
+                  "offset": 526,
                   "scale": 0
                 },
                 "y": {
@@ -1392,7 +1392,7 @@
               "LayoutOrder": 0,
               "Position": {
                 "x": {
-                  "offset": 327,
+                  "offset": 387,
                   "scale": 0
                 },
                 "y": {
@@ -1453,7 +1453,7 @@
               "LayoutOrder": 0,
               "Position": {
                 "x": {
-                  "offset": 327,
+                  "offset": 387,
                   "scale": 0
                 },
                 "y": {
@@ -1525,7 +1525,7 @@
               "Rotation": 0,
               "Size": {
                 "x": {
-                  "offset": 660,
+                  "offset": 780,
                   "scale": 0
                 },
                 "y": {
@@ -1916,7 +1916,7 @@
               "Rotation": 0,
               "Size": {
                 "x": {
-                  "offset": 660,
+                  "offset": 780,
                   "scale": 0
                 },
                 "y": {
@@ -2129,7 +2129,7 @@
               "LayoutOrder": 0,
               "Position": {
                 "x": {
-                  "offset": 88,
+                  "offset": 118,
                   "scale": 0
                 },
                 "y": {
@@ -2364,7 +2364,7 @@
               "LayoutOrder": 0,
               "Position": {
                 "x": {
-                  "offset": 416,
+                  "offset": 506,
                   "scale": 0
                 },
                 "y": {
@@ -2397,6 +2397,15 @@
               "Visible": true,
               "ZIndex": 3
             }
+          },
+          {
+            "children": [],
+            "className": "UIScale",
+            "id": "46929b16-66c3-4976-8f2c-cac4ac6007a2",
+            "name": "WindowScale",
+            "properties": {
+              "Scale": 0.65
+            }
           }
         ],
         "className": "Frame",
@@ -2413,18 +2422,18 @@
           "LayoutOrder": 0,
           "Position": {
             "x": {
-              "offset": 270,
+              "offset": 361,
               "scale": 0
             },
             "y": {
-              "offset": 140,
+              "offset": 217,
               "scale": 0
             }
           },
           "Rotation": 0,
           "Size": {
             "x": {
-              "offset": 740,
+              "offset": 860,
               "scale": 0
             },
             "y": {
@@ -2548,7 +2557,7 @@
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 780,
+                      "offset": 900,
                       "scale": 0
                     },
                     "y": {
@@ -2626,7 +2635,7 @@
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 780,
+                      "offset": 900,
                       "scale": 0
                     },
                     "y": {
@@ -2678,7 +2687,7 @@
               "Rotation": 0,
               "Size": {
                 "x": {
-                  "offset": 780,
+                  "offset": 900,
                   "scale": 0
                 },
                 "y": {
@@ -2731,7 +2740,7 @@
               "Rotation": 0,
               "Size": {
                 "x": {
-                  "offset": 568,
+                  "offset": 688,
                   "scale": 0
                 },
                 "y": {
@@ -2853,7 +2862,7 @@
               "LayoutOrder": 0,
               "Position": {
                 "x": {
-                  "offset": 718,
+                  "offset": 838,
                   "scale": 0
                 },
                 "y": {
@@ -2933,6 +2942,15 @@
               "Visible": true,
               "ZIndex": 8
             }
+          },
+          {
+            "children": [],
+            "className": "UIScale",
+            "id": "d4cc1324-caac-4b4b-9a17-afe556771eaa",
+            "name": "WindowScale",
+            "properties": {
+              "Scale": 0.65
+            }
           }
         ],
         "className": "Frame",
@@ -2949,18 +2967,18 @@
           "LayoutOrder": 0,
           "Position": {
             "x": {
-              "offset": 250,
+              "offset": 348,
               "scale": 0
             },
             "y": {
-              "offset": 70,
+              "offset": 172,
               "scale": 0
             }
           },
           "Rotation": 0,
           "Size": {
             "x": {
-              "offset": 780,
+              "offset": 900,
               "scale": 0
             },
             "y": {
