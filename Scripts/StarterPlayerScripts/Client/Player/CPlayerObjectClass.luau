@@ -12,6 +12,7 @@ function Player:Ctor(playerId)
     self:AddComponent("CRebirthIntegrationCompClass")
     self:AddComponent("CCollectionUICompClass")
     self:AddComponent("CLootSellUICompClass")
+    self:AddComponent("CAuraShopUICompClass")
     self:AddComponent("CMainUICompClass")
 end
 

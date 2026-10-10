@@ -7,6 +7,7 @@ require(script.Parent.UI.CMainUICompClass)
 require(script.Parent.UI.CRebirthIntegrationCompClass)
 require(script.Parent.UI.CCollectionUICompClass)
 require(script.Parent.UI.CLootSellUICompClass)
+require(script.Parent.UI.CAuraShopUICompClass)
 require(script.Parent.UI.CCommonUICompClass)
 local PlayerClass = require(script.Parent.Player.CPlayerObjectClass)
 

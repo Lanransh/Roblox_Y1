@@ -807,176 +807,61 @@ return {
             GemGoodsId = 160
         }
     },
-    TrailConfig = {
+    AuraConfig = {
         [1] = {
             Index = 1,
-            TrailId = 101,
-            Name = [[1星拖尾]],
+            AuraId = 101,
+            Name = [[Common]],
             Price = 3750,
             TrainingRate = 1.5,
+            Quality = 1,
             DevGoodId = nil,
-            ModelId = [[Effects.Trail1]],
-            Img = [[sandboxId://UI/Icon/Trail/Trail1Img.png]]
+            Img = [[Effects.Trail1]],
+            ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["01_Common"]]=]
         },
         [2] = {
             Index = 2,
-            TrailId = 102,
-            Name = [[2星拖尾]],
+            AuraId = 102,
+            Name = [[Uncommon]],
             Price = 1.38e+6,
             TrainingRate = 2.5,
+            Quality = 1,
             DevGoodId = nil,
-            ModelId = [[Effects.Trail2]],
-            Img = [[sandboxId://UI/Icon/Trail/Trail2Img.png]]
+            Img = [[Effects.Trail2]],
+            ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["02_Uncommon"]]=]
         },
         [3] = {
             Index = 3,
-            TrailId = 103,
-            Name = [[3星拖尾]],
+            AuraId = 103,
+            Name = [[Rare]],
             Price = 3.32e+8,
             TrainingRate = 3.5,
+            Quality = 1,
             DevGoodId = nil,
-            ModelId = [[Effects.Trail3]],
-            Img = [[sandboxId://UI/Icon/Trail/Trail3Img.png]]
+            Img = [[Effects.Trail3]],
+            ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["03_Rare"]]=]
         },
         [4] = {
             Index = 4,
-            TrailId = 104,
-            Name = [[4星拖尾]],
+            AuraId = 104,
+            Name = [[Epic]],
             Price = 7.3e+10,
             TrainingRate = 4.5,
+            Quality = 1,
             DevGoodId = nil,
-            ModelId = [[Effects.Trail4]],
-            Img = [[sandboxId://UI/Icon/Trail/Trail4Img.png]]
+            Img = [[Effects.Trail4]],
+            ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["04_Epic"]]=]
         },
         [5] = {
             Index = 5,
-            TrailId = 105,
-            Name = [[5星拖尾]],
+            AuraId = 105,
+            Name = [[Legendary]],
             Price = 1.42e+13,
             TrainingRate = 5.5,
+            Quality = 1,
             DevGoodId = nil,
-            ModelId = [[Effects.Trail5]],
-            Img = [[sandboxId://UI/Icon/Trail/Trail5Img.png]]
-        },
-        [6] = {
-            Index = 6,
-            TrailId = 106,
-            Name = [[6星拖尾]],
-            Price = 2.67e+15,
-            TrainingRate = 6.5,
-            DevGoodId = nil,
-            ModelId = [[Effects.Trail6]],
-            Img = [[sandboxId://UI/Icon/Trail/Trail6Img.png]]
-        },
-        [7] = {
-            Index = 7,
-            TrailId = 107,
-            Name = [[7星拖尾]],
-            Price = 4.69e+17,
-            TrainingRate = 7.5,
-            DevGoodId = nil,
-            ModelId = [[Effects.Trail7]],
-            Img = [[sandboxId://UI/Icon/Trail/Trail7Img.png]]
-        },
-        [8] = {
-            Index = 8,
-            TrailId = 108,
-            Name = [[8星拖尾]],
-            Price = 7.56e+19,
-            TrainingRate = 8.5,
-            DevGoodId = nil,
-            ModelId = [[Effects.Trail8]],
-            Img = [[sandboxId://UI/Icon/Trail/Trail8Img.png]]
-        },
-        [9] = {
-            Index = 9,
-            TrailId = 109,
-            Name = [[9星拖尾]],
-            Price = 1.18e+22,
-            TrainingRate = 9.5,
-            DevGoodId = nil,
-            ModelId = [[Effects.Trail9]],
-            Img = [[sandboxId://UI/Icon/Trail/Trail9Img.png]]
-        },
-        [10] = {
-            Index = 10,
-            TrailId = 110,
-            Name = [[10星拖尾]],
-            Price = 1.649999999999999945474048e+24,
-            TrainingRate = 12.5,
-            DevGoodId = nil,
-            ModelId = [[Effects.Trail10]],
-            Img = [[sandboxId://UI/Icon/Trail/Trail10Img.png]]
-        },
-        [11] = {
-            Index = 11,
-            TrailId = 111,
-            Name = [[11星拖尾]],
-            Price = 2.27000000000000009613344768e+26,
-            TrainingRate = 15.9,
-            DevGoodId = nil,
-            ModelId = [[Effects.Trail11]],
-            Img = [[sandboxId://UI/Icon/Trail/Trail11Img.png]]
-        },
-        [12] = {
-            Index = 12,
-            TrailId = 112,
-            Name = [[12星拖尾]],
-            Price = 3.0000000000000000948382466048e+28,
-            TrainingRate = 19.7,
-            DevGoodId = nil,
-            ModelId = [[Effects.Trail12]],
-            Img = [[sandboxId://UI/Icon/Trail/Trail12Img.png]]
-        },
-        [13] = {
-            Index = 13,
-            TrailId = 113,
-            Name = [[13星拖尾]],
-            Price = 2.2299999999999999233084734046208e+31,
-            TrainingRate = 21.3,
-            DevGoodId = nil,
-            ModelId = [[Effects.Trail13]],
-            Img = [[sandboxId://UI/Icon/Trail/Trail13Img.png]]
-        },
-        [14] = {
-            Index = 14,
-            TrailId = 114,
-            Name = [[14星拖尾]],
-            Price = 3.28999999999999980364868737826816e+33,
-            TrainingRate = 22.9,
-            DevGoodId = nil,
-            ModelId = [[Effects.Trail14]],
-            Img = [[sandboxId://UI/Icon/Trail/Trail14Img.png]]
-        },
-        [15] = {
-            Index = 15,
-            TrailId = 115,
-            Name = [[15星拖尾]],
-            Price = 4.78000000000000000502155017763946496e+35,
-            TrainingRate = 24.5,
-            DevGoodId = nil,
-            ModelId = [[Effects.Trail15]],
-            Img = [[sandboxId://UI/Icon/Trail/Trail15Img.png]]
-        },
-        [16] = {
-            Index = 16,
-            TrailId = 116,
-            Name = [[16星拖尾]],
-            Price = 6.7200000000000001433956886673113481216e+37,
-            TrainingRate = 26.1,
-            DevGoodId = nil,
-            ModelId = [[Effects.Trail16]],
-            Img = [[sandboxId://UI/Icon/Trail/Trail16Img.png]]
-        },
-        [17] = {
-            Index = 17,
-            TrailId = 117,
-            Name = [[17星拖尾]],
-            Price = 9.610000000000000053779986854268576464896e+39,
-            TrainingRate = 27.7,
-            DevGoodId = nil,
-            ModelId = [[Effects.Trail17]],
-            Img = [[sandboxId://UI/Icon/Trail/Trail17Img.png]]
+            Img = [[Effects.Trail5]],
+            ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["05_Legendary"]]=]
         }
     },
     AreaRefreshData = {

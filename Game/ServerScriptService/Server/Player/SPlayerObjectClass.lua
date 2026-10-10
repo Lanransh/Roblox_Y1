@@ -178,6 +178,7 @@ function Player:Ctor(id)
     self:AddComponent("SRockLevelCompClass")
     self:AddComponent("SMiscCompClass")
     self:AddComponent("SLootSellCompClass")
+    self:AddComponent("SAuraCompClass")
 end
 
 --- 服务端仅发送文案 Key 和业务参数，不按服务器语言提前生成提示。

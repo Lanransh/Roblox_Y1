@@ -53,6 +53,15 @@ Loot.LuckyEntry,{item}  ${price} · Lucky x{rate},,item=Nail;price=8;rate=2.50
 Loot.LuckyTooltip,Lucky {item} · x{rate} · ${price},,item=Nail;rate=2.50;price=8
 Loot.LuckyRarity,Lucky · Quality {level:int} · x{rate},,level=1;rate=2.50
 Rarity.Quality,Quality {level:int},,level=1
+Aura.TrainingRate,Training x{rate},,rate=1.5
+Aura.Price,{value} Coins,,value=3.75K
+Aura.NeedCoins,Need {value} Coins,,value=3.75K
+Aura.Equip,Equip,,
+Aura.Unequip,Unequip,,
+Aura.Waiting,Waiting...,,
+Aura.AlreadyOwned,You already own this aura.,,
+Aura.NotOwned,Unlock this aura first.,,
+Aura.NotEnoughCoins,Not enough Coins.,,
 Item.FreePickaxe,Free Pickaxe,,
 Item.Collectible,Rock Collectible,,
 Loot.Tooltip,{item} · ${price},,item=Bowling Pin;price=252

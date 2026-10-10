@@ -9,6 +9,24 @@ function Manager:Ctor()
     self:RegMiscMsg()
     self:RegRockDropMsg()
     self:RegLootSellMsg()
+    self:RegAuraMsg()
+end
+
+--- 光环协议只注册一次，再按引擎认证身份转发到本人组件。
+function Manager:RegAuraMsg()
+    --- 未完成登录或已离服时拒绝请求，组件负责权威价格与拥有权校验。
+    --- @param userId number 引擎认证的请求者。
+    --- @param action string 购买或切换装备动作。
+    --- @param auraId number 客户端请求的稳定光环 ID。
+    --- @return table 权威操作结果。
+    FX.Network:RegClientMsgCallback("C2S_AuraAction", function(userId, action, auraId)
+        local player = self:GetPlayerObject(userId)
+        local aura = player and player:GetComponent("SAuraComp")
+        if not aura then
+            return {success = false, key = "Common.Unknown"}
+        end
+        return aura:RequestAura(action, auraId)
+    end)
 end
 
 --- 出售 RPC 只转发引擎认证玩家自身的请求，未就绪时不结算。

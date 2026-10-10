@@ -51,7 +51,7 @@
     },
     {
       "id": "prefab-node-155d7652-c2ea-4585-b4b7-0a6f23a02547",
-      "name": "01破旧木镐",
+      "name": "01WornWoodenPickaxe",
       "parentId": "transform-1",
       "type": "PrefabReference",
       "transform": {
@@ -78,7 +78,7 @@
     },
     {
       "id": "prefab-node-ed42ba3a-6f54-4663-be2b-0fa12d2ca249",
-      "name": "02笨重木锤",
+      "name": "02HeavyWoodenHammer",
       "parentId": "transform-1",
       "type": "PrefabReference",
       "transform": {
@@ -105,7 +105,7 @@
     },
     {
       "id": "prefab-node-ac0e0b65-d836-405d-9237-2cc45092dcb7",
-      "name": "03粗制银镐",
+      "name": "03CrudeSilverPickaxe",
       "parentId": "transform-1",
       "type": "PrefabReference",
       "transform": {
@@ -132,7 +132,7 @@
     },
     {
       "id": "prefab-node-4781c834-0ba1-436e-8746-f0d03308fd8a",
-      "name": "04粗制银锤",
+      "name": "04CrudeSilverHammer",
       "parentId": "transform-1",
       "type": "PrefabReference",
       "transform": {
@@ -159,7 +159,7 @@
     },
     {
       "id": "prefab-node-a63265da-903d-4991-b91a-fc7177996396",
-      "name": "05加固铁镐",
+      "name": "05ReinforcedIronPickaxe",
       "parentId": "transform-1",
       "type": "PrefabReference",
       "transform": {
@@ -186,7 +186,7 @@
     },
     {
       "id": "prefab-node-7c52ca0c-d269-4766-8f33-f69f9253c94e",
-      "name": "06加固铁锤",
+      "name": "06ReinforcedIronHammer",
       "parentId": "transform-1",
       "type": "PrefabReference",
       "transform": {
@@ -213,7 +213,7 @@
     },
     {
       "id": "prefab-node-a561c283-7028-4ac6-b81b-92326009038d",
-      "name": "07精钢矿镐",
+      "name": "07FineSteelMiningPickaxe",
       "parentId": "transform-1",
       "type": "PrefabReference",
       "transform": {
@@ -240,7 +240,7 @@
     },
     {
       "id": "prefab-node-7a7f298b-5623-453f-8b8c-dced6b18a7ee",
-      "name": "08精钢重锤",
+      "name": "08FineSteelMaul",
       "parentId": "transform-1",
       "type": "PrefabReference",
       "transform": {
@@ -267,7 +267,7 @@
     },
     {
       "id": "prefab-node-3958ac5c-bfc3-43a2-9f84-ea26eb099088",
-      "name": "09黄铜机械镐",
+      "name": "09BrassMechanicalPickaxe",
       "parentId": "transform-1",
       "type": "PrefabReference",
       "transform": {
@@ -294,7 +294,7 @@
     },
     {
       "id": "prefab-node-ff883b3e-59d7-4dd0-9e12-4a3e4712aca7",
-      "name": "10黄铜机械锤",
+      "name": "10BrassMechanicalHammer",
       "parentId": "transform-1",
       "type": "PrefabReference",
       "transform": {
@@ -321,7 +321,7 @@
     },
     {
       "id": "prefab-node-4555d223-f3bc-498d-a037-bc24aa8d8b64",
-      "name": "11黑曜石战镐",
+      "name": "11ObsidianBattlePickaxe",
       "parentId": "transform-1",
       "type": "PrefabReference",
       "transform": {
@@ -348,7 +348,7 @@
     },
     {
       "id": "prefab-node-14d24a6a-ed52-4816-90f6-ce861a269fc2",
-      "name": "12黑曜石巨锤",
+      "name": "12ObsidianGreatHammer",
       "parentId": "transform-1",
       "type": "PrefabReference",
       "transform": {
@@ -375,7 +375,7 @@
     },
     {
       "id": "prefab-node-8a0792c3-ddc1-4ab4-aff6-82aaf18554c7",
-      "name": "13翡翠守护镐",
+      "name": "13EmeraldGuardianPickaxe",
       "parentId": "transform-1",
       "type": "PrefabReference",
       "transform": {
@@ -402,7 +402,7 @@
     },
     {
       "id": "prefab-node-07982b29-9f66-479e-a998-a98108f52d1f",
-      "name": "14翡翠守护锤",
+      "name": "14EmeraldGuardianHammer",
       "parentId": "transform-1",
       "type": "PrefabReference",
       "transform": {
@@ -429,7 +429,7 @@
     },
     {
       "id": "prefab-node-dd346f15-a0c5-4a68-b4bc-407e27b117c3",
-      "name": "15红晶熔炉镐",
+      "name": "15RedCrystalForgePickaxe",
       "parentId": "transform-1",
       "type": "PrefabReference",
       "transform": {
@@ -456,7 +456,7 @@
     },
     {
       "id": "prefab-node-4fe1870b-ecd4-4a87-8e16-a57784af8913",
-      "name": "16红晶熔炉锤",
+      "name": "16RedCrystalForgeHammer",
       "parentId": "transform-1",
       "type": "PrefabReference",
       "transform": {
@@ -483,7 +483,7 @@
     },
     {
       "id": "prefab-node-b1d68e89-74e2-4609-8c9f-ebd70c04378a",
-      "name": "17冰蓝星晶镐",
+      "name": "17IceBlueStarCrystalPickaxe",
       "parentId": "transform-1",
       "type": "PrefabReference",
       "transform": {
@@ -510,7 +510,7 @@
     },
     {
       "id": "prefab-node-b0c8a842-7693-4f6f-bf81-d93a9b625396",
-      "name": "18冰蓝星晶锤",
+      "name": "18IceBlueStarCrystalHammer",
       "parentId": "transform-1",
       "type": "PrefabReference",
       "transform": {
@@ -537,7 +537,7 @@
     },
     {
       "id": "prefab-node-eea329cc-a462-4cef-8a98-b70c706fd90f",
-      "name": "19鎏金王冠镐",
+      "name": "19GildedCrownPickaxe",
       "parentId": "transform-1",
       "type": "PrefabReference",
       "transform": {
@@ -564,7 +564,7 @@
     },
     {
       "id": "prefab-node-fb5c38d5-f06d-497a-82ef-0d484dc96474",
-      "name": "20鎏金王冠巨锤",
+      "name": "20GildedCrownGreatHammer",
       "parentId": "transform-1",
       "type": "PrefabReference",
       "transform": {
