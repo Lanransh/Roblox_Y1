@@ -10,7 +10,7 @@ local GameConfig = _G.GameConfig
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local CollectibleText = FXLoader:RequireShared("Scripts/Game/Shared/CollectibleText")
 local Collection = FXLoader:RequireShared("Scripts/Game/Shared/Collection")
-local English = FXLoader:Shared("Scripts/Game/Shared/Localization"):GetTranslator("en-us")
+local English = FXLoader:Shared("Shared/Localization"):GetTranslator("en-us")
 local Component = FX.Class("SRockLevelCompClass", "FSPlayerCompClass")
 
 --- 配置校验和倍率计算共用的有限数检查，拒绝 NaN 与无穷值。
@@ -443,7 +443,7 @@ function Component:CreateDrop(key, area, cell, result, round)
         prompt.ActionText = "Pick Up"
         prompt.ObjectText = ""
         prompt.AutoLocalize = true
-        prompt.RootLocalizationTable = FXLoader:Shared("Scripts/Game/Shared/Localization")
+        prompt.RootLocalizationTable = FXLoader:Shared("Shared/Localization")
         prompt.KeyboardKeyCode = Enum.KeyCode.E
         prompt.HoldDuration = 0.5
         prompt.MaxActivationDistance = Collectible.PickupDistance

@@ -1,7 +1,7 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
 local LocalizationService = game:GetService("LocalizationService")
-local SourceTable = FXLoader:Shared("Scripts/Game/Shared/Localization")
+local SourceTable = FXLoader:Shared("Shared/Localization")
 local Localization = {}
 Localization.__index = Localization
 

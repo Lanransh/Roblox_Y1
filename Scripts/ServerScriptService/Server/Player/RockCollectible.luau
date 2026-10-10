@@ -3,7 +3,7 @@ local FXLoader = FX.Loader
 local Collectible = {}
 local GameConfig = _G.GameConfig
 local CollectibleText = FXLoader:RequireShared("Scripts/Game/Shared/CollectibleText")
-local English = FXLoader:Shared("Scripts/Game/Shared/Localization"):GetTranslator("en-us")
+local English = FXLoader:Shared("Shared/Localization"):GetTranslator("en-us")
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 
 Collectible.ItemId = 1003

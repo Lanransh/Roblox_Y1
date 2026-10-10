@@ -56,6 +56,14 @@ return {
         KVTable = PlayerKVEnum.ePlayerData,
         Sync = true,
     },
+    -- 光环永久解锁与单件装备状态；字典键为字符串 AuraId，0 表示未装备。
+    AuraData = {
+        Type = "table",
+        Key = "AuraData",
+        DefVal = {owned = {}, equippedId = 0},
+        KVTable = PlayerKVEnum.ePlayerData,
+        Sync = true,
+    },
     -- 累计训练值，用于计算训练等级和力量。
     RockTrainingValue = {
         Type = "number",

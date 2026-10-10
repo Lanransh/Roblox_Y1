@@ -3,18 +3,40 @@
 ## 角色
 
 你是一名 Roblox 游戏开发者。
-该项目使用 Luau 和 Rojo，沿用已迁移的 FX/FC/FS 组件框架。
-本文件中的相对路径以 `Game/` 为基准；Git 仓库根目录是它的上级目录。
+该项目使用 Luau 和 Roblox Studio 内置 Script Sync，沿用已迁移的 FX/FC/FS 组件框架。
+本文件中的相对路径以当前 `Scripts/` 工作区为基准。Git 仓库根目录通过 `git rev-parse --show-toplevel` 确认，不假设当前目录就是仓库根。
+当前工作区不使用 Rojo 维护、同步或构建。技能与历史文档中的 Rojo 命令、服务映射、`.meta.json` 和旧文件后缀不能作为当前操作依据，以本文件的 Script Sync 规则为准。
+技能示例中的 `Game/AGENTS.md` 指当前工作区 `AGENTS.md`；本地 `StarterPlayer/StarterPlayerScripts/` 路径改按 `StarterPlayerScripts/` 定位，历史 `.lua` 模块路径先核对现有 `.luau` 文件。旧 `Main.client.lua` 不作为新文件命名模板，当前客户端入口为 `StarterPlayerScripts/Client/Main.local.luau`；已有服务端入口按实际文件与 Studio 属性核对。
 
 ## 重要目录
-- `default.project.json`：Rojo 服务映射
 - `ReplicatedStorage/Scripts/Framework/`：FX/FC/FS 框架，沿用 MiniStudio 的 Shared/Client/Server 分层；`ReplicatedStorage/Scripts/Game/Shared/`：公共配置与模块
 - `ServerScriptService/Server/`：服务端业务入口、项目类和私有配置
-- `StarterPlayer/StarterPlayerScripts/Client/`：客户端业务入口、玩家对象与项目组件
+- `StarterPlayerScripts/Client/`：客户端业务入口、玩家对象与项目组件；对应 Studio 的 `StarterPlayer.StarterPlayerScripts.Client`
 - `Docs/功能验收清单.md`：当前已实现功能及其验收状态
-- `Workspace/`、`ServerStorage/`、`StarterGui/`：场景、服务器模板和 UI 源节点
+- `Workspace`、`ServerStorage`、`StarterGui`：Studio 中的场景、服务器模板和 UI 节点；不假设当前本地目录包含这些非脚本实例
 - `../Docs/框架迁移.md`：已迁移能力、业务接入与历史验证记录
-- `Tests/`、`Tools/`、`Build/`：测试、辅助工具和构建产物，不加入 Rojo 服务映射
+- `Tests/`、`Tools/`、`Build/`：需要时使用的测试、辅助工具和编译产物目录，不作为游戏脚本同步根
+
+## Script Sync 文件创建与同步（必须遵守）
+
+- 创建文件前明确实例类型、运行上下文和目标同步目录；不能仅按代码运行在服务端或客户端来选择后缀。组件类、配置和工具模块即使只用于某一端，也使用 ModuleScript 的 `.luau` 后缀。
+
+| 本地文件名 | Studio 实例类型与运行上下文 |
+| --- | --- |
+| `Name.luau` | `ModuleScript`，通过 `require` 加载 |
+| `Name.server.luau` | `Script`，`RunContext = Server` |
+| `Name.client.luau` | `Script`，`RunContext = Client`；不是 `LocalScript` |
+| `Name.local.luau` | `LocalScript` |
+| `Name.legacy.luau` | `Script`，`RunContext = Legacy`；不是代码版本标记 |
+| `Name.plugin.luau` | `Script`，`RunContext = Plugin` |
+| `Name/init.*.luau` | 带子节点的脚本实例，类型按上述后缀确定；ModuleScript 使用 `Name/init.luau` |
+
+- 新增服务端执行入口默认使用 `.server.luau`；当前 `StarterPlayerScripts/Client/` 下的客户端入口使用 `.local.luau`。只有明确需要 Client RunContext 的 Script 时才用 `.client.luau`，明确需要 Legacy 行为时才用 `.legacy.luau`。
+- 新文件统一使用 `.luau`，不照搬 Rojo 的 `.server.lua`、`.client.lua`、`init.lua` 或通过 `.meta.json` 设置脚本类型的方式。同步后的实例名不包含类型后缀，例如 `Main.server.luau` 对应实例 `Main`，代码查找节点时仍使用 `Main`。
+- 修改已有脚本保留其路径、后缀和类型；遇到本地后缀与 Studio 属性不一致，先通过 Roblox MCP 核对 ClassName、RunContext 与同步状态，不猜测，也不顺手批量重命名。文件重命名、移动、删除可能同步改变 Studio 实例，执行前检查引用及同名文件。
+- 新文件放在已确认启用 Script Sync 的目录中。当前本地目录结构不等于完整 DataModel；新增同步根或无法确认目录映射时，说明需要在 Studio 的 `Sync to...` 中确认，不能假设新建本地目录就会同步。
+- Script Sync 同步脚本和受支持文件，不负责将本地模型、UI、CSV 或 Rojo 元数据自动导入为对应非脚本实例。场景、模型、UI 和 LocalizationTable 在 Studio 中维护，通过 Roblox MCP 查询和核对。
+- 官方命名依据：[Roblox Script Sync — Sync rules](https://create.roblox.com/docs/scripting/sync#sync-rules)。
 
 ## 共享技能
 在编写代码之前，先读取并遵循与当前任务匹配的技能文档：
@@ -61,28 +83,28 @@
 
 ## 制作模型的存放规则
 
-- 场景中直接摆放的模型统一放入 `game.Workspace.Decorations`，本地源文件保存到 `Workspace/Decorations/`。
-- 供运行时克隆的可复用模型模板统一放入 `game.ReplicatedStorage.Assets.Decorations`，本地源文件保存到 `ReplicatedStorage/Assets/Decorations/`。
-- 新建上述目录或保存模型源文件时，确认 `default.project.json` 已配置对应的 Rojo 映射；不要为了沿用现有映射而将模型放进 BlockMeshs。
+- 场景中直接摆放的模型统一放入 `game.Workspace.Decorations`。
+- 供运行时克隆的可复用模型模板统一放入 `game.ReplicatedStorage.Assets.Decorations`。
+- 模型与上述容器在 Studio 中维护，不通过 Script Sync 创建非脚本实例。确需保存本地模型副本时明确导出与导入步骤，不把本地保存当作 Studio 已更新；不得将模型放进 BlockMeshs。
 
 ## 补充说明
 - 需要读取场景、存储或 UI 节点时，直接使用 Roblox MCP：先用 `list_roblox_studios` 确定目标 Studio，再用 `get_studio_state` 确认当前模式和可用 DataModel。
 - 用 `search_game_tree` 查询目标子树，按需要限定路径、类型、深度和结果数量；用 `inspect_instance` 获取具体节点的属性、Attributes 和子节点。节点名称、完整路径、层级和 ClassName 以 MCP 返回结果为准，不猜测。
 - 编辑态查询使用 `Edit`；已有试玩中的运行时查询按目标使用 `Client` 或 `Server`。UI 模板查 `StarterGui`，玩家实际界面在客户端 DataModel 中查目标玩家的 `PlayerGui`，不要把模板当作运行时界面。
 - 只读节点查询直接进行；需要的运行时 DataModel 尚未开启时，说明待确认范围，按既有测试或试玩授权决定是否启动游戏。
-- MCP 不可用时说明当前实例结构尚未确认；本地模型源文件、动态创建代码和 Rojo sourcemap 可用于分析预期结构，但不能作为当前 Studio 或运行时节点已存在的证据。修改本地模型或服务映射时再检查 `default.project.json` 和对应源文件。
-- `.agents/`、`AGENTS.md`、`Docs/`、`Tests/`、`Tools/` 和 `Build/` 是开发资料或产物，不加入 Rojo 的服务映射。
+- MCP 不可用时说明当前实例结构尚未确认；本地同步脚本、模型副本和动态创建代码可用于分析预期结构，但不能作为当前 Studio 或运行时节点已存在、同步已完成的证据。
+- `.agents/`、`AGENTS.md`、`Docs/`、`Tests/`、`Tools/` 和 `Build/` 是开发资料或产物，不作为游戏脚本同步根。
 - 业务模块显式声明 `local FX, FC, FS = _G.FX, _G.FC, _G.FS` 中实际用到的变量；每个 ModuleScript 返回有效结果。
-- 项目协议声明在 `ReplicatedStorage/Scripts/Game/Shared/NetworkProtocol.lua` 的 `ClientMsgID/ServerMsgID`；框架协议在 `ReplicatedStorage/Scripts/Framework/FrameworkInit.lua`。
-- `FC` 开头的代码属于框架，统一放在 `ReplicatedStorage/Scripts/Framework/Client/`；项目开发不直接修改这些框架代码，只通过项目子类继承和覆写接入，子类放在 `StarterPlayer/StarterPlayerScripts/Client/`。
+- 项目协议声明在 `ReplicatedStorage/Scripts/Game/Shared/NetworkProtocol.luau` 的 `ClientMsgID/ServerMsgID`；框架协议在 `ReplicatedStorage/Scripts/Framework/FrameworkInit.luau`。
+- `FC` 开头的代码属于框架，统一放在 `ReplicatedStorage/Scripts/Framework/Client/`；项目开发不直接修改这些框架代码，只通过项目子类继承和覆写接入，子类放在本地 `StarterPlayerScripts/Client/`。
 - 目录尽量对齐 `F:/MiniGame/Studio_Y3/Code`：MiniStudio 的 `MainStorage` 对应 Roblox 的 `ReplicatedStorage`；保留 `Scripts/Framework/Shared`、`Client`、`Server` 分层，`FShared/FClient/FServer/FrameworkInit` 放在框架根目录。服务端框架仅由服务器初始化，私有配置仍放在 `ServerScriptService`。
 - 新代码直接用 Roblox 服务名称；不使用 MiniStudio 节点 API 或资源 URI。
 
 ## PowerShell 命令安全规范
 - 运行 PowerShell 命令时，始终使用 PowerShell 安全语法，避免解析错误。
-- 对正则/模式/glob 参数优先使用单引号，例如：`-g '*.lua'`、`'GetNumber\(|WatchDataChanged\('`。
+- 对正则/模式/glob 参数优先使用单引号，例如：`-g '*.luau'`、`'GetNumber\(|WatchDataChanged\('`。
 - 不要在类似正则的参数中留下未加引号的 `|`、`*`、`(`、`)` 或 `"`；应显式加引号或转义。
-- 在 PowerShell 中使用 `rg` 时，优先采用这种形式：`rg -n --max-count 200 -g '*.lua' 'pattern1|pattern2|pattern3' <path>`。
+- 在 PowerShell 中使用 `rg` 时，优先采用这种形式：`rg -n --max-count 200 -g '*.luau' 'pattern1|pattern2|pattern3' <path>`。
 - 使用 `rg` 检索时，先只用 `-n` 精确定位行号；禁止默认使用 `-C`/`--context` 输出上下文。
 - 必须限制返回量：优先加 `--max-count`，或先限定到更小的路径/文件段后再检索。
 - 不要无范围地使用 `rg -u`、`rg -uu`、`rg -uuu`；确需检查隐藏或被忽略文件时，必须同时限定到明确目录和文件类型。
@@ -101,7 +123,7 @@
 
 ## 数值文案显示
 
-- 力量、货币、经验、价格、收益等数量文案，统一调用 `ReplicatedStorage/Scripts/Game/Shared/GameUtility.lua` 的 `GameUtility.NumberToText`；不要在各 UI 中重复实现单位换算或小数格式化。
+- 力量、货币、经验、价格、收益等数量文案，统一调用 `ReplicatedStorage/Scripts/Game/Shared/GameUtility.luau` 的 `GameUtility.NumberToText`；不要在各 UI 中重复实现单位换算或小数格式化。
 - 大数使用该方法定义的 `K/M/B/T/Qa/...` 英文缩写；小数沿用通用方法的两位小数规则，例如 `2/3` 显示为 `0.67`。明确需要取整显示时使用 `NumberToTextFloor`。
 - 等级、序号、背包件数/容量、时间和百分比按各自语义显示，不强制使用数量缩写。
 - 格式化仅用于文案；计算、比较、存档和服务端发奖始终使用原始数值。均分收益先计算再格式化，不使用格式化后的字符串参与计算。
@@ -124,9 +146,9 @@
 - 注释必须说明业务意图或约束，不要只重复代码字面语义。
 
 ## Luau 验证规则
-- 默认沿用源工作区的验证限制：新增或修改 Luau 后只做编译/语法验证及相关 Rojo 构建，不自行运行 Lua 脚本或启动游戏。用户明确要求运行测试或试玩时，以该授权为准，并在结果中区分编译、构建与实际运行验证。
+- 默认沿用源工作区的验证限制：新增或修改 Luau 后只做编译/语法验证，以及通过 Roblox MCP 只读核对同步后的脚本类型、RunContext 和内容，不自行运行 Lua 脚本或启动游戏。用户明确要求运行测试或试玩时，以该授权为准，并在结果中区分语法、同步核对与实际运行验证。
 - 通过 Roblox MCP 只读查询当前场景或 UI 节点属于开发信息读取，可直接执行；这不等于启动试玩或运行游戏测试。
-- 编译器先检查 PATH 和 `Build/luau/luau-compile.exe` 等实际本地位置，不假设已安装；缺失时报告未完成语法验证。构建命令（在 Game 中）为 `rojo build default.project.json -o Build/Roblox_Y1.rbxlx`，先确认输出目录存在。
+- 编译器先检查 PATH 和 `Build/luau/luau-compile.exe` 等实际本地位置，不假设已安装；缺失时报告未完成语法验证。不运行 `rojo build` 或 `rojo sourcemap`，不为验证创建 `default.project.json`。Script Sync 无法确认或发生冲突时报告待核对范围，不把磁盘保存成功当作同步成功。
 - `git diff --check` 从仓库根执行。不要把历史验收记录当作本次结果。
 
 ## 编码与文本处理规范

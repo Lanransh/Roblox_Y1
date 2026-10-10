@@ -2,12 +2,16 @@
 -- 框架已有的 Ready、玩家数据和服务器数据同步协议继续由 FrameworkInit 声明。
 return {
     ClientMsgID = {
-        -- 无参数，服务端校验请求者当前等级与重生次数，单向请求。
+        -- 无参数，服务端校验请求者当前等级与重生次数；RPC 返回 {success: boolean}。
         "C2S_Rebirth",
         -- entryIds: string[]，正式库存的稳定实例 ID；multiplier: 1|2，暂时允许免费双倍。
         -- RPC 返回 {success: boolean, key: string, amount: number?, count: number?, entries: table?}。
         -- 价格、幸运与重生倍率均由服务端决定，不接受客户端金额。
         "C2S_SellLoot",
+        -- action: "Buy"|"Equip"、auraId: number；身份来自引擎认证 UserId。
+        -- RPC 返回 {success: boolean, key: string?, data: table?, coins: number?}。
+        -- 服务端按 AuraConfig 校验、扣款和切换装备，忽略客户端价格与模型路径。
+        "C2S_AuraAction",
         -- key: string、round: number，击破格号与轮次；服务器按有效命中记录揭露预生成结果一次。
         -- 单向请求，不接受客户端提供道具、价格、位置或玩家身份。
         "C2S_RequestRockDrop",

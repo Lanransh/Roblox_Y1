@@ -1,7 +1,0 @@
-Tools/.venv/
-Tools/.venv/**
-**/.venv/
-**/.venv/**
-
-Tools/__pycache__/
-**/__pycache__/
