@@ -49,6 +49,14 @@
     "ReplicatedStorage": {
       "$className": "ReplicatedStorage",
       "$ignoreUnknownInstances": true,
+      "Assets": {
+        "$className": "Folder",
+        "$ignoreUnknownInstances": true,
+        "BlockMeshs": {
+          "$className": "Folder",
+          "$path": "ReplicatedStorage/Assets/BlockMeshs"
+        }
+      },
       "Shared": {
         "$className": "Folder",
         "Config": {

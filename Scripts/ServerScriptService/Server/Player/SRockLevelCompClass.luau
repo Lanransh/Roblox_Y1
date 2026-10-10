@@ -1,11 +1,11 @@
 local FX, FS = _G.FX, _G.FS
 local FXLoader = FX.Loader
 local Fields = _G.PlayerDataConfig
-local ServerStorage = game:GetService("ServerStorage")
 local TweenService = game:GetService("TweenService")
 local HttpService = game:GetService("HttpService")
 local RockLevel = require(game:GetService("ReplicatedStorage").Scripts.Game.Shared.RockLevel)
 local Collectible = require(script.Parent.RockCollectible)
+local RockWeaponTool = require(script.Parent.RockWeaponTool)
 local GameConfig = _G.GameConfig
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local CollectibleText = FXLoader:RequireShared("Scripts/Game/Shared/CollectibleText")
@@ -638,25 +638,29 @@ function Component:ClearDrops()
     self._dropByCell = {}
 end
 
---- 出生与重生时发放带短拖尾的默认镐子，动画和拖尾由客户端控制。
+--- 出生与重生时将导出木镐的副本组装为右手 Tool，不改动编辑器管理的模板。
 --- @param humanoid Humanoid 当前存活角色的 Humanoid。
 function Component:EquipPickaxe(humanoid)
     if self._pickaxe then
         self._pickaxe:Destroy()
     end
-    self._pickaxe = ServerStorage:WaitForChild("StarterPickaxe"):Clone()
+    local template = FXLoader:Shared("Assets/BlockMeshs/Tools/01WornWoodenPickaxe")
+    local model
+    self._pickaxe, model = RockWeaponTool.Build(template)
+    local handle = self._pickaxe.Handle
     self._pickaxe.Name = English:FormatByKey("Item.FreePickaxe")
     self._pickaxe.ToolTip = self._pickaxe.Name
     self._pickaxe:SetAttribute("StarterPickaxe", true)
     self._pickaxe:SetAttribute("DisplayNameKey", "Item.FreePickaxe")
-    local handle = self._pickaxe:WaitForChild("Handle")
+    local headCFrame, modelSize = model:GetBoundingBox()
+    local headY = headCFrame.Position.Y + modelSize.Y * 0.5 - 0.2 - handle.Position.Y
     local start = Instance.new("Attachment")
     start.Name = "SwingTrailStart"
-    start.Position = Vector3.new(0, 0, -handle.Size.Z * 0.35)
+    start.Position = Vector3.new(-modelSize.X * 0.35, headY, 0)
     start.Parent = handle
     local finish = Instance.new("Attachment")
     finish.Name = "SwingTrailEnd"
-    finish.Position = Vector3.new(0, 0, handle.Size.Z * 0.35)
+    finish.Position = Vector3.new(modelSize.X * 0.35, headY, 0)
     finish.Parent = handle
     self._swingTrail = Instance.new("Trail")
     self._swingTrail.Name = "PickaxeSwingTrail"

@@ -1,0 +1,671 @@
+{
+  "version": 9,
+  "guid": "2882eba8-29e9-4e0e-b20e-2ff0c5844c8e",
+  "rootNodeId": "asset-root",
+  "nodes": [
+    {
+      "id": "asset-root",
+      "name": "巨岩金矿训练场地 资产根",
+      "parentId": null,
+      "type": "Transform",
+      "transform": {
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "ai-node-1-copy-copy",
+      "name": "巨岩金矿训练场地",
+      "parentId": "asset-root",
+      "type": "Group",
+      "transform": {
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "ai-node-2-copy-copy",
+      "name": "正方形底座",
+      "parentId": "ai-node-1-copy-copy",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.6,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          28,
+          1.2,
+          28
+        ],
+        "color": "#8a7654",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-3-copy-copy",
+      "name": "沙色训练地面",
+      "parentId": "ai-node-1-copy-copy",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          1.35,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          26,
+          0.3,
+          26
+        ],
+        "color": "#cfb47b",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-5-copy",
+      "name": "棱角金矿岩石",
+      "parentId": "ai-node-1-copy-copy",
+      "type": "Group",
+      "transform": {
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "ai-node-6-copy",
+      "name": "岩心",
+      "parentId": "ai-node-5-copy",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          5.82,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          10.8,
+          8.64,
+          10.8
+        ],
+        "color": "#777568",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-7-copy",
+      "name": "左斜面",
+      "parentId": "ai-node-5-copy",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -7.74,
+          6.720000000000001,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Slope",
+        "size": [
+          5.4,
+          10.44,
+          14.4
+        ],
+        "color": "#969184",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-8-copy",
+      "name": "右斜面",
+      "parentId": "ai-node-5-copy",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          7.920000000000001,
+          6.09,
+          0.18000000000000002
+        ],
+        "rotation": [
+          0,
+          180,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Slope",
+        "size": [
+          5.9399999999999995,
+          9.18,
+          13.5
+        ],
+        "color": "#706f65",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-9-copy",
+      "name": "前斜面",
+      "parentId": "ai-node-5-copy",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          5.64,
+          7.38
+        ],
+        "rotation": [
+          0,
+          90,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Slope",
+        "size": [
+          5.04,
+          8.28,
+          10.8
+        ],
+        "color": "#858275",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-10-copy",
+      "name": "后斜面",
+      "parentId": "ai-node-5-copy",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -0.36000000000000004,
+          6.45,
+          -7.5600000000000005
+        ],
+        "rotation": [
+          0,
+          -90,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Slope",
+        "size": [
+          5.4,
+          9.9,
+          10.8
+        ],
+        "color": "#8d897b",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-11-copy",
+      "name": "顶部左切面",
+      "parentId": "ai-node-5-copy",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -2.7,
+          11.58,
+          -0.36000000000000004
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Slope",
+        "size": [
+          6.12,
+          4.680000000000001,
+          10.44
+        ],
+        "color": "#b0aa97",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-12-copy",
+      "name": "顶部右切面",
+      "parentId": "ai-node-5-copy",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          3.06,
+          11.58,
+          -0.36000000000000004
+        ],
+        "rotation": [
+          0,
+          180,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Slope",
+        "size": [
+          5.4,
+          4.680000000000001,
+          10.44
+        ],
+        "color": "#9a9483",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-13-copy",
+      "name": "金矿脉下段",
+      "parentId": "ai-node-5-copy",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -1.9800000000000002,
+          3.6600000000000006,
+          8.73
+        ],
+        "rotation": [
+          -31.3,
+          0,
+          -18
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.1700000000000002,
+          3.24,
+          0.81
+        ],
+        "color": "#c18b28",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-14-copy",
+      "name": "金矿脉中段",
+      "parentId": "ai-node-5-copy",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -1.1700000000000002,
+          6.09,
+          7.2540000000000004
+        ],
+        "rotation": [
+          -31.3,
+          0,
+          -20
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.9900000000000001,
+          3.06,
+          0.7200000000000001
+        ],
+        "color": "#e0b64a",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-15-copy",
+      "name": "金矿脉上段",
+      "parentId": "ai-node-5-copy",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -0.54,
+          8.16,
+          5.994000000000001
+        ],
+        "rotation": [
+          -31.3,
+          0,
+          16
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.35,
+          2.25,
+          0.81
+        ],
+        "color": "#d2a336",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-16-copy",
+      "name": "露出金矿结晶",
+      "parentId": "ai-node-5-copy",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          2.8800000000000003,
+          13.020000000000001,
+          -0.7200000000000001
+        ],
+        "rotation": [
+          0,
+          25,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Slope",
+        "size": [
+          2.3400000000000003,
+          2.16,
+          2.16
+        ],
+        "color": "#eac75b",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-17-copy",
+      "name": "侧面金矿",
+      "parentId": "ai-node-5-copy",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          9.09,
+          5.1,
+          2.16
+        ],
+        "rotation": [
+          0,
+          0,
+          -32
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.7200000000000001,
+          2.16,
+          1.26
+        ],
+        "color": "#caa044",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    }
+  ],
+  "prefabFolders": [],
+  "prefabs": [],
+  "externalPrefabAliases": []
+}
