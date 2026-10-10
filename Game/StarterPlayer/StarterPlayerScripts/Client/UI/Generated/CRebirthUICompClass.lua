@@ -54,11 +54,6 @@ function UI:OnReady()
     self.CurrentMoneyTxt = FXLoader:Here(root, "PopupPanelImg.CurrentMoneyImg.MultiplierTxt")
     self.NextMoneyTxt = FXLoader:Here(root, "PopupPanelImg.NextMoneyImg.MultiplierTxt")
     self.RebirthGradient = FXLoader:Here(root, "PopupPanelImg.RebirthBtn.SurfaceGradient")
-    -- Roblox Arial 不支持设计稿的 ➜ 字形，使用基础字符避免显示缺字方框。
-    local strengthArrow = FXLoader:Here(root, "PopupPanelImg.StrengthArrowTxt")
-    local moneyArrow = FXLoader:Here(root, "PopupPanelImg.MoneyArrowTxt")
-    strengthArrow.Text = "->"
-    moneyArrow.Text = "->"
     local close = FXLoader:Here(root, "TitleBox.CloseSurfaceImg.CloseBtn")
     -- 关闭由接入层更新 Open，不销毁设计节点。
     self:TrackConnection(close.Activated:Connect(function()

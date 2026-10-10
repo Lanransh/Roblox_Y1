@@ -17,8 +17,11 @@ function Component:OnReady()
     self._commonUI = self:GetPlayerObject():RequireComponent("FCCommonUIComp")
     self._commonUI:RegisterTrainingClickModal(root)
     self._localization = self._commonUI.Localization
-    for _, label in ipairs({self.ProgressTxt, self.WarningTxt}) do
-        label.AutoLocalize = false
+    root.AutoLocalize = true
+    for _, node in ipairs(root:GetDescendants()) do
+        if node:IsA("GuiObject") then
+            node.AutoLocalize = true
+        end
     end
     self.State = {Open = false, Completed = false, Pending = false}
     self:Hide()

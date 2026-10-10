@@ -1,0 +1,1690 @@
+{
+  "version": 9,
+  "guid": "390ba14d-4a45-48bf-af72-32835ca499cb",
+  "rootNodeId": "asset-root",
+  "nodes": [
+    {
+      "id": "asset-root",
+      "name": "19鎏金王冠镐 资产根",
+      "parentId": null,
+      "type": "Transform",
+      "transform": {
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "ai-node-799",
+      "name": "19鎏金王冠镐",
+      "parentId": "asset-root",
+      "type": "Transform",
+      "transform": {
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "ai-node-800",
+      "name": "六棱柄0",
+      "parentId": "ai-node-799",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          2.3,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.55,
+          4.6,
+          0.3175426480542942
+        ],
+        "color": "#243c61",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-801",
+      "name": "六棱柄1",
+      "parentId": "ai-node-799",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          2.3,
+          0
+        ],
+        "rotation": [
+          0,
+          60,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.55,
+          4.6,
+          0.3175426480542942
+        ],
+        "color": "#243c61",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-802",
+      "name": "六棱柄2",
+      "parentId": "ai-node-799",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          2.3,
+          0
+        ],
+        "rotation": [
+          0,
+          120,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.55,
+          4.6,
+          0.3175426480542942
+        ],
+        "color": "#243c61",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-803",
+      "name": "平整握持包覆",
+      "parentId": "ai-node-799",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          1.58,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.62,
+          1.95,
+          0.62
+        ],
+        "color": "#294b76",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-804",
+      "name": "下收口箍",
+      "parentId": "ai-node-799",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.58,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.72,
+          0.22,
+          0.72
+        ],
+        "color": "#c49a48",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-805",
+      "name": "上收口箍",
+      "parentId": "ai-node-799",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          2.62,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.72,
+          0.22,
+          0.72
+        ],
+        "color": "#c49a48",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-806",
+      "name": "切角尾帽横",
+      "parentId": "ai-node-799",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.2,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.8,
+          0.224,
+          0.73
+        ],
+        "color": "#c49a48",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-807",
+      "name": "切角尾帽竖",
+      "parentId": "ai-node-799",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.2,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.624,
+          0.4,
+          0.73
+        ],
+        "color": "#c49a48",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-808",
+      "name": "切角尾帽斜0",
+      "parentId": "ai-node-799",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0.312,
+          0.08800000000000001,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          45
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.12445079348883238,
+          0.12445079348883238,
+          0.73
+        ],
+        "color": "#c49a48",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-809",
+      "name": "切角尾帽斜1",
+      "parentId": "ai-node-799",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0.312,
+          0.312,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          45
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.12445079348883238,
+          0.12445079348883238,
+          0.73
+        ],
+        "color": "#c49a48",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-810",
+      "name": "切角尾帽斜2",
+      "parentId": "ai-node-799",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -0.312,
+          0.08800000000000001,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          45
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.12445079348883238,
+          0.12445079348883238,
+          0.73
+        ],
+        "color": "#c49a48",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-811",
+      "name": "切角尾帽斜3",
+      "parentId": "ai-node-799",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -0.312,
+          0.312,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          45
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.12445079348883238,
+          0.12445079348883238,
+          0.73
+        ],
+        "color": "#c49a48",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-812",
+      "name": "厚金八角连接框横",
+      "parentId": "ai-node-799",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          4.93,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.34,
+          0.6607999999999999,
+          1.08
+        ],
+        "color": "#c99d43",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-813",
+      "name": "厚金八角连接框竖",
+      "parentId": "ai-node-799",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          4.93,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.8208000000000001,
+          1.18,
+          1.08
+        ],
+        "color": "#c99d43",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-814",
+      "name": "厚金八角连接框斜0",
+      "parentId": "ai-node-799",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0.41040000000000004,
+          4.5996,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          45
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.3671298407920555,
+          0.3671298407920555,
+          1.08
+        ],
+        "color": "#c99d43",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-815",
+      "name": "厚金八角连接框斜1",
+      "parentId": "ai-node-799",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0.41040000000000004,
+          5.2604,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          45
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.3671298407920555,
+          0.3671298407920555,
+          1.08
+        ],
+        "color": "#c99d43",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-816",
+      "name": "厚金八角连接框斜2",
+      "parentId": "ai-node-799",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -0.41040000000000004,
+          4.5996,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          45
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.3671298407920555,
+          0.3671298407920555,
+          1.08
+        ],
+        "color": "#c99d43",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-817",
+      "name": "厚金八角连接框斜3",
+      "parentId": "ai-node-799",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -0.41040000000000004,
+          5.2604,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          45
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.3671298407920555,
+          0.3671298407920555,
+          1.08
+        ],
+        "color": "#c99d43",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-818",
+      "name": "肩甲暗金内层-1",
+      "parentId": "ai-node-799",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -1.03,
+          4.93,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.13,
+          0.92,
+          0.94
+        ],
+        "color": "#856029",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-819",
+      "name": "上层展开金肩甲-1",
+      "parentId": "ai-node-799",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -1.06,
+          5.23,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          5
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.16,
+          0.42,
+          1
+        ],
+        "color": "#deb45a",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-820",
+      "name": "上层浅金切面-1",
+      "parentId": "ai-node-799",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -1.06,
+          5.49,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          5
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.13,
+          0.12,
+          1.03
+        ],
+        "color": "#f2d48b",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-821",
+      "name": "内收下层肩甲-1",
+      "parentId": "ai-node-799",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -0.96,
+          4.59,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          5
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.99,
+          0.32,
+          0.91
+        ],
+        "color": "#bb8c38",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-822",
+      "name": "宽大银白镐臂-1",
+      "parentId": "ai-node-799",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -1.75,
+          4.67,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          -129.80557109226524
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.7810249675906652,
+          0.68,
+          0.91
+        ],
+        "color": "#c1d0d7",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-823",
+      "name": "厚银白楔尖-1",
+      "parentId": "ai-node-799",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -2.24,
+          3.91,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          180
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Slope",
+        "size": [
+          0.5,
+          0.9,
+          0.83
+        ],
+        "color": "#e0e8ea",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-824",
+      "name": "肩甲暗金内层1",
+      "parentId": "ai-node-799",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          1.03,
+          4.93,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.13,
+          0.92,
+          0.94
+        ],
+        "color": "#856029",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-825",
+      "name": "上层展开金肩甲1",
+      "parentId": "ai-node-799",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          1.06,
+          5.23,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          -5
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.16,
+          0.42,
+          1
+        ],
+        "color": "#deb45a",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-826",
+      "name": "上层浅金切面1",
+      "parentId": "ai-node-799",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          1.06,
+          5.49,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          -5
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.13,
+          0.12,
+          1.03
+        ],
+        "color": "#f2d48b",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-827",
+      "name": "内收下层肩甲1",
+      "parentId": "ai-node-799",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0.96,
+          4.59,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          -5
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.99,
+          0.32,
+          0.91
+        ],
+        "color": "#bb8c38",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-828",
+      "name": "宽大银白镐臂1",
+      "parentId": "ai-node-799",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          1.75,
+          4.67,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          -50.19442890773479
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.7810249675906652,
+          0.68,
+          0.91
+        ],
+        "color": "#c1d0d7",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-829",
+      "name": "厚银白楔尖1",
+      "parentId": "ai-node-799",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          2.24,
+          3.91,
+          0
+        ],
+        "rotation": [
+          0,
+          180,
+          180
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Slope",
+        "size": [
+          0.5,
+          0.9,
+          0.83
+        ],
+        "color": "#e0e8ea",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-830",
+      "name": "王冠共同厚底座",
+      "parentId": "ai-node-799",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          5.64,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.45,
+          0.23,
+          0.79
+        ],
+        "color": "#daae56",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-831",
+      "name": "中央粗王冠柱",
+      "parentId": "ai-node-799",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          6.07,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.38,
+          0.65,
+          0.57
+        ],
+        "color": "#e7c26d",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-832",
+      "name": "左粗王冠柱",
+      "parentId": "ai-node-799",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -0.5,
+          5.96,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.34,
+          0.43,
+          0.53
+        ],
+        "color": "#d8ab4f",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-833",
+      "name": "右粗王冠柱",
+      "parentId": "ai-node-799",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0.5,
+          5.96,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.34,
+          0.43,
+          0.53
+        ],
+        "color": "#d8ab4f",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-834",
+      "name": "正面大蓝宝石0",
+      "parentId": "ai-node-799",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          4.97,
+          0.73
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.77,
+          0.44455970727601185,
+          0.24
+        ],
+        "color": "#2d5884",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-835",
+      "name": "正面大蓝宝石1",
+      "parentId": "ai-node-799",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          4.97,
+          0.73
+        ],
+        "rotation": [
+          0,
+          0,
+          60
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.77,
+          0.44455970727601185,
+          0.24
+        ],
+        "color": "#2d5884",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-836",
+      "name": "正面大蓝宝石2",
+      "parentId": "ai-node-799",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          4.97,
+          0.73
+        ],
+        "rotation": [
+          0,
+          0,
+          120
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.77,
+          0.44455970727601185,
+          0.24
+        ],
+        "color": "#2d5884",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-837",
+      "name": "深蓝厚背护板",
+      "parentId": "ai-node-799",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          4.96,
+          -0.67
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.87,
+          0.88,
+          0.2
+        ],
+        "color": "#294365",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    }
+  ],
+  "prefabFolders": [],
+  "prefabs": [],
+  "externalPrefabAliases": []
+}
