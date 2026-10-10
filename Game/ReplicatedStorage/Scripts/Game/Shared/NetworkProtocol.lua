@@ -2,7 +2,7 @@
 -- 框架已有的 Ready、玩家数据和服务器数据同步协议继续由 FrameworkInit 声明。
 return {
     ClientMsgID = {
-        -- 无参数，服务端校验请求者当前等级与重生次数，单向请求。
+        -- 无参数，服务端校验请求者当前等级与重生次数；RPC 返回 {success: boolean}。
         "C2S_Rebirth",
         -- entryIds: string[]，正式库存的稳定实例 ID；multiplier: 1|2，暂时允许免费双倍。
         -- RPC 返回 {success: boolean, key: string, amount: number?, count: number?, entries: table?}。

@@ -237,3 +237,5 @@ Rebirth.Confirm,Rebirth,,
 Rebirth.Progress,Level {level:int} / {required:int},,level=1;required=15
 Rebirth.RequiredLevel,Reach level {level:int} to rebirth.,,level=15
 Rebirth.Success,Rebirth complete! Your level has reset to 1.,,
+Rebirth.ResetWarning,Rebirth resets your strength!,,
+Rebirth.MaxCount,Maximum rebirths reached. More rebirths are coming soon!,,

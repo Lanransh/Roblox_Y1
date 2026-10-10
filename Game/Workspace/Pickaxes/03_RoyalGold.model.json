@@ -1,24 +1,11 @@
-{
-  "ClassName": "Model",
-  "Children": [
-    {"Name":"GemLightFacet","ClassName":"WedgePart","Properties":{"Size":[0.36,0.36,0.1],"Position":[865.98,-7.79,899.18],"Orientation":[0,0,45],"Color":[0.45,0.78,1],"Material":"SmoothPlastic","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
-    {"Name":"RoyalGrip","ClassName":"Part","Properties":{"Size":[0.69,1.1,0.69],"Position":[866,-11.95,900],"Color":[0.12,0.25,0.58],"Material":"SmoothPlastic","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
-    {"Name":"GoldNeckBand","ClassName":"Part","Properties":{"Size":[0.82,0.5,0.82],"Position":[866,-8.65,900],"Color":[0.94,0.64,0.11],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
-    {"Name":"GoldPommel","ClassName":"WedgePart","Properties":{"Size":[0.85,0.4,0.85],"Position":[866,-14.27,900],"Color":[0.91,0.59,0.08],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
-    {"Name":"GemDarkSetting","ClassName":"Part","Properties":{"Size":[0.76,0.76,0.16],"Position":[866,-7.83,899.47],"Orientation":[0,0,45],"Color":[0.35,0.21,0.04],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
-    {"Name":"GoldTopBevel","ClassName":"WedgePart","Properties":{"Size":[3.4,0.23,0.28],"Position":[866,-7.22,899.66],"Color":[1,0.91,0.51],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
-    {"Name":"LeftWingFacet","ClassName":"WedgePart","Properties":{"Size":[0.14,0.88,2.05],"Position":[863.43,-7.76,899.54],"Orientation":[0,90,0],"Color":[1,0.9,0.43],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
-    {"Name":"RightWingFacet","ClassName":"WedgePart","Properties":{"Size":[0.14,0.88,2.05],"Position":[868.57,-7.76,899.54],"Orientation":[0,-90,0],"Color":[0.99,0.73,0.19],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
-    {"Name":"ShieldBackPlate","ClassName":"Part","Properties":{"Size":[0.86,0.93,0.14],"Position":[866,-7.8,900.5],"Color":[0.72,0.43,0.06],"Material":"Plastic","BackSurface":"Studs","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
-    {"Name":"RoyalBlueHandle","ClassName":"Part","Properties":{"Size":[0.58,6.5,0.58],"Position":[866,-11.25,900],"Color":[0.08,0.16,0.42],"Material":"SmoothPlastic","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
-    {"Name":"GoldGripRing","ClassName":"Part","Properties":{"Size":[0.76,0.22,0.76],"Position":[866,-12.55,900],"Color":[0.96,0.67,0.12],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
-    {"Name":"GoldHeadBar","ClassName":"Part","Properties":{"Size":[3.3,0.78,0.85],"Position":[866,-7.7,900],"Color":[1,0.72,0.16],"Material":"Plastic","FrontSurface":"Studs","BackSurface":"Studs","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
-    {"Name":"LeftGoldWing","ClassName":"WedgePart","Properties":{"Size":[0.85,1.22,2.25],"Position":[863.43,-7.73,900],"Orientation":[0,90,0],"Color":[1,0.82,0.25],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
-    {"Name":"RightGoldWing","ClassName":"WedgePart","Properties":{"Size":[0.85,1.22,2.25],"Position":[868.57,-7.73,900],"Orientation":[0,-90,0],"Color":[0.82,0.51,0.08],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
-    {"Name":"ShieldSocket","ClassName":"Part","Properties":{"Size":[1.15,1.2,0.95],"Position":[866,-7.8,900],"Color":[0.91,0.61,0.1],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
-    {"Name":"CrownCenter","ClassName":"Part","Properties":{"Size":[0.38,0.5,0.45],"Position":[866,-6.95,900],"Color":[1,0.78,0.17],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
-    {"Name":"CrownLeft","ClassName":"Part","Properties":{"Size":[0.3,0.32,0.42],"Position":[865.55,-7.02,900],"Color":[0.94,0.61,0.08],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
-    {"Name":"CrownRight","ClassName":"Part","Properties":{"Size":[0.3,0.32,0.42],"Position":[866.45,-7.02,900],"Color":[0.94,0.61,0.08],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
-    {"Name":"BlueGem","ClassName":"Part","Properties":{"Size":[0.55,0.55,0.18],"Position":[866,-7.83,899.31],"Orientation":[0,0,45],"Color":[0.12,0.4,0.87],"Material":"SmoothPlastic","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}}
-  ]
-}
+{"ClassName":"Model","Children":[
+{"Name":"RoyalBlueHandle","ClassName":"Part","Properties":{"Size":[0.58,6.5,0.58],"Position":[866,-11.25,900],"Color":[0.08,0.16,0.42],"Material":"SmoothPlastic","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+{"Name":"RoyalGrip","ClassName":"Part","Properties":{"Size":[0.72,1.9,0.72],"Position":[866,-12.1,900],"Color":[0.06,0.1,0.26],"Material":"Fabric","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+{"Name":"DiamondSocket","ClassName":"Part","Properties":{"Size":[1.35,1.35,1.1],"Position":[866,-7.65,900],"Orientation":[0,0,45],"Color":[0.8,0.51,0.12],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+{"Name":"LeftFanBlade","ClassName":"WedgePart","Properties":{"Size":[1.02,2.55,2.3],"Position":[864.3,-7.35,900],"Orientation":[0,90,-25],"Color":[1,0.79,0.32],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+{"Name":"RightFanBlade","ClassName":"WedgePart","Properties":{"Size":[1.02,2.55,2.3],"Position":[867.7,-7.35,900],"Orientation":[0,-90,25],"Color":[0.94,0.67,0.2],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+{"Name":"CrownSpear","ClassName":"WedgePart","Properties":{"Size":[0.85,1.65,0.82],"Position":[866,-6.02,900],"Orientation":[0,90,0],"Color":[1,0.89,0.5],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+{"Name":"BlueGem","ClassName":"Part","Properties":{"Size":[0.65,0.65,1.25],"Position":[866,-7.65,900],"Orientation":[0,0,45],"Color":[0.13,0.43,0.9],"Material":"SmoothPlastic","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+{"Name":"GoldNeckBand","ClassName":"Part","Properties":{"Size":[0.9,0.4,0.9],"Position":[866,-8.7,900],"Color":[1,0.78,0.27],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+{"Name":"GoldPommel","ClassName":"Part","Properties":{"Size":[0.78,0.78,0.78],"Position":[866,-14.1,900],"Orientation":[0,0,45],"Color":[0.91,0.59,0.08],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}}
+]}

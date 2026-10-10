@@ -1,22 +1,11 @@
-{
-  "ClassName": "Model",
-  "Children": [
-    {"Name":"SilverNeckGuard","ClassName":"Part","Properties":{"Size":[0.78,0.7,0.78],"Position":[874,-8.13,900],"Color":[0.56,0.68,0.81],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
-    {"Name":"IcePommel","ClassName":"Part","Properties":{"Size":[0.76,0.32,0.76],"Position":[874,-14.32,900],"Color":[0.62,0.77,0.86],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
-    {"Name":"LongCrystalFacet","ClassName":"WedgePart","Properties":{"Size":[0.14,0.72,2.4],"Position":[871.15,-7.25,899.54],"Orientation":[0,90,0],"Color":[0.8,0.96,1],"Material":"SmoothPlastic","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
-    {"Name":"ChiselCrystalFacet","ClassName":"WedgePart","Properties":{"Size":[0.14,0.68,1.26],"Position":[876.34,-7.22,899.54],"Orientation":[0,-90,0],"Color":[0.51,0.83,0.98],"Material":"SmoothPlastic","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
-    {"Name":"SocketDarkBorder","ClassName":"Part","Properties":{"Size":[0.85,0.88,0.12],"Position":[874,-7.22,899.49],"Color":[0.26,0.42,0.59],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
-    {"Name":"SnowBarVertical","ClassName":"Part","Properties":{"Size":[0.12,0.48,0.08],"Position":[874,-7.22,899.27],"Color":[0.93,0.98,1],"Material":"SmoothPlastic","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
-    {"Name":"SnowBarHorizontal","ClassName":"Part","Properties":{"Size":[0.48,0.12,0.08],"Position":[874,-7.22,899.27],"Color":[0.93,0.98,1],"Material":"SmoothPlastic","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
-    {"Name":"NavyHandle","ClassName":"Part","Properties":{"Size":[0.54,7.1,0.54],"Position":[874,-10.95,900],"Color":[0.08,0.16,0.34],"Material":"SmoothPlastic","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
-    {"Name":"DarkGripA","ClassName":"Part","Properties":{"Size":[0.72,0.28,0.72],"Position":[874,-12.75,900],"Color":[0.04,0.09,0.22],"Material":"SmoothPlastic","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
-    {"Name":"DarkGripB","ClassName":"Part","Properties":{"Size":[0.72,0.28,0.72],"Position":[874,-12,900],"Color":[0.04,0.09,0.22],"Material":"SmoothPlastic","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
-    {"Name":"FrostSocket","ClassName":"Part","Properties":{"Size":[1.08,1.08,0.9],"Position":[874,-7.2,900],"Color":[0.72,0.83,0.91],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
-    {"Name":"FrostHeadBeam","ClassName":"Part","Properties":{"Size":[3.75,0.55,0.78],"Position":[874,-7.12,900],"Color":[0.2,0.39,0.6],"Material":"Plastic","FrontSurface":"Studs","BackSurface":"Studs","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
-    {"Name":"LongIcePick","ClassName":"WedgePart","Properties":{"Size":[0.78,1.12,2.6],"Position":[871.15,-7.2,900],"Orientation":[0,90,0],"Color":[0.42,0.82,1],"Material":"Ice","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
-    {"Name":"ShortIceChisel","ClassName":"WedgePart","Properties":{"Size":[0.84,1.02,1.45],"Position":[876.34,-7.14,900],"Orientation":[0,-90,0],"Color":[0.18,0.56,0.86],"Material":"Ice","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
-    {"Name":"CrystalFace","ClassName":"Part","Properties":{"Size":[0.52,0.52,0.18],"Position":[874,-7.22,899.4],"Orientation":[0,0,45],"Color":[0.38,0.74,0.91],"Material":"SmoothPlastic","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
-    {"Name":"IceSpikeLeft","ClassName":"WedgePart","Properties":{"Size":[0.55,0.9,0.55],"Position":[873.45,-6.3,900],"Orientation":[0,90,0],"Color":[0.55,0.86,1],"Material":"Ice","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
-    {"Name":"IceSpikeRight","ClassName":"WedgePart","Properties":{"Size":[0.48,0.64,0.5],"Position":[874.55,-6.45,900],"Orientation":[0,-90,0],"Color":[0.37,0.72,0.96],"Material":"Ice","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}}
-  ]
-}
+{"ClassName":"Model","Children":[
+{"Name":"NavyHandle","ClassName":"Part","Properties":{"Size":[0.54,7.1,0.54],"Position":[874,-10.95,900],"Color":[0.08,0.16,0.34],"Material":"SmoothPlastic","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+{"Name":"FrostGrip","ClassName":"Part","Properties":{"Size":[0.7,1.74,0.7],"Position":[874,-12.37,900],"Color":[0.04,0.08,0.17],"Material":"Fabric","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+{"Name":"CrystalRoot","ClassName":"Part","Properties":{"Size":[1.5,1.45,1.2],"Position":[874,-7.5,900],"Orientation":[0,0,30],"Color":[0.25,0.51,0.7],"Material":"Ice","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+{"Name":"LongCrystal","ClassName":"WedgePart","Properties":{"Size":[1.02,1.7,3.25],"Position":[872.17,-6.91,900],"Orientation":[0,90,-28],"Color":[0.57,0.86,1],"Material":"Ice","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+{"Name":"HighCrystal","ClassName":"WedgePart","Properties":{"Size":[0.86,2.85,1],"Position":[874.15,-5.9,900],"Orientation":[0,90,-12],"Color":[0.74,0.95,1],"Material":"Ice","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+{"Name":"RightCrystal","ClassName":"WedgePart","Properties":{"Size":[0.88,1.8,2.05],"Position":[875.35,-6.5,900],"Orientation":[0,-90,48],"Color":[0.32,0.7,0.94],"Material":"Ice","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+{"Name":"LowerCrystal","ClassName":"WedgePart","Properties":{"Size":[0.78,1.7,1],"Position":[873.1,-8.1,900],"Orientation":[0,90,145],"Color":[0.43,0.76,0.94],"Material":"Ice","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+{"Name":"CrystalFace","ClassName":"Part","Properties":{"Size":[0.62,0.62,1.38],"Position":[874,-7.5,900],"Orientation":[0,0,45],"Color":[0.8,0.97,1],"Material":"SmoothPlastic","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}},
+{"Name":"IcePommel","ClassName":"Part","Properties":{"Size":[0.76,0.32,0.76],"Position":[874,-14.32,900],"Color":[0.62,0.77,0.86],"Material":"Metal","Anchored":true,"CanCollide":false,"CanTouch":false,"CanQuery":false}}
+]}
