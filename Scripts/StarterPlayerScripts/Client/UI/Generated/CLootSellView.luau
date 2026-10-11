@@ -12,7 +12,7 @@ State 为完整输入，不是增量，所有必填字段无默认值：
   items[i].id:string 唯一、稳定的背包实例 ID，不是名称或数组下标；
   items[i].name:string 英文显示名；
   items[i].qualityId:string 品质 ID，与 Config.qualities 的键对应，必填；
-  items[i].value:number 此条目的出售��价，非负，单位 Coins；
+  items[i].value:number 此条目的出售��价，非负，单位金币；展示为钞票图标与 +$金额，百万金额保留一位小数 M；
   pending:boolean 可选，省略 false，出售按钮禁用；
   message:string 可选，省略空文本；空列表时缺省显示 No items to sell。
 条目原型位于隐藏的 Templates.LootTemplateImg，显示容器 LootListBox 仅挂载运行时克隆。
@@ -45,9 +45,9 @@ local CLootSellView = FX.Class("CLootSellView", "CUIView")
 -- @return string 金币展示文本
 local function FormatCoins(amount)
     if amount >= 1000000 then
-        return string.format("%.1fM Coins", amount / 1000000)
+        return string.format("+$%.1fM", amount / 1000000)
     end
-    return tostring(amount) .. " Coins"
+    return "+$" .. tostring(amount)
 end
 
 -- 绑定静态节点，事件只连接一次。
@@ -62,6 +62,7 @@ function CLootSellView:OnReady()
     self.Rows = {}
     self.List.CanvasPosition = Vector2.new(0, 0)
     self.StatusTxt = FXLoader:Here(root, "PopupPanelImg.StatusTxt")
+    self.StatusMoneyIcon = FXLoader:Here(root, "PopupPanelImg.StatusMoneyIconImg")
     self.SellAllBtn = FXLoader:Here(root, "PopupPanelImg.TotalImg.SellAllBtn")
     self.SellDoubleBtn = FXLoader:Here(root, "PopupPanelImg.TotalImg.SellDoubleBtn")
     local closeBtn = FXLoader:Here(root, "TitleBox.CloseSurfaceImg.CloseBtn")
@@ -147,7 +148,7 @@ function CLootSellView:Render(state)
     end
     local count = #state.items
     local canvasHeight = math.max(252, count * 112 - 8)
-    self.List.CanvasSize = UDim2.fromOffset(702, canvasHeight)
+    self.List.CanvasSize = UDim2.fromOffset(822, canvasHeight)
     self.List.CanvasPosition = Vector2.new(0, math.min(self.List.CanvasPosition.Y, canvasHeight - 252))
     self.Total.Text = FormatCoins(total)
     self.CapacityTxt.Text = "Items: " .. count .. " / " .. self:GetUIConfig().capacity
@@ -156,6 +157,7 @@ function CLootSellView:Render(state)
         self.CapacityTxt.TextColor3 = Color3.fromHex("#FFD34F")
     end
     self.StatusTxt.Text = state.message or ""
+    self.StatusMoneyIcon.Visible = string.find(self.StatusTxt.Text, "+$", 1, true) ~= nil
     if count == 0 and not state.message then
         self.StatusTxt.Text = "No items to sell"
     end

@@ -1956,7 +1956,7 @@
             "id": "05f224bf-5115-465a-992e-822e4673bca1",
             "name": "WindowScale",
             "properties": {
-              "Scale": 0.65
+              "Scale": 0.78
             }
           }
         ],
@@ -1974,11 +1974,11 @@
           "LayoutOrder": 0,
           "Position": {
             "x": {
-              "offset": 419,
+              "offset": 387,
               "scale": 0
             },
             "y": {
-              "offset": 237,
+              "offset": 212,
               "scale": 0
             }
           },
@@ -2429,7 +2429,7 @@
             "id": "3ae8186c-6288-4c0c-963f-9adbeaf375c2",
             "name": "WindowScale",
             "properties": {
-              "Scale": 0.65
+              "Scale": 0.78
             }
           }
         ],
@@ -2447,11 +2447,11 @@
           "LayoutOrder": 0,
           "Position": {
             "x": {
-              "offset": 419,
+              "offset": 387,
               "scale": 0
             },
             "y": {
-              "offset": 191,
+              "offset": 157,
               "scale": 0
             }
           },
@@ -3618,7 +3618,7 @@
             "id": "d461a11b-3aaa-4a7b-a64f-16a0d6e2ac4d",
             "name": "WindowScale",
             "properties": {
-              "Scale": 0.65
+              "Scale": 0.78
             }
           }
         ],
@@ -3636,11 +3636,11 @@
           "LayoutOrder": 0,
           "Position": {
             "x": {
-              "offset": 309,
+              "offset": 254,
               "scale": 0
             },
             "y": {
-              "offset": 242,
+              "offset": 218,
               "scale": 0
             }
           },
