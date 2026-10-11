@@ -7,6 +7,7 @@ local GameConfig = _G.GameConfig
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local CollectibleText = FXLoader:RequireShared("Scripts/Game/Shared/CollectibleText")
 local Rebirth = FXLoader:RequireShared("Scripts/Game/Shared/Rebirth")
+local RockLevel = FXLoader:RequireShared("Scripts/Game/Shared/RockLevel")
 local Component = FX.Class("CLootSellUICompClass", "CLootSellView")
 
 --- 出售区域通过业务组件打开正式库存出售窗口。
@@ -24,7 +25,7 @@ function Component:OnReady()
     self._commonUI = self:GetPlayerObject():RequireComponent("FCCommonUIComp")
     self._commonUI:RegisterTrainingClickModal(root)
     self._localization = self._commonUI.Localization
-    self.Config = {capacity = _G.Provider:GetNativeBackpackConfig().InventoryCapacity, qualities = {}}
+    self.Config = {capacity = RockLevel.StoredLootCapacity, qualities = {}}
     -- 项目尚无品质颜色配置，保留设计模板配色，不虚构品质等级与颜色规则。
     local color = FXLoader:Here(self.Template, "QualityStripeImg").BackgroundColor3:ToHex()
     for itemId, config in pairs(GameConfig.ItemData) do

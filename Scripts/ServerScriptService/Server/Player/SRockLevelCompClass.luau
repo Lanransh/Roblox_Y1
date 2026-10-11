@@ -1,4 +1,4 @@
-local FX, FS = _G.FX, _G.FS
+local FX = _G.FX
 local FXLoader = FX.Loader
 local Fields = _G.PlayerDataConfig
 local TweenService = game:GetService("TweenService")
@@ -532,13 +532,9 @@ function Component:PickupDrop(dropId)
     end
     drop.Picking = true
     local loot = self:GetTable(Fields.RockLoot)
-    local inventory = self:GetPlayerObject():RequireComponent("FSInventoryComp")
-    local inventoryCount = 0
-    for gridIndex in pairs(inventory:GetData()) do
-        inventoryCount += 1
-    end
-    local capacity = inventory:GetTotalCapacity()
-    if inventoryCount + #loot >= capacity then
+    local stored = self:GetTable(Fields.StoredLoot)
+    local capacity = RockLevel.StoredLootCapacity
+    if #stored + #loot >= capacity then
         drop.Picking = false
         self:GetPlayerObject():ShowLocalizedTips("Loot.InventoryFull", {capacity = capacity})
         return
@@ -568,24 +564,19 @@ function Component:PickupDrop(dropId)
     end
 end
 
---- 仅在基地逐件入正式背包，成功后激活图鉴；满包不激活且保留未转移战利品。
+--- 仅在基地转存玩家 KV 并激活图鉴，不创建背包道具；满存储保留随身战利品。
 function Component:DepositLoot()
     local loot = self:GetTable(Fields.RockLoot)
     if #loot == 0 then
         return
     end
-    local inventory = self:GetPlayerObject():RequireComponent("FSInventoryComp")
+    local stored = self:GetTable(Fields.StoredLoot)
     local deposited = 0
     local entries = self:GetTable(Fields.CollectionEntries)
     local collectionChanged = false
-    while #loot > 0 do
+    while #loot > 0 and #stored < RockLevel.StoredLootCapacity do
         local entry = loot[1]
-        local item = FS.ItemClass.New(Collectible.ItemId, 1,
-            {TemplateName = entry.TemplateName, ItemId = entry.ItemId, DisplayModelId = entry.DisplayModelId,
-                Price = entry.Price, IsLucky = entry.IsLucky == true, LuckRate = entry.LuckRate or 1})
-        if not inventory:AddItems({item}) then
-            break
-        end
+        table.insert(stored, entry)
         if Collection.Activate(entries, entry.ItemId) then
             collectionChanged = true
         end
@@ -593,6 +584,7 @@ function Component:DepositLoot()
         deposited += 1
     end
     if deposited > 0 then
+        self:SetTable(Fields.StoredLoot, stored)
         self:SetTable(Fields.RockLoot, loot)
         if collectionChanged then
             self:SetTable(Fields.CollectionEntries, entries)
@@ -754,6 +746,21 @@ function Component:Tick()
             end
         end
     end
+end
+
+--- 仅允许关卡内存活角色回到基地，入库与轮次重置仍由原有基地位置检查处理。
+function Component:ReturnHome()
+    local character = self:GetPlayerCharacter()
+    local root = character and character:FindFirstChild("HumanoidRootPart")
+    local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+    if not self._areas or not root or not humanoid or humanoid.Health <= 0
+        or not RockLevel.IsInArea(self._areas, root.Position) then
+        return
+    end
+    local spawn = FXLoader:Workspace("SpawnLocation")
+    character:PivotTo(spawn.CFrame * CFrame.new(0, spawn.Size.Y / 2 + humanoid.HipHeight + root.Size.Y / 2, 0))
+    root.AssemblyLinearVelocity = Vector3.zero
+    root.AssemblyAngularVelocity = Vector3.zero
 end
 
 --- 离服释放掉落、关卡任务和镐子，清空个人区域与命中记录。

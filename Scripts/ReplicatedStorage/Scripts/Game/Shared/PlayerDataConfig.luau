@@ -33,7 +33,7 @@ return {
         KVTable = PlayerKVEnum.ePlayerData,
         Sync = true,
     },
-    -- 当前携带且尚未返回基地存入正式背包的战利品。
+    -- 当前携带且尚未返回基地存入 KV 的战利品。
     RockLoot = {
         Type = "table",
         Key = "RockLoot",
@@ -41,7 +41,15 @@ return {
         KVTable = PlayerKVEnum.ePlayerData,
         Sync = true,
     },
-    -- 正式背包中可出售收藏品的临时展示快照；实际库存仍为服务端私有字段。
+    -- 返回基地后存入的收藏品，仅在玩家 KV 保存，不生成原生背包 Tool。
+    StoredLoot = {
+        Type = "table",
+        Key = "StoredLoot",
+        DefVal = {},
+        KVTable = PlayerKVEnum.ePlayerData,
+        Sync = false,
+    },
+    -- KV 收藏品的临时出售展示快照；完整记录仅由服务端读取。
     LootSellEntries = {
         Type = "table",
         Key = "LootSellEntries",

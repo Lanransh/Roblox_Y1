@@ -10,6 +10,24 @@ function Manager:Ctor()
     self:RegRockDropMsg()
     self:RegLootSellMsg()
     self:RegAuraMsg()
+    self:RegGMMsg()
+end
+
+--- GM 协议统一注册，按引擎认证身份转发到请求者本人的玩家组件。
+function Manager:RegGMMsg()
+    --- 未建立玩家会话时拒绝请求，GM 组件负责开发者权限及数值校验。
+    --- @param userId number 引擎认证的请求者身份。
+    --- @param action string 六种 GM 操作之一。
+    --- @param value any 数值操作的目标值。
+    --- @return table GM 组件的权威操作结果。
+    FX.Network:RegClientMsgCallback("C2S_GMCommand", function(userId, action, value)
+        local player = self:GetPlayerObject(userId)
+        local gm = player and player:GetComponent("SGMComp")
+        if not gm then
+            return {success = false, key = "Common.Unknown"}
+        end
+        return gm:Request(action, value)
+    end)
 end
 
 --- 光环协议只注册一次，再按引擎认证身份转发到本人组件。
@@ -98,6 +116,16 @@ function Manager:RegRockDropMsg()
         end
     end
     FX.Network:RegClientMsgCallback("C2S_RequestRockRound", requestRound)
+    --- 回家目标由服务端决定，未登录或已离服时忽略请求。
+    --- @param userId number 引擎认证的玩家身份。
+    local function returnHome(userId)
+        local player = self:GetPlayerObject(userId)
+        local rocks = player and player:GetComponent("SRockLevelComp")
+        if rocks then
+            rocks:ReturnHome()
+        end
+    end
+    FX.Network:RegClientMsgCallback("C2S_ReturnHome", returnHome)
 end
 
 function Manager:GetInventory(playerId)

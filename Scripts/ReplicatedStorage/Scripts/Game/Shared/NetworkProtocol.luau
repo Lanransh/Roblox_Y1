@@ -2,6 +2,10 @@
 -- 框架已有的 Ready、玩家数据和服务器数据同步协议继续由 FrameworkInit 声明。
 return {
     ClientMsgID = {
+        -- action: "SetLevel"|"SetRebirth"|"SetMoney"|"SetDiamonds"|"ResetData"|"SaveNow"。
+        -- value: number?，非负安全整数；等级为 1 到当前阶段上限，重生为 0 到配置上限。
+        -- 仅引擎认证 UserId 对应开发者可操作本人；RPC 返回 {success: boolean, key: string, arguments: table?}。
+        "C2S_GMCommand",
         -- 无参数，服务端校验请求者当前等级与重生次数；RPC 返回 {success: boolean}。
         "C2S_Rebirth",
         -- entryIds: string[]，正式库存的稳定实例 ID；multiplier: 1|2，暂时允许免费双倍。
@@ -19,6 +23,8 @@ return {
         "C2S_RockHit",
         -- 无参数，客户端就绪或角色变化后请求当前轮次和个人已击破格号快照。
         "C2S_RequestRockRound",
+        -- 无参数，单向请求；服务端仅允许存活且位于关卡内的本人返回基地出生点。
+        "C2S_ReturnHome",
     },
     ServerMsgID = {
         -- key: string、arguments: table?、duration: number?，项目提示在客户端翻译，单向消息。

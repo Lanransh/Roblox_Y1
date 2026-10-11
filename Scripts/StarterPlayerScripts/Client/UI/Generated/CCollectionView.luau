@@ -94,7 +94,7 @@ function CCollectionView:Render(state)
         end
         kept[item.id] = true
         row.node.Position = UDim2.fromOffset(
-            2 + ((index - 1) % 4) * 198,
+            2 + ((index - 1) % 4) * 228,
             2 + math.floor((index - 1) / 4) * 164
         )
         if entry.active then
@@ -112,7 +112,7 @@ function CCollectionView:Render(state)
         end
     end
     self.List.CanvasSize = UDim2.fromOffset(
-        778,
+        898,
         math.max(326, math.ceil(#config.items / 4) * 164 - 12)
     )
     self.Count.Text = "Activated " .. tostring(activeCount) .. " / " .. tostring(#config.items)

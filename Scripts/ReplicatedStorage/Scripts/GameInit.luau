@@ -21,6 +21,13 @@ require(script.Parent:WaitForChild("Framework"):WaitForChild("FrameworkInit"))
 local FX = _G.FX
 local FXLoader = FX.Loader
 
+--- 项目开发者固定为这两个账户，两端沿用框架入口进行相同的 ID 判断。
+--- @param playerId number Roblox 引擎认证的 UserId。
+--- @return boolean 是否为本项目开发者。
+function FX.IsDeveloper(playerId)
+    return playerId == 10001624241 or playerId == 2563885143
+end
+
 return {
     GameEnum = _G.GameEnum,
     GameUtility = FXLoader:Require(GameShared, "GameUtility"),

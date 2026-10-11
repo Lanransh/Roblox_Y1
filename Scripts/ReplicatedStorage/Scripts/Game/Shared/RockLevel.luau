@@ -16,6 +16,7 @@ local RockLevel = {
     ClickEffectValue = 2, -- 仅用于客户端点击图标文案，不发放实际收益。
     ClickInterval = 0.2,
     LootCapacity = 3, -- 尚未回基地存放的战利品最多携带 3 件。
+    StoredLootCapacity = 12, -- 已存收藏品与随身战利品共用的 KV 存储容量。
     HP = {29, 122, 520, 2176, 9101, 38000, 159000, 664000, 2770000, 11600000, 48400000, 202000000, 844000000},
 }
 local thresholds = {0}
@@ -88,6 +89,21 @@ function RockLevel.GetAreas()
         }
     end
     return areas
+end
+
+--- 客户端显示回家入口与服务端传送校验共用关卡边界，不把基地或关卡外算作关卡。
+--- @param areas table 已加载的关卡边界。
+--- @param position Vector3 当前角色根节点位置。
+--- @return boolean 是否位于任一关卡区域。
+function RockLevel.IsInArea(areas, position)
+    for index, area in ipairs(areas) do
+        if position.X >= area.MinX and position.X < area.MinX + area.Columns * RockLevel.CellSize
+            and position.Z >= area.MinZ and position.Z < area.MinZ + area.Rows * RockLevel.CellSize
+            and math.abs(position.Y - area.FloorY) < 12 then
+            return true
+        end
+    end
+    return false
 end
 
 --- 只检测角色水平朝向前方 3 studs 的格子，空格不继续向远处搜索。

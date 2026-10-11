@@ -6,7 +6,7 @@ local UI = (function()
 Config.title: string，必填标题。
 Config.qualities: 字典，键为品质 ID；值 {name: string, color: string} 均必填，color 为 #RRGGBB 卡片底色。
 Config.auras: 数组，显示顺序；每项 {id: string, name: string, qualityId: string,
- strength: number, price: number, icon: string?}。前五项必填；price 单位金币，strength 为加成点数；
+ strength: number, price: number, icon: string?}。前五项必填；price 单位金币，显示为钞票图标与 +$金额；strength 为加成点数；
  id 唯一稳定，qualityId 对应 qualities 键；icon 可选 Roblox 图片 ID，缺省或空字符串显示问号占位。
 State.owned: 字典，auraId -> boolean，缺省键表示未拥有。
 State.equippedId: string，必填，空字符串表示未装备。
@@ -100,7 +100,7 @@ function CAuraShopView:Render(state)
             local owned = state.owned[aura.id] == true
             local equipped = state.equippedId == aura.id
             local pending = state.pending and state.pending[aura.id]
-            local caption = tostring(aura.price) .. " Coins"
+            local caption = "+$" .. tostring(aura.price)
             local color = "#67ED14"
             local edge = "#225A07"
             if owned then
@@ -114,11 +114,22 @@ function CAuraShopView:Render(state)
                 caption = "Waiting..."
                 color = "#638079"
             elseif not owned and state.coins < aura.price then
-                caption = "Need " .. tostring(aura.price)
+                caption = "+$" .. tostring(aura.price)
                 color = "#638079"
             end
             FXLoader:Here(row, "OwnedTxt").Visible = false
-            FXLoader:Here(row, "ActionBtn.ButtonTxt").Text = caption
+            local showMoney = not owned and not equipped and not pending
+            FXLoader:Here(row, "ActionBtn.MoneyIconImg").Visible = showMoney
+            local buttonText = FXLoader:Here(row, "ActionBtn.ButtonTxt")
+            buttonText.Text = caption
+            buttonText.Position = UDim2.fromOffset(0, 0)
+            buttonText.Size = UDim2.fromScale(1, 1)
+            buttonText.TextXAlignment = Enum.TextXAlignment.Center
+            if showMoney then
+                buttonText.Position = UDim2.fromOffset(64, 0)
+                buttonText.Size = UDim2.new(1, -72, 1, 0)
+                buttonText.TextXAlignment = Enum.TextXAlignment.Left
+            end
             FXLoader:Here(row, "ActionBtn.BottomEdgeImg").BackgroundColor3 = Color3.fromHex(edge)
             entry.button.BackgroundColor3 = Color3.fromHex(color)
             self:SetButtonEnabled(entry.button, not equipped and not pending and (owned or state.coins >= aura.price))

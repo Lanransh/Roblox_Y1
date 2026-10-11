@@ -22,6 +22,13 @@ function Component:OnReady()
     self._rootNode.ResetOnSpawn = false
     local top = FXLoader:Here(self._rootNode, "TopCenter")
     self._bar = FXLoader:Here(top, "LevelProgressBar")
+    self._homeButton = FXLoader:Here(top, "HomeButton")
+    self._homeButton.Size = UDim2.fromOffset(160, 54)
+    self._homeButton.TextScaled = false
+    self._homeButton.TextSize = 32
+    self._homeButton.TextStrokeColor3 = Color3.new(0, 0, 0)
+    self._homeButton.TextStrokeTransparency = 0
+    self._areas = RockLevel.GetAreas()
     self._strength = FXLoader:Here(top, "Strength/Value")
     self._rebirthBadge = FXLoader:Here(self._rootNode, "LeftCenter/RebirthButton/Badge")
     self._rebirthBadge.AutoLocalize = false
@@ -29,6 +36,8 @@ function Component:OnReady()
     self._localization = self._commonUI.Localization
     self._strength.AutoLocalize = false
     self._bar.ProgressLabel.AutoLocalize = false
+    self._homeButton.AutoLocalize = false
+    self._homeButton.Text = self._localization:FormatByKey("Main.Home")
     --- 翻译就绪或语言切换时刷新主界面，出售界面自行监听语言变化。
     self:TrackConnection(self._localization.Changed:Connect(function()
         self:RefreshLocalization()
@@ -41,6 +50,11 @@ function Component:OnReady()
     self._pulseScale = Instance.new("UIScale")
     self._pulseScale.Parent = self._strength
     self:BindButtons()
+    self:RefreshHomeButton()
+    --- 跟随角色进出关卡及重生切换入口，不重复注册按钮事件。
+    self._homeTimer = FX.Task:Interval(0.1, function()
+        self:RefreshHomeButton()
+    end)
     --- 走路及击打按服务端结算播放，点击图标由本地输入立即播放。
     --- @param gain number 服务端确认的走路及击打收益。
     FX.Network:RegServerMsgCallback("S2C_TrainingEffect", function(gain)
@@ -53,7 +67,7 @@ function Component:OnReady()
     self:WatchDataChanged(Fields.Coins, self.RefreshCoins, self)
     self:WatchDataChanged(Fields.RebirthCount, self.RefreshRebirthCount, self)
     self:WatchDataChanged(Fields.Diamonds, self.RefreshDiamonds, self)
-    self:WatchDataChanged(Fields.LootSellEntries, self.RefreshLoot, self)
+    self:WatchDataChanged(Fields.RockLoot, self.RefreshLoot, self)
     --- 鼠标只在未被按钮、背包等 UI 消耗时播放点击图标。
     --- @param input InputObject 本次输入。
     --- @param processed boolean 是否已被引擎 UI 消耗。
@@ -117,6 +131,7 @@ end
 
 --- 标记主界面实际内容区域，弹窗入口交给对应业务组件。
 function Component:BindButtons()
+    FXLoader:Here(self._rootNode, "GMButton").Visible = FX.IsDeveloper(self:GetPlayerNode().UserId)
     for index, path in ipairs({"TopCenter/LevelProgressBar", "TopCenter/Strength",
         "LeftDown/RebirthStat", "LeftDown/BackpackStat", "LeftDown/CashStat", "LeftDown/DiamondStat"}) do
         FXLoader:Here(self._rootNode, path):SetAttribute("BlocksTrainingClick", true)
@@ -125,10 +140,16 @@ function Component:BindButtons()
         if node:IsA("GuiButton") then
             node:SetAttribute("BlocksTrainingClick", true)
             self:TrackConnection(node.Activated:Connect(function()
-                if node.Name == "CollectionBtn" then
+                if node.Name == "GMButton" then
+                    if FX.IsDeveloper(self:GetPlayerNode().UserId) then
+                        self:GetPlayerObject():RequireComponent("CGMUIComp"):Show()
+                    end
+                elseif node.Name == "CollectionBtn" then
                     self:GetPlayerObject():RequireComponent("CCollectionUIComp"):Show()
                 elseif node.Name == "RebirthButton" then
                     self:GetPlayerObject():RequireComponent("CRebirthUIComp"):Show()
+                elseif node == self._homeButton then
+                    FX.Network:SendMsgToServer("C2S_ReturnHome")
                 else
                     self:ShowDeveloping()
                 end
@@ -137,8 +158,21 @@ function Component:BindButtons()
     end
 end
 
+--- 关卡内仅显示独立回家按钮；基地、关卡外或无存活角色时恢复等级经验条及力量。
+function Component:RefreshHomeButton()
+    local character = self:GetPlayerCharacter()
+    local root = character and character:FindFirstChild("HumanoidRootPart")
+    local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+    local inArea = root ~= nil and humanoid ~= nil and humanoid.Health > 0
+        and RockLevel.IsInArea(self._areas, root.Position)
+    self._homeButton.Visible = inArea
+    self._bar.Visible = not inArea
+    self._strength.Parent.Visible = not inArea
+end
+
 --- 语言变化只刷新当前数据显示，不播放训练收益动画或重新打开已关闭弹窗。
 function Component:RefreshLocalization()
+    self._homeButton.Text = self._localization:FormatByKey("Main.Home")
     self:RefreshProgress(self:GetNumber(Fields.RockTrainingValue))
 end
 
@@ -165,11 +199,11 @@ function Component:RefreshDiamonds(value)
     FXLoader:Here(self._leftDown, "DiamondStat/Value").Text = GameUtility.NumberToText(value)
 end
 
---- 背包计数与出售列表使用同一正式库存快照，出售后同步腾出容量。
---- @param loot table 正式背包中的可出售收藏品。
+--- 显示尚未入库的随身战利品数量，容量与服务端拾取限制一致。
+--- @param loot table 当前携带且尚未回基地入库的战利品。
 function Component:RefreshLoot(loot)
     self._leftDown.BackpackStat.Value.Text = string.format("%d/%d", #loot,
-        _G.Provider:GetNativeBackpackConfig().InventoryCapacity)
+        RockLevel.LootCapacity)
 end
 
 --- 刷新经验、力量与整数重生百分比；经验条以 0.3 秒 Quad Out 平滑填充。
@@ -296,6 +330,7 @@ end
 
 --- 释放自建节点和未结束动画，保留共用 ScreenGui；基类负责取消数据及按钮监听。
 function Component:Dtor()
+    FX.Task:Cancel(self._homeTimer)
     FX.Network:UnRegServerMsgCallback("S2C_TrainingEffect")
     for icon, effect in pairs(self._effects or {}) do
         task.cancel(effect.Task)
