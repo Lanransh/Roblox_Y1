@@ -682,131 +682,6 @@
             }
           },
           {
-            "children": [
-              {
-                "children": [],
-                "className": "UICorner",
-                "id": "3487bf15-aedd-417f-b865-e55a9af60b3e",
-                "name": "UICorner",
-                "properties": {
-                  "CornerRadius": {
-                    "offset": 6,
-                    "scale": 0
-                  }
-                }
-              },
-              {
-                "children": [],
-                "className": "UIStroke",
-                "id": "fc0cea8e-44c0-482b-9ac3-cacd7234e0ce",
-                "name": "UIStroke",
-                "properties": {
-                  "Color": "#000000",
-                  "Enabled": true,
-                  "Thickness": 3,
-                  "Transparency": 0
-                }
-              },
-              {
-                "children": [
-                  {
-                    "children": [],
-                    "className": "UIStroke",
-                    "id": "e3a21922-9875-4910-bc4e-556773c69991",
-                    "name": "TextStroke",
-                    "properties": {
-                      "Color": "#000000",
-                      "Enabled": true,
-                      "Thickness": 2,
-                      "Transparency": 0
-                    }
-                  }
-                ],
-                "className": "TextButton",
-                "id": "c90c2a2f-583e-4968-a528-1edb27499e11",
-                "name": "CloseBtn",
-                "properties": {
-                  "AnchorPoint": {
-                    "x": 0,
-                    "y": 0
-                  },
-                  "BackgroundColor3": "#ffffff",
-                  "BackgroundTransparency": 1,
-                  "ClipsDescendants": false,
-                  "Font": "GothamBold",
-                  "LayoutOrder": 0,
-                  "Position": {
-                    "x": {
-                      "offset": 0,
-                      "scale": 0
-                    },
-                    "y": {
-                      "offset": -2,
-                      "scale": 0
-                    }
-                  },
-                  "Rotation": 0,
-                  "Size": {
-                    "x": {
-                      "offset": 52,
-                      "scale": 0
-                    },
-                    "y": {
-                      "offset": 52,
-                      "scale": 0
-                    }
-                  },
-                  "Text": "×",
-                  "TextColor3": "#ffffff",
-                  "TextScaled": false,
-                  "TextSize": 52,
-                  "TextTransparency": 0,
-                  "TextWrapped": false,
-                  "TextXAlignment": "Center",
-                  "TextYAlignment": "Center",
-                  "Visible": true,
-                  "ZIndex": 7
-                }
-              }
-            ],
-            "className": "Frame",
-            "id": "73432d6f-184f-425a-8a94-85f130d88f7b",
-            "name": "CloseSurfaceImg",
-            "properties": {
-              "AnchorPoint": {
-                "x": 0,
-                "y": 0
-              },
-              "BackgroundColor3": "#55ce35",
-              "BackgroundTransparency": 0,
-              "ClipsDescendants": false,
-              "LayoutOrder": 0,
-              "Position": {
-                "x": {
-                  "offset": 878,
-                  "scale": 0
-                },
-                "y": {
-                  "offset": 9,
-                  "scale": 0
-                }
-              },
-              "Rotation": 0,
-              "Size": {
-                "x": {
-                  "offset": 52,
-                  "scale": 0
-                },
-                "y": {
-                  "offset": 52,
-                  "scale": 0
-                }
-              },
-              "Visible": true,
-              "ZIndex": 6
-            }
-          },
-          {
             "children": [],
             "className": "TextLabel",
             "id": "b568b6aa-68fb-408b-ba79-a056145d556a",
@@ -861,6 +736,64 @@
             "name": "WindowScale",
             "properties": {
               "Scale": 0.65
+            }
+          },
+          {
+            "children": [],
+            "className": "ImageButton",
+            "id": "a79d834d-f528-4947-8afe-3d1d66c5bd95",
+            "imageAssetId": "d22a5479fa52468fb6c159b40959050b",
+            "name": "CloseSurfaceImg",
+            "properties": {
+              "AnchorPoint": {
+                "x": 0,
+                "y": 0
+              },
+              "BackgroundColor3": "#ffffff",
+              "BackgroundTransparency": 1,
+              "ClipsDescendants": false,
+              "Image": "rbxassetid://98802390031827",
+              "ImageColor3": "#ffffff",
+              "ImageTransparency": 0,
+              "LayoutOrder": 0,
+              "Position": {
+                "x": {
+                  "offset": 878,
+                  "scale": 0
+                },
+                "y": {
+                  "offset": 9,
+                  "scale": 0
+                }
+              },
+              "Rotation": 0,
+              "ScaleType": "Fit",
+              "Size": {
+                "x": {
+                  "offset": 52,
+                  "scale": 0
+                },
+                "y": {
+                  "offset": 52,
+                  "scale": 0
+                }
+              },
+              "TileSize": {
+                "x": {
+                  "offset": 0,
+                  "scale": 1
+                },
+                "y": {
+                  "offset": 0,
+                  "scale": 1
+                }
+              },
+              "Visible": true,
+              "ZIndex": 6
+            },
+            "previewImage": {
+              "name": "CloseSurfaceImg-2.png",
+              "dataUrl": "data:image/png;base64,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"
             }
           }
         ],
@@ -1182,7 +1115,7 @@
   },
   "scripts": {
     "integration": "local FX = _G.FX\nlocal FXLoader = FX.Loader\nlocal CCollectionPreview = FX.Class(\"CCollectionPreview\", \"CCollectionView\")\n\n-- 示例每激活一项增加 2% 力量，前三项已激活；不修改真实玩家数据。\n-- @param owner table 编辑器组件宿主\nfunction CCollectionPreview:Ctor(owner)\n    CCollectionPreview.Super.Ctor(self, owner)\n    self.Config = {\n        strengthPerEntryPercent = 2,\n        items = {\n            { id = \"wood_sword\", name = \"Wood Sword\" },\n            { id = \"iron_sword\", name = \"Iron Sword\" },\n            { id = \"crystal\", name = \"Crystal\" },\n            { id = \"flame\", name = \"Flame Blade\" },\n            { id = \"ice\", name = \"Ice Staff\" },\n            { id = \"star\", name = \"Star Gem\" },\n            { id = \"ruby\", name = \"Ruby\" },\n            { id = \"emerald\", name = \"Emerald\" },\n            { id = \"sapphire\", name = \"Sapphire\" },\n            { id = \"gold\", name = \"Gold Ring\" },\n            { id = \"silver\", name = \"Silver Ring\" },\n            { id = \"shield\", name = \"Shield\" },\n            { id = \"hammer\", name = \"Hammer\" },\n            { id = \"axe\", name = \"Axe\" },\n            { id = \"bow\", name = \"Bow\" },\n            { id = \"spear\", name = \"Spear\" },\n            { id = \"helmet\", name = \"Helmet\" },\n            { id = \"boots\", name = \"Boots\" },\n            { id = \"amulet\", name = \"Amulet\" },\n            { id = \"crown\", name = \"Crown\" },\n        },\n    }\n    self.State = {\n        open = true,\n        totalStrengthPercent = 6,\n        entries = {\n            wood_sword = { active = true },\n            iron_sword = { active = true },\n            crystal = { active = true },\n            flame = { active = false },\n            ice = { active = false },\n            star = { active = false },\n            ruby = { active = false },\n            emerald = { active = false },\n            sapphire = { active = false },\n            gold = { active = false },\n            silver = { active = false },\n            shield = { active = false },\n            hammer = { active = false },\n            axe = { active = false },\n            bow = { active = false },\n            spear = { active = false },\n            helmet = { active = false },\n            boots = { active = false },\n            amulet = { active = false },\n            crown = { active = false },\n        },\n    }\nend\n\n-- 绑定完成后加载数据并显示图鉴。\nfunction CCollectionPreview:OnReady()\n    CCollectionPreview.Super.OnReady(self)\n    self:BindUIData()\n    self:Show()\nend\n\n-- 模拟只响应关闭，不再提供领取或发奖行为。\n-- @param action string Close\n-- @param payload table 空表\nfunction CCollectionPreview:OnUIAction(action, payload)\n    assert(action == \"Close\", \"Unsupported collection action: \" .. tostring(action))\n    self.State.open = false\n    self:RefreshUI()\nend\n\nreturn CCollectionPreview",
-    "source": "--[[\n图鉴接入契约\nConfig.items: 必填数组，数组顺序为展示顺序，可为空。\n每项 { id: string 全列表唯一且不含点的稳定道具 ID, name: string 名称,\nicon: string 可选，真实 Roblox Image ID，省略或为空时清除旧图并显示问号 }。\nConfig.strengthPerEntryPercent: number 必填，每激活一个图鉴增加的力量百分比，\n例如 2 表示 +2%，不是倍率 0.02。此字段只负责规则展示。\nState 是完整输入，不合并增量：\nopen: boolean 必填，窗口显隐；\ntotalStrengthPercent: number 必填，游戏端提供的已生效累计力量百分比，\n例如 6 显示 +6%；展示层不修改玩家力量；\nentries: 字典[id] 必填，每个 Config.items ID 对应\n{ active: boolean 必填，true 为已激活，false 为未激活 }。\n未激活项隐藏真实名称与图标并显示 ???；激活由游戏发现道具时同步。\n不包含领取、奖励、pending、error 或逐项增益字段，也不发送激活动作。\n空列表或加载期间提供 items={}、entries={}、totalStrengthPercent=0。\n最小完整数据示例：\nself.Config = { strengthPerEntryPercent = 2,\nitems = { { id = \"sword\", name = \"Wood Sword\" } } }\nself.State = { open = true, totalStrengthPercent = 2,\nentries = { sword = { active = true } } }\nGetUIConfig/GetUIState 默认读取 self.Config/self.State；首次刷新前准备完整数据。\n接入 OnReady 先调用父方法，再 BindUIData、Show；更新完整 State 后 RefreshUI。\n必须覆写 OnUIAction(action, payload)，唯一动作 Close {}，无返回值。\n无其他页面专用必需或可选覆写。游戏端负责激活记录和力量计算，\n每次业务数据变化后更新 entries、totalStrengthPercent 并刷新。\nTemplates.ItemRowImg.ItemIconImg 为动态图占位，配置 items[].icon 替换；\nApp 动态资源预览、真实资源权限和设备显示需另验。\n]]\nlocal FX = _G.FX\nlocal FXLoader = FX.Loader\nlocal CCollectionView = FX.Class(\"CCollectionView\", \"CUIView\")\n\n-- 绑定窗口、统计与隐藏卡片原型，只连接关闭操作。\nfunction CCollectionView:OnReady()\n    local root = FXLoader:PlayerGui(\"CollectionUI\")\n    self.Root = root\n    self.List = FXLoader:Here(root, \"PopupPanelImg.ItemListBox\")\n    self.Count = FXLoader:Here(root, \"TitleBox.CountTxt\")\n    self.Boost = FXLoader:Here(root, \"PopupPanelImg.SummaryImg.BoostTxt\")\n    self.Rule = FXLoader:Here(root, \"PopupPanelImg.SummaryImg.StatusTxt\")\n    self.Template = FXLoader:Here(root, \"Templates.ItemRowImg\")\n    self.Rows = {}\n    local close = FXLoader:Here(root, \"TitleBox.CloseSurfaceImg.CloseBtn\")\n    -- 关闭由接入层更新显隐状态。\n    self:TrackConnection(close.Activated:Connect(function()\n        self:EmitUIAction(\"Close\", {})\n    end))\nend\n\n-- 打开时刷新完整业务数据。\nfunction CCollectionView:OnShow()\n    self:RefreshUI()\nend\n\n-- 新增稳定 ID 的卡片，仅保存图标、名称与清理方法。\n-- @param item table Config.items 中的道具配置\n-- @return table 卡片节点引用及释放方法\nfunction CCollectionView:CreateRow(item)\n    local node = self.Template:Clone()\n    node.Name = \"Item_\" .. item.id\n    node.Parent = self.List\n    node.Visible = true\n    local row = {\n        node = node,\n        name = FXLoader:Here(node, \"ItemNameTxt\"),\n        icon = FXLoader:Here(node, \"ItemIconImg\"),\n        unknown = FXLoader:Here(node, \"UnknownTxt\"),\n    }\n    row.release = self:TrackCleanup(function()\n        node:Destroy()\n    end)\n    return row\nend\n\n-- 刷新四列卡片及累计力量，复用已有 ID 并清理移除项。\n-- @param state table 文件头定义的完整 State\nfunction CCollectionView:Render(state)\n    self.Root.Enabled = state.open\n    local config = self:GetUIConfig()\n    self.Rule.Text = \"+\" .. tostring(config.strengthPerEntryPercent) .. \"% Strength\"\n    self.Boost.Text = \"+\" .. tostring(state.totalStrengthPercent) .. \"%\"\n    local kept = {}\n    local activeCount = 0\n    for index, item in ipairs(config.items) do\n        local entry = state.entries[item.id]\n        local row = self.Rows[item.id]\n        if not row then\n            row = self:CreateRow(item)\n            self.Rows[item.id] = row\n        end\n        kept[item.id] = true\n        row.node.Position = UDim2.fromOffset(\n            2 + ((index - 1) % 4) * 228,\n            2 + math.floor((index - 1) / 4) * 164\n        )\n        if entry.active then\n            activeCount = activeCount + 1\n        end\n        row.name.Text = entry.active and item.name or \"???\"\n        row.icon.Image = entry.active and (item.icon or \"\") or \"\"\n        row.unknown.Visible = not entry.active or not item.icon or item.icon == \"\"\n        row.icon.ImageTransparency = row.unknown.Visible and 1 or 0\n    end\n    for id, row in pairs(self.Rows) do\n        if not kept[id] then\n            row.release()\n            self.Rows[id] = nil\n        end\n    end\n    self.List.CanvasSize = UDim2.fromOffset(\n        898,\n        math.max(326, math.ceil(#config.items / 4) * 164 - 12)\n    )\n    self.Count.Text = \"Activated \" .. tostring(activeCount) .. \" / \" .. tostring(#config.items)\nend\n\n-- 模拟与游戏接入必须处理关闭操作。\n-- @param action string Close\n-- @param payload table 空表\nfunction CCollectionView:OnUIAction(action, payload)\n    error(\"Collection integration must implement OnUIAction\")\nend\n\nreturn CCollectionView"
+    "source": "--[[\n图鉴接入契约\nConfig.items: 必填数组，数组顺序为展示顺序，可为空。\n每项 { id: string 全列表唯一且不含点的稳定道具 ID, name: string 名称,\nicon: string 可选，真实 Roblox Image ID，省略或为空时清除旧图并显示问号 }。\nConfig.strengthPerEntryPercent: number 必填，每激活一个图鉴增加的力量百分比，\n例如 2 表示 +2%，不是倍率 0.02。此字段只负责规则展示。\nState 是完整输入，不合并增量：\nopen: boolean 必填，窗口显隐；\ntotalStrengthPercent: number 必填，游戏端提供的已生效累计力量百分比，\n例如 6 显示 +6%；展示层不修改玩家力量；\nentries: 字典[id] 必填，每个 Config.items ID 对应\n{ active: boolean 必填，true 为已激活，false 为未激活 }。\n未激活项隐藏真实名称与图标并显示 ???；激活由游戏发现道具时同步。\n不包含领取、奖励、pending、error 或逐项增益字段，也不发送激活动作。\n空列表或加载期间提供 items={}、entries={}、totalStrengthPercent=0。\n最小完整数据示例：\nself.Config = { strengthPerEntryPercent = 2,\nitems = { { id = \"sword\", name = \"Wood Sword\" } } }\nself.State = { open = true, totalStrengthPercent = 2,\nentries = { sword = { active = true } } }\nGetUIConfig/GetUIState 默认读取 self.Config/self.State；首次刷新前准备完整数据。\n接入 OnReady 先调用父方法，再 BindUIData、Show；更新完整 State 后 RefreshUI。\n必须覆写 OnUIAction(action, payload)，唯一动作 Close {}，无返回值。\n无其他页面专用必需或可选覆写。游戏端负责激活记录和力量计算，\n每次业务数据变化后更新 entries、totalStrengthPercent 并刷新。\nTemplates.ItemRowImg.ItemIconImg 为动态图占位，配置 items[].icon 替换；\nApp 动态资源预览、真实资源权限和设备显示需另验。\n]]\nlocal FX = _G.FX\nlocal FXLoader = FX.Loader\nlocal CCollectionView = FX.Class(\"CCollectionView\", \"CUIView\")\n\n-- 绑定窗口、统计与隐藏卡片原型，只连接关闭操作。\nfunction CCollectionView:OnReady()\n    local root = FXLoader:PlayerGui(\"CollectionUI\")\n    self.Root = root\n    self.List = FXLoader:Here(root, \"PopupPanelImg.ItemListBox\")\n    self.Count = FXLoader:Here(root, \"TitleBox.CountTxt\")\n    self.Boost = FXLoader:Here(root, \"PopupPanelImg.SummaryImg.BoostTxt\")\n    self.Rule = FXLoader:Here(root, \"PopupPanelImg.SummaryImg.StatusTxt\")\n    self.Template = FXLoader:Here(root, \"Templates.ItemRowImg\")\n    self.Rows = {}\n    local close = FXLoader:Here(root, \"TitleBox.CloseSurfaceImg\")\n    -- 关闭由接入层更新显隐状态。\n    self:TrackConnection(close.Activated:Connect(function()\n        self:EmitUIAction(\"Close\", {})\n    end))\nend\n\n-- 打开时刷新完整业务数据。\nfunction CCollectionView:OnShow()\n    self:RefreshUI()\nend\n\n-- 新增稳定 ID 的卡片，仅保存图标、名称与清理方法。\n-- @param item table Config.items 中的道具配置\n-- @return table 卡片节点引用及释放方法\nfunction CCollectionView:CreateRow(item)\n    local node = self.Template:Clone()\n    node.Name = \"Item_\" .. item.id\n    node.Parent = self.List\n    node.Visible = true\n    local row = {\n        node = node,\n        name = FXLoader:Here(node, \"ItemNameTxt\"),\n        icon = FXLoader:Here(node, \"ItemIconImg\"),\n        unknown = FXLoader:Here(node, \"UnknownTxt\"),\n    }\n    row.release = self:TrackCleanup(function()\n        node:Destroy()\n    end)\n    return row\nend\n\n-- 刷新四列卡片及累计力量，复用已有 ID 并清理移除项。\n-- @param state table 文件头定义的完整 State\nfunction CCollectionView:Render(state)\n    self.Root.Enabled = state.open\n    local config = self:GetUIConfig()\n    self.Rule.Text = \"+\" .. tostring(config.strengthPerEntryPercent) .. \"% Strength\"\n    self.Boost.Text = \"+\" .. tostring(state.totalStrengthPercent) .. \"%\"\n    local kept = {}\n    local activeCount = 0\n    for index, item in ipairs(config.items) do\n        local entry = state.entries[item.id]\n        local row = self.Rows[item.id]\n        if not row then\n            row = self:CreateRow(item)\n            self.Rows[item.id] = row\n        end\n        kept[item.id] = true\n        row.node.Position = UDim2.fromOffset(\n            2 + ((index - 1) % 4) * 228,\n            2 + math.floor((index - 1) / 4) * 164\n        )\n        if entry.active then\n            activeCount = activeCount + 1\n        end\n        row.name.Text = entry.active and item.name or \"???\"\n        row.icon.Image = entry.active and (item.icon or \"\") or \"\"\n        row.unknown.Visible = not entry.active or not item.icon or item.icon == \"\"\n        row.icon.ImageTransparency = row.unknown.Visible and 1 or 0\n    end\n    for id, row in pairs(self.Rows) do\n        if not kept[id] then\n            row.release()\n            self.Rows[id] = nil\n        end\n    end\n    self.List.CanvasSize = UDim2.fromOffset(\n        898,\n        math.max(326, math.ceil(#config.items / 4) * 164 - 12)\n    )\n    self.Count.Text = \"Activated \" .. tostring(activeCount) .. \" / \" .. tostring(#config.items)\nend\n\n-- 模拟与游戏接入必须处理关闭操作。\n-- @param action string Close\n-- @param payload table 空表\nfunction CCollectionView:OnUIAction(action, payload)\n    error(\"Collection integration must implement OnUIAction\")\nend\n\nreturn CCollectionView"
   },
   "version": 3
 }

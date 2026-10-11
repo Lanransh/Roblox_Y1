@@ -1363,23 +1363,15 @@
             }
           },
           {
-            "children": [
-              {
-                "children": [],
-                "className": "UIStroke",
-                "id": "aa17fb81-972a-4492-b7b8-0b5e72b8ce03",
-                "name": "TextStroke",
-                "properties": {
-                  "Color": "#132341",
-                  "Enabled": true,
-                  "Thickness": 3,
-                  "Transparency": 0
-                }
-              }
-            ],
-            "className": "TextLabel",
+            "children": [],
+            "className": "ImageLabel",
             "id": "5f8a607b-aab5-4df2-bdff-12407e474450",
-            "name": "StrengthArrowTxt",
+            "imageAssetId": "4913ddf74c294c2bbfcaea19c847c425",
+            "name": "StrengthArrowImg",
+            "previewImage": {
+              "dataUrl": "data:image/png;base64,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",
+              "name": "StrengthArrowTxt.png"
+            },
             "properties": {
               "AnchorPoint": {
                 "x": 0,
@@ -1388,7 +1380,9 @@
               "BackgroundColor3": "#ffffff",
               "BackgroundTransparency": 1,
               "ClipsDescendants": false,
-              "Font": "Arial",
+              "Image": "rbxassetid://124911070183024",
+              "ImageColor3": "#ffffff",
+              "ImageTransparency": 0,
               "LayoutOrder": 0,
               "Position": {
                 "x": {
@@ -1401,6 +1395,7 @@
                 }
               },
               "Rotation": 0,
+              "ScaleType": "Stretch",
               "Size": {
                 "x": {
                   "offset": 86,
@@ -1411,75 +1406,16 @@
                   "scale": 0
                 }
               },
-              "Text": "➜",
-              "TextColor3": "#dff9ff",
-              "TextScaled": false,
-              "TextSize": 64,
-              "TextTransparency": 0,
-              "TextWrapped": false,
-              "TextXAlignment": "Center",
-              "TextYAlignment": "Center",
-              "Visible": true,
-              "ZIndex": 7
-            }
-          },
-          {
-            "children": [
-              {
-                "children": [],
-                "className": "UIStroke",
-                "id": "0a16b31d-6bba-460e-baff-f894a13f7f43",
-                "name": "TextStroke",
-                "properties": {
-                  "Color": "#132341",
-                  "Enabled": true,
-                  "Thickness": 3,
-                  "Transparency": 0
-                }
-              }
-            ],
-            "className": "TextLabel",
-            "id": "d6d27092-2fe3-4bbf-801e-b9bf74712249",
-            "name": "MoneyArrowTxt",
-            "properties": {
-              "AnchorPoint": {
-                "x": 0,
-                "y": 0
-              },
-              "BackgroundColor3": "#ffffff",
-              "BackgroundTransparency": 1,
-              "ClipsDescendants": false,
-              "Font": "Arial",
-              "LayoutOrder": 0,
-              "Position": {
+              "TileSize": {
                 "x": {
-                  "offset": 387,
-                  "scale": 0
+                  "offset": 0,
+                  "scale": 1
                 },
                 "y": {
-                  "offset": 143,
-                  "scale": 0
+                  "offset": 0,
+                  "scale": 1
                 }
               },
-              "Rotation": 0,
-              "Size": {
-                "x": {
-                  "offset": 86,
-                  "scale": 0
-                },
-                "y": {
-                  "offset": 66,
-                  "scale": 0
-                }
-              },
-              "Text": "➜",
-              "TextColor3": "#dff9ff",
-              "TextScaled": false,
-              "TextSize": 64,
-              "TextTransparency": 0,
-              "TextWrapped": false,
-              "TextXAlignment": "Center",
-              "TextYAlignment": "Center",
               "Visible": true,
               "ZIndex": 7
             }
@@ -2406,6 +2342,64 @@
             "properties": {
               "Scale": 0.65
             }
+          },
+          {
+            "children": [],
+            "className": "ImageLabel",
+            "id": "d23f8efd-a277-405d-974a-0fa184f867fa",
+            "imageAssetId": "4913ddf74c294c2bbfcaea19c847c425",
+            "name": "MoneyArrowImg",
+            "properties": {
+              "AnchorPoint": {
+                "x": 0,
+                "y": 0
+              },
+              "BackgroundColor3": "#ffffff",
+              "BackgroundTransparency": 1,
+              "ClipsDescendants": false,
+              "Image": "rbxassetid://124911070183024",
+              "ImageColor3": "#ffffff",
+              "ImageTransparency": 0,
+              "LayoutOrder": 0,
+              "Position": {
+                "x": {
+                  "offset": 387,
+                  "scale": 0
+                },
+                "y": {
+                  "offset": 143,
+                  "scale": 0
+                }
+              },
+              "Rotation": 0,
+              "ScaleType": "Stretch",
+              "Size": {
+                "x": {
+                  "offset": 86,
+                  "scale": 0
+                },
+                "y": {
+                  "offset": 66,
+                  "scale": 0
+                }
+              },
+              "TileSize": {
+                "x": {
+                  "offset": 0,
+                  "scale": 1
+                },
+                "y": {
+                  "offset": 0,
+                  "scale": 1
+                }
+              },
+              "Visible": true,
+              "ZIndex": 7
+            },
+            "previewImage": {
+              "name": "StrengthArrowTxt.png",
+              "dataUrl": "data:image/png;base64,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"
+            }
           }
         ],
         "className": "Frame",
@@ -2761,104 +2755,26 @@
             }
           },
           {
-            "children": [
-              {
-                "children": [],
-                "className": "UICorner",
-                "id": "020e356e-3bd9-417b-9624-74f80faa4871",
-                "name": "UICorner",
-                "properties": {
-                  "CornerRadius": {
-                    "offset": 2,
-                    "scale": 0
-                  }
-                }
-              },
-              {
-                "children": [],
-                "className": "UIStroke",
-                "id": "f45f7a62-cf5c-405e-9faf-a6bd35e3182f",
-                "name": "UIStroke",
-                "properties": {
-                  "Color": "#000000",
-                  "Enabled": true,
-                  "Thickness": 3,
-                  "Transparency": 0
-                }
-              },
-              {
-                "children": [
-                  {
-                    "children": [],
-                    "className": "UIStroke",
-                    "id": "b5eed151-d39b-4f53-a34b-71878d377b2a",
-                    "name": "TextStroke",
-                    "properties": {
-                      "Color": "#000000",
-                      "Enabled": true,
-                      "Thickness": 2,
-                      "Transparency": 0
-                    }
-                  }
-                ],
-                "className": "TextButton",
-                "id": "e1f785d1-90ee-4b22-891c-ed70b3c795f5",
-                "name": "CloseBtn",
-                "properties": {
-                  "AnchorPoint": {
-                    "x": 0,
-                    "y": 0
-                  },
-                  "BackgroundColor3": "#ffffff",
-                  "BackgroundTransparency": 1,
-                  "ClipsDescendants": false,
-                  "Font": "GothamBold",
-                  "LayoutOrder": 0,
-                  "Position": {
-                    "x": {
-                      "offset": 0,
-                      "scale": 0
-                    },
-                    "y": {
-                      "offset": 0,
-                      "scale": 0
-                    }
-                  },
-                  "Rotation": 0,
-                  "Size": {
-                    "x": {
-                      "offset": 52,
-                      "scale": 0
-                    },
-                    "y": {
-                      "offset": 52,
-                      "scale": 0
-                    }
-                  },
-                  "Text": "X",
-                  "TextColor3": "#ffffff",
-                  "TextScaled": false,
-                  "TextSize": 40,
-                  "TextTransparency": 0,
-                  "TextWrapped": false,
-                  "TextXAlignment": "Center",
-                  "TextYAlignment": "Center",
-                  "Visible": true,
-                  "ZIndex": 7
-                }
-              }
-            ],
-            "className": "Frame",
+            "children": [],
+            "className": "ImageButton",
             "id": "463b80ae-5dbe-4cb8-a2fc-ecdc3ec314cc",
+            "imageAssetId": "194789043de84989913e2a71d9dbff16",
             "name": "CloseSurfaceImg",
+            "previewImage": {
+              "dataUrl": "data:image/png;base64,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",
+              "name": "Rebirth_CloseSurfaceImg.png"
+            },
             "properties": {
               "AnchorPoint": {
                 "x": 0,
                 "y": 0
               },
-              "BackgroundColor3": "#ef4266",
-              "BackgroundTransparency": 0,
+              "BackgroundColor3": "#ffffff",
+              "BackgroundTransparency": 1,
               "ClipsDescendants": false,
+              "Image": "rbxassetid://98736539833835",
+              "ImageColor3": "#ffffff",
+              "ImageTransparency": 0,
               "LayoutOrder": 0,
               "Position": {
                 "x": {
@@ -2871,6 +2787,7 @@
                 }
               },
               "Rotation": 0,
+              "ScaleType": "Stretch",
               "Size": {
                 "x": {
                   "offset": 52,
@@ -2879,6 +2796,16 @@
                 "y": {
                   "offset": 52,
                   "scale": 0
+                }
+              },
+              "TileSize": {
+                "x": {
+                  "offset": 0,
+                  "scale": 1
+                },
+                "y": {
+                  "offset": 0,
+                  "scale": 1
                 }
               },
               "Visible": true,
@@ -3001,7 +2928,7 @@
   },
   "scripts": {
     "integration": "local FX = _G.FX\nlocal Preview = FX.Class(\"CRebirthPreviewCompClass\", \"CRebirthUICompClass\")\n\n-- 父构造后准备符合展示契约的模拟数据。\n-- @param owner table 编辑器组件宿主\nfunction Preview:Ctor(owner)\n    Preview.Super.Ctor(self, owner)\n    self.State = {\n        Open = true,\n        Level = 317,\n        RequiredLevel = 325,\n        Completed = false,\n        CurrentStrengthMultiplier = 7,\n        NextStrengthMultiplier = 7.5,\n        CurrentMoneyMultiplier = 3.4,\n        NextMoneyMultiplier = 3.6,\n    }\nend\n\n-- 先绑定节点，再绑定完整数据并显示界面。\nfunction Preview:OnReady()\n    Preview.Super.OnReady(self)\n    self:BindUIData()\n    self:Show()\nend\n\n-- 模拟即时成功；拒绝隐藏、未就绪、请求中及完成后的业务动作。\n-- @param action string CloseRebirth / RequestSkip / RequestRebirth\n-- @param payload table 空表，与展示���约一致\nfunction Preview:OnUIAction(action, payload)\n    if action == \"CloseRebirth\" then\n        self.State.Open = false\n    elseif action == \"RequestSkip\" or action == \"RequestRebirth\" then\n        if not self.State.Open or self.State.RequiredLevel <= 0 or self.State.Completed or self.State.Pending then\n            return\n        end\n        if action == \"RequestSkip\" then\n            self.State.Level = self.State.RequiredLevel\n            print(\"模拟 Skip：满足等级条件，未执行支付\")\n        elseif self.State.Level >= self.State.RequiredLevel then\n            -- 仅模拟现有差值成长；真实倍率须由游戏业务提供。\n            local strengthIncrease = self.State.NextStrengthMultiplier - self.State.CurrentStrengthMultiplier\n            local moneyIncrease = self.State.NextMoneyMultiplier - self.State.CurrentMoneyMultiplier\n            self.State.CurrentStrengthMultiplier = self.State.NextStrengthMultiplier\n            self.State.CurrentMoneyMultiplier = self.State.NextMoneyMultiplier\n            self.State.NextStrengthMultiplier = self.State.CurrentStrengthMultiplier + strengthIncrease\n            self.State.NextMoneyMultiplier = self.State.CurrentMoneyMultiplier + moneyIncrease\n            self.State.Level = 0\n            self.State.Completed = true\n            print(\"模拟重生：力量重置，未修改游戏数据\")\n        end\n    else\n        error(\"Unsupported rebirth action: \" .. tostring(action))\n    end\n    self:RefreshUI()\nend\n\nreturn Preview\n",
-    "source": "--[[\n重生界面接入契约\nConfig：本页面不消费配置字段，无需设置 Config。\nState（Render 的完整输入，不是增量）：\n  Open: boolean，必填，无默认值；控制内容与标题显隐。\n  Level: number，必填，无默认值；当前等级，单位为级。\n  RequiredLevel: number，必填，无默认值；重生所需等级，单位为级；\n    非正数表示条件未就绪，显示占位并禁用业务按钮。\n  Completed: boolean，必填，无默认值；本次重生是否已完成。\n  Pending: boolean，可选，省略按 false；请求期间禁用重生与 Skip。\n  CurrentStrengthMultiplier: number，必填，无默认值；当前力量倍率，无量纲。\n  NextStrengthMultiplier: number，必填，无默认值；下次重生后的力量倍率，无量纲。\n  CurrentMoneyMultiplier: number，必填，无默认值；当前收益倍率，无量纲。\n  NextMoneyMultiplier: number，必填，无默认值；下次重生后的收益倍率，无量纲。\n  四项倍率由接入层提供；展示层加 x 前缀、以 15 位有效数字去掉浮点尾数，不改业务数据或推导真实成长规则。\n最小完整示例（接入 Ctor 调用父构造后准备）：\n  self.State = {\n      Open = true, Level = 317, RequiredLevel = 325, Completed = false,\n      CurrentStrengthMultiplier = 7, NextStrengthMultiplier = 7.5,\n      CurrentMoneyMultiplier = 3.4, NextMoneyMultiplier = 3.6,\n  }\n数据来源与刷新：\n  GetUIState() 默认读取 self.State，RefreshUI() 调用 Render(GetUIState())。\n  首次刷新前备齐完整 State；接入 OnReady 先调父方法绑定节点，\n  再 BindUIData()、Show()。之后更新 self.State，再 self:RefreshUI()。\n  本页面无列表；异步条件未就绪时 RequiredLevel = 0。\n动作与覆写：\n  必需覆写 OnUIAction(action, payload)，无返回值；payload 均为空表。\n  CloseRebirth：关闭；RequestSkip：请求跳过等级条件；RequestRebirth：请求重生。\n  接入层负责真实资格校验、支付与结果，不以按钮可用作为校验依据。\n  请求前 Pending = true 并刷新；结果返回后 Pending = false，再更新等级与\n  Completed 及四项倍率并刷新。下一次重生由业务提供新的等级条件、Completed = false。\n  无其他页面专用覆写。静态图标沿用设计节点，不通过状态替换。\n]]\nlocal FX = _G.FX\nlocal FXLoader = FX.Loader\nlocal UI = FX.Class(\"CRebirthUICompClass\", \"CUIView\")\n\n-- 绑定已有设计节点与按钮；刷新时不重复连接事件。\nfunction UI:OnReady()\n    local root = FXLoader:PlayerGui(\"RebirthUI\")\n    self.Panel = FXLoader:Here(root, \"PopupPanelImg\")\n    self.TitleBox = FXLoader:Here(root, \"TitleBox\")\n    self.RebirthBtn = FXLoader:Here(root, \"PopupPanelImg.RebirthBtn\")\n    self.SkipBtn = FXLoader:Here(root, \"PopupPanelImg.SkipBtn\")\n    self.ProgressFill = FXLoader:Here(root, \"PopupPanelImg.ProgressBarImg.ProgressFillImg\")\n    self.ProgressTxt = FXLoader:Here(root, \"PopupPanelImg.ProgressBarImg.ProgressTxt\")\n    self.WarningTxt = FXLoader:Here(root, \"PopupPanelImg.ResetWarningTxt\")\n    self.CurrentStrengthTxt = FXLoader:Here(root, \"PopupPanelImg.CurrentStrengthImg.MultiplierTxt\")\n    self.NextStrengthTxt = FXLoader:Here(root, \"PopupPanelImg.NextStrengthImg.MultiplierTxt\")\n    self.CurrentMoneyTxt = FXLoader:Here(root, \"PopupPanelImg.CurrentMoneyImg.MultiplierTxt\")\n    self.NextMoneyTxt = FXLoader:Here(root, \"PopupPanelImg.NextMoneyImg.MultiplierTxt\")\n    self.RebirthGradient = FXLoader:Here(root, \"PopupPanelImg.RebirthBtn.SurfaceGradient\")\n    local close = FXLoader:Here(root, \"TitleBox.CloseSurfaceImg.CloseBtn\")\n    -- 关闭由接入层更新 Open，不销毁设计节点。\n    self:TrackConnection(close.Activated:Connect(function()\n        self:EmitUIAction(\"CloseRebirth\", {})\n    end))\n    -- 重生资格与请求结果由接入层处理。\n    self:TrackConnection(self.RebirthBtn.Activated:Connect(function()\n        self:EmitUIAction(\"RequestRebirth\", {})\n    end))\n    -- Skip 仅发送请求，展示层不执行支付。\n    self:TrackConnection(self.SkipBtn.Activated:Connect(function()\n        self:EmitUIAction(\"RequestSkip\", {})\n    end))\nend\n\n-- 打开时刷新最新完整状态，不重新绑定事件。\nfunction UI:OnShow()\n    self:RefreshUI()\nend\n\n-- 更新完整状态对应的展示；字段定义见文件头。\n-- @param state table 重生 State，Pending 可省略\nfunction UI:Render(state)\n    self.Panel.Visible = state.Open\n    self.TitleBox.Visible = state.Open\n    self.CurrentStrengthTxt.Text = string.format(\"x%.15g\", state.CurrentStrengthMultiplier)\n    self.NextStrengthTxt.Text = string.format(\"x%.15g\", state.NextStrengthMultiplier)\n    self.CurrentMoneyTxt.Text = string.format(\"x%.15g\", state.CurrentMoneyMultiplier)\n    self.NextMoneyTxt.Text = string.format(\"x%.15g\", state.NextMoneyMultiplier)\n    local ready = state.RequiredLevel > 0\n    local ratio = 0\n    if ready then\n        self.ProgressTxt.Text = \"Level \" .. state.Level .. \"/\" .. state.RequiredLevel\n        ratio = math.clamp(state.Level / state.RequiredLevel, 0, 1)\n    else\n        self.ProgressTxt.Text = \"Level \" .. state.Level .. \"/--\"\n    end\n    self.ProgressFill.Size = UDim2.fromScale(ratio, 1)\n    local available = state.Open and ready and not state.Completed and not state.Pending\n    local eligible = available and state.Level >= state.RequiredLevel\n    self:SetButtonEnabled(self.RebirthBtn, eligible)\n    self:SetButtonEnabled(self.SkipBtn, available)\n    if eligible then\n        self.RebirthBtn.BackgroundColor3 = Color3.fromHex(\"#67ED14\")\n    else\n        self.RebirthBtn.BackgroundColor3 = Color3.fromHex(\"#B7B7B7\")\n    end\n    self.RebirthGradient.Enabled = not eligible\n    if state.Completed then\n        self.WarningTxt.Text = \"Rebirth complete! Strength reset.\"\n    else\n        self.WarningTxt.Text = \"Rebirth resets your strength!\"\n    end\nend\n\n-- 必须由模拟或游戏接入实现，不在展示层执行业务。\n-- @param action string CloseRebirth / RequestSkip / RequestRebirth\n-- @param payload table 空表，无业务 ID 字段\nfunction UI:OnUIAction(action, payload)\n    error(\"Rebirth integration must implement OnUIAction: \" .. tostring(action))\nend\n\nreturn UI\n"
+    "source": "--[[\n重生界面接入契约\nConfig：本页面不消费配置字段，无需设置 Config。\nState（Render 的完整输入，不是增量）：\n  Open: boolean，必填，无默认值；控制内容与标题显隐。\n  Level: number，必填，无默认值；当前等级，单位为级。\n  RequiredLevel: number，必填，无默认值；重生所需等级，单位为级；\n    非正数表示条件未就绪，显示占位并禁用业务按钮。\n  Completed: boolean，必填，无默认值；本次重生是否已完成。\n  Pending: boolean，可选，省略按 false；请求期间禁用重生与 Skip。\n  CurrentStrengthMultiplier: number，必填，无默认值；当前力量倍率，无量纲。\n  NextStrengthMultiplier: number，必填，无默认值；下次重生后的力量倍率，无量纲。\n  CurrentMoneyMultiplier: number，必填，无默认值；当前收益倍率，无量纲。\n  NextMoneyMultiplier: number，必填，无默认值；下次重生后的收益倍率，无量纲。\n  四项倍率由接入层提供；展示层加 x 前缀、以 15 位有效数字去掉浮点尾数，不改业务数据或推导真实成长规则。\n最小完整示例（接入 Ctor 调用父构造后准备）：\n  self.State = {\n      Open = true, Level = 317, RequiredLevel = 325, Completed = false,\n      CurrentStrengthMultiplier = 7, NextStrengthMultiplier = 7.5,\n      CurrentMoneyMultiplier = 3.4, NextMoneyMultiplier = 3.6,\n  }\n数据来源与刷新：\n  GetUIState() 默认读取 self.State，RefreshUI() 调用 Render(GetUIState())。\n  首次刷新前备齐完整 State；接入 OnReady 先调父方法绑定节点，\n  再 BindUIData()、Show()。之后更新 self.State，再 self:RefreshUI()。\n  本页面无列表；异步条件未就绪时 RequiredLevel = 0。\n动作与覆写：\n  必需覆写 OnUIAction(action, payload)，无返回值；payload 均为空表。\n  CloseRebirth：关闭；RequestSkip：请求跳过等级条件；RequestRebirth：请求重生。\n  接入层负责真实资格校验、支付与结果，不以按钮可用作为校验依据。\n  请求前 Pending = true 并刷新；结果返回后 Pending = false，再更新等级与\n  Completed 及四项倍率并刷新。下一次重生由业务提供新的等级条件、Completed = false。\n  无其他页面专用覆写。静态图标沿用设计节点，不通过状态替换。\n]]\nlocal FX = _G.FX\nlocal FXLoader = FX.Loader\nlocal UI = FX.Class(\"CRebirthUICompClass\", \"CUIView\")\n\n-- 绑定已有设计节点与按钮；刷新时不重复连接事件。\nfunction UI:OnReady()\n    local root = FXLoader:PlayerGui(\"RebirthUI\")\n    self.Panel = FXLoader:Here(root, \"PopupPanelImg\")\n    self.TitleBox = FXLoader:Here(root, \"TitleBox\")\n    self.RebirthBtn = FXLoader:Here(root, \"PopupPanelImg.RebirthBtn\")\n    self.SkipBtn = FXLoader:Here(root, \"PopupPanelImg.SkipBtn\")\n    self.ProgressFill = FXLoader:Here(root, \"PopupPanelImg.ProgressBarImg.ProgressFillImg\")\n    self.ProgressTxt = FXLoader:Here(root, \"PopupPanelImg.ProgressBarImg.ProgressTxt\")\n    self.WarningTxt = FXLoader:Here(root, \"PopupPanelImg.ResetWarningTxt\")\n    self.CurrentStrengthTxt = FXLoader:Here(root, \"PopupPanelImg.CurrentStrengthImg.MultiplierTxt\")\n    self.NextStrengthTxt = FXLoader:Here(root, \"PopupPanelImg.NextStrengthImg.MultiplierTxt\")\n    self.CurrentMoneyTxt = FXLoader:Here(root, \"PopupPanelImg.CurrentMoneyImg.MultiplierTxt\")\n    self.NextMoneyTxt = FXLoader:Here(root, \"PopupPanelImg.NextMoneyImg.MultiplierTxt\")\n    self.RebirthGradient = FXLoader:Here(root, \"PopupPanelImg.RebirthBtn.SurfaceGradient\")\n    local close = FXLoader:Here(root, \"TitleBox.CloseSurfaceImg\")\n    -- 关闭由接入层更新 Open，不销毁设计节点。\n    self:TrackConnection(close.Activated:Connect(function()\n        self:EmitUIAction(\"CloseRebirth\", {})\n    end))\n    -- 重生资格与请求结果由接入层处理。\n    self:TrackConnection(self.RebirthBtn.Activated:Connect(function()\n        self:EmitUIAction(\"RequestRebirth\", {})\n    end))\n    -- Skip 仅发送请求，展示层不执行支付。\n    self:TrackConnection(self.SkipBtn.Activated:Connect(function()\n        self:EmitUIAction(\"RequestSkip\", {})\n    end))\nend\n\n-- 打开时刷新最新完整状态，不重新绑定事件。\nfunction UI:OnShow()\n    self:RefreshUI()\nend\n\n-- 更新完整状态对应的展示；字段定义见文件头。\n-- @param state table 重生 State，Pending 可省略\nfunction UI:Render(state)\n    self.Panel.Visible = state.Open\n    self.TitleBox.Visible = state.Open\n    self.CurrentStrengthTxt.Text = string.format(\"x%.15g\", state.CurrentStrengthMultiplier)\n    self.NextStrengthTxt.Text = string.format(\"x%.15g\", state.NextStrengthMultiplier)\n    self.CurrentMoneyTxt.Text = string.format(\"x%.15g\", state.CurrentMoneyMultiplier)\n    self.NextMoneyTxt.Text = string.format(\"x%.15g\", state.NextMoneyMultiplier)\n    local ready = state.RequiredLevel > 0\n    local ratio = 0\n    if ready then\n        self.ProgressTxt.Text = \"Level \" .. state.Level .. \"/\" .. state.RequiredLevel\n        ratio = math.clamp(state.Level / state.RequiredLevel, 0, 1)\n    else\n        self.ProgressTxt.Text = \"Level \" .. state.Level .. \"/--\"\n    end\n    self.ProgressFill.Size = UDim2.fromScale(ratio, 1)\n    local available = state.Open and ready and not state.Completed and not state.Pending\n    local eligible = available and state.Level >= state.RequiredLevel\n    self:SetButtonEnabled(self.RebirthBtn, eligible)\n    self:SetButtonEnabled(self.SkipBtn, available)\n    if eligible then\n        self.RebirthBtn.BackgroundColor3 = Color3.fromHex(\"#67ED14\")\n    else\n        self.RebirthBtn.BackgroundColor3 = Color3.fromHex(\"#B7B7B7\")\n    end\n    self.RebirthGradient.Enabled = not eligible\n    if state.Completed then\n        self.WarningTxt.Text = \"Rebirth complete! Strength reset.\"\n    else\n        self.WarningTxt.Text = \"Rebirth resets your strength!\"\n    end\nend\n\n-- 必须由模拟或游戏接入实现，不在展示层执行业务。\n-- @param action string CloseRebirth / RequestSkip / RequestRebirth\n-- @param payload table 空表，无业务 ID 字段\nfunction UI:OnUIAction(action, payload)\n    error(\"Rebirth integration must implement OnUIAction: \" .. tostring(action))\nend\n\nreturn UI\n"
   },
   "version": 3
 }
