@@ -91,6 +91,21 @@ function RockLevel.GetAreas()
     return areas
 end
 
+--- 客户端显示回家入口与服务端传送校验共用关卡边界，不把基地或关卡外算作关卡。
+--- @param areas table 已加载的关卡边界。
+--- @param position Vector3 当前角色根节点位置。
+--- @return boolean 是否位于任一关卡区域。
+function RockLevel.IsInArea(areas, position)
+    for index, area in ipairs(areas) do
+        if position.X >= area.MinX and position.X < area.MinX + area.Columns * RockLevel.CellSize
+            and position.Z >= area.MinZ and position.Z < area.MinZ + area.Rows * RockLevel.CellSize
+            and math.abs(position.Y - area.FloorY) < 12 then
+            return true
+        end
+    end
+    return false
+end
+
 --- 只检测角色水平朝向前方 3 studs 的格子，空格不继续向远处搜索。
 --- @param area table 关卡边界。
 --- @param position Vector3 服务端角色位置。

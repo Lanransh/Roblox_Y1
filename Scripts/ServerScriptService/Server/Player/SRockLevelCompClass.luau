@@ -748,6 +748,21 @@ function Component:Tick()
     end
 end
 
+--- 仅允许关卡内存活角色回到基地，入库与轮次重置仍由原有基地位置检查处理。
+function Component:ReturnHome()
+    local character = self:GetPlayerCharacter()
+    local root = character and character:FindFirstChild("HumanoidRootPart")
+    local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+    if not self._areas or not root or not humanoid or humanoid.Health <= 0
+        or not RockLevel.IsInArea(self._areas, root.Position) then
+        return
+    end
+    local spawn = FXLoader:Workspace("SpawnLocation")
+    character:PivotTo(spawn.CFrame * CFrame.new(0, spawn.Size.Y / 2 + humanoid.HipHeight + root.Size.Y / 2, 0))
+    root.AssemblyLinearVelocity = Vector3.zero
+    root.AssemblyAngularVelocity = Vector3.zero
+end
+
 --- 离服释放掉落、关卡任务和镐子，清空个人区域与命中记录。
 function Component:OnPlayerLogout()
     self:ClearDrops()

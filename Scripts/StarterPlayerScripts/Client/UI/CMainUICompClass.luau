@@ -22,6 +22,13 @@ function Component:OnReady()
     self._rootNode.ResetOnSpawn = false
     local top = FXLoader:Here(self._rootNode, "TopCenter")
     self._bar = FXLoader:Here(top, "LevelProgressBar")
+    self._homeButton = FXLoader:Here(top, "HomeButton")
+    self._homeButton.Size = UDim2.fromOffset(160, 54)
+    self._homeButton.TextScaled = false
+    self._homeButton.TextSize = 32
+    self._homeButton.TextStrokeColor3 = Color3.new(0, 0, 0)
+    self._homeButton.TextStrokeTransparency = 0
+    self._areas = RockLevel.GetAreas()
     self._strength = FXLoader:Here(top, "Strength/Value")
     self._rebirthBadge = FXLoader:Here(self._rootNode, "LeftCenter/RebirthButton/Badge")
     self._rebirthBadge.AutoLocalize = false
@@ -29,6 +36,8 @@ function Component:OnReady()
     self._localization = self._commonUI.Localization
     self._strength.AutoLocalize = false
     self._bar.ProgressLabel.AutoLocalize = false
+    self._homeButton.AutoLocalize = false
+    self._homeButton.Text = self._localization:FormatByKey("Main.Home")
     --- 翻译就绪或语言切换时刷新主界面，出售界面自行监听语言变化。
     self:TrackConnection(self._localization.Changed:Connect(function()
         self:RefreshLocalization()
@@ -41,6 +50,11 @@ function Component:OnReady()
     self._pulseScale = Instance.new("UIScale")
     self._pulseScale.Parent = self._strength
     self:BindButtons()
+    self:RefreshHomeButton()
+    --- 跟随角色进出关卡及重生切换入口，不重复注册按钮事件。
+    self._homeTimer = FX.Task:Interval(0.1, function()
+        self:RefreshHomeButton()
+    end)
     --- 走路及击打按服务端结算播放，点击图标由本地输入立即播放。
     --- @param gain number 服务端确认的走路及击打收益。
     FX.Network:RegServerMsgCallback("S2C_TrainingEffect", function(gain)
@@ -134,6 +148,8 @@ function Component:BindButtons()
                     self:GetPlayerObject():RequireComponent("CCollectionUIComp"):Show()
                 elseif node.Name == "RebirthButton" then
                     self:GetPlayerObject():RequireComponent("CRebirthUIComp"):Show()
+                elseif node == self._homeButton then
+                    FX.Network:SendMsgToServer("C2S_ReturnHome")
                 else
                     self:ShowDeveloping()
                 end
@@ -142,8 +158,21 @@ function Component:BindButtons()
     end
 end
 
+--- 关卡内仅显示独立回家按钮；基地、关卡外或无存活角色时恢复等级经验条及力量。
+function Component:RefreshHomeButton()
+    local character = self:GetPlayerCharacter()
+    local root = character and character:FindFirstChild("HumanoidRootPart")
+    local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+    local inArea = root ~= nil and humanoid ~= nil and humanoid.Health > 0
+        and RockLevel.IsInArea(self._areas, root.Position)
+    self._homeButton.Visible = inArea
+    self._bar.Visible = not inArea
+    self._strength.Parent.Visible = not inArea
+end
+
 --- 语言变化只刷新当前数据显示，不播放训练收益动画或重新打开已关闭弹窗。
 function Component:RefreshLocalization()
+    self._homeButton.Text = self._localization:FormatByKey("Main.Home")
     self:RefreshProgress(self:GetNumber(Fields.RockTrainingValue))
 end
 
@@ -301,6 +330,7 @@ end
 
 --- 释放自建节点和未结束动画，保留共用 ScreenGui；基类负责取消数据及按钮监听。
 function Component:Dtor()
+    FX.Task:Cancel(self._homeTimer)
     FX.Network:UnRegServerMsgCallback("S2C_TrainingEffect")
     for icon, effect in pairs(self._effects or {}) do
         task.cancel(effect.Task)

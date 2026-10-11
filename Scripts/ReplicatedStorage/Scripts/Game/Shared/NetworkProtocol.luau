@@ -23,6 +23,8 @@ return {
         "C2S_RockHit",
         -- 无参数，客户端就绪或角色变化后请求当前轮次和个人已击破格号快照。
         "C2S_RequestRockRound",
+        -- 无参数，单向请求；服务端仅允许存活且位于关卡内的本人返回基地出生点。
+        "C2S_ReturnHome",
     },
     ServerMsgID = {
         -- key: string、arguments: table?、duration: number?，项目提示在客户端翻译，单向消息。

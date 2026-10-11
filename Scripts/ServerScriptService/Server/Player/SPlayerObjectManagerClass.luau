@@ -116,6 +116,16 @@ function Manager:RegRockDropMsg()
         end
     end
     FX.Network:RegClientMsgCallback("C2S_RequestRockRound", requestRound)
+    --- 回家目标由服务端决定，未登录或已离服时忽略请求。
+    --- @param userId number 引擎认证的玩家身份。
+    local function returnHome(userId)
+        local player = self:GetPlayerObject(userId)
+        local rocks = player and player:GetComponent("SRockLevelComp")
+        if rocks then
+            rocks:ReturnHome()
+        end
+    end
+    FX.Network:RegClientMsgCallback("C2S_ReturnHome", returnHome)
 end
 
 function Manager:GetInventory(playerId)
