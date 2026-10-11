@@ -117,6 +117,7 @@ end
 
 --- 标记主界面实际内容区域，弹窗入口交给对应业务组件。
 function Component:BindButtons()
+    FXLoader:Here(self._rootNode, "GMButton").Visible = FX.IsDeveloper(self:GetPlayerNode().UserId)
     for index, path in ipairs({"TopCenter/LevelProgressBar", "TopCenter/Strength",
         "LeftDown/RebirthStat", "LeftDown/BackpackStat", "LeftDown/CashStat", "LeftDown/DiamondStat"}) do
         FXLoader:Here(self._rootNode, path):SetAttribute("BlocksTrainingClick", true)
@@ -125,7 +126,11 @@ function Component:BindButtons()
         if node:IsA("GuiButton") then
             node:SetAttribute("BlocksTrainingClick", true)
             self:TrackConnection(node.Activated:Connect(function()
-                if node.Name == "CollectionBtn" then
+                if node.Name == "GMButton" then
+                    if FX.IsDeveloper(self:GetPlayerNode().UserId) then
+                        self:GetPlayerObject():RequireComponent("CGMUIComp"):Show()
+                    end
+                elseif node.Name == "CollectionBtn" then
                     self:GetPlayerObject():RequireComponent("CCollectionUIComp"):Show()
                 elseif node.Name == "RebirthButton" then
                     self:GetPlayerObject():RequireComponent("CRebirthUIComp"):Show()
