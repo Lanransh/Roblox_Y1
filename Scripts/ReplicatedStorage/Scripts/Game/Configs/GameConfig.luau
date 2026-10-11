@@ -1686,7 +1686,7 @@ return {
             Name = [[打火机]],
             Pirce = 3,
             Quality = 1,
-            IconId = [[73689874069532]],
+            IconId = [[113244405937302]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_001_Nail]],
             ModelType = [[Item]]
         },
@@ -1696,7 +1696,7 @@ return {
             Name = [[矿泉水]],
             Pirce = 4,
             Quality = 1,
-            IconId = [[103338086714343]],
+            IconId = [[105711056874756]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_002_Pill]],
             ModelType = [[Item]]
         },
@@ -1706,7 +1706,7 @@ return {
             Name = [[纯净水]],
             Pirce = 6,
             Quality = 1,
-            IconId = [[114468149232543]],
+            IconId = [[82693303214454]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_003_Capsule]],
             ModelType = [[Item]]
         },
@@ -1716,7 +1716,7 @@ return {
             Name = [[苏打水]],
             Pirce = 8,
             Quality = 1,
-            IconId = [[102034222005672]],
+            IconId = [[102504658102706]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_004_Battery01]],
             ModelType = [[Item]]
         },
@@ -1726,7 +1726,7 @@ return {
             Name = [[水桶]],
             Pirce = 13,
             Quality = 2,
-            IconId = [[83505287199254]],
+            IconId = [[83069096807916]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_005_Battery02]],
             ModelType = [[Item]]
         },
@@ -1736,7 +1736,7 @@ return {
             Name = [[玻璃瓶]],
             Pirce = 20,
             Quality = 2,
-            IconId = [[82413393212572]],
+            IconId = [[80534536398974]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_006_Biscuit01]],
             ModelType = [[Item]]
         },
@@ -1746,7 +1746,7 @@ return {
             Name = [[啤酒瓶]],
             Pirce = 30,
             Quality = 2,
-            IconId = [[93587171790136]],
+            IconId = [[74246671448525]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_007_Biscuit02]],
             ModelType = [[Item]]
         },
@@ -1756,7 +1756,7 @@ return {
             Name = [[红酒瓶]],
             Pirce = 38,
             Quality = 2,
-            IconId = [[98881391823727]],
+            IconId = [[71499702430100]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_008_Biscuit03]],
             ModelType = [[Item]]
         },
@@ -1766,7 +1766,7 @@ return {
             Name = [[香槟瓶]],
             Pirce = 63,
             Quality = 3,
-            IconId = [[140583336060167]],
+            IconId = [[122909083001205]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_009_Chocolate01]],
             ModelType = [[Item]]
         },
@@ -1776,7 +1776,7 @@ return {
             Name = [[收藏酒瓶]],
             Pirce = 100,
             Quality = 3,
-            IconId = [[111194186656631]],
+            IconId = [[128658267266293]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_010_Chocolate02]],
             ModelType = [[Item]]
         },
@@ -1786,7 +1786,7 @@ return {
             Name = [[钢钉]],
             Pirce = 150,
             Quality = 3,
-            IconId = [[133914186848952]],
+            IconId = [[134748387119946]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_011_Chocolate_Drink]],
             ModelType = [[Item]]
         },
@@ -1796,7 +1796,7 @@ return {
             Name = [[药片]],
             Pirce = 188,
             Quality = 3,
-            IconId = [[122198581325096]],
+            IconId = [[131559815185521]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_012_Honey01]],
             ModelType = [[Item]]
         },
@@ -1806,7 +1806,7 @@ return {
             Name = [[曲奇]],
             Pirce = 313,
             Quality = 4,
-            IconId = [[137046890645413]],
+            IconId = [[135406755438948]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_013_Honey02]],
             ModelType = [[Item]]
         },
@@ -1816,7 +1816,7 @@ return {
             Name = [[苏打饼]],
             Pirce = 500,
             Quality = 4,
-            IconId = [[102352328211075]],
+            IconId = [[128433990441931]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_014_Jam01]],
             ModelType = [[Item]]
         },
@@ -1826,7 +1826,7 @@ return {
             Name = [[夹心饼]],
             Pirce = 750,
             Quality = 4,
-            IconId = [[82050572064304]],
+            IconId = [[86357992624263]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_015_Jam02]],
             ModelType = [[Item]]
         },
@@ -1836,7 +1836,7 @@ return {
             Name = [[黑巧克力]],
             Pirce = 938,
             Quality = 4,
-            IconId = [[78831531789183]],
+            IconId = [[96128137486525]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_016_Water01]],
             ModelType = [[Item]]
         },
@@ -1846,7 +1846,7 @@ return {
             Name = [[牛奶巧克力]],
             Pirce = 1563,
             Quality = 5,
-            IconId = [[108041083429458]],
+            IconId = [[131913492630514]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_017_Water02]],
             ModelType = [[Item]]
         },
@@ -1856,7 +1856,7 @@ return {
             Name = [[可可饮料]],
             Pirce = 2500,
             Quality = 5,
-            IconId = [[86299665819505]],
+            IconId = [[119579899338192]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_018_Water03]],
             ModelType = [[Item]]
         },
@@ -1866,7 +1866,7 @@ return {
             Name = [[蜂蜜]],
             Pirce = 3750,
             Quality = 5,
-            IconId = [[123569723967761]],
+            IconId = [[82472089572732]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_019_Waterbottle01]],
             ModelType = [[Item]]
         },
@@ -1876,7 +1876,7 @@ return {
             Name = [[野蜂蜜]],
             Pirce = 4688,
             Quality = 5,
-            IconId = [[119546448004051]],
+            IconId = [[104108852156434]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_020_Waterbottle02]],
             ModelType = [[Item]]
         },
@@ -1886,7 +1886,7 @@ return {
             Name = [[草莓酱]],
             Pirce = 7800,
             Quality = 6,
-            IconId = [[91007101306341]],
+            IconId = [[79005623120233]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_021_Bottle01]],
             ModelType = [[Item]]
         },
@@ -1896,7 +1896,7 @@ return {
             Name = [[蓝莓酱]],
             Pirce = 12480,
             Quality = 6,
-            IconId = [[91391954516503]],
+            IconId = [[97611938478078]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_022_Bottle02]],
             ModelType = [[Item]]
         },
@@ -1906,7 +1906,7 @@ return {
             Name = [[肉罐头]],
             Pirce = 18720,
             Quality = 6,
-            IconId = [[109276220541606]],
+            IconId = [[81806655827798]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_023_Bottle03]],
             ModelType = [[Item]]
         },
@@ -1916,7 +1916,7 @@ return {
             Name = [[鱼罐头]],
             Pirce = 23400,
             Quality = 6,
-            IconId = [[108792020810626]],
+            IconId = [[105716218867716]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_024_Bottle04]],
             ModelType = [[Item]]
         },
@@ -1926,7 +1926,7 @@ return {
             Name = [[水果罐头]],
             Pirce = 39050,
             Quality = 7,
-            IconId = [[94990895501990]],
+            IconId = [[128411546772202]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_025_Bottle05]],
             ModelType = [[Item]]
         },
@@ -1936,7 +1936,7 @@ return {
             Name = [[午餐肉]],
             Pirce = 62480,
             Quality = 7,
-            IconId = [[92053411642730]],
+            IconId = [[139465058617680]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_026_Can01]],
             ModelType = [[Item]]
         },
@@ -1946,7 +1946,7 @@ return {
             Name = [[豆子罐头]],
             Pirce = 93720,
             Quality = 7,
-            IconId = [[129094955837159]],
+            IconId = [[81737011057690]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_027_Can02]],
             ModelType = [[Item]]
         },
@@ -1956,7 +1956,7 @@ return {
             Name = [[军粮罐头]],
             Pirce = 117150,
             Quality = 7,
-            IconId = [[136720402016106]],
+            IconId = [[81445862907930]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_028_Can03]],
             ModelType = [[Item]]
         },
@@ -1966,7 +1966,7 @@ return {
             Name = [[高级罐头]],
             Pirce = 195500,
             Quality = 8,
-            IconId = [[103985740716894]],
+            IconId = [[123098432383687]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_029_Can04]],
             ModelType = [[Item]]
         },
@@ -1976,7 +1976,7 @@ return {
             Name = [[清洁剂]],
             Pirce = 312800,
             Quality = 8,
-            IconId = [[110363379748775]],
+            IconId = [[131796260838154]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_030_Can05]],
             ModelType = [[Item]]
         },
@@ -1986,7 +1986,7 @@ return {
             Name = [[漂白水]],
             Pirce = 469200,
             Quality = 8,
-            IconId = [[130735151388109]],
+            IconId = [[116376878683736]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_031_Can06]],
             ModelType = [[Item]]
         },
@@ -1996,7 +1996,7 @@ return {
             Name = [[润滑油]],
             Pirce = 586500,
             Quality = 8,
-            IconId = [[112469820699203]],
+            IconId = [[100558097057142]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_032_Can07]],
             ModelType = [[Item]]
         },
@@ -2006,7 +2006,7 @@ return {
             Name = [[小油壶]],
             Pirce = 975000,
             Quality = 9,
-            IconId = [[104485794834544]],
+            IconId = [[92332707761527]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_033_Medicine_bottle01]],
             ModelType = [[Item]]
         },
@@ -2016,7 +2016,7 @@ return {
             Name = [[运动水壶]],
             Pirce = 1.56e+6,
             Quality = 6,
-            IconId = [[99220241284612]],
+            IconId = [[108895787734224]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_034_Medicine_bottle02]],
             ModelType = [[Item]]
         },
@@ -2026,7 +2026,7 @@ return {
             Name = [[军用水壶]],
             Pirce = 2.34e+6,
             Quality = 7,
-            IconId = [[80947939739818]],
+            IconId = [[95471681056681]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_035_Injection]],
             ModelType = [[Item]]
         },
@@ -2036,7 +2036,7 @@ return {
             Name = [[机油壶]],
             Pirce = 2.925e+6,
             Quality = 9,
-            IconId = [[107316878006177]],
+            IconId = [[104955598295323]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_036_InjectionA]],
             ModelType = [[Item]]
         },
@@ -2046,7 +2046,7 @@ return {
             Name = [[燃油罐]],
             Pirce = 4.885e+6,
             Quality = 10,
-            IconId = [[81581045315216]],
+            IconId = [[103175883366340]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_037_First_aid_Kit_Bandage]],
             ModelType = [[Item]]
         },
@@ -2056,7 +2056,7 @@ return {
             Name = [[礼帽]],
             Pirce = 7.816e+6,
             Quality = 10,
-            IconId = [[112660123650049]],
+            IconId = [[114247164745798]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_038_Lv]],
             ModelType = [[Item]]
         },
@@ -2066,7 +2066,7 @@ return {
             Name = [[棒球帽]],
             Pirce = 1.1724e+7,
             Quality = 10,
-            IconId = [[105948548039431]],
+            IconId = [[86017047390182]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_039_First_aid_Kit01]],
             ModelType = [[Item]]
         },
@@ -2076,7 +2076,7 @@ return {
             Name = [[墨镜]],
             Pirce = 1.4655e+7,
             Quality = 10,
-            IconId = [[136608949835509]],
+            IconId = [[81373582816266]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_040_First_aid_Kit02]],
             ModelType = [[Item]]
         },
@@ -2086,7 +2086,7 @@ return {
             Name = [[太阳镜]],
             Pirce = 2.44e+7,
             Quality = 11,
-            IconId = [[123814344941081]],
+            IconId = [[132788281080826]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_041_First_aid_Kit03]],
             ModelType = [[Item]]
         },
@@ -2096,7 +2096,7 @@ return {
             Name = [[护目镜]],
             Pirce = 3.904e+7,
             Quality = 11,
-            IconId = [[70631811357234]],
+            IconId = [[95162444285252]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_042_Detergent]],
             ModelType = [[Item]]
         },
@@ -2106,7 +2106,7 @@ return {
             Name = [[战术风镜]],
             Pirce = 5.856e+7,
             Quality = 11,
-            IconId = [[121882306399734]],
+            IconId = [[95953438126479]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_043_Bleach]],
             ModelType = [[Item]]
         },
@@ -2116,7 +2116,7 @@ return {
             Name = [[口罩]],
             Pirce = 7.32e+7,
             Quality = 11,
-            IconId = [[98362111955314]],
+            IconId = [[112039222887887]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_044_WD40]],
             ModelType = [[Item]]
         },
@@ -2126,7 +2126,7 @@ return {
             Name = [[防毒面具]],
             Pirce = 1.22e+8,
             Quality = 12,
-            IconId = [[87499152943626]],
+            IconId = [[95377459606647]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_045_Pipe]],
             ModelType = [[Item]]
         },
@@ -2136,7 +2136,7 @@ return {
             Name = [[战术面具]],
             Pirce = 1.952e+8,
             Quality = 12,
-            IconId = [[94526628741923]],
+            IconId = [[113983796605688]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_046_Zippo]],
             ModelType = [[Item]]
         },
@@ -2146,7 +2146,7 @@ return {
             Name = [[皮靴]],
             Pirce = 2.928e+8,
             Quality = 12,
-            IconId = [[135071120477292]],
+            IconId = [[117157716541352]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_047_Oilcan01]],
             ModelType = [[Item]]
         },
@@ -2156,7 +2156,7 @@ return {
             Name = [[雨靴]],
             Pirce = 3.66e+8,
             Quality = 12,
-            IconId = [[73644651229136]],
+            IconId = [[100893051807474]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_048_Oilcan02]],
             ModelType = [[Item]]
         },
@@ -2166,7 +2166,7 @@ return {
             Name = [[登山靴]],
             Pirce = 6.1e+8,
             Quality = 13,
-            IconId = [[77926265714695]],
+            IconId = [[137999782231090]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_049_Oilcan03]],
             ModelType = [[Item]]
         },
@@ -2176,7 +2176,7 @@ return {
             Name = [[军靴]],
             Pirce = 9.76e+8,
             Quality = 13,
-            IconId = [[82854353471706]],
+            IconId = [[127007149281218]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_050_Mobilephone]],
             ModelType = [[Item]]
         },
@@ -2186,7 +2186,7 @@ return {
             Name = [[防弹背心]],
             Pirce = 1.464e+9,
             Quality = 13,
-            IconId = [[77671502371070]],
+            IconId = [[85273469740405]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_051_Watch01]],
             ModelType = [[Item]]
         },
@@ -2196,7 +2196,7 @@ return {
             Name = [[重型护甲]],
             Pirce = 1.83e+9,
             Quality = 13,
-            IconId = [[70793360263168]],
+            IconId = [[85750403977754]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_052_IdentificationTag]],
             ModelType = [[Item]]
         },
@@ -2206,7 +2206,7 @@ return {
             Name = [[工地头盔]],
             Pirce = 3.05e+9,
             Quality = 14,
-            IconId = [[84818213347817]],
+            IconId = [[87658125570749]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_053_Compass]],
             ModelType = [[Item]]
         },
@@ -2216,7 +2216,7 @@ return {
             Name = [[骑行头盔]],
             Pirce = 4.88e+9,
             Quality = 14,
-            IconId = [[91851759457969]],
+            IconId = [[71386503893388]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_054_CompassA]],
             ModelType = [[Item]]
         },
@@ -2226,7 +2226,7 @@ return {
             Name = [[防暴头盔]],
             Pirce = 7.32e+9,
             Quality = 14,
-            IconId = [[121890208198805]],
+            IconId = [[117660867991736]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_055_Hat]],
             ModelType = [[Item]]
         },
@@ -2236,7 +2236,7 @@ return {
             Name = [[战术头盔]],
             Pirce = 9.15e+9,
             Quality = 14,
-            IconId = [[117985852407168]],
+            IconId = [[75602786825729]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_056_Cap_A_0]],
             ModelType = [[Item]]
         },
@@ -2246,7 +2246,7 @@ return {
             Name = [[小背包]],
             Pirce = 1.525e+10,
             Quality = 15,
-            IconId = [[97339206973141]],
+            IconId = [[97494295137425]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_057_Sunglass01]],
             ModelType = [[Item]]
         },
@@ -2256,7 +2256,7 @@ return {
             Name = [[登山包]],
             Pirce = 2.44e+10,
             Quality = 15,
-            IconId = [[91021502703797]],
+            IconId = [[121387106380169]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_058_Sunglass02]],
             ModelType = [[Item]]
         },
@@ -2266,7 +2266,7 @@ return {
             Name = [[军用背包]],
             Pirce = 3.66e+10,
             Quality = 15,
-            IconId = [[118793829418414]],
+            IconId = [[77703154963129]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_059_Goggle]],
             ModelType = [[Item]]
         },
@@ -2276,7 +2276,7 @@ return {
             Name = [[铁锅]],
             Pirce = 4.575e+10,
             Quality = 15,
-            IconId = [[108919245506457]],
+            IconId = [[82745313217810]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_060_GoggleA]],
             ModelType = [[Item]]
         },
@@ -2286,7 +2286,7 @@ return {
             Name = [[木锤]],
             Pirce = 7.65e+10,
             Quality = 16,
-            IconId = [[135998992968408]],
+            IconId = [[78702263483439]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_061_MaskA]],
             ModelType = [[Item]]
         },
@@ -2296,7 +2296,7 @@ return {
             Name = [[铁锤]],
             Pirce = 1.224e+11,
             Quality = 16,
-            IconId = [[124995167587191]],
+            IconId = [[103252845267522]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_062_GasMask01]],
             ModelType = [[Item]]
         },
@@ -2306,7 +2306,7 @@ return {
             Name = [[大锤]],
             Pirce = 1.836e+11,
             Quality = 16,
-            IconId = [[100207039759139]],
+            IconId = [[93380659059014]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_063_GasMask02]],
             ModelType = [[Item]]
         },
@@ -2316,7 +2316,7 @@ return {
             Name = [[扳手]],
             Pirce = 2.295e+11,
             Quality = 16,
-            IconId = [[117284808467540]],
+            IconId = [[124070618735034]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_064_Boots01]],
             ModelType = [[Item]]
         },
@@ -2326,7 +2326,7 @@ return {
             Name = [[活动扳手]],
             Pirce = 3.815e+11,
             Quality = 17,
-            IconId = [[100856293823266]],
+            IconId = [[82229267783572]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_065_Boots02]],
             ModelType = [[Item]]
         },
@@ -2336,7 +2336,7 @@ return {
             Name = [[管钳]],
             Pirce = 6.104e+11,
             Quality = 17,
-            IconId = [[131767978667574]],
+            IconId = [[90764663625426]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_066_Boots03]],
             ModelType = [[Item]]
         },
@@ -2346,7 +2346,7 @@ return {
             Name = [[工兵铲]],
             Pirce = 9.156e+11,
             Quality = 17,
-            IconId = [[137793066084531]],
+            IconId = [[89592774326120]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_067_Boots04]],
             ModelType = [[Item]]
         },
@@ -2356,7 +2356,7 @@ return {
             Name = [[铁锹]],
             Pirce = 1.1445e+12,
             Quality = 17,
-            IconId = [[89446188580427]],
+            IconId = [[96498729983354]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_068_BulletproofJacket01]],
             ModelType = [[Item]]
         },
@@ -2366,7 +2366,7 @@ return {
             Name = [[十字镐]],
             Pirce = 1.905e+12,
             Quality = 18,
-            IconId = [[122719253084629]],
+            IconId = [[137402232463633]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_069_BulletproofJacket02]],
             ModelType = [[Item]]
         },
@@ -2376,7 +2376,7 @@ return {
             Name = [[胶囊]],
             Pirce = 3.048e+12,
             Quality = 15,
-            IconId = [[112549310275337]],
+            IconId = [[79717469784936]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_070_Helmet01]],
             ModelType = [[Item]]
         },
@@ -2386,7 +2386,7 @@ return {
             Name = [[干电池]],
             Pirce = 4.572e+12,
             Quality = 16,
-            IconId = [[88430290010781]],
+            IconId = [[86646811474956]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_071_Helmet02]],
             ModelType = [[Item]]
         },
@@ -2396,7 +2396,7 @@ return {
             Name = [[强力电池]],
             Pirce = 5.715e+12,
             Quality = 16,
-            IconId = [[71786460797721]],
+            IconId = [[128217347353354]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_072_Helmet03]],
             ModelType = [[Item]]
         },
@@ -2406,7 +2406,7 @@ return {
             Name = [[药瓶]],
             Pirce = 9.55e+12,
             Quality = 16,
-            IconId = [[97338088026484]],
+            IconId = [[126321668579357]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_073_Helmet04]],
             ModelType = [[Item]]
         },
@@ -2416,7 +2416,7 @@ return {
             Name = [[急救药瓶]],
             Pirce = 1.528e+13,
             Quality = 16,
-            IconId = [[111210837018880]],
+            IconId = [[98351529529203]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_074_Bag01]],
             ModelType = [[Item]]
         },
@@ -2426,7 +2426,7 @@ return {
             Name = [[注射器]],
             Pirce = 2.292e+13,
             Quality = 17,
-            IconId = [[91454753076661]],
+            IconId = [[81048668172712]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_075_Bag02]],
             ModelType = [[Item]]
         },
@@ -2436,7 +2436,7 @@ return {
             Name = [[强化针]],
             Pirce = 2.865e+13,
             Quality = 17,
-            IconId = [[140372090697167]],
+            IconId = [[127615544859575]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_076_Bag03]],
             ModelType = [[Item]]
         },
@@ -2446,7 +2446,7 @@ return {
             Name = [[医用绷带]],
             Pirce = 4.77e+13,
             Quality = 17,
-            IconId = [[85844805634635]],
+            IconId = [[70656304136373]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_077_Box01]],
             ModelType = [[Item]]
         },
@@ -2456,7 +2456,7 @@ return {
             Name = [[绿色徽章]],
             Pirce = 7.632e+13,
             Quality = 17,
-            IconId = [[121461526979401]],
+            IconId = [[134424174805013]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_078_Box02]],
             ModelType = [[Item]]
         },
@@ -2466,7 +2466,7 @@ return {
             Name = [[急救包]],
             Pirce = 1.1448e+14,
             Quality = 18,
-            IconId = [[119745475735524]],
+            IconId = [[127255485663084]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_079_Box03]],
             ModelType = [[Item]]
         },
@@ -2476,7 +2476,7 @@ return {
             Name = [[医疗箱]],
             Pirce = 1.431e+14,
             Quality = 18,
-            IconId = [[101894479505985]],
+            IconId = [[134027683373658]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_080_Pot01]],
             ModelType = [[Item]]
         },
@@ -2486,7 +2486,7 @@ return {
             Name = [[高级医疗箱]],
             Pirce = 2.385e+14,
             Quality = 18,
-            IconId = [[130984354600200]],
+            IconId = [[112447657334137]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_081_Drum01]],
             ModelType = [[Item]]
         },
@@ -2496,7 +2496,7 @@ return {
             Name = [[钢管]],
             Pirce = 3.816e+14,
             Quality = 18,
-            IconId = [[139575750428458]],
+            IconId = [[104595008892706]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_082_Drum02]],
             ModelType = [[Item]]
         },
@@ -2506,7 +2506,7 @@ return {
             Name = [[手机]],
             Pirce = 5.724e+14,
             Quality = 19,
-            IconId = [[111543784097462]],
+            IconId = [[82759045606098]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_083_Drum03]],
             ModelType = [[Item]]
         },
@@ -2516,7 +2516,7 @@ return {
             Name = [[手表]],
             Pirce = 7.155e+14,
             Quality = 19,
-            IconId = [[104244387773955]],
+            IconId = [[105620837789519]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_084_Drum04]],
             ModelType = [[Item]]
         },
@@ -2526,7 +2526,7 @@ return {
             Name = [[身份牌]],
             Pirce = 1.19e+15,
             Quality = 19,
-            IconId = [[136776890462387]],
+            IconId = [[111024567754480]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_085_Drum05]],
             ModelType = [[Item]]
         },
@@ -2536,7 +2536,7 @@ return {
             Name = [[指南针]],
             Pirce = 1.904e+15,
             Quality = 19,
-            IconId = [[126165124926341]],
+            IconId = [[137153989969007]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_086_Propane]],
             ModelType = [[Item]]
         },
@@ -2546,7 +2546,7 @@ return {
             Name = [[军用罗盘]],
             Pirce = 2.856e+15,
             Quality = 20,
-            IconId = [[76143760243972]],
+            IconId = [[74496996195913]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_087_RopeA]],
             ModelType = [[Item]]
         },
@@ -2556,7 +2556,7 @@ return {
             Name = [[木箱]],
             Pirce = 3.57e+15,
             Quality = 20,
-            IconId = [[73975383470183]],
+            IconId = [[132785860315163]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_088_Wire]],
             ModelType = [[Item]]
         },
@@ -2566,7 +2566,7 @@ return {
             Name = [[工具箱]],
             Pirce = 5.95e+15,
             Quality = 20,
-            IconId = [[110779582383706]],
+            IconId = [[117198962948319]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_089_Walkie_Talkie]],
             ModelType = [[Item]]
         },
@@ -2576,7 +2576,7 @@ return {
             Name = [[补给箱]],
             Pirce = 9.52e+15,
             Quality = 20,
-            IconId = [[139231009266383]],
+            IconId = [[124449160476895]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_090_Walkie_TalkieA]],
             ModelType = [[Item]]
         },
@@ -2586,7 +2586,7 @@ return {
             Name = [[油桶]],
             Pirce = 1.428e+16,
             Quality = 21,
-            IconId = [[122330740858585]],
+            IconId = [[125887863438527]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_091_Flashlight01]],
             ModelType = [[Item]]
         },
@@ -2596,7 +2596,7 @@ return {
             Name = [[储物桶]],
             Pirce = 1.785e+16,
             Quality = 21,
-            IconId = [[117103663687356]],
+            IconId = [[137692564728429]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_092_HeadLantern]],
             ModelType = [[Item]]
         },
@@ -2606,7 +2606,7 @@ return {
             Name = [[密封桶]],
             Pirce = 2.98e+16,
             Quality = 21,
-            IconId = [[103139070075508]],
+            IconId = [[82350951870220]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_093_Lantern]],
             ModelType = [[Item]]
         },
@@ -2616,7 +2616,7 @@ return {
             Name = [[大铁桶]],
             Pirce = 4.768e+16,
             Quality = 21,
-            IconId = [[88725487654147]],
+            IconId = [[133019385929561]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_094_Telescope01]],
             ModelType = [[Item]]
         },
@@ -2626,7 +2626,7 @@ return {
             Name = [[煤气罐]],
             Pirce = 7.152e+16,
             Quality = 22,
-            IconId = [[72100736251601]],
+            IconId = [[82714807302588]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_095_Telescope02]],
             ModelType = [[Item]]
         },
@@ -2636,7 +2636,7 @@ return {
             Name = [[粗绳]],
             Pirce = 8.94e+16,
             Quality = 22,
-            IconId = [[95625760850047]],
+            IconId = [[120409278538446]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_096_Hammer01]],
             ModelType = [[Item]]
         },
@@ -2646,7 +2646,7 @@ return {
             Name = [[电线]],
             Pirce = 1.49e+17,
             Quality = 22,
-            IconId = [[110809850119673]],
+            IconId = [[136303201068741]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_097_Hammer02]],
             ModelType = [[Item]]
         },
@@ -2656,7 +2656,7 @@ return {
             Name = [[对讲机]],
             Pirce = 2.384e+17,
             Quality = 22,
-            IconId = [[128268169997293]],
+            IconId = [[76724781858184]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_098_Hammer03]],
             ModelType = [[Item]]
         },
@@ -2666,7 +2666,7 @@ return {
             Name = [[军用电台]],
             Pirce = 3.576e+17,
             Quality = 23,
-            IconId = [[81568443921942]],
+            IconId = [[120125979830927]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_099_Wrench01]],
             ModelType = [[Item]]
         },
@@ -2676,7 +2676,7 @@ return {
             Name = [[手电筒]],
             Pirce = 4.47e+17,
             Quality = 23,
-            IconId = [[80275546299866]],
+            IconId = [[86921870572603]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_100_Wrench02]],
             ModelType = [[Item]]
         },
@@ -2686,7 +2686,7 @@ return {
             Name = [[头灯]],
             Pirce = 7.45e+17,
             Quality = 23,
-            IconId = [[104304476590207]],
+            IconId = [[126355990231048]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_101_Wrench03]],
             ModelType = [[Item]]
         },
@@ -2696,7 +2696,7 @@ return {
             Name = [[提灯]],
             Pirce = 1.192e+18,
             Quality = 23,
-            IconId = [[129658959682028]],
+            IconId = [[72326444062448]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_102_Shovel01]],
             ModelType = [[Item]]
         },
@@ -2706,7 +2706,7 @@ return {
             Name = [[望远镜]],
             Pirce = 1.788e+18,
             Quality = 24,
-            IconId = [[91807501817775]],
+            IconId = [[72257499044823]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_103_Shovel02]],
             ModelType = [[Item]]
         },
@@ -2716,7 +2716,7 @@ return {
             Name = [[高倍望远镜]],
             Pirce = 2.235e+18,
             Quality = 24,
-            IconId = [[119033390105144]],
+            IconId = [[74695865349139]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_104_Pickax]],
             ModelType = [[Item]]
         },
@@ -2726,7 +2726,7 @@ return {
             Name = [[高尔夫球杆]],
             Pirce = 3.725e+18,
             Quality = 24,
-            IconId = [[96459025721039]],
+            IconId = [[98358488442985]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_105_GolfClub]],
             ModelType = [[Item]]
         },
@@ -2736,7 +2736,7 @@ return {
             Name = [[冰球杆]],
             Pirce = 5.96e+18,
             Quality = 24,
-            IconId = [[138981227536547]],
+            IconId = [[113636295509693]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_106_Hockey]],
             ModelType = [[Item]]
         },
@@ -2746,7 +2746,7 @@ return {
             Name = [[木棒]],
             Pirce = 8.94e+18,
             Quality = 25,
-            IconId = [[119423227657745]],
+            IconId = [[114047124407739]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_107_Bat01]],
             ModelType = [[Item]]
         },
@@ -2756,7 +2756,7 @@ return {
             Name = [[球棒]],
             Pirce = 1.1175e+19,
             Quality = 25,
-            IconId = [[96126442221467]],
+            IconId = [[95771403493939]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_108_Bat02]],
             ModelType = [[Item]]
         },
@@ -2766,7 +2766,7 @@ return {
             Name = [[铁棒]],
             Pirce = 1.865e+19,
             Quality = 25,
-            IconId = [[115960927208349]],
+            IconId = [[140393673870516]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_109_Bat03]],
             ModelType = [[Item]]
         },
@@ -2776,7 +2776,7 @@ return {
             Name = [[战术棍]],
             Pirce = 2.984e+19,
             Quality = 25,
-            IconId = [[130983706534388]],
+            IconId = [[123109322631502]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_110_Bat04]],
             ModelType = [[Item]]
         },
@@ -2786,7 +2786,7 @@ return {
             Name = [[电锯]],
             Pirce = 4.476e+19,
             Quality = 26,
-            IconId = [[95831043321895]],
+            IconId = [[98614967981417]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_111_ElectricSaw]],
             ModelType = [[Item]]
         },
@@ -2796,7 +2796,7 @@ return {
             Name = [[木斧]],
             Pirce = 5.595e+19,
             Quality = 26,
-            IconId = [[112143431254973]],
+            IconId = [[127369769981706]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_112_Ax01]],
             ModelType = [[Item]]
         },
@@ -2806,7 +2806,7 @@ return {
             Name = [[消防斧]],
             Pirce = 9.3e+19,
             Quality = 26,
-            IconId = [[118258115873868]],
+            IconId = [[134574393827781]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_113_Ax02]],
             ModelType = [[Item]]
         },
@@ -2816,7 +2816,7 @@ return {
             Name = [[战斧]],
             Pirce = 1.488e+20,
             Quality = 26,
-            IconId = [[78313318872069]],
+            IconId = [[130258203281991]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_114_Ax03]],
             ModelType = [[Item]]
         },
@@ -2826,7 +2826,7 @@ return {
             Name = [[小刀]],
             Pirce = 2.232e+20,
             Quality = 27,
-            IconId = [[125592304728045]],
+            IconId = [[93953823085119]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_115_Knife01]],
             ModelType = [[Item]]
         },
@@ -2836,7 +2836,7 @@ return {
             Name = [[猎刀]],
             Pirce = 2.79e+20,
             Quality = 27,
-            IconId = [[80137167951870]],
+            IconId = [[109802560542166]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_116_Knife02]],
             ModelType = [[Item]]
         },
@@ -2846,7 +2846,7 @@ return {
             Name = [[军刀]],
             Pirce = 4.655e+20,
             Quality = 27,
-            IconId = [[73282351047760]],
+            IconId = [[130989494782889]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_117_Knife03]],
             ModelType = [[Item]]
         },
@@ -2856,7 +2856,7 @@ return {
             Name = [[开山刀]],
             Pirce = 7.448e+20,
             Quality = 27,
-            IconId = [[103255430368191]],
+            IconId = [[129408716253336]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_118_Knife04]],
             ModelType = [[Item]]
         },
@@ -2866,7 +2866,7 @@ return {
             Name = [[匕首]],
             Pirce = 1.1172e+21,
             Quality = 28,
-            IconId = [[116294264954356]],
+            IconId = [[127772866805590]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_119_Knife05]],
             ModelType = [[Item]]
         },
@@ -2876,7 +2876,7 @@ return {
             Name = [[战术刀]],
             Pirce = 1.396499999999999868928e+21,
             Quality = 28,
-            IconId = [[125743373452231]],
+            IconId = [[91938109188463]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_120_Knife06]],
             ModelType = [[Item]]
         },
@@ -2886,7 +2886,7 @@ return {
             Name = [[狼牙棒]],
             Pirce = 2.33e+21,
             Quality = 28,
-            IconId = [[112421216883327]],
+            IconId = [[85077262752129]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_121_Ironmace]],
             ModelType = [[Item]]
         },
@@ -2896,7 +2896,7 @@ return {
             Name = [[炸药罐]],
             Pirce = 3.728e+21,
             Quality = 28,
-            IconId = [[91269915478196]],
+            IconId = [[140335958193244]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_122_Dynamite01]],
             ModelType = [[Item]]
         },
@@ -2906,7 +2906,7 @@ return {
             Name = [[捆装炸药]],
             Pirce = 5.592e+21,
             Quality = 29,
-            IconId = [[105465120437268]],
+            IconId = [[86732012145983]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_123_Dynamite02]],
             ModelType = [[Item]]
         },
@@ -2916,7 +2916,7 @@ return {
             Name = [[遥控炸弹]],
             Pirce = 6.990000000000000524288e+21,
             Quality = 29,
-            IconId = [[83111312306519]],
+            IconId = [[78044122276865]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_124_Dynamite03]],
             ModelType = [[Item]]
         },
@@ -2926,7 +2926,7 @@ return {
             Name = [[圆形手雷]],
             Pirce = 1.1649999999999999475712e+22,
             Quality = 29,
-            IconId = [[100761293408985]],
+            IconId = [[114974638199136]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_125_Grenade01]],
             ModelType = [[Item]]
         },
@@ -2936,7 +2936,7 @@ return {
             Name = [[高爆手雷]],
             Pirce = 1.864e+22,
             Quality = 29,
-            IconId = [[125949085124996]],
+            IconId = [[83652207307759]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_126_Grenade02]],
             ModelType = [[Item]]
         },
@@ -2946,7 +2946,7 @@ return {
             Name = [[等离子手雷]],
             Pirce = 2.7960000000000002097152e+22,
             Quality = 30,
-            IconId = [[97905565242094]],
+            IconId = [[131787091355052]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_127_Grenade03]],
             ModelType = [[Item]]
         },
@@ -2956,7 +2956,7 @@ return {
             Name = [[感应地雷]],
             Pirce = 3.4949999999999998427136e+22,
             Quality = 30,
-            IconId = [[140476411551393]],
+            IconId = [[99348381699835]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_128_Mine]],
             ModelType = [[Item]]
         },
@@ -2966,7 +2966,7 @@ return {
             Name = [[捕兽夹]],
             Pirce = 5.7999999999999995805696e+22,
             Quality = 30,
-            IconId = [[120018046835451]],
+            IconId = [[75412160560516]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_129_Trap]],
             ModelType = [[Item]]
         },
@@ -2976,7 +2976,7 @@ return {
             Name = [[手枪子弹]],
             Pirce = 9.28e+22,
             Quality = 30,
-            IconId = [[80251278207088]],
+            IconId = [[105475505052937]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_130_Bullet01]],
             ModelType = [[Item]]
         },
@@ -2986,7 +2986,7 @@ return {
             Name = [[手枪弹药]],
             Pirce = 1.392e+23,
             Quality = 31,
-            IconId = [[93241401911451]],
+            IconId = [[125484119033793]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_131_Bullet02]],
             ModelType = [[Item]]
         },
@@ -2996,7 +2996,7 @@ return {
             Name = [[整箱弹药]],
             Pirce = 1.73999999999999987417088e+23,
             Quality = 31,
-            IconId = [[111428364476852]],
+            IconId = [[140608831780254]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_132_Bullet03]],
             ModelType = [[Item]]
         },
@@ -3006,7 +3006,7 @@ return {
             Name = [[盒装弹药]],
             Pirce = 2.91000000000000002097152e+23,
             Quality = 31,
-            IconId = [[117739005088015]],
+            IconId = [[124177358025481]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_133_Bullet04]],
             ModelType = [[Item]]
         },
@@ -3016,7 +3016,7 @@ return {
             Name = [[直式弹匣]],
             Pirce = 4.65600000000000016777216e+23,
             Quality = 31,
-            IconId = [[106059177546151]],
+            IconId = [[129385390119523]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_134_Bullet05]],
             ModelType = [[Item]]
         },
@@ -3026,7 +3026,7 @@ return {
             Name = [[弯式弹匣]],
             Pirce = 6.98400000000000058720256e+23,
             Quality = 32,
-            IconId = [[136795155731733]],
+            IconId = [[84940520003035]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_135_Bullet06]],
             ModelType = [[Item]]
         },
@@ -3036,7 +3036,7 @@ return {
             Name = [[霰弹盒]],
             Pirce = 8.73000000000000006291456e+23,
             Quality = 32,
-            IconId = [[72644523405324]],
+            IconId = [[90031364711610]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_136_Bullet07]],
             ModelType = [[Item]]
         },
@@ -3046,7 +3046,7 @@ return {
             Name = [[军用弹药箱]],
             Pirce = 1.45500000000000001048576e+24,
             Quality = 32,
-            IconId = [[108937394146011]],
+            IconId = [[84418341821320]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_137_Cartridge]],
             ModelType = [[Item]]
         },
@@ -3056,7 +3056,7 @@ return {
             Name = [[左轮手枪]],
             Pirce = 2.328000000000000016777216e+24,
             Quality = 32,
-            IconId = [[79433065873354]],
+            IconId = [[130255705800444]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_138_Gun01]],
             ModelType = [[Item]]
         },
@@ -3066,7 +3066,7 @@ return {
             Name = [[单发手枪]],
             Pirce = 3.492000000000000025165824e+24,
             Quality = 33,
-            IconId = [[78433393917163]],
+            IconId = [[123568265278671]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_139_Gun02]],
             ModelType = [[Item]]
         },
@@ -3076,7 +3076,7 @@ return {
             Name = [[短管突击步枪]],
             Pirce = 4.364999999999999763021824e+24,
             Quality = 33,
-            IconId = [[86723396142799]],
+            IconId = [[75689117044416]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_140_Rifle01]],
             ModelType = [[Item]]
         },
@@ -3086,7 +3086,7 @@ return {
             Name = [[战术突击步枪]],
             Pirce = 7.299999999999999823839232e+24,
             Quality = 33,
-            IconId = [[116389499163956]],
+            IconId = [[92309488435591]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_141_Rifle02]],
             ModelType = [[Item]]
         },
@@ -3096,7 +3096,7 @@ return {
             Name = [[木托突击步枪]],
             Pirce = 1.168000000000000100663296e+25,
             Quality = 33,
-            IconId = [[97264334614998]],
+            IconId = [[106319308889290]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_142_Rifle03]],
             ModelType = [[Item]]
         },
@@ -3106,7 +3106,7 @@ return {
             Name = [[战斗霰弹枪]],
             Pirce = 1.7520000000000000436207616e+25,
             Quality = 34,
-            IconId = [[115791824258294]],
+            IconId = [[123120949699520]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_143_Rifle04]],
             ModelType = [[Item]]
         },
@@ -3116,7 +3116,7 @@ return {
             Name = [[狙击步枪]],
             Pirce = 2.190000000000000054525952e+25,
             Quality = 34,
-            IconId = [[94398618924427]],
+            IconId = [[111674856010497]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_144_Rifle05]],
             ModelType = [[Item]]
         },
@@ -3126,7 +3126,7 @@ return {
             Name = [[冲锋枪]],
             Pirce = 3.6399999999999997886070784e+25,
             Quality = 34,
-            IconId = [[128273384481118]],
+            IconId = [[118080816505555]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_145_MachineGun01]],
             ModelType = [[Item]]
         },
@@ -3136,7 +3136,7 @@ return {
             Name = [[消音冲锋枪]],
             Pirce = 5.8240000000000003489660928e+25,
             Quality = 34,
-            IconId = [[138000317292270]],
+            IconId = [[105021574817966]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_146_MachineGun02]],
             ModelType = [[Item]]
         },
@@ -3146,7 +3146,7 @@ return {
             Name = [[微型冲锋枪]],
             Pirce = 8.7360000000000005234491392e+25,
             Quality = 35,
-            IconId = [[100641475547869]],
+            IconId = [[72690180103558]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_147_MachineGun03]],
             ModelType = [[Item]]
         },
@@ -3156,7 +3156,7 @@ return {
             Name = [[木托冲锋枪]],
             Pirce = 1.09200000000000002248146944e+26,
             Quality = 35,
-            IconId = [[79371487434912]],
+            IconId = [[94914272618995]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_148_MachineGun04]],
             ModelType = [[Item]]
         }
