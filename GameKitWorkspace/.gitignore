@@ -1,6 +1,7 @@
 AgentWorkspace/
 setting.local.json
 .studiogametoolkit/outputs/ai-image/
+.studiogametoolkit/ai-image/task-references/
 .studiogametoolkit/image-to-model/
 .studiogametoolkit/outputs/image-to-model/
 !AgentWorkspace/
