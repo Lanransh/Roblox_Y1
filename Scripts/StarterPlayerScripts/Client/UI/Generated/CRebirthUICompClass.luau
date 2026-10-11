@@ -54,7 +54,7 @@ function UI:OnReady()
     self.CurrentMoneyTxt = FXLoader:Here(root, "PopupPanelImg.CurrentMoneyImg.MultiplierTxt")
     self.NextMoneyTxt = FXLoader:Here(root, "PopupPanelImg.NextMoneyImg.MultiplierTxt")
     self.RebirthGradient = FXLoader:Here(root, "PopupPanelImg.RebirthBtn.SurfaceGradient")
-    local close = FXLoader:Here(root, "TitleBox.CloseSurfaceImg.CloseBtn")
+    local close = FXLoader:Here(root, "TitleBox.CloseSurfaceImg")
     -- 关闭由接入层更新 Open，不销毁设计节点。
     self:TrackConnection(close.Activated:Connect(function()
         self:EmitUIAction("CloseRebirth", {})

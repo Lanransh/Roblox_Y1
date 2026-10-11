@@ -486,104 +486,31 @@
             }
           },
           {
-            "children": [
-              {
-                "children": [],
-                "className": "UICorner",
-                "id": "d65fd9b4-13c3-44ce-b956-601403628468",
-                "name": "UICorner",
-                "properties": {
-                  "CornerRadius": {
-                    "offset": 6,
-                    "scale": 0
-                  }
-                }
-              },
-              {
-                "children": [],
-                "className": "UIStroke",
-                "id": "925ac483-6624-45f9-ba6b-a680ff3deb5a",
-                "name": "UIStroke",
-                "properties": {
-                  "Color": "#000000",
-                  "Enabled": true,
-                  "Thickness": 3,
-                  "Transparency": 0
-                }
-              },
-              {
-                "children": [
-                  {
-                    "children": [],
-                    "className": "UIStroke",
-                    "id": "653c3fc9-9e32-45ca-865e-6fb72e466dd3",
-                    "name": "TextStroke",
-                    "properties": {
-                      "Color": "#000000",
-                      "Enabled": true,
-                      "Thickness": 2,
-                      "Transparency": 0
-                    }
-                  }
-                ],
-                "className": "TextButton",
-                "id": "94cc4c75-3a9b-43a7-9faa-06c588260111",
-                "name": "CloseBtn",
-                "properties": {
-                  "AnchorPoint": {
-                    "x": 0,
-                    "y": 0
-                  },
-                  "BackgroundColor3": "#ffffff",
-                  "BackgroundTransparency": 1,
-                  "ClipsDescendants": false,
-                  "Font": "GothamBold",
-                  "LayoutOrder": 0,
-                  "Position": {
-                    "x": {
-                      "offset": 0,
-                      "scale": 0
-                    },
-                    "y": {
-                      "offset": -6,
-                      "scale": 0
-                    }
-                  },
-                  "Rotation": 0,
-                  "Size": {
-                    "x": {
-                      "offset": 52,
-                      "scale": 0
-                    },
-                    "y": {
-                      "offset": 52,
-                      "scale": 0
-                    }
-                  },
-                  "Text": "×",
-                  "TextColor3": "#ffffff",
-                  "TextScaled": false,
-                  "TextSize": 52,
-                  "TextTransparency": 0,
-                  "TextWrapped": false,
-                  "TextXAlignment": "Center",
-                  "TextYAlignment": "Center",
-                  "Visible": true,
-                  "ZIndex": 7
-                }
-              }
-            ],
-            "className": "Frame",
-            "id": "0dc9edfb-ce47-4230-b2a7-dc25f9cdabb5",
+            "children": [],
+            "className": "UIScale",
+            "id": "94ee9947-e6de-4576-a208-68dc02a4b79d",
+            "name": "WindowScale",
+            "properties": {
+              "Scale": 0.65
+            }
+          },
+          {
+            "children": [],
+            "className": "ImageButton",
+            "id": "e08d6f0b-c997-460d-be69-92ad55a6d736",
+            "imageAssetId": "d22a5479fa52468fb6c159b40959050b",
             "name": "CloseSurfaceImg",
             "properties": {
               "AnchorPoint": {
                 "x": 0,
                 "y": 0
               },
-              "BackgroundColor3": "#55ce35",
-              "BackgroundTransparency": 0,
+              "BackgroundColor3": "#ffffff",
+              "BackgroundTransparency": 1,
               "ClipsDescendants": false,
+              "Image": "rbxassetid://98802390031827",
+              "ImageColor3": "#ffffff",
+              "ImageTransparency": 0,
               "LayoutOrder": 0,
               "Position": {
                 "x": {
@@ -596,6 +523,7 @@
                 }
               },
               "Rotation": 0,
+              "ScaleType": "Fit",
               "Size": {
                 "x": {
                   "offset": 52,
@@ -606,17 +534,22 @@
                   "scale": 0
                 }
               },
+              "TileSize": {
+                "x": {
+                  "offset": 0,
+                  "scale": 1
+                },
+                "y": {
+                  "offset": 0,
+                  "scale": 1
+                }
+              },
               "Visible": true,
               "ZIndex": 6
-            }
-          },
-          {
-            "children": [],
-            "className": "UIScale",
-            "id": "94ee9947-e6de-4576-a208-68dc02a4b79d",
-            "name": "WindowScale",
-            "properties": {
-              "Scale": 0.65
+            },
+            "previewImage": {
+              "name": "CloseSurfaceImg-2.png",
+              "dataUrl": "data:image/png;base64,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"
             }
           }
         ],
@@ -1533,7 +1466,7 @@
   },
   "scripts": {
     "integration": "local FX = _G.FX\nlocal FXLoader = FX.Loader\nlocal CWeaponShopPreview = FX.Class(\"CWeaponShopPreview\", \"CWeaponShopView\")\n\n-- 准备多条武器与品质颜色，演示固定窗口中的滚动列表，只用于本地模拟。\n-- @param owner table 编辑器宿主。\nfunction CWeaponShopPreview:Ctor(owner)\n    CWeaponShopPreview.Super.Ctor(self, owner)\n    self.Config = {\n        title = \"WEAPONS\",\n        qualities = {\n            common = {name = \"Common\", color = \"#FAFCF9\"},\n            rare = {name = \"Rare\", color = \"#73BBEF\"},\n            epic = {name = \"Epic\", color = \"#BC85E5\"},\n            legendary = {name = \"Legendary\", color = \"#F4BF52\"},\n        },\n        weapons = {\n            {id = \"sickle\", name = \"Sickle\", qualityId = \"common\", strength = 1, price = 0},\n            {id = \"knife\", name = \"Knife\", qualityId = \"rare\", strength = 8, price = 700},\n            {id = \"saw\", name = \"Saw Blade\", qualityId = \"common\", strength = 3, price = 350},\n            {id = \"axe\", name = \"Battle Axe\", qualityId = \"rare\", strength = 12, price = 1200},\n            {id = \"spear\", name = \"Steel Spear\", qualityId = \"rare\", strength = 18, price = 1800},\n            {id = \"katana\", name = \"Katana\", qualityId = \"epic\", strength = 25, price = 2500},\n            {id = \"hammer\", name = \"War Hammer\", qualityId = \"epic\", strength = 35, price = 3500},\n            {id = \"greatsword\", name = \"Greatsword\", qualityId = \"epic\", strength = 50, price = 5000},\n            {id = \"flameblade\", name = \"Flame Blade\", qualityId = \"legendary\", strength = 75, price = 7500},\n            {id = \"dragonblade\", name = \"Dragon Blade\", qualityId = \"legendary\", strength = 100, price = 10000},\n        },\n    }\n    self.State = {\n        owned = {sickle = true, saw = true, dragonblade = true},\n        equippedId = \"sickle\",\n        coins = 700,\n        open = true,\n    }\nend\n\n-- 绑定展示后刷新。\nfunction CWeaponShopPreview:OnReady()\n    CWeaponShopPreview.Super.OnReady(self)\n    self:BindUIData()\n    self:Show()\nend\n\n-- 模拟购买与装备成功，正式游戏必须替换为服务端结果。\n-- @param action string Buy、Equip 或 Close。\n-- @param payload table 稳定 weaponId，Close 为空表。\nfunction CWeaponShopPreview:OnUIAction(action, payload)\n    if action == \"Close\" then\n        self.State.open = false\n    elseif action == \"Buy\" then\n        for index, weapon in ipairs(self.Config.weapons) do\n            if weapon.id == payload.weaponId and not self.State.owned[weapon.id] and self.State.coins >= weapon.price then\n                self.State.coins = self.State.coins - weapon.price\n                self.State.owned[weapon.id] = true\n            end\n        end\n    elseif action == \"Equip\" then\n        if self.State.owned[payload.weaponId] then\n            self.State.equippedId = payload.weaponId\n        end\n    end\n    self:RefreshUI()\nend\n\nreturn CWeaponShopPreview",
-    "source": "--[[\n武器列表接入契约（完整状态，非增量）\nConfig.title: string，必填标题。\nConfig.qualities: 字典，键为品质 ID；值 {name: string, color: string} 均必填，color 为 #RRGGBB 卡片底色。\nConfig.weapons: 数组，显示顺序；每项 {id: string, name: string, qualityId: string,\n strength: number, price: number, icon: string?}。前五项必填；price 单位金币，显示为钞票图标与 +$金额；strength 为加成点数；\n id 唯一稳定，qualityId 对应 qualities 键；icon 可选 Roblox 图片 ID，缺省或空字符串显示问号占位。\nState.owned: 字典，weaponId -> boolean，缺省键表示未拥有。\nState.equippedId: string，必填，空字符串表示未装备。\nState.coins: number，必填，可用金币；State.open: boolean，必填。\nState.pending: 字典，可选，weaponId -> boolean，缺省为未请求；State.loading: boolean? 缺省 false。\n最小示例：\n self.Config = {title=\"WEAPONS\", qualities={common={name=\"Common\",color=\"#FAFCF9\"}},\n weapons={{id=\"sickle\",name=\"Sickle\",qualityId=\"common\",strength=1,price=0}}}\n self.State = {owned={sickle=true},equippedId=\"sickle\",coins=700,open=true}\nGetUIConfig/GetUIState 默认读取 self.Config/self.State。首次 Show 前准备全部必填数据；\n接入 OnReady 先父 OnReady，再 BindUIData、Show；后续更新数据后 RefreshUI。\nRefreshUI 调用 Render(GetUIState())；列表空时显示空提示，loading=true 时显示加载提示并清空条目。\n动作：Buy / Equip，payload={weaponId:string}；Close，payload={}。无返回值。\n必需覆写 OnUIAction，负责服务端校验、扣款及装备，请求时设置 pending[id]，完成后更新完整状态并刷新。\n无其他页面专用覆写。UI 禁用不代表服务器校验。模拟 integration 不导入游戏。\nWeaponIconImg 是动态图占位，正式图由 Config.weapons[].icon 替换；\nApp 动态 ID 预览能力有限，真实资源权限及 Studio 显示需另验。\n]]\nlocal FX = _G.FX\nlocal FXLoader = FX.Loader\nlocal CWeaponShopView = FX.Class(\"CWeaponShopView\", \"CUIView\")\n\n-- 绑定窗口与隐藏原型，只在首次准备时连接关闭按钮。\nfunction CWeaponShopView:OnReady()\n    local root = FXLoader:PlayerGui(\"WeaponShopUI\")\n    self.Root = root\n    self.Panel = FXLoader:Here(root, \"PopupPanelImg\")\n    self.TitleBox = FXLoader:Here(root, \"TitleBox\")\n    self.TitleTxt = FXLoader:Here(root, \"TitleBox.TitleTxt\")\n    self.List = FXLoader:Here(root, \"PopupPanelImg.WeaponListBox\")\n    self.EmptyTxt = FXLoader:Here(root, \"PopupPanelImg.EmptyTxt\")\n    self.Template = FXLoader:Here(root, \"Templates.WeaponRowImg\")\n    self.Rows = {}\n    local closeBtn = FXLoader:Here(root, \"TitleBox.CloseSurfaceImg.CloseBtn\")\n    self:TrackConnection(closeBtn.Activated:Connect(function()\n        self:EmitUIAction(\"Close\", {})\n    end))\nend\n\n-- 打开时应用当前完整数据。\nfunction CWeaponShopView:OnShow()\n    self:RefreshUI()\nend\n\n-- 根据稳定 ID 增删和更新条目，颜色始终从品质配置读取。\n-- @param state table 完整状态，字段见文件头。\nfunction CWeaponShopView:Render(state)\n    local config = self:GetUIConfig()\n    self.Panel.Visible = state.open\n    self.TitleBox.Visible = state.open\n    self.TitleTxt.Text = config.title\n    local active = {}\n    local count = 0\n    if not state.loading then\n        for index, weapon in ipairs(config.weapons) do\n            count = index\n            active[weapon.id] = true\n            local entry = self.Rows[weapon.id]\n            if not entry then\n                local row = self.Template:Clone()\n                row.Name = \"Weapon_\" .. weapon.id\n                row.Parent = self.List\n                row.Visible = true\n                local button = FXLoader:Here(row, \"ActionBtn\")\n                local weaponId = weapon.id\n                -- 每个实例只连接一次；点击时读取当前状态，以稳定 ID 发出动作。\n                local connection = self:TrackConnection(button.Activated:Connect(function()\n                    local currentState = self:GetUIState()\n                    local action = \"Buy\"\n                    if currentState.owned[weaponId] then\n                        action = \"Equip\"\n                    end\n                    self:EmitUIAction(action, {weaponId = weaponId})\n                end))\n                local release = self:TrackCleanup(function()\n                    connection:Disconnect()\n                    row:Destroy()\n                end)\n                entry = {row = row, button = button, release = release}\n                self.Rows[weapon.id] = entry\n            end\n            local row = entry.row\n            local quality = config.qualities[weapon.qualityId]\n            row.Position = UDim2.fromOffset(2, (index - 1) * 172 + 2)\n            row.BackgroundColor3 = Color3.fromHex(quality.color)\n            FXLoader:Here(row, \"NameTxt\").Text = weapon.name\n            FXLoader:Here(row, \"RarityTxt\").Text = quality.name\n            FXLoader:Here(row, \"StrengthTxt\").Text = \"Strength +\" .. tostring(weapon.strength)\n            local icon = FXLoader:Here(row, \"WeaponIconImg\")\n            icon.Image = weapon.icon or \"rbxassetid://86795093617566\"\n            local owned = state.owned[weapon.id] == true\n            local equipped = state.equippedId == weapon.id\n            local pending = state.pending and state.pending[weapon.id]\n            local caption = \"+$\" .. tostring(weapon.price)\n            local color = \"#67ED14\"\n            local edge = \"#225A07\"\n            if owned then\n                caption = \"Equip\"\n            end\n            if equipped then\n                caption = \"Equipped\"\n                color = \"#397BA7\"\n                edge = \"#193E73\"\n            elseif pending then\n                caption = \"Waiting...\"\n                color = \"#638079\"\n            elseif not owned and state.coins < weapon.price then\n                caption = \"+$\" .. tostring(weapon.price)\n                color = \"#638079\"\n            end\n            FXLoader:Here(row, \"OwnedTxt\").Visible = false\n            local showMoney = not owned and not equipped and not pending\n            FXLoader:Here(row, \"ActionBtn.MoneyIconImg\").Visible = showMoney\n            local buttonText = FXLoader:Here(row, \"ActionBtn.ButtonTxt\")\n            buttonText.Text = caption\n            buttonText.Position = UDim2.fromOffset(0, 0)\n            buttonText.Size = UDim2.fromScale(1, 1)\n            buttonText.TextXAlignment = Enum.TextXAlignment.Center\n            if showMoney then\n                buttonText.Position = UDim2.fromOffset(64, 0)\n                buttonText.Size = UDim2.new(1, -72, 1, 0)\n                buttonText.TextXAlignment = Enum.TextXAlignment.Left\n            end\n            FXLoader:Here(row, \"ActionBtn.BottomEdgeImg\").BackgroundColor3 = Color3.fromHex(edge)\n            entry.button.BackgroundColor3 = Color3.fromHex(color)\n            self:SetButtonEnabled(entry.button, not equipped and not pending and (owned or state.coins >= weapon.price))\n        end\n    end\n    for weaponId, entry in pairs(self.Rows) do\n        if not active[weaponId] then\n            entry.release()\n            self.Rows[weaponId] = nil\n        end\n    end\n    self.List.CanvasSize = UDim2.fromOffset(0, math.max(524, count * 172))\n    self.EmptyTxt.Visible = count == 0\n    self.EmptyTxt.Text = \"No weapons available\"\n    if state.loading then\n        self.EmptyTxt.Text = \"Loading...\"\n    end\nend\n\n-- 必须由游戏接入或模拟类处理业务动作。\n-- @param action string Buy、Equip 或 Close。\n-- @param payload table weaponId 或空表。\nfunction CWeaponShopView:OnUIAction(action, payload)\n    error(\"Weapon shop integration must implement OnUIAction\")\nend\n\nreturn CWeaponShopView"
+    "source": "--[[\n武器列表接入契约（完整状态，非增量）\nConfig.title: string，必填标题。\nConfig.qualities: 字典，键为品质 ID；值 {name: string, color: string} 均必填，color 为 #RRGGBB 卡片底色。\nConfig.weapons: 数组，显示顺序；每项 {id: string, name: string, qualityId: string,\n strength: number, price: number, icon: string?}。前五项必填；price 单位金币，显示为钞票图标与 +$金额；strength 为加成点数；\n id 唯一稳定，qualityId 对应 qualities 键；icon 可选 Roblox 图片 ID，缺省或空字符串显示问号占位。\nState.owned: 字典，weaponId -> boolean，缺省键表示未拥有。\nState.equippedId: string，必填，空字符串表示未装备。\nState.coins: number，必填，可用金币；State.open: boolean，必填。\nState.pending: 字典，可选，weaponId -> boolean，缺省为未请求；State.loading: boolean? 缺省 false。\n最小示例：\n self.Config = {title=\"WEAPONS\", qualities={common={name=\"Common\",color=\"#FAFCF9\"}},\n weapons={{id=\"sickle\",name=\"Sickle\",qualityId=\"common\",strength=1,price=0}}}\n self.State = {owned={sickle=true},equippedId=\"sickle\",coins=700,open=true}\nGetUIConfig/GetUIState 默认读取 self.Config/self.State。首次 Show 前准备全部必填数据；\n接入 OnReady 先父 OnReady，再 BindUIData、Show；后续更新数据后 RefreshUI。\nRefreshUI 调用 Render(GetUIState())；列表空时显示空提示，loading=true 时显示加载提示并清空条目。\n动作：Buy / Equip，payload={weaponId:string}；Close，payload={}。无返回值。\n必需覆写 OnUIAction，负责服务端校验、扣款及装备，请求时设置 pending[id]，完成后更新完整状态并刷新。\n无其他页面专用覆写。UI 禁用不代表服务器校验。模拟 integration 不导入游戏。\nWeaponIconImg 是动态图占位，正式图由 Config.weapons[].icon 替换；\nApp 动态 ID 预览能力有限，真实资源权限及 Studio 显示需另验。\n]]\nlocal FX = _G.FX\nlocal FXLoader = FX.Loader\nlocal CWeaponShopView = FX.Class(\"CWeaponShopView\", \"CUIView\")\n\n-- 绑定窗口与隐藏原型，只在首次准备时连接关闭按钮。\nfunction CWeaponShopView:OnReady()\n    local root = FXLoader:PlayerGui(\"WeaponShopUI\")\n    self.Root = root\n    self.Panel = FXLoader:Here(root, \"PopupPanelImg\")\n    self.TitleBox = FXLoader:Here(root, \"TitleBox\")\n    self.TitleTxt = FXLoader:Here(root, \"TitleBox.TitleTxt\")\n    self.List = FXLoader:Here(root, \"PopupPanelImg.WeaponListBox\")\n    self.EmptyTxt = FXLoader:Here(root, \"PopupPanelImg.EmptyTxt\")\n    self.Template = FXLoader:Here(root, \"Templates.WeaponRowImg\")\n    self.Rows = {}\n    local closeBtn = FXLoader:Here(root, \"TitleBox.CloseSurfaceImg\")\n    self:TrackConnection(closeBtn.Activated:Connect(function()\n        self:EmitUIAction(\"Close\", {})\n    end))\nend\n\n-- 打开时应用当前完整数据。\nfunction CWeaponShopView:OnShow()\n    self:RefreshUI()\nend\n\n-- 根据稳定 ID 增删和更新条目，颜色始终从品质配置读取。\n-- @param state table 完整状态，字段见文件头。\nfunction CWeaponShopView:Render(state)\n    local config = self:GetUIConfig()\n    self.Panel.Visible = state.open\n    self.TitleBox.Visible = state.open\n    self.TitleTxt.Text = config.title\n    local active = {}\n    local count = 0\n    if not state.loading then\n        for index, weapon in ipairs(config.weapons) do\n            count = index\n            active[weapon.id] = true\n            local entry = self.Rows[weapon.id]\n            if not entry then\n                local row = self.Template:Clone()\n                row.Name = \"Weapon_\" .. weapon.id\n                row.Parent = self.List\n                row.Visible = true\n                local button = FXLoader:Here(row, \"ActionBtn\")\n                local weaponId = weapon.id\n                -- 每个实例只连接一次；点击时读取当前状态，以稳定 ID 发出动作。\n                local connection = self:TrackConnection(button.Activated:Connect(function()\n                    local currentState = self:GetUIState()\n                    local action = \"Buy\"\n                    if currentState.owned[weaponId] then\n                        action = \"Equip\"\n                    end\n                    self:EmitUIAction(action, {weaponId = weaponId})\n                end))\n                local release = self:TrackCleanup(function()\n                    connection:Disconnect()\n                    row:Destroy()\n                end)\n                entry = {row = row, button = button, release = release}\n                self.Rows[weapon.id] = entry\n            end\n            local row = entry.row\n            local quality = config.qualities[weapon.qualityId]\n            row.Position = UDim2.fromOffset(2, (index - 1) * 172 + 2)\n            row.BackgroundColor3 = Color3.fromHex(quality.color)\n            FXLoader:Here(row, \"NameTxt\").Text = weapon.name\n            FXLoader:Here(row, \"RarityTxt\").Text = quality.name\n            FXLoader:Here(row, \"StrengthTxt\").Text = \"Strength +\" .. tostring(weapon.strength)\n            local icon = FXLoader:Here(row, \"WeaponIconImg\")\n            icon.Image = weapon.icon or \"rbxassetid://86795093617566\"\n            local owned = state.owned[weapon.id] == true\n            local equipped = state.equippedId == weapon.id\n            local pending = state.pending and state.pending[weapon.id]\n            local caption = \"+$\" .. tostring(weapon.price)\n            local color = \"#67ED14\"\n            local edge = \"#225A07\"\n            if owned then\n                caption = \"Equip\"\n            end\n            if equipped then\n                caption = \"Equipped\"\n                color = \"#397BA7\"\n                edge = \"#193E73\"\n            elseif pending then\n                caption = \"Waiting...\"\n                color = \"#638079\"\n            elseif not owned and state.coins < weapon.price then\n                caption = \"+$\" .. tostring(weapon.price)\n                color = \"#638079\"\n            end\n            FXLoader:Here(row, \"OwnedTxt\").Visible = false\n            local showMoney = not owned and not equipped and not pending\n            FXLoader:Here(row, \"ActionBtn.MoneyIconImg\").Visible = showMoney\n            local buttonText = FXLoader:Here(row, \"ActionBtn.ButtonTxt\")\n            buttonText.Text = caption\n            buttonText.Position = UDim2.fromOffset(0, 0)\n            buttonText.Size = UDim2.fromScale(1, 1)\n            buttonText.TextXAlignment = Enum.TextXAlignment.Center\n            if showMoney then\n                buttonText.Position = UDim2.fromOffset(64, 0)\n                buttonText.Size = UDim2.new(1, -72, 1, 0)\n                buttonText.TextXAlignment = Enum.TextXAlignment.Left\n            end\n            FXLoader:Here(row, \"ActionBtn.BottomEdgeImg\").BackgroundColor3 = Color3.fromHex(edge)\n            entry.button.BackgroundColor3 = Color3.fromHex(color)\n            self:SetButtonEnabled(entry.button, not equipped and not pending and (owned or state.coins >= weapon.price))\n        end\n    end\n    for weaponId, entry in pairs(self.Rows) do\n        if not active[weaponId] then\n            entry.release()\n            self.Rows[weaponId] = nil\n        end\n    end\n    self.List.CanvasSize = UDim2.fromOffset(0, math.max(524, count * 172))\n    self.EmptyTxt.Visible = count == 0\n    self.EmptyTxt.Text = \"No weapons available\"\n    if state.loading then\n        self.EmptyTxt.Text = \"Loading...\"\n    end\nend\n\n-- 必须由游戏接入或模拟类处理业务动作。\n-- @param action string Buy、Equip 或 Close。\n-- @param payload table weaponId 或空表。\nfunction CWeaponShopView:OnUIAction(action, payload)\n    error(\"Weapon shop integration must implement OnUIAction\")\nend\n\nreturn CWeaponShopView"
   },
   "version": 3
 }
