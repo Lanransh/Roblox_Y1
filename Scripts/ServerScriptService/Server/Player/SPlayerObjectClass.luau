@@ -159,6 +159,7 @@ function Player:Ctor(id)
     self:AddComponent("SMiscCompClass")
     self:AddComponent("SLootSellCompClass")
     self:AddComponent("SAuraCompClass")
+    self:AddComponent("SWeaponCompClass")
     self:AddComponent("SGMCompClass")
 end
 

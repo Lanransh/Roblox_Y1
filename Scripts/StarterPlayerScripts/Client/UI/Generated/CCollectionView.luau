@@ -44,7 +44,7 @@ function CCollectionView:OnReady()
     self.Rule = FXLoader:Here(root, "PopupPanelImg.SummaryImg.StatusTxt")
     self.Template = FXLoader:Here(root, "Templates.ItemRowImg")
     self.Rows = {}
-    local close = FXLoader:Here(root, "TitleBox.CloseSurfaceImg.CloseBtn")
+    local close = FXLoader:Here(root, "TitleBox.CloseSurfaceImg")
     -- 关闭由接入层更新显隐状态。
     self:TrackConnection(close.Activated:Connect(function()
         self:EmitUIAction("Close", {})

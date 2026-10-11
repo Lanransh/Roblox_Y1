@@ -165,205 +165,205 @@ return {
             Node = [[BlockModels.TrainingField4.Field1]]
         }
     },
-    SlicerConfig = {
+    ToolConfig = {
         [1] = {
             Index = 1,
-            SlicerId = 101,
+            ToolId = 101,
             Name = [[WornWoodenPickaxe]],
             Price = 0,
             TrainingRate = 1,
             DevGoodId = nil,
-            Img = nil,
+            Img = [[99853650045862]],
             ModelId = [=[game.ReplicatedStorage.Assets.BlockMeshs.Tools["01WornWoodenPickaxe"]]=]
         },
         [2] = {
             Index = 2,
-            SlicerId = 102,
+            ToolId = 102,
             Name = [[HeavyWoodenHammer]],
             Price = 25,
             TrainingRate = 39,
             DevGoodId = nil,
-            Img = nil,
+            Img = [[116225665846279]],
             ModelId = [=[game.ReplicatedStorage.Assets.BlockMeshs.Tools["02HeavyWoodenHammer"]]=]
         },
         [3] = {
             Index = 3,
-            SlicerId = 103,
+            ToolId = 103,
             Name = [[CrudeSilverPickaxe]],
             Price = 450,
             TrainingRate = 450,
             DevGoodId = nil,
-            Img = nil,
+            Img = [[136956773152573]],
             ModelId = [=[game.ReplicatedStorage.Assets.BlockMeshs.Tools["03CrudeSilverPickaxe"]]=]
         },
         [4] = {
             Index = 4,
-            SlicerId = 104,
+            ToolId = 104,
             Name = [[CrudeSilverHammer]],
             Price = 4375,
             TrainingRate = 3282,
             DevGoodId = nil,
-            Img = nil,
+            Img = [[97553870039023]],
             ModelId = [=[game.ReplicatedStorage.Assets.BlockMeshs.Tools["04CrudeSilverHammer"]]=]
         },
         [5] = {
             Index = 5,
-            SlicerId = 105,
+            ToolId = 105,
             Name = [[ReinforcedIronPickaxe]],
             Price = 35000,
             TrainingRate = 19000,
             DevGoodId = nil,
-            Img = nil,
+            Img = [[118090700645855]],
             ModelId = [=[game.ReplicatedStorage.Assets.BlockMeshs.Tools["05ReinforcedIronPickaxe"]]=]
         },
         [6] = {
             Index = 6,
-            SlicerId = 106,
+            ToolId = 106,
             Name = [[ReinforcedIronHammer]],
             Price = 253000,
             TrainingRate = 95500,
             DevGoodId = nil,
-            Img = nil,
+            Img = [[138508042210191]],
             ModelId = [=[game.ReplicatedStorage.Assets.BlockMeshs.Tools["06ReinforcedIronHammer"]]=]
         },
         [7] = {
             Index = 7,
-            SlicerId = 107,
+            ToolId = 107,
             Name = [[FineSteelMiningPickaxe]],
             Price = 1.89e+6,
             TrainingRate = 442000,
             DevGoodId = nil,
-            Img = nil,
+            Img = [[78371166922896]],
             ModelId = [=[game.ReplicatedStorage.Assets.BlockMeshs.Tools["07FineSteelMiningPickaxe"]]=]
         },
         [8] = {
             Index = 8,
-            SlicerId = 108,
+            ToolId = 108,
             Name = [[FineSteelMaul]],
             Price = 1.22e+7,
             TrainingRate = 1.93e+6,
             DevGoodId = nil,
-            Img = nil,
+            Img = [[132966760008713]],
             ModelId = [=[game.ReplicatedStorage.Assets.BlockMeshs.Tools["08FineSteelMaul"]]=]
         },
         [9] = {
             Index = 9,
-            SlicerId = 109,
+            ToolId = 109,
             Name = [[BrassMechanicalPickaxe]],
             Price = 7.62e+7,
             TrainingRate = 8.1e+6,
             DevGoodId = nil,
-            Img = nil,
+            Img = [[133927008310944]],
             ModelId = [=[game.ReplicatedStorage.Assets.BlockMeshs.Tools["09BrassMechanicalPickaxe"]]=]
         },
         [10] = {
             Index = 10,
-            SlicerId = 110,
+            ToolId = 110,
             Name = [[BrassMechanicalHammer]],
             Price = 4.65e+8,
             TrainingRate = 3.31e+7,
             DevGoodId = nil,
-            Img = nil,
+            Img = [[98415179467911]],
             ModelId = [=[game.ReplicatedStorage.Assets.BlockMeshs.Tools["10BrassMechanicalHammer"]]=]
         },
         [11] = {
             Index = 11,
-            SlicerId = 111,
+            ToolId = 111,
             Name = [[ObsidianBattlePickaxe]],
             Price = 2.78e+9,
             TrainingRate = 1.33e+8,
             DevGoodId = nil,
-            Img = nil,
+            Img = [[79276409476682]],
             ModelId = [=[game.ReplicatedStorage.Assets.BlockMeshs.Tools["11ObsidianBattlePickaxe"]]=]
         },
         [12] = {
             Index = 12,
-            SlicerId = 112,
+            ToolId = 112,
             Name = [[ObsidianGreatHammer]],
             Price = 1.64e+10,
             TrainingRate = 5.25e+8,
             DevGoodId = nil,
-            Img = nil,
+            Img = [[86184044773576]],
             ModelId = [=[game.ReplicatedStorage.Assets.BlockMeshs.Tools["12ObsidianGreatHammer"]]=]
         },
         [13] = {
             Index = 13,
-            SlicerId = 113,
+            ToolId = 113,
             Name = [[EmeraldGuardianPickaxe]],
             Price = 9.55e+10,
             TrainingRate = 2.05e+9,
             DevGoodId = nil,
-            Img = nil,
+            Img = [[85964386896273]],
             ModelId = [=[game.ReplicatedStorage.Assets.BlockMeshs.Tools["13EmeraldGuardianPickaxe"]]=]
         },
         [14] = {
             Index = 14,
-            SlicerId = 114,
+            ToolId = 114,
             Name = [[EmeraldGuardianHammer]],
             Price = 5.49e+11,
             TrainingRate = 7.99e+9,
             DevGoodId = nil,
-            Img = nil,
+            Img = [[121813166897471]],
             ModelId = [=[game.ReplicatedStorage.Assets.BlockMeshs.Tools["14EmeraldGuardianHammer"]]=]
         },
         [15] = {
             Index = 15,
-            SlicerId = 115,
+            ToolId = 115,
             Name = [[RedCrystalForgePickaxe]],
             Price = 3.13e+12,
             TrainingRate = 3.1e+10,
             DevGoodId = nil,
-            Img = nil,
+            Img = [[107669574278873]],
             ModelId = [=[game.ReplicatedStorage.Assets.BlockMeshs.Tools["15RedCrystalForgePickaxe"]]=]
         },
         [16] = {
             Index = 16,
-            SlicerId = 116,
+            ToolId = 116,
             Name = [[RedCrystalForgeHammer]],
             Price = 1.77e+13,
             TrainingRate = 1.2e+11,
             DevGoodId = nil,
-            Img = nil,
+            Img = [[98723580431394]],
             ModelId = [=[game.ReplicatedStorage.Assets.BlockMeshs.Tools["16RedCrystalForgeHammer"]]=]
         },
         [17] = {
             Index = 17,
-            SlicerId = 117,
+            ToolId = 117,
             Name = [[IceBlueStarCrystalPickaxe]],
             Price = 9.93e+13,
             TrainingRate = 4.62e+11,
             DevGoodId = nil,
-            Img = nil,
+            Img = [[126241505230536]],
             ModelId = [=[game.ReplicatedStorage.Assets.BlockMeshs.Tools["17IceBlueStarCrystalPickaxe"]]=]
         },
         [18] = {
             Index = 18,
-            SlicerId = 118,
+            ToolId = 118,
             Name = [[IceBlueStarCrystalHammer]],
             Price = 5.54e+14,
             TrainingRate = 1.78e+12,
             DevGoodId = nil,
-            Img = nil,
+            Img = [[78092021290844]],
             ModelId = [=[game.ReplicatedStorage.Assets.BlockMeshs.Tools["18IceBlueStarCrystalHammer"]]=]
         },
         [19] = {
             Index = 19,
-            SlicerId = 119,
+            ToolId = 119,
             Name = [[GildedCrownPickaxe]],
             Price = 3.07e+15,
             TrainingRate = 6.9e+12,
             DevGoodId = nil,
-            Img = nil,
+            Img = [[138731887343821]],
             ModelId = [=[game.ReplicatedStorage.Assets.BlockMeshs.Tools["19GildedCrownPickaxe"]]=]
         },
         [20] = {
             Index = 20,
-            SlicerId = 120,
+            ToolId = 120,
             Name = [[GildedCrownGreatHammer]],
             Price = 1.69e+16,
             TrainingRate = 2.67e+13,
             DevGoodId = nil,
-            Img = nil,
+            Img = [[113127149166000]],
             ModelId = [=[game.ReplicatedStorage.Assets.BlockMeshs.Tools["20GildedCrownGreatHammer"]]=]
         }
     },
@@ -433,7 +433,7 @@ return {
             TrainingRate = 1.5,
             Quality = 1,
             DevGoodId = nil,
-            Img = [[Effects.Trail1]],
+            Img = [[91469233823349]],
             ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["01_Common"]]=]
         },
         [2] = {
@@ -444,7 +444,7 @@ return {
             TrainingRate = 2.5,
             Quality = 1,
             DevGoodId = nil,
-            Img = [[Effects.Trail2]],
+            Img = [[112048940124762]],
             ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["02_Uncommon"]]=]
         },
         [3] = {
@@ -455,7 +455,7 @@ return {
             TrainingRate = 3.5,
             Quality = 1,
             DevGoodId = nil,
-            Img = [[Effects.Trail3]],
+            Img = [[114920101659350]],
             ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["03_Rare"]]=]
         },
         [4] = {
@@ -466,7 +466,7 @@ return {
             TrainingRate = 4.5,
             Quality = 1,
             DevGoodId = nil,
-            Img = [[Effects.Trail4]],
+            Img = [[76680071023422]],
             ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["04_Epic"]]=]
         },
         [5] = {
@@ -477,7 +477,7 @@ return {
             TrainingRate = 5.5,
             Quality = 1,
             DevGoodId = nil,
-            Img = [[Effects.Trail5]],
+            Img = [[98163950325063]],
             ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["05_Legendary"]]=]
         }
     },

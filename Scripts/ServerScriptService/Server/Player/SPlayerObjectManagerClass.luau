@@ -10,6 +10,7 @@ function Manager:Ctor()
     self:RegRockDropMsg()
     self:RegLootSellMsg()
     self:RegAuraMsg()
+    self:RegWeaponMsg()
     self:RegGMMsg()
 end
 
@@ -44,6 +45,23 @@ function Manager:RegAuraMsg()
             return {success = false, key = "Common.Unknown"}
         end
         return aura:RequestAura(action, auraId)
+    end)
+end
+
+--- 武器协议只注册一次，客户端不能指定其他玩家身份。
+function Manager:RegWeaponMsg()
+    --- 会话未就绪或已离服时拒绝请求，价格与拥有权由组件校验。
+    --- @param userId number 引擎认证的请求者。
+    --- @param action string 购买或装备动作。
+    --- @param weaponId number 稳定 ToolId。
+    --- @return table 权威操作结果。
+    FX.Network:RegClientMsgCallback("C2S_WeaponAction", function(userId, action, weaponId)
+        local player = self:GetPlayerObject(userId)
+        local weapon = player and player:GetComponent("SWeaponComp")
+        if not weapon then
+            return {success = false, key = "Common.Unknown"}
+        end
+        return weapon:RequestWeapon(action, weaponId)
     end)
 end
 

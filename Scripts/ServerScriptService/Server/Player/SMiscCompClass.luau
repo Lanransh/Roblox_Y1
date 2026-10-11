@@ -4,6 +4,7 @@ local Fields = _G.PlayerDataConfig
 local Rebirth = FXLoader:RequireShared("Scripts/Game/Shared/Rebirth")
 local Collection = FXLoader:RequireShared("Scripts/Game/Shared/Collection")
 local Aura = FXLoader:RequireShared("Scripts/Game/Shared/Aura")
+local Weapon = FXLoader:RequireShared("Scripts/Game/Shared/Weapon")
 local RockLevel = FXLoader:RequireShared("Scripts/Game/Shared/RockLevel")
 local Component = FX.Class("SMiscCompClass", "FSPlayerCompClass")
 
@@ -100,7 +101,7 @@ function Component:ClearTrainingHit()
     self._hit = false
 end
 
---- 走路和击打基础收益应用图鉴与单件光环倍率，再沿用重生、追赶和经验封顶规则。
+--- 走路和击打基础收益应用图鉴、光环与已装备武器倍率，再沿用重生、追赶和经验封顶规则。
 function Component:TickTraining()
     local character = self:GetPlayerCharacter()
     local root = character and character:FindFirstChild("HumanoidRootPart")
@@ -126,6 +127,7 @@ function Component:TickTraining()
     local baseGain = (walking and RockLevel.WalkTraining or 0) + (self._hit and 2 or 0)
     baseGain *= Collection.GetTrainingRate(self:GetTable(Fields.CollectionEntries))
     baseGain *= Aura.GetTrainingRate(self:GetTable(Fields.AuraData))
+    baseGain *= Weapon.GetEquippedConfig(self:GetTable(Fields.WeaponData)).TrainingRate
     local gain = Rebirth.GetTrainingGain(self:GetNumber(Fields.RockTrainingValue), baseGain,
         self:GetNumber(Fields.RebirthCount))
     if gain > 0 then

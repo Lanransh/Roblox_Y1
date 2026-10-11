@@ -72,6 +72,14 @@ return {
         KVTable = PlayerKVEnum.ePlayerData,
         Sync = true,
     },
+    -- 武器永久解锁与单件装备状态；字符串 ToolId 为字典键，默认木镐不能卸下。
+    WeaponData = {
+        Type = "table",
+        Key = "WeaponData",
+        DefVal = {owned = {["101"] = true}, equippedId = 101},
+        KVTable = PlayerKVEnum.ePlayerData,
+        Sync = true,
+    },
     -- 累计训练值，用于计算训练等级和力量。
     RockTrainingValue = {
         Type = "number",

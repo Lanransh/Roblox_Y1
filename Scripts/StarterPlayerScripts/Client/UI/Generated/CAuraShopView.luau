@@ -40,7 +40,7 @@ function CAuraShopView:OnReady()
     self.EmptyTxt = FXLoader:Here(root, "PopupPanelImg.EmptyTxt")
     self.Template = FXLoader:Here(root, "Templates.AuraRowImg")
     self.Rows = {}
-    local closeBtn = FXLoader:Here(root, "TitleBox.CloseSurfaceImg.CloseBtn")
+    local closeBtn = FXLoader:Here(root, "TitleBox.CloseSurfaceImg")
     self:TrackConnection(closeBtn.Activated:Connect(function()
         self:EmitUIAction("Close", {})
     end))

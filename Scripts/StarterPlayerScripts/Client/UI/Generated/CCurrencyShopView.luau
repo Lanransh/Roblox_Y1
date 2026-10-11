@@ -53,7 +53,7 @@ function CCurrencyShopView:OnReady()
     self:TrackConnection(self.RobuxTab.Activated:Connect(function()
         self:EmitUIAction("SelectTab", { tab = "Robux" })
     end))
-    local close = FXLoader:Here(root, "TitleBox.CloseSurfaceImg.CloseBtn")
+    local close = FXLoader:Here(root, "TitleBox.CloseSurfaceImg")
     -- 关闭动作交给接入层记录显隐状态。
     self:TrackConnection(close.Activated:Connect(function()
         self:EmitUIAction("Close", {})

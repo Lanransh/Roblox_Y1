@@ -6,6 +6,7 @@ _G.CPlayerObjectClass = Player
 --- @param playerId number 当前玩家的 Roblox UserId。
 function Player:Ctor(playerId)
     Player.Super.Ctor(self, playerId)
+    self:AddComponent("CSoundCompClass")
     self:AddComponent("CCommonUICompClass")
     self:AddComponent("FCFriendCompClass")
     self:AddComponent("CRockLevelCompClass")
@@ -13,6 +14,7 @@ function Player:Ctor(playerId)
     self:AddComponent("CCollectionUICompClass")
     self:AddComponent("CLootSellUICompClass")
     self:AddComponent("CAuraShopUICompClass")
+    self:AddComponent("CWeaponShopUICompClass")
     if FX.IsDeveloper(playerId) then
         self:AddComponent("CGMIntegrationCompClass")
     end

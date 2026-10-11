@@ -96,7 +96,7 @@ function Component:RefreshEffects()
     end
 end
 
---- 权威结算不让出执行；重复购买不扣款，未拥有的光环不能装备。
+--- 权威结算不让出执行；购买更高训练倍率的光环时自动装备，未装备时直接装备。
 --- @param action string 仅允许 Buy 或 Equip，Equip 再次点击当前光环时卸下。
 --- @param auraId number 客户端只能提供稳定 ID。
 --- @return table 操作结果、失败文案 Key 或最新权威状态与余额。
@@ -116,6 +116,9 @@ function Component:RequestAura(action, auraId)
             return {success = false, key = "Aura.NotEnoughCoins"}
         end
         data.owned[id] = true
+        if data.equippedId == 0 or config.TrainingRate > Aura.GetTrainingRate(data) then
+            data.equippedId = auraId
+        end
     else
         if data.owned[id] ~= true then
             return {success = false, key = "Aura.NotOwned"}

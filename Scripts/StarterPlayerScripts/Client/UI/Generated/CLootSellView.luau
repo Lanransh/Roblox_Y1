@@ -65,7 +65,7 @@ function CLootSellView:OnReady()
     self.StatusMoneyIcon = FXLoader:Here(root, "PopupPanelImg.StatusMoneyIconImg")
     self.SellAllBtn = FXLoader:Here(root, "PopupPanelImg.TotalImg.SellAllBtn")
     self.SellDoubleBtn = FXLoader:Here(root, "PopupPanelImg.TotalImg.SellDoubleBtn")
-    local closeBtn = FXLoader:Here(root, "TitleBox.CloseSurfaceImg.CloseBtn")
+    local closeBtn = FXLoader:Here(root, "TitleBox.CloseSurfaceImg")
     -- 点击时发送当前配置中的稳定 ID。
     self:TrackConnection(self.SellAllBtn.Activated:Connect(function()
         self:EmitUIAction("Sell", {entryIds = self:GetEntryIds(), multiplier = 1})

@@ -28,9 +28,10 @@ function Component:OnReady()
         table.insert(self.Config.auras, {
             id = tostring(config.AuraId), auraId = config.AuraId, name = config.Name,
             qualityId = qualityId, strength = config.TrainingRate, price = config.Price,
+            icon = "rbxassetid://" .. config.Img,
         })
     end
-    self.State = {owned = {}, equippedId = "", coins = 0, open = false, pending = {}}
+    self.State = {owned = {}, equippedId = "", coins = 0, open = false}
     self:Hide()
     self:TrackConnection(self._localization.Changed:Connect(function()
         self:RefreshUI()
@@ -108,6 +109,7 @@ function Component:Render(state)
         local quality = FXLoader:Here(row, "RarityTxt")
         local caption = FXLoader:Here(row, "ActionBtn/ButtonTxt")
         rate.AutoLocalize = false
+        rate.TextScaled = true
         quality.AutoLocalize = false
         caption.AutoLocalize = false
         rate.Text = self._localization:FormatByKey("Aura.TrainingRate", {
@@ -115,11 +117,8 @@ function Component:Render(state)
         })
         local owned = state.owned[aura.id] == true
         local equipped = state.equippedId == aura.id
-        local pending = state.pending[aura.id]
         local key = "Aura.Price"
-        if pending then
-            key = "Aura.Waiting"
-        elseif equipped then
+        if equipped then
             key = "Aura.Unequip"
         elseif owned then
             key = "Aura.Equip"
@@ -127,8 +126,8 @@ function Component:Render(state)
             key = "Aura.NeedCoins"
         end
         caption.Text = self._localization:FormatByKey(key, {value = GameUtility.NumberToText(aura.price)})
-        -- 余额不足仍允许点击，由服务端返回提示；已装备允许卸下，仅请求期间禁用。
-        self:SetButtonEnabled(entry.button, not pending)
+        -- 请求期间保持原有显示；余额不足由服务端提示，已装备允许卸下。
+        self:SetButtonEnabled(entry.button, true)
     end
 end
 
@@ -143,7 +142,7 @@ function Component:OnHide()
     self.State.open = false
 end
 
---- 只请求操作与稳定 ID，不在客户端扣款、写存档或创建角色特效。
+--- 请求不切换按钮为等待状态，后台请求锁防止重复提交，只发送操作与稳定 ID。
 --- @param action string Buy、Equip 或 Close。
 --- @param payload table 展示类提供的字符串 auraId。
 function Component:OnUIAction(action, payload)
@@ -154,10 +153,6 @@ function Component:OnUIAction(action, payload)
     if self._requestTask then
         return
     end
-    for index, aura in ipairs(self.Config.auras) do
-        self.State.pending[aura.id] = true
-    end
-    self:RefreshUI()
     self._requestTask = task.defer(function()
         --- 网络拒绝或失败恢复按钮，不用本地状态伪造成功。
         --- @return table 服务端权威结果。
@@ -165,7 +160,6 @@ function Component:OnUIAction(action, payload)
             return FX.Network:InvokeServer("C2S_AuraAction", action, tonumber(payload.auraId))
         end)
         self._requestTask = nil
-        table.clear(self.State.pending)
         if ok and result.success then
             self.State.owned = result.data.owned
             self.State.equippedId = result.data.equippedId == 0 and "" or tostring(result.data.equippedId)

@@ -10,6 +10,7 @@ local GameConfig = _G.GameConfig
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local CollectibleText = FXLoader:RequireShared("Scripts/Game/Shared/CollectibleText")
 local Collection = FXLoader:RequireShared("Scripts/Game/Shared/Collection")
+local Weapon = FXLoader:RequireShared("Scripts/Game/Shared/Weapon")
 local English = FXLoader:Shared("Shared/Localization"):GetTranslator("en-us")
 local Component = FX.Class("SRockLevelCompClass", "FSPlayerCompClass")
 
@@ -45,8 +46,12 @@ function Component:GetCompName()
     return "SRockLevelComp"
 end
 
---- 读档后校验奖池模型、同步地板颜色并启动位置检查。
+--- 读档后缓存武器模板、校验奖池模型、同步地板颜色并启动位置检查。
 function Component:OnPlayerLogin()
+    self._weaponTemplates = {}
+    for index, config in ipairs(GameConfig.ToolConfig) do
+        self._weaponTemplates[config.ToolId] = FXLoader:Shared("Assets/BlockMeshs/Tools/" .. Weapon.GetModelName(config))
+    end
     self._itemHUD = FXLoader:Shared("Nodes/ItemHUD")
     self._areas = RockLevel.GetAreas()
     self:PrepareAreaDefinitions()
@@ -630,20 +635,25 @@ function Component:ClearDrops()
     self._dropByCell = {}
 end
 
---- 出生与重生时将导出木镐的副本组装为右手 Tool，不改动编辑器管理的模板。
+--- 出生、重生与切换装备时将已解锁武器组装为右手 Tool，保留攻击动画与拖尾。
 --- @param humanoid Humanoid 当前存活角色的 Humanoid。
 function Component:EquipPickaxe(humanoid)
     if self._pickaxe then
         self._pickaxe:Destroy()
     end
-    local template = FXLoader:Shared("Assets/BlockMeshs/Tools/01WornWoodenPickaxe")
+    local config = Weapon.GetEquippedConfig(self:GetTable(Fields.WeaponData))
+    local template = self._weaponTemplates[config.ToolId]
     local model
     self._pickaxe, model = RockWeaponTool.Build(template)
     local handle = self._pickaxe.Handle
-    self._pickaxe.Name = English:FormatByKey("Item.FreePickaxe")
+    self._weaponId = config.ToolId
+    local nameKey = "Weapon.Name." .. tostring(config.ToolId)
+    self._pickaxe.Name = English:FormatByKey(nameKey)
     self._pickaxe.ToolTip = self._pickaxe.Name
+    self._pickaxe.TextureId = "rbxassetid://" .. config.Img
+    self._pickaxe:SetAttribute("WeaponId", config.ToolId)
     self._pickaxe:SetAttribute("StarterPickaxe", true)
-    self._pickaxe:SetAttribute("DisplayNameKey", "Item.FreePickaxe")
+    self._pickaxe:SetAttribute("DisplayNameKey", nameKey)
     local headCFrame, modelSize = model:GetBoundingBox()
     local headY = headCFrame.Position.Y + modelSize.Y * 0.5 - 0.2 - handle.Position.Y
     local start = Instance.new("Attachment")
@@ -682,7 +692,7 @@ function Component:EquipPickaxe(humanoid)
     end
 end
 
---- 服务端重试已揭露奖励、回收超时道具并处理角色与入库，死亡期间仍执行重试和回收。
+--- 服务端处理掉落、角色与入库，并在装备数据变化后替换当前武器；死亡期间仍回收掉落。
 function Component:Tick()
     local now = workspace:GetServerTimeNow()
     for dropId, drop in pairs(self._dropNodes) do
@@ -715,6 +725,8 @@ function Component:Tick()
             self:PublishEvent("RockAttackReset")
         end
         self._character = character
+        self:EquipPickaxe(humanoid)
+    elseif self._weaponId ~= Weapon.GetEquippedConfig(self:GetTable(Fields.WeaponData)).ToolId then
         self:EquipPickaxe(humanoid)
     end
     local firstArea = self._areas[1]

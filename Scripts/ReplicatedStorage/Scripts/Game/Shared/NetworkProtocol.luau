@@ -16,6 +16,10 @@ return {
         -- RPC 返回 {success: boolean, key: string?, data: table?, coins: number?}。
         -- 服务端按 AuraConfig 校验、扣款和切换装备，忽略客户端价格与模型路径。
         "C2S_AuraAction",
+        -- action: "Buy"|"Equip"、weaponId: number ToolId；身份来自引擎认证 UserId。
+        -- RPC 返回 {success: boolean, key: string?, data: table?, coins: number?}。
+        -- 服务端校验解锁与余额，购买不自动装备，当前武器不能卸下。
+        "C2S_WeaponAction",
         -- key: string、round: number，击破格号与轮次；服务器按有效命中记录揭露预生成结果一次。
         -- 单向请求，不接受客户端提供道具、价格、位置或玩家身份。
         "C2S_RequestRockDrop",
