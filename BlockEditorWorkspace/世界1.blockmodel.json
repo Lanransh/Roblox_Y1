@@ -9507,6 +9507,6648 @@
           }
         }
       }
+    },
+    {
+      "id": "ai-node-282",
+      "name": "基地墙顶绿化",
+      "parentId": "ai-node-29",
+      "type": "Transform",
+      "transform": {
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "prefab-node-bad4935a-00c3-4637-b10e-17870cd64f63",
+      "name": "墙顶树_1",
+      "parentId": "ai-node-282",
+      "type": "PrefabReference",
+      "transform": {
+        "position": [
+          -50,
+          13.075,
+          -14.85
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "target": {
+        "kind": "local",
+        "prefabGuid": "41bda629-31ff-4ac8-938b-ccd6d0fb3c63"
+      }
+    },
+    {
+      "id": "group-11",
+      "name": "墙顶树_2",
+      "parentId": "ai-node-282",
+      "type": "Group",
+      "transform": {
+        "position": [
+          -31,
+          13.075,
+          -14.85
+        ],
+        "rotation": [
+          0,
+          90,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "block-187",
+      "name": "Trunk",
+      "parentId": "group-11",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          1.612,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.65,
+          3.3280000000000003,
+          0.65
+        ],
+        "color": "#795037",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "block-188",
+      "name": "Branch",
+      "parentId": "group-11",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -0.468,
+          2.5480000000000005,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.456,
+          0.41600000000000004,
+          0.41600000000000004
+        ],
+        "color": "#795037",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "block-189",
+      "name": "LowerCrown",
+      "parentId": "group-11",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          3.224,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          2.704,
+          1.456,
+          2.704
+        ],
+        "color": "#347b37",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-190",
+      "name": "UpperCrown",
+      "parentId": "group-11",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0.182,
+          4.316000000000001,
+          0.13
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          2.1319999999999997,
+          1.508,
+          2.1319999999999997
+        ],
+        "color": "#559b3b",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-191",
+      "name": "SideCrown",
+      "parentId": "group-11",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -1.04,
+          3.016,
+          0.20800000000000002
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.6640000000000001,
+          1.1440000000000001,
+          1.768
+        ],
+        "color": "#438a32",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "group-12",
+      "name": "墙顶树_3",
+      "parentId": "ai-node-282",
+      "type": "Group",
+      "transform": {
+        "position": [
+          30,
+          13.075,
+          -14.85
+        ],
+        "rotation": [
+          180,
+          0,
+          180
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "block-192",
+      "name": "Trunk",
+      "parentId": "group-12",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          1.95,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.85,
+          3.9,
+          0.85
+        ],
+        "color": "#76523b",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "block-193",
+      "name": "Branch",
+      "parentId": "group-12",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          2.795,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          4.1,
+          1.43,
+          3.9
+        ],
+        "color": "#326e37",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "block-194",
+      "name": "MainCrown",
+      "parentId": "group-12",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          3.965,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          3.4,
+          1.495,
+          3.2
+        ],
+        "color": "#41863b",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-195",
+      "name": "TopCrown",
+      "parentId": "group-12",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          5.07,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          2.5,
+          1.365,
+          2.3
+        ],
+        "color": "#579849",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-196",
+      "name": "SideCrown",
+      "parentId": "group-12",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          6.045,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.4,
+          1.04,
+          1.3
+        ],
+        "color": "#77ad53",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "prefab-node-07f9e1cc-4a3c-4072-985c-da9e9380552d",
+      "name": "墙顶树_4",
+      "parentId": "ai-node-282",
+      "type": "PrefabReference",
+      "transform": {
+        "position": [
+          51,
+          13.075,
+          -14.85
+        ],
+        "rotation": [
+          0,
+          270,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "target": {
+        "kind": "local",
+        "prefabGuid": "156c5355-1f68-4a56-b247-54e71438b1a6"
+      }
+    },
+    {
+      "id": "group-15",
+      "name": "墙顶树_5",
+      "parentId": "ai-node-282",
+      "type": "Group",
+      "transform": {
+        "position": [
+          -48,
+          13.075,
+          16.75
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "block-197",
+      "name": "Trunk",
+      "parentId": "group-15",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          1.6660000000000001,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.02,
+          3.468,
+          1.02
+        ],
+        "color": "#795037",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "block-198",
+      "name": "Branch",
+      "parentId": "group-15",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -0.6120000000000001,
+          2.5160000000000005,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          2.176,
+          0.6120000000000001,
+          0.6120000000000001
+        ],
+        "color": "#795037",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "block-199",
+      "name": "MainCrown",
+      "parentId": "group-15",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          4.0120000000000005,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          4.6240000000000006,
+          2.3120000000000003,
+          3.944
+        ],
+        "color": "#448d36",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-200",
+      "name": "TopCrown",
+      "parentId": "group-15",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0.476,
+          5.44,
+          0.136
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          3.128,
+          1.6320000000000001,
+          2.9920000000000004
+        ],
+        "color": "#69a846",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-201",
+      "name": "SideCrown",
+      "parentId": "group-15",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -1.6320000000000001,
+          3.6720000000000006,
+          0.272
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          2.3120000000000003,
+          1.6320000000000001,
+          2.5160000000000005
+        ],
+        "color": "#357b34",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "prefab-node-aea6041b-61d8-4535-8807-fdd4b7add8b7",
+      "name": "墙顶树_6",
+      "parentId": "ai-node-282",
+      "type": "PrefabReference",
+      "transform": {
+        "position": [
+          -29,
+          13.075,
+          16.75
+        ],
+        "rotation": [
+          0,
+          90,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "target": {
+        "kind": "local",
+        "prefabGuid": "156c5355-1f68-4a56-b247-54e71438b1a6"
+      }
+    },
+    {
+      "id": "prefab-node-b8ce3ca3-73ff-415c-b673-c1126543a2ba",
+      "name": "墙顶树_7",
+      "parentId": "ai-node-282",
+      "type": "PrefabReference",
+      "transform": {
+        "position": [
+          32,
+          13.075,
+          16.75
+        ],
+        "rotation": [
+          180,
+          0,
+          180
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "target": {
+        "kind": "local",
+        "prefabGuid": "41bda629-31ff-4ac8-938b-ccd6d0fb3c63"
+      }
+    },
+    {
+      "id": "group-16",
+      "name": "墙顶树_8",
+      "parentId": "ai-node-282",
+      "type": "Group",
+      "transform": {
+        "position": [
+          53,
+          13.075,
+          16.75
+        ],
+        "rotation": [
+          0,
+          270,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "block-202",
+      "name": "Trunk",
+      "parentId": "group-16",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          1.612,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.65,
+          3.3280000000000003,
+          0.65
+        ],
+        "color": "#795037",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "block-203",
+      "name": "Branch",
+      "parentId": "group-16",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -0.468,
+          2.5480000000000005,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.456,
+          0.41600000000000004,
+          0.41600000000000004
+        ],
+        "color": "#795037",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "block-204",
+      "name": "LowerCrown",
+      "parentId": "group-16",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          3.224,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          2.704,
+          1.456,
+          2.704
+        ],
+        "color": "#347b37",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-205",
+      "name": "UpperCrown",
+      "parentId": "group-16",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0.182,
+          4.316000000000001,
+          0.13
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          2.1319999999999997,
+          1.508,
+          2.1319999999999997
+        ],
+        "color": "#559b3b",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-206",
+      "name": "SideCrown",
+      "parentId": "group-16",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -1.04,
+          3.016,
+          0.20800000000000002
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.6640000000000001,
+          1.1440000000000001,
+          1.768
+        ],
+        "color": "#438a32",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "group-17",
+      "name": "墙顶树_9",
+      "parentId": "ai-node-282",
+      "type": "Group",
+      "transform": {
+        "position": [
+          -60.75,
+          13.075,
+          1
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "block-207",
+      "name": "Trunk",
+      "parentId": "group-17",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          2.25,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.85,
+          4.5,
+          0.85
+        ],
+        "color": "#76523b",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "block-208",
+      "name": "Branch",
+      "parentId": "group-17",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          3.225,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          4.1,
+          1.65,
+          3.9
+        ],
+        "color": "#326e37",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "block-209",
+      "name": "MainCrown",
+      "parentId": "group-17",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          4.575,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          3.4,
+          1.725,
+          3.2
+        ],
+        "color": "#41863b",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-210",
+      "name": "TopCrown",
+      "parentId": "group-17",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          5.8500000000000005,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          2.5,
+          1.575,
+          2.3
+        ],
+        "color": "#579849",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-211",
+      "name": "SideCrown",
+      "parentId": "group-17",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          6.9750000000000005,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.4,
+          1.2,
+          1.3
+        ],
+        "color": "#77ad53",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "prefab-node-519c8c7e-5cf5-4d2c-b15b-345eec85ad9e",
+      "name": "墙顶树_10",
+      "parentId": "ai-node-282",
+      "type": "PrefabReference",
+      "transform": {
+        "position": [
+          62.15,
+          13.075,
+          2
+        ],
+        "rotation": [
+          0,
+          90,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "target": {
+        "kind": "local",
+        "prefabGuid": "156c5355-1f68-4a56-b247-54e71438b1a6"
+      }
+    },
+    {
+      "id": "group-18",
+      "name": "墙顶树_11",
+      "parentId": "ai-node-282",
+      "type": "Group",
+      "transform": {
+        "position": [
+          -18.25,
+          13.075,
+          -30
+        ],
+        "rotation": [
+          180,
+          0,
+          180
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "block-212",
+      "name": "Trunk",
+      "parentId": "group-18",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          1.6660000000000001,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.02,
+          3.468,
+          1.02
+        ],
+        "color": "#795037",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "block-213",
+      "name": "Branch",
+      "parentId": "group-18",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -0.6120000000000001,
+          2.5160000000000005,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          2.176,
+          0.6120000000000001,
+          0.6120000000000001
+        ],
+        "color": "#795037",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "block-214",
+      "name": "MainCrown",
+      "parentId": "group-18",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          4.0120000000000005,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          4.6240000000000006,
+          2.3120000000000003,
+          3.944
+        ],
+        "color": "#448d36",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-215",
+      "name": "TopCrown",
+      "parentId": "group-18",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0.476,
+          5.44,
+          0.136
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          3.128,
+          1.6320000000000001,
+          2.9920000000000004
+        ],
+        "color": "#69a846",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-216",
+      "name": "SideCrown",
+      "parentId": "group-18",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -1.6320000000000001,
+          3.6720000000000006,
+          0.272
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          2.3120000000000003,
+          1.6320000000000001,
+          2.5160000000000005
+        ],
+        "color": "#357b34",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "group-19",
+      "name": "墙顶树_12",
+      "parentId": "ai-node-282",
+      "type": "Group",
+      "transform": {
+        "position": [
+          19.65,
+          13.075,
+          -33
+        ],
+        "rotation": [
+          0,
+          270,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "block-217",
+      "name": "Trunk",
+      "parentId": "group-19",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          2.4599999999999995,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.85,
+          4.919999999999999,
+          0.85
+        ],
+        "color": "#76523b",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "block-218",
+      "name": "Branch",
+      "parentId": "group-19",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          3.526,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          4.1,
+          1.8039999999999998,
+          3.9
+        ],
+        "color": "#326e37",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "block-219",
+      "name": "LowerCrown",
+      "parentId": "group-19",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          5.002,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          3.4,
+          1.886,
+          3.2
+        ],
+        "color": "#41863b",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-220",
+      "name": "UpperCrown",
+      "parentId": "group-19",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          6.396,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          2.5,
+          1.7219999999999998,
+          2.3
+        ],
+        "color": "#579849",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-221",
+      "name": "SideCrown",
+      "parentId": "group-19",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          7.6259999999999994,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.4,
+          1.3119999999999998,
+          1.3
+        ],
+        "color": "#77ad53",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "prefab-node-bde88117-efbb-4ad7-940c-638d16fd108b",
+      "name": "墙顶树_13",
+      "parentId": "ai-node-282",
+      "type": "PrefabReference",
+      "transform": {
+        "position": [
+          -11,
+          13.075,
+          -46.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "target": {
+        "kind": "local",
+        "prefabGuid": "41bda629-31ff-4ac8-938b-ccd6d0fb3c63"
+      }
+    },
+    {
+      "id": "group-20",
+      "name": "墙顶树_14",
+      "parentId": "ai-node-282",
+      "type": "Group",
+      "transform": {
+        "position": [
+          12,
+          13.075,
+          -46.45
+        ],
+        "rotation": [
+          0,
+          90,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "block-222",
+      "name": "Trunk",
+      "parentId": "group-20",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          1.612,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.65,
+          3.3280000000000003,
+          0.65
+        ],
+        "color": "#795037",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "block-223",
+      "name": "Branch",
+      "parentId": "group-20",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -0.468,
+          2.5480000000000005,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.456,
+          0.41600000000000004,
+          0.41600000000000004
+        ],
+        "color": "#795037",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "block-224",
+      "name": "LowerCrown",
+      "parentId": "group-20",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          3.224,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          2.704,
+          1.456,
+          2.704
+        ],
+        "color": "#347b37",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-225",
+      "name": "UpperCrown",
+      "parentId": "group-20",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0.182,
+          4.316000000000001,
+          0.13
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          2.1319999999999997,
+          1.508,
+          2.1319999999999997
+        ],
+        "color": "#559b3b",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-226",
+      "name": "SideCrown",
+      "parentId": "group-20",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -1.04,
+          3.016,
+          0.20800000000000002
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.6640000000000001,
+          1.1440000000000001,
+          1.768
+        ],
+        "color": "#438a32",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "group-21",
+      "name": "墙顶草丛_1",
+      "parentId": "ai-node-282",
+      "type": "Group",
+      "transform": {
+        "position": [
+          -56,
+          13.075,
+          -14.85
+        ],
+        "rotation": [
+          0,
+          90,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "block-227",
+      "name": "GrassBlock_1",
+      "parentId": "group-21",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.18399999999999997,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.22,
+          0.44799999999999995,
+          2.5
+        ],
+        "color": "#4d9335",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-228",
+      "name": "GrassBlock_2",
+      "parentId": "group-21",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0.05,
+          0.422,
+          -0.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          0.476,
+          1.5
+        ],
+        "color": "#75ac40",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-229",
+      "name": "GrassBlock_3",
+      "parentId": "group-21",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.2,
+          1.25
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          0.48,
+          1.05
+        ],
+        "color": "#609c36",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "group-22",
+      "name": "墙顶草丛_2",
+      "parentId": "ai-node-282",
+      "type": "Group",
+      "transform": {
+        "position": [
+          -43,
+          13.075,
+          -14.85
+        ],
+        "rotation": [
+          0,
+          270,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "block-230",
+      "name": "GrassBlock_1",
+      "parentId": "group-22",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.31200000000000006,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.22,
+          0.7040000000000001,
+          2.5
+        ],
+        "color": "#4c9235",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-231",
+      "name": "GrassBlock_2",
+      "parentId": "group-22",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0.05,
+          0.686,
+          -0.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          0.7480000000000001,
+          1.5
+        ],
+        "color": "#6eab3d",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-232",
+      "name": "GrassBlock_3",
+      "parentId": "group-22",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.2,
+          1.25
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          0.48,
+          1.05
+        ],
+        "color": "#82b94b",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "group-23",
+      "name": "墙顶草丛_3",
+      "parentId": "ai-node-282",
+      "type": "Group",
+      "transform": {
+        "position": [
+          -24,
+          13.075,
+          -14.85
+        ],
+        "rotation": [
+          0,
+          90,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "block-233",
+      "name": "GrassBlock_1",
+      "parentId": "group-23",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.47200000000000003,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.22,
+          1.024,
+          2.5
+        ],
+        "color": "#4d9335",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-234",
+      "name": "GrassBlock_2",
+      "parentId": "group-23",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0.05,
+          1.016,
+          -0.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          1.088,
+          1.5
+        ],
+        "color": "#75ac40",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-235",
+      "name": "GrassBlock_3",
+      "parentId": "group-23",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.2,
+          1.25
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          0.48,
+          1.05
+        ],
+        "color": "#609c36",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "group-24",
+      "name": "墙顶草丛_4",
+      "parentId": "ai-node-282",
+      "type": "Group",
+      "transform": {
+        "position": [
+          23,
+          13.075,
+          -14.85
+        ],
+        "rotation": [
+          0,
+          270,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "block-236",
+      "name": "GrassBlock_1",
+      "parentId": "group-24",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.18399999999999997,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.22,
+          0.44799999999999995,
+          2.5
+        ],
+        "color": "#4c9235",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-237",
+      "name": "GrassBlock_2",
+      "parentId": "group-24",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0.05,
+          0.422,
+          -0.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          0.476,
+          1.5
+        ],
+        "color": "#6eab3d",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-238",
+      "name": "GrassBlock_3",
+      "parentId": "group-24",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.2,
+          1.25
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          0.48,
+          1.05
+        ],
+        "color": "#82b94b",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "group-25",
+      "name": "墙顶草丛_5",
+      "parentId": "ai-node-282",
+      "type": "Group",
+      "transform": {
+        "position": [
+          42,
+          13.075,
+          -14.85
+        ],
+        "rotation": [
+          0,
+          90,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "block-239",
+      "name": "GrassBlock_1",
+      "parentId": "group-25",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.31200000000000006,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.22,
+          0.7040000000000001,
+          2.5
+        ],
+        "color": "#4d9335",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-240",
+      "name": "GrassBlock_2",
+      "parentId": "group-25",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0.05,
+          0.686,
+          -0.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          0.7480000000000001,
+          1.5
+        ],
+        "color": "#75ac40",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-241",
+      "name": "GrassBlock_3",
+      "parentId": "group-25",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.2,
+          1.25
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          0.48,
+          1.05
+        ],
+        "color": "#609c36",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "group-26",
+      "name": "墙顶草丛_6",
+      "parentId": "ai-node-282",
+      "type": "Group",
+      "transform": {
+        "position": [
+          56,
+          13.075,
+          -14.85
+        ],
+        "rotation": [
+          0,
+          270,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "block-242",
+      "name": "GrassBlock_1",
+      "parentId": "group-26",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.47200000000000003,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.22,
+          1.024,
+          2.5
+        ],
+        "color": "#4c9235",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-243",
+      "name": "GrassBlock_2",
+      "parentId": "group-26",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0.05,
+          1.016,
+          -0.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          1.088,
+          1.5
+        ],
+        "color": "#6eab3d",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-244",
+      "name": "GrassBlock_3",
+      "parentId": "group-26",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.2,
+          1.25
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          0.48,
+          1.05
+        ],
+        "color": "#82b94b",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "group-27",
+      "name": "墙顶草丛_7",
+      "parentId": "ai-node-282",
+      "type": "Group",
+      "transform": {
+        "position": [
+          -55,
+          13.075,
+          16.75
+        ],
+        "rotation": [
+          0,
+          90,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "block-245",
+      "name": "GrassBlock_1",
+      "parentId": "group-27",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.18399999999999997,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.22,
+          0.44799999999999995,
+          2.5
+        ],
+        "color": "#4d9335",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-246",
+      "name": "GrassBlock_2",
+      "parentId": "group-27",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0.05,
+          0.422,
+          -0.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          0.476,
+          1.5
+        ],
+        "color": "#75ac40",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-247",
+      "name": "GrassBlock_3",
+      "parentId": "group-27",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.2,
+          1.25
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          0.48,
+          1.05
+        ],
+        "color": "#609c36",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "group-28",
+      "name": "墙顶草丛_8",
+      "parentId": "ai-node-282",
+      "type": "Group",
+      "transform": {
+        "position": [
+          -39,
+          13.075,
+          16.75
+        ],
+        "rotation": [
+          0,
+          270,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "block-248",
+      "name": "GrassBlock_1",
+      "parentId": "group-28",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.31200000000000006,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.22,
+          0.7040000000000001,
+          2.5
+        ],
+        "color": "#4c9235",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-249",
+      "name": "GrassBlock_2",
+      "parentId": "group-28",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0.05,
+          0.686,
+          -0.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          0.7480000000000001,
+          1.5
+        ],
+        "color": "#6eab3d",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-250",
+      "name": "GrassBlock_3",
+      "parentId": "group-28",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.2,
+          1.25
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          0.48,
+          1.05
+        ],
+        "color": "#82b94b",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "group-29",
+      "name": "墙顶草丛_9",
+      "parentId": "ai-node-282",
+      "type": "Group",
+      "transform": {
+        "position": [
+          -23,
+          13.075,
+          16.75
+        ],
+        "rotation": [
+          0,
+          90,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "block-251",
+      "name": "GrassBlock_1",
+      "parentId": "group-29",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.47200000000000003,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.22,
+          1.024,
+          2.5
+        ],
+        "color": "#4d9335",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-252",
+      "name": "GrassBlock_2",
+      "parentId": "group-29",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0.05,
+          1.016,
+          -0.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          1.088,
+          1.5
+        ],
+        "color": "#75ac40",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-253",
+      "name": "GrassBlock_3",
+      "parentId": "group-29",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.2,
+          1.25
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          0.48,
+          1.05
+        ],
+        "color": "#609c36",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "group-30",
+      "name": "墙顶草丛_10",
+      "parentId": "ai-node-282",
+      "type": "Group",
+      "transform": {
+        "position": [
+          25,
+          13.075,
+          16.75
+        ],
+        "rotation": [
+          0,
+          270,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "block-254",
+      "name": "GrassBlock_1",
+      "parentId": "group-30",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.18399999999999997,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.22,
+          0.44799999999999995,
+          2.5
+        ],
+        "color": "#4c9235",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-255",
+      "name": "GrassBlock_2",
+      "parentId": "group-30",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0.05,
+          0.422,
+          -0.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          0.476,
+          1.5
+        ],
+        "color": "#6eab3d",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-256",
+      "name": "GrassBlock_3",
+      "parentId": "group-30",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.2,
+          1.25
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          0.48,
+          1.05
+        ],
+        "color": "#82b94b",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "group-31",
+      "name": "墙顶草丛_11",
+      "parentId": "ai-node-282",
+      "type": "Group",
+      "transform": {
+        "position": [
+          43,
+          13.075,
+          16.75
+        ],
+        "rotation": [
+          0,
+          90,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "block-257",
+      "name": "GrassBlock_1",
+      "parentId": "group-31",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.31200000000000006,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.22,
+          0.7040000000000001,
+          2.5
+        ],
+        "color": "#4d9335",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-258",
+      "name": "GrassBlock_2",
+      "parentId": "group-31",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0.05,
+          0.686,
+          -0.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          0.7480000000000001,
+          1.5
+        ],
+        "color": "#75ac40",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-259",
+      "name": "GrassBlock_3",
+      "parentId": "group-31",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.2,
+          1.25
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          0.48,
+          1.05
+        ],
+        "color": "#609c36",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "group-32",
+      "name": "墙顶草丛_12",
+      "parentId": "ai-node-282",
+      "type": "Group",
+      "transform": {
+        "position": [
+          57,
+          13.075,
+          16.75
+        ],
+        "rotation": [
+          0,
+          270,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "block-260",
+      "name": "GrassBlock_1",
+      "parentId": "group-32",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.47200000000000003,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.22,
+          1.024,
+          2.5
+        ],
+        "color": "#4c9235",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-261",
+      "name": "GrassBlock_2",
+      "parentId": "group-32",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0.05,
+          1.016,
+          -0.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          1.088,
+          1.5
+        ],
+        "color": "#6eab3d",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-262",
+      "name": "GrassBlock_3",
+      "parentId": "group-32",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.2,
+          1.25
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          0.48,
+          1.05
+        ],
+        "color": "#82b94b",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "group-33",
+      "name": "墙顶草丛_13",
+      "parentId": "ai-node-282",
+      "type": "Group",
+      "transform": {
+        "position": [
+          -60.75,
+          13.075,
+          -7
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "block-263",
+      "name": "GrassBlock_1",
+      "parentId": "group-33",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.18399999999999997,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.22,
+          0.44799999999999995,
+          2.5
+        ],
+        "color": "#4d9335",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-264",
+      "name": "GrassBlock_2",
+      "parentId": "group-33",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0.05,
+          0.422,
+          -0.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          0.476,
+          1.5
+        ],
+        "color": "#75ac40",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-265",
+      "name": "GrassBlock_3",
+      "parentId": "group-33",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.2,
+          1.25
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          0.48,
+          1.05
+        ],
+        "color": "#609c36",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "group-34",
+      "name": "墙顶草丛_14",
+      "parentId": "ai-node-282",
+      "type": "Group",
+      "transform": {
+        "position": [
+          -60.75,
+          13.075,
+          9
+        ],
+        "rotation": [
+          180,
+          0,
+          180
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "block-266",
+      "name": "GrassBlock_1",
+      "parentId": "group-34",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.31200000000000006,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.22,
+          0.7040000000000001,
+          2.5
+        ],
+        "color": "#4c9235",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-267",
+      "name": "GrassBlock_2",
+      "parentId": "group-34",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0.05,
+          0.686,
+          -0.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          0.7480000000000001,
+          1.5
+        ],
+        "color": "#6eab3d",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-268",
+      "name": "GrassBlock_3",
+      "parentId": "group-34",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.2,
+          1.25
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          0.48,
+          1.05
+        ],
+        "color": "#82b94b",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "group-35",
+      "name": "墙顶草丛_15",
+      "parentId": "ai-node-282",
+      "type": "Group",
+      "transform": {
+        "position": [
+          62.15,
+          13.075,
+          -7
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "block-269",
+      "name": "GrassBlock_1",
+      "parentId": "group-35",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.47200000000000003,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.22,
+          1.024,
+          2.5
+        ],
+        "color": "#4d9335",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-270",
+      "name": "GrassBlock_2",
+      "parentId": "group-35",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0.05,
+          1.016,
+          -0.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          1.088,
+          1.5
+        ],
+        "color": "#75ac40",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-271",
+      "name": "GrassBlock_3",
+      "parentId": "group-35",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.2,
+          1.25
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          0.48,
+          1.05
+        ],
+        "color": "#609c36",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "group-36",
+      "name": "墙顶草丛_16",
+      "parentId": "ai-node-282",
+      "type": "Group",
+      "transform": {
+        "position": [
+          62.15,
+          13.075,
+          10
+        ],
+        "rotation": [
+          180,
+          0,
+          180
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "block-272",
+      "name": "GrassBlock_1",
+      "parentId": "group-36",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.18399999999999997,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.22,
+          0.44799999999999995,
+          2.5
+        ],
+        "color": "#4c9235",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-273",
+      "name": "GrassBlock_2",
+      "parentId": "group-36",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0.05,
+          0.422,
+          -0.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          0.476,
+          1.5
+        ],
+        "color": "#6eab3d",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-274",
+      "name": "GrassBlock_3",
+      "parentId": "group-36",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.2,
+          1.25
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          0.48,
+          1.05
+        ],
+        "color": "#82b94b",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "group-37",
+      "name": "墙顶草丛_17",
+      "parentId": "ai-node-282",
+      "type": "Group",
+      "transform": {
+        "position": [
+          -18.25,
+          13.075,
+          -22
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "block-275",
+      "name": "GrassBlock_1",
+      "parentId": "group-37",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.31200000000000006,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.22,
+          0.7040000000000001,
+          2.5
+        ],
+        "color": "#4d9335",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-276",
+      "name": "GrassBlock_2",
+      "parentId": "group-37",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0.05,
+          0.686,
+          -0.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          0.7480000000000001,
+          1.5
+        ],
+        "color": "#75ac40",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-277",
+      "name": "GrassBlock_3",
+      "parentId": "group-37",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.2,
+          1.25
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          0.48,
+          1.05
+        ],
+        "color": "#609c36",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "group-38",
+      "name": "墙顶草丛_18",
+      "parentId": "ai-node-282",
+      "type": "Group",
+      "transform": {
+        "position": [
+          -18.25,
+          13.075,
+          -39
+        ],
+        "rotation": [
+          180,
+          0,
+          180
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "block-278",
+      "name": "GrassBlock_1",
+      "parentId": "group-38",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.47200000000000003,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.22,
+          1.024,
+          2.5
+        ],
+        "color": "#4c9235",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-279",
+      "name": "GrassBlock_2",
+      "parentId": "group-38",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0.05,
+          1.016,
+          -0.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          1.088,
+          1.5
+        ],
+        "color": "#6eab3d",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-280",
+      "name": "GrassBlock_3",
+      "parentId": "group-38",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.2,
+          1.25
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          0.48,
+          1.05
+        ],
+        "color": "#82b94b",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "group-39",
+      "name": "墙顶草丛_19",
+      "parentId": "ai-node-282",
+      "type": "Group",
+      "transform": {
+        "position": [
+          19.65,
+          13.075,
+          -23
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "block-281",
+      "name": "GrassBlock_1",
+      "parentId": "group-39",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.18399999999999997,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.22,
+          0.44799999999999995,
+          2.5
+        ],
+        "color": "#4d9335",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-282",
+      "name": "GrassBlock_2",
+      "parentId": "group-39",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0.05,
+          0.422,
+          -0.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          0.476,
+          1.5
+        ],
+        "color": "#75ac40",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-283",
+      "name": "GrassBlock_3",
+      "parentId": "group-39",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.2,
+          1.25
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          0.48,
+          1.05
+        ],
+        "color": "#609c36",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "group-40",
+      "name": "墙顶草丛_20",
+      "parentId": "ai-node-282",
+      "type": "Group",
+      "transform": {
+        "position": [
+          19.65,
+          13.075,
+          -40
+        ],
+        "rotation": [
+          180,
+          0,
+          180
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "block-284",
+      "name": "GrassBlock_1",
+      "parentId": "group-40",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.31200000000000006,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.22,
+          0.7040000000000001,
+          2.5
+        ],
+        "color": "#4c9235",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-285",
+      "name": "GrassBlock_2",
+      "parentId": "group-40",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0.05,
+          0.686,
+          -0.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          0.7480000000000001,
+          1.5
+        ],
+        "color": "#6eab3d",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-286",
+      "name": "GrassBlock_3",
+      "parentId": "group-40",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.2,
+          1.25
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          0.48,
+          1.05
+        ],
+        "color": "#82b94b",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "group-41",
+      "name": "墙顶草丛_21",
+      "parentId": "ai-node-282",
+      "type": "Group",
+      "transform": {
+        "position": [
+          -16,
+          13.075,
+          -46.45
+        ],
+        "rotation": [
+          0,
+          90,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "block-287",
+      "name": "GrassBlock_1",
+      "parentId": "group-41",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.47200000000000003,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.22,
+          1.024,
+          2.5
+        ],
+        "color": "#4d9335",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-288",
+      "name": "GrassBlock_2",
+      "parentId": "group-41",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0.05,
+          1.016,
+          -0.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          1.088,
+          1.5
+        ],
+        "color": "#75ac40",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-289",
+      "name": "GrassBlock_3",
+      "parentId": "group-41",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.2,
+          1.25
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          0.48,
+          1.05
+        ],
+        "color": "#609c36",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "group-42",
+      "name": "墙顶草丛_22",
+      "parentId": "ai-node-282",
+      "type": "Group",
+      "transform": {
+        "position": [
+          -4,
+          13.075,
+          -46.45
+        ],
+        "rotation": [
+          0,
+          270,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "block-290",
+      "name": "GrassBlock_1",
+      "parentId": "group-42",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.18399999999999997,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.22,
+          0.44799999999999995,
+          2.5
+        ],
+        "color": "#4c9235",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-291",
+      "name": "GrassBlock_2",
+      "parentId": "group-42",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0.05,
+          0.422,
+          -0.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          0.476,
+          1.5
+        ],
+        "color": "#6eab3d",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-292",
+      "name": "GrassBlock_3",
+      "parentId": "group-42",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.2,
+          1.25
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          0.48,
+          1.05
+        ],
+        "color": "#82b94b",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "group-43",
+      "name": "墙顶草丛_23",
+      "parentId": "ai-node-282",
+      "type": "Group",
+      "transform": {
+        "position": [
+          5,
+          13.075,
+          -46.45
+        ],
+        "rotation": [
+          0,
+          90,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "block-293",
+      "name": "GrassBlock_1",
+      "parentId": "group-43",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.31200000000000006,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.22,
+          0.7040000000000001,
+          2.5
+        ],
+        "color": "#4d9335",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-294",
+      "name": "GrassBlock_2",
+      "parentId": "group-43",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0.05,
+          0.686,
+          -0.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          0.7480000000000001,
+          1.5
+        ],
+        "color": "#75ac40",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-295",
+      "name": "GrassBlock_3",
+      "parentId": "group-43",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.2,
+          1.25
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          0.48,
+          1.05
+        ],
+        "color": "#609c36",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "group-44",
+      "name": "墙顶草丛_24",
+      "parentId": "ai-node-282",
+      "type": "Group",
+      "transform": {
+        "position": [
+          17,
+          13.075,
+          -46.45
+        ],
+        "rotation": [
+          0,
+          270,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "block-296",
+      "name": "GrassBlock_1",
+      "parentId": "group-44",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.47200000000000003,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.22,
+          1.024,
+          2.5
+        ],
+        "color": "#4c9235",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-297",
+      "name": "GrassBlock_2",
+      "parentId": "group-44",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0.05,
+          1.016,
+          -0.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          1.088,
+          1.5
+        ],
+        "color": "#6eab3d",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-298",
+      "name": "GrassBlock_3",
+      "parentId": "group-44",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.2,
+          1.25
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.08,
+          0.48,
+          1.05
+        ],
+        "color": "#82b94b",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "prefab-node-3d94cdcd-b5ef-42f3-9ee4-19e4771f3c45",
+      "name": "墙顶碎石_1",
+      "parentId": "ai-node-282",
+      "type": "PrefabReference",
+      "transform": {
+        "position": [
+          -36,
+          13.055,
+          16.75
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "target": {
+        "kind": "local",
+        "prefabGuid": "feda8cae-8c0f-4b37-bb67-d6379e16cdd6"
+      }
+    },
+    {
+      "id": "prefab-node-f636a0a6-a02a-41c3-8866-0b2bc5a0e03a",
+      "name": "墙顶碎石_2",
+      "parentId": "ai-node-282",
+      "type": "PrefabReference",
+      "transform": {
+        "position": [
+          46,
+          13.055,
+          -14.85
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "target": {
+        "kind": "local",
+        "prefabGuid": "feda8cae-8c0f-4b37-bb67-d6379e16cdd6"
+      }
+    },
+    {
+      "id": "prefab-node-3970f8ca-8dbc-4fb4-a358-64759deef484",
+      "name": "墙顶碎石_3",
+      "parentId": "ai-node-282",
+      "type": "PrefabReference",
+      "transform": {
+        "position": [
+          -25,
+          13.055,
+          -14.85
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "target": {
+        "kind": "local",
+        "prefabGuid": "feda8cae-8c0f-4b37-bb67-d6379e16cdd6"
+      }
+    },
+    {
+      "id": "prefab-node-8ea91481-a690-4cea-b3a8-7d7e12bb5e64",
+      "name": "墙顶碎石_4",
+      "parentId": "ai-node-282",
+      "type": "PrefabReference",
+      "transform": {
+        "position": [
+          -60.75,
+          13.055,
+          12
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "target": {
+        "kind": "local",
+        "prefabGuid": "feda8cae-8c0f-4b37-bb67-d6379e16cdd6"
+      }
+    },
+    {
+      "id": "prefab-node-979b0beb-43f5-4678-a86d-0bd50e2d6f19",
+      "name": "墙顶碎石_5",
+      "parentId": "ai-node-282",
+      "type": "PrefabReference",
+      "transform": {
+        "position": [
+          62.15,
+          13.055,
+          -10
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "target": {
+        "kind": "local",
+        "prefabGuid": "feda8cae-8c0f-4b37-bb67-d6379e16cdd6"
+      }
+    },
+    {
+      "id": "prefab-node-96b3fcce-5329-4af1-b69e-4c2a5b6ed52d",
+      "name": "墙顶碎石_6",
+      "parentId": "ai-node-282",
+      "type": "PrefabReference",
+      "transform": {
+        "position": [
+          7,
+          13.055,
+          -46.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "target": {
+        "kind": "local",
+        "prefabGuid": "feda8cae-8c0f-4b37-bb67-d6379e16cdd6"
+      }
+    },
+    {
+      "id": "prefab-node-c9524fa3-3203-4bb5-93ff-4a457d772299",
+      "name": "垂藤_1",
+      "parentId": "ai-node-282",
+      "type": "PrefabReference",
+      "transform": {
+        "position": [
+          -54,
+          13.075,
+          17.48
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "target": {
+        "kind": "local",
+        "prefabGuid": "fa48ba88-c724-46f4-9987-52b00300b897"
+      }
+    },
+    {
+      "id": "prefab-node-e7e8a989-6eee-4af7-a280-27e161534428",
+      "name": "垂藤_2",
+      "parentId": "ai-node-282",
+      "type": "PrefabReference",
+      "transform": {
+        "position": [
+          -26,
+          13.075,
+          17.48
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "target": {
+        "kind": "local",
+        "prefabGuid": "fa48ba88-c724-46f4-9987-52b00300b897"
+      }
+    },
+    {
+      "id": "prefab-node-f8d9f897-5961-4f65-b4e1-e217bd945bf0",
+      "name": "垂藤_3",
+      "parentId": "ai-node-282",
+      "type": "PrefabReference",
+      "transform": {
+        "position": [
+          48,
+          13.075,
+          17.48
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "target": {
+        "kind": "local",
+        "prefabGuid": "fa48ba88-c724-46f4-9987-52b00300b897"
+      }
+    },
+    {
+      "id": "prefab-node-13465736-8a6f-4928-8138-a5a802a23360",
+      "name": "垂藤_4",
+      "parentId": "ai-node-282",
+      "type": "PrefabReference",
+      "transform": {
+        "position": [
+          -45,
+          13.075,
+          -15.58
+        ],
+        "rotation": [
+          0,
+          180,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "target": {
+        "kind": "local",
+        "prefabGuid": "fa48ba88-c724-46f4-9987-52b00300b897"
+      }
+    },
+    {
+      "id": "prefab-node-56c27a75-a3b7-4426-810a-c8c7aac688ee",
+      "name": "垂藤_5",
+      "parentId": "ai-node-282",
+      "type": "PrefabReference",
+      "transform": {
+        "position": [
+          8,
+          13.075,
+          -47.18
+        ],
+        "rotation": [
+          0,
+          180,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "target": {
+        "kind": "local",
+        "prefabGuid": "fa48ba88-c724-46f4-9987-52b00300b897"
+      }
     }
   ],
   "prefabFolders": [],
@@ -24999,6 +31641,578 @@
                 "right": "checker",
                 "front": "checker",
                 "back": "checker"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "guid": "feda8cae-8c0f-4b37-bb67-d6379e16cdd6",
+      "name": "基地墙顶碎石",
+      "folderId": null,
+      "rootNodeId": "ai-node-283",
+      "nodes": [
+        {
+          "id": "ai-node-283",
+          "name": "墙顶碎石_1",
+          "parentId": null,
+          "type": "Group",
+          "transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        },
+        {
+          "id": "ai-node-284",
+          "name": "主石",
+          "parentId": "ai-node-283",
+          "type": "Geometry",
+          "transform": {
+            "position": [
+              0,
+              0.45,
+              0
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "geometry": {
+            "type": "Box",
+            "size": [
+              1.15,
+              0.95,
+              1.15
+            ],
+            "color": "#92958a",
+            "texturePattern": "solid",
+            "roblox": {
+              "surfaces": {
+                "top": "Studs",
+                "bottom": "Studs",
+                "left": "Studs",
+                "right": "Studs",
+                "front": "Studs",
+                "back": "Studs"
+              },
+              "faceTextures": {
+                "top": "checker",
+                "bottom": "solid",
+                "left": "solid",
+                "right": "solid",
+                "front": "solid",
+                "back": "solid"
+              }
+            }
+          }
+        },
+        {
+          "id": "ai-node-285",
+          "name": "浅石",
+          "parentId": "ai-node-283",
+          "type": "Geometry",
+          "transform": {
+            "position": [
+              0.65,
+              0.25,
+              0.35
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "geometry": {
+            "type": "Box",
+            "size": [
+              0.65,
+              0.55,
+              0.65
+            ],
+            "color": "#b4b7a4",
+            "texturePattern": "solid",
+            "roblox": {
+              "surfaces": {
+                "top": "Studs",
+                "bottom": "Studs",
+                "left": "Studs",
+                "right": "Studs",
+                "front": "Studs",
+                "back": "Studs"
+              },
+              "faceTextures": {
+                "top": "checker",
+                "bottom": "solid",
+                "left": "solid",
+                "right": "solid",
+                "front": "solid",
+                "back": "solid"
+              }
+            }
+          }
+        },
+        {
+          "id": "ai-node-286",
+          "name": "小石",
+          "parentId": "ai-node-283",
+          "type": "Geometry",
+          "transform": {
+            "position": [
+              -0.65,
+              0.16,
+              -0.25
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "geometry": {
+            "type": "Box",
+            "size": [
+              0.55,
+              0.37,
+              0.6
+            ],
+            "color": "#7c8378",
+            "texturePattern": "solid",
+            "roblox": {
+              "surfaces": {
+                "top": "Studs",
+                "bottom": "Studs",
+                "left": "Studs",
+                "right": "Studs",
+                "front": "Studs",
+                "back": "Studs"
+              },
+              "faceTextures": {
+                "top": "checker",
+                "bottom": "solid",
+                "left": "solid",
+                "right": "solid",
+                "front": "solid",
+                "back": "solid"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "guid": "fa48ba88-c724-46f4-9987-52b00300b897",
+      "name": "基地贴墙垂藤",
+      "folderId": null,
+      "rootNodeId": "ai-node-287",
+      "nodes": [
+        {
+          "id": "ai-node-287",
+          "name": "垂藤_1",
+          "parentId": null,
+          "type": "Group",
+          "transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        },
+        {
+          "id": "ai-node-288",
+          "name": "贴墙藤茎",
+          "parentId": "ai-node-287",
+          "type": "Geometry",
+          "transform": {
+            "position": [
+              0,
+              -1.8,
+              0
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "geometry": {
+            "type": "Box",
+            "size": [
+              0.3,
+              3.7,
+              0.24
+            ],
+            "color": "#416f30",
+            "texturePattern": "solid",
+            "roblox": {
+              "surfaces": {
+                "top": "Studs",
+                "bottom": "Studs",
+                "left": "Studs",
+                "right": "Studs",
+                "front": "Studs",
+                "back": "Studs"
+              },
+              "faceTextures": {
+                "top": "checker",
+                "bottom": "solid",
+                "left": "solid",
+                "right": "solid",
+                "front": "solid",
+                "back": "solid"
+              }
+            }
+          }
+        },
+        {
+          "id": "ai-node-289",
+          "name": "藤叶_0",
+          "parentId": "ai-node-287",
+          "type": "Geometry",
+          "transform": {
+            "position": [
+              -0.32,
+              -0.35,
+              0.02
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "geometry": {
+            "type": "Box",
+            "size": [
+              1.05,
+              0.7,
+              0.28
+            ],
+            "color": "#4d8938",
+            "texturePattern": "solid",
+            "roblox": {
+              "surfaces": {
+                "top": "Studs",
+                "bottom": "Studs",
+                "left": "Studs",
+                "right": "Studs",
+                "front": "Studs",
+                "back": "Studs"
+              },
+              "faceTextures": {
+                "top": "checker",
+                "bottom": "solid",
+                "left": "solid",
+                "right": "solid",
+                "front": "solid",
+                "back": "solid"
+              }
+            }
+          }
+        },
+        {
+          "id": "ai-node-290",
+          "name": "藤叶_1",
+          "parentId": "ai-node-287",
+          "type": "Geometry",
+          "transform": {
+            "position": [
+              0.22,
+              -1.05,
+              0.02
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "geometry": {
+            "type": "Box",
+            "size": [
+              0.8,
+              0.7,
+              0.28
+            ],
+            "color": "#689e3f",
+            "texturePattern": "solid",
+            "roblox": {
+              "surfaces": {
+                "top": "Studs",
+                "bottom": "Studs",
+                "left": "Studs",
+                "right": "Studs",
+                "front": "Studs",
+                "back": "Studs"
+              },
+              "faceTextures": {
+                "top": "checker",
+                "bottom": "solid",
+                "left": "solid",
+                "right": "solid",
+                "front": "solid",
+                "back": "solid"
+              }
+            }
+          }
+        },
+        {
+          "id": "ai-node-291",
+          "name": "藤叶_2",
+          "parentId": "ai-node-287",
+          "type": "Geometry",
+          "transform": {
+            "position": [
+              -0.23,
+              -1.65,
+              0.02
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "geometry": {
+            "type": "Box",
+            "size": [
+              0.95,
+              0.7,
+              0.28
+            ],
+            "color": "#4d8938",
+            "texturePattern": "solid",
+            "roblox": {
+              "surfaces": {
+                "top": "Studs",
+                "bottom": "Studs",
+                "left": "Studs",
+                "right": "Studs",
+                "front": "Studs",
+                "back": "Studs"
+              },
+              "faceTextures": {
+                "top": "checker",
+                "bottom": "solid",
+                "left": "solid",
+                "right": "solid",
+                "front": "solid",
+                "back": "solid"
+              }
+            }
+          }
+        },
+        {
+          "id": "ai-node-292",
+          "name": "藤叶_3",
+          "parentId": "ai-node-287",
+          "type": "Geometry",
+          "transform": {
+            "position": [
+              0.2,
+              -2.3,
+              0.02
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "geometry": {
+            "type": "Box",
+            "size": [
+              0.65,
+              0.7,
+              0.28
+            ],
+            "color": "#689e3f",
+            "texturePattern": "solid",
+            "roblox": {
+              "surfaces": {
+                "top": "Studs",
+                "bottom": "Studs",
+                "left": "Studs",
+                "right": "Studs",
+                "front": "Studs",
+                "back": "Studs"
+              },
+              "faceTextures": {
+                "top": "checker",
+                "bottom": "solid",
+                "left": "solid",
+                "right": "solid",
+                "front": "solid",
+                "back": "solid"
+              }
+            }
+          }
+        },
+        {
+          "id": "ai-node-293",
+          "name": "藤叶_4",
+          "parentId": "ai-node-287",
+          "type": "Geometry",
+          "transform": {
+            "position": [
+              -0.1,
+              -3,
+              0.02
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "geometry": {
+            "type": "Box",
+            "size": [
+              0.55,
+              0.7,
+              0.28
+            ],
+            "color": "#4d8938",
+            "texturePattern": "solid",
+            "roblox": {
+              "surfaces": {
+                "top": "Studs",
+                "bottom": "Studs",
+                "left": "Studs",
+                "right": "Studs",
+                "front": "Studs",
+                "back": "Studs"
+              },
+              "faceTextures": {
+                "top": "checker",
+                "bottom": "solid",
+                "left": "solid",
+                "right": "solid",
+                "front": "solid",
+                "back": "solid"
+              }
+            }
+          }
+        },
+        {
+          "id": "ai-node-294",
+          "name": "藤叶_5",
+          "parentId": "ai-node-287",
+          "type": "Geometry",
+          "transform": {
+            "position": [
+              0,
+              -3.6,
+              0.02
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "geometry": {
+            "type": "Box",
+            "size": [
+              0.4,
+              0.7,
+              0.28
+            ],
+            "color": "#689e3f",
+            "texturePattern": "solid",
+            "roblox": {
+              "surfaces": {
+                "top": "Studs",
+                "bottom": "Studs",
+                "left": "Studs",
+                "right": "Studs",
+                "front": "Studs",
+                "back": "Studs"
+              },
+              "faceTextures": {
+                "top": "checker",
+                "bottom": "solid",
+                "left": "solid",
+                "right": "solid",
+                "front": "solid",
+                "back": "solid"
               }
             }
           }

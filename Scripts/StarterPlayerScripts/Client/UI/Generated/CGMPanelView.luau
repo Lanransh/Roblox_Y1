@@ -20,6 +20,8 @@ ResetData / SaveNow / Close：payload = {}。ResetData 经再次点击确认才�
 游戏接入负责服务端权限、数值校验、实际写入、重置和持久化；
 请求前 pending=true 并刷新，返回后 pending=false 并刷新；结果与错误由接入层处理，本面板不显示状态文本。
 无其他必需或可选覆写；Preview 只改模拟数据，不持久化。
+中文固定显示：真实 Roblox 初始化时将 GMPanelUI.AutoLocalize 设为 false，覆盖全部后代与未来新增控件。
+App 模拟节点没有此属性，按实例类型跳过；不影响编辑器中文预览。
 TextBox 为原生 Roblox 输入框；App 自动化不支持键盘、文本输入和焦点事件。
 ]]
 local FX = _G.FX
@@ -29,6 +31,10 @@ local CGMPanelView = FX.Class("CGMPanelView", "CUIView")
 -- 一次绑定静态节点和按钮，输入值在点击时读取。
 function CGMPanelView:OnReady()
     local root = FXLoader:PlayerGui("GMPanelUI")
+    -- 真实 Roblox 根界面关闭自动翻译，全部后代保留中文；App 模拟节点跳过。
+    if typeof(root) == "Instance" then
+        root.AutoLocalize = false
+    end
     self.Panel = FXLoader:Here(root, "PopupPanelImg")
     self.Title = FXLoader:Here(root, "TitleBox")
     self.Inputs = {}
@@ -47,7 +53,7 @@ function CGMPanelView:OnReady()
         end))
     end
     self.ResetTxt = FXLoader:Here(root, "PopupPanelImg.ResetDataBtn.ButtonTxt")
-    local close = FXLoader:Here(root, "TitleBox.CloseSurfaceImg.CloseBtn")
+    local close = FXLoader:Here(root, "TitleBox.CloseSurfaceImg")
     -- 关闭隐藏当前面板，并取消尚未执行的重置确认。
     self:TrackConnection(close.Activated:Connect(function()
         self:CancelReset()

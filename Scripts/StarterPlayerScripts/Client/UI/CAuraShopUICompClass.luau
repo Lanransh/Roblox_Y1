@@ -4,6 +4,7 @@ local RunService = game:GetService("RunService")
 FXLoader:RequireFromParent(script, "Generated/CAuraShopView")
 local Fields = _G.PlayerDataConfig
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
+local ShopReminder = FXLoader:RequireFromParent(script, "ShopReminder")
 local Component = FX.Class("CAuraShopUICompClass", "CAuraShopView")
 
 --- Aura 摊位打开业务子类，生成展示类不单独挂载。
@@ -36,8 +37,9 @@ function Component:OnReady()
     self:TrackConnection(self._localization.Changed:Connect(function()
         self:RefreshUI()
     end))
-    self:BindUIData()
     self._trigger = FXLoader:Workspace("BlueHut/Trigger")
+    self._shopReminder = ShopReminder.New(self._trigger.Parent)
+    self:BindUIData()
     self._inside = false
     self._nextAreaCheck = 0
     --- 区域只控制本地显隐，不能决定扣款或装备资格。
@@ -58,12 +60,13 @@ function Component:BindUIData()
     self:WatchDataChanged(Fields.Coins, self.RefreshAura, self)
 end
 
---- 将同步存档转换为生成展示类要求的完整状态。
+--- 将同步存档转换为展示状态，并及时更新小屋的购买与装备提醒。
 function Component:RefreshAura()
     local data = self:GetTable(Fields.AuraData)
     self.State.owned = data.owned
     self.State.equippedId = data.equippedId == 0 and "" or tostring(data.equippedId)
     self.State.coins = self:GetNumber(Fields.Coins)
+    self._shopReminder:Refresh(self.Config.auras, self.State)
     self:RefreshUI()
 end
 
@@ -142,7 +145,7 @@ function Component:OnHide()
     self.State.open = false
 end
 
---- 请求不切换按钮为等待状态，后台请求锁防止重复提交，只发送操作与稳定 ID。
+--- 请求只发送操作与稳定 ID，成功后按权威返回值更新列表及小屋提醒。
 --- @param action string Buy、Equip 或 Close。
 --- @param payload table 展示类提供的字符串 auraId。
 function Component:OnUIAction(action, payload)
@@ -164,6 +167,7 @@ function Component:OnUIAction(action, payload)
             self.State.owned = result.data.owned
             self.State.equippedId = result.data.equippedId == 0 and "" or tostring(result.data.equippedId)
             self.State.coins = result.coins
+            self._shopReminder:Refresh(self.Config.auras, self.State)
         else
             self._commonUI:ShowLocalizedTips(ok and result.key or "Common.Unknown")
         end
@@ -171,8 +175,11 @@ function Component:OnUIAction(action, payload)
     end)
 end
 
---- 取消尚未返回的请求，父类清理行节点、区域检测与数据订阅。
+--- 取消请求并释放小屋提醒，父类清理行节点、区域检测与数据订阅。
 function Component:Dtor()
+    if self._shopReminder then
+        self._shopReminder:Destroy()
+    end
     if self._requestTask then
         task.cancel(self._requestTask)
         self._requestTask = nil
