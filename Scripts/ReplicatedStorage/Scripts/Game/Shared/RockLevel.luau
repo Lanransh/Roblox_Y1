@@ -16,6 +16,7 @@ local RockLevel = {
     ClickEffectValue = 2, -- 仅用于客户端点击图标文案，不发放实际收益。
     ClickInterval = 0.2,
     LootCapacity = 3, -- 尚未回基地存放的战利品最多携带 3 件。
+    StoredLootCapacity = 12, -- 已存收藏品与随身战利品共用的 KV 存储容量。
     HP = {29, 122, 520, 2176, 9101, 38000, 159000, 664000, 2770000, 11600000, 48400000, 202000000, 844000000},
 }
 local thresholds = {0}

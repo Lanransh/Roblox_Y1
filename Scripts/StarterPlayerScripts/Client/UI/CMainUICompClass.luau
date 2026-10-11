@@ -53,7 +53,7 @@ function Component:OnReady()
     self:WatchDataChanged(Fields.Coins, self.RefreshCoins, self)
     self:WatchDataChanged(Fields.RebirthCount, self.RefreshRebirthCount, self)
     self:WatchDataChanged(Fields.Diamonds, self.RefreshDiamonds, self)
-    self:WatchDataChanged(Fields.LootSellEntries, self.RefreshLoot, self)
+    self:WatchDataChanged(Fields.RockLoot, self.RefreshLoot, self)
     --- 鼠标只在未被按钮、背包等 UI 消耗时播放点击图标。
     --- @param input InputObject 本次输入。
     --- @param processed boolean 是否已被引擎 UI 消耗。
@@ -170,11 +170,11 @@ function Component:RefreshDiamonds(value)
     FXLoader:Here(self._leftDown, "DiamondStat/Value").Text = GameUtility.NumberToText(value)
 end
 
---- 背包计数与出售列表使用同一正式库存快照，出售后同步腾出容量。
---- @param loot table 正式背包中的可出售收藏品。
+--- 显示尚未入库的随身战利品数量，容量与服务端拾取限制一致。
+--- @param loot table 当前携带且尚未回基地入库的战利品。
 function Component:RefreshLoot(loot)
     self._leftDown.BackpackStat.Value.Text = string.format("%d/%d", #loot,
-        _G.Provider:GetNativeBackpackConfig().InventoryCapacity)
+        RockLevel.LootCapacity)
 end
 
 --- 刷新经验、力量与整数重生百分比；经验条以 0.3 秒 Quad Out 平滑填充。
