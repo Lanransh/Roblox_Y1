@@ -4,6 +4,7 @@ local Rebirth = FXLoader:RequireShared("Scripts/Game/Shared/Rebirth")
 local Fields = _G.PlayerDataConfig
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
+local RunService = game:GetService("RunService")
 local GuiService = game:GetService("GuiService")
 local RockLevel = require(game:GetService("ReplicatedStorage").Scripts.Game.Shared.RockLevel)
 local GameUtility = require(game:GetService("ReplicatedStorage").Scripts.Game.Shared.GameUtility)
@@ -44,6 +45,7 @@ function Component:OnReady()
     end))
     self._leftDown = FXLoader:Here(self._rootNode, "LeftDown")
     self._effects = {}
+    self._pickupEffects = {}
     self._lastClick = -math.huge
     -- 复用 Rojo 管理的 ScreenGui，飘字直属该节点，不受 Canvas 缩放影响。
     self._effectGui = FXLoader:Here(self._playerGui, "ScreenGui")
@@ -199,11 +201,123 @@ function Component:RefreshDiamonds(value)
     FXLoader:Here(self._leftDown, "DiamondStat/Value").Text = GameUtility.NumberToText(value)
 end
 
---- 显示尚未入库的随身战利品数量，容量与服务端拾取限制一致。
+--- 刷新随身战利品数量，仅为服务端确认新增的道具播放 UI 拾取表现。
 --- @param loot table 当前携带且尚未回基地入库的战利品。
-function Component:RefreshLoot(loot)
+--- @param oldLoot table? 变化前的战利品，首次同步为空且不播放动画。
+function Component:RefreshLoot(loot, oldLoot)
     self._leftDown.BackpackStat.Value.Text = string.format("%d/%d", #loot,
         RockLevel.LootCapacity)
+    if oldLoot == nil or #loot <= #oldLoot then
+        return
+    end
+    for index = #oldLoot + 1, #loot do
+        self:ShowPickupEffect(loot[index])
+    end
+end
+
+--- 在屏幕中央展示旋转道具与放射光芒，再一起缩小飞向背包图标。
+--- @param entry table 服务端确认入袋的道具，使用其稳定展示模型路径。
+function Component:ShowPickupEffect(entry)
+    local path = type(entry.DisplayModelId) == "string" and string.match(entry.DisplayModelId, "^game%.(.+)$")
+    local template = path and FXLoader:Find(game, path)
+    if not template or not template:IsA("Model") then
+        return
+    end
+    local effect = Instance.new("Frame")
+    effect.Name = "PickupItemEffect"
+    effect.AnchorPoint = Vector2.new(0.5, 0.5)
+    effect.BackgroundTransparency = 1
+    effect.ZIndex = 20
+    local glow = Instance.new("CanvasGroup")
+    glow.Name = "Glow"
+    glow.AnchorPoint = Vector2.new(0.5, 0.5)
+    glow.Position = UDim2.fromScale(0.5, 0.5)
+    glow.Size = UDim2.fromScale(1.65, 1.65)
+    glow.BackgroundTransparency = 1
+    glow.ZIndex = 1
+    glow.Parent = effect
+    for index = 1, 12 do
+        local angle = (index - 1) * math.pi / 6
+        local ray = Instance.new("Frame")
+        ray.Name = "Ray" .. index
+        ray.AnchorPoint = Vector2.new(0.5, 0.5)
+        ray.Position = UDim2.fromScale(0.5 + math.cos(angle) * 0.24, 0.5 + math.sin(angle) * 0.24)
+        ray.Size = UDim2.fromScale(0.46, 0.055)
+        ray.Rotation = math.deg(angle)
+        ray.BackgroundColor3 = Color3.fromRGB(255, 243, 196)
+        ray.BorderSizePixel = 0
+        local gradient = Instance.new("UIGradient")
+        gradient.Transparency = NumberSequence.new({
+            NumberSequenceKeypoint.new(0, 0.85),
+            NumberSequenceKeypoint.new(0.25, 0.55),
+            NumberSequenceKeypoint.new(0.6, 0.7),
+            NumberSequenceKeypoint.new(1, 1),
+        })
+        gradient.Parent = ray
+        ray.Parent = glow
+    end
+    local viewport = Instance.new("ViewportFrame")
+    viewport.Name = "Item"
+    viewport.Size = UDim2.fromScale(1, 1)
+    viewport.BackgroundTransparency = 1
+    viewport.BorderSizePixel = 0
+    viewport.ZIndex = 2
+    viewport.Parent = effect
+    viewport.Ambient = Color3.fromRGB(200, 200, 200)
+    viewport.LightColor = Color3.new(1, 1, 1)
+    viewport.LightDirection = Vector3.new(-1, -1, -1)
+    local model = template:Clone()
+    for index, node in ipairs(model:GetDescendants()) do
+        if node:IsA("BasePart") then
+            node.Anchored = true
+            node.CanCollide = false
+            node.CanTouch = false
+            node.CanQuery = false
+        end
+    end
+    local bounds, size = model:GetBoundingBox()
+    local pivot = model:GetPivot() - bounds.Position
+    model:PivotTo(pivot)
+    model.Parent = viewport
+    local camera = Instance.new("Camera")
+    camera.FieldOfView = 35
+    local distance = size.Magnitude * 0.6 / math.sin(math.rad(camera.FieldOfView / 2))
+    camera.CFrame = CFrame.lookAt(Vector3.new(0, 0, distance), Vector3.zero)
+    camera.Parent = viewport
+    viewport.CurrentCamera = camera
+    local elapsed = 0
+    local connection
+    --- 道具与光芒共用屏幕位置和缩放，光芒缓慢旋转并在飞向背包时淡出。
+    --- @param deltaTime number 本次渲染帧间隔秒数。
+    local function animate(deltaTime)
+        elapsed += deltaTime
+        if elapsed >= 1.3 then
+            connection:Disconnect()
+            self._pickupEffects[effect] = nil
+            effect:Destroy()
+            return
+        end
+        local origin = self._effectGui.AbsolutePosition
+        local screenArea = GuiService:GetInsetArea(Enum.ScreenInsets.None)
+        local center = (screenArea.Min + screenArea.Max) / 2 - origin
+        local icon = self._leftDown.BackpackStat.Icon
+        local target = icon.AbsolutePosition + icon.AbsoluteSize / 2 - origin
+        local fly = math.clamp((elapsed - 0.85) / 0.45, 0, 1)
+        local position = center:Lerp(target, fly ^ 2)
+        local pop = math.clamp(elapsed / 0.18, 0, 1)
+        local scale = (0.25 + 0.75 * (1 - (1 - pop) ^ 3)) * (1 - 0.9 * fly)
+        local diameter = math.min(self._effectGui.AbsoluteSize.X, self._effectGui.AbsoluteSize.Y) * 0.30 * scale
+        effect.Position = UDim2.fromOffset(position.X, position.Y)
+        effect.Size = UDim2.fromOffset(diameter, diameter)
+        glow.Rotation = elapsed * 25
+        glow.GroupTransparency = 1 - pop * (1 - fly)
+        viewport.ImageTransparency = fly
+        model:PivotTo(CFrame.Angles(0, elapsed * math.pi * 2, 0) * pivot)
+    end
+    animate(0)
+    effect.Parent = self._effectGui
+    connection = RunService.RenderStepped:Connect(animate)
+    self._pickupEffects[effect] = connection
 end
 
 --- 刷新经验、力量与整数重生百分比；经验条以 0.3 秒 Quad Out 平滑填充。
@@ -332,6 +446,10 @@ end
 function Component:Dtor()
     FX.Task:Cancel(self._homeTimer)
     FX.Network:UnRegServerMsgCallback("S2C_TrainingEffect")
+    for viewport, connection in pairs(self._pickupEffects or {}) do
+        connection:Disconnect()
+        viewport:Destroy()
+    end
     for icon, effect in pairs(self._effects or {}) do
         task.cancel(effect.Task)
         effect.SizeConnection:Disconnect()

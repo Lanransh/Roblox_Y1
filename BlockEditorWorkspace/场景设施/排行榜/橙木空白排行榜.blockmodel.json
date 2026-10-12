@@ -1,0 +1,1254 @@
+{
+  "version": 9,
+  "guid": "e24287fe-3042-4a6b-8333-80364f4ac65d",
+  "rootNodeId": "asset-root",
+  "nodes": [
+    {
+      "id": "asset-root",
+      "name": "橙木空白排行榜 资产根",
+      "parentId": null,
+      "type": "Transform",
+      "transform": {
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "ai-node-342",
+      "name": "橙木空白排行榜",
+      "parentId": "asset-root",
+      "type": "Transform",
+      "transform": {
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "ai-node-343",
+      "name": "背板",
+      "parentId": "ai-node-342",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          10,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          12.7,
+          16,
+          1.05
+        ],
+        "color": "#603f2c",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-344",
+      "name": "空白深色面板",
+      "parentId": "ai-node-342",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          10,
+          0.68
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          11.3,
+          14.3,
+          0.25
+        ],
+        "color": "#28262d",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-345",
+      "name": "左厚木边框",
+      "parentId": "ai-node-342",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -6.45,
+          10.1,
+          0.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.25,
+          18.6,
+          1.65
+        ],
+        "color": "#b9692c",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-346",
+      "name": "左亮边",
+      "parentId": "ai-node-342",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -6.83,
+          10.2,
+          1.36
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.28,
+          16.8,
+          0.2
+        ],
+        "color": "#dc8a38",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-347",
+      "name": "左支脚",
+      "parentId": "ai-node-342",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -6.45,
+          0.4,
+          0.1
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          2.9,
+          0.8,
+          4
+        ],
+        "color": "#626557",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-348",
+      "name": "左柱脚",
+      "parentId": "ai-node-342",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -6.45,
+          1.3,
+          0.4
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.7,
+          1.2,
+          2
+        ],
+        "color": "#814724",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-349",
+      "name": "左金属箍0",
+      "parentId": "ai-node-342",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -6.45,
+          2.25,
+          0.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.35,
+          0.48,
+          1.78
+        ],
+        "color": "#695e45",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-350",
+      "name": "左金属箍1",
+      "parentId": "ai-node-342",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -6.45,
+          9.95,
+          0.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.35,
+          0.48,
+          1.78
+        ],
+        "color": "#695e45",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-351",
+      "name": "左金属箍2",
+      "parentId": "ai-node-342",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -6.45,
+          17.65,
+          0.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.35,
+          0.48,
+          1.78
+        ],
+        "color": "#695e45",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-352",
+      "name": "左木钉0",
+      "parentId": "ai-node-342",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -6.45,
+          3.9,
+          1.37
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.25,
+          0.25,
+          0.17
+        ],
+        "color": "#df9647",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-353",
+      "name": "左木钉1",
+      "parentId": "ai-node-342",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -6.45,
+          5.9,
+          1.37
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.25,
+          0.25,
+          0.17
+        ],
+        "color": "#df9647",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-354",
+      "name": "左木钉2",
+      "parentId": "ai-node-342",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -6.45,
+          7.9,
+          1.37
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.25,
+          0.25,
+          0.17
+        ],
+        "color": "#df9647",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-355",
+      "name": "左木钉3",
+      "parentId": "ai-node-342",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -6.45,
+          9.9,
+          1.37
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.25,
+          0.25,
+          0.17
+        ],
+        "color": "#df9647",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-356",
+      "name": "左木钉4",
+      "parentId": "ai-node-342",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -6.45,
+          11.9,
+          1.37
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.25,
+          0.25,
+          0.17
+        ],
+        "color": "#df9647",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-357",
+      "name": "左木钉5",
+      "parentId": "ai-node-342",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -6.45,
+          13.9,
+          1.37
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.25,
+          0.25,
+          0.17
+        ],
+        "color": "#df9647",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-358",
+      "name": "左木钉6",
+      "parentId": "ai-node-342",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -6.45,
+          15.9,
+          1.37
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.25,
+          0.25,
+          0.17
+        ],
+        "color": "#df9647",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-359",
+      "name": "右厚木边框",
+      "parentId": "ai-node-342",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          6.45,
+          10.1,
+          0.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.25,
+          18.6,
+          1.65
+        ],
+        "color": "#b9692c",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-360",
+      "name": "右亮边",
+      "parentId": "ai-node-342",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          6.07,
+          10.2,
+          1.36
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.28,
+          16.8,
+          0.2
+        ],
+        "color": "#dc8a38",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-361",
+      "name": "右支脚",
+      "parentId": "ai-node-342",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          6.45,
+          0.4,
+          0.1
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          2.9,
+          0.8,
+          4
+        ],
+        "color": "#626557",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-362",
+      "name": "右柱脚",
+      "parentId": "ai-node-342",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          6.45,
+          1.3,
+          0.4
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.7,
+          1.2,
+          2
+        ],
+        "color": "#814724",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-363",
+      "name": "右金属箍0",
+      "parentId": "ai-node-342",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          6.45,
+          2.25,
+          0.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.35,
+          0.48,
+          1.78
+        ],
+        "color": "#695e45",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-364",
+      "name": "右金属箍1",
+      "parentId": "ai-node-342",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          6.45,
+          9.95,
+          0.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.35,
+          0.48,
+          1.78
+        ],
+        "color": "#695e45",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-365",
+      "name": "右金属箍2",
+      "parentId": "ai-node-342",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          6.45,
+          17.65,
+          0.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.35,
+          0.48,
+          1.78
+        ],
+        "color": "#695e45",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-366",
+      "name": "右木钉0",
+      "parentId": "ai-node-342",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          6.45,
+          3.9,
+          1.37
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.25,
+          0.25,
+          0.17
+        ],
+        "color": "#df9647",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-367",
+      "name": "右木钉1",
+      "parentId": "ai-node-342",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          6.45,
+          5.9,
+          1.37
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.25,
+          0.25,
+          0.17
+        ],
+        "color": "#df9647",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-368",
+      "name": "右木钉2",
+      "parentId": "ai-node-342",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          6.45,
+          7.9,
+          1.37
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.25,
+          0.25,
+          0.17
+        ],
+        "color": "#df9647",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-369",
+      "name": "右木钉3",
+      "parentId": "ai-node-342",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          6.45,
+          9.9,
+          1.37
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.25,
+          0.25,
+          0.17
+        ],
+        "color": "#df9647",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-370",
+      "name": "右木钉4",
+      "parentId": "ai-node-342",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          6.45,
+          11.9,
+          1.37
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.25,
+          0.25,
+          0.17
+        ],
+        "color": "#df9647",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-371",
+      "name": "右木钉5",
+      "parentId": "ai-node-342",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          6.45,
+          13.9,
+          1.37
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.25,
+          0.25,
+          0.17
+        ],
+        "color": "#df9647",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-372",
+      "name": "右木钉6",
+      "parentId": "ai-node-342",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          6.45,
+          15.9,
+          1.37
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.25,
+          0.25,
+          0.17
+        ],
+        "color": "#df9647",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-373",
+      "name": "下横框",
+      "parentId": "ai-node-342",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          2.25,
+          0.4
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          12.2,
+          1.1,
+          1.7
+        ],
+        "color": "#a95c28",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-374",
+      "name": "上横框",
+      "parentId": "ai-node-342",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          18,
+          0.4
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          13.2,
+          1.2,
+          1.75
+        ],
+        "color": "#c5742f",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-375",
+      "name": "冠部台阶一",
+      "parentId": "ai-node-342",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          19.1,
+          0.35
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          12.1,
+          1.15,
+          1.5
+        ],
+        "color": "#a95c28",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-376",
+      "name": "冠部台阶二",
+      "parentId": "ai-node-342",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          20.15,
+          0.35
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          8.6,
+          1.1,
+          1.5
+        ],
+        "color": "#a95c28",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-377",
+      "name": "冠部台阶三",
+      "parentId": "ai-node-342",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          21.05,
+          0.35
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          5,
+          0.85,
+          1.5
+        ],
+        "color": "#a95c28",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-378",
+      "name": "顶端木沿",
+      "parentId": "ai-node-342",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          21.6,
+          0.35
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          5.4,
+          0.3,
+          1.75
+        ],
+        "color": "#d08a40",
+        "texturePattern": "solid"
+      }
+    }
+  ],
+  "prefabFolders": [],
+  "prefabs": [],
+  "externalPrefabAliases": []
+}

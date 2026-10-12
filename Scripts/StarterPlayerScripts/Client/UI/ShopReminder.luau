@@ -3,7 +3,7 @@ local TweenService = game:GetService("TweenService")
 local Reminder = {}
 Reminder.__index = Reminder
 
---- 在对应小屋上方创建当前玩家独有的立体感叹号，不参与碰撞或交互。
+--- 在对应小屋上方创建醒目的大号立体感叹号，抬高位置保持屋顶间距，不参与碰撞或交互。
 --- @param hut Model 已确认的商店小屋。
 --- @return table 由商店组件持有并释放的提醒对象。
 function Reminder.New(hut)
@@ -15,10 +15,10 @@ function Reminder.New(hut)
     self._parts = {}
     local bounds, size = hut:GetBoundingBox()
     local center = bounds:PointToWorldSpace(Vector3.new(0, size.Y * 0.5, 0))
-        + Vector3.new(0, 3, 0)
+        + Vector3.new(0, 5, 0)
     local shapes = {
-        {name = "Stem", size = Vector3.new(0.9, 2.6, 0.9), offset = 0.7, shape = Enum.PartType.Block},
-        {name = "Dot", size = Vector3.new(0.9, 0.9, 0.9), offset = -1.4, shape = Enum.PartType.Ball},
+        {name = "Stem", size = Vector3.new(1.8, 5.2, 1.8), offset = 1.4, shape = Enum.PartType.Block},
+        {name = "Dot", size = Vector3.new(1.8, 1.8, 1.8), offset = -2.8, shape = Enum.PartType.Ball},
     }
     for index, shape in ipairs(shapes) do
         local part = Instance.new("Part")
@@ -37,7 +37,7 @@ function Reminder.New(hut)
         part.Parent = self._model
         local tween = TweenService:Create(part,
             TweenInfo.new(1.2, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true),
-            {Position = position + Vector3.new(0, 0.8, 0)})
+            {Position = position + Vector3.new(0, 2, 0)})
         table.insert(self._parts, {part = part, position = position, tween = tween})
     end
     return self

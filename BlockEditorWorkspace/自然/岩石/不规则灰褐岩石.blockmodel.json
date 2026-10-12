@@ -1,0 +1,320 @@
+{
+  "version": 9,
+  "guid": "dab3af91-8b16-4c9e-a80a-0595eb26b72f",
+  "rootNodeId": "asset-root",
+  "nodes": [
+    {
+      "id": "asset-root",
+      "name": "不规则岩石制作 资产根",
+      "parentId": null,
+      "type": "Transform",
+      "transform": {
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "ai-node-463",
+      "name": "不规则岩石制作",
+      "parentId": "asset-root",
+      "type": "Group",
+      "transform": {
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "ai-node-464",
+      "name": "落地主岩",
+      "parentId": "ai-node-463",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          1.3,
+          0
+        ],
+        "rotation": [
+          0,
+          18,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          4.6,
+          2.6,
+          3.8
+        ],
+        "color": "#898477",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-465",
+      "name": "偏心上岩",
+      "parentId": "ai-node-463",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -0.65,
+          2.85,
+          0.15
+        ],
+        "rotation": [
+          8,
+          -12,
+          10
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          3.35,
+          1.9,
+          2.95
+        ],
+        "color": "#a39c8b",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-466",
+      "name": "左侧岩肩",
+      "parentId": "ai-node-463",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -2,
+          1.05,
+          0.6
+        ],
+        "rotation": [
+          0,
+          -22,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          2.35,
+          2.1,
+          2.8
+        ],
+        "color": "#77766a",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-467",
+      "name": "右侧低岩",
+      "parentId": "ai-node-463",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          1.95,
+          0.8,
+          -0.35
+        ],
+        "rotation": [
+          0,
+          37,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          2.6,
+          1.6,
+          2.35
+        ],
+        "color": "#928a79",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-468",
+      "name": "后侧凸岩",
+      "parentId": "ai-node-463",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0.25,
+          1.35,
+          1.75
+        ],
+        "rotation": [
+          5,
+          12,
+          -8
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          2.9,
+          2.15,
+          1.9
+        ],
+        "color": "#817f73",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-469",
+      "name": "前侧碎角",
+      "parentId": "ai-node-463",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -0.55,
+          0.55,
+          -2
+        ],
+        "rotation": [
+          0,
+          -28,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          2.1,
+          1.1,
+          1.6
+        ],
+        "color": "#a59e8c",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-470",
+      "name": "岩顶棱块",
+      "parentId": "ai-node-463",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -0.95,
+          3.65,
+          0.25
+        ],
+        "rotation": [
+          6,
+          25,
+          -12
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.65,
+          0.95,
+          1.8
+        ],
+        "color": "#b0a795",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-471",
+      "name": "附属小石",
+      "parentId": "ai-node-463",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          3.55,
+          0.35,
+          1.35
+        ],
+        "rotation": [
+          0,
+          27,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.05,
+          0.7,
+          0.95
+        ],
+        "color": "#827e70",
+        "texturePattern": "solid"
+      }
+    }
+  ],
+  "prefabFolders": [],
+  "prefabs": [],
+  "externalPrefabAliases": []
+}

@@ -1,0 +1,1076 @@
+{
+  "version": 9,
+  "guid": "1583a22d-6ad0-4074-b983-1257412b3193",
+  "rootNodeId": "asset-root",
+  "nodes": [
+    {
+      "id": "asset-root",
+      "name": "暖木村舍 资产根",
+      "parentId": null,
+      "type": "Transform",
+      "transform": {
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "ai-node-311",
+      "name": "暖木村舍",
+      "parentId": "asset-root",
+      "type": "Group",
+      "transform": {
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "ai-node-312",
+      "name": "石基",
+      "parentId": "ai-node-311",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.3,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          8.8,
+          0.6,
+          7.8
+        ],
+        "color": "#8a8776",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-313",
+      "name": "暖色墙体",
+      "parentId": "ai-node-311",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          3.4,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          8,
+          5.6,
+          7
+        ],
+        "color": "#d9ae6d",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-314",
+      "name": "木柱-3_85-3_35",
+      "parentId": "ai-node-311",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -3.85,
+          3.5,
+          -3.35
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.5,
+          5.8,
+          0.5
+        ],
+        "color": "#775034",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-315",
+      "name": "木柱-3_853_35",
+      "parentId": "ai-node-311",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -3.85,
+          3.5,
+          3.35
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.5,
+          5.8,
+          0.5
+        ],
+        "color": "#775034",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-316",
+      "name": "木柱3_85-3_35",
+      "parentId": "ai-node-311",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          3.85,
+          3.5,
+          -3.35
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.5,
+          5.8,
+          0.5
+        ],
+        "color": "#775034",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-317",
+      "name": "木柱3_853_35",
+      "parentId": "ai-node-311",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          3.85,
+          3.5,
+          3.35
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.5,
+          5.8,
+          0.5
+        ],
+        "color": "#775034",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-318",
+      "name": "前横梁",
+      "parentId": "ai-node-311",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          5.9,
+          3.4
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          8.3,
+          0.5,
+          0.55
+        ],
+        "color": "#775034",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-319",
+      "name": "后横梁",
+      "parentId": "ai-node-311",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          5.9,
+          -3.4
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          8.3,
+          0.5,
+          0.55
+        ],
+        "color": "#775034",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-320",
+      "name": "阶梯屋顶0",
+      "parentId": "ai-node-311",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          6.5,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          9.4,
+          0.8,
+          8.5
+        ],
+        "color": "#9e633b",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-321",
+      "name": "阶梯屋顶1",
+      "parentId": "ai-node-311",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          7.15,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          7.7,
+          0.8,
+          8.5
+        ],
+        "color": "#885234",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-322",
+      "name": "阶梯屋顶2",
+      "parentId": "ai-node-311",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          7.8,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          6,
+          0.8,
+          8.5
+        ],
+        "color": "#9e633b",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-323",
+      "name": "阶梯屋顶3",
+      "parentId": "ai-node-311",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          8.45,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          4.300000000000001,
+          0.8,
+          8.5
+        ],
+        "color": "#885234",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-324",
+      "name": "阶梯屋顶4",
+      "parentId": "ai-node-311",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          9.1,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          2.6000000000000005,
+          0.8,
+          8.5
+        ],
+        "color": "#9e633b",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-325",
+      "name": "屋脊",
+      "parentId": "ai-node-311",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          9.6,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.5,
+          0.45,
+          8.8
+        ],
+        "color": "#c08a50",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-326",
+      "name": "烟囱",
+      "parentId": "ai-node-311",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          2.5,
+          8.3,
+          -1.6
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.05,
+          3,
+          1.1
+        ],
+        "color": "#938a79",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-327",
+      "name": "烟囱帽",
+      "parentId": "ai-node-311",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          2.5,
+          9.9,
+          -1.6
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.4,
+          0.35,
+          1.5
+        ],
+        "color": "#625f54",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-328",
+      "name": "门框",
+      "parentId": "ai-node-311",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          2.35,
+          3.58
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          2.15,
+          3.8,
+          0.25
+        ],
+        "color": "#65482f",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-329",
+      "name": "木门",
+      "parentId": "ai-node-311",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          2.1,
+          3.76
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.65,
+          3.3,
+          0.2
+        ],
+        "color": "#a47143",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-330",
+      "name": "门把",
+      "parentId": "ai-node-311",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0.55,
+          2,
+          3.95
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.18,
+          0.22,
+          0.16
+        ],
+        "color": "#d7b85e",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-331",
+      "name": "门阶",
+      "parentId": "ai-node-311",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.3,
+          4.05
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          2.6,
+          0.35,
+          1.15
+        ],
+        "color": "#a39c83",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-332",
+      "name": "左窗框",
+      "parentId": "ai-node-311",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -2.6,
+          3.65,
+          3.58
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.85,
+          2,
+          0.3
+        ],
+        "color": "#775034",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-333",
+      "name": "左窗光",
+      "parentId": "ai-node-311",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -2.6,
+          3.65,
+          3.78
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.4,
+          1.55,
+          0.12
+        ],
+        "color": "#ffe4a0",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-334",
+      "name": "左窗竖棂",
+      "parentId": "ai-node-311",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -2.6,
+          3.65,
+          3.88
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.14,
+          1.6,
+          0.15
+        ],
+        "color": "#b0824c",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-335",
+      "name": "左窗横棂",
+      "parentId": "ai-node-311",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -2.6,
+          3.65,
+          3.88
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.45,
+          0.14,
+          0.15
+        ],
+        "color": "#b0824c",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-336",
+      "name": "左窗台",
+      "parentId": "ai-node-311",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -2.6,
+          2.58,
+          3.7
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          2.05,
+          0.22,
+          0.6
+        ],
+        "color": "#b0824c",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-337",
+      "name": "右窗框",
+      "parentId": "ai-node-311",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          2.6,
+          3.65,
+          3.58
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.85,
+          2,
+          0.3
+        ],
+        "color": "#775034",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-338",
+      "name": "右窗光",
+      "parentId": "ai-node-311",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          2.6,
+          3.65,
+          3.78
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.4,
+          1.55,
+          0.12
+        ],
+        "color": "#ffe4a0",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-339",
+      "name": "右窗竖棂",
+      "parentId": "ai-node-311",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          2.6,
+          3.65,
+          3.88
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.14,
+          1.6,
+          0.15
+        ],
+        "color": "#b0824c",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-340",
+      "name": "右窗横棂",
+      "parentId": "ai-node-311",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          2.6,
+          3.65,
+          3.88
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.45,
+          0.14,
+          0.15
+        ],
+        "color": "#b0824c",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-341",
+      "name": "右窗台",
+      "parentId": "ai-node-311",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          2.6,
+          2.58,
+          3.7
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          2.05,
+          0.22,
+          0.6
+        ],
+        "color": "#b0824c",
+        "texturePattern": "solid"
+      }
+    }
+  ],
+  "prefabFolders": [],
+  "prefabs": [],
+  "externalPrefabAliases": []
+}
