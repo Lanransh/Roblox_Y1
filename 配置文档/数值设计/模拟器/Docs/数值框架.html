@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>数值框架</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --background: #fafafa;
+      --surface: #ffffff;
+      --text: #0a0a0a;
+      --text-secondary: #6b6b6b;
+      --border: #e8e8ec;
+      --surface-muted: #f4f4f5;
+      --focus: rgba(99, 102, 241, 0.12);
+      --warning: #b45309;
+      --warning-soft: #fffbeb;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--text);
+      background: var(--background);
+      font: 16px/1.75 "DM Sans", "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+    }
+    a { color: var(--primary); text-underline-offset: 3px; }
+    a:hover { color: var(--primary-hover); }
+    a:focus-visible { outline: none; border-radius: 4px; box-shadow: 0 0 0 3px var(--focus); }
+    .site-header { position: sticky; z-index: 10; top: 0; border-bottom: 1px solid var(--border); background: rgba(250, 250, 250, 0.9); backdrop-filter: blur(16px); }
+    .header-inner, .layout, footer { width: min(1240px, calc(100% - 48px)); margin: 0 auto; }
+    .header-inner { display: flex; align-items: center; justify-content: space-between; height: 60px; gap: 24px; }
+    .doc-brand { color: var(--text); font: 700 13px/1 "General Sans", "Microsoft YaHei", sans-serif; text-decoration: none; }
+    .doc-links { display: flex; align-items: center; gap: 4px; }
+    .doc-links a { padding: 8px 12px; border-radius: 6px; color: var(--text-secondary); font-weight: 500; text-decoration: none; }
+    .doc-links a:hover { color: var(--text); background: var(--surface-muted); }
+    .doc-links a[aria-current="page"] { color: var(--primary); background: #eef2ff; }
+    h1, h2, h3 { font-family: "General Sans", "Microsoft YaHei", "PingFang SC", sans-serif; letter-spacing: 0; }
+    h1 { margin: 0; max-width: 760px; font-size: 52px; line-height: 1.15; }
+    h2 { margin: 72px 0 28px; padding-bottom: 16px; border-bottom: 1px solid var(--border); font-size: 30px; line-height: 1.3; }
+    h3 { margin: 52px 0 20px; font-size: 22px; line-height: 1.35; }
+    p, ul { margin: 12px 0; }
+    ul { padding-left: 20px; }
+    li + li { margin-top: 8px; }
+    code { padding: 2px 4px; border-radius: 4px; background: #f0f0f2; font-family: "JetBrains Mono", Consolas, "Courier New", monospace; font-size: 0.9em; overflow-wrap: anywhere; white-space: normal; }
+    .page-intro { padding: 80px 0 64px; border-bottom: 1px solid var(--border); }
+    .eyebrow { margin: 0 0 12px; color: var(--text-secondary); font-size: 12px; font-weight: 700; text-transform: uppercase; }
+    .subtitle { max-width: 760px; margin: 16px 0 0; color: var(--text-secondary); font-size: 16px; }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 240px minmax(0, 1fr);
+      gap: 48px;
+      align-items: start;
+    }
+    nav.toc {
+      position: sticky;
+      top: 92px;
+      margin-top: 64px;
+      padding-right: 24px;
+      border-right: 1px solid var(--border);
+      max-height: calc(100vh - 124px);
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #d4d4d8 transparent;
+    }
+    nav.toc > strong { display: block; margin-bottom: 12px; font-size: 12px; text-transform: uppercase; }
+    nav.toc a { display: block; color: var(--text-secondary); text-decoration: none; }
+    .toc-group { padding: 2px 0; }
+    .toc-group summary {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 6px 0;
+      color: var(--text-secondary);
+      font-size: 13px;
+      line-height: 1.5;
+      list-style: none;
+      cursor: pointer;
+    }
+    .toc-group summary::-webkit-details-marker { display: none; }
+    .toc-group summary::before {
+      content: "›";
+      flex: 0 0 12px;
+      color: #9c9c9c;
+      font-size: 16px;
+      line-height: 1.2;
+      transform-origin: center;
+      transition: transform 160ms ease;
+    }
+    .toc-group[open] summary::before { transform: rotate(90deg); }
+    .toc-group summary:hover { color: var(--text); }
+    .toc-subnav {
+      margin: 2px 0 8px 5px;
+      padding-left: 15px;
+      border-left: 1px solid var(--border);
+    }
+    .toc-subnav a { padding: 5px 0; font-size: 12px; line-height: 1.5; }
+    .toc-direct { padding: 8px 0 8px 20px; font-size: 13px; line-height: 1.5; }
+    nav.toc a:hover, nav.toc a:focus { color: var(--primary); }
+    article { min-width: 0; padding-bottom: 96px; }
+
+    .note, .pending {
+      max-width: 920px;
+      margin: 20px 0 32px;
+      padding: 16px 18px;
+      border-left: 3px solid #9c9c9c;
+      border-radius: 0 4px 4px 0;
+      background: #f6f7f8;
+      color: var(--text-secondary);
+      font-size: 14px;
+      line-height: 1.8;
+    }
+    .note strong, .pending strong { color: var(--text); }
+    .pending { border-left-color: var(--warning); background: var(--warning-soft); }
+    .pending strong { color: var(--warning); }
+    .formula {
+      max-width: 920px;
+      margin: 20px 0 32px;
+      padding: 16px 18px;
+      border-left: 3px solid var(--border);
+      background: #f6f7f8;
+      color: var(--text-secondary);
+      font-size: 14px;
+      line-height: 1.8;
+      overflow-wrap: anywhere;
+    }
+    .formula strong { color: var(--text); }
+
+    .table-wrap { max-width: 100%; margin: 20px 0 40px; }
+    table { width: 100%; min-width: 0; table-layout: fixed; border-collapse: separate; border-spacing: 0; background: var(--surface); }
+    th, td { padding: 14px 16px; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; overflow-wrap: anywhere; word-break: break-word; }
+    th:first-child, td:first-child { border-left: 1px solid var(--border); }
+    thead th { border-top: 1px solid var(--border); background: var(--surface-muted); font-size: 13px; font-weight: 700; }
+    thead th:first-child { border-top-left-radius: 8px; }
+    thead th:last-child { border-top-right-radius: 8px; }
+    tbody tr:last-child td:first-child { border-bottom-left-radius: 8px; }
+    tbody tr:last-child td:last-child { border-bottom-right-radius: 8px; }
+    .config-order { min-width: 0; font-size: 13px; line-height: 1.5; }
+    .config-order th, .config-order td { padding: 10px 12px; }
+    .config-order th:nth-child(1) { width: 9%; }
+    .config-order th:nth-child(2) { width: 28%; }
+    .config-order th:nth-child(3) { width: 63%; }
+    .resource-table { min-width: 0; font-size: 14px; line-height: 1.6; }
+    .resource-table th, .resource-table td { padding: 12px 14px; }
+    .resource-table th:nth-child(1) { width: 14%; }
+    .resource-table th:nth-child(2) { width: 27%; }
+    .resource-table th:nth-child(3) { width: 23%; }
+    .resource-table th:nth-child(4) { width: 19%; }
+    .resource-table th:nth-child(5) { width: 17%; }
+    .config-order tr.group-start td { border-top: 2px solid #9c9c9c; }
+    .g-rules td, .g-time-rule td { background: #f3f4f6; }
+    .g-training-output td, .g-level-output td, .g-attack-output td, .g-hp-output td,
+    .g-stage-output td, .g-pending-output td, .g-trophy-output td, .g-rebirth-output td,
+    .g-pet-output td, .g-paid-output td { background: #edf7f1; }
+    .g-training-cost td, .g-attack-cost td, .g-hp-cost td, .g-time-cost td,
+    .g-trophy-cost td, .g-run-cost td, .g-external-cost td { background: #fbf1ef; }
+    .g-level-threshold td, .g-trophy-threshold td, .g-rebirth-threshold td { background: #fff7df; }
+    .g-pending-settle td { background: #eef2f7; }
+
+    #resource-config > h3 {
+      margin-top: 72px;
+      padding-top: 52px;
+      border-top: 1px solid var(--border);
+    }
+    #resource-config > h3:first-of-type {
+      margin-top: 56px;
+      padding-top: 0;
+      border-top: 0;
+    }
+    #resource-config > p {
+      max-width: 860px;
+      margin: 20px 0;
+      color: var(--text-secondary);
+      font-size: 14px;
+      line-height: 1.85;
+    }
+    #resource-config > p strong { color: var(--text); }
+    #resource-config > .formula,
+    #resource-config > .note,
+    #resource-config > .pending { max-width: 920px; margin: 24px 0 36px; }
+    #resource-config > .table-wrap { margin-top: 24px; margin-bottom: 44px; }
+
+    footer { padding: 32px 0 48px; border-top: 1px solid var(--border); color: var(--text-secondary); font-size: 12px; }
+
+    @media (max-width: 760px) {
+      .header-inner, .layout, footer { width: min(100% - 20px, 720px); }
+      .header-inner { gap: 8px; }
+      .doc-brand { font-size: 12px; }
+      .doc-links a { padding: 7px 8px; font-size: 13px; }
+      .layout { display: block; }
+      nav.toc { position: static; margin-top: 16px; padding: 0 0 12px; border-right: 0; border-bottom: 1px solid var(--border); }
+      nav.toc a { display: inline-block; margin-right: 10px; }
+      .page-intro { padding: 48px 0 40px; }
+      h1 { font-size: 40px; }
+      h2 { margin: 48px 0 20px; font-size: 26px; }
+      h3 { margin: 36px 0 16px; font-size: 20px; }
+      .note, .pending, .formula { margin: 14px 0 24px; }
+      .table-wrap { margin: 14px 0 24px; }
+      th, td { padding: 8px 5px; font-size: 12px; line-height: 1.45; }
+    }
+
+    @media print {
+      body { font-size: 11pt; }
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .site-header { display: none; }
+      .header-inner, .layout, footer { width: 100%; }
+      .layout { display: block; }
+      nav.toc { display: none; }
+      .page-intro { padding-top: 0; }
+      h1 { font-size: 24pt; }
+      h2, h3, table, .note, .pending { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="doc-brand" href="#top">PROJECT DOCS</a>
+      <nav class="doc-links" aria-label="项目文档">
+        <a href="玩法设计.html">玩法设计</a>
+        <a href="数值框架.html" aria-current="page">数值框架</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top" class="layout">
+    <nav class="toc" aria-label="本文目录">
+      <strong>本文目录</strong>
+      <details class="toc-group" open>
+        <summary>1. 数值体验目标</summary>
+        <div class="toc-subnav">
+          <a href="#graduation-goals">1.1 游戏毕业目标</a>
+          <a href="#duration-goals">1.2 时长目标</a>
+        </div>
+      </details>
+      <a class="toc-direct" href="#order">2. 数值配置顺序</a>
+      <details class="toc-group" open>
+        <summary>3. 资源管理配置</summary>
+        <div class="toc-subnav">
+          <a href="#global-rule">3.1 全局进度.规则</a>
+          <a href="#time-rule">3.2 时间.规则</a>
+          <a href="#training-output">3.3 训练值.产出</a>
+          <a href="#training-cost">3.4 训练值.消耗</a>
+          <a href="#level-output">3.5 玩家等级.产出</a>
+          <a href="#level-threshold">3.6 玩家等级.门槛</a>
+          <a href="#attack-output">3.7 攻击力.产出</a>
+          <a href="#hp-output">3.8 生命上限.产出</a>
+          <a href="#attack-cost">3.9 攻击力.消耗</a>
+          <a href="#hp-cost">3.10 当前生命.消耗</a>
+          <a href="#time-cost">3.11 时间.消耗</a>
+          <a href="#stage-output">3.12 关卡进度.产出</a>
+          <a href="#pending-output">3.13 待领奖杯.产出</a>
+          <a href="#pending-settle">3.14 待领奖杯.结算</a>
+          <a href="#trophy-output">3.15 奖杯.产出</a>
+          <a href="#trophy-cost">3.16 奖杯.消耗</a>
+          <a href="#trophy-threshold">3.17 奖杯.门槛</a>
+          <a href="#rebirth-output">3.18 重生次数.产出</a>
+          <a href="#run-cost">3.19 本轮进度.消耗</a>
+          <a href="#rebirth-threshold">3.20 重生次数.门槛</a>
+          <a href="#pet-output">3.21 宠物.产出</a>
+          <a href="#paid-output">3.22 付费倍率.产出</a>
+          <a href="#external-cost">3.23 外部付费.消耗</a>
+        </div>
+      </details>
+    </nav>
+
+    <article>
+      <div class="page-intro">
+        <p class="eyebrow">Balance Framework</p>
+        <h1>数值框架</h1>
+        <p class="subtitle">挂机成长、连续闯关、收集强化与重生提速的数值依赖框架</p>
+      </div>
+      <section id="goals">
+        <h2>1. 数值体验目标</h2>
+
+        <h3 id="graduation-goals">1.1 游戏毕业目标</h3>
+        <p>当前以达到全部内容边界作为毕业口径，玩家必须同时满足：</p>
+        <ul>
+          <li>累计完成 50 次重生。</li>
+          <li>最后一次重生后再次将当前角色等级提升至上限 500 级。</li>
+          <li>通过第 3 世界第 20 关，即全 60 关通关。</li>
+          <li>获得全部宠物，并将每只宠物提升至各自满级。</li>
+        </ul>
+        <p class="note">关卡固定划分为 3 个世界，每个世界 20 关。全局关卡编号 <code>s</code> 的世界编号为 <code>ceil(s / 20)</code>，世界内关卡编号为 <code>((s - 1) mod 20) + 1</code>。</p>
+
+        <h3 id="duration-goals">1.2 时长目标</h3>
+        <p>从全新存档开始，全程使用 2048 倍付费倍率，不计算离线收益，并按本文确定性推荐策略操作，目标在 <strong>24 小时</strong>内毕业；可接受预测区间为 <code>22.8–25.2</code> 小时。</p>
+        <p>确定性推荐策略：训练值足够时立即购买当前可负担的全部等级；达到当前关推荐等级后挑战；优先完成已开放但未毕业的扭蛋并立即激活所得宠物；阶段收集完成且达到门槛后立即重生。</p>
+      </section>
+
+      <section id="order">
+        <h2>2. 数值配置顺序</h2>
+        <p><strong>资源：</strong>时间、训练值、玩家等级、攻击力、生命上限、当前生命、关卡进度、待领奖杯、奖杯、重生次数、本轮进度、宠物、付费倍率、外部付费。</p>
+        <p>按表格从上到下配置。相同资源关联连续排列并使用同一底色；先固定规则和基础产出，再根据产出反推消耗与门槛。</p>
+        <div class="table-wrap">
+          <table class="config-order">
+            <thead><tr><th>顺序</th><th>资源关联</th><th>系统关联</th></tr></thead>
+            <tbody>
+              <tr class="g-rules group-start"><td>1</td><td>全局进度.规则</td><td>基础规则.内容上限</td></tr>
+              <tr class="g-time-rule group-start"><td>2</td><td>时间.规则</td><td>挂机.结算频率</td></tr>
+              <tr class="g-training-output group-start"><td>3</td><td>训练值.产出</td><td>挂机.基础训练值收益</td></tr>
+              <tr class="g-training-output"><td>4</td><td>训练值.产出</td><td>重生.训练值倍率</td></tr>
+              <tr class="g-training-output"><td>5</td><td>训练值.产出</td><td>宠物.训练值倍率</td></tr>
+              <tr class="g-training-output"><td>6</td><td>训练值.产出</td><td>训练值武器.训练值倍率</td></tr>
+              <tr class="g-training-output"><td>7</td><td>训练值.产出</td><td>付费倍率.训练值倍率</td></tr>
+              <tr class="g-training-cost group-start"><td>8</td><td>训练值.消耗</td><td>等级.升级训练值消耗</td></tr>
+              <tr class="g-level-output group-start"><td>9</td><td>玩家等级.产出</td><td>等级.训练值转等级</td></tr>
+              <tr class="g-level-threshold group-start"><td>10</td><td>玩家等级.门槛</td><td>重生.角色等级要求</td></tr>
+              <tr class="g-level-threshold"><td>11</td><td>玩家等级.门槛</td><td>世界.进入等级要求</td></tr>
+              <tr class="g-attack-output group-start"><td>12</td><td>攻击力.产出</td><td>等级.攻击力</td></tr>
+              <tr class="g-hp-output group-start"><td>13</td><td>生命上限.产出</td><td>等级.生命上限</td></tr>
+              <tr class="g-attack-cost group-start"><td>14</td><td>攻击力.消耗</td><td>关卡.敌人生命</td></tr>
+              <tr class="g-hp-cost group-start"><td>15</td><td>当前生命.消耗</td><td>关卡.敌人伤害</td></tr>
+              <tr class="g-time-cost group-start"><td>16</td><td>时间.消耗</td><td>关卡.战斗时间</td></tr>
+              <tr class="g-stage-output group-start"><td>17</td><td>关卡进度.产出</td><td>关卡.通关进度</td></tr>
+              <tr class="g-pending-output group-start"><td>18</td><td>待领奖杯.产出</td><td>关卡.待领奖杯奖励</td></tr>
+              <tr class="g-pending-settle group-start"><td>19</td><td>待领奖杯.结算</td><td>闯关.停止结算</td></tr>
+              <tr class="g-trophy-output group-start"><td>20</td><td>奖杯.产出</td><td>闯关.奖杯领取</td></tr>
+              <tr class="g-trophy-cost group-start"><td>21</td><td>奖杯.消耗</td><td>扭蛋.抽取价格</td></tr>
+              <tr class="g-trophy-threshold group-start"><td>22</td><td>奖杯.门槛</td><td>训练值武器.解锁奖杯</td></tr>
+              <tr class="g-rebirth-output group-start"><td>23</td><td>重生次数.产出</td><td>重生.次数增加</td></tr>
+              <tr class="g-run-cost group-start"><td>24</td><td>本轮进度.消耗</td><td>重生.清空本轮进度</td></tr>
+              <tr class="g-rebirth-threshold group-start"><td>25</td><td>重生次数.门槛</td><td>重生.次数上限</td></tr>
+              <tr class="g-pet-output group-start"><td>26</td><td>宠物.产出</td><td>扭蛋.宠物抽取</td></tr>
+              <tr class="g-pet-output"><td>27</td><td>宠物.产出</td><td>宠物.重复抽取经验</td></tr>
+              <tr class="g-pet-output"><td>28</td><td>宠物.产出</td><td>宠物.升级</td></tr>
+              <tr class="g-paid-output group-start"><td>29</td><td>付费倍率.产出</td><td>付费倍率.倍率档位</td></tr>
+              <tr class="g-external-cost group-start"><td>30</td><td>外部付费.消耗</td><td>付费倍率.购买成本</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">配置时使用控制变量法：先固定升级成本、重生、战斗、奖杯、扭蛋和宠物的相对关系，再以基础训练值产出作为全局时间缩放参数。完整闭环验证时，付费倍率只改变第 7 行，其余参数保持不变。</p>
+      </section>
+
+      <section id="resource-config">
+        <h2>3. 资源管理配置</h2>
+        <p>每个系统关联独占一行。“毕业数值”按该系统自身的内容上限填写，不重复写入所有乘区叠乘后的总结果。</p>
+
+        <h3 id="global-rule">3.1 全局进度.规则</h3>
+        <div class="table-wrap"><table class="resource-table">
+          <thead><tr><th>系统关联</th><th>曲线或规则</th><th>投放方式</th><th>毕业条件</th><th>毕业数值</th></tr></thead>
+          <tbody><tr><td>基础规则.内容上限</td><td>初始等级 1；等级上限 500、重生上限 50、3 个世界共 60 关、5 个扭蛋共 25 只宠物。</td><td>创建新存档时生效；内容随等级、重生、关卡和扭蛋进度逐步开放。</td><td>完成 50 次重生，最后一轮达到 500 级，通过第 60 关并将 25 只宠物全部升满。</td><td>等级 500；重生 50；关卡 60；满级宠物 25 只</td></tr></tbody>
+        </table></div>
+        <p><strong>固定规则：</strong>初始等级为 1，玩家等级范围为 <code>1–500</code>；重生次数范围为 <code>0–50</code>；关卡为 3 个世界、每世界 20 关，共 60 关；扭蛋共 5 个，每个包含 5 只宠物。超过上限的升级、重生和关卡推进操作必须阻断。</p>
+
+        <h3 id="time-rule">3.2 时间.规则</h3>
+        <div class="table-wrap"><table class="resource-table">
+          <thead><tr><th>系统关联</th><th>曲线或规则</th><th>投放方式</th><th>毕业条件</th><th>毕业数值</th></tr></thead>
+          <tbody><tr><td>挂机.结算频率</td><td>在线状态固定每 1 秒结算一次；训练与闯关并行；不计算离线收益。</td><td>进入存档后自动持续投放时间，每秒触发一次训练值结算和战斗推进。</td><td>在目标前提下完成全部毕业条件。</td><td>模型累计在线时间 88,071 秒</td></tr></tbody>
+        </table></div>
+        <p><strong>固定规则：</strong>主进度单位为秒，在线状态每秒结算一次训练值；训练与闯关可同时进行。首版不实现、不计算离线收益，因此不存在离线比例和离线时长上限。</p>
+
+        <h3 id="training-output">3.3 训练值.产出</h3>
+        <div class="table-wrap"><table class="resource-table">
+          <thead><tr><th>系统关联</th><th>曲线或规则</th><th>投放方式</th><th>毕业条件</th><th>毕业数值</th></tr></thead>
+          <tbody>
+            <tr><td>挂机.基础训练值收益</td><td>默认 <code>0.000139/秒</code>；建议调参范围 <code>0.00010–0.00020/秒</code>。</td><td>创建存档时自动生效，在线期间每秒投放一次。</td><td>始终生效。</td><td>0.000139 训练值/秒</td></tr>
+            <tr><td>重生.训练值倍率</td><td>默认 <code>1.7908476965^r</code>，底数建议范围 <code>1.70–1.90</code>；<code>r</code> 为已完成重生次数。</td><td>满足等级门槛后主动重生，每次永久增加 1 个倍率档位。</td><td>完成第 50 次重生。</td><td>×4,497,100,900,000</td></tr>
+            <tr><td>宠物.训练值倍率</td><td><code>1 + ΣPetBonus</code>，<code>PetBonus=0.02×2^(e-1)×Rarity(p)×L</code>；基础加成建议范围 <code>0.01–0.04</code>；同层相加，不连乘。</td><td>通过 5 个扭蛋获得并升级宠物，玩家激活后生效。</td><td>25 只宠物全部 5 级并激活。</td><td>×23.01</td></tr>
+            <tr><td>训练值武器.训练值倍率</td><td>按当前奖杯取最高档，倍率依次为 <code>×1/1.10/1.25/1.45/1.70/2.00</code>；消费后可降级。</td><td>持有奖杯达到 0、100、1千、1万、10万、100万时动态投放对应档位。</td><td>当前持有奖杯达到 1,000,000。</td><td>×2.00</td></tr>
+            <tr><td>付费倍率.训练值倍率</td><td><code>2^p</code>，档位 <code>p=0…11</code>。</td><td>通过外部付费档位提供；本模型从新存档起固定使用最高档。</td><td>获得 2048 倍档位。</td><td>×2,048</td></tr>
+          </tbody>
+        </table></div>
+        <p class="formula"><strong>公式：</strong><code>V = 0.000139 × 1.7908476965^r × (1 + Σ宠物加成) × 武器倍率 × 2^p</code>，其中 <code>V</code> 为每秒训练值，<code>r</code> 为已完成重生次数，<code>p ∈ [0,11]</code> 为付费档位。</p>
+        <p><strong>单位与取整：</strong>训练值存量和每秒收益保留浮点数；只有显示层可缩写。初始存档在 2048 倍、无宠物、无武器时每秒获得 <code>0.284672</code> 训练值。</p>
+        <p><strong>宠物聚合：</strong>所有已激活宠物的百分比加成先相加，再形成一个宠物乘区；宠物之间不连乘。全部 25 只宠物满级且激活时，宠物倍率为 <code>23.01</code>。</p>
+
+        <h3 id="training-cost">3.4 训练值.消耗</h3>
+        <div class="table-wrap"><table class="resource-table">
+          <thead><tr><th>系统关联</th><th>曲线或规则</th><th>投放方式</th><th>毕业条件</th><th>毕业数值</th></tr></thead>
+          <tbody><tr><td>等级.升级训练值消耗</td><td><code>C(n)=floor(100×1.06^(n-2))</code>；基础值建议范围 <code>80–120</code>，增长率建议范围 <code>1.05–1.07</code>；批量升级先逐级取整再求和。</td><td>玩家每次升级时消耗训练值，可单级购买或连续购买当前可负担等级。</td><td>最后一轮从 1 级提升至 500 级。</td><td>1→500 累计消耗 7,070,913,374,268,260 训练值</td></tr></tbody>
+        </table></div>
+        <p class="formula"><strong>单级公式：</strong>从 <code>n-1</code> 级升到目标等级 <code>n</code> 时，<code>C(n) = floor(100 × 1.06^(n-2))</code>，<code>n ∈ [2,500]</code>。</p>
+        <p><strong>批量规则：</strong>从等级 <code>a</code> 升到 <code>b</code> 的成本为 <code>Σ C(n)</code>，求和范围为 <code>n=a+1…b</code>；必须先逐级向下取整再求和，不能对未取整的等比级数总和统一取整。</p>
+        <div class="table-wrap"><table><thead><tr><th>目标等级</th><th>本级成本</th></tr></thead><tbody><tr><td>2</td><td>100</td></tr><tr><td>10</td><td>159</td></tr><tr><td>100</td><td>30,197</td></tr><tr><td>500</td><td>400,240,379,675,670</td></tr></tbody></table></div>
+
+        <h3 id="level-output">3.5 玩家等级.产出</h3>
+        <div class="table-wrap"><table class="resource-table">
+          <thead><tr><th>系统关联</th><th>曲线或规则</th><th>投放方式</th><th>毕业条件</th><th>毕业数值</th></tr></thead>
+          <tbody><tr><td>等级.训练值转等级</td><td>支付当前目标等级成本后固定增加 1 级；范围 1–500。</td><td>通过持续挂机获得训练值，再由玩家执行单级或最大可购买升级。</td><td>第 50 次重生后再次达到等级上限。</td><td>等级 500</td></tr></tbody>
+        </table></div>
+        <p><strong>固定规则：</strong>每次成功升级增加 1 级；初始等级和重生后等级均为 1。允许“升 1 级”和“最大可购买”两种口径，最大可购买应依次扣除第 3.4 节单级成本，直到下一等级不可负担或达到 500 级。</p>
+
+        <h3 id="level-threshold">3.6 玩家等级.门槛</h3>
+        <div class="table-wrap"><table class="resource-table">
+          <thead><tr><th>系统关联</th><th>曲线或规则</th><th>投放方式</th><th>毕业条件</th><th>毕业数值</th></tr></thead>
+          <tbody>
+            <tr><td>重生.角色等级要求</td><td><code>Lrebirth(r)=10×(r+1)</code>，共 50 档。</td><td>每轮升级达到对应门槛时开放下一次主动重生。</td><td>满足第 50 次重生门槛。</td><td>等级门槛 500</td></tr>
+            <tr><td>世界.进入等级要求</td><td>取各世界第 1 关推荐等级：1、171、340。</td><td>达到门槛时开放对应世界；开始闯关时选择已开放的最高世界。</td><td>开放世界 3。</td><td>等级门槛 340</td></tr>
+          </tbody>
+        </table></div>
+        <p class="formula"><strong>重生门槛：</strong>已完成 <code>r</code> 次重生时，下一次重生要求 <code>Lrebirth(r) = 10 × (r + 1)</code>，<code>r ∈ [0,49]</code>；50 次门槛依次为 10、20、…、500 级。</p>
+        <p><strong>世界门槛：</strong>世界 1、2、3 的第 1 关分别是全局关卡 1、21、41，对应推荐等级 1、171、340。“最合适世界”为玩家满足第 1 关推荐等级的最高世界。</p>
+
+        <h3 id="attack-output">3.7 攻击力.产出</h3>
+        <div class="table-wrap"><table class="resource-table">
+          <thead><tr><th>系统关联</th><th>曲线或规则</th><th>投放方式</th><th>毕业条件</th><th>毕业数值</th></tr></thead>
+          <tbody><tr><td>等级.攻击力</td><td><code>Attack(L)=floor(10×L^1.35)</code>；基础值建议范围 <code>5–20</code>，指数建议范围 <code>1.20–1.50</code>。</td><td>每次升级自动提高，无需额外领取。</td><td>玩家等级达到 500。</td><td>44,015 伤害/次</td></tr></tbody>
+        </table></div>
+        <p class="formula"><strong>公式：</strong><code>Attack(L) = floor(10 × L^1.35)</code>，等级 <code>L ∈ [1,500]</code>。结果单位为每次玩家攻击造成的伤害，向下取整。</p>
+
+        <h3 id="hp-output">3.8 生命上限.产出</h3>
+        <div class="table-wrap"><table class="resource-table">
+          <thead><tr><th>系统关联</th><th>曲线或规则</th><th>投放方式</th><th>毕业条件</th><th>毕业数值</th></tr></thead>
+          <tbody><tr><td>等级.生命上限</td><td><code>MaxHP(L)=floor(100×L^1.2)</code>；基础值建议范围 <code>50–200</code>，指数建议范围 <code>1.10–1.40</code>。</td><td>每次升级自动提高；每关开始时恢复至当前生命上限。</td><td>玩家等级达到 500。</td><td>173,286 生命</td></tr></tbody>
+        </table></div>
+        <p class="formula"><strong>公式：</strong><code>MaxHP(L) = floor(100 × L^1.2)</code>，等级 <code>L ∈ [1,500]</code>。结果单位为生命点，向下取整。</p>
+        <p><strong>恢复规则：</strong>升级只提高生命上限，不按差值治疗；每关开始时当前生命直接恢复至最新生命上限。</p>
+
+        <h3 id="attack-cost">3.9 攻击力.消耗</h3>
+        <div class="table-wrap"><table class="resource-table">
+          <thead><tr><th>系统关联</th><th>曲线或规则</th><th>投放方式</th><th>毕业条件</th><th>毕业数值</th></tr></thead>
+          <tbody><tr><td>关卡.敌人生命</td><td><code>EnemyHP(s)=5×Attack(RecommendedLevel(s))</code>；目标攻击次数建议范围 <code>3–8</code>。</td><td>进入每关时生成对应敌人；玩家每秒攻击一次直至敌人生命归零。</td><td>击败第 60 关敌人。</td><td>第 60 关敌人生命 220,075</td></tr></tbody>
+        </table></div>
+        <p class="formula"><strong>公式：</strong>全局关卡 <code>s</code> 的敌人生命为 <code>EnemyHP(s) = 5 × Attack(RecommendedLevel(s))</code>。达到推荐等级时固定需要 5 次玩家攻击；高于推荐等级时所需次数为 <code>ceil(EnemyHP / 当前攻击力)</code>。</p>
+
+        <h3 id="hp-cost">3.10 当前生命.消耗</h3>
+        <div class="table-wrap"><table class="resource-table">
+          <thead><tr><th>系统关联</th><th>曲线或规则</th><th>投放方式</th><th>毕业条件</th><th>毕业数值</th></tr></thead>
+          <tbody><tr><td>关卡.敌人伤害</td><td><code>max(1,floor((MaxHP(推荐等级)-1)/5))</code>。</td><td>敌人存活时每秒反击一次；玩家先攻击，低于推荐等级不得进入。</td><td>在推荐等级下通过第 60 关。</td><td>第 60 关 34,657 伤害/次</td></tr></tbody>
+        </table></div>
+        <p class="formula"><strong>公式：</strong><code>EnemyDamage(s) = max(1, floor((MaxHP(RecommendedLevel(s)) - 1) / 5))</code>。</p>
+        <p><strong>固定规则：</strong>玩家每秒先攻击；敌人仅在存活时反击。推荐等级下敌人会在第 5 次玩家攻击时死亡，至多完成 4 次反击，因此玩家必定存活；低于推荐等级时不会进入战斗，不设置战败分支。</p>
+
+        <h3 id="time-cost">3.11 时间.消耗</h3>
+        <div class="table-wrap"><table class="resource-table">
+          <thead><tr><th>系统关联</th><th>曲线或规则</th><th>投放方式</th><th>毕业条件</th><th>毕业数值</th></tr></thead>
+          <tbody><tr><td>关卡.战斗时间</td><td><code>ceil(EnemyHP/当前攻击力)</code> 秒；无额外移动时间。</td><td>每次进入关卡时按攻防结算；推荐等级固定 5 秒，高等级重打最短 1 秒。</td><td>通过第 60 关。</td><td>第 60 关基准 5 秒；60 关推荐等级基准合计 300 秒</td></tr></tbody>
+        </table></div>
+        <p><strong>固定规则：</strong>不计算额外进场移动时间；玩家与敌人的攻击间隔均为 1 秒。单关战斗秒数为 <code>ceil(EnemyHP / 当前攻击力)</code>，因此推荐等级下为 5 秒，高等级重打时可缩短至 1 秒。</p>
+
+        <h3 id="stage-output">3.12 关卡进度.产出</h3>
+        <div class="table-wrap"><table class="resource-table">
+          <thead><tr><th>系统关联</th><th>曲线或规则</th><th>投放方式</th><th>毕业条件</th><th>毕业数值</th></tr></thead>
+          <tbody><tr><td>关卡.通关进度</td><td><code>RecommendedLevel(s)=ceil(1+(s-1)×499/59)</code>；每世界 20 关。</td><td>达到推荐等级后从已开放最高世界第 1 关连续挑战；不足下一关门槛时自动停止。</td><td>永久最高通关达到世界 3 第 20 关。</td><td>全局关卡 60</td></tr></tbody>
+        </table></div>
+        <p class="formula"><strong>推荐等级：</strong><code>RecommendedLevel(s) = ceil(1 + (s - 1) × 499 / 59)</code>，全局关卡 <code>s ∈ [1,60]</code>。</p>
+        <p><strong>推进规则：</strong>每次选择当前可进入的最高世界并从该世界第 1 关开始；胜利后顺序推进。下一关推荐等级高于当前等级时自动停止并领取；世界第 20 关完成时也自动停止并记录永久最高通关。</p>
+        <div class="table-wrap"><table><thead><tr><th>全局关卡</th><th>世界/关</th><th>推荐等级</th><th>玩家攻击</th><th>玩家生命</th><th>敌人生命</th><th>敌人伤害</th><th>奖励</th></tr></thead><tbody><tr><td>1</td><td>1-1</td><td>1</td><td>10</td><td>100</td><td>50</td><td>19</td><td>10</td></tr><tr><td>20</td><td>1-20</td><td>162</td><td>9,612</td><td>44,814</td><td>48,060</td><td>8,962</td><td>232</td></tr><tr><td>21</td><td>2-1</td><td>171</td><td>10,340</td><td>47,818</td><td>51,700</td><td>9,563</td><td>273</td></tr><tr><td>40</td><td>2-20</td><td>331</td><td>25,221</td><td>105,631</td><td>126,105</td><td>21,126</td><td>6,359</td></tr><tr><td>41</td><td>3-1</td><td>340</td><td>26,151</td><td>109,087</td><td>130,755</td><td>21,817</td><td>7,503</td></tr><tr><td>60</td><td>3-20</td><td>500</td><td>44,015</td><td>173,286</td><td>220,075</td><td>34,657</td><td>174,196</td></tr></tbody></table></div>
+
+        <h3 id="pending-output">3.13 待领奖杯.产出</h3>
+        <div class="table-wrap"><table class="resource-table">
+          <thead><tr><th>系统关联</th><th>曲线或规则</th><th>投放方式</th><th>毕业条件</th><th>毕业数值</th></tr></thead>
+          <tbody><tr><td>关卡.待领奖杯奖励</td><td><code>floor(10×1.18^(s-1))</code>；基础值建议范围 <code>5–20</code>，增长率建议范围 <code>1.16–1.20</code>；每关向下取整。</td><td>每次通关先投入本轮待领奖杯，不立即成为可消费奖杯；关卡可重复挑战。</td><td>通过第 60 关。</td><td>第 60 关 +174,196 待领奖杯；60 关单次合计 +1,141,864</td></tr></tbody>
+        </table></div>
+        <p class="formula"><strong>公式：</strong><code>TrophyReward(s) = floor(10 × 1.18^(s-1))</code>。每次通关只把该关整数奖励加入本轮待领奖杯，不立即加入可消费奖杯。</p>
+
+        <h3 id="pending-settle">3.14 待领奖杯.结算</h3>
+        <div class="table-wrap"><table class="resource-table">
+          <thead><tr><th>系统关联</th><th>曲线或规则</th><th>投放方式</th><th>毕业条件</th><th>毕业数值</th></tr></thead>
+          <tbody><tr><td>闯关.停止结算</td><td>主动停止、下一关等级不足或世界通关时，将全部待领奖杯转为当前奖杯并归零。</td><td>每轮闯关结束时一次性结算；不设置战败分支。</td><td>最终闯关已经结算且无待领奖杯。</td><td>待领奖杯 0</td></tr></tbody>
+        </table></div>
+        <p><strong>固定规则：</strong>玩家主动停止、下一关推荐等级不足或完成当前世界第 20 关时，一次性领取本轮全部待领奖杯并归零。由于推荐等级是硬门槛，不存在失败清空或失败领取分支。</p>
+
+        <h3 id="trophy-output">3.15 奖杯.产出</h3>
+        <div class="table-wrap"><table class="resource-table">
+          <thead><tr><th>系统关联</th><th>曲线或规则</th><th>投放方式</th><th>毕业条件</th><th>毕业数值</th></tr></thead>
+          <tbody><tr><td>闯关.奖杯领取</td><td><code>当前奖杯增加量=本轮待领奖杯</code>；使用非负整数。</td><td>通过闯关停止结算投放，可用于扭蛋并动态决定武器档位。</td><td>完成全部扭蛋消费并执行第 50 次重生。</td><td>毕业最终持有 0；模型过程峰值 3,352,053 奖杯</td></tr></tbody>
+        </table></div>
+        <p><strong>固定规则：</strong><code>可消费奖杯增加量 = 本轮待领奖杯</code>。奖杯只使用非负整数；领取和消费后都立即按当前持有量重算武器等级。</p>
+
+        <h3 id="trophy-cost">3.16 奖杯.消耗</h3>
+        <div class="table-wrap"><table class="resource-table">
+          <thead><tr><th>系统关联</th><th>曲线或规则</th><th>投放方式</th><th>毕业条件</th><th>毕业数值</th></tr></thead>
+          <tbody><tr><td>扭蛋.抽取价格</td><td><code>floor(BaseEggCost(e)×1.08^d)</code>；基础价格为 10、50、250、1,250、6,250，增长率建议范围 <code>1.06–1.10</code>；各扭蛋独立累计抽数。</td><td>开启对应扭蛋时逐次扣除奖杯；5 个扭蛋在重生 0、10、20、30、40 时开放。</td><td>5 个扭蛋各完成 55 次有效抽取。</td><td>累计消耗 6,629,966 奖杯</td></tr></tbody>
+        </table></div>
+        <p class="formula"><strong>公式：</strong>扭蛋 <code>e</code> 在已抽取 <code>d</code> 次后，下次价格为 <code>EggCost(e,d) = floor(BaseEggCost(e) × 1.08^d)</code>，<code>d ∈ [0,54]</code>。</p>
+        <div class="table-wrap"><table><thead><tr><th>扭蛋</th><th>开放重生次数</th><th>基础价格</th><th>第 55 抽价格</th><th>满池总成本</th></tr></thead><tbody><tr><td>1</td><td>0</td><td>10</td><td>638</td><td>8,463</td></tr><tr><td>2</td><td>10</td><td>50</td><td>3,190</td><td>42,419</td></tr><tr><td>3</td><td>20</td><td>250</td><td>15,952</td><td>212,206</td></tr><tr><td>4</td><td>30</td><td>1,250</td><td>79,761</td><td>1,061,132</td></tr><tr><td>5</td><td>40</td><td>6,250</td><td>398,807</td><td>5,305,746</td></tr></tbody></table></div>
+
+        <h3 id="trophy-threshold">3.17 奖杯.门槛</h3>
+        <div class="table-wrap"><table class="resource-table">
+          <thead><tr><th>系统关联</th><th>曲线或规则</th><th>投放方式</th><th>毕业条件</th><th>毕业数值</th></tr></thead>
+          <tbody><tr><td>训练值武器.解锁奖杯</td><td>按当前奖杯判定 0、100、1千、1万、10万、100万六档门槛。</td><td>领取奖杯后即时解锁或升级；消费或重生后即时降级。</td><td>当前奖杯达到最高门槛。</td><td>1,000,000 奖杯门槛，对应武器 ×2.00</td></tr></tbody>
+        </table></div>
+        <div class="table-wrap"><table><thead><tr><th>武器等级</th><th>当前奖杯门槛</th><th>训练值倍率</th></tr></thead><tbody><tr><td>0</td><td>0</td><td>1.00</td></tr><tr><td>1</td><td>100</td><td>1.10</td></tr><tr><td>2</td><td>1,000</td><td>1.25</td></tr><tr><td>3</td><td>10,000</td><td>1.45</td></tr><tr><td>4</td><td>100,000</td><td>1.70</td></tr><tr><td>5</td><td>1,000,000</td><td>2.00</td></tr></tbody></table></div>
+        <p><strong>固定规则：</strong>取当前奖杯满足的最高档；抽奖或重生使奖杯跌破门槛时立即降级。闭环模型最高持有奖杯为 <code>3,352,053</code>，六档均可实际触达。</p>
+
+        <h3 id="rebirth-output">3.18 重生次数.产出</h3>
+        <div class="table-wrap"><table class="resource-table">
+          <thead><tr><th>系统关联</th><th>曲线或规则</th><th>投放方式</th><th>毕业条件</th><th>毕业数值</th></tr></thead>
+          <tbody><tr><td>重生.次数增加</td><td>满足当前等级门槛并主动执行后固定增加 1；上限 50。</td><td>玩家在每轮达到门槛后主动触发，每次投放 1 次永久重生进度。</td><td>完成第 50 次重生。</td><td>重生次数 50（累计 +50）</td></tr></tbody>
+        </table></div>
+        <p><strong>固定规则：</strong>满足当前等级门槛并主动执行后，已完成重生次数增加 1；达到 50 次后禁止再次重生。</p>
+        <p class="formula"><strong>训练倍率：</strong><code>RebirthMultiplier(r) = 1.7908476965^r = 1.06^(10r)</code>。它与每次重生增加 10 级门槛使用同一增长尺度，抵消升级成本向后平移 10 级带来的主要增长。</p>
+        <div class="table-wrap"><table><thead><tr><th>重生次数</th><th>训练倍率</th></tr></thead><tbody><tr><td>0</td><td>1</td></tr><tr><td>10</td><td>339.30208</td></tr><tr><td>20</td><td>115,125.9</td></tr><tr><td>30</td><td>39,062,459</td></tr><tr><td>40</td><td>13,253,974,000</td></tr><tr><td>50</td><td>4,497,100,900,000</td></tr></tbody></table></div>
+
+        <h3 id="run-cost">3.19 本轮进度.消耗</h3>
+        <div class="table-wrap"><table class="resource-table">
+          <thead><tr><th>系统关联</th><th>曲线或规则</th><th>投放方式</th><th>毕业条件</th><th>毕业数值</th></tr></thead>
+          <tbody><tr><td>重生.清空本轮进度</td><td>等级回到 1，训练值、当前奖杯、待领奖杯和战斗清零；长期进度保留。</td><td>玩家确认重生时立即执行，每次成功重生触发一次。</td><td>完成第 50 次重生。</td><td>累计触发 50 次；最后一次重置为等级 1、训练值 0、奖杯 0</td></tr></tbody>
+        </table></div>
+        <p><strong>固定规则：</strong>重生后等级设为 1，训练值、当前奖杯、待领奖杯和当前战斗清零，武器回到 0 级。宠物拥有状态、等级、经验、激活状态、付费倍率、已完成重生次数和永久最高通关记录保留。</p>
+
+        <h3 id="rebirth-threshold">3.20 重生次数.门槛</h3>
+        <div class="table-wrap"><table class="resource-table">
+          <thead><tr><th>系统关联</th><th>曲线或规则</th><th>投放方式</th><th>毕业条件</th><th>毕业数值</th></tr></thead>
+          <tbody><tr><td>重生.次数上限</td><td>重生次数范围 0–50；达到上限后阻断重生操作。</td><td>创建存档时生效，随每次成功重生逐步接近上限。</td><td>重生次数达到设计上限。</td><td>上限 50 次</td></tr></tbody>
+        </table></div>
+        <p><strong>固定规则：</strong>重生次数范围为 0 至 50；达到等级门槛只解锁操作，不强制重生。确定性推荐策略会在当前已开放扭蛋完成、当前闯关结算且门槛满足后立即重生。</p>
+        <p><strong>闭环预测检查点：</strong></p>
+        <div class="table-wrap"><table><thead><tr><th>事件</th><th>累计小时</th><th>当时重生</th><th>当时等级</th><th>永久最高关</th></tr></thead><tbody><tr><td>扭蛋 1 毕业</td><td>0.3697</td><td>0</td><td>6</td><td>1</td></tr><tr><td>完成 10 次重生</td><td>10.4431</td><td>10</td><td>1</td><td>12</td></tr><tr><td>扭蛋 2 毕业</td><td>11.5625</td><td>10</td><td>114</td><td>14</td></tr><tr><td>世界 1 通关</td><td>15.2256</td><td>16</td><td>162</td><td>20</td></tr><tr><td>完成 20 次重生</td><td>17.3231</td><td>20</td><td>1</td><td>24</td></tr><tr><td>扭蛋 3 毕业</td><td>18.1300</td><td>20</td><td>220</td><td>26</td></tr><tr><td>完成 30 次重生</td><td>20.9953</td><td>30</td><td>1</td><td>36</td></tr><tr><td>世界 2 通关</td><td>21.6975</td><td>30</td><td>331</td><td>40</td></tr><tr><td>扭蛋 4 毕业</td><td>21.7856</td><td>30</td><td>333</td><td>40</td></tr><tr><td>完成 40 次重生</td><td>23.2025</td><td>40</td><td>1</td><td>48</td></tr><tr><td>扭蛋 5 毕业</td><td>23.6261</td><td>40</td><td>436</td><td>52</td></tr><tr><td>世界 3 通关并完成第 50 次重生</td><td>24.3972</td><td>50</td><td>1</td><td>60</td></tr><tr><td>最后一轮达到 500 级，毕业</td><td>24.4642</td><td>50</td><td>500</td><td>60</td></tr></tbody></table></div>
+        <p class="note"><strong>验证说明：</strong>同一常量、策略和随机种子连续运行两次，均得到 <code>88,071 秒</code>，满足 24 小时目标区间。随后使用 Editor <code>run_config_sampling</code> 的一次性 Worker 复算文档常量，累计升级成本、60 关奖励、5 个扭蛋成本和时长断言全部通过，结果无错误、无截断。当前 <code>Data/config.json</code> 仍是模板配置，因此本次结果是文档常量校验，不是 Config 曲线或玩法运行时验收。</p>
+
+        <h3 id="pet-output">3.21 宠物.产出</h3>
+        <div class="table-wrap"><table class="resource-table">
+          <thead><tr><th>系统关联</th><th>曲线或规则</th><th>投放方式</th><th>毕业条件</th><th>毕业数值</th></tr></thead>
+          <tbody>
+            <tr><td>扭蛋.宠物抽取</td><td>每个扭蛋 5 只宠物，基础权重 40、25、16、11、8；满级宠物移出后重新归一化。</td><td>消耗奖杯开启 5 个扭蛋，按有效奖池随机投放；首次抽到获得该宠物。</td><td>25 只宠物全部获得并因满级退出奖池。</td><td>获得 25 只宠物；累计 275 次有效抽取</td></tr>
+            <tr><td>宠物.重复抽取经验</td><td>重复抽到同种宠物固定增加 1 经验；升至 2–5 级分别需要 1、2、3、4 经验。</td><td>首次获得后的同种重复抽取自动转化为经验。</td><td>每只宠物累计获得 10 点升级经验。</td><td>累计 +250 宠物经验</td></tr>
+            <tr><td>宠物.升级</td><td>经验达到当前门槛时立即升级，最高 5 级；每只满级共需 11 次有效抽取。</td><td>通过重复抽取逐级投放，每次升级增加 1 级。</td><td>25 只宠物全部达到 5 级。</td><td>25 只 5 级宠物；宠物等级合计 125</td></tr>
+          </tbody>
+        </table></div>
+        <p><strong>目录：</strong>宠物使用中性编号“宠物 e-p”；每个扭蛋包含槽位 1–5，基础抽取权重依次为 <code>40、25、16、11、8</code>。满级宠物移出有效池，剩余权重重新归一化。</p>
+        <p><strong>经验：</strong>首次抽到获得 1 级；每次重复抽取增加 1 经验。升至 2、3、4、5 级分别需要 1、2、3、4 经验，因此每只宠物满级固定需要 <code>1 + 1 + 2 + 3 + 4 = 11</code> 次有效抽取，每个扭蛋固定需要 55 抽。</p>
+        <p class="formula"><strong>单宠加成：</strong><code>PetBonus(e,p,L) = 0.02 × 2^(e-1) × Rarity(p) × L</code>，其中 <code>Rarity = [1, 1.15, 1.35, 1.6, 2]</code>，等级 <code>L ∈ [1,5]</code>。</p>
+        <div class="table-wrap"><table><thead><tr><th>已完成扭蛋</th><th>该池满级加成</th><th>累计宠物倍率</th></tr></thead><tbody><tr><td>1</td><td>+0.71</td><td>1.71</td></tr><tr><td>1–2</td><td>+1.42</td><td>3.13</td></tr><tr><td>1–3</td><td>+2.84</td><td>5.97</td></tr><tr><td>1–4</td><td>+5.68</td><td>11.65</td></tr><tr><td>1–5</td><td>+11.36</td><td>23.01</td></tr></tbody></table></div>
+        <p><strong>固定规则：</strong>激活数量没有上限；获得后由玩家激活，推荐策略立即激活。宠物拥有、等级、经验和激活状态不因重生清空。</p>
+
+        <h3 id="paid-output">3.22 付费倍率.产出</h3>
+        <div class="table-wrap"><table class="resource-table">
+          <thead><tr><th>系统关联</th><th>曲线或规则</th><th>投放方式</th><th>毕业条件</th><th>毕业数值</th></tr></thead>
+          <tbody><tr><td>付费倍率.倍率档位</td><td><code>2^p</code>，<code>p=0…11</code>，共 12 档且只作用于训练值。</td><td>通过外部付费购买并永久生效；模型从新存档起使用最高档。</td><td>获得最高倍率档位。</td><td>×2,048</td></tr></tbody>
+        </table></div>
+        <p><strong>固定规则：</strong>倍率为 <code>2^p</code>，<code>p</code> 为 0 至 11 的整数，即 1、2、4、8、16、32、64、128、256、512、1024、2048 倍。它是独立训练值乘区，不改变成本、战斗属性、奖励、扭蛋价格或概率。</p>
+
+        <h3 id="external-cost">3.23 外部付费.消耗</h3>
+        <div class="table-wrap"><table class="resource-table">
+          <thead><tr><th>系统关联</th><th>曲线或规则</th><th>投放方式</th><th>毕业条件</th><th>毕业数值</th></tr></thead>
+          <tbody><tr><td>付费倍率.购买成本</td><td>现实货币价格和购买方式未配置，不进入玩法内资源闭环。</td><td>外部商店按 1–2048 倍档位提供；本次只记录最高档作为时长前提。</td><td>获得 2048 倍档位。</td><td>未配置：缺少 12 档现实货币价格</td></tr></tbody>
+        </table></div>
+        <p class="pending"><strong>未配置：</strong>各倍率档位的现实货币价格和购买方式不属于本次数值闭环，不参与训练值、奖杯或宠物计算；本次只把 2048 倍作为毕业时长的明确前置条件。</p>
+      </section>
+    </article>
+  </main>
+
+  <footer>项目数值框架文档；当前结果为独立模型预测，待玩法实现后进行运行时复验。</footer>
+</body>
+</html>
