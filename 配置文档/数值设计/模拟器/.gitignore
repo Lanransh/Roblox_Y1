@@ -1,0 +1,9 @@
+/*
+!/.gitignore
+!/Code/
+!/Docs/
+!/Data/
+/Data/*
+!/Data/config.json
+
+!/Data/talent-tree.json
