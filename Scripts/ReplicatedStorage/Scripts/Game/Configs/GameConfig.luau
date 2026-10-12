@@ -50,119 +50,35 @@ return {
             NeedRebirhLevel = 0,
             DevGoodId = nil,
             TrainingRate = 1,
-            Node = [[BlockModels.TrainingField1.Field4]]
+            Node = [[game.Workspace.BlockMeshs["世界1"].TrainingCenter.Training1]]
         },
         [2] = {
             Index = 2,
             NeedRebirhLevel = 3,
             DevGoodId = nil,
             TrainingRate = 2,
-            Node = [[BlockModels.TrainingField1.Field3]]
+            Node = [[game.Workspace.BlockMeshs["世界1"].TrainingCenter.Training2]]
         },
         [3] = {
             Index = 3,
             NeedRebirhLevel = 6,
             DevGoodId = nil,
             TrainingRate = 5,
-            Node = [[BlockModels.TrainingField1.Field2]]
+            Node = [[game.Workspace.BlockMeshs["世界1"].TrainingCenter.Training3]]
         },
         [4] = {
             Index = 4,
             NeedRebirhLevel = 9,
             DevGoodId = nil,
             TrainingRate = 9,
-            Node = [[BlockModels.TrainingField1.Field1]]
+            Node = [[game.Workspace.BlockMeshs["世界1"].TrainingCenter.Training4]]
         },
         [5] = {
             Index = 5,
             NeedRebirhLevel = 12,
             DevGoodId = nil,
             TrainingRate = 14,
-            Node = [[BlockModels.TrainingField1.Field0]]
-        },
-        [6] = {
-            Index = 6,
-            NeedRebirhLevel = 15,
-            DevGoodId = nil,
-            TrainingRate = 20,
-            Node = [[BlockModels.TrainingField2.Field4]]
-        },
-        [7] = {
-            Index = 7,
-            NeedRebirhLevel = 18,
-            DevGoodId = nil,
-            TrainingRate = 27,
-            Node = [[BlockModels.TrainingField2.Field3]]
-        },
-        [8] = {
-            Index = 8,
-            NeedRebirhLevel = 21,
-            DevGoodId = nil,
-            TrainingRate = 35,
-            Node = [[BlockModels.TrainingField2.Field2]]
-        },
-        [9] = {
-            Index = 9,
-            NeedRebirhLevel = 24,
-            DevGoodId = nil,
-            TrainingRate = 44,
-            Node = [[BlockModels.TrainingField2.Field1]]
-        },
-        [10] = {
-            Index = 10,
-            NeedRebirhLevel = 27,
-            DevGoodId = nil,
-            TrainingRate = 54,
-            Node = [[BlockModels.TrainingField3.Field4]]
-        },
-        [11] = {
-            Index = 11,
-            NeedRebirhLevel = 30,
-            DevGoodId = nil,
-            TrainingRate = 65,
-            Node = [[BlockModels.TrainingField3.Field3]]
-        },
-        [12] = {
-            Index = 12,
-            NeedRebirhLevel = 33,
-            DevGoodId = nil,
-            TrainingRate = 76,
-            Node = [[BlockModels.TrainingField3.Field2]]
-        },
-        [13] = {
-            Index = 13,
-            NeedRebirhLevel = 36,
-            DevGoodId = nil,
-            TrainingRate = 89,
-            Node = [[BlockModels.TrainingField3.Field1]]
-        },
-        [14] = {
-            Index = 14,
-            NeedRebirhLevel = 39,
-            DevGoodId = nil,
-            TrainingRate = 103,
-            Node = [[BlockModels.TrainingField4.Field4]]
-        },
-        [15] = {
-            Index = 15,
-            NeedRebirhLevel = 42,
-            DevGoodId = nil,
-            TrainingRate = 117,
-            Node = [[BlockModels.TrainingField4.Field3]]
-        },
-        [16] = {
-            Index = 16,
-            NeedRebirhLevel = 45,
-            DevGoodId = nil,
-            TrainingRate = 132,
-            Node = [[BlockModels.TrainingField4.Field2]]
-        },
-        [17] = {
-            Index = 17,
-            NeedRebirhLevel = 48,
-            DevGoodId = nil,
-            TrainingRate = 149,
-            Node = [[BlockModels.TrainingField4.Field1]]
+            Node = [[game.Workspace.BlockMeshs["世界1"].TrainingCenter.Training5]]
         }
     },
     ToolConfig = {

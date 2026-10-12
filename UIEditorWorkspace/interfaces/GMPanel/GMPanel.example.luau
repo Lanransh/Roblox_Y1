@@ -8,6 +8,7 @@ function CGMPanelPreview:Ctor(owner)
     self.Config = {}
     self.State = { pending = false }
     self.Data = { SetLevel = 1, SetRebirth = 0, SetMoney = 0, SetDiamonds = 0 }
+    self.Items = {}
 end
 
 -- 父方法绑定完成后初始化并显示。
@@ -19,15 +20,19 @@ end
 
 -- 模拟命令仅更新内存；保存按钮仅模拟成功反馈。
 -- @param action string 稳定命令名
--- @param payload table 设置命令的 value/param2/param3 或空表
+-- @param payload table 设置命令的 value/param2/param3、AddItem 的 itemId/count 或空表
 function CGMPanelPreview:OnUIAction(action, payload)
     if action == "Close" then
         return
     elseif action == "ResetData" then
         self.Data = { SetLevel = 1, SetRebirth = 0, SetMoney = 0, SetDiamonds = 0 }
+        self.Items = {}
         print("模拟：数据已重置")
     elseif action == "SaveNow" then
         print("模拟：立即保存成功")
+    elseif action == "AddItem" then
+        self.Items[payload.itemId] = (self.Items[payload.itemId] or 0) + payload.count
+        print("模拟：已添加道具 " .. tostring(payload.itemId) .. " × " .. tostring(payload.count))
     else
         self.Data[action] = payload.value
         local labels = { SetLevel = "等级", SetRebirth = "重生", SetMoney = "金钱", SetDiamonds = "钻石" }

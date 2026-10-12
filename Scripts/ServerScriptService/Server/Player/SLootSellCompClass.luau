@@ -50,7 +50,7 @@ end
 
 --- 全部目标校验通过才扣 KV 记录；无让出执行的结算防止重复请求重复到账。
 --- @param entryIds table 客户端展示的稳定实例 ID 数组，不接受格号或金额。
---- @param multiplier number 仅允许 1 或 2；双倍暂不要求付费资格。
+--- @param multiplier number 仅允许 1 或 2；2 倍出售需要消耗一张 103 号卡。
 --- @return table 出售是否成功、文案 Key、实际收益与最新展示快照。
 function Component:SellLoot(entryIds, multiplier)
     if type(entryIds) ~= "table" or (multiplier ~= 1 and multiplier ~= 2) then
@@ -97,6 +97,11 @@ function Component:SellLoot(entryIds, multiplier)
     amount *= Rebirth.GetMoneyRate(self:GetNumber(Fields.RebirthCount)) * multiplier
     if not (amount >= 0 and amount < math.huge)
         or self:GetNumber(Fields.Coins) + amount >= math.huge then
+        return {success = false, key = "Common.Unknown"}
+    end
+    local rewardComp = self:GetComponent("FSRewardComp")
+    local cost = {{Type = "Item", ItemId = 103, Count = 1}}
+    if multiplier == 2 and (not rewardComp or not rewardComp:ConsumeRewards(cost)) then
         return {success = false, key = "Common.Unknown"}
     end
     self:SetTable(Fields.StoredLoot, remaining)

@@ -270,17 +270,17 @@ function CWelfareView:StyleFeatured(row, config)
     for _, iconType in ipairs({ "Coin", "Gem", "Egg" }) do
         local box = Loader:Here(row, iconType .. "IconBox")
         local icon = Loader:Here(box, "RewardIconImg")
-        icon.Position = UDim2.fromOffset((width - 64) / 2, 92)
-        icon.Size = UDim2.fromOffset(64, 64)
+        icon.Position = UDim2.fromOffset((width - 112) / 2, 84)
+        icon.Size = UDim2.fromOffset(112, 112)
         for _, child in ipairs(box:GetChildren()) do
             if child.Name == "IconMarkTxt" then
                 child.Position, child.Size = icon.Position, icon.Size
             end
         end
     end
-    Loader:Here(row, "MoneyRewardBox").Position = UDim2.fromOffset(0, 176)
+    Loader:Here(row, "MoneyRewardBox").Position = UDim2.fromOffset(0, 208)
     local reward = Loader:Here(row, "RewardTxt")
-    reward.Position, reward.Size = UDim2.fromOffset(0, 176), UDim2.fromOffset(width, 55)
+    reward.Position, reward.Size = UDim2.fromOffset(0, 208), UDim2.fromOffset(width, 48)
     local button = Loader:Here(row, "ClaimBtn")
     button.Position = UDim2.fromOffset(button.Position.X.Offset, row.Size.Y.Offset - 48)
 end

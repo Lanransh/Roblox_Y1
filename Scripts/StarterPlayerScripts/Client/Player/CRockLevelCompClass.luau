@@ -351,10 +351,10 @@ function Component:ResolvePickaxeHit(character, key, area)
     self:ApplyHit(key, area)
 end
 
---- 秒杀保留快速下砸与收招表现，由穿行检查独立结算；普通攻击仍在下砸时扣血。
+--- 下砸时普通关卡攻击扣血，训练巨石只播放受击表现；秒杀由穿行检查独立结算。
 --- @param humanoid Humanoid 当前执行敲击的角色。
---- @param key string 本次锁定的石头格子。
---- @param area table 石头所属关卡。
+--- @param key string? 本次锁定的石头格子，训练巨石为 nil。
+--- @param area table? 石头所属关卡，训练巨石为 nil。
 --- @param instantBreak boolean 是否仅播放秒杀动作，避免与穿行击碎重复扣血。
 function Component:SwingPickaxe(humanoid, key, area, instantBreak)
     self:StopSwing()
@@ -382,7 +382,9 @@ function Component:SwingPickaxe(humanoid, key, area, instantBreak)
             self:PoseSwing(strike, 0, -38, Enum.EasingDirection.In)
             task.wait(strike)
             self._swingTrack:AdjustSpeed(1.25 * 0.26 / recovery)
-            if not instantBreak then
+            if key == nil then
+                self:PlayTrainingHitEffect(character)
+            elseif not instantBreak then
                 self:ResolvePickaxeHit(character, key, area)
             end
             task.wait(0.06)
@@ -412,7 +414,9 @@ function Component:SwingPickaxe(humanoid, key, area, instantBreak)
         self._swingTrail.Enabled = true
         self:PoseSwing(strike, -40, -18, Enum.EasingDirection.In)
         task.wait(strike)
-        if not instantBreak then
+        if key == nil then
+            self:PlayTrainingHitEffect(character)
+        elseif not instantBreak then
             self:ResolvePickaxeHit(character, key, area)
         end
         task.wait(0.08)
@@ -424,7 +428,45 @@ function Component:SwingPickaxe(humanoid, key, area, instantBreak)
     end)
 end
 
---- 气场按实际所在关卡判断秒杀资格；每 0.1 秒检查穿行命中，挥镐间隔不阻塞结算。
+--- 对已解锁场地巨石的实际表面播放火花、碎屑和声音，不改模型、血量或关卡命中记录。
+--- @param character Model 开始本次挥镐的角色，切换角色后不播放旧动作的特效。
+function Component:PlayTrainingHitEffect(character)
+    if character ~= self:GetPlayerCharacter() then
+        return
+    end
+    local config = _G.GameConfig.TrainingFieldData[self:GetNumber(Fields.TrainingFieldIndex)]
+    local root = character:FindFirstChild("HumanoidRootPart")
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if not config or not root or not humanoid or humanoid.Health <= 0 then
+        return
+    end
+    local worldName, fieldName = string.match(config.Node,
+        '^game%.Workspace%.BlockMeshs%["([^"]+)"%]%.TrainingCenter%.([^%.]+)$')
+    local field = FXLoader:Find(workspace, "BlockMeshs/" .. worldName .. "/TrainingCenter/" .. fieldName)
+    local core = field and field:FindFirstChild("巨岩暗色核心", true)
+    if not core or not core:IsA("BasePart") then
+        return
+    end
+    local direction = core.Position - root.Position
+    if direction.Magnitude < 0.01 then
+        return
+    end
+    local rockParts = {}
+    for index, part in ipairs(core.Parent:GetDescendants()) do
+        if part:IsA("BasePart") and string.find(part.Name, "岩") then
+            table.insert(rockParts, part)
+        end
+    end
+    local params = RaycastParams.new()
+    params.FilterType = Enum.RaycastFilterType.Include
+    params.FilterDescendantsInstances = rockParts
+    local impact = workspace:Raycast(root.Position, direction.Unit * (direction.Magnitude + core.Size.Magnitude), params)
+    if impact then
+        self:PlayHitEffect(core.Parent, false, impact)
+    end
+end
+
+--- 已解锁训练基地复用挥镐表现且不发送关卡命中；场外仍按关卡秒杀资格检查攻击。
 function Component:UpdateAttacks()
     local character = self:GetPlayerCharacter()
     local root = character and character:FindFirstChild("HumanoidRootPart")
@@ -455,6 +497,14 @@ function Component:UpdateAttacks()
     end
     local position = root.Position
     local regularAttack = now - self._lastAttack >= 0.8
+    if self:GetNumber(Fields.TrainingFieldIndex) > 0 then
+        self:SetPowerAura(nil)
+        if regularAttack then
+            self._lastAttack = now
+            self:SwingPickaxe(humanoid, nil, nil, true)
+        end
+        return
+    end
     local targetFound = false
     local powerRoot
     local level = self:GetNumber(Fields.RockTrainingLevel)
@@ -542,7 +592,8 @@ end
 --- 每次命中以配置颜色爆发粒子闪光、光环及火星；仅击破时散出较大烟尘。
 --- @param rock Model 当前受击且仍在场景中的石头。
 --- @param broken boolean 本次扣血是否击破石头。
-function Component:PlayHitEffect(rock, broken)
+--- @param impact RaycastResult? 训练巨石的实际表面命中；提供时只生成表现，不移动巨石。
+function Component:PlayHitEffect(rock, broken, impact)
     local character = self:GetPlayerCharacter()
     local root = character and character:FindFirstChild("HumanoidRootPart")
     if not root then
@@ -560,11 +611,16 @@ function Component:PlayHitEffect(rock, broken)
         toViewer = -direction
     end
     local normal = toViewer.Unit
-    local localDirection = rock.Root.CFrame:VectorToObjectSpace(normal)
-    local halfSize = rock.Root.Size / 2
+    local rockPart = impact and impact.Instance or rock.Root
+    local localDirection = rockPart.CFrame:VectorToObjectSpace(normal)
+    local halfSize = rockPart.Size / 2
     local distance = 1 / math.max(math.abs(localDirection.X) / halfSize.X,
         math.abs(localDirection.Y) / halfSize.Y, math.abs(localDirection.Z) / halfSize.Z)
-    local position = rock.Root.Position + normal * distance
+    local position = rockPart.Position + normal * distance
+    if impact then
+        position = impact.Position
+        normal = impact.Normal
+    end
     local effect = Instance.new("Part")
     effect.Name = "RockHitEffect"
     effect.Size = Vector3.new(0.1, 0.1, 0.1)
@@ -589,7 +645,7 @@ function Component:PlayHitEffect(rock, broken)
         dust:Emit(3)
     end
     local effectColor = RockLevel.HitEffectColors[math.random(1, #RockLevel.HitEffectColors)]
-    local radius = math.clamp(math.max(rock.Root.Size.X, rock.Root.Size.Y, rock.Root.Size.Z) * 0.55, 1.5, 4)
+    local radius = math.clamp(math.max(rockPart.Size.X, rockPart.Size.Y, rockPart.Size.Z) * 0.55, 1.5, 4)
     self:PlayImpactParticles(effect, radius, broken, effectColor)
     sound:Play()
     local away = Vector3.new(direction.X, 0, direction.Z)
@@ -597,11 +653,11 @@ function Component:PlayHitEffect(rock, broken)
         away = Vector3.new(0, 0, 1)
     end
     away = away.Unit
-    if not broken then
+    if not broken and not impact then
         self._hitReactions[rock] = {Started = os.clock(), Direction = away}
     end
     local fragmentOrigin = broken and CFrame.lookAt(center, center + normal) or effect.CFrame
-    self:SpawnFragments(fragmentOrigin, rock:GetAttribute("GroundColor"), rock.Root.Size, broken)
+    self:SpawnFragments(fragmentOrigin, impact and rockPart.Color or rock:GetAttribute("GroundColor"), rockPart.Size, broken)
     Debris:AddItem(effect, math.max(3, sound.TimeLength + 0.1))
 end
 

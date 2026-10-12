@@ -70,6 +70,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 0.58,
                   "ClipsDescendants": false,
@@ -96,8 +97,7 @@
                     }
                   },
                   "Visible": true,
-                  "ZIndex": 4,
-                  "AutoLocalize": true
+                  "ZIndex": 4
                 }
               },
               {
@@ -110,6 +110,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#225a07",
                   "BackgroundTransparency": 0.2,
                   "ClipsDescendants": false,
@@ -136,8 +137,7 @@
                     }
                   },
                   "Visible": true,
-                  "ZIndex": 4,
-                  "AutoLocalize": true
+                  "ZIndex": 4
                 }
               },
               {
@@ -163,6 +163,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 1,
                   "ClipsDescendants": false,
@@ -198,8 +199,7 @@
                   "TextXAlignment": "Center",
                   "TextYAlignment": "Center",
                   "Visible": true,
-                  "ZIndex": 5,
-                  "AutoLocalize": true
+                  "ZIndex": 5
                 }
               }
             ],
@@ -215,6 +215,7 @@
                 "x": 0,
                 "y": 0
               },
+              "AutoLocalize": true,
               "BackgroundColor3": "#67ed14",
               "BackgroundTransparency": 0,
               "ClipsDescendants": false,
@@ -255,8 +256,7 @@
                 }
               },
               "Visible": true,
-              "ZIndex": 3,
-              "AutoLocalize": true
+              "ZIndex": 3
             }
           },
           {
@@ -295,6 +295,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 0.58,
                   "ClipsDescendants": false,
@@ -321,8 +322,7 @@
                     }
                   },
                   "Visible": true,
-                  "ZIndex": 4,
-                  "AutoLocalize": true
+                  "ZIndex": 4
                 }
               },
               {
@@ -335,6 +335,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#225a07",
                   "BackgroundTransparency": 0.2,
                   "ClipsDescendants": false,
@@ -361,8 +362,7 @@
                     }
                   },
                   "Visible": true,
-                  "ZIndex": 4,
-                  "AutoLocalize": true
+                  "ZIndex": 4
                 }
               },
               {
@@ -388,6 +388,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 1,
                   "ClipsDescendants": false,
@@ -423,8 +424,7 @@
                   "TextXAlignment": "Center",
                   "TextYAlignment": "Center",
                   "Visible": true,
-                  "ZIndex": 5,
-                  "AutoLocalize": true
+                  "ZIndex": 5
                 }
               }
             ],
@@ -440,6 +440,7 @@
                 "x": 0,
                 "y": 0
               },
+              "AutoLocalize": true,
               "BackgroundColor3": "#67ed14",
               "BackgroundTransparency": 0,
               "ClipsDescendants": false,
@@ -480,8 +481,7 @@
                 }
               },
               "Visible": true,
-              "ZIndex": 3,
-              "AutoLocalize": true
+              "ZIndex": 3
             }
           },
           {
@@ -520,6 +520,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 0.58,
                   "ClipsDescendants": false,
@@ -546,8 +547,7 @@
                     }
                   },
                   "Visible": true,
-                  "ZIndex": 4,
-                  "AutoLocalize": true
+                  "ZIndex": 4
                 }
               },
               {
@@ -560,6 +560,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#225a07",
                   "BackgroundTransparency": 0.2,
                   "ClipsDescendants": false,
@@ -586,8 +587,7 @@
                     }
                   },
                   "Visible": true,
-                  "ZIndex": 4,
-                  "AutoLocalize": true
+                  "ZIndex": 4
                 }
               },
               {
@@ -613,6 +613,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 1,
                   "ClipsDescendants": false,
@@ -648,8 +649,7 @@
                   "TextXAlignment": "Center",
                   "TextYAlignment": "Center",
                   "Visible": true,
-                  "ZIndex": 5,
-                  "AutoLocalize": true
+                  "ZIndex": 5
                 }
               }
             ],
@@ -665,6 +665,7 @@
                 "x": 0,
                 "y": 0
               },
+              "AutoLocalize": true,
               "BackgroundColor3": "#67ed14",
               "BackgroundTransparency": 0,
               "ClipsDescendants": false,
@@ -705,8 +706,7 @@
                 }
               },
               "Visible": true,
-              "ZIndex": 3,
-              "AutoLocalize": true
+              "ZIndex": 3
             }
           },
           {
@@ -745,6 +745,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 0.58,
                   "ClipsDescendants": false,
@@ -771,8 +772,7 @@
                     }
                   },
                   "Visible": true,
-                  "ZIndex": 4,
-                  "AutoLocalize": true
+                  "ZIndex": 4
                 }
               },
               {
@@ -785,6 +785,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#225a07",
                   "BackgroundTransparency": 0.2,
                   "ClipsDescendants": false,
@@ -811,8 +812,7 @@
                     }
                   },
                   "Visible": true,
-                  "ZIndex": 4,
-                  "AutoLocalize": true
+                  "ZIndex": 4
                 }
               },
               {
@@ -838,6 +838,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 1,
                   "ClipsDescendants": false,
@@ -873,8 +874,7 @@
                   "TextXAlignment": "Center",
                   "TextYAlignment": "Center",
                   "Visible": true,
-                  "ZIndex": 5,
-                  "AutoLocalize": true
+                  "ZIndex": 5
                 }
               }
             ],
@@ -890,6 +890,7 @@
                 "x": 0,
                 "y": 0
               },
+              "AutoLocalize": true,
               "BackgroundColor3": "#67ed14",
               "BackgroundTransparency": 0,
               "ClipsDescendants": false,
@@ -930,8 +931,7 @@
                 }
               },
               "Visible": true,
-              "ZIndex": 3,
-              "AutoLocalize": true
+              "ZIndex": 3
             }
           },
           {
@@ -970,6 +970,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 0.58,
                   "ClipsDescendants": false,
@@ -996,8 +997,7 @@
                     }
                   },
                   "Visible": true,
-                  "ZIndex": 4,
-                  "AutoLocalize": true
+                  "ZIndex": 4
                 }
               },
               {
@@ -1010,6 +1010,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#7d2519",
                   "BackgroundTransparency": 0.2,
                   "ClipsDescendants": false,
@@ -1036,8 +1037,7 @@
                     }
                   },
                   "Visible": true,
-                  "ZIndex": 4,
-                  "AutoLocalize": true
+                  "ZIndex": 4
                 }
               },
               {
@@ -1063,6 +1063,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 1,
                   "ClipsDescendants": false,
@@ -1098,8 +1099,7 @@
                   "TextXAlignment": "Center",
                   "TextYAlignment": "Center",
                   "Visible": true,
-                  "ZIndex": 5,
-                  "AutoLocalize": true
+                  "ZIndex": 5
                 }
               }
             ],
@@ -1115,6 +1115,7 @@
                 "x": 0,
                 "y": 0
               },
+              "AutoLocalize": true,
               "BackgroundColor3": "#f2654d",
               "BackgroundTransparency": 0,
               "ClipsDescendants": false,
@@ -1155,8 +1156,7 @@
                 }
               },
               "Visible": true,
-              "ZIndex": 3,
-              "AutoLocalize": true
+              "ZIndex": 3
             }
           },
           {
@@ -1195,6 +1195,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 0.58,
                   "ClipsDescendants": false,
@@ -1221,8 +1222,7 @@
                     }
                   },
                   "Visible": true,
-                  "ZIndex": 4,
-                  "AutoLocalize": true
+                  "ZIndex": 4
                 }
               },
               {
@@ -1235,6 +1235,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#225a07",
                   "BackgroundTransparency": 0.2,
                   "ClipsDescendants": false,
@@ -1261,8 +1262,7 @@
                     }
                   },
                   "Visible": true,
-                  "ZIndex": 4,
-                  "AutoLocalize": true
+                  "ZIndex": 4
                 }
               },
               {
@@ -1288,6 +1288,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 1,
                   "ClipsDescendants": false,
@@ -1323,8 +1324,7 @@
                   "TextXAlignment": "Center",
                   "TextYAlignment": "Center",
                   "Visible": true,
-                  "ZIndex": 5,
-                  "AutoLocalize": true
+                  "ZIndex": 5
                 }
               }
             ],
@@ -1340,6 +1340,7 @@
                 "x": 0,
                 "y": 0
               },
+              "AutoLocalize": true,
               "BackgroundColor3": "#67ed14",
               "BackgroundTransparency": 0,
               "ClipsDescendants": false,
@@ -1380,8 +1381,7 @@
                 }
               },
               "Visible": true,
-              "ZIndex": 3,
-              "AutoLocalize": true
+              "ZIndex": 3
             }
           },
           {
@@ -1407,6 +1407,7 @@
                 "x": 0,
                 "y": 0
               },
+              "AutoLocalize": true,
               "BackgroundColor3": "#ffffff",
               "BackgroundTransparency": 1,
               "ClipsDescendants": false,
@@ -1442,8 +1443,7 @@
               "TextXAlignment": "Left",
               "TextYAlignment": "Center",
               "Visible": true,
-              "ZIndex": 5,
-              "AutoLocalize": true
+              "ZIndex": 5
             }
           },
           {
@@ -1481,6 +1481,7 @@
                 "x": 0,
                 "y": 0
               },
+              "AutoLocalize": true,
               "BackgroundColor3": "#17221F",
               "BackgroundTransparency": 0.12,
               "ClipsDescendants": false,
@@ -1517,8 +1518,7 @@
               "TextXAlignment": "Center",
               "TextYAlignment": "Center",
               "Visible": true,
-              "ZIndex": 5,
-              "AutoLocalize": true
+              "ZIndex": 5
             }
           },
           {
@@ -1544,6 +1544,7 @@
                 "x": 0,
                 "y": 0
               },
+              "AutoLocalize": true,
               "BackgroundColor3": "#ffffff",
               "BackgroundTransparency": 1,
               "ClipsDescendants": false,
@@ -1579,8 +1580,7 @@
               "TextXAlignment": "Left",
               "TextYAlignment": "Center",
               "Visible": true,
-              "ZIndex": 5,
-              "AutoLocalize": true
+              "ZIndex": 5
             }
           },
           {
@@ -1618,6 +1618,7 @@
                 "x": 0,
                 "y": 0
               },
+              "AutoLocalize": true,
               "BackgroundColor3": "#17221F",
               "BackgroundTransparency": 0.12,
               "ClipsDescendants": false,
@@ -1654,8 +1655,7 @@
               "TextXAlignment": "Center",
               "TextYAlignment": "Center",
               "Visible": true,
-              "ZIndex": 5,
-              "AutoLocalize": true
+              "ZIndex": 5
             }
           },
           {
@@ -1681,6 +1681,7 @@
                 "x": 0,
                 "y": 0
               },
+              "AutoLocalize": true,
               "BackgroundColor3": "#ffffff",
               "BackgroundTransparency": 1,
               "ClipsDescendants": false,
@@ -1716,8 +1717,7 @@
               "TextXAlignment": "Left",
               "TextYAlignment": "Center",
               "Visible": true,
-              "ZIndex": 5,
-              "AutoLocalize": true
+              "ZIndex": 5
             }
           },
           {
@@ -1755,6 +1755,7 @@
                 "x": 0,
                 "y": 0
               },
+              "AutoLocalize": true,
               "BackgroundColor3": "#17221F",
               "BackgroundTransparency": 0.12,
               "ClipsDescendants": false,
@@ -1791,8 +1792,232 @@
               "TextXAlignment": "Center",
               "TextYAlignment": "Center",
               "Visible": true,
-              "ZIndex": 5,
-              "AutoLocalize": true
+              "ZIndex": 5
+            }
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "className": "UICorner",
+                "id": "46626825-8bdb-464f-bc03-77aac1b40863",
+                "name": "UICorner",
+                "properties": {
+                  "CornerRadius": {
+                    "offset": 6,
+                    "scale": 0
+                  }
+                }
+              },
+              {
+                "children": [],
+                "className": "UIStroke",
+                "id": "0bf2e934-0a30-41a2-8308-b133e0ed72d4",
+                "name": "UIStroke",
+                "properties": {
+                  "Color": "#000000",
+                  "Enabled": true,
+                  "Thickness": 3,
+                  "Transparency": 0
+                }
+              },
+              {
+                "children": [],
+                "className": "Frame",
+                "id": "873018c3-74a7-4ffd-9969-60ec4f63bf13",
+                "name": "TopHighlightImg",
+                "properties": {
+                  "AnchorPoint": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "AutoLocalize": true,
+                  "BackgroundColor3": "#ffffff",
+                  "BackgroundTransparency": 0.58,
+                  "ClipsDescendants": false,
+                  "LayoutOrder": 0,
+                  "Position": {
+                    "x": {
+                      "offset": 0,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 0,
+                      "scale": 0
+                    }
+                  },
+                  "Rotation": 0,
+                  "Size": {
+                    "x": {
+                      "offset": 140,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 2,
+                      "scale": 0
+                    }
+                  },
+                  "Visible": true,
+                  "ZIndex": 4
+                }
+              },
+              {
+                "children": [],
+                "className": "Frame",
+                "id": "7e7983a2-5a76-45e3-8aa4-4256e7536692",
+                "name": "BottomEdgeImg",
+                "properties": {
+                  "AnchorPoint": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "AutoLocalize": true,
+                  "BackgroundColor3": "#225a07",
+                  "BackgroundTransparency": 0.2,
+                  "ClipsDescendants": false,
+                  "LayoutOrder": 0,
+                  "Position": {
+                    "x": {
+                      "offset": 0,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 30,
+                      "scale": 0
+                    }
+                  },
+                  "Rotation": 0,
+                  "Size": {
+                    "x": {
+                      "offset": 140,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 4,
+                      "scale": 0
+                    }
+                  },
+                  "Visible": true,
+                  "ZIndex": 4
+                }
+              },
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "a096f90a-e49a-4431-adcc-91884adda42c",
+                    "name": "TextStroke",
+                    "properties": {
+                      "Color": "#20231c",
+                      "Enabled": true,
+                      "Thickness": 2,
+                      "Transparency": 0
+                    }
+                  }
+                ],
+                "className": "TextLabel",
+                "id": "ef7d4d15-c012-4772-886d-7f689a1527bd",
+                "name": "ButtonTxt",
+                "properties": {
+                  "AnchorPoint": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "AutoLocalize": true,
+                  "BackgroundColor3": "#ffffff",
+                  "BackgroundTransparency": 1,
+                  "ClipsDescendants": false,
+                  "Font": "GothamBold",
+                  "LayoutOrder": 0,
+                  "Position": {
+                    "x": {
+                      "offset": 0,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": -2,
+                      "scale": 0
+                    }
+                  },
+                  "Rotation": 0,
+                  "Size": {
+                    "x": {
+                      "offset": 0,
+                      "scale": 1
+                    },
+                    "y": {
+                      "offset": 0,
+                      "scale": 1
+                    }
+                  },
+                  "Text": "添加道具",
+                  "TextColor3": "#ffffff",
+                  "TextScaled": false,
+                  "TextSize": 16,
+                  "TextTransparency": 0,
+                  "TextWrapped": true,
+                  "TextXAlignment": "Center",
+                  "TextYAlignment": "Center",
+                  "Visible": true,
+                  "ZIndex": 5
+                }
+              }
+            ],
+            "className": "ImageButton",
+            "id": "f8ade16c-7ed6-41a6-852d-2911d02011f5",
+            "name": "AddItemBtn",
+            "previewImage": {
+              "dataUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAACXBIWXMAACE4AAAhOAFFljFgAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAAAgdJREFUeAHt3M1KAlEUwPFjn7TpA6woq0WLFkLv5ELwxXyOniFoIZkaWpGbwijCSpvObUaI0Ijo3nOV/w8OTbNR599c29wRAQAAAAAAAAAAAAAAADBrchJIkiTutZZ1jnQOdRYkLgOdK52zXC73KoEECaAXf05/rEp68Q8kbpc6TZ0HDZGIZ3MSxmr2WjsSv31J3+tadtd65X0Z0A+xJOmScyDxLTs/cRHcktkXj0LcAccS55o/ye2X40XxLMRF2ZPp8KZzLel3wMhMBJj0IU4kMpVKZaterxfdcaFQuK9Wq13xbJrWZK9KpdJOq9XKj37vdDqbGuRdD+/Fo1D/BUWv3W5vfD+nd0NePCNAZjgczv/m3H8jgDECGCOAMQIYI4AxAhgjgDECGCOAMQIYI4AxAhgjgDECGCOAMQIYI4AxAhgjgDECGCOAMQIYI4AxAhgjgDECGCOAMQIYI4AxAhgjgDECGAuxRcltfvu+T8ztSh/tycqH2AgRqxB3wOWYc7duT1atVtuO+eInSfIknoUIUNfpSHonuHFBLsbtyYpNt9vtiWchlqAXnXOdhkyRwWDw1mg0rsQz73dA9sCLR53h1/PFYvFOIuUuvt6hp3ro/akpwR5X42TPjVjR+Vz3y+XybrPZXI/le6Df7z/re7zr9Xo3+tf/IgAAAAAAAAAAAAAAAADwBx/xiIkJsM5B3AAAAABJRU5ErkJggg==",
+              "name": "StudTile.png"
+            },
+            "properties": {
+              "AnchorPoint": {
+                "x": 0,
+                "y": 0
+              },
+              "AutoLocalize": true,
+              "BackgroundColor3": "#67ed14",
+              "BackgroundTransparency": 0,
+              "ClipsDescendants": false,
+              "Image": "rbxassetid://82793028306773",
+              "ImageColor3": "#ffffff",
+              "ImageTransparency": 0,
+              "LayoutOrder": 0,
+              "Position": {
+                "x": {
+                  "offset": 324,
+                  "scale": 0
+                },
+                "y": {
+                  "offset": 66,
+                  "scale": 0
+                }
+              },
+              "Rotation": 0,
+              "ScaleType": "Tile",
+              "Size": {
+                "x": {
+                  "offset": 140,
+                  "scale": 0
+                },
+                "y": {
+                  "offset": 34,
+                  "scale": 0
+                }
+              },
+              "TileSize": {
+                "x": {
+                  "offset": 28,
+                  "scale": 0
+                },
+                "y": {
+                  "offset": 28,
+                  "scale": 0
+                }
+              },
+              "Visible": true,
+              "ZIndex": 3
             }
           }
         ],
@@ -1804,6 +2029,7 @@
             "x": 0,
             "y": 0
           },
+          "AutoLocalize": true,
           "BackgroundColor3": "#000000",
           "BackgroundTransparency": 0.3,
           "ClipsDescendants": false,
@@ -1830,8 +2056,7 @@
             }
           },
           "Visible": true,
-          "ZIndex": 2,
-          "AutoLocalize": true
+          "ZIndex": 2
         }
       },
       {
@@ -1876,6 +2101,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 1,
                   "ClipsDescendants": false,
@@ -1916,8 +2142,7 @@
                     }
                   },
                   "Visible": true,
-                  "ZIndex": 4,
-                  "AutoLocalize": true
+                  "ZIndex": 4
                 }
               },
               {
@@ -1930,6 +2155,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 0.58,
                   "ClipsDescendants": false,
@@ -1956,8 +2182,7 @@
                     }
                   },
                   "Visible": true,
-                  "ZIndex": 5,
-                  "AutoLocalize": true
+                  "ZIndex": 5
                 }
               },
               {
@@ -1970,6 +2195,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 0.75,
                   "ClipsDescendants": false,
@@ -1996,8 +2222,7 @@
                     }
                   },
                   "Visible": true,
-                  "ZIndex": 5,
-                  "AutoLocalize": true
+                  "ZIndex": 5
                 }
               },
               {
@@ -2010,6 +2235,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#193E73",
                   "BackgroundTransparency": 0.2,
                   "ClipsDescendants": false,
@@ -2036,8 +2262,7 @@
                     }
                   },
                   "Visible": true,
-                  "ZIndex": 5,
-                  "AutoLocalize": true
+                  "ZIndex": 5
                 }
               }
             ],
@@ -2049,6 +2274,7 @@
                 "x": 0,
                 "y": 0
               },
+              "AutoLocalize": true,
               "BackgroundColor3": "#397BC7",
               "BackgroundTransparency": 0,
               "ClipsDescendants": true,
@@ -2075,8 +2301,7 @@
                 }
               },
               "Visible": true,
-              "ZIndex": 3,
-              "AutoLocalize": true
+              "ZIndex": 3
             }
           },
           {
@@ -2102,6 +2327,7 @@
                 "x": 0,
                 "y": 0
               },
+              "AutoLocalize": true,
               "BackgroundColor3": "#ffffff",
               "BackgroundTransparency": 1,
               "ClipsDescendants": false,
@@ -2137,8 +2363,7 @@
               "TextXAlignment": "Left",
               "TextYAlignment": "Center",
               "Visible": true,
-              "ZIndex": 6,
-              "AutoLocalize": true
+              "ZIndex": 6
             }
           },
           {
@@ -2147,11 +2372,16 @@
             "id": "032607db-0832-47b1-8989-e91a83c1a0f8",
             "imageAssetId": "d22a5479fa52468fb6c159b40959050b",
             "name": "CloseSurfaceImg",
+            "previewImage": {
+              "dataUrl": "data:image/png;base64,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",
+              "name": "CloseSurfaceImg-2.png"
+            },
             "properties": {
               "AnchorPoint": {
                 "x": 0,
                 "y": 0
               },
+              "AutoLocalize": true,
               "BackgroundColor3": "#ffffff",
               "BackgroundTransparency": 1,
               "ClipsDescendants": false,
@@ -2192,12 +2422,7 @@
                 }
               },
               "Visible": true,
-              "ZIndex": 6,
-              "AutoLocalize": true
-            },
-            "previewImage": {
-              "name": "CloseSurfaceImg-2.png",
-              "dataUrl": "data:image/png;base64,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"
+              "ZIndex": 6
             }
           }
         ],
@@ -2209,6 +2434,7 @@
             "x": 0,
             "y": 0
           },
+          "AutoLocalize": true,
           "BackgroundColor3": "#ffffff",
           "BackgroundTransparency": 1,
           "ClipsDescendants": false,
@@ -2235,8 +2461,7 @@
             }
           },
           "Visible": true,
-          "ZIndex": 3,
-          "AutoLocalize": true
+          "ZIndex": 3
         }
       }
     ],
@@ -2244,9 +2469,9 @@
     "id": "330a0e6f-45fc-47f7-b3c2-0b3153be8a7b",
     "name": "GMPanelUI",
     "properties": {
+      "AutoLocalize": true,
       "DisplayOrder": 0,
-      "Enabled": true,
-      "AutoLocalize": true
+      "Enabled": true
     }
   },
   "version": 4

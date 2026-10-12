@@ -51,12 +51,20 @@ function Component:Show()
 end
 
 --- 复用展示类的参数提取与二次确认，非法输入通过现有提示展示。
---- @param action string 六项 GM 操作之一。
+--- @param action string 七项 GM 操作之一。
 function Component:ExecuteCommand(action)
     if self.State.pending then
         return
     end
-    if action ~= "ResetData" and action ~= "SaveNow" then
+    if action == "AddItem" then
+        local itemId = tonumber(self.Inputs[1].Text)
+        local count = tonumber(self.Inputs[2].Text)
+        if not itemId or itemId ~= itemId or itemId < 1 or itemId > 9007199254740991 or itemId % 1 ~= 0
+            or not count or count ~= count or count < 1 or count > 9007199254740991 or count % 1 ~= 0 then
+            self._commonUI:ShowLocalizedTips("GM.InvalidItemInput")
+            return
+        end
+    elseif action ~= "ResetData" and action ~= "SaveNow" then
         local value = tonumber(self.Inputs[1].Text)
         if not value or value ~= value or value < 0 or value > 9007199254740991
             or value % 1 ~= 0 or (action == "SetLevel" and value < 1) then
@@ -69,7 +77,7 @@ end
 
 --- 只提交操作及原始数值，身份和权限由服务端验证；请求中禁用操作。
 --- @param action string 展示类的稳定动作名。
---- @param payload table 展示类校验后的输入，备用输入不参与业务。
+--- @param payload table 展示类校验后的输入，添加道具使用 itemId/count，数值动作使用 value。
 function Component:OnUIAction(action, payload)
     if action == "Close" then
         self:Hide()
@@ -85,11 +93,16 @@ function Component:OnUIAction(action, payload)
         --- 通过正式框架协议请求本人数据操作。
         --- @return table 服务端操作结果和提示 Key。
         local ok, result = pcall(function()
-            return FX.Network:InvokeServer("C2S_GMCommand", action, payload.value)
+            local value = action == "AddItem" and payload.itemId or payload.value
+            return FX.Network:InvokeServer("C2S_GMCommand", action, value, payload.count)
         end)
         self._requestTask = nil
         self.State.pending = false
         self:RefreshUI()
+        if action == "AddItem" then
+            self._commonUI:ShowLocalizedTips(ok and type(result) == "table" and result.key or "Common.Unknown")
+            return
+        end
         local text = ResultTexts["Common.Unknown"]
         if ok and type(result) == "table" then
             if result.key == "GM.LevelLimit" then

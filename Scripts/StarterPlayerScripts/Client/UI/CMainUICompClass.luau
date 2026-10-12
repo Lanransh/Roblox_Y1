@@ -35,6 +35,19 @@ function Component:OnReady()
     self._rebirthBadge.AutoLocalize = false
     self._commonUI = self:GetPlayerObject():RequireComponent("FCCommonUIComp")
     self._localization = self._commonUI.Localization
+    self._trainingStatus = Instance.new("TextLabel")
+    self._trainingStatus.Name = "TrainingStatus"
+    self._trainingStatus.AnchorPoint = Vector2.new(0.5, 0)
+    self._trainingStatus.Position = UDim2.new(0.5, 0, 0, 150)
+    self._trainingStatus.Size = UDim2.fromOffset(360, 32)
+    self._trainingStatus.BackgroundTransparency = 1
+    self._trainingStatus.Font = Enum.Font.GothamBold
+    self._trainingStatus.TextSize = 22
+    self._trainingStatus.TextColor3 = Color3.fromRGB(255, 225, 90)
+    self._trainingStatus.TextStrokeTransparency = 0.3
+    self._trainingStatus.AutoLocalize = false
+    self._trainingStatus.Visible = false
+    self._trainingStatus.Parent = self._rootNode
     self._strength.AutoLocalize = false
     self._bar.ProgressLabel.AutoLocalize = false
     self._homeButton.AutoLocalize = false
@@ -56,6 +69,7 @@ function Component:OnReady()
     --- 跟随角色进出关卡及重生切换入口，不重复注册按钮事件。
     self._homeTimer = FX.Task:Interval(0.1, function()
         self:RefreshHomeButton()
+        self:RefreshLootCapacity()
     end)
     --- 走路及击打按服务端结算播放，点击图标由本地输入立即播放。
     --- @param gain number 服务端确认的走路及击打收益。
@@ -63,6 +77,7 @@ function Component:OnReady()
         self:ShowTrainingEffect(gain)
     end)
     self:WatchDataChanged(Fields.RockTrainingValue, self.RefreshProgress, self)
+    self:WatchDataChanged(Fields.TrainingFieldIndex, self.RefreshTrainingStatus, self)
     self:WatchDataChanged(Fields.RebirthCount, function()
         self:RefreshProgress(self:GetNumber(Fields.RockTrainingValue))
     end, self)
@@ -150,6 +165,8 @@ function Component:BindButtons()
                     self:GetPlayerObject():RequireComponent("CCollectionUIComp"):Show()
                 elseif node.Name == "RebirthButton" then
                     self:GetPlayerObject():RequireComponent("CRebirthUIComp"):Show()
+                elseif node.Name == "RewardBtn" then
+                    self:GetPlayerObject():RequireComponent("CWelfareUIComp"):Show()
                 elseif node == self._homeButton then
                     FX.Network:SendMsgToServer("C2S_ReturnHome")
                 else
@@ -176,6 +193,19 @@ end
 function Component:RefreshLocalization()
     self._homeButton.Text = self._localization:FormatByKey("Main.Home")
     self:RefreshProgress(self:GetNumber(Fields.RockTrainingValue))
+    self:RefreshTrainingStatus(self:GetNumber(Fields.TrainingFieldIndex))
+end
+
+--- 仅显示服务端确认的已解锁训练基地，不凭客户端位置授予训练资格。
+--- @param index number 同步的训练基地序号，0 表示场外。
+function Component:RefreshTrainingStatus(index)
+    local config = _G.GameConfig.TrainingFieldData[index]
+    self._trainingStatus.Visible = config ~= nil
+    if config then
+        self._trainingStatus.Text = self._localization:FormatByKey("Training.Active", {
+            rate = GameUtility.NumberToText(config.TrainingRate),
+        })
+    end
 end
 
 --- 未实现的入口统一走现有通用提示，不伪造购买或奖励成功。
@@ -205,14 +235,25 @@ end
 --- @param loot table 当前携带且尚未回基地入库的战利品。
 --- @param oldLoot table? 变化前的战利品，首次同步为空且不播放动画。
 function Component:RefreshLoot(loot, oldLoot)
-    self._leftDown.BackpackStat.Value.Text = string.format("%d/%d", #loot,
-        RockLevel.LootCapacity)
+    self:RefreshLootCapacity(loot)
     if oldLoot == nil or #loot <= #oldLoot then
         return
     end
     for index = #oldLoot + 1, #loot do
         self:ShowPickupEffect(loot[index])
     end
+end
+
+--- 显示扩容卡到期前的当前随身容量，过期后回到基础上限。
+---@param loot table? 当前携带的战利品；省略时读取已同步字段。
+function Component:RefreshLootCapacity(loot)
+    loot = loot or self:GetTable(Fields.RockLoot)
+    local boost = self:GetTable(Fields.RockLootCapacityBoost)
+    local capacity = RockLevel.LootCapacity
+    if type(boost) == "table" and (boost.expiresAt or 0) > workspace:GetServerTimeNow() then
+        capacity += math.max(0, math.floor(boost.count or 0))
+    end
+    self._leftDown.BackpackStat.Value.Text = string.format("%d/%d", #loot, capacity)
 end
 
 --- 在屏幕中央展示旋转道具与放射光芒，再一起缩小飞向背包图标。
@@ -444,6 +485,9 @@ end
 
 --- 释放自建节点和未结束动画，保留共用 ScreenGui；基类负责取消数据及按钮监听。
 function Component:Dtor()
+    if self._trainingStatus then
+        self._trainingStatus:Destroy()
+    end
     FX.Task:Cancel(self._homeTimer)
     FX.Network:UnRegServerMsgCallback("S2C_TrainingEffect")
     for viewport, connection in pairs(self._pickupEffects or {}) do

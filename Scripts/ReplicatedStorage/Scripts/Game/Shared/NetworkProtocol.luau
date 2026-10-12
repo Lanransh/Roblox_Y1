@@ -2,8 +2,12 @@
 -- 框架已有的 Ready、玩家数据和服务器数据同步协议继续由 FrameworkInit 声明。
 return {
     ClientMsgID = {
-        -- action: "SetLevel"|"SetRebirth"|"SetMoney"|"SetDiamonds"|"ResetData"|"SaveNow"。
+        -- kind: "online"|"signin"|"diamonds"，rewardId: string 稳定配置 ID；身份来自引擎。
+        -- RPC 返回 {success: boolean, key: string, state: table?}；服务端决定日期、资格及奖励。
+        "C2S_ClaimWelfareReward",
+        -- action: "SetLevel"|"SetRebirth"|"SetMoney"|"SetDiamonds"|"ResetData"|"SaveNow"|"AddItem"。
         -- value: number?，非负安全整数；等级为 1 到当前阶段上限，重生为 0 到配置上限。
+        -- AddItem 使用 value 为道具配置 ID、count 为添加数量，两者均为正安全整数；其他动作不使用 count。
         -- 仅引擎认证 UserId 对应开发者可操作本人；RPC 返回 {success: boolean, key: string, arguments: table?}。
         "C2S_GMCommand",
         -- 无参数，服务端校验请求者当前等级与重生次数；RPC 返回 {success: boolean}。
@@ -29,6 +33,9 @@ return {
         "C2S_RequestRockRound",
         -- 无参数，单向请求；服务端仅允许存活且位于关卡内的本人返回基地出生点。
         "C2S_ReturnHome",
+        -- index: number，世界传送列表序号，从 1 开始；接受过哪些世界的重生门槛与落点由服务端配置决定。
+        -- RPC 返回 {success: boolean, key: string?, arguments: table?, index: number?}，不接受客户端坐标。
+        "C2S_TransferWorld",
     },
     ServerMsgID = {
         -- key: string、arguments: table?、duration: number?，项目提示在客户端翻译，单向消息。

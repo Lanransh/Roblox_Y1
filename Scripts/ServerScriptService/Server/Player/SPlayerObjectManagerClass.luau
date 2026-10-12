@@ -12,22 +12,41 @@ function Manager:Ctor()
     self:RegAuraMsg()
     self:RegWeaponMsg()
     self:RegGMMsg()
+    self:RegActivityMsg()
+end
+
+--- 福利协议只注册一次，按引擎认证身份取得本人的活动组件。
+function Manager:RegActivityMsg()
+    --- 会话未就绪时拒绝，类别与稳定 ID 由活动组件校验。
+    --- @param userId number 引擎认证的请求者。
+    --- @param kind any 客户端奖励类别。
+    --- @param rewardId any 客户端配置 ID。
+    --- @return table 领取结果与权威状态。
+    FX.Network:RegClientMsgCallback("C2S_ClaimWelfareReward", function(userId, kind, rewardId)
+        local player = self:GetPlayerObject(userId)
+        local activity = player and player:GetComponent("SActivityComp")
+        if not activity then
+            return {success = false, key = "Welfare.NotReady"}
+        end
+        return activity:Claim(kind, rewardId)
+    end)
 end
 
 --- GM 协议统一注册，按引擎认证身份转发到请求者本人的玩家组件。
 function Manager:RegGMMsg()
     --- 未建立玩家会话时拒绝请求，GM 组件负责开发者权限及数值校验。
     --- @param userId number 引擎认证的请求者身份。
-    --- @param action string 六种 GM 操作之一。
-    --- @param value any 数值操作的目标值。
+    --- @param action string 七种 GM 操作之一。
+    --- @param value any 数值操作的目标值或道具配置 ID。
+    --- @param count any 添加道具数量，其他动作不使用。
     --- @return table GM 组件的权威操作结果。
-    FX.Network:RegClientMsgCallback("C2S_GMCommand", function(userId, action, value)
+    FX.Network:RegClientMsgCallback("C2S_GMCommand", function(userId, action, value, count)
         local player = self:GetPlayerObject(userId)
         local gm = player and player:GetComponent("SGMComp")
         if not gm then
             return {success = false, key = "Common.Unknown"}
         end
-        return gm:Request(action, value)
+        return gm:Request(action, value, count)
     end)
 end
 
@@ -95,6 +114,19 @@ function Manager:RegMiscMsg()
         return {success = false}
     end
     FX.Network:RegClientMsgCallback("C2S_Rebirth", rebirth)
+    --- 世界传送只接受配置序号，重生门槛与落点由杂项组件按服务端数据校验。
+    --- @param userId number 引擎认证的玩家身份。
+    --- @param index any 客户端请求的世界传送序号。
+    --- @return table 权威结果与失败提示 Key。
+    local function transferWorld(userId, index)
+        local player = self:GetPlayerObject(userId)
+        local misc = player and player:GetComponent("SMiscComp")
+        if not misc then
+            return {success = false, key = "Common.Unknown"}
+        end
+        return misc:HandleTransferWorld(index)
+    end
+    FX.Network:RegClientMsgCallback("C2S_TransferWorld", transferWorld)
 end
 
 --- 按引擎认证身份转发命中、开奖和轮次请求，未登录或已离服时忽略。

@@ -9,6 +9,18 @@ _G.PlayerKVEnum = {
 local PlayerKVEnum = _G.PlayerKVEnum
 
 return {
+    -- 福利存档只由服务端读取；周卡 remaining 为剩余领取次数，不按漏登扣减。
+    WelfareData = {
+        Type = "table", Key = "WelfareData", KVTable = PlayerKVEnum.eActivityData, Sync = false,
+        DefVal = {day = -1, onlineSeconds = 0, onlineClaimed = {}, lastLoginDay = -1,
+            loginDays = 0, signInClaimed = {}, lastClaimDay = -1, cards = {}},
+    },
+    -- 客户端使用服务端完整快照，不能自行决定领取日期或钻石加成。
+    WelfareState = {
+        Type = "table", Key = "WelfareState", Sync = true,
+        DefVal = {ready = false, revision = 0, day = -1, onlineSeconds = 0, loginDays = 0,
+            onlineClaimed = {}, signInClaimed = {}, dailyAmount = 0, cards = {}},
+    },
     -- 金币余额。
     Coins = {
         Type = "number",
@@ -38,6 +50,14 @@ return {
         Type = "table",
         Key = "RockLoot",
         DefVal = {},
+        KVTable = PlayerKVEnum.ePlayerData,
+        Sync = true,
+    },
+    -- 关卡随身容量卡的当前加成与服务端时间戳，过期后恢复基础容量。
+    RockLootCapacityBoost = {
+        Type = "table",
+        Key = "RockLootCapacityBoost",
+        DefVal = {count = 0, expiresAt = 0},
         KVTable = PlayerKVEnum.ePlayerData,
         Sync = true,
     },
@@ -92,6 +112,20 @@ return {
     RockTrainingLevel = {
         Type = "number",
         Key = "RockTrainingLevel",
+        DefVal = 1,
+        Sync = true,
+    },
+    -- 服务端校验的当前训练基地；0 表示场外或尚未解锁，不保存到 KV。
+    TrainingFieldIndex = {
+        Type = "number",
+        Key = "TrainingFieldIndex",
+        DefVal = 0,
+        Sync = true,
+    },
+    -- 服务端确认的当前世界序号；1 为默认世界，不保存到 KV，重登回到默认世界。
+    WorldIndex = {
+        Type = "number",
+        Key = "WorldIndex",
         DefVal = 1,
         Sync = true,
     },

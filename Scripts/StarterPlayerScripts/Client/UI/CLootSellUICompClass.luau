@@ -120,7 +120,7 @@ function Component:RefreshLoot(entries)
         end
         table.insert(items, {
             id = entry.id, name = name, qualityId = tostring(config.Quality),
-            value = entry.price * rate, icon = "rbxassetid://" .. tostring(config.IconId),
+            value = entry.price * rate, icon = config.IconId,
         })
     end
     self.State.items = items

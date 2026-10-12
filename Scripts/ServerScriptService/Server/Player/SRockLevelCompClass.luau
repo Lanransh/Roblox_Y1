@@ -46,6 +46,33 @@ function Component:GetCompName()
     return "SRockLevelComp"
 end
 
+--- 返回当前有效的关卡随身容量，扩容卡到期后自动恢复基础上限。
+---@return number 当前可携带的战利品数量上限。
+function Component:GetLootCapacity()
+    local boost = self:GetTable(Fields.RockLootCapacityBoost)
+    if type(boost) ~= "table" or (boost.expiresAt or 0) <= workspace:GetServerTimeNow() then
+        return RockLevel.LootCapacity
+    end
+    return RockLevel.LootCapacity + math.max(0, math.floor(boost.count or 0))
+end
+
+--- 写入扩容卡状态；连续使用时只延长现有到期时间，不重复增加格数。
+---@param count number 本次卡片提供的容量格数。
+---@param duration number 本次卡片持续秒数。
+---@return boolean 是否成功写入扩容状态。
+function Component:ApplyLootCapacityBoost(count, duration)
+    local now = workspace:GetServerTimeNow()
+    local boost = self:GetTable(Fields.RockLootCapacityBoost)
+    local active = type(boost) == "table" and (boost.expiresAt or 0) > now
+    local expiresAt = (active and boost.expiresAt or now) + duration
+    local currentCount = active and math.max(0, math.floor(boost.count or 0)) or 0
+    self:SetTable(Fields.RockLootCapacityBoost, {
+        count = math.max(currentCount, math.floor(count)),
+        expiresAt = expiresAt,
+    })
+    return true
+end
+
 --- 读档后缓存武器模板、校验奖池模型、同步地板颜色并启动位置检查。
 function Component:OnPlayerLogin()
     self._weaponTemplates = {}
@@ -544,7 +571,7 @@ function Component:PickupDrop(dropId)
         self:GetPlayerObject():ShowLocalizedTips("Loot.InventoryFull", {capacity = capacity})
         return
     end
-    if #loot >= RockLevel.LootCapacity then
+    if #loot >= self:GetLootCapacity() then
         drop.Picking = false
         self:GetPlayerObject():ShowLocalizedTips("Loot.BagFull")
         return

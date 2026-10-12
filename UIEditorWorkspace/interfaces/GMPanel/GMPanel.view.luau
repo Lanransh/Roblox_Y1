@@ -12,6 +12,8 @@ SetLevel / SetRebirth / SetMoney / SetDiamonds：
 payload = { value:number, param2:string, param3:string }；
 value 为参数1的非负安全整数，等级至少1，单位分别为级/次数/金币/钻石。
 param2、param3 为另外两个输入框原文（空框为 ""），当前四项功能不消费。
+AddItem：payload = { itemId:number, count:number }；参数1为道具配置 ID，参数2为添加数量，
+两者均为正安全整数，参数3不消费；游戏接入校验道具配置存在并向当前管理员背包添加。
 ResetData / SaveNow / Close：payload = {}。ResetData 经再次点击确认才发送。
 设置作用于当前管理员本人，目标身份由游戏接入层决定，不把备用框当作玩家ID。
 游戏接入负责服务端权限、数值校验、实际写入、重置和持久化；
@@ -40,7 +42,7 @@ function CGMPanelView:OnReady()
     for index = 1, 3 do
         self.Inputs[index] = FXLoader:Here(root, "PopupPanelImg.Param" .. index .. "Input")
     end
-    local actions = { "SetLevel", "SetRebirth", "SetMoney", "SetDiamonds", "ResetData", "SaveNow" }
+    local actions = { "SetLevel", "SetRebirth", "SetMoney", "SetDiamonds", "ResetData", "SaveNow", "AddItem" }
     for index, action in ipairs(actions) do
         local button = FXLoader:Here(root, "PopupPanelImg." .. action .. "Btn")
         self.Buttons[action] = button
@@ -93,6 +95,20 @@ function CGMPanelView:ExecuteCommand(action)
     self:CancelReset()
     if action == "SaveNow" then
         self:EmitUIAction(action, {})
+        return
+    end
+    if action == "AddItem" then
+        local itemId = tonumber(self.Inputs[1].Text)
+        local count = tonumber(self.Inputs[2].Text)
+        if not itemId or itemId ~= itemId or itemId < 1 or itemId > 9007199254740991 or itemId % 1 ~= 0 then
+            warn("GM 参数 1 请输入正整数道具 ID")
+            return
+        end
+        if not count or count ~= count or count < 1 or count > 9007199254740991 or count % 1 ~= 0 then
+            warn("GM 参数 2 请输入正整数数量")
+            return
+        end
+        self:EmitUIAction(action, { itemId = itemId, count = count })
         return
     end
     local value = tonumber(self.Inputs[1].Text)

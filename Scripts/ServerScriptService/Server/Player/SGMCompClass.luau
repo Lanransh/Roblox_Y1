@@ -20,12 +20,30 @@ function Component:GetCompName()
     return "SGMComp"
 end
 
---- 六项面板契约中的数值必须为非负安全整数。
+--- 面板契约中的数值必须为非负安全整数。
 --- @param value any 客户端提交的数值。
 --- @return boolean 是否可以写入数值字段。
 local function IsValidNumber(value)
     return type(value) == "number" and value == value and value >= 0
         and value <= 9007199254740991 and value % 1 == 0
+end
+
+--- 沿用正式奖励入口整批添加，容量不足时不发放部分道具。
+--- @param itemId any 客户端提交的道具配置 ID。
+--- @param count any 客户端提交的添加数量。
+--- @return table 权威校验与发放结果。
+function Component:AddItem(itemId, count)
+    if not IsValidNumber(itemId) or itemId < 1 or not IsValidNumber(count) or count < 1 then
+        return {success = false, key = "GM.InvalidItemInput"}
+    end
+    if not _G.ItemConfig.Data[itemId] then
+        return {success = false, key = "GM.InvalidItem"}
+    end
+    local reward = self:GetPlayerObject():RequireComponent("FSRewardComp")
+    if not reward:AddRewards({{Type = "Item", ItemId = itemId, Count = count}}) then
+        return {success = false, key = "GM.ItemFull"}
+    end
+    return {success = true, key = "GM.ItemAdded"}
 end
 
 --- 恢复配置默认值，并撤销尚未领取的掉落及上一轮命中凭据。
@@ -83,10 +101,11 @@ function Component:SetValue(action, value)
 end
 
 --- 权限按协议转发得到的所属玩家检查，客户端不能指定目标玩家或任意字段。
---- @param action string 六种允许的面板动作。
---- @param value any 数值动作的目标值，重置和保存不使用。
---- @return table 操作结果及客户端中文提示标识。
-function Component:Request(action, value)
+--- @param action string 七种允许的面板动作。
+--- @param value any 数值动作的目标值或添加道具的配置 ID，重置和保存不使用。
+--- @param count any 添加道具数量，其他动作不使用。
+--- @return table 操作结果及客户端提示标识。
+function Component:Request(action, value, count)
     local userId = self:GetPlayerId()
     if not FX.IsDeveloper(userId) then
         return {success = false, key = "GM.Forbidden"}
@@ -104,6 +123,9 @@ function Component:Request(action, value)
         return {success = false, key = "GM.Busy"}
     end
     self._nextRequest = now + 0.2
+    if action == "AddItem" then
+        return self:AddItem(value, count)
+    end
     if action ~= "ResetData" and action ~= "SaveNow" then
         return self:SetValue(action, value)
     end
