@@ -1,8 +1,8 @@
 # 排行榜组件
 
-基类：`ReplicatedStorage/Scripts/Framework/Client/Player/FCRankingUICompClass.lua`。
-服务端校验：`ServerScriptService/Server/Service/SRankingServiceClass.lua`。
-当前 RankingDataConfig 为空，没有已启用的业务榜。
+基类：`ReplicatedStorage/Scripts/Framework/Client/Player/FCRankingUICompClass.luau`。
+服务端校验：`ServerScriptService/Server/Service/SRankingServiceClass.luau`。
+`ReplicatedStorage/Scripts/Game/Shared/RankingDataConfig.luau` 已配置 Playtime 榜。先核对现有榜单配置、服务端写入和 UI 接入，再按需求扩展；本地配置存在不等于本次已完成运行验收。
 
 先确定榜单规则和配置，再提供真实 UI：
 - Ctor 在 Super.Ctor 之前准备基类会调用的节点映射与配置；基类构造会绑定按钮。

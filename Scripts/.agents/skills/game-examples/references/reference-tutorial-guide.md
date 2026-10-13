@@ -1,11 +1,11 @@
 # 新手引导接入
 
-现有服务端 STutorialGuideCompClass 在 SPlayerObjectClass.lua 内定义并已挂载，
+现有服务端 STutorialGuideCompClass 在 SPlayerObjectClass.luau 内定义并已挂载，
 使用 TutorialGuideConfig 与 PlayerData.Guide。
-当前 GuideGroups 为空。客户端只有 FCTutorialGuideCompClass 基类，尚未挂载项目引导表现。
+当前 TutorialGuideConfig 为空。客户端只有 FCTutorialGuideCompClass 基类，尚未挂载项目引导表现。
 
 按实际需求：
-1. 复用业务成功事件，填 GuideGroups 的分组 DSL，不新增客户端“直接完成”权限。
+1. 复用业务成功事件，在 TutorialGuideConfig 中填写分组 DSL，不新增客户端“直接完成”权限。
 2. 在客户端新增继承 FCTutorialGuideCompClass 的组件，覆盖 GetCompName/GetGuideConfig/GetGuideStorage。
 3. 覆盖 OnEnterGuide/OnExitGuide；目标 DSL 由本项目的表现约定确定，不假设已有 UI 高亮框架。
 4. require 后在 CPlayerObjectClass 挂载。基类 OnReady 订阅 Guide 字段，回放当前步骤。
@@ -28,7 +28,6 @@ FirstLogin = {
 
 Guide 字段已为 table、Sync=true，默认含 activeGuideId/guideMap/target。
 客户端的 target 仅用于表现；进度由服务器存档决定。
-世界箭头可以调用 ShowGuideArrowToPosition(Vector3)，退出时 HideGuideArrow；
-它是原生 Part/WedgePart，不依赖旧特效资源编号。
+世界箭头调用 ShowGuideArrowToPosition(Vector3)，退出时 HideGuideArrow。
 UI 高亮、遮罩和文案需要真实节点与需求。关闭、换步骤、重生、析构均清理表现，
-不要在每帧重新创建箭头或在提示词迁移时添加示例玩法。
+不要在每帧重新创建箭头。

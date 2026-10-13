@@ -11,11 +11,11 @@ description: 审查 Roblox_Y1 服务端的身份与权限漏洞、严重逻辑�
 
 ## 实际入口
 
-路径以 Game 为根：
-- 项目协议白名单：ReplicatedStorage/Scripts/Game/Shared/NetworkProtocol.lua 的 ClientMsgID/ServerMsgID。
-- 框架协议：ReplicatedStorage/Scripts/Framework/FrameworkInit.lua。
-- 网络身份与限速：ReplicatedStorage/Scripts/Framework/Shared/Core/FXNetwork.lua。
-- 管理器：ServerScriptService/Server/Player/SPlayerObjectManagerClass.lua；
+以下本地路径以 Scripts 工作区为根：
+- 项目协议白名单：ReplicatedStorage/Scripts/Game/Shared/NetworkProtocol.luau 的 ClientMsgID/ServerMsgID。
+- 框架协议：ReplicatedStorage/Scripts/Framework/FrameworkInit.luau。
+- 网络身份与限速：ReplicatedStorage/Scripts/Framework/Shared/Core/FXNetwork.luau。
+- 管理器：ServerScriptService/Server/Player/SPlayerObjectManagerClass.luau；
   服务协议搜索 ServerScriptService/Server/Service 与 ReplicatedStorage/Scripts/Framework/Server/Modules 的 RegClientMsgCallback。
 - 非协议功能直接从平台回调、任务、玩家生命周期或调用方追踪，不以缺少协议为由停止。
 
@@ -32,7 +32,7 @@ description: 审查 Roblox_Y1 服务端的身份与权限漏洞、严重逻辑�
 
 ## Developer Product（涉及购买时）
 
-查 FSShopService.lua、FXBuyProcessor.lua、GoodsConfig.GoodsData，
+查 FSShopService.luau、FXBuyProcessor.luau、GoodsConfig.GoodsData，
 及服务端注册的 _G.Provider.BuyHandlers。
 客户端 FCCommonUIComp:ShowDeveloperBuyUI(productId) 预检后展示购买窗口，
 发奖只由 FSShopService.ProcessReceipt 接收平台凭证。
@@ -47,11 +47,11 @@ description: 审查 Roblox_Y1 服务端的身份与权限漏洞、严重逻辑�
 
 ## 奖励（涉及发放或消耗时）
 
-查 ReplicatedStorage/Scripts/Framework/Server/Player/FSRewardCompClass.lua。
+查 ReplicatedStorage/Scripts/Framework/Server/Player/FSRewardCompClass.luau。
 协作名 FSRewardComp，方法 CanAddRewards/AddRewards/CanConsumeRewards/ConsumeRewards。
 
 - 当前支持 Type=Item/Money；Money 依赖 GameConfig.RewardCurrencies 到 PlayerData 的映射。
-- 使用 Type/Count/ItemId/Currency 等真实字段，不能照搬原项目 Pet/Jade/Gem 等未迁入处理器。
+- 使用 Type/Count/ItemId/Currency 等实际字段，奖励类型与处理器以当前注册内容为准。
 - 核对数量、有限整数、道具存在、容量、合并重复币种和余额范围，调用方处理 false 返回。
 - 权威结算和领奖标记在服务端；客户端“完成”或弹窗确认不是奖励依据。
 - 检查与背包、Tool 同步、存档与业务状态的边界，区分内存逻辑和云端持久化证据。

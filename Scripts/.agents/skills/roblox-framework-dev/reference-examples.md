@@ -1,6 +1,6 @@
 # 数据同步示例
 
-以下 Coins 是新增字段示意，当前项目尚未预设货币。只在需求需要时加入 PlayerDataConfig 内：
+当前 `PlayerDataConfig` 已声明 Coins。下列为字段结构示意；使用现有定义，不重复新增或改写存档 Key 与数据域：
 
 ```lua
 Coins = {
@@ -8,7 +8,7 @@ Coins = {
     Key = "Coins",
     DefVal = 0,
     Sync = true,
-    KVTable = "PlayerData",
+    KVTable = PlayerKVEnum.ePlayerData,
 },
 ```
 
@@ -22,8 +22,10 @@ self:AddNumber(PlayerDataConfig.Coins, amount)
 客户端组件在 Ctor 中绑定已确认的 TextLabel。监听会先回放当前值，无需另外初始化同一文案：
 
 ```lua
+local FX = _G.FX
+local GameUtility = FX.Loader:RequireShared("Scripts/Game/Shared/GameUtility")
 self:WatchDataChanged(PlayerDataConfig.Coins, function(value)
-    coinsLabel.Text = tostring(value)
+    coinsLabel.Text = GameUtility.NumberToText(value)
 end)
 ```
 

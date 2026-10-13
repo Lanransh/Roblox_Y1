@@ -1,6 +1,6 @@
 # 添加服务端玩家组件
 
-位置：`ServerScriptService/Server/Player/SExampleCompClass.lua`。
+位置：`ServerScriptService/Server/Player/SExampleCompClass.luau`。
 
 ```lua
 local FX = _G.FX
@@ -20,10 +20,10 @@ end
 return SExampleCompClass
 ```
 
-在 Main.server.lua require FServer 之后、玩家对象构造之前 require 此模块，
+在 Main.server.luau 加载 Scripts/GameInit 完成框架初始化之后、玩家对象构造之前 require 此模块，
 然后在 SPlayerObjectClass:Ctor 中 `self:AddComponent("SExampleCompClass")`。
 取得组件用 `player:RequireComponent("SExampleComp")`。
 
 协议只在玩家管理器或服务中注册一次，再通过已认证 userId 找组件；
 不要在每位玩家的 Ctor 注册同名 RegClientMsgCallback。
-新增玩法有数值或流程影响时维护 Game/Docs/功能验收清单.md。
+新增或移除系统、改变核心流程或核心数值时，按 maintain-acceptance-checklist 维护 Docs/功能验收清单.md；普通 bug 修复不触发。
