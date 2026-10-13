@@ -24,7 +24,7 @@ function Component:GetCompName()
     return "CWelfareUIComp"
 end
 
---- 按现有配置构造完整展示契约，任务组为空且隐藏入口。
+--- 按现有配置构造在线、签到和每日任务的完整展示契约。
 function Component:OnReady()
     Component.Super.OnReady(self)
     self.Root.ResetOnSpawn = false
@@ -32,11 +32,17 @@ function Component:OnReady()
     self._commonUI = self:GetPlayerObject():RequireComponent("FCCommonUIComp")
     self._commonUI:RegisterTrainingClickModal(self.Root)
     self._localization = self._commonUI.Localization
-    self.Config = {groups = {
-        {kind = "online", page = "OnlineBox", columns = 3, gapX = 20, gapY = 16, items = {}},
-        {kind = "signin", page = "SignInBox", columns = 3, gapX = 12, gapY = 16, items = {}},
-        {kind = "task", page = "TasksBox", columns = 1, gapX = 0, gapY = 12, items = {}},
-    }, diamonds = {rewardId = "daily_diamonds"}}
+    self._mainRewardDot = FXLoader:Here(self:GetPlayerNode():WaitForChild("PlayerGui"),
+        "MainUI/LeftCenter/RewardBtn/RedDotImg")
+    self._mainRewardDot.Visible = false
+    self.Config = {
+        groups = {
+            {kind = "online", page = "OnlineBox", columns = 3, gapX = 20, gapY = 16, items = {}},
+            {kind = "signin", page = "SignInBox", columns = 3, gapX = 12, gapY = 16, items = {}},
+            {kind = "task", page = "TasksBox", columns = 1, gapX = 0, gapY = 12, items = {}},
+        },
+        diamonds = {rewardId = "daily_diamonds"},
+    }
     for index, config in ipairs(_G.ActivityConfig.OnlineRewardData) do
         table.insert(self.Config.groups[1].items, {
             id = tostring(config.Index), minutes = config.TargetMinutes,
@@ -50,6 +56,13 @@ function Component:OnReady()
             featured = config.LoginDays == 7,
             badge = self._localization:FormatByKey("Welfare.WeeklyReward"),
             color = {102, 80, 25},
+        })
+    end
+    for index, config in ipairs(_G.ActivityConfig.DailyTaskConfig) do
+        table.insert(self.Config.groups[3].items, {
+            id = tostring(config.Index), target = config.Target, taskType = config.Type,
+            title = self._localization:FormatByKey("Welfare.Task." .. config.Type, {target = config.Target}),
+            reward = Welfare.ToDisplayReward(config.Rewards[1]),
         })
     end
     self._firstSnapshot = true
@@ -74,16 +87,27 @@ function Component:RefreshWelfare(data)
         data = self._snapshot
     end
     self._snapshot = data
-    self.State = {onlineMinutes = math.floor(data.onlineSeconds / 60), signInDay = data.loginDays,
+    self.State = {
+        onlineMinutes = math.floor(data.onlineSeconds / 60),
+        signInDay = data.loginDays,
         entries = {online = {}, signin = {}, task = {}},
-        diamonds = {amount = data.dailyAmount, status = data.ready and (data.dailyAmount > 0 and "Claimable" or "Claimed") or "Locked"}}
+        diamonds = {
+            amount = data.dailyAmount,
+            status = data.ready and (data.dailyAmount > 0 and "Claimable" or "Claimed") or "Locked",
+        },
+    }
     for index, group in ipairs(self.Config.groups) do
         for itemIndex, config in ipairs(group.items) do
-            local claimed = group.kind == "online" and data.onlineClaimed or data.signInClaimed
+            local current = group.kind == "task" and (config.taskType == "OnlineTime"
+                and math.floor(data.onlineSeconds / 60) or ((data.taskProgress or {})[config.taskType] or 0)) or 0
+            local claimed = group.kind == "online" and data.onlineClaimed
+                or group.kind == "task" and (data.taskClaimed or {}) or data.signInClaimed
             local eligible = group.kind == "online" and data.onlineSeconds >= config.minutes * 60
                 or group.kind == "signin" and data.loginDays >= config.day
+                or group.kind == "task" and current >= config.target
             self.State.entries[group.kind][config.id] = {
                 status = claimed[config.id] and "Claimed" or (data.ready and eligible and "Claimable" or "Locked"),
+                current = current,
             }
         end
     end
@@ -149,17 +173,36 @@ function Component:RenderButton(button, label, enabled)
     local keys = {Claim = "Welfare.Claim", ["Check In"] = "Welfare.Claim", Claimed = "Welfare.Claimed",
         ["Checked In"] = "Welfare.Claimed", Locked = "Welfare.Locked", ["Claiming..."] = "Welfare.Pending",
         Retry = "Welfare.Retry", ["Online\nRewards"] = "Welfare.Online", ["Daily Login"] = "Welfare.SignIn",
-        Diamonds = "Welfare.Daily"}
+        Diamonds = "Welfare.Daily", Tasks = "Welfare.Tasks", ["In Progress"] = "Welfare.InProgress"}
     Component.Super.RenderButton(self, button, keys[label] and self._localization:FormatByKey(keys[label]) or label, enabled)
     FXLoader:Here(button, "ButtonTxt").AutoLocalize = false
 end
 
---- 复用列表、布局与红点，钻石和道具使用放大后的实际图片。
+--- 复用列表和布局，主界面红点汇总全部可领取奖励，钻石和道具使用实际图片。
 --- @param state table 当前完整福利展示状态。
 function Component:Render(state)
+    for index, config in ipairs(self.Config.groups[3].items) do
+        config.title = self._localization:FormatByKey("Welfare.Task." .. config.taskType, {target = config.target})
+    end
     Component.Super.Render(self, state)
-    FXLoader:Here(self.Root, "TabsBox/TasksTabBtn").Visible = false
-    FXLoader:Here(self.Root, "PopupPanelImg/TasksBox").Visible = false
+    local hasClaimable = state.diamonds.status == "Claimable" and not state.diamonds.pending
+    for index, group in ipairs(self.Config.groups) do
+        for itemIndex, config in ipairs(group.items) do
+            local entry = state.entries[group.kind][config.id]
+            if entry.status == "Claimable" and not entry.pending then
+                hasClaimable = true
+                break
+            end
+        end
+        if hasClaimable then
+            break
+        end
+    end
+    self._mainRewardDot.Visible = hasClaimable
+    FXLoader:Here(self.Root, "TabsBox/TasksTabBtn").Visible = true
+    self:SetText(self.Root, "PopupPanelImg/TasksBox/HeadingTxt", "Welfare.Tasks")
+    self:SetText(self.Root, "PopupPanelImg/TasksBox/SubtitleTxt", "Welfare.TaskRule")
+    self:SetText(self.Root, "PopupPanelImg/TasksBox/FooterTxt", "Welfare.TaskRule")
     self:SetText(self.Root, "TitleBox/TitleTxt", "Welfare.Title")
     self:SetText(self.Root, "PopupPanelImg/OnlineBox/HeadingTxt", "Welfare.Online")
     self:SetText(self.Root, "PopupPanelImg/OnlineBox/SubtitleTxt", "Welfare.OnlineTime", {minutes = state.onlineMinutes})
@@ -169,46 +212,73 @@ function Component:Render(state)
     self:SetText(self.Root, "PopupPanelImg/SignInBox/FooterTxt", "Welfare.SignInRule")
     for kind, rows in pairs(self.Rows) do
         for id, row in pairs(rows) do
-            local config = row.Config
-            local root = row.Root
-            self:SetText(root, kind == "online" and "TimeTxt" or "DayTxt",
-                kind == "online" and "Welfare.Minute" or "Welfare.Day",
-                kind == "online" and {minutes = config.minutes} or {day = config.day})
-            local reward = config.reward
-            local label = FXLoader:Here(root, "RewardTxt")
-            label.AutoLocalize = false
-            label.TextScaled = true
-            label.Text = reward.type == "Gem"
-                and self._localization:FormatByKey("Welfare.Diamonds", {value = GameUtility.NumberToText(reward.amount)})
-                or self:FormatReward(self:GetRewardDisplay(reward).name, reward.amount)
-            if config.featured then
-                self:SetText(root, "WeeklyTxt", "Welfare.WeeklyReward")
-            end
-            if reward.type == "Item" or reward.type == "Gem" then
-                local box = FXLoader:Here(root, reward.type == "Gem" and "GemIconBox" or "EggIconBox")
-                local placeholder = FXLoader:Here(box, "RewardIconImg")
-                ResizeRewardIcon(placeholder, config.featured and FeaturedRewardIconSize or NormalRewardIconSize)
-                placeholder.Visible = false
-                if reward.type == "Item" then
-                    local mark = FXLoader:Here(box, "IconMarkTxt")
-                    mark.Position, mark.Size = placeholder.Position, placeholder.Size
-                    mark.Visible = false
-                end
-                local imageName = reward.type .. "Image"
-                local image = box:FindFirstChild(imageName)
-                if not image then
-                    image = Instance.new("ImageLabel")
-                    image.Name = imageName
-                    image.BackgroundTransparency = 1
-                    image.ScaleType = Enum.ScaleType.Fit
-                    image.Parent = box
-                end
-                image.Position, image.Size, image.ZIndex = placeholder.Position, placeholder.Size, placeholder.ZIndex
-                image.Image = reward.type == "Gem" and "rbxassetid://116061018286803"
-                    or _G.ItemConfig.Display[tonumber(reward.id)].IconId
-            end
+            self:_RenderRewardRow(kind, row)
         end
     end
+end
+
+--- 将奖励行接入项目文案，图标适配与文字刷新分别处理。
+--- @param kind string 在线、签到或任务奖励分组。
+--- @param row table 展示父类管理的奖励行。
+function Component:_RenderRewardRow(kind, row)
+    local config = row.Config
+    local root = row.Root
+    if kind == "task" then
+        self:SetText(root, "TaskNameTxt", "Welfare.Task." .. config.taskType, {target = config.target})
+        local reward = config.reward
+        local label = FXLoader:Here(root, "RewardTxt")
+        label.AutoLocalize = false
+        label.Text = reward.type == "Gem"
+            and self._localization:FormatByKey("Welfare.Diamonds", {value = GameUtility.NumberToText(reward.amount)})
+            or self:FormatReward(self:GetRewardDisplay(reward).name, reward.amount)
+        FXLoader:Here(root, "ProgressBarImg/ProgressTxt").AutoLocalize = false
+        return
+    end
+    self:SetText(root, kind == "online" and "TimeTxt" or "DayTxt",
+        kind == "online" and "Welfare.Minute" or "Welfare.Day",
+        kind == "online" and {minutes = config.minutes} or {day = config.day})
+    local reward = config.reward
+    local label = FXLoader:Here(root, "RewardTxt")
+    label.AutoLocalize = false
+    label.TextScaled = true
+    label.Text = reward.type == "Gem"
+        and self._localization:FormatByKey("Welfare.Diamonds", {value = GameUtility.NumberToText(reward.amount)})
+        or self:FormatReward(self:GetRewardDisplay(reward).name, reward.amount)
+    if config.featured then
+        self:SetText(root, "WeeklyTxt", "Welfare.WeeklyReward")
+    end
+    self:_RenderRewardIcon(root, reward, config.featured)
+end
+
+--- 复用已有图片节点，按普通奖励或精选奖励尺寸展示真实图标。
+--- @param root GuiObject 奖励行根节点。
+--- @param reward table 展示契约中的奖励类型和 ID。
+--- @param featured boolean? 是否使用精选奖励尺寸。
+function Component:_RenderRewardIcon(root, reward, featured)
+    if reward.type ~= "Item" and reward.type ~= "Gem" then
+        return
+    end
+    local box = FXLoader:Here(root, reward.type == "Gem" and "GemIconBox" or "EggIconBox")
+    local placeholder = FXLoader:Here(box, "RewardIconImg")
+    ResizeRewardIcon(placeholder, featured and FeaturedRewardIconSize or NormalRewardIconSize)
+    placeholder.Visible = false
+    if reward.type == "Item" then
+        local mark = FXLoader:Here(box, "IconMarkTxt")
+        mark.Position, mark.Size = placeholder.Position, placeholder.Size
+        mark.Visible = false
+    end
+    local imageName = reward.type .. "Image"
+    local image = box:FindFirstChild(imageName)
+    if not image then
+        image = Instance.new("ImageLabel")
+        image.Name = imageName
+        image.BackgroundTransparency = 1
+        image.ScaleType = Enum.ScaleType.Fit
+        image.Parent = box
+    end
+    image.Position, image.Size, image.ZIndex = placeholder.Position, placeholder.Size, placeholder.ZIndex
+    image.Image = reward.type == "Gem" and "rbxassetid://116061018286803"
+        or _G.ItemConfig.Display[tonumber(reward.id)].IconId
 end
 
 --- 将原有加成说明槽展示为两种周卡；只有服务端金额决定领取按钮。

@@ -35,7 +35,7 @@ function Component:OnReady()
     for itemId, item in pairs(GameConfig.ItemData) do
         table.insert(self.Config.items, {
             id = tostring(item.Id), itemId = item.Id,
-            name = "", icon = item.IconId,
+            name = "", icon = "rbxassetid://" .. item.IconId,
         })
     end
     --- 按稳定道具 ID 排序，不依赖配置字典的遍历顺序。

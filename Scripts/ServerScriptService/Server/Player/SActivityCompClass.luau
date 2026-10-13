@@ -3,6 +3,7 @@ local Fields = _G.PlayerDataConfig
 local Welfare = FX.Loader:RequireShared("Scripts/Game/Shared/Welfare")
 local Component = FX.Class("SActivityCompClass", "FSPlayerCompClass")
 local MAX_INTEGER = 9007199254740991
+local Players = game:GetService("Players")
 
 --- 返回玩家内协作名，供道具使用与福利协议定位。
 --- @return string 活动组件名。
@@ -16,6 +17,10 @@ function Component:OnPlayerLogin()
     self._nextSync = self._lastTime + 10
     local data = self:GetTable(Fields.WelfareData)
     local day = math.floor(self._lastTime / 86400)
+    -- 旧福利存档没有任务字段，仅补入本次新增结构。
+    data.taskProgress = data.taskProgress or {}
+    data.taskClaimed = data.taskClaimed or {}
+    data.taskFriends = data.taskFriends or {}
     if data.lastLoginDay ~= day then
         data.lastLoginDay = day
         data.loginDays = math.min(data.loginDays + 1, #_G.ActivityConfig.LoginMilestoneData)
@@ -35,6 +40,9 @@ function Component:UpdateTime(now)
         data.day = day
         data.onlineSeconds = 0
         data.onlineClaimed = {}
+        data.taskProgress = {}
+        data.taskClaimed = {}
+        data.taskFriends = {}
         startTime = math.max(startTime, day * 86400)
     end
     data.onlineSeconds += math.max(0, now - startTime)
@@ -63,6 +71,8 @@ function Component:PublishState()
         ready = true, revision = self._revision, day = data.day, onlineSeconds = data.onlineSeconds, loginDays = data.loginDays,
         onlineClaimed = FX.Table:DeepCopy(data.onlineClaimed),
         signInClaimed = FX.Table:DeepCopy(data.signInClaimed),
+        taskProgress = FX.Table:DeepCopy(data.taskProgress),
+        taskClaimed = FX.Table:DeepCopy(data.taskClaimed),
         dailyAmount = self:GetDailyAmount(), cards = FX.Table:DeepCopy(data.cards),
     })
 end
@@ -79,15 +89,103 @@ function Component:OnUpdate(serverTime)
     if oldDay ~= math.floor(now / 86400) or now >= self._nextSync then
         self._nextSync = now + 10
         self:PublishState()
+        self:CheckFriends()
     end
 end
 
 --- 保存前结清当前会话在线时长，重进当天继续累计。
 function Component:OnPlayerLogout()
+    if self._friendTask then
+        task.cancel(self._friendTask)
+        self._friendTask = nil
+    end
     if self._lastTime then
         self:UpdateTime(os.time())
         self._lastTime = nil
     end
+end
+
+--- 成功拾取后累计当天件数，不将发奖或 GM 添加道具计入任务。
+function Component:RecordPickup()
+    self:UpdateTime(os.time())
+    local data = self:GetTable(Fields.WelfareData)
+    data.taskProgress.GetItem = (data.taskProgress.GetItem or 0) + 1
+    self:SetTable(Fields.WelfareData, data)
+    self:PublishState()
+end
+
+--- 平台好友查询允许 yield；按本次同服快照累计不同好友，每位好友每天只计一次。
+function Component:CheckFriends()
+    if self._friendTask then
+        return
+    end
+    local player = Players:GetPlayerByUserId(self:GetPlayerId())
+    if not player then
+        return
+    end
+    local day = self:GetTable(Fields.WelfareData).day
+    local presentPlayers = Players:GetPlayers()
+    self._friendTask = task.defer(function()
+        local friends = {}
+        for index, other in ipairs(presentPlayers) do
+            if other ~= player then
+                --- 查询失败时不增加任务进度，后续同步周期重试。
+                --- @return boolean 平台确认的好友关系。
+                local ok, isFriend = pcall(function()
+                    return player:IsFriendsWithAsync(other.UserId)
+                end)
+                if ok and isFriend then
+                    table.insert(friends, other)
+                end
+            end
+        end
+        self._friendTask = nil
+        if not self._lastTime or player.Parent ~= Players then
+            return
+        end
+        self:UpdateTime(os.time())
+        local data = self:GetTable(Fields.WelfareData)
+        if data.day ~= day then
+            return
+        end
+        local count = 0
+        for id in pairs(data.taskFriends) do
+            count += 1
+        end
+        local changed = count ~= (data.taskProgress.ForFriendPlay or 0)
+        for index, friend in ipairs(friends) do
+            local id = tostring(friend.UserId)
+            -- 同服事实来自查询前的快照；好友在平台响应前离开也应计入。
+            if not data.taskFriends[id] then
+                data.taskFriends[id] = true
+                count += 1
+                changed = true
+            end
+        end
+        if changed then
+            data.taskProgress.ForFriendPlay = count
+            self:SetTable(Fields.WelfareData, data)
+            self:PublishState()
+        end
+    end)
+end
+
+--- 在线任务以分钟为单位，其余任务读取服务端累计值。
+--- @param config table 当日任务配置。
+--- @return number 当前任务进度。
+function Component:GetTaskProgress(config)
+    local data = self:GetTable(Fields.WelfareData)
+    return config.Type == "OnlineTime" and math.floor(data.onlineSeconds / 60)
+        or (data.taskProgress[config.Type] or 0)
+end
+
+--- 销毁组件时取消平台查询，防止后台任务继续持有玩家对象。
+function Component:Dtor()
+    if self._friendTask then
+        task.cancel(self._friendTask)
+        self._friendTask = nil
+    end
+    Component.Super.Dtor(self)
 end
 
 --- 使用前验证即时钻石不会越过安全整数上限，避免先消耗卡片再拒绝发奖。
@@ -144,7 +242,7 @@ function Component:GrantReward(reward)
 end
 
 --- RPC 只领取本人配置档位；全程不 yield，发奖失败保留领取资格。
---- @param kind any 客户端类别，仅接受 online、signin、diamonds。
+--- @param kind any 客户端类别，仅接受 online、signin、task、diamonds。
 --- @param rewardId any 稳定字符串 ID，不接受客户端金额或玩家身份。
 --- @return table 成功标记、提示 Key 和最新权威快照。
 function Component:Claim(kind, rewardId)
@@ -172,13 +270,20 @@ function Component:Claim(kind, rewardId)
     else
         local config = Welfare.GetReward(kind, rewardId)
         if config then
-            local claimed = kind == "online" and data.onlineClaimed or data.signInClaimed
+            local claimed = kind == "online" and data.onlineClaimed
+                or kind == "task" and data.taskClaimed or data.signInClaimed
             local eligible = kind == "online" and data.onlineSeconds >= config.TargetMinutes * 60
                 or kind == "signin" and data.loginDays >= config.LoginDays
+                or kind == "task" and self:GetTaskProgress(config) >= config.Target
             if claimed[rewardId] then
                 key = "Welfare.AlreadyClaimed"
             elseif eligible then
-                success = self:GrantReward(config.Reward)
+                if kind == "task" then
+                    -- 当前任务配置均为单项奖励，与展示契约保持一致。
+                    success = self:GrantReward(config.Rewards[1])
+                else
+                    success = self:GrantReward(config.Reward)
+                end
                 if success then
                     claimed[rewardId] = true
                 else

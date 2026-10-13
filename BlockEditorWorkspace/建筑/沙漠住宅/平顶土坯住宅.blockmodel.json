@@ -1,0 +1,1102 @@
+{
+  "version": 9,
+  "guid": "7be512b2-1d20-4548-94c1-07828e055fc9",
+  "rootNodeId": "asset-root",
+  "nodes": [
+    {
+      "id": "asset-root",
+      "name": "沙漠住宅资产 资产根",
+      "parentId": null,
+      "type": "Transform",
+      "transform": {
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "ai-node-1",
+      "name": "沙漠住宅资产",
+      "parentId": "asset-root",
+      "type": "Transform",
+      "transform": {
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "ai-node-2",
+      "name": "沙漠住宅",
+      "parentId": "ai-node-1",
+      "type": "Group",
+      "transform": {
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "ai-node-3",
+      "name": "砂岩地基",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.25,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          9.2,
+          0.5,
+          8.2
+        ],
+        "color": "#b89060",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-4",
+      "name": "土坯主体",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          3.45,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          8.6,
+          5.9,
+          7.6
+        ],
+        "color": "#dfbf89",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-5",
+      "name": "墙脚色带",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.85,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          8.7,
+          0.7,
+          7.7
+        ],
+        "color": "#c49b68",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-6",
+      "name": "平顶楼板",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          6.6,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          9,
+          0.4,
+          8
+        ],
+        "color": "#eacfa1",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-7",
+      "name": "前女儿墙",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          7.1,
+          3.78
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          9,
+          0.8,
+          0.45
+        ],
+        "color": "#d5ad77",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-8",
+      "name": "后女儿墙",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          7.1,
+          -3.78
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          9,
+          0.8,
+          0.45
+        ],
+        "color": "#d5ad77",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-9",
+      "name": "左女儿墙",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -4.28,
+          7.1,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.45,
+          0.8,
+          7.15
+        ],
+        "color": "#d5ad77",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-10",
+      "name": "右女儿墙",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          4.28,
+          7.1,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.45,
+          0.8,
+          7.15
+        ],
+        "color": "#d5ad77",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-11",
+      "name": "屋顶错层房",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -1.8,
+          7.95,
+          -1.5
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          3.7,
+          2.3,
+          3.5
+        ],
+        "color": "#e5c793",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-12",
+      "name": "错层平顶",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -1.8,
+          9.28,
+          -1.5
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          4.1,
+          0.35,
+          3.9
+        ],
+        "color": "#f0d7aa",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-13",
+      "name": "错层窗框",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -1.8,
+          8,
+          -3.32
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.3,
+          1.2,
+          0.18
+        ],
+        "color": "#b48b5b",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-14",
+      "name": "错层深窗",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -1.8,
+          8,
+          -3.44
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.9,
+          0.85,
+          0.15
+        ],
+        "color": "#4d6e70",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-15",
+      "name": "门洞框",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          2.25,
+          3.85
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          2.1,
+          3.5,
+          0.24
+        ],
+        "color": "#bc915f",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-16",
+      "name": "深色木门",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          2,
+          4.03
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.55,
+          2.95,
+          0.15
+        ],
+        "color": "#715443",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-17",
+      "name": "门上楣",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          4.1,
+          3.95
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          2.4,
+          0.35,
+          0.4
+        ],
+        "color": "#f0d7aa",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-18",
+      "name": "门阶",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0.3,
+          4.05
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          2.8,
+          0.35,
+          1.15
+        ],
+        "color": "#bc915f",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-19",
+      "name": "门把",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0.5,
+          2,
+          4.17
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.14,
+          0.25,
+          0.15
+        ],
+        "color": "#d3aa55",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-20",
+      "name": "入口遮阳板",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          4.55,
+          4.35
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          4.2,
+          0.28,
+          1.7
+        ],
+        "color": "#a67f52",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-21",
+      "name": "遮阳左支撑",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -1.7,
+          4.1,
+          4.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.2,
+          0.8,
+          0.2
+        ],
+        "color": "#846244",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-22",
+      "name": "遮阳右支撑",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          1.7,
+          4.1,
+          4.45
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.2,
+          0.8,
+          0.2
+        ],
+        "color": "#846244",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-23",
+      "name": "侧窗框",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          4.38,
+          3.8,
+          -0.5
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.2,
+          1.6,
+          1.45
+        ],
+        "color": "#b48b5b",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-24",
+      "name": "侧窗深色",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          4.52,
+          3.8,
+          -0.5
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.15,
+          1.15,
+          1
+        ],
+        "color": "#4d6e70",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-25",
+      "name": "侧窗遮阳檐",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          4.58,
+          4.7,
+          -0.5
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.65,
+          0.2,
+          1.8
+        ],
+        "color": "#f0d7aa",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-26",
+      "name": "左窄窗框",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -2.65,
+          3.4,
+          3.88
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.5,
+          1.9,
+          0.2
+        ],
+        "color": "#bb925f",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-27",
+      "name": "左蓝绿深窗",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -2.65,
+          3.4,
+          4.02
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.05,
+          1.4,
+          0.14
+        ],
+        "color": "#4d7778",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-28",
+      "name": "左窗顶遮阳",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -2.65,
+          4.48,
+          4.08
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.85,
+          0.22,
+          0.65
+        ],
+        "color": "#efdaa9",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-29",
+      "name": "左窗台",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -2.65,
+          2.32,
+          4.03
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.8,
+          0.22,
+          0.5
+        ],
+        "color": "#c29d6c",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-30",
+      "name": "右窄窗框",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          2.65,
+          3.4,
+          3.88
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.5,
+          1.9,
+          0.2
+        ],
+        "color": "#bb925f",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-31",
+      "name": "右蓝绿深窗",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          2.65,
+          3.4,
+          4.02
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.05,
+          1.4,
+          0.14
+        ],
+        "color": "#4d7778",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-32",
+      "name": "右窗顶遮阳",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          2.65,
+          4.48,
+          4.08
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.85,
+          0.22,
+          0.65
+        ],
+        "color": "#efdaa9",
+        "texturePattern": "solid"
+      }
+    },
+    {
+      "id": "ai-node-33",
+      "name": "右窗台",
+      "parentId": "ai-node-2",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          2.65,
+          2.32,
+          4.03
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.8,
+          0.22,
+          0.5
+        ],
+        "color": "#c29d6c",
+        "texturePattern": "solid"
+      }
+    }
+  ],
+  "prefabFolders": [],
+  "prefabs": [],
+  "externalPrefabAliases": []
+}

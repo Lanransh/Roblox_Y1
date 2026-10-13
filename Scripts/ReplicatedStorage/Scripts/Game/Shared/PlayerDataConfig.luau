@@ -13,13 +13,15 @@ return {
     WelfareData = {
         Type = "table", Key = "WelfareData", KVTable = PlayerKVEnum.eActivityData, Sync = false,
         DefVal = {day = -1, onlineSeconds = 0, onlineClaimed = {}, lastLoginDay = -1,
-            loginDays = 0, signInClaimed = {}, lastClaimDay = -1, cards = {}},
+            loginDays = 0, signInClaimed = {}, lastClaimDay = -1, cards = {},
+            taskProgress = {}, taskClaimed = {}, taskFriends = {}},
     },
     -- 客户端使用服务端完整快照，不能自行决定领取日期或钻石加成。
     WelfareState = {
         Type = "table", Key = "WelfareState", Sync = true,
         DefVal = {ready = false, revision = 0, day = -1, onlineSeconds = 0, loginDays = 0,
-            onlineClaimed = {}, signInClaimed = {}, dailyAmount = 0, cards = {}},
+            onlineClaimed = {}, signInClaimed = {}, dailyAmount = 0, cards = {},
+            taskProgress = {}, taskClaimed = {}},
     },
     -- 金币余额。
     Coins = {

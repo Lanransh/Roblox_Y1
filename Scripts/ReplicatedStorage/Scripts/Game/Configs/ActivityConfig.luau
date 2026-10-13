@@ -3,8 +3,8 @@ return {
         [1] = {
             Index = 1,
             Type = [[GetItem]],
-            Name = [[拾取道具]],
-            Desc = [[拾取50个道具]],
+            Name = [[Collect Items]],
+            Desc = [[Collect 50 items]],
             Target = 50,
             Rewards = {
                 [1] = {
@@ -16,8 +16,8 @@ return {
         [2] = {
             Index = 2,
             Type = [[GetItem]],
-            Name = [[拾取道具]],
-            Desc = [[拾取80个道具]],
+            Name = [[Collect Items]],
+            Desc = [[Collect 80 items]],
             Target = 80,
             Rewards = {
                 [1] = {
@@ -29,22 +29,9 @@ return {
         },
         [3] = {
             Index = 3,
-            Type = [[GetNpc]],
-            Name = [[拾取狗作者]],
-            Desc = [[拾取10个狗作者]],
-            Target = 10,
-            Rewards = {
-                [1] = {
-                    Type = [[Gem]],
-                    Count = 3
-                },
-            }
-        },
-        [4] = {
-            Index = 4,
             Type = [[OnlineTime]],
-            Name = [[在线30分钟]],
-            Desc = [[在线30分钟]],
+            Name = [[Play for 30 Minutes]],
+            Desc = [[Play for 30 minutes]],
             Target = 30,
             Rewards = {
                 [1] = {
@@ -53,11 +40,11 @@ return {
                 },
             }
         },
-        [5] = {
-            Index = 5,
+        [4] = {
+            Index = 4,
             Type = [[ForFriendPlay]],
-            Name = [[和好友在同一房间]],
-            Desc = [[和2位好友在同一房间]],
+            Name = [[Play with Friends]],
+            Desc = [[Play with 2 friends in the same server]],
             Target = 2,
             Rewards = {
                 [1] = {

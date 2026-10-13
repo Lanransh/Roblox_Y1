@@ -588,6 +588,7 @@ function Component:PickupDrop(dropId)
     self:SetTable(Fields.RockLoot, loot)
     self:RemoveDrop(dropId)
     local nameKey = CollectibleText.GetNameKey(drop.Template.Name)
+    self:RequireComponent("SActivityComp"):RecordPickup()
     if drop.IsLucky then
         self:GetPlayerObject():ShowLocalizedTips("Loot.LuckyPickedUp",
             {itemKey = nameKey, rate = GameUtility.NumberToText(drop.LuckRate)})

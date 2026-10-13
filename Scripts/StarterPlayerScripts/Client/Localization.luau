@@ -4,6 +4,7 @@ local LocalizationService = game:GetService("LocalizationService")
 local SourceTable = FXLoader:Shared("Shared/Localization")
 local Localization = {}
 Localization.__index = Localization
+local warnedCloudLocales = {}
 
 --- 本地英文不依赖云端；云端加载在后台进行，不阻塞玩家组件初始化。
 --- @param player Player 当前本地玩家。
@@ -12,7 +13,6 @@ function Localization.New(player)
     local self = setmetatable({}, Localization)
     self._english = SourceTable:GetTranslator("en-us")
     self._keys = {}
-    self._missingKeys = {}
     for index, entry in ipairs(SourceTable:GetEntries()) do
         self._keys[entry.Key] = true
     end
@@ -40,6 +40,7 @@ function Localization.New(player)
                 self._loadTask = nil
                 return
             end
+            warn("Localization: cloud translator request " .. attempt .. " failed: " .. tostring(translator))
             if attempt < 3 then
                 task.wait(5)
             end
@@ -50,10 +51,10 @@ function Localization.New(player)
     return self
 end
 
---- 英文玩家使用本地源文案，其余读取 Roblox 云端译文；缺失时回退本地英文。
+--- 云端译文失败时每种语言仅警告一次并回退英文，避免界面刷新刷屏；本地 Key 或参数错误仍直接抛出。
 --- @param key string 本地文案表中的稳定 Key。
 --- @param arguments table? 模板参数；itemKey 在客户端按当前语言解析为 item，数量仍由调用方格式化。
---- @return string 当前玩家语言的文案，未知 Key 显示通用英文提示。
+--- @return string 当前玩家语言的文案。
 function Localization:FormatByKey(key, arguments)
     if arguments and arguments.itemKey then
         arguments = table.clone(arguments)
@@ -61,11 +62,7 @@ function Localization:FormatByKey(key, arguments)
         arguments.itemKey = nil
     end
     if not self._keys[key] then
-        if not self._missingKeys[key] then
-            self._missingKeys[key] = true
-            warn("Localization: unknown key " .. tostring(key))
-        end
-        return self._english:FormatByKey("Common.Unknown")
+        error("Localization: unknown key " .. tostring(key), 2)
     end
     if self._cloud and string.match(string.lower(self._cloud.LocaleId), "^[^-]+") ~= "en" then
         --- 云端缺少 Key 或译文格式错误时允许回退英文。
@@ -76,17 +73,14 @@ function Localization:FormatByKey(key, arguments)
         if success and text ~= "" then
             return text
         end
+        local localeId = string.lower(self._cloud.LocaleId)
+        if not warnedCloudLocales[localeId] then
+            warnedCloudLocales[localeId] = true
+            warn("Localization: cloud translation failed for " .. key .. " (" .. self._cloud.LocaleId
+                .. "); using local English: " .. (success and "empty translation" or tostring(text)))
+        end
     end
-    --- 错误参数只影响本次提示，不能打断后续 UI 和网络回调。
-    --- @return string 格式化后的英文源文案。
-    local success, text = pcall(function()
-        return self._english:FormatByKey(key, arguments)
-    end)
-    if success then
-        return text
-    end
-    warn("Localization: invalid parameters for " .. key .. ": " .. tostring(text))
-    return self._english:FormatByKey("Common.Unknown")
+    return self._english:FormatByKey(key, arguments)
 end
 
 --- 释放本对象的后台请求任务和语言监听，避免销毁后更新界面。

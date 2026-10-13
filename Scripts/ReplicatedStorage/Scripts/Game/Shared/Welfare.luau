@@ -2,6 +2,12 @@
 local Welfare = {}
 
 Welfare.Sources = {
+    ["Welfare.Tasks"] = "Daily Tasks",
+    ["Welfare.TaskRule"] = "Progress and rewards reset daily at 00:00 UTC.",
+    ["Welfare.InProgress"] = "In Progress",
+    ["Welfare.Task.GetItem"] = "Collect {target:int} items",
+    ["Welfare.Task.OnlineTime"] = "Play for {target:int} minutes",
+    ["Welfare.Task.ForFriendPlay"] = "Play with {target:int} friends in the same server",
     ["Welfare.Title"] = "REWARDS",
     ["Welfare.Online"] = "Online Rewards",
     ["Welfare.SignIn"] = "7-Day Login",
@@ -42,12 +48,13 @@ for id, display in pairs(_G.ItemConfig.Display) do
 end
 
 --- 按稳定字符串 ID 查找配置，不把客户端传入的奖励数量用于结算。
---- @param kind string online 或 signin。
+--- @param kind string online、signin 或 task。
 --- @param rewardId string 配置 Index 的字符串形式。
 --- @return table? 匹配的档位配置。
 function Welfare.GetReward(kind, rewardId)
     local list = kind == "online" and _G.ActivityConfig.OnlineRewardData
         or kind == "signin" and _G.ActivityConfig.LoginMilestoneData
+        or kind == "task" and _G.ActivityConfig.DailyTaskConfig
     if not list then
         return nil
     end

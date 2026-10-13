@@ -130,8 +130,8 @@ return {
         },
         [107] = {
             Id = 107,
-            Name = [[NPC Progress Card]],
-            Desc = [[Adds 1 NPC task progress.]],
+            Name = [[NPC进度卡]],
+            Desc = [[NPC任务进度加1]],
             Quality = 12,
             IconId = [[rbxassetid://117314008364013]],
             DisplayModelId = nil
