@@ -46,14 +46,15 @@ function Component:GetCompName()
     return "SRockLevelComp"
 end
 
---- 返回当前有效的关卡随身容量，扩容卡到期后自动恢复基础上限。
+--- 返回基础容量、永久商店扩容和未到期扩容卡之和。
 ---@return number 当前可携带的战利品数量上限。
 function Component:GetLootCapacity()
+    local capacity = RockLevel.LootCapacity + self:GetTable(Fields.CurrencyShopData).capacity
     local boost = self:GetTable(Fields.RockLootCapacityBoost)
     if type(boost) ~= "table" or (boost.expiresAt or 0) <= workspace:GetServerTimeNow() then
-        return RockLevel.LootCapacity
+        return capacity
     end
-    return RockLevel.LootCapacity + math.max(0, math.floor(boost.count or 0))
+    return capacity + math.max(0, math.floor(boost.count or 0))
 end
 
 --- 写入扩容卡状态；连续使用时只延长现有到期时间，不重复增加格数。

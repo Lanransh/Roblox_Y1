@@ -9,6 +9,11 @@ _G.PlayerKVEnum = {
 local PlayerKVEnum = _G.PlayerKVEnum
 
 return {
+    -- 商店永久升级与购买记录；重生保留，Robux 记录随凭证奖励一起保存。
+    CurrencyShopData = {
+        Type = "table", Key = "CurrencyShopData", KVTable = PlayerKVEnum.eStaticData, Sync = true,
+        DefVal = {trainingLevel = 0, capacity = 0, gemBought = {}, robuxBought = {}},
+    },
     -- 福利存档只由服务端读取；周卡 remaining 为剩余领取次数，不按漏登扣减。
     WelfareData = {
         Type = "table", Key = "WelfareData", KVTable = PlayerKVEnum.eActivityData, Sync = false,

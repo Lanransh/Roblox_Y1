@@ -8,6 +8,7 @@ local Weapon = FXLoader:RequireShared("Scripts/Game/Shared/Weapon")
 local RockLevel = FXLoader:RequireShared("Scripts/Game/Shared/RockLevel")
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local TrainingFields = FXLoader:RequireFromParent(script, "TrainingFields")
+local CurrencyShop = FXLoader:RequireShared("Scripts/Game/Shared/CurrencyShop")
 local Component = FX.Class("SMiscCompClass", "FSPlayerCompClass")
 
 --- 计算当前重生次数可用的最高训练场倍率，不要求玩家当前站在训练场内。
@@ -244,13 +245,14 @@ function Component:ApplyTrainingCard(seconds)
     baseGain *= Collection.GetTrainingRate(self:GetTable(Fields.CollectionEntries))
     baseGain *= Aura.GetTrainingRate(self:GetTable(Fields.AuraData))
     baseGain *= Weapon.GetEquippedConfig(self:GetTable(Fields.WeaponData)).TrainingRate
+    baseGain *= CurrencyShop.GetTrainingRate(self:GetTable(Fields.CurrencyShopData))
     local gain = math.min(baseGain * Rebirth.GetTrainingRate(rebirthCount), maxValue - currentValue)
     if gain <= 0 then
         return false
     end
     self:AddNumber(Fields.RockTrainingValue, gain)
     self:RefreshProgress()
-    FX.Network:SendMsgToClient(self:GetPlayerId(), "S2C_TrainingEffect", gain)
+    FX.Network:SendMsgToClient(self:GetPlayerId(), "S2C_TrainingEffect", gain, true)
     return true
 end
 
@@ -284,7 +286,7 @@ function Component:RefreshTrainingField(config, now)
     return unlocked and config.TrainingRate or 0
 end
 
---- 场内按秒自动训练，替代走路与击打；统一应用装备、图鉴、重生、追赶和经验封顶。
+--- 场内按秒自动训练，替代走路与击打；统一应用装备、图鉴、商店倍率、重生、追赶和经验封顶。
 function Component:TickTraining()
     local character = self:GetPlayerCharacter()
     local root = character and character:FindFirstChild("HumanoidRootPart")
@@ -316,6 +318,7 @@ function Component:TickTraining()
     baseGain *= Collection.GetTrainingRate(self:GetTable(Fields.CollectionEntries))
     baseGain *= Aura.GetTrainingRate(self:GetTable(Fields.AuraData))
     baseGain *= Weapon.GetEquippedConfig(self:GetTable(Fields.WeaponData)).TrainingRate
+    baseGain *= CurrencyShop.GetTrainingRate(self:GetTable(Fields.CurrencyShopData))
     local gain = Rebirth.GetTrainingGain(self:GetNumber(Fields.RockTrainingValue), baseGain,
         self:GetNumber(Fields.RebirthCount))
     if gain > 0 then

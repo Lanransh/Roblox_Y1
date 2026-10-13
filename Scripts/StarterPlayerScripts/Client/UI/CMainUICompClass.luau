@@ -59,6 +59,7 @@ function Component:OnReady()
     self._leftDown = FXLoader:Here(self._rootNode, "LeftDown")
     self._effects = {}
     self._pickupEffects = {}
+    self._rainEffects = {}
     self._lastClick = -math.huge
     -- 复用 Rojo 管理的 ScreenGui，飘字直属该节点，不受 Canvas 缩放影响。
     self._effectGui = FXLoader:Here(self._playerGui, "ScreenGui")
@@ -71,10 +72,16 @@ function Component:OnReady()
         self:RefreshHomeButton()
         self:RefreshLootCapacity()
     end)
-    --- 走路及击打按服务端结算播放，点击图标由本地输入立即播放。
-    --- @param gain number 服务端确认的走路及击打收益。
-    FX.Network:RegServerMsgCallback("S2C_TrainingEffect", function(gain)
-        self:ShowTrainingEffect(gain)
+    --- 普通训练沿用飞行图标，力量卡成功结算后改为力量图标雨。
+    --- @param gain number 服务端确认的训练收益。
+    --- @param rewardRain boolean? 是否来自力量卡结算。
+    FX.Network:RegServerMsgCallback("S2C_TrainingEffect", function(gain, rewardRain)
+        if rewardRain then
+            self:ShowRewardRain(self._bar.StrengthIcon)
+            self:PulseStrength()
+        else
+            self:ShowTrainingEffect(gain)
+        end
     end)
     self:WatchDataChanged(Fields.RockTrainingValue, self.RefreshProgress, self)
     self:WatchDataChanged(Fields.TrainingFieldIndex, self.RefreshTrainingStatus, self)
@@ -167,6 +174,8 @@ function Component:BindButtons()
                     self:GetPlayerObject():RequireComponent("CRebirthUIComp"):Show()
                 elseif node.Name == "RewardBtn" then
                     self:GetPlayerObject():RequireComponent("CWelfareUIComp"):Show()
+                elseif node.Name == "ShopBtn" then
+                    self:GetPlayerObject():RequireComponent("CCurrencyShopUIComp"):Show()
                 elseif node == self._homeButton then
                     FX.Network:SendMsgToServer("C2S_ReturnHome")
                 else
@@ -244,12 +253,12 @@ function Component:RefreshLoot(loot, oldLoot)
     end
 end
 
---- 显示扩容卡到期前的当前随身容量，过期后回到基础上限。
+--- 显示基础容量与永久扩容；临时扩容卡仅在有效期内额外增加容量。
 ---@param loot table? 当前携带的战利品；省略时读取已同步字段。
 function Component:RefreshLootCapacity(loot)
     loot = loot or self:GetTable(Fields.RockLoot)
     local boost = self:GetTable(Fields.RockLootCapacityBoost)
-    local capacity = RockLevel.LootCapacity
+    local capacity = RockLevel.LootCapacity + self:GetTable(Fields.CurrencyShopData).capacity
     if type(boost) == "table" and (boost.expiresAt or 0) > workspace:GetServerTimeNow() then
         capacity += math.max(0, math.floor(boost.count or 0))
     end
@@ -471,6 +480,65 @@ function Component:ShowTrainingEffect(gain, position)
     end
 end
 
+--- 出售弹窗退场后复用主界面金币图标播放金币雨。
+function Component:ShowMoneyRain()
+    self:ShowRewardRain(FXLoader:Here(self._leftDown, "CashStat/Icon"))
+end
+
+--- 迁移 Studio_Y3 的 24 枚错落旋转下坠图标，按当前屏幕尺寸适配轨迹。
+--- @param template ImageLabel 当前项目的金币或力量图标模板。
+function Component:ShowRewardRain(template)
+    self:ClearRewardRain()
+    local origin = self._effectGui.AbsolutePosition
+    local screenArea = GuiService:GetInsetArea(Enum.ScreenInsets.None)
+    local screenSize = screenArea.Max - screenArea.Min
+    local scale = math.min(screenSize.X / 1280, screenSize.Y / 720)
+    for index = 1, 24 do
+        local icon = template:Clone()
+        icon.Name = "RewardRain"
+        icon.AnchorPoint = Vector2.new(0.5, 0.5)
+        local start = screenArea.Min - origin + Vector2.new(
+            math.random() * (screenSize.X - 80 * scale) + 40 * scale,
+            -math.random(60, 420) * scale)
+        icon.Position = UDim2.fromOffset(start.X, start.Y)
+        local size = 64 * scale * math.random(65, 115) / 100
+        icon.Size = UDim2.fromOffset(size, size)
+        icon.Rotation = math.random(-45, 45)
+        icon.ImageTransparency = 0
+        icon.Active = false
+        icon.Visible = true
+        icon.ZIndex = 20
+        icon.Parent = self._effectGui
+        local tween = TweenService:Create(icon,
+            TweenInfo.new(math.random(150, 250) / 100, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+                Position = UDim2.fromOffset(start.X + math.random(-100, 100) * scale,
+                    screenArea.Max.Y - origin.Y + 100 * scale),
+                Rotation = icon.Rotation + math.random(-240, 240),
+            })
+        local effect = {Tween = tween}
+        self._rainEffects[icon] = effect
+        --- 下坠完成即释放克隆节点和补间，取消时由统一清理方法处理。
+        effect.Connection = tween.Completed:Connect(function()
+            self._rainEffects[icon] = nil
+            effect.Connection:Disconnect()
+            tween:Destroy()
+            icon:Destroy()
+        end)
+        tween:Play()
+    end
+end
+
+--- 连续奖励与组件销毁时停止上一轮图标雨，不保留临时节点或回调。
+function Component:ClearRewardRain()
+    for icon, effect in pairs(self._rainEffects) do
+        effect.Connection:Disconnect()
+        effect.Tween:Cancel()
+        effect.Tween:Destroy()
+        icon:Destroy()
+    end
+    table.clear(self._rainEffects)
+end
+
 --- 到账时轻微放大力量文字再复原，连续动画不累加缩放。
 function Component:PulseStrength()
     if self._pulseTween then
@@ -485,6 +553,9 @@ end
 
 --- 释放自建节点和未结束动画，保留共用 ScreenGui；基类负责取消数据及按钮监听。
 function Component:Dtor()
+    if self._rainEffects then
+        self:ClearRewardRain()
+    end
     if self._trainingStatus then
         self._trainingStatus:Destroy()
     end

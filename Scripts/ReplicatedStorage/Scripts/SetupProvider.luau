@@ -74,7 +74,12 @@ end
 --- @param productId number Roblox Developer Product ID。
 --- @return table 商品定义。
 function Provider:GetGoodsConfig(productId)
-    return GoodsConfig.GoodsData[productId]
+    for goodsId, config in pairs(GoodsConfig.GoodsData) do
+        if config.RobloxProductId and config.RobloxProductId > 0 and config.RobloxProductId == productId then
+            return config
+        end
+    end
+    return nil
 end
 
 --- @param handlerType string 已注册处理器名。

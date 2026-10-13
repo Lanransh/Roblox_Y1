@@ -155,9 +155,13 @@ function Component:OnShow()
     self:RefreshLoot()
 end
 
---- 关闭后库存同步只刷新数据，不重新显示窗口。
+--- 关闭后库存同步只刷新数据，成功出售的金币雨等窗口实际退场后播放。
 function Component:OnHide()
     self.State.isOpen = false
+    if self._pendingMoneyRain then
+        self._pendingMoneyRain = nil
+        self:GetPlayerObject():RequireComponent("CMainUIComp"):ShowMoneyRain()
+    end
 end
 
 --- 出售仅提交稳定 ID 与固定倍率；等待结果期间禁止重复点击。
@@ -191,6 +195,10 @@ function Component:OnUIAction(action, payload)
             self._commonUI:ShowLocalizedTips("LootSell.Gained", {
                 value = GameUtility.NumberToText(result.amount),
             })
+            if result.amount > 0 then
+                self._pendingMoneyRain = true
+                self:Hide()
+            end
         else
             self._commonUI:ShowLocalizedTips(ok and result.key or "Common.Unknown")
         end

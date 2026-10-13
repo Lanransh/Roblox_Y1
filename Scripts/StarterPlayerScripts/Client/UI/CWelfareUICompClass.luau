@@ -277,7 +277,7 @@ function Component:_RenderRewardIcon(root, reward, featured)
         image.Parent = box
     end
     image.Position, image.Size, image.ZIndex = placeholder.Position, placeholder.Size, placeholder.ZIndex
-    image.Image = reward.type == "Gem" and "rbxassetid://116061018286803"
+    image.Image = reward.type == "Gem" and "rbxassetid://123110249883616"
         or _G.ItemConfig.Display[tonumber(reward.id)].IconId
 end
 

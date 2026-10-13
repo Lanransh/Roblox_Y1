@@ -2,6 +2,8 @@
 -- 框架已有的 Ready、玩家数据和服务器数据同步协议继续由 FrameworkInit 声明。
 return {
     ClientMsgID = {
+        -- goodsId: number，服务端校验钻石余额与下一档；返回 success、key、data。
+        "C2S_BuyCurrencyShopGoods",
         -- kind: "online"|"signin"|"diamonds"，rewardId: string 稳定配置 ID；身份来自引擎。
         -- RPC 返回 {success: boolean, key: string, state: table?}；服务端决定日期、资格及奖励。
         "C2S_ClaimWelfareReward",
@@ -42,7 +44,8 @@ return {
         "S2C_DogPickedUp",
         -- key: string、arguments: table?、duration: number?，项目提示在客户端翻译，单向消息。
         "S2C_ShowLocalizedTips",
-        -- gain: number，服务端实际走路及击打总收益；点击图标由客户端立即播放，无需回包。
+        -- gain: number，服务端实际训练收益；rewardRain: boolean?，力量卡结算为 true，播放力量图标雨。
+        -- 普通走路及击打不传 rewardRain；点击图标由客户端立即播放，无需回包。
         "S2C_TrainingEffect",
         -- round: number、brokenCells: string[]?；新轮重置，或同轮恢复个人已击破格号。
         "S2C_RockReset",

@@ -103,19 +103,19 @@ function CCurrencyShopView:Render(state)
     self.Status.Text = state.message or ""
     local diamondSelected = state.tab == "Diamond"
     self.ContentTitle.Text = diamondSelected and "DIAMOND SHOP" or "ROBUX SHOP"
-    local diamondColor = "#638079"
-    local robuxColor = "#638079"
+    local diamondColor = Color3.fromHex("638079")
+    local robuxColor = Color3.fromHex("638079")
     if diamondSelected then
-        diamondColor = "#67ED14"
+        diamondColor = Color3.fromHex("67ED14")
     else
-        robuxColor = "#249CB5"
+        robuxColor = Color3.fromHex("249CB5")
     end
     self.DiamondTab.BackgroundColor3 = diamondColor
     self.RobuxTab.BackgroundColor3 = robuxColor
     local diamondEdge = FXLoader:Here(self.DiamondTab, "BottomEdgeImg")
     local robuxEdge = FXLoader:Here(self.RobuxTab, "BottomEdgeImg")
-    diamondEdge.BackgroundColor3 = diamondSelected and "#225A07" or "#263E36"
-    robuxEdge.BackgroundColor3 = diamondSelected and "#263E36" or "#105464"
+    diamondEdge.BackgroundColor3 = diamondSelected and Color3.fromHex("225A07") or Color3.fromHex("263E36")
+    robuxEdge.BackgroundColor3 = diamondSelected and Color3.fromHex("263E36") or Color3.fromHex("105464")
     local kept = {}
     local count = 0
     for index, product in ipairs(self:GetUIConfig().products) do

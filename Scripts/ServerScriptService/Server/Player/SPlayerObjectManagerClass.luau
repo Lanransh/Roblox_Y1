@@ -1,4 +1,5 @@
 local FX = _G.FX
+local CurrencyShop = FX.Loader:Require(script.Parent.Parent, "Handlers/CurrencyShop")
 local Manager = FX.Class("SPlayerObjectManagerClass", "FSPlayerObjectManagerClass")
 _G.SPlayerObjectManagerClass = Manager
 
@@ -13,6 +14,22 @@ function Manager:Ctor()
     self:RegWeaponMsg()
     self:RegGMMsg()
     self:RegActivityMsg()
+    self:RegCurrencyShopMsg()
+end
+
+--- 商店协议只注册一次；玩家身份始终取网络层认证结果。
+function Manager:RegCurrencyShopMsg()
+    --- 未建立有效会话时拒绝扣款。
+    --- @param userId number 引擎认证玩家 ID。
+    --- @param goodsId any 客户端商品 ID。
+    --- @return table 商店权威结果。
+    FX.Network:RegClientMsgCallback("C2S_BuyCurrencyShopGoods", function(userId, goodsId)
+        local player = self:GetPlayerObject(userId)
+        if not player then
+            return {success = false, key = "Common.Unknown"}
+        end
+        return CurrencyShop.Buy(player, goodsId)
+    end)
 end
 
 --- 福利协议只注册一次，按引擎认证身份取得本人的活动组件。

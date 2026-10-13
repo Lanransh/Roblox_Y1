@@ -7,18 +7,95 @@ function CCurrencyShopPreview:Ctor(owner)
     CCurrencyShopPreview.Super.Ctor(self, owner)
     self.Config = {
         products = {
-            { id = "speed", currency = "Diamond", title = "Speed Potion", description = "Boost your movement speed", price = 100 },
-            { id = "luck", currency = "Diamond", title = "Luck Potion", description = "Add luck to your next adventure", price = 250 },
-            { id = "energy", currency = "Diamond", title = "Energy Pack", description = "Refill your energy for exploring", price = 150 },
-            { id = "chest", currency = "Diamond", title = "Mystery Chest", description = "Discover a mystery reward", price = 500 },
-            { id = "trail", currency = "Diamond", title = "Star Trail", description = "Leave a sparkling trail", price = 800 },
-            { id = "ticket", currency = "Diamond", title = "Challenge Ticket", description = "Unlock an extra challenge", price = 200 },
-            { id = "starter", currency = "Robux", title = "Starter Pack", description = "Supplies to start your adventure", price = 49 },
-            { id = "gem_pack", currency = "Robux", title = "Diamond Pack", description = "Get 1,000 diamonds", price = 99 },
+            {
+                id = "speed",
+                currency = "Diamond",
+                title = "Speed Potion",
+                description = "Boost your movement speed",
+                price = 100,
+                cardColor = "#245778",
+            },
+            {
+                id = "luck",
+                currency = "Diamond",
+                title = "Luck Potion",
+                description = "Add luck to your next adventure",
+                price = 250,
+                cardColor = "#573575",
+            },
+            {
+                id = "energy",
+                currency = "Diamond",
+                title = "Energy Pack",
+                description = "Refill your energy for exploring",
+                price = 150,
+                cardColor = "#245F5A",
+            },
+            {
+                id = "chest",
+                currency = "Diamond",
+                title = "Mystery Chest",
+                description = "Discover a mystery reward",
+                price = 500,
+                cardColor = "#78472C",
+            },
+            {
+                id = "trail",
+                currency = "Diamond",
+                title = "Star Trail",
+                description = "Leave a sparkling trail",
+                price = 800,
+                cardColor = "#753A57",
+            },
+            {
+                id = "ticket",
+                currency = "Diamond",
+                title = "Challenge Ticket",
+                description = "Unlock an extra challenge",
+                price = 200,
+                cardColor = "#6C5A28",
+            },
+            {
+                id = "starter",
+                currency = "Robux",
+                title = "Starter Pack",
+                description = "Supplies to start your adventure",
+                price = 49,
+                cardColor = "#245F5A",
+            },
+            {
+                id = "gem_pack",
+                currency = "Robux",
+                title = "Diamond Pack",
+                description = "Get 1,000 diamonds",
+                price = 99,
+                cardColor = "#245778",
+            },
             { id = "vip", currency = "Robux", title = "VIP Pass", description = "Unlock exclusive VIP perks", price = 199 },
-            { id = "outfit", currency = "Robux", title = "Special Outfit", description = "Create your own unique look", price = 149 },
-            { id = "deluxe", currency = "Robux", title = "Deluxe Pack", description = "Stock up on adventure supplies", price = 299 },
-            { id = "pet", currency = "Robux", title = "Companion Pack", description = "Meet your new adventure companion", price = 249 },
+            {
+                id = "outfit",
+                currency = "Robux",
+                title = "Special Outfit",
+                description = "Create your own unique look",
+                price = 149,
+                cardColor = "#753A57",
+            },
+            {
+                id = "deluxe",
+                currency = "Robux",
+                title = "Deluxe Pack",
+                description = "Stock up on adventure supplies",
+                price = 299,
+                cardColor = "#6C5A28",
+            },
+            {
+                id = "pet",
+                currency = "Robux",
+                title = "Companion Pack",
+                description = "Meet your new adventure companion",
+                price = 249,
+                cardColor = "#78472C",
+            },
         },
     }
     self.State = { tab = "Diamond", open = true, pending = {} }
@@ -37,17 +114,9 @@ end
 function CCurrencyShopPreview:OnUIAction(action, payload)
     if action == "SelectTab" then
         self.State.tab = payload.tab
-        self.State.message = ""
         self.List.CanvasPosition = Vector2.new(0, 0)
     elseif action == "Close" then
         self.State.open = false
-    elseif action == "Purchase" then
-        for index, product in ipairs(self.Config.products) do
-            if product.id == payload.productId then
-                self.State.message = "Preview purchase: " .. product.title .. " (no charge)"
-                break
-            end
-        end
     end
     self:RefreshUI()
 end

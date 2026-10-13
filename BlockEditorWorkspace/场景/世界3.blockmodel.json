@@ -118063,10 +118063,666 @@
         "kind": "project",
         "projectGuid": "c81feef9-f5a6-4b1e-bc9b-6f5836a31d04"
       }
+    },
+    {
+      "id": "prefab-node-2fa5fc50-0215-4ebc-826c-7c2492a7baea",
+      "name": "排行榜1",
+      "parentId": "transform-7",
+      "type": "PrefabReference",
+      "transform": {
+        "position": [
+          -11,
+          -0.5,
+          -27
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          0.6,
+          0.6,
+          0.6
+        ]
+      },
+      "target": {
+        "kind": "local",
+        "prefabGuid": "71cdf843-c532-4bc0-aa9f-437078e41a99"
+      }
+    },
+    {
+      "id": "prefab-node-3b7049ff-594e-4fe9-8e50-6ab42638b0aa",
+      "name": "排行榜2",
+      "parentId": "transform-7",
+      "type": "PrefabReference",
+      "transform": {
+        "position": [
+          0,
+          -0.5,
+          -27
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          0.6,
+          0.6,
+          0.6
+        ]
+      },
+      "target": {
+        "kind": "local",
+        "prefabGuid": "71cdf843-c532-4bc0-aa9f-437078e41a99"
+      }
+    },
+    {
+      "id": "prefab-node-cf710ab4-b73e-496c-a1c8-11d130fc5dc9",
+      "name": "排行榜3",
+      "parentId": "transform-7",
+      "type": "PrefabReference",
+      "transform": {
+        "position": [
+          11,
+          -0.5,
+          -27
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          0.6,
+          0.6,
+          0.6
+        ]
+      },
+      "target": {
+        "kind": "local",
+        "prefabGuid": "71cdf843-c532-4bc0-aa9f-437078e41a99"
+      }
     }
   ],
   "prefabFolders": [],
-  "prefabs": [],
+  "prefabs": [
+    {
+      "guid": "71cdf843-c532-4bc0-aa9f-437078e41a99",
+      "name": "积雪排行榜",
+      "folderId": null,
+      "rootNodeId": "ai-node-1",
+      "nodes": [
+        {
+          "id": "prefab-node-a2241221-2f99-421a-a6c2-a8451f62b8b9",
+          "name": "橙木空白排行榜",
+          "parentId": "ai-node-1",
+          "type": "PrefabReference",
+          "transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "target": {
+            "kind": "project",
+            "projectGuid": "e24287fe-3042-4a6b-8333-80364f4ac65d"
+          }
+        },
+        {
+          "id": "ai-node-1",
+          "name": "积雪排行榜",
+          "parentId": null,
+          "type": "Group",
+          "transform": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        },
+        {
+          "id": "ai-node-2",
+          "name": "顶沿雪帽",
+          "parentId": "ai-node-1",
+          "type": "Geometry",
+          "transform": {
+            "position": [
+              0,
+              21.93,
+              0.35
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "geometry": {
+            "type": "Box",
+            "size": [
+              5.9,
+              0.45,
+              2.2
+            ],
+            "color": "#f4faff",
+            "texturePattern": "solid",
+            "roblox": {
+              "surfaces": {
+                "top": "Studs",
+                "bottom": "Smooth",
+                "left": "Smooth",
+                "right": "Smooth",
+                "front": "Smooth",
+                "back": "Smooth"
+              }
+            }
+          }
+        },
+        {
+          "id": "ai-node-3",
+          "name": "二层积雪左",
+          "parentId": "ai-node-1",
+          "type": "Geometry",
+          "transform": {
+            "position": [
+              -3.7,
+              20.83,
+              0.35
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "geometry": {
+            "type": "Box",
+            "size": [
+              2.7,
+              0.34,
+              1.95
+            ],
+            "color": "#f4faff",
+            "texturePattern": "solid",
+            "roblox": {
+              "surfaces": {
+                "top": "Studs",
+                "bottom": "Smooth",
+                "left": "Smooth",
+                "right": "Smooth",
+                "front": "Smooth",
+                "back": "Smooth"
+              }
+            }
+          }
+        },
+        {
+          "id": "ai-node-4",
+          "name": "二层积雪右",
+          "parentId": "ai-node-1",
+          "type": "Geometry",
+          "transform": {
+            "position": [
+              3.7,
+              20.83,
+              0.35
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "geometry": {
+            "type": "Box",
+            "size": [
+              2.7,
+              0.34,
+              1.95
+            ],
+            "color": "#f4faff",
+            "texturePattern": "solid",
+            "roblox": {
+              "surfaces": {
+                "top": "Studs",
+                "bottom": "Smooth",
+                "left": "Smooth",
+                "right": "Smooth",
+                "front": "Smooth",
+                "back": "Smooth"
+              }
+            }
+          }
+        },
+        {
+          "id": "ai-node-5",
+          "name": "一层积雪左",
+          "parentId": "ai-node-1",
+          "type": "Geometry",
+          "transform": {
+            "position": [
+              -5.35,
+              19.83,
+              0.4
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "geometry": {
+            "type": "Box",
+            "size": [
+              2.6,
+              0.32,
+              2.05
+            ],
+            "color": "#f4faff",
+            "texturePattern": "solid",
+            "roblox": {
+              "surfaces": {
+                "top": "Studs",
+                "bottom": "Smooth",
+                "left": "Smooth",
+                "right": "Smooth",
+                "front": "Smooth",
+                "back": "Smooth"
+              }
+            }
+          }
+        },
+        {
+          "id": "ai-node-6",
+          "name": "一层积雪右",
+          "parentId": "ai-node-1",
+          "type": "Geometry",
+          "transform": {
+            "position": [
+              5.35,
+              19.83,
+              0.4
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "geometry": {
+            "type": "Box",
+            "size": [
+              2.6,
+              0.32,
+              2.05
+            ],
+            "color": "#f4faff",
+            "texturePattern": "solid",
+            "roblox": {
+              "surfaces": {
+                "top": "Studs",
+                "bottom": "Smooth",
+                "left": "Smooth",
+                "right": "Smooth",
+                "front": "Smooth",
+                "back": "Smooth"
+              }
+            }
+          }
+        },
+        {
+          "id": "ai-node-7",
+          "name": "左框雪帽",
+          "parentId": "ai-node-1",
+          "type": "Geometry",
+          "transform": {
+            "position": [
+              -6.45,
+              19.57,
+              0.45
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "geometry": {
+            "type": "Box",
+            "size": [
+              1.8,
+              0.34,
+              2.1
+            ],
+            "color": "#f4faff",
+            "texturePattern": "solid",
+            "roblox": {
+              "surfaces": {
+                "top": "Studs",
+                "bottom": "Smooth",
+                "left": "Smooth",
+                "right": "Smooth",
+                "front": "Smooth",
+                "back": "Smooth"
+              }
+            }
+          }
+        },
+        {
+          "id": "ai-node-8",
+          "name": "右框雪帽",
+          "parentId": "ai-node-1",
+          "type": "Geometry",
+          "transform": {
+            "position": [
+              6.45,
+              19.57,
+              0.45
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "geometry": {
+            "type": "Box",
+            "size": [
+              1.8,
+              0.34,
+              2.1
+            ],
+            "color": "#f4faff",
+            "texturePattern": "solid",
+            "roblox": {
+              "surfaces": {
+                "top": "Studs",
+                "bottom": "Smooth",
+                "left": "Smooth",
+                "right": "Smooth",
+                "front": "Smooth",
+                "back": "Smooth"
+              }
+            }
+          }
+        },
+        {
+          "id": "ai-node-9",
+          "name": "左支脚积雪",
+          "parentId": "ai-node-1",
+          "type": "Geometry",
+          "transform": {
+            "position": [
+              -6.45,
+              0.97,
+              0.1
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "geometry": {
+            "type": "Box",
+            "size": [
+              3.25,
+              0.34,
+              4.3
+            ],
+            "color": "#f4faff",
+            "texturePattern": "solid",
+            "roblox": {
+              "surfaces": {
+                "top": "Studs",
+                "bottom": "Smooth",
+                "left": "Smooth",
+                "right": "Smooth",
+                "front": "Smooth",
+                "back": "Smooth"
+              }
+            }
+          }
+        },
+        {
+          "id": "ai-node-10",
+          "name": "右支脚积雪",
+          "parentId": "ai-node-1",
+          "type": "Geometry",
+          "transform": {
+            "position": [
+              6.45,
+              0.97,
+              0.1
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "geometry": {
+            "type": "Box",
+            "size": [
+              3.25,
+              0.34,
+              4.3
+            ],
+            "color": "#f4faff",
+            "texturePattern": "solid",
+            "roblox": {
+              "surfaces": {
+                "top": "Studs",
+                "bottom": "Smooth",
+                "left": "Smooth",
+                "right": "Smooth",
+                "front": "Smooth",
+                "back": "Smooth"
+              }
+            }
+          }
+        },
+        {
+          "id": "ai-node-11",
+          "name": "底框积雪",
+          "parentId": "ai-node-1",
+          "type": "Geometry",
+          "transform": {
+            "position": [
+              0,
+              2.93,
+              0.6
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "geometry": {
+            "type": "Box",
+            "size": [
+              12.4,
+              0.26,
+              2.15
+            ],
+            "color": "#f4faff",
+            "texturePattern": "solid",
+            "roblox": {
+              "surfaces": {
+                "top": "Studs",
+                "bottom": "Smooth",
+                "left": "Smooth",
+                "right": "Smooth",
+                "front": "Smooth",
+                "back": "Smooth"
+              }
+            }
+          }
+        },
+        {
+          "id": "ai-node-12",
+          "name": "左垂雪",
+          "parentId": "ai-node-1",
+          "type": "Geometry",
+          "transform": {
+            "position": [
+              -6.55,
+              18.92,
+              1.38
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "geometry": {
+            "type": "Box",
+            "size": [
+              0.7,
+              1.1,
+              0.45
+            ],
+            "color": "#f4faff",
+            "texturePattern": "solid",
+            "roblox": {
+              "surfaces": {
+                "top": "Studs",
+                "bottom": "Smooth",
+                "left": "Smooth",
+                "right": "Smooth",
+                "front": "Smooth",
+                "back": "Smooth"
+              }
+            }
+          }
+        },
+        {
+          "id": "ai-node-13",
+          "name": "右垂雪",
+          "parentId": "ai-node-1",
+          "type": "Geometry",
+          "transform": {
+            "position": [
+              6.55,
+              19.05,
+              1.38
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          "geometry": {
+            "type": "Box",
+            "size": [
+              0.65,
+              0.85,
+              0.45
+            ],
+            "color": "#f4faff",
+            "texturePattern": "solid",
+            "roblox": {
+              "surfaces": {
+                "top": "Studs",
+                "bottom": "Smooth",
+                "left": "Smooth",
+                "right": "Smooth",
+                "front": "Smooth",
+                "back": "Smooth"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
   "externalPrefabAliases": [
     {
       "projectGuid": "1ff405b8-a52e-4d7f-86ab-f3ee2dde4025",
@@ -118091,6 +118747,10 @@
     {
       "projectGuid": "c81feef9-f5a6-4b1e-bc9b-6f5836a31d04",
       "name": "World3_Training4"
+    },
+    {
+      "projectGuid": "e24287fe-3042-4a6b-8333-80364f4ac65d",
+      "name": "橙木空白排行榜"
     }
   ]
 }

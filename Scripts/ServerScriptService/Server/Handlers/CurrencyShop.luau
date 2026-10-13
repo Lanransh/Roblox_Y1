@@ -1,0 +1,45 @@
+-- 钻石商店结算不 yield，顺序、余额和奖励只从服务器数据读取。
+local FX = _G.FX
+local Shop = FX.Loader:RequireShared("Scripts/Game/Shared/CurrencyShop")
+local Fields = _G.PlayerDataConfig
+local Service = {}
+
+--- 同组只能购买下一档，拒绝过期按钮、跳级及重复扣款。
+--- @param player table 引擎认证身份对应的已就绪玩家对象。
+--- @param goodsId any 客户端提交的钻石商品 ID。
+--- @return table 结果 Key 与权威商店状态。
+function Service.Buy(player, goodsId)
+    if type(goodsId) ~= "number" or goodsId % 1 ~= 0 then
+        return {success = false, key = "CurrencyShop.Invalid"}
+    end
+    local data = player:GetTable(Fields.CurrencyShopData)
+    local selected
+    for index, item in ipairs(_G.ShopConfig.GemCoinData) do
+        if item.GemGoodsId == goodsId then
+            selected = item
+            break
+        end
+    end
+    local nextItem = selected and Shop.GetNextGemGoods(selected.Group, data)
+    if not nextItem or nextItem.GemGoodsId ~= goodsId then
+        return {success = false, key = "CurrencyShop.Invalid"}
+    end
+    local goods = _G.GoodsConfig.GemGoodsData[goodsId]
+    local diamonds = player:GetNumber(Fields.Diamonds)
+    if diamonds < goods.Price then
+        return {success = false, key = "CurrencyShop.NeedDiamonds"}
+    end
+    if goods.BuyHandler == "TrainingRateLevel" then
+        data.trainingLevel += 1
+    elseif goods.BuyHandler == "ExpandableBackpack" then
+        data.capacity += goods.NumberArray[1]
+    else
+        return {success = false, key = "CurrencyShop.Invalid"}
+    end
+    data.gemBought[tostring(goodsId)] = true
+    player:SetNumber(Fields.Diamonds, diamonds - goods.Price)
+    player:SetTable(Fields.CurrencyShopData, data)
+    return {success = true, key = "CurrencyShop.Success", data = data}
+end
+
+return Service
