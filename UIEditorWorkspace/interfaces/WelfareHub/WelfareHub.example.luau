@@ -53,6 +53,9 @@ function CWelfarePreview:Ctor(owner)
     }
     self.State = { onlineMinutes = 12, signInDay = 1, entries = {} }
     self.State.diamonds = { amount = 250, status = "Claimable", pending = false }
+    self.Config.offline = { rewardId = "offline_session_1" }
+    self.State.offline = { seconds = 9000, training = 1500, status = "Claimable", pending = false }
+    self.ClaimedOfflineTraining = 0
     self.FailNextClaim = false
     for _, group in ipairs(self.Config.groups) do
         local entries = {}
@@ -96,6 +99,31 @@ end
 -- @param action string View 发出的动作
 -- @param payload table kind 与 rewardId
 function CWelfarePreview:OnUIAction(action, payload)
+    if action == "ClaimOffline" then
+        assert(payload.rewardId == self.Config.offline.rewardId, "Unknown offline reward")
+        assert(payload.multiplier == 1 or payload.multiplier == 2, "Unsupported offline multiplier")
+        local state = self.State.offline
+        if state.status ~= "Claimable" or state.pending or state.training <= 0 then
+            return
+        end
+        state.pending = true
+        state.error = nil
+        self:RefreshUI()
+        state.pending = false
+        if self.FailNextClaim then
+            self.FailNextClaim = false
+            state.error = "Simulated request failure"
+        else
+            self.ClaimedOfflineTraining = self.ClaimedOfflineTraining + state.training * payload.multiplier
+            print("Offline training claimed: " .. tostring(state.training * payload.multiplier))
+            state.seconds = 0
+            state.training = 0
+            state.status = "Claimed"
+        end
+        self:RefreshUI()
+        return
+    end
+
     if action == "ClaimDiamonds" then
         assert(payload.rewardId == self.Config.diamonds.rewardId, "Unknown diamond reward")
         local state = self.State.diamonds
