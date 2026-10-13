@@ -16,6 +16,8 @@ require(Player.SActivityCompClass)
 require(Player.SPlayerObjectClass)
 local ManagerClass = require(Player.SPlayerObjectManagerClass)
 local RankingClass = require(Service.SRankingServiceClass)
+local DogNpcClass = require(Service.SDogNpcServiceClass)
 
 _G.SRankingService = RankingClass.New()
 _G.SPlayerObjectManager = ManagerClass.New()
+_G.SDogNpcService = DogNpcClass.New()

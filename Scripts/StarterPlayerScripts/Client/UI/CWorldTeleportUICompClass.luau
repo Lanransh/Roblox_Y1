@@ -21,7 +21,7 @@ function Component:GetCompName()
     return "CWorldTeleportUIComp"
 end
 
---- 复用导出的列表与动作，只接入服务端同步的重生次数和当前世界。
+--- 复用导出的列表与动作，接入服务端同步的历史最高等级和当前世界。
 function Component:OnReady()
     Component.Super.OnReady(self)
     local root = self:GetRootNode()
@@ -30,12 +30,12 @@ function Component:OnReady()
     self._commonUI = self:GetPlayerObject():RequireComponent("FCCommonUIComp")
     self._commonUI:RegisterTrainingClickModal(root)
     self._localization = self._commonUI.Localization
-    -- 展示契约的 requiredLevel 表示解锁所需重生次数，数值只来自配置，不在界面内改写。
+    -- 展示契约按等级判断解锁；使用历史最高等级，重生后保留传送资格。
     self.Config = {worlds = {}}
     for index, world in ipairs(GameEnum.WorldTransferConfig) do
         local palette = WorldColors[(index - 1) % #WorldColors + 1]
         table.insert(self.Config.worlds, {
-            id = world.Id, name = world.Name, requiredLevel = world.NeedRebirthCount,
+            id = world.Id, name = world.Name, requiredLevel = world.NeedTrainingLevel,
             color = palette.Color, edgeColor = palette.EdgeColor,
         })
     end
@@ -45,21 +45,28 @@ function Component:OnReady()
     self:BindPortalArea()
 end
 
---- 重生次数与当前世界都由服务端同步，本地不推断传送资格。
+--- 历史最高等级与当前世界都由服务端同步，本地不推断传送资格。
 function Component:BindUIData()
-    self:WatchDataChanged(Fields.RebirthCount, self.RefreshWorlds, self)
+    self:WatchDataChanged(Fields.MaxTrainingLevel, self.RefreshWorlds, self)
     self:WatchDataChanged(Fields.WorldIndex, self.RefreshWorlds, self)
 end
 
---- 世界 1 的金色传送门是当前入口；场景模型缺失时只保留组件接口，不拦截其他入口。
+--- 按世界配置绑定金色传送门；场景入口缺失时保留其他世界的入口。
 function Component:BindPortalArea()
-    self._portal = FXLoader:Find(workspace, "BlockMeshs/世界1/金色传送门")
-    if not self._portal then
-        FX.Log:Warn("CWorldTeleportUICompClass: 金色传送门 not found; world UI has no area entry")
+    self._portals = {}
+    for index, world in ipairs(GameEnum.WorldTransferConfig) do
+        local portal = FXLoader:Find(workspace, world.PortalPath)
+        if portal then
+            local center, size = portal:GetBoundingBox()
+            table.insert(self._portals, {Node = portal, Center = center, Size = size})
+        else
+            FX.Log:Warn("CWorldTeleportUICompClass: portal not found: " .. world.PortalPath)
+        end
+    end
+    if #self._portals == 0 then
         return
     end
     -- 门体固定不动，进场检测只缓存一次包围盒，避免每次遍历门体装饰。
-    self._portalCenter, self._portalSize = self._portal:GetBoundingBox()
     self._inPortalArea = false
     self._portalCharacter = nil
     self._nextPortalCheck = 0
@@ -86,13 +93,21 @@ function Component:UpdatePortalArea()
     local root = character and character:FindFirstChild("HumanoidRootPart")
     local humanoid = character and character:FindFirstChildOfClass("Humanoid")
     local inside = false
-    if root and humanoid and humanoid.Health > 0 and self._portal:IsDescendantOf(workspace) then
-        local point = self._portalCenter:PointToObjectSpace(root.Position)
-        local half = self._portalSize * 0.5
-        -- 金环装饰很高，只认贴近地面的高度，避免从门体上方经过时触发。
-        local height = point.Y + half.Y
-        inside = math.abs(point.X) <= half.X and math.abs(point.Z) <= half.Z
-            and height >= 0 and height <= 11
+    if root and humanoid and humanoid.Health > 0 then
+        for index, portal in ipairs(self._portals) do
+            if portal.Node:IsDescendantOf(workspace) then
+                local point = portal.Center:PointToObjectSpace(root.Position)
+                local half = portal.Size * 0.5
+                -- 金环装饰很高，只认贴近地面的高度，避免从门体上方经过时触发。
+                local height = point.Y + half.Y
+                if math.abs(point.X) <= half.X and math.abs(point.Z) <= half.Z
+                    and height >= 0 and height <= 11
+                then
+                    inside = true
+                    break
+                end
+            end
+        end
     end
     if inside == self._inPortalArea then
         return
@@ -105,11 +120,11 @@ function Component:UpdatePortalArea()
     end
 end
 
---- 用服务端字段刷新列表：重生次数决定解锁，当前世界由服务端落点决定。
+--- 用服务端字段刷新列表：历史最高等级决定解锁，当前世界由服务端落点决定。
 function Component:RefreshWorlds()
     local index = math.floor(self:GetNumber(Fields.WorldIndex))
     local world = GameEnum.WorldTransferConfig[index]
-    self.State.level = self:GetNumber(Fields.RebirthCount)
+    self.State.level = self:GetNumber(Fields.MaxTrainingLevel)
     self.State.currentWorldId = world and world.Id or nil
     self:RefreshUI()
 end
@@ -138,7 +153,7 @@ function Component:OnUIAction(action, payload)
     self.State.error = nil
     self:RefreshUI()
     self._transferTask = task.defer(function()
-        --- 白名单 RPC 只传序号；重生门槛、落点和世界状态都由服务端决定。
+        --- 白名单 RPC 只传序号；历史等级门槛、落点和世界状态都由服务端决定。
         local ok, result = pcall(function()
             return FX.Network:InvokeServer("C2S_TransferWorld", index)
         end)

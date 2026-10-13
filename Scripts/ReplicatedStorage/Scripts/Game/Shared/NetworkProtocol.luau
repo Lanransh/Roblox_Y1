@@ -38,6 +38,8 @@ return {
         "C2S_TransferWorld",
     },
     ServerMsgID = {
+        -- 无参数；服务端确认公共小狗拾取成功后，仅通知拾取者播放现有拾取音效。
+        "S2C_DogPickedUp",
         -- key: string、arguments: table?、duration: number?，项目提示在客户端翻译，单向消息。
         "S2C_ShowLocalizedTips",
         -- gain: number，服务端实际走路及击打总收益；点击图标由客户端立即播放，无需回包。

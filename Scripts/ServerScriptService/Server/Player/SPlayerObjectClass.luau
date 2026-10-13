@@ -1,4 +1,7 @@
 local FX = _G.FX
+local FXLoader = FX.Loader
+local Rebirth = FXLoader:RequireShared("Scripts/Game/Shared/Rebirth")
+local RockLevel = FXLoader:RequireShared("Scripts/Game/Shared/RockLevel")
 local PlayerDataConfig, ItemConfig = _G.PlayerDataConfig, _G.ItemConfig
 local TutorialGuideConfig = _G.TutorialGuideConfig
 local Inventory = FX.Class("SInventoryCompClass", "FSInventoryCompClass")
@@ -179,9 +182,18 @@ function Player:ShowLocalizedTips(key, arguments, duration)
     FX.Network:SendMsgToClient(self:GetPlayerId(), "S2C_ShowLocalizedTips", key, arguments, duration)
 end
 
---- 项目不使用存档版本检查或迁移，保留框架要求的入口以完成玩家初始化。
---- @param version number 框架传入的旧存档字段，本项目不使用。
+--- 为旧存档补入历史等级；已完成重生能证明玩家达到过上一次重生门槛。
+--- @param version number 框架传入的旧存档版本。
 function Player:MigrateData(version)
+    if version < 1 then
+        local count = self:GetNumber(PlayerDataConfig.RebirthCount)
+        local level = RockLevel.GetProgress(self:GetNumber(PlayerDataConfig.RockTrainingValue),
+            Rebirth.GetRequiredLevel(count))
+        local previousLevel = count > 0 and Rebirth.GetRequiredLevel(count - 1) or 1
+        self:SetNumber(PlayerDataConfig.MaxTrainingLevel,
+            math.max(self:GetNumber(PlayerDataConfig.MaxTrainingLevel), level, previousLevel))
+        self:SetNumber(PlayerDataConfig.DataVersion, 1)
+    end
 end
 
 --- 先同步初始数据，再向玩家组件发布登录事件。

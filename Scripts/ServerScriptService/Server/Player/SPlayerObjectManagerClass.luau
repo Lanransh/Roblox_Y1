@@ -143,7 +143,7 @@ function Manager:RegRockDropMsg()
         end
     end
     FX.Network:RegClientMsgCallback("C2S_RequestRockDrop", requestDrop)
-    --- 服务端只记录通过边界校验的命中，回包用于撤销客户端无效预测。
+    --- 服务端只记录通过边界校验的命中，回包校正血量或撤销客户端无效预测。
     --- @param userId number 引擎认证的玩家身份。
     --- @param key string 客户端命中的格号。
     --- @param round number 客户端当前关卡轮次。
@@ -151,8 +151,8 @@ function Manager:RegRockDropMsg()
         local player = self:GetPlayerObject(userId)
         local rocks = player and player:GetComponent("SRockLevelComp")
         if rocks then
-            local accepted = rocks:RecordHit(key, round)
-            FX.Network:SendMsgToClient(userId, "S2C_RockHitResult", key, round, accepted)
+            local accepted, health = rocks:RecordHit(key, round)
+            FX.Network:SendMsgToClient(userId, "S2C_RockHitResult", key, round, accepted, health)
         end
     end
     FX.Network:RegClientMsgCallback("C2S_RockHit", rockHit)

@@ -24,12 +24,17 @@ function Collectible.ResolveModel(displayModelId)
     return instance
 end
 
---- 将静态收藏品焊接为单个装配，供场景掉落补间使用。
+--- 放大小型掉落收藏品并焊接为单个装配，保证可见性且保留大件尺寸。
 --- @param template Model 已导入的收藏品模板。
 --- @return Model 以 PrimaryPart 为锚点、无碰撞的收藏品副本。
 function Collectible.CreateModel(template)
     local model = template:Clone()
     model:PivotTo(CFrame.new())
+    local size = model:GetExtentsSize()
+    local longestSide = math.max(size.X, size.Y, size.Z)
+    if longestSide < 2.4 then
+        model:ScaleTo(model:GetScale() * 2.4 / longestSide)
+    end
     local root = model.PrimaryPart
     for index, node in ipairs(model:GetDescendants()) do
         if node:IsA("BasePart") then

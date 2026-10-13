@@ -28401,6 +28401,87 @@
         "kind": "project",
         "projectGuid": "1b0ff147-7484-4cc1-893b-f412b2d9ae4f"
       }
+    },
+    {
+      "id": "prefab-node-9c90f6f4-ca8d-432d-94e8-656fa948e695",
+      "name": "排行榜1",
+      "parentId": "ai-node-29",
+      "type": "PrefabReference",
+      "transform": {
+        "position": [
+          -11,
+          -0.5,
+          -27
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          0.6,
+          0.6,
+          0.6
+        ]
+      },
+      "target": {
+        "kind": "project",
+        "projectGuid": "e24287fe-3042-4a6b-8333-80364f4ac65d"
+      }
+    },
+    {
+      "id": "prefab-node-becb0d4e-bb03-4712-8318-a6553aafa396",
+      "name": "排行榜2",
+      "parentId": "ai-node-29",
+      "type": "PrefabReference",
+      "transform": {
+        "position": [
+          0,
+          -0.5,
+          -27
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          0.6,
+          0.6,
+          0.6
+        ]
+      },
+      "target": {
+        "kind": "project",
+        "projectGuid": "e24287fe-3042-4a6b-8333-80364f4ac65d"
+      }
+    },
+    {
+      "id": "prefab-node-2cff8198-b690-49ac-b65a-d23dae6afbbb",
+      "name": "排行榜3",
+      "parentId": "ai-node-29",
+      "type": "PrefabReference",
+      "transform": {
+        "position": [
+          11,
+          -0.5,
+          -27
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          0.6,
+          0.6,
+          0.6
+        ]
+      },
+      "target": {
+        "kind": "project",
+        "projectGuid": "e24287fe-3042-4a6b-8333-80364f4ac65d"
+      }
     }
   ],
   "prefabFolders": [],
@@ -45577,6 +45658,10 @@
     {
       "projectGuid": "1b0ff147-7484-4cc1-893b-f412b2d9ae4f",
       "name": "绿色巨岩训练基地"
+    },
+    {
+      "projectGuid": "e24287fe-3042-4a6b-8333-80364f4ac65d",
+      "name": "橙木空白排行榜"
     }
   ]
 }

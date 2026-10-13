@@ -6,6 +6,7 @@ local Collection = FXLoader:RequireShared("Scripts/Game/Shared/Collection")
 local Aura = FXLoader:RequireShared("Scripts/Game/Shared/Aura")
 local Weapon = FXLoader:RequireShared("Scripts/Game/Shared/Weapon")
 local RockLevel = FXLoader:RequireShared("Scripts/Game/Shared/RockLevel")
+local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local TrainingFields = FXLoader:RequireFromParent(script, "TrainingFields")
 local Component = FX.Class("SMiscCompClass", "FSPlayerCompClass")
 
@@ -62,10 +63,14 @@ function Component:HandleRebirth()
     return {success = true}
 end
 
---- 读档后建立训练数据显示，并按原频率检查每秒结算条件。
+--- 读档后建立排行榜和公开头顶力量显示，并按原频率检查每秒结算条件。
 function Component:OnPlayerLogin()
     TrainingFields.GetFields()
     local player = self:GetPlayerNode()
+    -- 当前唯一启用的出生点位于世界 1；新角色出生时同步重置世界，恢复原世界传送资格。
+    self:TrackConnection(player.CharacterAdded:Connect(function()
+        self:SetNumber(Fields.WorldIndex, 1)
+    end))
     self._stats = player:FindFirstChild("leaderstats")
     self._ownsStats = self._stats == nil
     if self._ownsStats then
@@ -80,12 +85,93 @@ function Component:OnPlayerLogin()
     self._strengthStat.Name = "Strength"
     self._strengthStat.Parent = self._stats
     self:RefreshProgress()
+    self:TrackConnection(player.CharacterAdded:Connect(function(character)
+        self:BindStrengthCharacter(character)
+    end))
+    self:TrackConnection(player.CharacterRemoving:Connect(function(character)
+        if character == self._strengthCharacter then
+            self:BindStrengthCharacter(nil)
+        end
+    end))
+    self:BindStrengthCharacter(player.Character)
     self._timer = FX.Task:Interval(0.1, function()
         self:TickTraining()
     end)
 end
 
---- 校验世界序号与解锁重生次数后，把角色移动到配置落点并同步当前世界。
+--- 更换角色时清理旧显示；头部尚未加载时监听其到达，不阻塞登录。
+--- @param character Model? 当前角色，nil 表示移除或离服。
+function Component:BindStrengthCharacter(character)
+    if self._strengthHeadConnection then
+        self._strengthHeadConnection:Disconnect()
+        self._strengthHeadConnection = nil
+    end
+    if self._strengthBillboard then
+        self._strengthBillboard:Destroy()
+        self._strengthBillboard = nil
+        self._strengthText = nil
+    end
+    self._strengthCharacter = character
+    if not character then
+        return
+    end
+    local head = character:FindFirstChild("Head")
+    if head and head:IsA("BasePart") then
+        self:CreateStrengthBillboard(head)
+    else
+        self._strengthHeadConnection = character.ChildAdded:Connect(function(child)
+            if child.Name == "Head" and child:IsA("BasePart") then
+                self._strengthHeadConnection:Disconnect()
+                self._strengthHeadConnection = nil
+                self:CreateStrengthBillboard(child)
+            end
+        end)
+    end
+end
+
+--- 由服务端创建角色下的 BillboardGui，使所有玩家收到相同力量显示。
+--- @param head BasePart 当前角色头部，兼容 R6 和 R15。
+function Component:CreateStrengthBillboard(head)
+    local billboard = Instance.new("BillboardGui")
+    billboard.Name = "StrengthBillboard"
+    billboard.Adornee = head
+    billboard.Size = UDim2.fromOffset(180, 44)
+    billboard.StudsOffsetWorldSpace = Vector3.new(0, 3, 0)
+    billboard.AlwaysOnTop = true
+    billboard.MaxDistance = 100
+
+    local icon = Instance.new("ImageLabel")
+    icon.Name = "StrengthIcon"
+    icon.BackgroundTransparency = 1
+    icon.Size = UDim2.fromOffset(44, 44)
+    icon.Image = "rbxassetid://123326023432901"
+    icon.ScaleType = Enum.ScaleType.Fit
+    icon.Parent = billboard
+
+    local text = Instance.new("TextLabel")
+    text.Name = "StrengthText"
+    text.BackgroundTransparency = 1
+    text.Position = UDim2.fromOffset(50, 0)
+    text.Size = UDim2.new(1, -50, 1, 0)
+    text.Font = Enum.Font.GothamBlack
+    text.TextColor3 = Color3.new(1, 1, 1)
+    text.TextScaled = true
+    text.TextXAlignment = Enum.TextXAlignment.Left
+    text.AutoLocalize = false
+    text.Text = GameUtility.NumberToText(self._strengthStat.Value)
+    text.Parent = billboard
+
+    local stroke = Instance.new("UIStroke")
+    stroke.Color = Color3.new(0, 0, 0)
+    stroke.Thickness = 2
+    stroke.Parent = text
+
+    self._strengthBillboard = billboard
+    self._strengthText = text
+    billboard.Parent = head
+end
+
+--- 校验世界序号与历史最高等级后，把角色移动到配置落点并同步当前世界。
 --- @param index any 客户端请求的世界传送序号，从 1 开始。
 --- @return table 权威结果；失败时给出客户端提示 Key 与参数。
 function Component:HandleTransferWorld(index)
@@ -96,11 +182,11 @@ function Component:HandleTransferWorld(index)
         return {success = false, key = "Common.Unknown"}
     end
     local world = worldConfig[index]
-    if self:GetNumber(Fields.RebirthCount) < world.NeedRebirthCount then
+    if self:GetNumber(Fields.MaxTrainingLevel) < world.NeedTrainingLevel then
         return {
             success = false,
-            key = "World.RequiredRebirths",
-            arguments = {count = world.NeedRebirthCount},
+            key = "World.RequiredLevel",
+            arguments = {level = world.NeedTrainingLevel},
         }
     end
     local character = self:GetPlayerCharacter()
@@ -113,18 +199,24 @@ function Component:HandleTransferWorld(index)
     return {success = true, index = index}
 end
 
---- 将持久训练值派生为同步等级，并暴露原生玩家属性便于检查。
+--- 将持久训练值派生为同步等级，并同步排行榜、玩家属性与头顶力量。
 function Component:RefreshProgress()
     local count = self:GetNumber(Fields.RebirthCount)
     local value = math.min(self:GetNumber(Fields.RockTrainingValue), Rebirth.GetMaxTrainingValue(count))
     self:SetNumber(Fields.RockTrainingValue, value)
     local level, strength = RockLevel.GetProgress(value, Rebirth.GetRequiredLevel(count))
     self:SetNumber(Fields.RockTrainingLevel, level)
+    if level > self:GetNumber(Fields.MaxTrainingLevel) then
+        self:SetNumber(Fields.MaxTrainingLevel, level)
+    end
     local player = self:GetPlayerNode()
     player:SetAttribute("TrainingLevel", level)
     player:SetAttribute("Strength", strength)
     self._levelStat.Value = level
     self._strengthStat.Value = strength
+    if self._strengthText then
+        self._strengthText.Text = GameUtility.NumberToText(strength)
+    end
 end
 
 --- 重生结算后刷新派生等级，并清除上一轮尚未结算的训练收益。
@@ -236,10 +328,11 @@ function Component:TickTraining()
     self._hit = false
 end
 
---- 离服停止训练结算，避免继续读写离线玩家数据。
+--- 离服停止训练结算并清理头顶显示，避免继续持有旧角色。
 function Component:OnPlayerLogout()
     FX.Task:Cancel(self._timer)
     self._timer = nil
+    self:BindStrengthCharacter(nil)
 end
 
 --- 释放自身建立的等级和力量节点，保留其他系统拥有的排行榜目录。

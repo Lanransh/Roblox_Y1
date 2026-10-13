@@ -21,7 +21,7 @@ local function isFiniteNumber(value)
     return type(value) == "number" and value == value and value > -math.huge and value < math.huge
 end
 
---- 每个玩家独立持有预生成区域、命中凭据、轮次和掉落，血量由客户端维护。
+--- 每个玩家独立持有预生成区域、命中凭据、轮次和掉落，客户端预测血量由服务端校正。
 --- @param owner FSPlayerObjectClass 已加载的玩家对象。
 function Component:Ctor(owner)
     Component.Super.Ctor(self, owner)
@@ -288,10 +288,11 @@ function Component:SendRockRound()
     FX.Network:SendMsgToClient(self:GetPlayerId(), "S2C_RockReset", self._round, self:GetBrokenCells())
 end
 
---- 命中记录只保存服务端认可的等级与次数；内容预生成后血量仍由客户端维护。
+--- 命中记录只保存服务端认可的等级与次数，并回传累计减伤后的剩余血量。
 --- @param key string 客户端命中的石头格号。
 --- @param round number 客户端当前关卡轮次。
 --- @return boolean 是否认可本次命中，可用于回滚客户端预测。
+--- @return number? 认可命中后的服务端剩余血量，拒绝时不返回。
 function Component:RecordHit(key, round)
     if not self._areas or round ~= self._round or type(key) ~= "string" or #key > 40 then
         return false
@@ -343,9 +344,9 @@ function Component:RecordHit(key, round)
     if not self:InitializeArea(area) then
         return false
     end
-    -- 客户端等级复制稍晚时允许其继续补完本地表现，但已具备开奖资格的格子不再产生训练收益。
+    -- 等级复制延迟时直接校正为击破，已具备开奖资格的格子不再产生训练收益。
     if self:GetRecordedDamage(key, area) >= RockLevel.HP[area.Index] then
-        return true
+        return true, 0
     end
     local record = self._attackRecords[key]
     if not record then
@@ -354,7 +355,7 @@ function Component:RecordHit(key, round)
     end
     record.Hits[level] = (record.Hits[level] or 0) + 1
     self:PublishEvent("RockTrainingHit")
-    return true
+    return true, math.max(0, RockLevel.HP[area.Index] - self:GetRecordedDamage(key, area))
 end
 
 --- 根据命中时的服务端等级回算有效伤害，不接受客户端上报的血量或伤害。
@@ -516,7 +517,7 @@ function Component:CreateDrop(key, area, cell, result, round)
     end
     drop.Connection = prompt.Triggered:Connect(pickup)
     model.Parent = workspace
-    --- 弹起结束后进入往返漂浮并开放拾取，轮次变化会取消旧奖励任务。
+    --- 弹起结束后交给客户端播放待拾取表现，服务端保留固定拾取位置。
     drop.Task = task.spawn(function()
         local root = model.PrimaryPart
         drop.Tween = TweenService:Create(root, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
@@ -535,11 +536,10 @@ function Component:CreateDrop(key, area, cell, result, round)
         end
         drop.Task = nil
         drop.Tween:Destroy()
-        -- 沿用现有 1.3 秒往返漂浮节奏，幅度适配 Roblox stud 尺度。
-        drop.Tween = TweenService:Create(root,
-            TweenInfo.new(1.3, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut, -1, true),
-            {CFrame = drop.Landing + Vector3.new(0, 0.8, 0)})
-        drop.Tween:Play()
+        drop.Tween = nil
+        root.CFrame = drop.Landing
+        model:SetAttribute("DropRestPivot", model:GetPivot())
+        model:SetAttribute("DropVisualStartedAt", workspace:GetServerTimeNow())
         prompt.Enabled = true
     end)
 end

@@ -6,6 +6,7 @@ Welfare.Sources = {
     ["Welfare.TaskRule"] = "Progress and rewards reset daily at 00:00 UTC.",
     ["Welfare.InProgress"] = "In Progress",
     ["Welfare.Task.GetItem"] = "Collect {target:int} items",
+    ["Welfare.Task.GetDog"] = "Pick up {target:int} dogs",
     ["Welfare.Task.OnlineTime"] = "Play for {target:int} minutes",
     ["Welfare.Task.ForFriendPlay"] = "Play with {target:int} friends in the same server",
     ["Welfare.Title"] = "REWARDS",

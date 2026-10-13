@@ -4,7 +4,7 @@ local RunService = game:GetService("RunService")
 FXLoader:RequireFromParent(script, "Generated/CWeaponShopView")
 local Fields = _G.PlayerDataConfig
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
-local ShopReminder = FXLoader:RequireFromParent(script, "ShopReminder")
+local ShopAreas = FXLoader:RequireFromParent(script, "ShopAreas")
 local Component = FX.Class("CWeaponShopUICompClass", "CWeaponShopView")
 
 --- 只挂载业务子类，复用编辑器展示与交互。
@@ -37,8 +37,7 @@ function Component:OnReady()
     self:TrackConnection(self._localization.Changed:Connect(function()
         self:RefreshUI()
     end))
-    self._trigger = FXLoader:Workspace("PurpleHut/Trigger")
-    self._shopReminder = ShopReminder.New(self._trigger.Parent)
+    self._shopAreas = ShopAreas.New("PurpleHut", true)
     self:BindUIData()
     self._inside = false
     self._nextAreaCheck = 0
@@ -66,7 +65,7 @@ function Component:RefreshWeapon()
     self.State.owned = data.owned
     self.State.equippedId = tostring(data.equippedId)
     self.State.coins = self:GetNumber(Fields.Coins)
-    self._shopReminder:Refresh(self.Config.weapons, self.State)
+    self._shopAreas:Refresh(self.Config.weapons, self.State)
     self:RefreshUI()
 end
 
@@ -80,13 +79,8 @@ function Component:UpdateShopArea()
     end
     local root = character and character:FindFirstChild("HumanoidRootPart")
     local humanoid = character and character:FindFirstChildOfClass("Humanoid")
-    local inside = false
-    if root and humanoid and humanoid.Health > 0 and self._trigger:IsDescendantOf(workspace) then
-        local point = self._trigger.CFrame:PointToObjectSpace(root.Position)
-        local half = self._trigger.Size * 0.5
-        inside = math.abs(point.X) <= half.X and math.abs(point.Y) <= half.Y
-            and math.abs(point.Z) <= half.Z
-    end
+    local position = root and humanoid and humanoid.Health > 0 and root.Position or nil
+    local inside = self._shopAreas:IsInside(position)
     if inside == self._inside then
         return
     end
@@ -171,7 +165,7 @@ function Component:OnUIAction(action, payload)
             self.State.owned = result.data.owned
             self.State.equippedId = tostring(result.data.equippedId)
             self.State.coins = result.coins
-            self._shopReminder:Refresh(self.Config.weapons, self.State)
+            self._shopAreas:Refresh(self.Config.weapons, self.State)
         else
             self._commonUI:ShowLocalizedTips(ok and result.key or "Common.Unknown")
         end
@@ -181,8 +175,8 @@ end
 
 --- 取消请求并释放小屋提醒，父类释放列表、连接和数据订阅。
 function Component:Dtor()
-    if self._shopReminder then
-        self._shopReminder:Destroy()
+    if self._shopAreas then
+        self._shopAreas:Destroy()
     end
     if self._requestTask then
         task.cancel(self._requestTask)

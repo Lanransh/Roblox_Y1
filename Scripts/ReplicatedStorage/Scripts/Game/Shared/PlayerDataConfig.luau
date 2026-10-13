@@ -117,6 +117,14 @@ return {
         DefVal = 1,
         Sync = true,
     },
+    -- 历史最高训练等级用于世界解锁，重生不清零，持久保存并同步展示。
+    MaxTrainingLevel = {
+        Type = "number",
+        Key = "MaxTrainingLevel",
+        DefVal = 1,
+        KVTable = PlayerKVEnum.eStaticData,
+        Sync = true,
+    },
     -- 服务端校验的当前训练基地；0 表示场外或尚未解锁，不保存到 KV。
     TrainingFieldIndex = {
         Type = "number",

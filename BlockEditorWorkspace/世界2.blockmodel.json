@@ -113,12 +113,12 @@
             "back": "Studs"
           },
           "faceTextures": {
-            "top": "solid",
-            "bottom": "solid",
-            "left": "solid",
-            "right": "solid",
-            "front": "solid",
-            "back": "solid"
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
           }
         }
       }
@@ -164,12 +164,12 @@
             "back": "Studs"
           },
           "faceTextures": {
-            "top": "solid",
-            "bottom": "solid",
-            "left": "solid",
-            "right": "solid",
-            "front": "solid",
-            "back": "solid"
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
           }
         }
       }
@@ -215,12 +215,12 @@
             "back": "Studs"
           },
           "faceTextures": {
-            "top": "solid",
-            "bottom": "solid",
-            "left": "solid",
-            "right": "solid",
-            "front": "solid",
-            "back": "solid"
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
           }
         }
       }
@@ -266,12 +266,12 @@
             "back": "Studs"
           },
           "faceTextures": {
-            "top": "solid",
-            "bottom": "solid",
-            "left": "solid",
-            "right": "solid",
-            "front": "solid",
-            "back": "solid"
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
           }
         }
       }
@@ -317,12 +317,12 @@
             "back": "Studs"
           },
           "faceTextures": {
-            "top": "solid",
-            "bottom": "solid",
-            "left": "solid",
-            "right": "solid",
-            "front": "solid",
-            "back": "solid"
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
           }
         }
       }
@@ -368,12 +368,12 @@
             "back": "Studs"
           },
           "faceTextures": {
-            "top": "solid",
-            "bottom": "solid",
-            "left": "solid",
-            "right": "solid",
-            "front": "solid",
-            "back": "solid"
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
           }
         }
       }
@@ -419,12 +419,12 @@
             "back": "Studs"
           },
           "faceTextures": {
-            "top": "solid",
-            "bottom": "solid",
-            "left": "solid",
-            "right": "solid",
-            "front": "solid",
-            "back": "solid"
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
           }
         }
       }
@@ -470,12 +470,12 @@
             "back": "Studs"
           },
           "faceTextures": {
-            "top": "solid",
-            "bottom": "solid",
-            "left": "solid",
-            "right": "solid",
-            "front": "solid",
-            "back": "solid"
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
           }
         }
       }
@@ -521,12 +521,12 @@
             "back": "Studs"
           },
           "faceTextures": {
-            "top": "solid",
-            "bottom": "solid",
-            "left": "solid",
-            "right": "solid",
-            "front": "solid",
-            "back": "solid"
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
           }
         }
       }
@@ -572,12 +572,12 @@
             "back": "Studs"
           },
           "faceTextures": {
-            "top": "solid",
-            "bottom": "solid",
-            "left": "solid",
-            "right": "solid",
-            "front": "solid",
-            "back": "solid"
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
           }
         }
       }
@@ -623,12 +623,12 @@
             "back": "Studs"
           },
           "faceTextures": {
-            "top": "solid",
-            "bottom": "solid",
-            "left": "solid",
-            "right": "solid",
-            "front": "solid",
-            "back": "solid"
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
           }
         }
       }
@@ -674,12 +674,12 @@
             "back": "Studs"
           },
           "faceTextures": {
-            "top": "solid",
-            "bottom": "solid",
-            "left": "solid",
-            "right": "solid",
-            "front": "solid",
-            "back": "solid"
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
           }
         }
       }
@@ -725,12 +725,12 @@
             "back": "Studs"
           },
           "faceTextures": {
-            "top": "solid",
-            "bottom": "solid",
-            "left": "solid",
-            "right": "solid",
-            "front": "solid",
-            "back": "solid"
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
           }
         }
       }
@@ -2745,12 +2745,12 @@
             "back": "Studs"
           },
           "faceTextures": {
-            "top": "solid",
-            "bottom": "solid",
-            "left": "solid",
-            "right": "solid",
-            "front": "solid",
-            "back": "solid"
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
           }
         }
       }
@@ -2796,12 +2796,12 @@
             "back": "Studs"
           },
           "faceTextures": {
-            "top": "solid",
-            "bottom": "solid",
-            "left": "solid",
-            "right": "solid",
-            "front": "solid",
-            "back": "solid"
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
           }
         }
       }
@@ -2847,12 +2847,12 @@
             "back": "Studs"
           },
           "faceTextures": {
-            "top": "solid",
-            "bottom": "solid",
-            "left": "solid",
-            "right": "solid",
-            "front": "solid",
-            "back": "solid"
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
           }
         }
       }
@@ -2921,12 +2921,12 @@
             "back": "Studs"
           },
           "faceTextures": {
-            "top": "solid",
-            "bottom": "solid",
-            "left": "solid",
-            "right": "solid",
-            "front": "solid",
-            "back": "solid"
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
           }
         }
       }
@@ -2995,12 +2995,12 @@
             "back": "Studs"
           },
           "faceTextures": {
-            "top": "solid",
-            "bottom": "solid",
-            "left": "solid",
-            "right": "solid",
-            "front": "solid",
-            "back": "solid"
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
           }
         }
       }
@@ -3069,12 +3069,12 @@
             "back": "Studs"
           },
           "faceTextures": {
-            "top": "solid",
-            "bottom": "solid",
-            "left": "solid",
-            "right": "solid",
-            "front": "solid",
-            "back": "solid"
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
           }
         }
       }
@@ -10108,12 +10108,12 @@
             "back": "Studs"
           },
           "faceTextures": {
-            "top": "solid",
-            "bottom": "solid",
-            "left": "solid",
-            "right": "solid",
-            "front": "solid",
-            "back": "solid"
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
           }
         }
       }
@@ -10182,12 +10182,12 @@
             "back": "Studs"
           },
           "faceTextures": {
-            "top": "solid",
-            "bottom": "solid",
-            "left": "solid",
-            "right": "solid",
-            "front": "solid",
-            "back": "solid"
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
           }
         }
       }
@@ -10256,12 +10256,12 @@
             "back": "Studs"
           },
           "faceTextures": {
-            "top": "solid",
-            "bottom": "solid",
-            "left": "solid",
-            "right": "solid",
-            "front": "solid",
-            "back": "solid"
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
           }
         }
       }
@@ -10330,12 +10330,12 @@
             "back": "Studs"
           },
           "faceTextures": {
-            "top": "solid",
-            "bottom": "solid",
-            "left": "solid",
-            "right": "solid",
-            "front": "solid",
-            "back": "solid"
+            "top": "checker",
+            "bottom": "checker",
+            "left": "checker",
+            "right": "checker",
+            "front": "checker",
+            "back": "checker"
           }
         }
       }
@@ -99121,6 +99121,87 @@
         "kind": "project",
         "projectGuid": "0651cb79-fa93-41c2-a639-4e7be4b40dc9"
       }
+    },
+    {
+      "id": "prefab-node-01da93a6-94c6-4f14-828f-23d79f859b20",
+      "name": "排行榜1",
+      "parentId": "transform-7",
+      "type": "PrefabReference",
+      "transform": {
+        "position": [
+          -11,
+          -0.5,
+          -27
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          0.6,
+          0.6,
+          0.6
+        ]
+      },
+      "target": {
+        "kind": "project",
+        "projectGuid": "e24287fe-3042-4a6b-8333-80364f4ac65d"
+      }
+    },
+    {
+      "id": "prefab-node-98b8d2d5-a7e2-408c-950a-0b9ea8d5742a",
+      "name": "排行榜2",
+      "parentId": "transform-7",
+      "type": "PrefabReference",
+      "transform": {
+        "position": [
+          0,
+          -0.5,
+          -27
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          0.6,
+          0.6,
+          0.6
+        ]
+      },
+      "target": {
+        "kind": "project",
+        "projectGuid": "e24287fe-3042-4a6b-8333-80364f4ac65d"
+      }
+    },
+    {
+      "id": "prefab-node-db04ed14-bbde-4ae2-87b2-1cfe116546f4",
+      "name": "排行榜3",
+      "parentId": "transform-7",
+      "type": "PrefabReference",
+      "transform": {
+        "position": [
+          11,
+          -0.5,
+          -27
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          0.6,
+          0.6,
+          0.6
+        ]
+      },
+      "target": {
+        "kind": "project",
+        "projectGuid": "e24287fe-3042-4a6b-8333-80364f4ac65d"
+      }
     }
   ],
   "prefabFolders": [],
@@ -99153,6 +99234,10 @@
     {
       "projectGuid": "0651cb79-fa93-41c2-a639-4e7be4b40dc9",
       "name": "世界2训练基地4"
+    },
+    {
+      "projectGuid": "e24287fe-3042-4a6b-8333-80364f4ac65d",
+      "name": "橙木空白排行榜"
     }
   ]
 }

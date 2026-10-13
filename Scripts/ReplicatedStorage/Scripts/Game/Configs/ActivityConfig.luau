@@ -3,8 +3,8 @@ return {
         [1] = {
             Index = 1,
             Type = [[GetItem]],
-            Name = [[Collect Items]],
-            Desc = [[Collect 50 items]],
+            Name = [[Pick up an item]],
+            Desc = [[Pick up 50 items]],
             Target = 50,
             Rewards = {
                 [1] = {
@@ -16,8 +16,8 @@ return {
         [2] = {
             Index = 2,
             Type = [[GetItem]],
-            Name = [[Collect Items]],
-            Desc = [[Collect 80 items]],
+            Name = [[Pick up an item]],
+            Desc = [[Pick up 80 items]],
             Target = 80,
             Rewards = {
                 [1] = {
@@ -30,8 +30,8 @@ return {
         [3] = {
             Index = 3,
             Type = [[OnlineTime]],
-            Name = [[Play for 30 Minutes]],
-            Desc = [[Play for 30 minutes]],
+            Name = [[Stay online for 30 minutes]],
+            Desc = [[Stay online for 30 minutes]],
             Target = 30,
             Rewards = {
                 [1] = {
@@ -42,9 +42,22 @@ return {
         },
         [4] = {
             Index = 4,
+            Type = [[GetDog]],
+            Name = [[Pick up a dog]],
+            Desc = [[Pick up 10 dogs]],
+            Target = 10,
+            Rewards = {
+                [1] = {
+                    Type = [[Gem]],
+                    Count = 3
+                },
+            }
+        },
+        [5] = {
+            Index = 5,
             Type = [[ForFriendPlay]],
-            Name = [[Play with Friends]],
-            Desc = [[Play with 2 friends in the same server]],
+            Name = [[Be in the same room as a friend]],
+            Desc = [[Be in the same room as 2 friends]],
             Target = 2,
             Rewards = {
                 [1] = {

@@ -32,6 +32,7 @@ function Component:Ctor(owner)
     self._nextAttackCheck = 0
     self._pendingHits = {}
     self._nextDropTimerCheck = 0
+    self._dropVisuals = {}
 end
 
 --- 返回项目关卡组件协作名称。
@@ -118,6 +119,7 @@ function Component:OnReady()
     FX.Network:SendMsgToServer("C2S_RequestRockRound")
     self:TrackConnection(RunService.Heartbeat:Connect(function()
         self:UpdateDropTimers()
+        self:UpdateDropVisuals()
         self:UpdateVisuals()
     end))
 end
@@ -133,6 +135,9 @@ function Component:UpdateDropTimers()
         local expiresAt = model:GetAttribute("DropExpiresAt")
         if model:IsA("Model") and model:GetAttribute("DropId") and type(expiresAt) == "number" then
             local root = model.PrimaryPart
+            if root and now < expiresAt and not self._dropVisuals[model] then
+                self:RegisterDropVisual(model)
+            end
             local hud = root and root:FindFirstChild("ItemHUD")
             local timer = hud and FXLoader:Find(hud, "Frame/Timer")
             local nameLabel = hud and FXLoader:Find(hud, "Frame/ItemName")
@@ -155,6 +160,95 @@ function Component:UpdateDropTimers()
             end
         end
     end
+end
+
+--- 复制齐全且弹出结束后，以固定落点注册放射光环和客户端动画。
+--- @param model Model 服务端创建的场景战利品。
+function Component:RegisterDropVisual(model)
+    local rest = model:GetAttribute("DropRestPivot")
+    local startedAt = model:GetAttribute("DropVisualStartedAt")
+    if typeof(rest) ~= "CFrame" or type(startedAt) ~= "number" then
+        return
+    end
+    local root = model.PrimaryPart
+    local box, size = model:GetBoundingBox()
+    local centerOffset = model:GetPivot():ToObjectSpace(box)
+    local anchor = Instance.new("Attachment")
+    anchor.Name = "DropGlowAnchor"
+    anchor.Position = root.CFrame:PointToObjectSpace(box.Position)
+    anchor.Parent = root
+    local glow = Instance.new("BillboardGui")
+    glow.Name = "DropGlow"
+    glow.Adornee = anchor
+    local diameter = math.max(size.X, size.Y, size.Z) * 1.65
+    glow.Size = UDim2.fromScale(diameter, diameter)
+    glow.AlwaysOnTop = false
+    glow.LightInfluence = 0
+    glow.MaxDistance = 120
+    local rays = Instance.new("Frame")
+    rays.Name = "Rays"
+    rays.AnchorPoint = Vector2.new(0.5, 0.5)
+    rays.Position = UDim2.fromScale(0.5, 0.5)
+    rays.Size = UDim2.fromScale(1, 1)
+    rays.BackgroundTransparency = 1
+    rays.Parent = glow
+    for index = 1, 12 do
+        local angle = (index - 1) * math.pi / 6
+        local ray = Instance.new("Frame")
+        ray.Name = "Ray" .. index
+        ray.AnchorPoint = Vector2.new(0.5, 0.5)
+        ray.Position = UDim2.fromScale(0.5 + math.cos(angle) * 0.34, 0.5 + math.sin(angle) * 0.34)
+        ray.Size = UDim2.fromScale(0.32, 0.055)
+        ray.Rotation = math.deg(angle)
+        ray.BackgroundColor3 = Color3.fromRGB(255, 243, 196)
+        ray.BorderSizePixel = 0
+        local gradient = Instance.new("UIGradient")
+        gradient.Transparency = NumberSequence.new({
+            NumberSequenceKeypoint.new(0, 0.85),
+            NumberSequenceKeypoint.new(0.25, 0.55),
+            NumberSequenceKeypoint.new(0.6, 0.7),
+            NumberSequenceKeypoint.new(1, 1),
+        })
+        gradient.Parent = ray
+        ray.Parent = rays
+    end
+    glow.Parent = root
+    self._dropVisuals[model] = {
+        Center = rest * centerOffset, PivotOffset = centerOffset:Inverse(),
+        Rest = rest, StartedAt = startedAt, Anchor = anchor, Glow = glow, Rays = rays,
+    }
+end
+
+--- 从固定基准合成自转和漂浮；注销过期或流出场景的模型，避免残留光环。
+function Component:UpdateDropVisuals()
+    local now = workspace:GetServerTimeNow()
+    for model, visual in pairs(self._dropVisuals) do
+        local expiresAt = model:GetAttribute("DropExpiresAt")
+        if not model:IsDescendantOf(workspace) or not model.PrimaryPart
+            or type(expiresAt) ~= "number" or now >= expiresAt then
+            self:RemoveDropVisual(model)
+        else
+            local elapsed = math.max(0, now - visual.StartedAt)
+            -- 从落点起步，完整行程为 0.3 stud，最低点不会低于原落点。
+            local height = 0.15 * (1 - math.cos(elapsed * math.pi * 2 / 2.6))
+            local center = visual.Center
+            model:PivotTo(CFrame.new(center.Position + Vector3.new(0, height, 0))
+                * CFrame.Angles(0, elapsed * math.rad(45), 0) * center.Rotation * visual.PivotOffset)
+            visual.Rays.Rotation = elapsed * 15
+        end
+    end
+end
+
+--- 仅释放本组件创建的光环，并恢复仍存在的权威落点姿态。
+--- @param model Model 已注册的战利品模型。
+function Component:RemoveDropVisual(model)
+    local visual = self._dropVisuals[model]
+    visual.Glow:Destroy()
+    visual.Anchor:Destroy()
+    if model:IsDescendantOf(workspace) and model.PrimaryPart then
+        model:PivotTo(visual.Rest)
+    end
+    self._dropVisuals[model] = nil
 end
 
 --- 新轮时清除旧命中；同轮快照只补已击破格号，保留未击破石头的本地血量。
@@ -183,11 +277,12 @@ function Component:ResetRound(round, brokenCells)
     self:ResetVisuals()
 end
 
---- 普通命中失败时回滚预测；致命命中认可后才隐藏石头并播放击碎，避免拒绝后反复闪烁。
+--- 命中失败时回滚预测；认可后使用服务端血量决定击碎，避免等级复制延迟造成提前或延后开奖。
 --- @param key string 本次命中的格号。
 --- @param round number 本次命中所属轮次。
 --- @param accepted boolean 是否通过服务端位置、装备及频率校验。
-function Component:OnHitResult(key, round, accepted)
+--- @param health number? 认可命中后的服务端剩余血量，拒绝时为空。
+function Component:OnHitResult(key, round, accepted, health)
     local pending = self._pendingHits[key]
     if not pending or round ~= self._round or pending.Round ~= round then
         return
@@ -202,8 +297,8 @@ function Component:OnHitResult(key, round, accepted)
             self:ResetVisuals()
         end
     else
-        self._health[key] = pending.Value
-        if pending.Value == 0 then
+        self._health[key] = health
+        if health == 0 then
             for index, chunk in ipairs(self._chunks) do
                 local rock = chunk.Rocks and chunk.Rocks[key]
                 if rock then
@@ -1017,8 +1112,11 @@ function Component:ResetVisuals()
     end
 end
 
---- 释放秒杀气场、场景及对象池并恢复攀爬设置，基类负责断开监听。
+--- 释放掉落光环、秒杀气场、场景及对象池并恢复攀爬设置，基类负责断开监听。
 function Component:Dtor()
+    for model, visual in pairs(self._dropVisuals) do
+        self:RemoveDropVisual(model)
+    end
     FX.Network:UnRegServerMsgCallback("S2C_RockReset")
     FX.Network:UnRegServerMsgCallback("S2C_RockHitResult")
     self:StopSwing()

@@ -8,6 +8,7 @@ local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local CollectibleText = FXLoader:RequireShared("Scripts/Game/Shared/CollectibleText")
 local Rebirth = FXLoader:RequireShared("Scripts/Game/Shared/Rebirth")
 local RockLevel = FXLoader:RequireShared("Scripts/Game/Shared/RockLevel")
+local ShopAreas = FXLoader:RequireFromParent(script, "ShopAreas")
 local Component = FX.Class("CLootSellUICompClass", "CLootSellView")
 
 --- 出售区域通过业务组件打开正式库存出售窗口。
@@ -52,7 +53,7 @@ function Component:OnReady()
         self:RefreshLoot()
     end))
     self:BindUIData()
-    self._sellTrigger = FXLoader:Workspace("Shop/Trigger")
+    self._shopAreas = ShopAreas.New("Shop", false)
     self._inSellArea = false
     self._nextSellAreaCheck = 0
     --- 只检测本地角色位置，每 0.1 秒检查一次；显隐仅在进出边沿改变。
@@ -77,13 +78,8 @@ function Component:UpdateSellArea()
     end
     local root = character and character:FindFirstChild("HumanoidRootPart")
     local humanoid = character and character:FindFirstChildOfClass("Humanoid")
-    local inside = false
-    if root and humanoid and humanoid.Health > 0 and self._sellTrigger:IsDescendantOf(workspace) then
-        local point = self._sellTrigger.CFrame:PointToObjectSpace(root.Position)
-        local half = self._sellTrigger.Size * 0.5
-        inside = math.abs(point.X) <= half.X and math.abs(point.Y) <= half.Y
-            and math.abs(point.Z) <= half.Z
-    end
+    local position = root and humanoid and humanoid.Health > 0 and root.Position or nil
+    local inside = self._shopAreas:IsInside(position)
     if inside == self._inSellArea then
         return
     end
@@ -204,6 +200,9 @@ end
 
 --- 释放尚未返回的 RPC 任务，父类清理列表克隆与按钮、数据监听。
 function Component:Dtor()
+    if self._shopAreas then
+        self._shopAreas:Destroy()
+    end
     if self._sellTask then
         task.cancel(self._sellTask)
         self._sellTask = nil

@@ -21,6 +21,13 @@ function CSoundCompClass:Ctor(owner)
     self:WatchDataChanged(Fields.RockTrainingLevel, self.OnTrainingLevelChanged, self)
     self:WatchDataChanged(Fields.Coins, self.OnCoinsChanged, self)
     self:WatchDataChanged(Fields.RockLoot, self.OnRockLootChanged, self)
+    FX.Network:RegServerMsgCallback("S2C_DogPickedUp", self.PlayPickupItemSound, self)
+end
+
+--- 释放小狗拾取通知，再由声音基类释放音乐和短音效池。
+function CSoundCompClass:Dtor()
+    FX.Network:UnRegServerMsgCallback("S2C_DogPickedUp")
+    CSoundCompClass.Super.Dtor(self)
 end
 
 --- 提供业务声音入口，复用框架的播放与生命周期管理。

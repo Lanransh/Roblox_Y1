@@ -114,6 +114,15 @@ function Component:RecordPickup()
     self:PublishState()
 end
 
+--- 小狗拾取单独累计 GetDog，不计入普通道具 GetItem；跨日重置后再记录。
+function Component:RecordDogPickup()
+    self:UpdateTime(os.time())
+    local data = self:GetTable(Fields.WelfareData)
+    data.taskProgress.GetDog = (data.taskProgress.GetDog or 0) + 1
+    self:SetTable(Fields.WelfareData, data)
+    self:PublishState()
+end
+
 --- 平台好友查询允许 yield；按本次同服快照累计不同好友，每位好友每天只计一次。
 function Component:CheckFriends()
     if self._friendTask then

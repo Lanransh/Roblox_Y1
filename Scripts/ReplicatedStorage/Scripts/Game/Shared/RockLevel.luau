@@ -61,7 +61,7 @@ function RockLevel.GetProgress(value, maxLevel)
         value - thresholds[level], RockLevel.GetNextExperience(level)
 end
 
---- 从 stageCurves 读取推荐等级，保留等级差减伤规则。
+--- 沿用 Studio_Y3 等级差减伤：低于推荐等级每级减伤 7%，差 15 级起伤害为零；升级后重算，无计时惩罚。
 --- @param level number 玩家训练等级。
 --- @param index number 世界 1 的关卡序号。
 --- @return number 单次击打伤害。
