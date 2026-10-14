@@ -7,6 +7,14 @@ local GiftDrop = {}
 
 --- 注册个人礼盒通知；生成表现与领取请求分离，客户端不能自行签发奖励资格。
 function GiftDrop.Init()
+    local handles = {}
+    --- 跨日释放旧礼盒，移除已经失效的领取资格。
+    FX.Network:RegServerMsgCallback("S2C_ClearGiftDrops", function()
+        for dropId, handle in pairs(handles) do
+            handle:Destroy()
+        end
+        table.clear(handles)
+    end)
     --- 接收服务端签发的礼盒，开盒时只提交该礼盒 ID。
     --- @param dropId string 本人礼盒的服务端唯一 ID。
     --- @param options table 服务端确定的落点、高度与降落时长。
@@ -14,8 +22,12 @@ function GiftDrop.Init()
         --- 将本地交互结果提交给服务端，不在客户端改写余额。
         --- @param player Player 本地开盒玩家，身份由网络层认证。
         --- @return boolean 服务端是否已成功发奖。
-        GiftDrop.Spawn(options, function(player)
-            return FX.Network:InvokeServer("C2S_OpenGiftDrop", dropId)
+        handles[dropId] = GiftDrop.Spawn(options, function(player)
+            local accepted = FX.Network:InvokeServer("C2S_OpenGiftDrop", dropId)
+            if accepted then
+                handles[dropId] = nil
+            end
+            return accepted
         end)
     end)
 end

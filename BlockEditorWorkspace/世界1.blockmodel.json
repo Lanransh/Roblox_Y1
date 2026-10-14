@@ -28482,6 +28482,424 @@
         "kind": "project",
         "projectGuid": "e24287fe-3042-4a6b-8333-80364f4ac65d"
       }
+    },
+    {
+      "id": "ai-node-506",
+      "name": "排行榜空白标题牌",
+      "parentId": "ai-node-29",
+      "type": "Group",
+      "transform": {
+        "position": [
+          0,
+          8.55,
+          -29.48
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          0.6,
+          0.6,
+          0.6
+        ]
+      }
+    },
+    {
+      "id": "ai-node-507",
+      "name": "深棕木底板",
+      "parentId": "ai-node-506",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          0,
+          -0.1
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          29.12,
+          5.12,
+          0.6
+        ],
+        "color": "#503526",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          },
+          "faceTextures": {
+            "top": "solid",
+            "bottom": "solid",
+            "left": "solid",
+            "right": "solid",
+            "front": "solid",
+            "back": "checker"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-543",
+      "name": "上木框",
+      "parentId": "ai-node-506",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          2.78,
+          0.1
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          30,
+          0.44,
+          0.6
+        ],
+        "color": "#b58958",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-544",
+      "name": "下木框",
+      "parentId": "ai-node-506",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          0,
+          -2.78,
+          0.1
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          30,
+          0.44,
+          0.6
+        ],
+        "color": "#b58958",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-549",
+      "name": "侧木框-14_78",
+      "parentId": "ai-node-506",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -14.78,
+          0,
+          0.1
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.44,
+          5.12,
+          0.6
+        ],
+        "color": "#b58958",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-550",
+      "name": "侧木框14_78",
+      "parentId": "ai-node-506",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          14.78,
+          0,
+          0.1
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.44,
+          5.12,
+          0.6
+        ],
+        "color": "#b58958",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-551",
+      "name": "方铆钉-14_76_-2_76",
+      "parentId": "ai-node-506",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -14.76,
+          -2.76,
+          0.44
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.28,
+          0.28,
+          0.12
+        ],
+        "color": "#30281f",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-552",
+      "name": "方铆钉-14_76_2_76",
+      "parentId": "ai-node-506",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -14.76,
+          2.76,
+          0.44
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.28,
+          0.28,
+          0.12
+        ],
+        "color": "#30281f",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-553",
+      "name": "方铆钉14_76_-2_76",
+      "parentId": "ai-node-506",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          14.76,
+          -2.76,
+          0.44
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.28,
+          0.28,
+          0.12
+        ],
+        "color": "#30281f",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-554",
+      "name": "方铆钉14_76_2_76",
+      "parentId": "ai-node-506",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          14.76,
+          2.76,
+          0.44
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          0.28,
+          0.28,
+          0.12
+        ],
+        "color": "#30281f",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          }
+        }
+      }
     }
   ],
   "prefabFolders": [],

@@ -42,6 +42,11 @@ return {
         },
         LoginData = {
             GemCount = 5
+        },
+        GiftData = {
+            Gem = 5,
+            Count = 5,
+            Time = 10
         }
     },
     TrainingFieldData = {

@@ -1004,7 +1004,36 @@ function Component:UpdateClimbing(character, position)
     end
 end
 
---- 每 0.1 秒检查分块和攀爬，每帧最多生成 6 块石头；气场由身体节点随角色移动。
+--- 公共小狗仅在本客户端按距离隐藏，保留服务端模型与其他玩家的拾取资格。
+--- @param position Vector3? 当前角色位置；为空时在组件销毁前恢复显示。
+function Component:UpdateDogVisibility(position)
+    local decorations = workspace:FindFirstChild("Decorations")
+    local dogs = decorations and decorations:FindFirstChild("DogNpcs")
+    if not dogs then
+        return
+    end
+    for dogIndex, dog in ipairs(dogs:GetChildren()) do
+        if dog:IsA("Model") then
+            local visible = not position or (dog:GetPivot().Position - position).Magnitude <= RockLevel.HideDistance
+            for nodeIndex, node in ipairs(dog:GetDescendants()) do
+                if node:IsA("BasePart") then
+                    node.LocalTransparencyModifier = visible and 0 or 1
+                elseif node:IsA("Highlight") then
+                    node.Enabled = visible
+                elseif node:IsA("ParticleEmitter") then
+                    if node.Enabled ~= visible then
+                        node.Enabled = visible
+                        if not visible then
+                            node:Clear()
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+--- 每 0.1 秒检查分块、攀爬和小狗显隐，每帧最多生成 6 块石头；气场由身体节点随角色移动。
 function Component:UpdateVisuals()
     self:UpdateFragments()
     self:UpdateAttacks()
@@ -1018,6 +1047,7 @@ function Component:UpdateVisuals()
     if now >= self._nextChunkCheck then
         self._nextChunkCheck = now + 0.1
         self:UpdateClimbing(character, position)
+        self:UpdateDogVisibility(position)
         self._refreshRocks = true
         local candidate, nearest = nil, math.huge
         for index = 1, #self._chunks do
@@ -1112,8 +1142,9 @@ function Component:ResetVisuals()
     end
 end
 
---- 释放掉落光环、秒杀气场、场景及对象池并恢复攀爬设置，基类负责断开监听。
+--- 释放掉落光环、秒杀气场、场景及对象池并恢复攀爬和小狗显示，基类负责断开监听。
 function Component:Dtor()
+    self:UpdateDogVisibility(nil)
     for model, visual in pairs(self._dropVisuals) do
         self:RemoveDropVisual(model)
     end

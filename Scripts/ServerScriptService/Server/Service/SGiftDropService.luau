@@ -1,29 +1,57 @@
--- 个人礼盒资格与固定金币结算；场景模型和圣光仍由接收者客户端生成。
+-- 每日个人礼盒在线计时与钻石结算；场景模型和圣光仍由接收者客户端生成。
 local Players = game:GetService("Players")
 local HttpService = game:GetService("HttpService")
 local FX, FS = _G.FX, _G.FS
 local Service = {}
 local drops = {}
 local startupTasks = {}
-local REWARD = 100
+local lastTimes = {}
+local Fields = _G.PlayerDataConfig
+local Config = _G.GameConfig.CommonConfig.GiftData
 -- 开局个人礼盒参数；落点取玩家出生位置附近的实际地面。
 local STARTUP_HEIGHT = 60
 local STARTUP_DURATION = 5
 local STARTUP_OFFSET = Vector3.new(6, 0, 0)
 
---- 注册一次领取协议；只认可服务端签发给当前玩家且已经落地的礼盒。
+--- 累计在线时间并清理跨日礼盒，未领取档位在重进时重新生成。
+--- @param playerObject table 当前登录会话的玩家对象。
+--- @param now number 服务端 Unix 时间戳。
+--- @return table 今日礼盒存档。
+function Service.UpdateTime(playerObject, now)
+    local userId = playerObject:GetPlayerId()
+    local data = playerObject:GetTable(Fields.GiftData)
+    local day = math.floor(now / 86400)
+    local previous = lastTimes[userId] or now
+    if data.day ~= day then
+        data.day = day
+        data.onlineSeconds = 0
+        data.claimed = {}
+        previous = math.max(previous, day * 86400)
+        drops[userId] = {}
+        FX.Network:SendMsgToClient(userId, "S2C_ClearGiftDrops")
+    end
+    data.onlineSeconds = math.min(Config.Time * Config.Count,
+        data.onlineSeconds + math.max(0, now - previous))
+    lastTimes[userId] = now
+    playerObject:SetTable(Fields.GiftData, data)
+    return data
+end
+
+--- 注册每日计时和一次领取协议；只认可服务端签发且已经落地的礼盒。
 function Service.Init()
-    --- 玩家存档与客户端握手就绪后，等待首个角色出现；重生不再次触发就绪事件。
+    --- 玩家握手就绪后累计在线时间，存活且有地面时恢复或生成到期档位。
     --- @param userId number 框架已完成登录的玩家 ID。
     FS.Events.OnPlayerReady.Event:Connect(function(userId)
         local player = Players:GetPlayerByUserId(userId)
         local playerObject = _G.SPlayerObjectManager:GetPlayerObject(userId)
+        lastTimes[userId] = os.time()
         startupTasks[userId] = task.defer(function()
             while player and player.Parent == Players
                 and _G.SPlayerObjectManager:GetPlayerObject(userId) == playerObject do
                 local character = player.Character
                 local root = character and character:FindFirstChild("HumanoidRootPart")
                 local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+                local data = Service.UpdateTime(playerObject, os.time())
                 if root and humanoid and humanoid.Health > 0 then
                     local params = RaycastParams.new()
                     params.FilterType = Enum.RaycastFilterType.Exclude
@@ -31,22 +59,32 @@ function Service.Init()
                     local origin = root.Position + STARTUP_OFFSET + Vector3.new(0, 8, 0)
                     local hit = workspace:Raycast(origin, Vector3.new(0, -64, 0), params)
                     if hit then
-                        Service.Spawn(player, {
-                            Position = hit.Position,
-                            Height = STARTUP_HEIGHT,
-                            Duration = STARTUP_DURATION,
-                        })
-                    else
-                        warn("Startup gift has no ground near player " .. userId)
+                        local active = {}
+                        for dropId, drop in pairs(drops[userId] or {}) do
+                            if drop.Index then
+                                active[drop.Index] = true
+                            end
+                        end
+                        local due = math.min(Config.Count, math.floor(data.onlineSeconds / Config.Time))
+                        for index = 1, due do
+                            if not data.claimed[tostring(index)] and not active[index] then
+                                local dropId = Service.Spawn(player, {
+                                    Position = hit.Position,
+                                    Height = STARTUP_HEIGHT,
+                                    Duration = STARTUP_DURATION,
+                                })
+                                drops[userId][dropId].Index = index
+                                drops[userId][dropId].Day = data.day
+                            end
+                        end
                     end
-                    break
                 end
-                task.wait(0.1)
+                task.wait(1)
             end
             startupTasks[userId] = nil
         end)
     end)
-    --- 校验身份、资格、落地时间及近身位置，先注销礼盒再加钱，阻止重复结算。
+    --- 校验身份、每日档位、落地及距离，先注销礼盒再发钻石，阻止重复结算。
     --- @param userId number 网络层认证的玩家 ID。
     --- @param dropId any 客户端请求的礼盒 ID，不接受金额或坐标。
     --- @return boolean 本次礼盒是否成功发奖。
@@ -67,13 +105,19 @@ function Service.Init()
             return false
         end
         owned[dropId] = nil
+        local data = Service.UpdateTime(playerObject, os.time())
+        if drop.Day ~= data.day or not drop.Index or data.claimed[tostring(drop.Index)] then
+            return false
+        end
         if not playerObject:RequireComponent("FSRewardComp"):AddRewards({
-            {Type = "Money", Currency = "Money", Count = REWARD},
+            {Type = "Money", Currency = "Diamonds", Count = Config.Gem},
         }) then
             owned[dropId] = drop
             return false
         end
-        FX.Network:SendMsgToClient(userId, "S2C_GiftDropOpened", REWARD)
+        data.claimed[tostring(drop.Index)] = true
+        playerObject:SetTable(Fields.GiftData, data)
+        FX.Network:SendMsgToClient(userId, "S2C_GiftDropOpened", Config.Gem, "Diamonds")
         return true
     end)
     --- 离服即释放该会话的全部未领取礼盒，不把旧资格带入新会话。
@@ -85,6 +129,7 @@ function Service.Init()
             startupTasks[player.UserId] = nil
         end
         drops[player.UserId] = nil
+        lastTimes[player.UserId] = nil
     end)
 end
 

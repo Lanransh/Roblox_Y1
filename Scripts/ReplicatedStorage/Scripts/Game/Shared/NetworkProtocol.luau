@@ -2,7 +2,7 @@
 -- 框架已有的 Ready、玩家数据和服务器数据同步协议继续由 FrameworkInit 声明。
 return {
     ClientMsgID = {
-        -- dropId: string，RPC 返回 boolean；校验个人礼盒资格、落地时间与距离，固定发放 100 金币并去重。
+        -- dropId: string，RPC 返回 boolean；校验今日个人档位、落地与距离，按 GiftData 发钻石并去重。
         "C2S_OpenGiftDrop",
         -- goodsId: number，服务端校验钻石余额与下一档；返回 success、key、data。
         "C2S_BuyCurrencyShopGoods",
@@ -44,9 +44,11 @@ return {
         "C2S_TrainingClick",
     },
     ServerMsgID = {
+        -- 无参数，UTC 跨日清理上一日的客户端礼盒。
+        "S2C_ClearGiftDrops",
         -- dropId: string、options: {Position: Vector3, Height: number, Duration: number}，个人客户端生成礼盒表现。
         "S2C_SpawnGiftDrop",
-        -- amount: number，服务端实际到账金币；客户端复用拾取奖励 UI。
+        -- amount: number、currency: string，实际到账奖励；客户端复用拾取奖励 UI。
         "S2C_GiftDropOpened",
         -- 无参数；服务端确认公共小狗拾取成功后，仅通知拾取者播放现有拾取音效。
         "S2C_DogPickedUp",

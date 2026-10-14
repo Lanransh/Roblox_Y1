@@ -57,7 +57,7 @@
       "transform": {
         "position": [
           0,
-          0.4,
+          0.5,
           0
         ],
         "rotation": [
@@ -74,12 +74,30 @@
       "geometry": {
         "type": "Box",
         "size": [
-          24,
-          0.8,
-          24
+          22,
+          1,
+          21
         ],
-        "color": "#786b51",
-        "texturePattern": "solid"
+        "color": "#302b3c",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          },
+          "faceTextures": {
+            "top": "solid",
+            "bottom": "solid",
+            "left": "solid",
+            "right": "solid",
+            "front": "solid",
+            "back": "solid"
+          }
+        }
       }
     },
     {
@@ -90,7 +108,7 @@
       "transform": {
         "position": [
           0,
-          0.975,
+          1.125,
           0
         ],
         "rotation": [
@@ -107,12 +125,30 @@
       "geometry": {
         "type": "Box",
         "size": [
-          22.4,
-          0.35,
-          22.4
+          20.4,
+          0.25,
+          19.4
         ],
-        "color": "#dccba2",
-        "texturePattern": "solid"
+        "color": "#51495e",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          },
+          "faceTextures": {
+            "top": "solid",
+            "bottom": "solid",
+            "left": "solid",
+            "right": "solid",
+            "front": "solid",
+            "back": "solid"
+          }
+        }
       }
     },
     {
@@ -123,8 +159,8 @@
       "transform": {
         "position": [
           0,
-          0.975,
-          -11.6
+          1.125,
+          -10.1
         ],
         "rotation": [
           0,
@@ -140,12 +176,30 @@
       "geometry": {
         "type": "Box",
         "size": [
-          24,
-          0.35,
+          22,
+          0.25,
           0.8
         ],
-        "color": "#bda16c",
-        "texturePattern": "solid"
+        "color": "#3b3449",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          },
+          "faceTextures": {
+            "top": "solid",
+            "bottom": "solid",
+            "left": "solid",
+            "right": "solid",
+            "front": "solid",
+            "back": "solid"
+          }
+        }
       }
     },
     {
@@ -156,8 +210,8 @@
       "transform": {
         "position": [
           0,
-          0.975,
-          11.6
+          1.125,
+          10.1
         ],
         "rotation": [
           0,
@@ -173,12 +227,30 @@
       "geometry": {
         "type": "Box",
         "size": [
-          24,
-          0.35,
+          22,
+          0.25,
           0.8
         ],
-        "color": "#bda16c",
-        "texturePattern": "solid"
+        "color": "#3b3449",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          },
+          "faceTextures": {
+            "top": "solid",
+            "bottom": "solid",
+            "left": "solid",
+            "right": "solid",
+            "front": "solid",
+            "back": "solid"
+          }
+        }
       }
     },
     {
@@ -188,8 +260,8 @@
       "type": "Geometry",
       "transform": {
         "position": [
-          -11.6,
-          0.975,
+          -10.6,
+          1.125,
           0
         ],
         "rotation": [
@@ -207,11 +279,29 @@
         "type": "Box",
         "size": [
           0.8,
-          0.35,
-          22.4
+          0.25,
+          19.4
         ],
-        "color": "#bda16c",
-        "texturePattern": "solid"
+        "color": "#3b3449",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          },
+          "faceTextures": {
+            "top": "solid",
+            "bottom": "solid",
+            "left": "solid",
+            "right": "solid",
+            "front": "solid",
+            "back": "solid"
+          }
+        }
       }
     },
     {
@@ -221,8 +311,8 @@
       "type": "Geometry",
       "transform": {
         "position": [
-          11.6,
-          0.975,
+          10.6,
+          1.125,
           0
         ],
         "rotation": [
@@ -240,11 +330,29 @@
         "type": "Box",
         "size": [
           0.8,
-          0.35,
-          22.4
+          0.25,
+          19.4
         ],
-        "color": "#bda16c",
-        "texturePattern": "solid"
+        "color": "#3b3449",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          },
+          "faceTextures": {
+            "top": "solid",
+            "bottom": "solid",
+            "left": "solid",
+            "right": "solid",
+            "front": "solid",
+            "back": "solid"
+          }
+        }
       }
     },
     {
@@ -255,13 +363,13 @@
       "transform": {
         "position": [
           0,
-          4.55,
+          4.6,
           0
         ],
         "rotation": [
-          0,
-          5,
-          0
+          4,
+          12,
+          -6
         ],
         "scale": [
           1,
@@ -272,12 +380,30 @@
       "geometry": {
         "type": "Box",
         "size": [
-          13.8,
-          6.8,
-          12.8
+          10.8,
+          6.3,
+          9.8
         ],
-        "color": "#a58a5d",
-        "texturePattern": "solid"
+        "color": "#766a54",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          },
+          "faceTextures": {
+            "top": "solid",
+            "bottom": "solid",
+            "left": "solid",
+            "right": "solid",
+            "front": "solid",
+            "back": "solid"
+          }
+        }
       }
     },
     {
@@ -287,14 +413,14 @@
       "type": "Geometry",
       "transform": {
         "position": [
-          -3.8,
-          5.15,
+          -1.5,
+          6.5,
           0.1
         ],
         "rotation": [
-          0,
-          -8,
-          0
+          -10,
+          -17,
+          -12
         ],
         "scale": [
           1,
@@ -306,11 +432,29 @@
         "type": "Box",
         "size": [
           7.8,
-          8,
-          12.4
+          10.1,
+          8.4
         ],
-        "color": "#cbb47f",
-        "texturePattern": "solid"
+        "color": "#dbc49c",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          },
+          "faceTextures": {
+            "top": "solid",
+            "bottom": "solid",
+            "left": "solid",
+            "right": "solid",
+            "front": "solid",
+            "back": "solid"
+          }
+        }
       }
     },
     {
@@ -320,14 +464,14 @@
       "type": "Geometry",
       "transform": {
         "position": [
-          3.65,
-          4.5,
-          0.35
+          4,
+          5.3,
+          0.7
         ],
         "rotation": [
-          0,
-          11,
-          0
+          12,
+          22,
+          19
         ],
         "scale": [
           1,
@@ -338,12 +482,30 @@
       "geometry": {
         "type": "Box",
         "size": [
-          7.3,
-          6.7,
-          12.9
+          5.6,
+          7.2,
+          7.3
         ],
-        "color": "#cbb47f",
-        "texturePattern": "solid"
+        "color": "#a99778",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          },
+          "faceTextures": {
+            "top": "solid",
+            "bottom": "solid",
+            "left": "solid",
+            "right": "solid",
+            "front": "solid",
+            "back": "solid"
+          }
+        }
       }
     },
     {
@@ -353,14 +515,14 @@
       "type": "Geometry",
       "transform": {
         "position": [
-          -2.7,
-          9.7,
-          0.7
+          -5.1,
+          4.2,
+          1.4
         ],
         "rotation": [
-          0,
-          -8,
-          0
+          16,
+          -24,
+          -24
         ],
         "scale": [
           1,
@@ -371,12 +533,30 @@
       "geometry": {
         "type": "Box",
         "size": [
-          7.2,
-          2.7,
-          8.8
+          4.5,
+          5.3,
+          5.2
         ],
-        "color": "#e8d5a5",
-        "texturePattern": "solid"
+        "color": "#e8d0a5",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          },
+          "faceTextures": {
+            "top": "solid",
+            "bottom": "solid",
+            "left": "solid",
+            "right": "solid",
+            "front": "solid",
+            "back": "solid"
+          }
+        }
       }
     },
     {
@@ -386,14 +566,14 @@
       "type": "Geometry",
       "transform": {
         "position": [
-          3.2,
-          8.2,
-          0.5
+          1.6,
+          4.5,
+          -3.9
         ],
         "rotation": [
-          0,
-          11,
-          0
+          -21,
+          13,
+          14
         ],
         "scale": [
           1,
@@ -404,12 +584,30 @@
       "geometry": {
         "type": "Box",
         "size": [
-          5.5,
-          2.3,
-          8.1
+          3.9,
+          5.4,
+          4.4
         ],
-        "color": "#e8d5a5",
-        "texturePattern": "solid"
+        "color": "#f5dcaf",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          },
+          "faceTextures": {
+            "top": "solid",
+            "bottom": "solid",
+            "left": "solid",
+            "right": "solid",
+            "front": "solid",
+            "back": "solid"
+          }
+        }
       }
     },
     {
@@ -419,14 +617,14 @@
       "type": "Geometry",
       "transform": {
         "position": [
-          -0.9,
-          2.95,
-          -5.9
+          -2.5,
+          3.2,
+          4.7
         ],
         "rotation": [
-          0,
-          -13,
-          0
+          14,
+          -19,
+          -13
         ],
         "scale": [
           1,
@@ -437,12 +635,30 @@
       "geometry": {
         "type": "Box",
         "size": [
-          9.5,
-          3.6,
-          4.8
+          6.1,
+          3.3,
+          4.5
         ],
-        "color": "#cbb47f",
-        "texturePattern": "solid"
+        "color": "#938369",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          },
+          "faceTextures": {
+            "top": "solid",
+            "bottom": "solid",
+            "left": "solid",
+            "right": "solid",
+            "front": "solid",
+            "back": "solid"
+          }
+        }
       }
     },
     {
@@ -452,14 +668,14 @@
       "type": "Geometry",
       "transform": {
         "position": [
-          6.75,
-          2.7,
-          1.3
+          6.2,
+          2.9,
+          3.8
         ],
         "rotation": [
-          0,
-          16,
-          0
+          17,
+          28,
+          21
         ],
         "scale": [
           1,
@@ -470,12 +686,183 @@
       "geometry": {
         "type": "Box",
         "size": [
-          4.7,
-          3.1,
-          7.2
+          3.8,
+          2.8,
+          4.6
         ],
-        "color": "#a58a5d",
-        "texturePattern": "solid"
+        "color": "#726651",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          },
+          "faceTextures": {
+            "top": "solid",
+            "bottom": "solid",
+            "left": "solid",
+            "right": "solid",
+            "front": "solid",
+            "back": "solid"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-1",
+      "name": "左侧碎石",
+      "parentId": "transform-49",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -7.8,
+          2.15,
+          4.9
+        ],
+        "rotation": [
+          12,
+          26,
+          -17
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          2.1,
+          1.6,
+          2.5
+        ],
+        "color": "#baa785",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          },
+          "faceTextures": {
+            "top": "solid",
+            "bottom": "solid",
+            "left": "solid",
+            "right": "solid",
+            "front": "solid",
+            "back": "solid"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-2",
+      "name": "前侧碎石",
+      "parentId": "transform-49",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          3.7,
+          2,
+          7.3
+        ],
+        "rotation": [
+          -14,
+          -20,
+          12
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.5,
+          1.3,
+          1.8
+        ],
+        "color": "#fce1b3",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          },
+          "faceTextures": {
+            "top": "solid",
+            "bottom": "solid",
+            "left": "solid",
+            "right": "solid",
+            "front": "solid",
+            "back": "solid"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-3",
+      "name": "后侧碎石",
+      "parentId": "transform-49",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          -5.9,
+          2.25,
+          -6.7
+        ],
+        "rotation": [
+          16,
+          34,
+          14
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          2.5,
+          1.8,
+          2.1
+        ],
+        "color": "#a08f72",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Smooth",
+            "bottom": "Smooth",
+            "left": "Smooth",
+            "right": "Smooth",
+            "front": "Smooth",
+            "back": "Smooth"
+          },
+          "faceTextures": {
+            "top": "solid",
+            "bottom": "solid",
+            "left": "solid",
+            "right": "solid",
+            "front": "solid",
+            "back": "solid"
+          }
+        }
       }
     }
   ],

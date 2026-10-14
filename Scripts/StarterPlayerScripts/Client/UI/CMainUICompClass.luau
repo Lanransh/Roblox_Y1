@@ -97,8 +97,8 @@ function Component:OnReady()
     self:WatchDataChanged(Fields.RockTrainingValue, self.RefreshProgress, self)
     --- 仅在礼盒金币由服务端发放成功后，复用拾取奖励表现。
     --- @param amount number 服务端确认的实际金币奖励。
-    FX.Network:RegServerMsgCallback("S2C_GiftDropOpened", function(amount)
-        self:ShowPickupEffect({MoneyAmount = amount})
+    FX.Network:RegServerMsgCallback("S2C_GiftDropOpened", function(amount, currency)
+        self:ShowPickupEffect({MoneyAmount = amount, Currency = currency})
     end)
     self:WatchDataChanged(Fields.TrainingFieldIndex, self.RefreshTrainingStatus, self)
     self:WatchDataChanged(Fields.RebirthCount, function()
@@ -383,6 +383,7 @@ function Component:ShowPickupEffect(entry)
     local path = type(entry.DisplayModelId) == "string" and string.match(entry.DisplayModelId, "^game%.(.+)$")
     local template = path and FXLoader:Find(game, path)
     local isMoney = entry.MoneyAmount ~= nil
+    local currencyPath = entry.Currency == "Diamonds" and "DiamondStat/Icon" or "CashStat/Icon"
     if not isMoney and (not template or not template:IsA("Model")) then
         return
     end
@@ -435,7 +436,7 @@ function Component:ShowPickupEffect(entry)
     local moneyText
     if isMoney then
         viewport.Visible = false
-        moneyIcon = FXLoader:Here(self._leftDown, "CashStat/Icon"):Clone()
+        moneyIcon = FXLoader:Here(self._leftDown, currencyPath):Clone()
         moneyIcon.Name = "Money"
         moneyIcon.AnchorPoint = Vector2.new(0.5, 0.5)
         moneyIcon.Position = UDim2.fromScale(0.5, 0.5)
@@ -454,7 +455,8 @@ function Component:ShowPickupEffect(entry)
         moneyText.Font = Enum.Font.GothamBold
         moneyText.TextScaled = true
         moneyText.TextColor3 = Color3.new(1, 1, 1)
-        moneyText.Text = GameUtility.NumberToText(entry.MoneyAmount) .. "元"
+        moneyText.Text = entry.Currency == "Diamonds" and GameUtility.NumberToText(entry.MoneyAmount)
+            or GameUtility.NumberToText(entry.MoneyAmount) .. "元"
         moneyText.AutoLocalize = false
         moneyText.ZIndex = 3
         moneyText.Parent = effect
@@ -508,7 +510,7 @@ function Component:ShowPickupEffect(entry)
         local center = (screenArea.Min + screenArea.Max) / 2 - origin
         local icon = self._leftDown.BackpackStat.Icon
         if isMoney then
-            icon = FXLoader:Here(self._leftDown, "CashStat/Icon")
+            icon = FXLoader:Here(self._leftDown, currencyPath)
         end
         local target = icon.AbsolutePosition + icon.AbsoluteSize / 2 - origin
         local fly = math.clamp((elapsed - 0.85) / 0.45, 0, 1)

@@ -9,6 +9,11 @@ _G.PlayerKVEnum = {
 local PlayerKVEnum = _G.PlayerKVEnum
 
 return {
+    -- 每日礼盒私有状态，累计在线与已领取档位重登保留。
+    GiftData = {
+        Type = "table", Key = "GiftData", KVTable = PlayerKVEnum.eActivityData, Sync = false,
+        DefVal = {day = -1, onlineSeconds = 0, claimed = {}},
+    },
     -- 商店永久升级与购买记录；重生保留，Robux 记录随凭证奖励一起保存。
     CurrencyShopData = {
         Type = "table", Key = "CurrencyShopData", KVTable = PlayerKVEnum.eStaticData, Sync = true,
