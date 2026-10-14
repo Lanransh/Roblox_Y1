@@ -104,7 +104,7 @@ self.State.offline = { seconds = 9000, training = 1500, status = "Claimable" }
 seconds=0、training=0、status="Claimed"、pending=false，再 RefreshUI。
 失败保留数值及 Claimable，pending=false、error=提示后刷新。
 模拟立即成功，双倍仅模拟两倍训练值；没有添加支付或广告流程。
-]]
+]]
 local FX = _G.FX
 local Loader = FX.Loader
 local CWelfareView = FX.Class("CWelfareView", "CUIView")
@@ -399,7 +399,7 @@ end
 
 -- 接入提供状态，View 只组织页面和条目展示，不改根节点的显隐。
 -- @param state table entries、onlineMinutes 与 signInDay
-function CWelfareView:Render(state)
+function CWelfareView:Render(state)
     self:RenderOffline(state.offline)
     self:RenderDiamonds(state.diamonds)
     local tabs = { online = "OnlineTabBtn", signin = "SignInTabBtn", task = "TasksTabBtn" }
@@ -434,7 +434,7 @@ end
 -- @param state table seconds、training、status 及可选 pending/error，见离线契约
 function CWelfareView:RenderOffline(state)
     local page = Loader:Here(self.Root, "PopupPanelImg.OfflineBox")
-    page.Visible = self.ActiveTab == "offline"
+    page.Visible = self.ActiveTab == "offline"
     local seconds = state.seconds
     local training = state.training
     if state.status == "Claimed" then
@@ -465,15 +465,15 @@ function CWelfareView:RenderOffline(state)
     if state.status == "Claimed" then
         status.Text = "Claimed"
     end
-    local tab = Loader:Here(self.Root, "TabsBox.OfflineTabBtn")
-    Loader:Here(tab, "RedDotImg").Visible = claimable and not state.pending
-    self:RenderButton(tab, "Offline\nRewards", true)
-    if self.ActiveTab ~= "offline" then
-        tab.BackgroundColor3 = Color3.fromRGB(99, 128, 121)
-        Loader:Here(tab, "BottomEdgeImg").BackgroundColor3 = Color3.fromRGB(38, 62, 54)
-    end
-end
-
+    local tab = Loader:Here(self.Root, "TabsBox.OfflineTabBtn")
+    Loader:Here(tab, "RedDotImg").Visible = claimable and not state.pending
+    self:RenderButton(tab, "Offline\nRewards", true)
+    if self.ActiveTab ~= "offline" then
+        tab.BackgroundColor3 = Color3.fromRGB(99, 128, 121)
+        Loader:Here(tab, "BottomEdgeImg").BackgroundColor3 = Color3.fromRGB(38, 62, 54)
+    end
+end
+
 return CWelfareView
 
 end)()

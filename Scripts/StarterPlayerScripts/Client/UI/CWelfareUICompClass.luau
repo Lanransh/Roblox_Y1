@@ -286,7 +286,7 @@ function Component:_RenderRewardIcon(root, reward, featured)
         or _G.ItemConfig.Display[tonumber(reward.id)].IconId
 end
 
---- 离线训练使用服务端批次，数值统一格式化并复用本地化入口。
+--- 离线训练使用服务端批次，页签本地化刷新后按当前选中状态恢复配色。
 --- @param state table 离线秒数、训练值、领取状态与请求标记。
 function Component:RenderOffline(state)
     Component.Super.RenderOffline(self, state)
@@ -306,7 +306,12 @@ function Component:RenderOffline(state)
             or self._localization:FormatByKey("Welfare.OfflineClaim", {multiplier = multiplier})
         self:RenderButton(FXLoader:Here(page, name), label, state.status == "Claimable" and not state.pending)
     end
-    self:RenderButton(FXLoader:Here(self.Root, "TabsBox/OfflineTabBtn"), self._localization:FormatByKey("Welfare.Offline"), true)
+    local tab = FXLoader:Here(self.Root, "TabsBox/OfflineTabBtn")
+    self:RenderButton(tab, self._localization:FormatByKey("Welfare.Offline"), true)
+    if self.ActiveTab ~= "offline" then
+        tab.BackgroundColor3 = Color3.fromRGB(99, 128, 121)
+        FXLoader:Here(tab, "BottomEdgeImg").BackgroundColor3 = Color3.fromRGB(38, 62, 54)
+    end
 end
 
 --- 将原有加成说明槽展示为两种周卡；只有服务端金额决定领取按钮。
