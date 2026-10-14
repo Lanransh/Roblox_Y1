@@ -1,6 +1,7 @@
 local FX = _G.FX
 local Fields = _G.PlayerDataConfig
 local Welfare = FX.Loader:RequireShared("Scripts/Game/Shared/Welfare")
+local Rebirth = FX.Loader:RequireShared("Scripts/Game/Shared/Rebirth")
 local Component = FX.Class("SActivityCompClass", "FSPlayerCompClass")
 local MAX_INTEGER = 9007199254740991
 local Players = game:GetService("Players")
@@ -11,12 +12,20 @@ function Component:GetCompName()
     return "SActivityComp"
 end
 
---- 读档后记录本次登录日；漏登不清零，重复进入同一天不累计。
+--- 读档后记录登录日及离线批次；当天领取记录与尚未领取的批次重登保留。
 function Component:OnPlayerLogin()
     self._lastTime = os.time()
     self._nextSync = self._lastTime + 10
     local data = self:GetTable(Fields.WelfareData)
     local day = math.floor(self._lastTime / 86400)
+    if data.day ~= day or data.offline.training <= 0 then
+        local config = _G.GameConfig.CommonConfig.OfflineReward
+        local seconds = data.lastSeenAt > 0 and math.clamp(self._lastTime - data.lastSeenAt, 0, config.Time) or 0
+        data.offline = {
+            id = tostring(self._lastTime), seconds = seconds,
+            training = self:RequireComponent("SMiscComp"):GetTrainingCardGain(seconds * config.Rate),
+        }
+    end
     -- 旧福利存档没有任务字段，仅补入本次新增结构。
     data.taskProgress = data.taskProgress or {}
     data.taskClaimed = data.taskClaimed or {}
@@ -25,8 +34,11 @@ function Component:OnPlayerLogin()
         data.lastLoginDay = day
         data.loginDays = math.min(data.loginDays + 1, #_G.ActivityConfig.LoginMilestoneData)
     end
+    -- 离线批次在登录时生成；UpdateTime 跨日时不会清掉刚生成的新批次。
+    self._loggingIn = true
     self:SetTable(Fields.WelfareData, data)
     self:UpdateTime(self._lastTime)
+    self._loggingIn = nil
     self:PublishState()
 end
 
@@ -43,9 +55,13 @@ function Component:UpdateTime(now)
         data.taskProgress = {}
         data.taskClaimed = {}
         data.taskFriends = {}
+        if not self._loggingIn then
+            data.offline = {id = "", seconds = 0, training = 0}
+        end
         startTime = math.max(startTime, day * 86400)
     end
     data.onlineSeconds += math.max(0, now - startTime)
+    data.lastSeenAt = now
     self._lastTime = now
     self:SetTable(Fields.WelfareData, data)
 end
@@ -74,6 +90,13 @@ function Component:PublishState()
         taskProgress = FX.Table:DeepCopy(data.taskProgress),
         taskClaimed = FX.Table:DeepCopy(data.taskClaimed),
         dailyAmount = self:GetDailyAmount(), cards = FX.Table:DeepCopy(data.cards),
+        offline = {
+            id = data.offline.id,
+            seconds = data.offlineClaimDay == data.day and 0 or data.offline.seconds,
+            training = data.offlineClaimDay == data.day and 0 or data.offline.training,
+            status = data.offlineClaimDay == data.day and "Claimed"
+                or (data.offline.training > 0 and "Claimable" or "Locked"),
+        },
     })
 end
 
@@ -251,10 +274,11 @@ function Component:GrantReward(reward)
 end
 
 --- RPC 只领取本人配置档位；全程不 yield，发奖失败保留领取资格。
---- @param kind any 客户端类别，仅接受 online、signin、task、diamonds。
+--- @param kind any 客户端类别，仅接受 online、signin、task、diamonds、offline。
 --- @param rewardId any 稳定字符串 ID，不接受客户端金额或玩家身份。
+--- @param multiplier any 离线领取方式，仅接受数值 1 或 2；双倍暂时免费。
 --- @return table 成功标记、提示 Key 和最新权威快照。
-function Component:Claim(kind, rewardId)
+function Component:Claim(kind, rewardId, multiplier)
     if not self._lastTime or type(kind) ~= "string" or type(rewardId) ~= "string" or #rewardId > 32 then
         return {success = false, key = "Welfare.NotReady"}
     end
@@ -262,7 +286,28 @@ function Component:Claim(kind, rewardId)
     local data = self:GetTable(Fields.WelfareData)
     local key = "Welfare.NotReady"
     local success = false
-    if kind == "diamonds" and rewardId == "daily_diamonds" then
+    if kind == "offline" then
+        if data.offlineClaimDay == data.day then
+            key = "Welfare.AlreadyClaimed"
+        elseif rewardId == data.offline.id and data.offline.training > 0 and (multiplier == 1 or multiplier == 2) then
+            local config = _G.GameConfig.CommonConfig.OfflineReward
+            local rate = multiplier == 2 and config.VIPRate or config.Rate
+            local remaining = Rebirth.GetMaxTrainingValue(self:GetNumber(Fields.RebirthCount))
+                - self:GetNumber(Fields.RockTrainingValue)
+            local gain = math.max(0, math.min(data.offline.training * rate / config.Rate, remaining))
+            if gain > 0 then
+                -- 发奖和批次消费不 yield，重复请求只能命中已领取状态。
+                data.offlineClaimDay = data.day
+                data.offline.seconds = 0
+                data.offline.training = 0
+                self:SetTable(Fields.WelfareData, data)
+                self:AddNumber(Fields.RockTrainingValue, gain)
+                self:RequireComponent("SMiscComp"):RefreshProgress()
+                FX.Network:SendMsgToClient(self:GetPlayerId(), "S2C_TrainingEffect", gain, true)
+                success = true
+            end
+        end
+    elseif kind == "diamonds" and rewardId == "daily_diamonds" then
         local amount = self:GetDailyAmount()
         if amount > 0 and self:GrantReward({Type = "Gem", Count = amount}) then
             data.lastClaimDay = data.day

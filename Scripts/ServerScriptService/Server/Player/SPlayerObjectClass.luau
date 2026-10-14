@@ -182,7 +182,7 @@ function Player:ShowLocalizedTips(key, arguments, duration)
     FX.Network:SendMsgToClient(self:GetPlayerId(), "S2C_ShowLocalizedTips", key, arguments, duration)
 end
 
---- 为旧存档补入历史等级；已完成重生能证明玩家达到过上一次重生门槛。
+--- 为旧存档补入历史等级与离线福利结构；无离服时间的旧档不追溯奖励。
 --- @param version number 框架传入的旧存档版本。
 function Player:MigrateData(version)
     if version < 1 then
@@ -193,6 +193,14 @@ function Player:MigrateData(version)
         self:SetNumber(PlayerDataConfig.MaxTrainingLevel,
             math.max(self:GetNumber(PlayerDataConfig.MaxTrainingLevel), level, previousLevel))
         self:SetNumber(PlayerDataConfig.DataVersion, 1)
+    end
+    if version < 2 then
+        local welfare = self:GetTable(PlayerDataConfig.WelfareData)
+        welfare.lastSeenAt = 0
+        welfare.offlineClaimDay = -1
+        welfare.offline = {id = "", seconds = 0, training = 0}
+        self:SetTable(PlayerDataConfig.WelfareData, welfare)
+        self:SetNumber(PlayerDataConfig.DataVersion, 2)
     end
 end
 

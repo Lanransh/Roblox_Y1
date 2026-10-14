@@ -8,6 +8,8 @@ local RunService = game:GetService("RunService")
 local GuiService = game:GetService("GuiService")
 local RockLevel = require(game:GetService("ReplicatedStorage").Scripts.Game.Shared.RockLevel)
 local GameUtility = require(game:GetService("ReplicatedStorage").Scripts.Game.Shared.GameUtility)
+local CurrencyShop = FXLoader:RequireShared("Scripts/Game/Shared/CurrencyShop")
+local StrengthPacks = {StrengthPack1Button = 301, StrengthPack2Button = 302}
 local Component = FX.Class("CMainUICompClass", "FCUICompClass")
 
 --- 返回主界面业务组件名，供项目组件协作使用。
@@ -23,6 +25,14 @@ function Component:OnReady()
     self._rootNode.ResetOnSpawn = false
     local top = FXLoader:Here(self._rootNode, "TopCenter")
     self._bar = FXLoader:Here(top, "LevelProgressBar")
+    self._barLayout = {
+        Position = self._bar.Position,
+        Size = self._bar.Size,
+        AnchorPoint = self._bar.AnchorPoint,
+        LevelPosition = self._bar.LevelLabel.Position,
+        LevelSize = self._bar.LevelLabel.Size,
+        LevelAlignment = self._bar.LevelLabel.TextXAlignment,
+    }
     self._homeButton = FXLoader:Here(top, "HomeButton")
     self._homeButton.Size = UDim2.fromOffset(160, 54)
     self._homeButton.TextScaled = false
@@ -92,6 +102,12 @@ function Component:OnReady()
     self:WatchDataChanged(Fields.RebirthCount, self.RefreshRebirthCount, self)
     self:WatchDataChanged(Fields.Diamonds, self.RefreshDiamonds, self)
     self:WatchDataChanged(Fields.RockLoot, self.RefreshLoot, self)
+    for index, field in ipairs({Fields.CurrencyShopData, Fields.RockTrainingValue, Fields.RebirthCount,
+        Fields.CollectionEntries, Fields.AuraData, Fields.WeaponData}) do
+        self:WatchDataChanged(field, function()
+            self:RefreshStrengthOffers()
+        end)
+    end
     --- 鼠标只在未被按钮、背包等 UI 消耗时播放点击图标。
     --- @param input InputObject 本次输入。
     --- @param processed boolean 是否已被引擎 UI 消耗。
@@ -178,6 +194,8 @@ function Component:BindButtons()
                     self:GetPlayerObject():RequireComponent("CCurrencyShopUIComp"):Show()
                 elseif node == self._homeButton then
                     FX.Network:SendMsgToServer("C2S_ReturnHome")
+                elseif node.Name == "DoubleStrengthButton" or StrengthPacks[node.Name] then
+                    self:OpenStrengthOffer(node.Name)
                 else
                     self:ShowDeveloping()
                 end
@@ -186,7 +204,81 @@ function Component:BindButtons()
     end
 end
 
---- 关卡内仅显示独立回家按钮；基地、关卡外或无存活角色时恢复等级经验条及力量。
+--- 下一档倍率与力量包只展示真实配置；满级仍允许点击查看不可购买原因。
+function Component:RefreshStrengthOffers()
+    local right = FXLoader:Here(self._rootNode, "RightCenter")
+    right.StrengthPack3Button.Visible = false
+    local data = self:GetTable(Fields.CurrencyShopData)
+    local nextItem = CurrencyShop.GetNextGemGoods(1, data)
+    local rateButton = right.DoubleStrengthButton
+    rateButton.Interactable = true
+    rateButton.Price.AutoLocalize = false
+    rateButton.Background.Label.AutoLocalize = false
+    rateButton.PriceDiamond.Visible = nextItem ~= nil
+    if nextItem then
+        rateButton.Price.Text = self._localization:FormatByKey("Main.OfferPrice", {
+            value = GameUtility.NumberToText(_G.GoodsConfig.GemGoodsData[nextItem.GemGoodsId].Price),
+        })
+        rateButton.Background.Label.Text = self._localization:FormatByKey("Main.StrengthRate", {
+            rate = GameUtility.NumberToText(_G.GameConfig.TrainingRateConfig[data.trainingLevel + 1].Rate),
+        })
+    else
+        rateButton.Price.Text = self._localization:FormatByKey("CurrencyShop.SoldOut")
+        rateButton.Background.Label.Text = self._localization:FormatByKey("Main.StrengthRate", {
+            rate = GameUtility.NumberToText(CurrencyShop.GetTrainingRate(data)),
+        })
+    end
+    for name, goodsId in pairs(StrengthPacks) do
+        local button = right[name]
+        local gain = CurrencyShop.GetTrainingPackGain(self:GetPlayerObject(), goodsId)
+        button.Interactable = true
+        button.Price.AutoLocalize = false
+        button.Amount.AutoLocalize = false
+        button.Price.Text = self._localization:FormatByKey("Main.OfferPrice", {
+            value = GameUtility.NumberToText(_G.GoodsConfig.GemGoodsData[goodsId].Price),
+        })
+        button.Amount.Text = "+" .. GameUtility.NumberToText(gain)
+    end
+end
+
+--- 主界面快捷入口复用钻石单件确认页，仅服务端确认后扣款发奖。
+--- @param name string 已绑定的右侧按钮名称。
+function Component:OpenStrengthOffer(name)
+    local shop = self:GetPlayerObject():RequireComponent("CCurrencyShopUIComp")
+    local product
+    if name == "DoubleStrengthButton" then
+        shop:BuildProducts()
+        for index, candidate in ipairs(shop.Config.products) do
+            if candidate.id == "group_1" and not candidate.soldOut then
+                product = candidate
+                break
+            end
+        end
+        if not product then
+            self._commonUI:ShowLocalizedTips("CurrencyShop.RateMaxed")
+            return
+        end
+    else
+        local goodsId = StrengthPacks[name]
+        local gain = CurrencyShop.GetTrainingPackGain(self:GetPlayerObject(), goodsId)
+        if gain <= 0 then
+            self._commonUI:ShowLocalizedTips("Main.TrainingFull")
+            return
+        end
+        local button = self._rootNode.RightCenter[name]
+        product = {goodsId = goodsId, currency = "Diamond", icon = button.Icon.Image,
+            price = _G.GoodsConfig.GemGoodsData[goodsId].Price,
+            title = self._localization:FormatByKey("Main.TrainingPack"),
+            description = self._localization:FormatByKey("Main.TrainingPackDesc", {
+                value = GameUtility.NumberToText(gain),
+            })}
+    end
+    if product then
+        self:GetPlayerObject():RequireComponent("CShopPurchaseUIComp"):OpenProduct(product)
+    end
+end
+
+--- 关卡内在回家按钮下显示紧凑等级经验条；离开或死亡时恢复完整经验条及力量。
 function Component:RefreshHomeButton()
     local character = self:GetPlayerCharacter()
     local root = character and character:FindFirstChild("HumanoidRootPart")
@@ -194,8 +286,21 @@ function Component:RefreshHomeButton()
     local inArea = root ~= nil and humanoid ~= nil and humanoid.Health > 0
         and RockLevel.IsInArea(self._areas, root.Position)
     self._homeButton.Visible = inArea
-    self._bar.Visible = not inArea
     self._strength.Parent.Visible = not inArea
+    if self._inLevelArea == inArea then
+        return
+    end
+    self._inLevelArea = inArea
+    local layout = self._barLayout
+    self._bar.Visible = true
+    self._bar.AnchorPoint = inArea and Vector2.new(0.5, 0) or layout.AnchorPoint
+    self._bar.Position = inArea and UDim2.new(0.5, 0, 0, 60) or layout.Position
+    self._bar.Size = inArea and UDim2.fromOffset(160, 26) or layout.Size
+    self._bar.LevelLabel.Position = inArea and UDim2.fromScale(0, 0) or layout.LevelPosition
+    self._bar.LevelLabel.Size = inArea and UDim2.fromScale(1, 1) or layout.LevelSize
+    self._bar.LevelLabel.TextXAlignment = inArea and Enum.TextXAlignment.Center or layout.LevelAlignment
+    self._bar.ProgressLabel.Visible = not inArea
+    self._bar.StrengthIcon.Visible = not inArea
 end
 
 --- 语言变化只刷新当前数据显示，不播放训练收益动画或重新打开已关闭弹窗。
@@ -203,6 +308,7 @@ function Component:RefreshLocalization()
     self._homeButton.Text = self._localization:FormatByKey("Main.Home")
     self:RefreshProgress(self:GetNumber(Fields.RockTrainingValue))
     self:RefreshTrainingStatus(self:GetNumber(Fields.TrainingFieldIndex))
+    self:RefreshStrengthOffers()
 end
 
 --- 仅显示服务端确认的已解锁训练基地，不凭客户端位置授予训练资格。

@@ -1,6 +1,9 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
 local Fields = _G.PlayerDataConfig
+local Debris = game:GetService("Debris")
+local TweenService = game:GetService("TweenService")
+local Workspace = game:GetService("Workspace")
 local UPGRADE_SOUND_ID = "rbxassetid://97430098988000"
 local ADD_MONEY_SOUND_ID = "rbxassetid://99533862853751"
 local PICKUP_SOUND_ID = "rbxassetid://88292715815889"
@@ -50,6 +53,110 @@ function CSoundCompClass:OnTrainingLevelChanged(level, oldLevel)
         return
     end
     self:PlayEffectSoundWithBGMDuck(UPGRADE_SOUND_ID, 2, 0.2)
+    self:PlayTrainingUpgradeEffect()
+end
+
+--- 用短暂金色闪光和向外散开的方框表现训练升级。
+function CSoundCompClass:PlayTrainingUpgradeEffect()
+    local character = self:GetPlayerCharacter()
+    local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+    local root = character and character:FindFirstChild("HumanoidRootPart")
+    if not humanoid or humanoid.Health <= 0 or not root or not root:IsA("BasePart") then
+        return
+    end
+
+    local highlight = Instance.new("Highlight")
+    highlight.Name = "TrainingUpgradeHighlight"
+    highlight.Adornee = character
+    highlight.FillColor = Color3.fromRGB(255, 194, 47)
+    highlight.FillTransparency = 0.12
+    highlight.OutlineColor = Color3.fromRGB(255, 245, 190)
+    highlight.OutlineTransparency = 0.1
+    highlight.DepthMode = Enum.HighlightDepthMode.Occluded
+    highlight.Parent = character
+    TweenService:Create(highlight, TweenInfo.new(0.48, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+        FillTransparency = 1,
+        OutlineTransparency = 1,
+    }):Play()
+    Debris:AddItem(highlight, 0.55)
+
+    local light = Instance.new("PointLight")
+    light.Name = "TrainingUpgradeLight"
+    light.Color = Color3.fromRGB(255, 195, 58)
+    light.Brightness = 2.5
+    light.Range = 9
+    light.Shadows = false
+    light.Parent = root
+    TweenService:Create(light, TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+        Brightness = 0,
+    }):Play()
+    Debris:AddItem(light, 0.45)
+
+    local raycastParams = RaycastParams.new()
+    raycastParams.FilterType = Enum.RaycastFilterType.Exclude
+    raycastParams.FilterDescendantsInstances = { character }
+    raycastParams.IgnoreWater = true
+    local floor = Workspace:Raycast(root.Position, Vector3.new(0, -12, 0), raycastParams)
+    if not floor then
+        return
+    end
+
+    local effects = Instance.new("Folder")
+    effects.Name = "TrainingUpgradeEffect"
+    effects.Parent = Workspace
+    local floorCenter = floor.Position + Vector3.new(0, 0.035, 0)
+    local edges = {
+        { Offset = Vector3.new(0, 0, -1), Rotation = 0 },
+        { Offset = Vector3.new(0, 0, 1), Rotation = 0 },
+        { Offset = Vector3.new(-1, 0, 0), Rotation = math.pi / 2 },
+        { Offset = Vector3.new(1, 0, 0), Rotation = math.pi / 2 },
+    }
+
+    for index = 1, 8 do
+        local angle = math.random() * math.pi * 2
+        local startRadius = math.random(35, 145) / 100
+        local endRadius = startRadius + math.random(75, 165) / 100
+        local side = math.random(38, 72) / 100
+        local halfSide = side / 2
+        local startCenter = floorCenter + Vector3.new(math.cos(angle) * startRadius, 0, math.sin(angle) * startRadius)
+        local endCenter = floorCenter + Vector3.new(math.cos(angle) * endRadius, 0, math.sin(angle) * endRadius)
+        local rotation = math.random() * math.pi * 2
+        local startFrame = CFrame.new(startCenter) * CFrame.Angles(0, rotation, 0)
+        local endFrame = CFrame.new(endCenter) * CFrame.Angles(0, rotation, 0)
+
+        for _, edge in ipairs(edges) do
+            local part = Instance.new("Part")
+            part.Name = "UpgradeSpark"
+            part.Anchored = true
+            part.CanCollide = false
+            part.CanTouch = false
+            part.CanQuery = false
+            part.CastShadow = false
+            part.Material = Enum.Material.Neon
+            part.Color = Color3.fromRGB(255, 250, 224)
+            part.Size = Vector3.new(side, 0.035, 0.035)
+            part.CFrame = startFrame
+                * CFrame.new(edge.Offset * halfSide)
+                * CFrame.Angles(0, edge.Rotation, 0)
+            part.Parent = effects
+
+            local targetCFrame = endFrame
+                * CFrame.new(edge.Offset * halfSide * 1.12)
+                * CFrame.Angles(0, edge.Rotation, 0)
+            local tween = TweenService:Create(
+                part,
+                TweenInfo.new(0.48, Enum.EasingStyle.Quad, Enum.EasingDirection.Out, 0, false, index * 0.012),
+                {
+                    CFrame = targetCFrame,
+                    Size = Vector3.new(side * 1.12, 0.025, 0.025),
+                    Transparency = 1,
+                }
+            )
+            tween:Play()
+        end
+    end
+
+    Debris:AddItem(effects, 0.75)
 end
 
 --- 金币到账时突出收益音效并暂时压低音乐，首次同步、消费和重置不播放。

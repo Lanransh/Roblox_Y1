@@ -42,6 +42,7 @@ function Component:OnReady()
             {kind = "task", page = "TasksBox", columns = 1, gapX = 0, gapY = 12, items = {}},
         },
         diamonds = {rewardId = "daily_diamonds"},
+        offline = {rewardId = ""},
     }
     for index, config in ipairs(_G.ActivityConfig.OnlineRewardData) do
         table.insert(self.Config.groups[1].items, {
@@ -87,7 +88,9 @@ function Component:RefreshWelfare(data)
         data = self._snapshot
     end
     self._snapshot = data
+    self.Config.offline.rewardId = data.offline.id
     self.State = {
+        offline = table.clone(data.offline),
         onlineMinutes = math.floor(data.onlineSeconds / 60),
         signInDay = data.loginDays,
         entries = {online = {}, signin = {}, task = {}},
@@ -112,12 +115,14 @@ function Component:RefreshWelfare(data)
         end
     end
     if self._pending then
-        local entry = self._pending.kind == "diamonds" and self.State.diamonds
+        local entry = self._pending.kind == "offline" and self.State.offline
+            or self._pending.kind == "diamonds" and self.State.diamonds
             or self.State.entries[self._pending.kind][self._pending.id]
         entry.pending = true
     end
     if self._failure then
-        local entry = self._failure.kind == "diamonds" and self.State.diamonds
+        local entry = self._failure.kind == "offline" and self.State.offline
+            or self._failure.kind == "diamonds" and self.State.diamonds
             or self.State.entries[self._failure.kind][self._failure.id]
         if entry.status == "Claimed" then
             self._failure = nil
@@ -128,10 +133,8 @@ function Component:RefreshWelfare(data)
     self:RefreshUI()
     if data.ready and self._firstSnapshot then
         self._firstSnapshot = false
-        if data.dailyAmount > 0 then
+        if data.offline.status == "Claimable" or data.dailyAmount > 0 then
             self:Show()
-            self.ActiveTab = "diamonds"
-            self:RefreshUI()
         end
     end
 end
@@ -165,7 +168,7 @@ function Component:SetText(root, path, key, arguments)
     node.Text = self._localization:FormatByKey(key, arguments)
 end
 
---- 保留父类按钮配色及禁用逻辑，只把父类英文状态映射到稳定 Key。
+--- 保留父类状态配色；不可领取的按钮允许点击解释原因，请求期间仍禁用。
 --- @param button GuiButton 展示父类提供的按钮。
 --- @param label string 父类状态文案或已本地化文本。
 --- @param enabled boolean 当前是否允许点击。
@@ -175,6 +178,7 @@ function Component:RenderButton(button, label, enabled)
         Retry = "Welfare.Retry", ["Online\nRewards"] = "Welfare.Online", ["Daily Login"] = "Welfare.SignIn",
         Diamonds = "Welfare.Daily", Tasks = "Welfare.Tasks", ["In Progress"] = "Welfare.InProgress"}
     Component.Super.RenderButton(self, button, keys[label] and self._localization:FormatByKey(keys[label]) or label, enabled)
+    self:SetButtonEnabled(button, enabled or (not self._requestTask and not self._pending))
     FXLoader:Here(button, "ButtonTxt").AutoLocalize = false
 end
 
@@ -185,7 +189,8 @@ function Component:Render(state)
         config.title = self._localization:FormatByKey("Welfare.Task." .. config.taskType, {target = config.target})
     end
     Component.Super.Render(self, state)
-    local hasClaimable = state.diamonds.status == "Claimable" and not state.diamonds.pending
+    local hasClaimable = state.offline.status == "Claimable" and not state.offline.pending
+        or state.diamonds.status == "Claimable" and not state.diamonds.pending
     for index, group in ipairs(self.Config.groups) do
         for itemIndex, config in ipairs(group.items) do
             local entry = state.entries[group.kind][config.id]
@@ -281,6 +286,29 @@ function Component:_RenderRewardIcon(root, reward, featured)
         or _G.ItemConfig.Display[tonumber(reward.id)].IconId
 end
 
+--- 离线训练使用服务端批次，数值统一格式化并复用本地化入口。
+--- @param state table 离线秒数、训练值、领取状态与请求标记。
+function Component:RenderOffline(state)
+    Component.Super.RenderOffline(self, state)
+    local page = FXLoader:Here(self.Root, "PopupPanelImg/OfflineBox")
+    local seconds = state.status == "Claimed" and 0 or state.seconds
+    local training = state.status == "Claimed" and 0 or state.training
+    self:SetText(page, "HeadingTxt", "Welfare.Offline")
+    self:SetText(page, "TimeTxt", "Welfare.OfflineTime", {
+        hours = math.floor(seconds / 3600), minutes = math.floor(seconds % 3600 / 60),
+        seconds = math.floor(seconds % 60),
+    })
+    self:SetText(page, "AmountTxt", "Welfare.OfflineTraining", {value = GameUtility.NumberToText(training)})
+    local statusKey = state.status == "Claimed" and "Welfare.Claimed" or "Welfare.OfflineEmpty"
+    self:SetText(page, "StatusTxt", self._failure and self._failure.kind == "offline" and self._failure.key or statusKey)
+    for multiplier, name in ipairs({"SingleClaimBtn", "DoubleClaimBtn"}) do
+        local label = state.pending and self._localization:FormatByKey("Welfare.Pending")
+            or self._localization:FormatByKey("Welfare.OfflineClaim", {multiplier = multiplier})
+        self:RenderButton(FXLoader:Here(page, name), label, state.status == "Claimable" and not state.pending)
+    end
+    self:RenderButton(FXLoader:Here(self.Root, "TabsBox/OfflineTabBtn"), self._localization:FormatByKey("Welfare.Offline"), true)
+end
+
 --- 将原有加成说明槽展示为两种周卡；只有服务端金额决定领取按钮。
 --- @param state table 今日金额、状态与请求标记。
 function Component:RenderDiamonds(state)
@@ -322,14 +350,40 @@ function Component:RenderDiamonds(state)
     end
 end
 
---- 客户端只提交类别和稳定 ID，失败恢复按钮，成功以服务端快照刷新。
---- @param action string 展示层的 Claim 或 ClaimDiamonds。
---- @param payload table 稳定 rewardId 及可选 kind。
+--- 条件不足只提示具体原因；可领取时提交类别与批次，结果以服务端快照刷新。
+--- @param action string 展示层的 Claim、ClaimDiamonds 或 ClaimOffline。
+--- @param payload table 稳定 rewardId 及可选 kind、multiplier。
 function Component:OnUIAction(action, payload)
-    if self._requestTask or not self._snapshot.ready then
+    if self._requestTask then
         return
     end
-    local kind = action == "ClaimDiamonds" and "diamonds" or payload.kind
+    if not self._snapshot.ready then
+        self._commonUI:ShowLocalizedTips("Welfare.NotReady")
+        return
+    end
+    local kind = action == "ClaimOffline" and "offline"
+        or action == "ClaimDiamonds" and "diamonds" or payload.kind
+    local entry = kind == "offline" and self.State.offline
+        or kind == "diamonds" and self.State.diamonds or self.State.entries[kind][payload.rewardId]
+    if entry.status ~= "Claimable" then
+        local key, arguments = "Welfare.AlreadyClaimed", nil
+        if kind == "offline" and entry.status ~= "Claimed" then
+            key = "Welfare.OfflineEmpty"
+        elseif entry.status == "Locked" then
+            local config = self.Rows[kind][payload.rewardId].Config
+            if kind == "online" then
+                key, arguments = "Welfare.OnlineRequired", {
+                    minutes = math.ceil((config.minutes * 60 - self._snapshot.onlineSeconds) / 60),
+                }
+            elseif kind == "signin" then
+                key, arguments = "Welfare.LoginRequired", {days = config.day}
+            else
+                key, arguments = "Welfare.TaskIncomplete", {current = entry.current, target = config.target}
+            end
+        end
+        self._commonUI:ShowLocalizedTips(key, arguments)
+        return
+    end
     self._pending = {kind = kind, id = payload.rewardId}
     self._failure = nil
     self:RefreshWelfare()
@@ -338,7 +392,7 @@ function Component:OnUIAction(action, payload)
         --- 网络拒绝会抛错，保留英文错误提示及重试能力。
         --- @return table 服务端领取结果。
         local ok, result = pcall(function()
-            return FX.Network:InvokeServer("C2S_ClaimWelfareReward", kind, payload.rewardId)
+            return FX.Network:InvokeServer("C2S_ClaimWelfareReward", kind, payload.rewardId, payload.multiplier)
         end)
         self._requestTask = nil
         self._pending = nil

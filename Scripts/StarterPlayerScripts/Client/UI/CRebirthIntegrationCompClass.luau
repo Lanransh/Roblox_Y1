@@ -1,4 +1,5 @@
 local FX = _G.FX
+local FC = _G.FC
 local FXLoader = FX.Loader
 FXLoader:RequireFromParent(script, "Generated/CRebirthUICompClass")
 local Fields = _G.PlayerDataConfig
@@ -9,11 +10,113 @@ function Component:GetCompName()
     return "CRebirthUIComp"
 end
 
+--- 创建本组件持有的重生提示横幅，沿用界面中的重生图标。
+--- @param root ScreenGui 重生界面的根节点。
+--- @return ScreenGui 提示横幅所在的界面。
+function Component:CreateRebirthNotice(root)
+    local noticeGui = Instance.new("ScreenGui")
+    noticeGui.Name = "RebirthNoticeUI"
+    noticeGui.ResetOnSpawn = false
+    noticeGui.DisplayOrder = 101
+    noticeGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    noticeGui.Parent = root.Parent
+
+    local group = Instance.new("CanvasGroup")
+    group.Name = "RebirthNotice"
+    group.AnchorPoint = Vector2.new(0.5, 0)
+    group.Position = UDim2.fromScale(0.5, 0.08)
+    group.Size = UDim2.new(0.9, 0, 0, 72)
+    group.BackgroundColor3 = Color3.fromRGB(8, 10, 14)
+    group.BackgroundTransparency = 0.35
+    group.Visible = false
+    group.ZIndex = 10
+    group.Parent = noticeGui
+    self._rebirthNoticeGroup = group
+
+    local maxSize = Instance.new("UISizeConstraint")
+    maxSize.MaxSize = Vector2.new(600, 80)
+    maxSize.Parent = group
+
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 6)
+    corner.Parent = group
+
+    local rebirthIcon = FXLoader:Here(root, "TitleBox.RebirthIconImg")
+    local icon = Instance.new("ImageLabel")
+    icon.Name = "Icon"
+    icon.Position = UDim2.fromOffset(6, 4)
+    icon.Size = UDim2.fromOffset(64, 64)
+    icon.BackgroundTransparency = 1
+    icon.Image = rebirthIcon.Image
+    icon.ScaleType = Enum.ScaleType.Fit
+    icon.AutoLocalize = false
+    icon.ZIndex = 11
+    icon.Parent = group
+
+    local text = Instance.new("TextLabel")
+    text.Name = "Message"
+    text.Position = UDim2.fromOffset(78, 0)
+    text.Size = UDim2.new(1, -88, 1, 0)
+    text.BackgroundTransparency = 1
+    text.Font = Enum.Font.GothamBlack
+    text.TextColor3 = Color3.fromHex("#FFD744")
+    text.TextStrokeColor3 = Color3.new(0, 0, 0)
+    text.TextStrokeTransparency = 0
+    text.TextSize = 28
+    text.TextScaled = true
+    text.TextWrapped = false
+    text.TextXAlignment = Enum.TextXAlignment.Left
+    text.AutoLocalize = false
+    text.ZIndex = 11
+    text.Parent = group
+    self._rebirthNoticeText = text
+
+    local textSizeLimit = Instance.new("UITextSizeConstraint")
+    textSizeLimit.MinTextSize = 12
+    textSizeLimit.MaxTextSize = 28
+    textSizeLimit.Parent = text
+
+    return noticeGui
+end
+
+--- 按当前玩家语言刷新显示中的重生成功文案。
+function Component:RefreshRebirthNotice()
+    if self._rebirthNoticePrevious == nil then
+        return
+    end
+    local successText = self._localization:FormatByKey("Rebirth.Success")
+    self._rebirthNoticeText.Text = string.format("%s  %d → %d", successText,
+        self._rebirthNoticePrevious, self._rebirthNoticeCurrent)
+end
+
+--- 显示服务端确认成功后的重生次数变化，并在短暂展示后淡出。
+--- @param previousCount number 请求前的重生次数。
+--- @param currentCount number 服务端确认的新重生次数。
+function Component:ShowRebirthNotice(previousCount, currentCount)
+    self._rebirthNoticePrevious = previousCount
+    self._rebirthNoticeCurrent = currentCount
+    self:RefreshRebirthNotice()
+
+    self._rebirthNoticeGeneration += 1
+    local generation = self._rebirthNoticeGeneration
+    FC.UIAnim:StopProgress(self._rebirthNoticeGroup)
+    self._rebirthNoticeGroup.GroupTransparency = 0
+    self._rebirthNoticeGroup.Visible = true
+    FC.UIAnim:FadeOut(self._rebirthNoticeGroup, function()
+        if self._rebirthNoticeGeneration == generation then
+            self._rebirthNoticeGroup.Visible = false
+        end
+    end, 0.2, 2.8)
+end
+
+--- 初始化重生界面、成功提示横幅和数据监听。
 function Component:OnReady()
     Component.Super.OnReady(self)
     local root = self:GetRootNode()
     root.ResetOnSpawn = false
     root.DisplayOrder = 10
+    self._rebirthNoticeGeneration = 0
+    self._rebirthNoticeGui = self:CreateRebirthNotice(root)
     self._commonUI = self:GetPlayerObject():RequireComponent("FCCommonUIComp")
     self._commonUI:RegisterTrainingClickModal(root)
     self._localization = self._commonUI.Localization
@@ -27,6 +130,7 @@ function Component:OnReady()
     self:Hide()
     self:TrackConnection(self._localization.Changed:Connect(function()
         self:RefreshRebirth()
+        self:RefreshRebirthNotice()
     end))
     self:WatchDataChanged(Fields.RockTrainingLevel, self.RefreshRebirth, self)
     self:WatchDataChanged(Fields.RebirthCount, self.RefreshRebirth, self)
@@ -71,6 +175,9 @@ function Component:OnHide()
     self.State.Open = false
 end
 
+--- 处理重生界面请求；仅服务端确认成功后显示次数变化。
+--- @param action string 重生界面操作名称。
+--- @param payload table 展示层传入的操作参数。
 function Component:OnUIAction(action, payload)
     if action == "CloseRebirth" then
         self:Hide()
@@ -91,6 +198,7 @@ function Component:OnUIAction(action, payload)
         self._commonUI:ShowLocalizedTips("Rebirth.RequiredLevel", {level = required})
         return
     end
+    local previousRebirthCount = self:GetNumber(Fields.RebirthCount)
     self.State.Pending = true
     self:RefreshUI()
     self._rebirthTask = task.defer(function()
@@ -101,16 +209,27 @@ function Component:OnUIAction(action, payload)
         self.State.Pending = false
         if not ok or type(result) ~= "table" then
             self._commonUI:ShowLocalizedTips("Common.Unknown")
+        elseif result.success == true then
+            self:ShowRebirthNotice(previousRebirthCount, previousRebirthCount + 1)
         end
         -- 成败提示由服务端发送；后续门槛与倍率由正式数据同步刷新。
         self:RefreshRebirth()
     end)
 end
 
+--- 停止本组件拥有的重生请求与提示动画，并释放提示界面。
 function Component:Dtor()
     if self._rebirthTask then
         task.cancel(self._rebirthTask)
         self._rebirthTask = nil
+    end
+    self._rebirthNoticeGeneration += 1
+    if self._rebirthNoticeGroup then
+        FC.UIAnim:StopProgress(self._rebirthNoticeGroup)
+    end
+    if self._rebirthNoticeGui then
+        self._rebirthNoticeGui:Destroy()
+        self._rebirthNoticeGui = nil
     end
     Component.Super.Dtor(self)
 end

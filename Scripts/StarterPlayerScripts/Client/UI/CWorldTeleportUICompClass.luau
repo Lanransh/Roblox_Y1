@@ -135,6 +135,29 @@ function Component:OnShow()
     Component.Super.OnShow(self)
 end
 
+--- 锁定条目保留父类门槛校验，额外点击只解释历史最高等级要求。
+--- @param worldId string 世界稳定 ID。
+--- @return table 父类创建并管理的条目。
+function Component:CreateRow(worldId)
+    local record = Component.Super.CreateRow(self, worldId)
+    self:TrackConnection(record.button.Activated:Connect(function()
+        local world = record.world
+        if not self.State.pendingWorldId and self.State.level < world.requiredLevel then
+            self._commonUI:ShowLocalizedTips("World.RequiredLevel", {level = world.requiredLevel})
+        end
+    end))
+    return record
+end
+
+--- 保留锁定配色与门槛文案，但允许点击查看原因；传送期间仍禁用。
+--- @param state table 权威等级、当前世界与请求状态。
+function Component:Render(state)
+    Component.Super.Render(self, state)
+    for worldId, record in pairs(self._rows) do
+        self:SetButtonEnabled(record.button, state.currentWorldId ~= worldId and not state.pendingWorldId)
+    end
+end
+
 --- 关闭界面，或请求服务端传送；客户端只提交稳定世界 ID 对应的配置序号。
 --- @param action string 展示类动作，Teleport 或 Close。
 --- @param payload table Teleport 携带 worldId，Close 为空表。
@@ -166,6 +189,9 @@ function Component:OnUIAction(action, payload)
             failure = {key = result.key or "Common.Unknown", arguments = result.arguments}
         end
         self.State.error = failure and self._localization:FormatByKey(failure.key, failure.arguments) or nil
+        if failure then
+            self._commonUI:ShowLocalizedTips(failure.key, failure.arguments)
+        end
         -- 成功时由服务端同步的世界序号刷新当前世界，不在客户端改写。
         self:RefreshWorlds()
     end)

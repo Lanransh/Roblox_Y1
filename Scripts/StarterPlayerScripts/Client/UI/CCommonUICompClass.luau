@@ -94,11 +94,17 @@ function UI:ShowTips(message, duration)
     UI.Super.ShowTips(self, message, duration)
 end
 
---- 服务端和客户端共用 Key 提示入口，显示时才按玩家语言格式化。
+--- 服务端和客户端共用 Key 提示入口；商店收益使用原始数值，显示时统一缩写。
 --- @param key string 本地文案表中的提示 Key。
 --- @param arguments table? 提示模板参数。
 --- @param duration number? 显示时长，单位为秒。
 function UI:ShowLocalizedTips(key, arguments, duration)
+    if key == "CurrencyShop.TrainingReceived" or key == "CurrencyShop.DiamondsReceived"
+        or key == "CurrencyShop.RateUpgraded" then
+        arguments = table.clone(arguments)
+        local field = key == "CurrencyShop.RateUpgraded" and "rate" or "value"
+        arguments[field] = GameUtility.NumberToText(arguments[field])
+    end
     self:ShowTips(self.Localization:FormatByKey(key, arguments), duration)
     self._tipKey, self._tipArguments = key, arguments
 end

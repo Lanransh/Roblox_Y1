@@ -9,6 +9,12 @@ local Fields = _G.PlayerDataConfig
 local MarketplaceService = game:GetService("MarketplaceService")
 local Component = FX.Class("CCurrencyShopUICompClass", "CCurrencyShopView")
 
+-- 按商品含义选择渐变：优惠粉、周卡绿/紫，钻石包随档位使用青/橙/金。
+local RobuxCardStyles = {
+    [100] = "Pink", [111] = "Green", [112] = "Purple",
+    [101] = "Cyan", [102] = "Orange", [103] = "Gold",
+}
+
 --- 主界面按此名称打开业务组件。
 --- @return string 玩家内组件名称。
 function Component:GetCompName()
@@ -73,7 +79,7 @@ function Component:BindUIData()
     end)
 end
 
---- 将配置与权威进度转换为展示契约，每组只显示下一档或完成态。
+--- 将配置与权威进度转换为渐变卡片，每组只显示下一档或完成态。
 function Component:BuildProducts()
     local products, groups = {}, {}
     for index, item in ipairs(_G.ShopConfig.GemCoinData) do
@@ -97,7 +103,8 @@ function Component:BuildProducts()
             end
             table.insert(products, {id = "group_" .. item.Group, currency = "Diamond",
                 goodsId = display.GemGoodsId, title = title, description = description,
-                price = goods.Price, icon = display.IconId, soldOut = nextItem == nil})
+                price = goods.Price, icon = display.IconId, soldOut = nextItem == nil,
+                cardStyle = goods.BuyHandler == "TrainingRateLevel" and "Orange" or "Cyan"})
         end
     end
     for index, item in ipairs(_G.ShopConfig.MiniCoinData) do
@@ -122,6 +129,7 @@ function Component:BuildProducts()
         table.insert(products, {id = "robux_" .. item.DevGoodsId, currency = "Robux",
             goodsId = item.DevGoodsId, productId = goods.RobloxProductId,
             title = title, description = description, icon = item.IconId,
+            cardStyle = RobuxCardStyles[item.DevGoodsId],
             price = self._prices[item.DevGoodsId] or goods.Price,
             unavailable = self._prices[item.DevGoodsId] == nil,
             soldOut = goods.BuyLimit ~= nil and count >= goods.BuyLimit})
@@ -129,13 +137,12 @@ function Component:BuildProducts()
     self.Config.products = products
 end
 
---- 保留生成类列表布局，补充本地化、数量缩写及业务禁用状态。
+--- 保留生成类多色列表布局，补充本地化、数量缩写及业务禁用状态。
 --- @param state table 完整界面状态。
 function Component:Render(state)
     self:BuildProducts()
     state.message = self._messageKey and self._localization:FormatByKey(self._messageKey) or ""
     Component.Super.Render(self, state)
-    self.Status.AutoLocalize = false
     for index, product in ipairs(self.Config.products) do
         local card = self.Cards[product.id]
         if card then
@@ -146,7 +153,9 @@ function Component:Render(state)
                 or (product.unavailable and "CurrencyShop.Unavailable")
             card.price.Text = key and self._localization:FormatByKey(key)
                 or GameUtility.NumberToText(product.price)
-            self:SetButtonEnabled(card.button, not self._busy and not product.soldOut and not product.unavailable)
+            local explainMaxRate = product.id == "group_1" and product.soldOut
+            self:SetButtonEnabled(card.button, not self._busy and not product.unavailable
+                and (not product.soldOut or explainMaxRate))
         end
     end
 end
@@ -162,7 +171,7 @@ function Component:OnHide()
     self.State.open = false
 end
 
---- 处理生成类动作，钻石商品二次确认，Robux 使用平台购买窗口。
+--- 满级训练倍率只提示原因；可购买商品沿用钻石确认页或平台窗口。
 --- @param action string SelectTab、Purchase 或 Close。
 --- @param payload table 生成类提供的页签或稳定商品 ID。
 function Component:OnUIAction(action, payload)
@@ -173,19 +182,13 @@ function Component:OnUIAction(action, payload)
         self:RefreshUI()
     elseif action == "Purchase" and not self._busy then
         for index, product in ipairs(self.Config.products) do
+            if product.id == payload.productId and product.id == "group_1" and product.soldOut then
+                self._commonUI:ShowLocalizedTips("CurrencyShop.RateMaxed")
+                return
+            end
             if product.id == payload.productId and not product.soldOut and not product.unavailable then
                 if product.currency == "Diamond" then
-                    self._confirmParams = {
-                        DescKey = "CurrencyShop.Confirm", Arguments = {value = GameUtility.NumberToText(product.price)},
-                        ConfirmCB = function()
-                            self._confirmParams = nil
-                            self:Purchase(product)
-                        end,
-                        CancelCB = function()
-                            self._confirmParams = nil
-                        end,
-                    }
-                    self._commonUI:ShowTooltips(self._confirmParams)
+                    self:GetPlayerObject():RequireComponent("CShopPurchaseUIComp"):OpenProduct(product)
                 else
                     self:Purchase(product)
                 end
@@ -195,8 +198,8 @@ function Component:OnUIAction(action, payload)
     end
 end
 
---- 请求期间禁点；RPC 失败或取消支付恢复界面，不提前扣款或发奖。
---- @param product table 用户确认时的商品快照，服务端仍校验下一档。
+--- Robux 预检或取消支付时恢复交互，奖励仍由平台收据处理。
+--- @param product table 所选 Robux 商品快照，包含平台 productId。
 function Component:Purchase(product)
     if self._busy then
         return
@@ -206,24 +209,11 @@ function Component:Purchase(product)
     self:RefreshUI()
     self._requestTask = task.defer(function()
         local ok, result = pcall(function()
-            if product.currency == "Robux" then
-                self._promptProductId = product.productId
-                return self._commonUI:ShowDeveloperBuyUI(product.productId)
-            end
-            return FX.Network:InvokeServer("C2S_BuyCurrencyShopGoods", product.goodsId)
+            self._promptProductId = product.productId
+            return self._commonUI:ShowDeveloperBuyUI(product.productId)
         end)
         self._requestTask = nil
-        if product.currency == "Diamond" then
-            self._busy = false
-            if ok and type(result) == "table" then
-                if result.success then
-                    self._data = result.data
-                end
-                self._messageKey = result.key
-            else
-                self._messageKey = "Common.Unknown"
-            end
-        elseif not ok or not result then
+        if not ok or not result then
             self._busy = false
             self._promptProductId = nil
             self._messageKey = "CurrencyShop.Unavailable"
@@ -232,16 +222,13 @@ function Component:Purchase(product)
     end)
 end
 
---- 取消组件拥有的请求与确认窗口，基类释放卡片和事件连接。
+--- 取消组件拥有的请求任务，基类释放卡片和事件连接。
 function Component:Dtor()
     if self._requestTask then
         task.cancel(self._requestTask)
     end
     if self._priceTask then
         task.cancel(self._priceTask)
-    end
-    if self._confirmParams and self._commonUI.TooltipParams == self._confirmParams then
-        self._commonUI:HideTooltips()
     end
     Component.Super.Dtor(self)
 end

@@ -17,6 +17,7 @@ function Player:Ctor(playerId)
     self:AddComponent("CAuraShopUICompClass")
     self:AddComponent("CWeaponShopUICompClass")
     self:AddComponent("CCurrencyShopUICompClass")
+    self:AddComponent("CShopPurchaseUICompClass")
     self:AddComponent("CWelfareUICompClass")
     self:AddComponent("CWorldTeleportUICompClass")
     if FX.IsDeveloper(playerId) then

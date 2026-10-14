@@ -4,10 +4,11 @@ Config.products: 必填数组；顺序为展示顺序，可为空。
 每项 { id: string 稳定商品 ID（全列表唯一）, currency: "Diamond"|"Robux",
 title: string, description: string, price: number 非负对应货币数量,
 icon: string 可选真实 Roblox Image ID，省略或空字符串显示问号占位,
-cardColor: string 可选卡片底色，格式 "#RRGGBB"；省略时使用对应货币原型的底色 }。
-推荐 cardColor：深蓝 "#245778"、青绿 "#245F5A"、紫色 "#573575"、
-橙棕 "#78472C"、玫红 "#753A57"、金棕 "#6C5A28"；也支持自定义十六进制色值。
-cardColor 只控制卡片底色，不改变购买按钮的语义色、文字和描边。
+cardStyle: string 可选 Green|Gold|Cyan|Orange|Purple|Pink，选择可编辑渐变原型；
+省略时 Diamond 使用 Green，Robux 使用 Gold。
+cardColor: string 旧配置兼容字段，本版不再读取 }。
+卡片使用设计原型的鲜艳竖向渐变，游戏可逐商品选择 cardStyle。
+商品配置不覆盖卡片底色，购买按钮、文字和描边仍由设计节点定义。
 State: 完整输入，非增量：
 tab: "Diamond"|"Robux" 必填；open: boolean 必填；
 pending: 字典[id]=boolean 可选，省略视为无请求；
@@ -16,7 +17,7 @@ pending: 字典[id]=boolean 可选，省略视为无请求；
 最小示例：
 self.Config = { products = { { id = "speed", currency = "Diamond",
 title = "Speed Potion", description = "Boost your movement speed", price = 100,
-cardColor = "#245778" } } }
+cardStyle = "Green" } } }
 self.State = { tab = "Diamond", open = true }
 动作：SelectTab { tab: "Diamond"|"Robux" }；
 Purchase { productId: string, currency: "Diamond"|"Robux" }；Close {}。
@@ -41,10 +42,13 @@ function CCurrencyShopView:OnReady()
     self.ContentTitle = FXLoader:Here(root, "PopupPanelImg.ProductsContentImg.ProductsTitleTxt")
     self.DiamondTab = FXLoader:Here(root, "PopupPanelImg.DiamondTabBtn")
     self.RobuxTab = FXLoader:Here(root, "PopupPanelImg.RobuxTabBtn")
-    self.Templates = {
-        Diamond = FXLoader:Here(root, "Templates.DiamondCardImg"),
-        Robux = FXLoader:Here(root, "Templates.RobuxCardImg"),
-    }
+    self.Templates = {}
+    for currencyIndex, currency in ipairs({ "Diamond", "Robux" }) do
+        self.Templates[currency] = {}
+        for styleIndex, style in ipairs({ "Green", "Gold", "Cyan", "Orange", "Purple", "Pink" }) do
+            self.Templates[currency][style] = FXLoader:Here(root, "Templates." .. currency .. style .. "CardImg")
+        end
+    end
     self.Cards = {}
     -- 页签动作仅提交目标货币。
     self:TrackConnection(self.DiamondTab.Activated:Connect(function()
@@ -67,9 +71,10 @@ end
 
 -- 创建原型副本并记录当前商品身份。
 -- @param product table Config.products 中的商品
+-- @param style string 已选择的渐变原型名称
 -- @return table 卡片节点、连接与清理函数
-function CCurrencyShopView:CreateCard(product)
-    local node = self.Templates[product.currency]:Clone()
+function CCurrencyShopView:CreateCard(product, style)
+    local node = self.Templates[product.currency][style]:Clone()
     node.Name = "Product_" .. product.id
     node.Parent = self.List
     node.Visible = true
@@ -81,6 +86,7 @@ function CCurrencyShopView:CreateCard(product)
         button = FXLoader:Here(node, "PurchaseBtn"),
         price = FXLoader:Here(node, "PurchaseBtn.ButtonTxt"),
         currency = product.currency,
+        style = style,
     }
     -- 点击读取稳定 ID，货币由当前配置关联。
     local connection = card.button.Activated:Connect(function()
@@ -120,21 +126,17 @@ function CCurrencyShopView:Render(state)
     for index, product in ipairs(self:GetUIConfig().products) do
         if product.currency == state.tab then
             count = count + 1
+            local style = product.cardStyle or (product.currency == "Diamond" and "Green" or "Gold")
             local card = self.Cards[product.id]
-            if card and card.currency ~= product.currency then
+            if card and (card.currency ~= product.currency or card.style ~= style) then
                 card.release()
                 card = nil
             end
             if not card then
-                card = self:CreateCard(product)
+                card = self:CreateCard(product, style)
                 self.Cards[product.id] = card
             end
             kept[product.id] = true
-            local cardColor = self.Templates[product.currency].BackgroundColor3
-            if product.cardColor then
-                cardColor = Color3.fromHex(product.cardColor)
-            end
-            card.node.BackgroundColor3 = cardColor
             card.node.Position = UDim2.fromOffset(((count - 1) % 2) * 374, math.floor((count - 1) / 2) * 192)
             card.title.Text = product.title
             card.description.Text = product.description

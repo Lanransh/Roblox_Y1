@@ -130,7 +130,7 @@ function Component:BindStrengthCharacter(character)
     end
 end
 
---- 由服务端创建角色下的 BillboardGui，使所有玩家收到相同力量显示。
+--- 由服务端创建角色下的 BillboardGui，限制字号避免短数字撑满显示区域。
 --- @param head BasePart 当前角色头部，兼容 R6 和 R15。
 function Component:CreateStrengthBillboard(head)
     local billboard = Instance.new("BillboardGui")
@@ -161,6 +161,10 @@ function Component:CreateStrengthBillboard(head)
     text.AutoLocalize = false
     text.Text = GameUtility.NumberToText(self._strengthStat.Value)
     text.Parent = billboard
+
+    local textSizeConstraint = Instance.new("UITextSizeConstraint")
+    textSizeConstraint.MaxTextSize = 28
+    textSizeConstraint.Parent = text
 
     local stroke = Instance.new("UIStroke")
     stroke.Color = Color3.new(0, 0, 0)
@@ -227,18 +231,15 @@ function Component:ResetTrainingProgress()
     self._lastGrowth = os.clock()
 end
 
---- 立即结算力量卡时长，复用训练基础速率、永久倍率和当前阶段经验上限。
----@param seconds number 力量卡提供的训练秒数。
----@return boolean 是否实际增加了训练值。
-function Component:ApplyTrainingCard(seconds)
-    if type(seconds) ~= "number" or seconds <= 0 or seconds == math.huge or seconds ~= seconds then
-        return false
-    end
+--- 力量卡与离线奖励共用训练速率和永久倍率，不包含在线追赶收益。
+--- @param seconds number 服务端提供的有效训练秒数。
+--- @return number 当前阶段经验上限内的训练收益。
+function Component:GetTrainingCardGain(seconds)
     local rebirthCount = self:GetNumber(Fields.RebirthCount)
     local currentValue = self:GetNumber(Fields.RockTrainingValue)
     local maxValue = Rebirth.GetMaxTrainingValue(rebirthCount)
     if currentValue >= maxValue then
-        return false
+        return 0
     end
     local baseGain = _G.NumericalConfig.trainingSettlementsPerSecond * seconds
         * self:GetHighestTrainingRate(rebirthCount)
@@ -246,7 +247,17 @@ function Component:ApplyTrainingCard(seconds)
     baseGain *= Aura.GetTrainingRate(self:GetTable(Fields.AuraData))
     baseGain *= Weapon.GetEquippedConfig(self:GetTable(Fields.WeaponData)).TrainingRate
     baseGain *= CurrencyShop.GetTrainingRate(self:GetTable(Fields.CurrencyShopData))
-    local gain = math.min(baseGain * Rebirth.GetTrainingRate(rebirthCount), maxValue - currentValue)
+    return math.min(baseGain * Rebirth.GetTrainingRate(rebirthCount), maxValue - currentValue)
+end
+
+--- 立即结算力量卡时长，复用训练基础速率、永久倍率和当前阶段经验上限。
+---@param seconds number 力量卡提供的训练秒数。
+---@return boolean 是否实际增加了训练值。
+function Component:ApplyTrainingCard(seconds)
+    if type(seconds) ~= "number" or seconds <= 0 or seconds == math.huge or seconds ~= seconds then
+        return false
+    end
+    local gain = self:GetTrainingCardGain(seconds)
     if gain <= 0 then
         return false
     end

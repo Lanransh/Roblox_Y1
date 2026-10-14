@@ -38,14 +38,15 @@ function Manager:RegActivityMsg()
     --- @param userId number 引擎认证的请求者。
     --- @param kind any 客户端奖励类别。
     --- @param rewardId any 客户端配置 ID。
+    --- @param multiplier any 离线领取方式，由服务端验证。
     --- @return table 领取结果与权威状态。
-    FX.Network:RegClientMsgCallback("C2S_ClaimWelfareReward", function(userId, kind, rewardId)
+    FX.Network:RegClientMsgCallback("C2S_ClaimWelfareReward", function(userId, kind, rewardId, multiplier)
         local player = self:GetPlayerObject(userId)
         local activity = player and player:GetComponent("SActivityComp")
         if not activity then
             return {success = false, key = "Welfare.NotReady"}
         end
-        return activity:Claim(kind, rewardId)
+        return activity:Claim(kind, rewardId, multiplier)
     end)
 end
 

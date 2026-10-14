@@ -2,6 +2,11 @@
 local Welfare = {}
 
 Welfare.Sources = {
+    ["Welfare.Offline"] = "Offline Rewards",
+    ["Welfare.OfflineTime"] = "Offline Time: {hours:int}h {minutes:int}m {seconds:int}s",
+    ["Welfare.OfflineTraining"] = "Training: {value}",
+    ["Welfare.OfflineEmpty"] = "No offline rewards available.",
+    ["Welfare.OfflineClaim"] = "Claim ×{multiplier:int}",
     ["Welfare.Tasks"] = "Daily Tasks",
     ["Welfare.TaskRule"] = "Progress and rewards reset daily at 00:00 UTC.",
     ["Welfare.InProgress"] = "In Progress",

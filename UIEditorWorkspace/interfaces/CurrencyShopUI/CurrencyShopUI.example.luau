@@ -13,7 +13,7 @@ function CCurrencyShopPreview:Ctor(owner)
                 title = "Speed Potion",
                 description = "Boost your movement speed",
                 price = 100,
-                cardColor = "#245778",
+                cardStyle = "Green",
             },
             {
                 id = "luck",
@@ -21,7 +21,7 @@ function CCurrencyShopPreview:Ctor(owner)
                 title = "Luck Potion",
                 description = "Add luck to your next adventure",
                 price = 250,
-                cardColor = "#573575",
+                cardStyle = "Gold",
             },
             {
                 id = "energy",
@@ -29,7 +29,7 @@ function CCurrencyShopPreview:Ctor(owner)
                 title = "Energy Pack",
                 description = "Refill your energy for exploring",
                 price = 150,
-                cardColor = "#245F5A",
+                cardStyle = "Cyan",
             },
             {
                 id = "chest",
@@ -37,7 +37,7 @@ function CCurrencyShopPreview:Ctor(owner)
                 title = "Mystery Chest",
                 description = "Discover a mystery reward",
                 price = 500,
-                cardColor = "#78472C",
+                cardStyle = "Orange",
             },
             {
                 id = "trail",
@@ -45,7 +45,7 @@ function CCurrencyShopPreview:Ctor(owner)
                 title = "Star Trail",
                 description = "Leave a sparkling trail",
                 price = 800,
-                cardColor = "#753A57",
+                cardStyle = "Purple",
             },
             {
                 id = "ticket",
@@ -53,7 +53,7 @@ function CCurrencyShopPreview:Ctor(owner)
                 title = "Challenge Ticket",
                 description = "Unlock an extra challenge",
                 price = 200,
-                cardColor = "#6C5A28",
+                cardStyle = "Pink",
             },
             {
                 id = "starter",
@@ -61,7 +61,7 @@ function CCurrencyShopPreview:Ctor(owner)
                 title = "Starter Pack",
                 description = "Supplies to start your adventure",
                 price = 49,
-                cardColor = "#245F5A",
+                cardStyle = "Green",
             },
             {
                 id = "gem_pack",
@@ -69,7 +69,7 @@ function CCurrencyShopPreview:Ctor(owner)
                 title = "Diamond Pack",
                 description = "Get 1,000 diamonds",
                 price = 99,
-                cardColor = "#245778",
+                cardStyle = "Cyan",
             },
             { id = "vip", currency = "Robux", title = "VIP Pass", description = "Unlock exclusive VIP perks", price = 199 },
             {
@@ -78,7 +78,7 @@ function CCurrencyShopPreview:Ctor(owner)
                 title = "Special Outfit",
                 description = "Create your own unique look",
                 price = 149,
-                cardColor = "#753A57",
+                cardStyle = "Purple",
             },
             {
                 id = "deluxe",
@@ -86,7 +86,7 @@ function CCurrencyShopPreview:Ctor(owner)
                 title = "Deluxe Pack",
                 description = "Stock up on adventure supplies",
                 price = 299,
-                cardColor = "#6C5A28",
+                cardStyle = "Pink",
             },
             {
                 id = "pet",
@@ -94,7 +94,7 @@ function CCurrencyShopPreview:Ctor(owner)
                 title = "Companion Pack",
                 description = "Meet your new adventure companion",
                 price = 249,
-                cardColor = "#78472C",
+                cardStyle = "Orange",
             },
         },
     }

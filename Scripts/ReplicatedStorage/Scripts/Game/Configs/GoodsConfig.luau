@@ -25,6 +25,8 @@ return {
         [201] = {GemGoodsId = 201, BuyHandler = "ExpandableBackpack", Price = 52, NumberArray = {1}},
         [202] = {GemGoodsId = 202, BuyHandler = "ExpandableBackpack", Price = 368, NumberArray = {1}},
         [203] = {GemGoodsId = 203, BuyHandler = "ExpandableBackpack", Price = 688, NumberArray = {1}},
+        [301] = {GemGoodsId = 301, BuyHandler = "BuyTrainingValue", Price = 98, NumberArray = {1800}},
+        [302] = {GemGoodsId = 302, BuyHandler = "BuyTrainingValue", Price = 388, NumberArray = {7200}},
     },
     GoodsItemData = {}
 }

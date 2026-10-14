@@ -4,7 +4,7 @@ local Shop = FX.Loader:RequireShared("Scripts/Game/Shared/CurrencyShop")
 local Fields = _G.PlayerDataConfig
 local Service = {}
 
---- 同组只能购买下一档，拒绝过期按钮、跳级及重复扣款。
+--- 升级同组只能买下一档，力量包允许逐次购买；价格和实际收益均由服务端重算。
 --- @param player table 引擎认证身份对应的已就绪玩家对象。
 --- @param goodsId any 客户端提交的钻石商品 ID。
 --- @return table 结果 Key 与权威商店状态。
@@ -13,6 +13,8 @@ function Service.Buy(player, goodsId)
         return {success = false, key = "CurrencyShop.Invalid"}
     end
     local data = player:GetTable(Fields.CurrencyShopData)
+    local goods = _G.GoodsConfig.GemGoodsData[goodsId]
+    local isTrainingPack = goods and goods.BuyHandler == "BuyTrainingValue"
     local selected
     for index, item in ipairs(_G.ShopConfig.GemCoinData) do
         if item.GemGoodsId == goodsId then
@@ -21,25 +23,36 @@ function Service.Buy(player, goodsId)
         end
     end
     local nextItem = selected and Shop.GetNextGemGoods(selected.Group, data)
-    if not nextItem or nextItem.GemGoodsId ~= goodsId then
+    if not isTrainingPack and (not nextItem or nextItem.GemGoodsId ~= goodsId) then
         return {success = false, key = "CurrencyShop.Invalid"}
     end
-    local goods = _G.GoodsConfig.GemGoodsData[goodsId]
+    local gain = isTrainingPack and Shop.GetTrainingPackGain(player, goodsId) or 0
+    if isTrainingPack and gain <= 0 then
+        return {success = false, key = "Main.TrainingFull"}
+    end
     local diamonds = player:GetNumber(Fields.Diamonds)
     if diamonds < goods.Price then
         return {success = false, key = "CurrencyShop.NeedDiamonds"}
     end
-    if goods.BuyHandler == "TrainingRateLevel" then
+    local key, arguments
+    if isTrainingPack then
+        player:AddNumber(Fields.RockTrainingValue, gain)
+        player:RequireComponent("SMiscComp"):RefreshProgress()
+        FX.Network:SendMsgToClient(player:GetPlayerId(), "S2C_TrainingEffect", gain, true)
+        key, arguments = "CurrencyShop.TrainingReceived", {value = gain}
+    elseif goods.BuyHandler == "TrainingRateLevel" then
         data.trainingLevel += 1
+        key, arguments = "CurrencyShop.RateUpgraded", {rate = Shop.GetTrainingRate(data)}
     elseif goods.BuyHandler == "ExpandableBackpack" then
         data.capacity += goods.NumberArray[1]
+        key, arguments = "CurrencyShop.CapacityUpgraded", {count = goods.NumberArray[1]}
     else
         return {success = false, key = "CurrencyShop.Invalid"}
     end
     data.gemBought[tostring(goodsId)] = true
     player:SetNumber(Fields.Diamonds, diamonds - goods.Price)
     player:SetTable(Fields.CurrencyShopData, data)
-    return {success = true, key = "CurrencyShop.Success", data = data}
+    return {success = true, key = key, arguments = arguments, data = data}
 end
 
 return Service
