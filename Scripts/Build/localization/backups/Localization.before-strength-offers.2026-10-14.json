@@ -1,0 +1,2846 @@
+[
+  {
+    "Key": "Test.Key",
+    "Values": {
+      "en-us": "Hello {count:int}"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Hello {count:int}"
+  },
+  {
+    "Key": "Main.Home",
+    "Values": {
+      "en-us": "HOME"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "HOME"
+  },
+  {
+    "Key": "Main.Strength",
+    "Values": {
+      "en-us": "Strength: {value}"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Strength: {value}"
+  },
+  {
+    "Key": "Main.MaxLevel",
+    "Values": {
+      "en-us": "MAX LEVEL"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "MAX LEVEL"
+  },
+  {
+    "Key": "Common.Confirm",
+    "Values": {
+      "en-us": "Confirm"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Confirm"
+  },
+  {
+    "Key": "Common.Cancel",
+    "Values": {
+      "en-us": "Cancel"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Cancel"
+  },
+  {
+    "Key": "Common.Unknown",
+    "Values": {
+      "en-us": "Something went wrong. Please try again."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Something went wrong. Please try again."
+  },
+  {
+    "Key": "Rarity.Quality",
+    "Values": {
+      "en-us": "Quality {level:int}"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Quality {level:int}"
+  },
+  {
+    "Key": "Aura.TrainingRate",
+    "Values": {
+      "en-us": "Training ×{rate}"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Training ×{rate}"
+  },
+  {
+    "Key": "Training.HUDStrength",
+    "Values": {
+      "en-us": "Training ×{rate}"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Training ×{rate}"
+  },
+  {
+    "Key": "Weapon.TrainingRate",
+    "Values": {
+      "en-us": "Training ×{rate}"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Training ×{rate}"
+  },
+  {
+    "Key": "Aura.Price",
+    "Values": {
+      "en-us": "Buy: {value} Coins"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Buy: {value} Coins"
+  },
+  {
+    "Key": "Weapon.Price",
+    "Values": {
+      "en-us": "Buy: {value} Coins"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Buy: {value} Coins"
+  },
+  {
+    "Key": "Aura.NeedCoins",
+    "Values": {
+      "en-us": "Need {value} Coins"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Need {value} Coins"
+  },
+  {
+    "Key": "LootSell.Coins",
+    "Values": {
+      "en-us": "{value} Coins"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "{value} Coins"
+  },
+  {
+    "Key": "LootSell.Count",
+    "Values": {
+      "en-us": "{count:int}/{capacity:int}"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "{count:int}/{capacity:int}"
+  },
+  {
+    "Key": "World.Go",
+    "Values": {
+      "en-us": "Go"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Go"
+  },
+  {
+    "Key": "World.Here",
+    "Values": {
+      "en-us": "Here"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Here"
+  },
+  {
+    "Key": "World.Teleporting",
+    "Values": {
+      "en-us": "Teleporting"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Teleporting"
+  },
+  {
+    "Key": "World.Title",
+    "Values": {
+      "en-us": "WORLDS"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "WORLDS"
+  },
+  {
+    "Key": "World.LockedButton",
+    "Values": {
+      "en-us": "Rebirths {count:int}"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Rebirths {count:int}"
+  },
+  {
+    "Key": "World.RequiredRebirths",
+    "Values": {
+      "en-us": "Requires {count:int} rebirths to travel here."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Requires {count:int} rebirths to travel here."
+  },
+  {
+    "Key": "Common.InDevelopment",
+    "Values": {
+      "en-us": "Coming soon."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Coming soon."
+  },
+  {
+    "Key": "Welfare.Title",
+    "Values": {
+      "en-us": "REWARDS"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "REWARDS"
+  },
+  {
+    "Key": "Welfare.Online",
+    "Values": {
+      "en-us": "Online Rewards"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Online Rewards"
+  },
+  {
+    "Key": "Welfare.SignIn",
+    "Values": {
+      "en-us": "7-Day Login"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "7-Day Login"
+  },
+  {
+    "Key": "Welfare.Daily",
+    "Values": {
+      "en-us": "Daily Diamonds"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Daily Diamonds"
+  },
+  {
+    "Key": "Welfare.OnlineTime",
+    "Values": {
+      "en-us": "Online: {minutes:int} min · Resets daily"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Online: {minutes:int} min · Resets daily"
+  },
+  {
+    "Key": "Welfare.LoginDay",
+    "Values": {
+      "en-us": "Total login days: {day:int}"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Total login days: {day:int}"
+  },
+  {
+    "Key": "Welfare.Minute",
+    "Values": {
+      "en-us": "{minutes:int} min"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "{minutes:int} min"
+  },
+  {
+    "Key": "Welfare.WeeklyReward",
+    "Values": {
+      "en-us": "Weekly Reward"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Weekly Reward"
+  },
+  {
+    "Key": "Welfare.ItemReward",
+    "Values": {
+      "en-us": "{item} ×{value}"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "{item} ×{value}"
+  },
+  {
+    "Key": "Welfare.Claim",
+    "Values": {
+      "en-us": "Claim"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Claim"
+  },
+  {
+    "Key": "Welfare.Claimed",
+    "Values": {
+      "en-us": "Claimed"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Claimed"
+  },
+  {
+    "Key": "Welfare.Locked",
+    "Values": {
+      "en-us": "Locked"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Locked"
+  },
+  {
+    "Key": "Welfare.DailySubtitle",
+    "Values": {
+      "en-us": "Daily login reward and active weekly passes"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Daily login reward and active weekly passes"
+  },
+  {
+    "Key": "Welfare.Available",
+    "Values": {
+      "en-us": "Available today"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Available today"
+  },
+  {
+    "Key": "Welfare.Tomorrow",
+    "Values": {
+      "en-us": "Today's rewards claimed · Come back tomorrow"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Today's rewards claimed · Come back tomorrow"
+  },
+  {
+    "Key": "Welfare.LoginBonus",
+    "Values": {
+      "en-us": "Daily Login"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Daily Login"
+  },
+  {
+    "Key": "Welfare.DailyAmount",
+    "Values": {
+      "en-us": "+{value} Diamonds per day"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "+{value} Diamonds per day"
+  },
+  {
+    "Key": "Welfare.PassInactive",
+    "Values": {
+      "en-us": "Use this pass from your backpack to activate it."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Use this pass from your backpack to activate it."
+  },
+  {
+    "Key": "Welfare.OnlineRule",
+    "Values": {
+      "en-us": "Online time adds up throughout the day. Each reward can be claimed once per day."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Online time adds up throughout the day. Each reward can be claimed once per day."
+  },
+  {
+    "Key": "Welfare.SignInRule",
+    "Values": {
+      "en-us": "Log in on 7 different days. Missing a day does not reset your progress."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Log in on 7 different days. Missing a day does not reset your progress."
+  },
+  {
+    "Key": "Welfare.DailyRule",
+    "Values": {
+      "en-us": "New passes start their daily rewards tomorrow. Unclaimed pass rewards do not expire."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "New passes start their daily rewards tomorrow. Unclaimed pass rewards do not expire."
+  },
+  {
+    "Key": "Welfare.Item.101",
+    "Values": {
+      "en-us": "Small Weekly Diamond Pass"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Small Weekly Diamond Pass"
+  },
+  {
+    "Key": "Welfare.Item.102",
+    "Values": {
+      "en-us": "Large Weekly Diamond Pass"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Large Weekly Diamond Pass"
+  },
+  {
+    "Key": "Welfare.Item.103",
+    "Values": {
+      "en-us": "Double Sell Value Card"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Double Sell Value Card"
+  },
+  {
+    "Key": "Welfare.Item.104",
+    "Values": {
+      "en-us": "Backpack Boost Card (1 Hour)"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Backpack Boost Card (1 Hour)"
+  },
+  {
+    "Key": "Welfare.Item.105",
+    "Values": {
+      "en-us": "Strength Card (15 Minutes)"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Strength Card (15 Minutes)"
+  },
+  {
+    "Key": "Welfare.Item.106",
+    "Values": {
+      "en-us": "Strength Card (30 Minutes)"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Strength Card (30 Minutes)"
+  },
+  {
+    "Key": "Welfare.Item.107",
+    "Values": {
+      "en-us": "NPC Progress Card"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "NPC Progress Card"
+  },
+  {
+    "Key": "Collectible.001",
+    "Values": {
+      "en-us": "Nail"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Nail"
+  },
+  {
+    "Key": "Collectible.002",
+    "Values": {
+      "en-us": "Pill"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Pill"
+  },
+  {
+    "Key": "Collectible.003",
+    "Values": {
+      "en-us": "Capsule"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Capsule"
+  },
+  {
+    "Key": "Collectible.004",
+    "Values": {
+      "en-us": "Battery 1"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Battery 1"
+  },
+  {
+    "Key": "Collectible.005",
+    "Values": {
+      "en-us": "Battery 2"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Battery 2"
+  },
+  {
+    "Key": "Collectible.006",
+    "Values": {
+      "en-us": "Biscuit 1"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Biscuit 1"
+  },
+  {
+    "Key": "Collectible.007",
+    "Values": {
+      "en-us": "Biscuit 2"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Biscuit 2"
+  },
+  {
+    "Key": "Collectible.008",
+    "Values": {
+      "en-us": "Biscuit 3"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Biscuit 3"
+  },
+  {
+    "Key": "Collectible.009",
+    "Values": {
+      "en-us": "Chocolate 1"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Chocolate 1"
+  },
+  {
+    "Key": "Collectible.010",
+    "Values": {
+      "en-us": "Chocolate 2"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Chocolate 2"
+  },
+  {
+    "Key": "Collectible.011",
+    "Values": {
+      "en-us": "Chocolate Drink"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Chocolate Drink"
+  },
+  {
+    "Key": "Collectible.012",
+    "Values": {
+      "en-us": "Honey 1"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Honey 1"
+  },
+  {
+    "Key": "Collectible.013",
+    "Values": {
+      "en-us": "Honey 2"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Honey 2"
+  },
+  {
+    "Key": "Collectible.014",
+    "Values": {
+      "en-us": "Jam 1"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Jam 1"
+  },
+  {
+    "Key": "Collectible.015",
+    "Values": {
+      "en-us": "Jam 2"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Jam 2"
+  },
+  {
+    "Key": "Collectible.016",
+    "Values": {
+      "en-us": "Water 1"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Water 1"
+  },
+  {
+    "Key": "Collectible.017",
+    "Values": {
+      "en-us": "Water 2"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Water 2"
+  },
+  {
+    "Key": "Collectible.018",
+    "Values": {
+      "en-us": "Water 3"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Water 3"
+  },
+  {
+    "Key": "Collectible.019",
+    "Values": {
+      "en-us": "Waterbottle 1"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Waterbottle 1"
+  },
+  {
+    "Key": "Collectible.020",
+    "Values": {
+      "en-us": "Waterbottle 2"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Waterbottle 2"
+  },
+  {
+    "Key": "Collectible.021",
+    "Values": {
+      "en-us": "Bottle 1"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Bottle 1"
+  },
+  {
+    "Key": "Collectible.022",
+    "Values": {
+      "en-us": "Bottle 2"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Bottle 2"
+  },
+  {
+    "Key": "Collectible.023",
+    "Values": {
+      "en-us": "Bottle 3"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Bottle 3"
+  },
+  {
+    "Key": "Collectible.024",
+    "Values": {
+      "en-us": "Bottle 4"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Bottle 4"
+  },
+  {
+    "Key": "Collectible.025",
+    "Values": {
+      "en-us": "Bottle 5"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Bottle 5"
+  },
+  {
+    "Key": "Collectible.026",
+    "Values": {
+      "en-us": "Can 1"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Can 1"
+  },
+  {
+    "Key": "Collectible.027",
+    "Values": {
+      "en-us": "Can 2"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Can 2"
+  },
+  {
+    "Key": "Collectible.028",
+    "Values": {
+      "en-us": "Can 3"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Can 3"
+  },
+  {
+    "Key": "Collectible.029",
+    "Values": {
+      "en-us": "Can 4"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Can 4"
+  },
+  {
+    "Key": "Collectible.030",
+    "Values": {
+      "en-us": "Can 5"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Can 5"
+  },
+  {
+    "Key": "Collectible.031",
+    "Values": {
+      "en-us": "Can 6"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Can 6"
+  },
+  {
+    "Key": "Collectible.032",
+    "Values": {
+      "en-us": "Can 7"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Can 7"
+  },
+  {
+    "Key": "Collectible.033",
+    "Values": {
+      "en-us": "Medicine Bottle 1"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Medicine Bottle 1"
+  },
+  {
+    "Key": "Collectible.034",
+    "Values": {
+      "en-us": "Medicine Bottle 2"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Medicine Bottle 2"
+  },
+  {
+    "Key": "Collectible.035",
+    "Values": {
+      "en-us": "Syringe"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Syringe"
+  },
+  {
+    "Key": "Collectible.036",
+    "Values": {
+      "en-us": "Syringe A"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Syringe A"
+  },
+  {
+    "Key": "Collectible.037",
+    "Values": {
+      "en-us": "Bandage"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Bandage"
+  },
+  {
+    "Key": "Collectible.038",
+    "Values": {
+      "en-us": "Medical Supplies"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Medical Supplies"
+  },
+  {
+    "Key": "Collectible.039",
+    "Values": {
+      "en-us": "First Aid Kit 1"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "First Aid Kit 1"
+  },
+  {
+    "Key": "Collectible.040",
+    "Values": {
+      "en-us": "First Aid Kit 2"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "First Aid Kit 2"
+  },
+  {
+    "Key": "Collectible.041",
+    "Values": {
+      "en-us": "First Aid Kit 3"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "First Aid Kit 3"
+  },
+  {
+    "Key": "Collectible.042",
+    "Values": {
+      "en-us": "Detergent"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Detergent"
+  },
+  {
+    "Key": "Collectible.043",
+    "Values": {
+      "en-us": "Bleach"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Bleach"
+  },
+  {
+    "Key": "Collectible.044",
+    "Values": {
+      "en-us": "Lubricant Spray"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Lubricant Spray"
+  },
+  {
+    "Key": "Collectible.045",
+    "Values": {
+      "en-us": "Pipe"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Pipe"
+  },
+  {
+    "Key": "Collectible.046",
+    "Values": {
+      "en-us": "Lighter"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Lighter"
+  },
+  {
+    "Key": "Collectible.047",
+    "Values": {
+      "en-us": "Oil Can 1"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Oil Can 1"
+  },
+  {
+    "Key": "Collectible.048",
+    "Values": {
+      "en-us": "Oil Can 2"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Oil Can 2"
+  },
+  {
+    "Key": "Collectible.049",
+    "Values": {
+      "en-us": "Oil Can 3"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Oil Can 3"
+  },
+  {
+    "Key": "Collectible.050",
+    "Values": {
+      "en-us": "Mobile Phone"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Mobile Phone"
+  },
+  {
+    "Key": "Collectible.051",
+    "Values": {
+      "en-us": "Watch 1"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Watch 1"
+  },
+  {
+    "Key": "Collectible.052",
+    "Values": {
+      "en-us": "Identification Tag"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Identification Tag"
+  },
+  {
+    "Key": "Collectible.053",
+    "Values": {
+      "en-us": "Compass"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Compass"
+  },
+  {
+    "Key": "Collectible.054",
+    "Values": {
+      "en-us": "Compass A"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Compass A"
+  },
+  {
+    "Key": "Collectible.055",
+    "Values": {
+      "en-us": "Hat"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Hat"
+  },
+  {
+    "Key": "Collectible.056",
+    "Values": {
+      "en-us": "Cap"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Cap"
+  },
+  {
+    "Key": "Collectible.057",
+    "Values": {
+      "en-us": "Sunglasses 1"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Sunglasses 1"
+  },
+  {
+    "Key": "Collectible.058",
+    "Values": {
+      "en-us": "Sunglasses 2"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Sunglasses 2"
+  },
+  {
+    "Key": "Collectible.059",
+    "Values": {
+      "en-us": "Goggles"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Goggles"
+  },
+  {
+    "Key": "Collectible.060",
+    "Values": {
+      "en-us": "Goggles A"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Goggles A"
+  },
+  {
+    "Key": "Collectible.061",
+    "Values": {
+      "en-us": "Mask"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Mask"
+  },
+  {
+    "Key": "Collectible.062",
+    "Values": {
+      "en-us": "Gas Mask 1"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Gas Mask 1"
+  },
+  {
+    "Key": "Collectible.063",
+    "Values": {
+      "en-us": "Gas Mask 2"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Gas Mask 2"
+  },
+  {
+    "Key": "Collectible.064",
+    "Values": {
+      "en-us": "Boots 1"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Boots 1"
+  },
+  {
+    "Key": "Collectible.065",
+    "Values": {
+      "en-us": "Boots 2"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Boots 2"
+  },
+  {
+    "Key": "Collectible.066",
+    "Values": {
+      "en-us": "Boots 3"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Boots 3"
+  },
+  {
+    "Key": "Collectible.067",
+    "Values": {
+      "en-us": "Boots 4"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Boots 4"
+  },
+  {
+    "Key": "Collectible.068",
+    "Values": {
+      "en-us": "Bulletproof Vest 1"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Bulletproof Vest 1"
+  },
+  {
+    "Key": "Collectible.069",
+    "Values": {
+      "en-us": "Bulletproof Vest 2"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Bulletproof Vest 2"
+  },
+  {
+    "Key": "Collectible.070",
+    "Values": {
+      "en-us": "Helmet 1"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Helmet 1"
+  },
+  {
+    "Key": "Collectible.071",
+    "Values": {
+      "en-us": "Helmet 2"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Helmet 2"
+  },
+  {
+    "Key": "Collectible.072",
+    "Values": {
+      "en-us": "Helmet 3"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Helmet 3"
+  },
+  {
+    "Key": "Collectible.073",
+    "Values": {
+      "en-us": "Helmet 4"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Helmet 4"
+  },
+  {
+    "Key": "Collectible.074",
+    "Values": {
+      "en-us": "Bag 1"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Bag 1"
+  },
+  {
+    "Key": "Collectible.075",
+    "Values": {
+      "en-us": "Bag 2"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Bag 2"
+  },
+  {
+    "Key": "Collectible.076",
+    "Values": {
+      "en-us": "Bag 3"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Bag 3"
+  },
+  {
+    "Key": "Collectible.077",
+    "Values": {
+      "en-us": "Box 1"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Box 1"
+  },
+  {
+    "Key": "Collectible.078",
+    "Values": {
+      "en-us": "Box 2"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Box 2"
+  },
+  {
+    "Key": "Collectible.079",
+    "Values": {
+      "en-us": "Box 3"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Box 3"
+  },
+  {
+    "Key": "Collectible.080",
+    "Values": {
+      "en-us": "Cooking Pot 1"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Cooking Pot 1"
+  },
+  {
+    "Key": "Collectible.081",
+    "Values": {
+      "en-us": "Barrel 1"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Barrel 1"
+  },
+  {
+    "Key": "Collectible.082",
+    "Values": {
+      "en-us": "Barrel 2"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Barrel 2"
+  },
+  {
+    "Key": "Collectible.083",
+    "Values": {
+      "en-us": "Barrel 3"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Barrel 3"
+  },
+  {
+    "Key": "Collectible.084",
+    "Values": {
+      "en-us": "Barrel 4"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Barrel 4"
+  },
+  {
+    "Key": "Collectible.085",
+    "Values": {
+      "en-us": "Barrel 5"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Barrel 5"
+  },
+  {
+    "Key": "Collectible.086",
+    "Values": {
+      "en-us": "Propane Tank"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Propane Tank"
+  },
+  {
+    "Key": "Collectible.087",
+    "Values": {
+      "en-us": "Rope"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Rope"
+  },
+  {
+    "Key": "Collectible.088",
+    "Values": {
+      "en-us": "Wire"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Wire"
+  },
+  {
+    "Key": "Collectible.089",
+    "Values": {
+      "en-us": "Walkie-Talkie"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Walkie-Talkie"
+  },
+  {
+    "Key": "Collectible.090",
+    "Values": {
+      "en-us": "Walkie-Talkie A"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Walkie-Talkie A"
+  },
+  {
+    "Key": "Collectible.091",
+    "Values": {
+      "en-us": "Flashlight 1"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Flashlight 1"
+  },
+  {
+    "Key": "Collectible.092",
+    "Values": {
+      "en-us": "Headlamp"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Headlamp"
+  },
+  {
+    "Key": "Collectible.093",
+    "Values": {
+      "en-us": "Lantern"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Lantern"
+  },
+  {
+    "Key": "Collectible.094",
+    "Values": {
+      "en-us": "Telescope 1"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Telescope 1"
+  },
+  {
+    "Key": "Collectible.095",
+    "Values": {
+      "en-us": "Telescope 2"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Telescope 2"
+  },
+  {
+    "Key": "Collectible.096",
+    "Values": {
+      "en-us": "Hammer 1"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Hammer 1"
+  },
+  {
+    "Key": "Collectible.097",
+    "Values": {
+      "en-us": "Hammer 2"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Hammer 2"
+  },
+  {
+    "Key": "Collectible.098",
+    "Values": {
+      "en-us": "Hammer 3"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Hammer 3"
+  },
+  {
+    "Key": "Collectible.099",
+    "Values": {
+      "en-us": "Wrench 1"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Wrench 1"
+  },
+  {
+    "Key": "Collectible.100",
+    "Values": {
+      "en-us": "Wrench 2"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Wrench 2"
+  },
+  {
+    "Key": "Collectible.101",
+    "Values": {
+      "en-us": "Wrench 3"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Wrench 3"
+  },
+  {
+    "Key": "Collectible.102",
+    "Values": {
+      "en-us": "Shovel 1"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Shovel 1"
+  },
+  {
+    "Key": "Collectible.103",
+    "Values": {
+      "en-us": "Shovel 2"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Shovel 2"
+  },
+  {
+    "Key": "Collectible.104",
+    "Values": {
+      "en-us": "Pickaxe"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Pickaxe"
+  },
+  {
+    "Key": "Collectible.105",
+    "Values": {
+      "en-us": "Golf Club"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Golf Club"
+  },
+  {
+    "Key": "Collectible.106",
+    "Values": {
+      "en-us": "Hockey Stick"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Hockey Stick"
+  },
+  {
+    "Key": "Collectible.107",
+    "Values": {
+      "en-us": "Baseball Bat 1"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Baseball Bat 1"
+  },
+  {
+    "Key": "Collectible.108",
+    "Values": {
+      "en-us": "Baseball Bat 2"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Baseball Bat 2"
+  },
+  {
+    "Key": "Collectible.109",
+    "Values": {
+      "en-us": "Baseball Bat 3"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Baseball Bat 3"
+  },
+  {
+    "Key": "Collectible.110",
+    "Values": {
+      "en-us": "Baseball Bat 4"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Baseball Bat 4"
+  },
+  {
+    "Key": "Collectible.111",
+    "Values": {
+      "en-us": "Chainsaw"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Chainsaw"
+  },
+  {
+    "Key": "Collectible.112",
+    "Values": {
+      "en-us": "Axe 1"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Axe 1"
+  },
+  {
+    "Key": "Collectible.113",
+    "Values": {
+      "en-us": "Axe 2"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Axe 2"
+  },
+  {
+    "Key": "Collectible.114",
+    "Values": {
+      "en-us": "Axe 3"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Axe 3"
+  },
+  {
+    "Key": "Collectible.115",
+    "Values": {
+      "en-us": "Knife 1"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Knife 1"
+  },
+  {
+    "Key": "Collectible.116",
+    "Values": {
+      "en-us": "Knife 2"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Knife 2"
+  },
+  {
+    "Key": "Collectible.117",
+    "Values": {
+      "en-us": "Knife 3"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Knife 3"
+  },
+  {
+    "Key": "Collectible.118",
+    "Values": {
+      "en-us": "Knife 4"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Knife 4"
+  },
+  {
+    "Key": "Collectible.119",
+    "Values": {
+      "en-us": "Knife 5"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Knife 5"
+  },
+  {
+    "Key": "Collectible.120",
+    "Values": {
+      "en-us": "Knife 6"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Knife 6"
+  },
+  {
+    "Key": "Collectible.121",
+    "Values": {
+      "en-us": "Iron Mace"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Iron Mace"
+  },
+  {
+    "Key": "Collectible.122",
+    "Values": {
+      "en-us": "Dynamite 1"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Dynamite 1"
+  },
+  {
+    "Key": "Collectible.123",
+    "Values": {
+      "en-us": "Dynamite 2"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Dynamite 2"
+  },
+  {
+    "Key": "Collectible.124",
+    "Values": {
+      "en-us": "Dynamite 3"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Dynamite 3"
+  },
+  {
+    "Key": "Collectible.125",
+    "Values": {
+      "en-us": "Grenade 1"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Grenade 1"
+  },
+  {
+    "Key": "Collectible.126",
+    "Values": {
+      "en-us": "Grenade 2"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Grenade 2"
+  },
+  {
+    "Key": "Collectible.127",
+    "Values": {
+      "en-us": "Grenade 3"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Grenade 3"
+  },
+  {
+    "Key": "Collectible.128",
+    "Values": {
+      "en-us": "Land Mine"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Land Mine"
+  },
+  {
+    "Key": "Collectible.129",
+    "Values": {
+      "en-us": "Trap"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Trap"
+  },
+  {
+    "Key": "Collectible.130",
+    "Values": {
+      "en-us": "Bullet 1"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Bullet 1"
+  },
+  {
+    "Key": "Collectible.131",
+    "Values": {
+      "en-us": "Bullet 2"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Bullet 2"
+  },
+  {
+    "Key": "Collectible.132",
+    "Values": {
+      "en-us": "Bullet 3"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Bullet 3"
+  },
+  {
+    "Key": "Collectible.133",
+    "Values": {
+      "en-us": "Bullet 4"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Bullet 4"
+  },
+  {
+    "Key": "Collectible.134",
+    "Values": {
+      "en-us": "Bullet 5"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Bullet 5"
+  },
+  {
+    "Key": "Collectible.135",
+    "Values": {
+      "en-us": "Bullet 6"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Bullet 6"
+  },
+  {
+    "Key": "Collectible.136",
+    "Values": {
+      "en-us": "Bullet 7"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Bullet 7"
+  },
+  {
+    "Key": "Collectible.137",
+    "Values": {
+      "en-us": "Cartridge"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Cartridge"
+  },
+  {
+    "Key": "Collectible.138",
+    "Values": {
+      "en-us": "Gun 1"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Gun 1"
+  },
+  {
+    "Key": "Collectible.139",
+    "Values": {
+      "en-us": "Gun 2"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Gun 2"
+  },
+  {
+    "Key": "Collectible.140",
+    "Values": {
+      "en-us": "Rifle 1"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Rifle 1"
+  },
+  {
+    "Key": "Collectible.141",
+    "Values": {
+      "en-us": "Rifle 2"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Rifle 2"
+  },
+  {
+    "Key": "Collectible.142",
+    "Values": {
+      "en-us": "Rifle 3"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Rifle 3"
+  },
+  {
+    "Key": "Collectible.143",
+    "Values": {
+      "en-us": "Rifle 4"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Rifle 4"
+  },
+  {
+    "Key": "Collectible.144",
+    "Values": {
+      "en-us": "Rifle 5"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Rifle 5"
+  },
+  {
+    "Key": "Collectible.145",
+    "Values": {
+      "en-us": "Machine Gun 1"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Machine Gun 1"
+  },
+  {
+    "Key": "Collectible.146",
+    "Values": {
+      "en-us": "Machine Gun 2"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Machine Gun 2"
+  },
+  {
+    "Key": "Collectible.147",
+    "Values": {
+      "en-us": "Machine Gun 3"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Machine Gun 3"
+  },
+  {
+    "Key": "Collectible.148",
+    "Values": {
+      "en-us": "Machine Gun 4"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Machine Gun 4"
+  },
+  {
+    "Key": "Weapon.Name.101",
+    "Values": {
+      "en-us": "Worn Wooden Pickaxe"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Worn Wooden Pickaxe"
+  },
+  {
+    "Key": "Weapon.Name.102",
+    "Values": {
+      "en-us": "Heavy Wooden Hammer"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Heavy Wooden Hammer"
+  },
+  {
+    "Key": "Weapon.Name.103",
+    "Values": {
+      "en-us": "Crude Silver Pickaxe"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Crude Silver Pickaxe"
+  },
+  {
+    "Key": "Weapon.Name.104",
+    "Values": {
+      "en-us": "Crude Silver Hammer"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Crude Silver Hammer"
+  },
+  {
+    "Key": "Weapon.Name.105",
+    "Values": {
+      "en-us": "Reinforced Iron Pickaxe"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Reinforced Iron Pickaxe"
+  },
+  {
+    "Key": "Weapon.Name.106",
+    "Values": {
+      "en-us": "Reinforced Iron Hammer"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Reinforced Iron Hammer"
+  },
+  {
+    "Key": "Weapon.Name.107",
+    "Values": {
+      "en-us": "Fine Steel Mining Pickaxe"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Fine Steel Mining Pickaxe"
+  },
+  {
+    "Key": "Weapon.Name.108",
+    "Values": {
+      "en-us": "Fine Steel Maul"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Fine Steel Maul"
+  },
+  {
+    "Key": "Weapon.Name.109",
+    "Values": {
+      "en-us": "Brass Mechanical Pickaxe"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Brass Mechanical Pickaxe"
+  },
+  {
+    "Key": "Weapon.Name.110",
+    "Values": {
+      "en-us": "Brass Mechanical Hammer"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Brass Mechanical Hammer"
+  },
+  {
+    "Key": "Weapon.Name.111",
+    "Values": {
+      "en-us": "Obsidian Battle Pickaxe"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Obsidian Battle Pickaxe"
+  },
+  {
+    "Key": "Weapon.Name.112",
+    "Values": {
+      "en-us": "Obsidian Great Hammer"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Obsidian Great Hammer"
+  },
+  {
+    "Key": "Weapon.Name.113",
+    "Values": {
+      "en-us": "Emerald Guardian Pickaxe"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Emerald Guardian Pickaxe"
+  },
+  {
+    "Key": "Weapon.Name.114",
+    "Values": {
+      "en-us": "Emerald Guardian Hammer"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Emerald Guardian Hammer"
+  },
+  {
+    "Key": "Weapon.Name.115",
+    "Values": {
+      "en-us": "Red Crystal Forge Pickaxe"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Red Crystal Forge Pickaxe"
+  },
+  {
+    "Key": "Weapon.Name.116",
+    "Values": {
+      "en-us": "Red Crystal Forge Hammer"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Red Crystal Forge Hammer"
+  },
+  {
+    "Key": "Weapon.Name.117",
+    "Values": {
+      "en-us": "Ice Blue Star Crystal Pickaxe"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Ice Blue Star Crystal Pickaxe"
+  },
+  {
+    "Key": "Weapon.Name.118",
+    "Values": {
+      "en-us": "Ice Blue Star Crystal Hammer"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Ice Blue Star Crystal Hammer"
+  },
+  {
+    "Key": "Weapon.Name.119",
+    "Values": {
+      "en-us": "Gilded Crown Pickaxe"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Gilded Crown Pickaxe"
+  },
+  {
+    "Key": "Weapon.Name.120",
+    "Values": {
+      "en-us": "Gilded Crown Great Hammer"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Gilded Crown Great Hammer"
+  },
+  {
+    "Key": "Rebirth.Progress",
+    "Values": {
+      "en-us": "Level {level:int}/{required:int}"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Level {level:int}/{required:int}"
+  },
+  {
+    "Key": "Rebirth.ResetWarning",
+    "Values": {
+      "en-us": "Rebirth resets your Strength!"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Rebirth resets your Strength!"
+  },
+  {
+    "Key": "Collection.Count",
+    "Values": {
+      "en-us": "{count:int}/{total:int} collected"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "{count:int}/{total:int} collected"
+  },
+  {
+    "Key": "Collection.Rule",
+    "Values": {
+      "en-us": "Collect {count:int} items for +{percent}% training."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Collect {count:int} items for +{percent}% training."
+  },
+  {
+    "Key": "Weapon.Title",
+    "Values": {
+      "en-us": "WEAPONS"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "WEAPONS"
+  },
+  {
+    "Key": "Weapon.Empty",
+    "Values": {
+      "en-us": "No weapons available."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "No weapons available."
+  },
+  {
+    "Key": "Weapon.Equipped",
+    "Values": {
+      "en-us": "Equipped"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Equipped"
+  },
+  {
+    "Key": "CurrencyShop.Diamonds",
+    "Values": {
+      "en-us": "{value} Diamonds"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "{value} Diamonds"
+  },
+  {
+    "Key": "Welfare.Diamonds",
+    "Values": {
+      "en-us": "{value} Diamonds"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "{value} Diamonds"
+  },
+  {
+    "Key": "Aura.AlreadyOwned",
+    "Values": {
+      "en-us": "You already own this aura."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "You already own this aura."
+  },
+  {
+    "Key": "Aura.Equip",
+    "Values": {
+      "en-us": "Equip"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Equip"
+  },
+  {
+    "Key": "Weapon.Equip",
+    "Values": {
+      "en-us": "Equip"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Equip"
+  },
+  {
+    "Key": "Aura.NotEnoughCoins",
+    "Values": {
+      "en-us": "Not enough Coins."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Not enough Coins."
+  },
+  {
+    "Key": "Weapon.NotEnoughCoins",
+    "Values": {
+      "en-us": "Not enough Coins."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Not enough Coins."
+  },
+  {
+    "Key": "Aura.NotOwned",
+    "Values": {
+      "en-us": "You do not own this aura."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "You do not own this aura."
+  },
+  {
+    "Key": "Aura.Unequip",
+    "Values": {
+      "en-us": "Unequip"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Unequip"
+  },
+  {
+    "Key": "Common.Close",
+    "Values": {
+      "en-us": "Close"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Close"
+  },
+  {
+    "Key": "GM.Busy",
+    "Values": {
+      "en-us": "An operation is in progress. Please try again shortly."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "An operation is in progress. Please try again shortly."
+  },
+  {
+    "Key": "GM.Forbidden",
+    "Values": {
+      "en-us": "Only developers can use these controls."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Only developers can use these controls."
+  },
+  {
+    "Key": "GM.InvalidItem",
+    "Values": {
+      "en-us": "Unknown item ID."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Unknown item ID."
+  },
+  {
+    "Key": "GM.InvalidItemInput",
+    "Values": {
+      "en-us": "Enter a valid item ID and a positive whole-number quantity."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Enter a valid item ID and a positive whole-number quantity."
+  },
+  {
+    "Key": "GM.InvalidValue",
+    "Values": {
+      "en-us": "Enter a valid whole number within the allowed range."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Enter a valid whole number within the allowed range."
+  },
+  {
+    "Key": "GM.ItemAdded",
+    "Values": {
+      "en-us": "Item added."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Item added."
+  },
+  {
+    "Key": "GM.ItemFull",
+    "Values": {
+      "en-us": "Not enough inventory space."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Not enough inventory space."
+  },
+  {
+    "Key": "GM.LevelLimit",
+    "Values": {
+      "en-us": "The current level limit is {level:int}."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "The current level limit is {level:int}."
+  },
+  {
+    "Key": "GM.SaveFailed",
+    "Values": {
+      "en-us": "Save failed. Please try again."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Save failed. Please try again."
+  },
+  {
+    "Key": "GM.Success",
+    "Values": {
+      "en-us": "Operation completed."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Operation completed."
+  },
+  {
+    "Key": "Loot.BagFull",
+    "Values": {
+      "en-us": "Your backpack is full. Return to your base to store your loot."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Your backpack is full. Return to your base to store your loot."
+  },
+  {
+    "Key": "Loot.DepositFull",
+    "Values": {
+      "en-us": "Your storage is full."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Your storage is full."
+  },
+  {
+    "Key": "Loot.Deposited",
+    "Values": {
+      "en-us": "Loot stored: {count:int}"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Loot stored: {count:int}"
+  },
+  {
+    "Key": "Loot.InventoryFull",
+    "Values": {
+      "en-us": "Storage limit reached: {capacity:int} items."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Storage limit reached: {capacity:int} items."
+  },
+  {
+    "Key": "Loot.LuckyPickedUp",
+    "Values": {
+      "en-us": "Picked up lucky {item} (×{rate})!"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Picked up lucky {item} (×{rate})!"
+  },
+  {
+    "Key": "Loot.LuckyRarity",
+    "Values": {
+      "en-us": "Quality {level:int} · Lucky ×{rate}"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Quality {level:int} · Lucky ×{rate}"
+  },
+  {
+    "Key": "Loot.LuckyTooltip",
+    "Values": {
+      "en-us": "{item} · Lucky ×{rate} · {price} Coins"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "{item} · Lucky ×{rate} · {price} Coins"
+  },
+  {
+    "Key": "Loot.PickedUp",
+    "Values": {
+      "en-us": "Picked up {item}!"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Picked up {item}!"
+  },
+  {
+    "Key": "Loot.Tooltip",
+    "Values": {
+      "en-us": "{item} · {price} Coins"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "{item} · {price} Coins"
+  },
+  {
+    "Key": "LootSell.Changed",
+    "Values": {
+      "en-us": "Your items have changed. Please try again."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Your items have changed. Please try again."
+  },
+  {
+    "Key": "LootSell.Empty",
+    "Values": {
+      "en-us": "You have no items to sell."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "You have no items to sell."
+  },
+  {
+    "Key": "LootSell.Gained",
+    "Values": {
+      "en-us": "You earned {value} Coins!"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "You earned {value} Coins!"
+  },
+  {
+    "Key": "LootSell.LuckyName",
+    "Values": {
+      "en-us": "Lucky {item} (×{rate})"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Lucky {item} (×{rate})"
+  },
+  {
+    "Key": "LootSell.Success",
+    "Values": {
+      "en-us": "Items sold!"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Items sold!"
+  },
+  {
+    "Key": "Rebirth.MaxCount",
+    "Values": {
+      "en-us": "You have reached the rebirth limit."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "You have reached the rebirth limit."
+  },
+  {
+    "Key": "Rebirth.RequiredLevel",
+    "Values": {
+      "en-us": "Reach level {level:int} to rebirth."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Reach level {level:int} to rebirth."
+  },
+  {
+    "Key": "Rebirth.Success",
+    "Values": {
+      "en-us": "Rebirth complete!"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Rebirth complete!"
+  },
+  {
+    "Key": "Training.Active",
+    "Values": {
+      "en-us": "Training active · ×{rate}"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Training active · ×{rate}"
+  },
+  {
+    "Key": "Training.RequiredRebirths",
+    "Values": {
+      "en-us": "Requires {count:int} rebirths to train here."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Requires {count:int} rebirths to train here."
+  },
+  {
+    "Key": "Weapon.AlreadyOwned",
+    "Values": {
+      "en-us": "You already own this weapon."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "You already own this weapon."
+  },
+  {
+    "Key": "Weapon.Loading",
+    "Values": {
+      "en-us": "Loading weapons..."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Loading weapons..."
+  },
+  {
+    "Key": "Weapon.NotOwned",
+    "Values": {
+      "en-us": "You do not own this weapon."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "You do not own this weapon."
+  },
+  {
+    "Key": "Welfare.AlreadyClaimed",
+    "Values": {
+      "en-us": "You have already claimed this reward."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "You have already claimed this reward."
+  },
+  {
+    "Key": "Welfare.Day",
+    "Values": {
+      "en-us": "Day {day:int}"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Day {day:int}"
+  },
+  {
+    "Key": "Welfare.InventoryFull",
+    "Values": {
+      "en-us": "Not enough inventory space. Your reward is still available."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Not enough inventory space. Your reward is still available."
+  },
+  {
+    "Key": "Welfare.NotReady",
+    "Values": {
+      "en-us": "This reward is not available yet."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "This reward is not available yet."
+  },
+  {
+    "Key": "Welfare.PassActivated",
+    "Values": {
+      "en-us": "Weekly pass activated! +{value} Diamonds"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Weekly pass activated! +{value} Diamonds"
+  },
+  {
+    "Key": "Welfare.PassRemaining",
+    "Values": {
+      "en-us": "{days:int} claims left · {status}"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "{days:int} claims left · {status}"
+  },
+  {
+    "Key": "Welfare.PassTomorrow",
+    "Values": {
+      "en-us": "Next claim tomorrow"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Next claim tomorrow"
+  },
+  {
+    "Key": "Welfare.Pending",
+    "Values": {
+      "en-us": "Claiming..."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Claiming..."
+  },
+  {
+    "Key": "Welfare.Ready",
+    "Values": {
+      "en-us": "Ready to claim"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Ready to claim"
+  },
+  {
+    "Key": "Welfare.Retry",
+    "Values": {
+      "en-us": "Retry"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Retry"
+  },
+  {
+    "Key": "Welfare.Success",
+    "Values": {
+      "en-us": "Reward claimed!"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Reward claimed!"
+  },
+  {
+    "Key": "Welfare.Tasks",
+    "Values": {
+      "en-us": "Daily Tasks"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Daily Tasks"
+  },
+  {
+    "Key": "Welfare.Task.ForFriendPlay",
+    "Values": {
+      "en-us": "Play with {target:int} friends in the same server"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Play with {target:int} friends in the same server"
+  },
+  {
+    "Key": "Welfare.InProgress",
+    "Values": {
+      "en-us": "In Progress"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "In Progress"
+  },
+  {
+    "Key": "Welfare.TaskRule",
+    "Values": {
+      "en-us": "Progress and rewards reset daily at 00:00 UTC."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Progress and rewards reset daily at 00:00 UTC."
+  },
+  {
+    "Key": "Welfare.Task.GetItem",
+    "Values": {
+      "en-us": "Collect {target:int} items"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Collect {target:int} items"
+  },
+  {
+    "Key": "Welfare.Task.OnlineTime",
+    "Values": {
+      "en-us": "Play for {target:int} minutes"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Play for {target:int} minutes"
+  },
+  {
+    "Key": "World.PortalLabel",
+    "Values": {
+      "en-us": "Worlds"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Worlds"
+  },
+  {
+    "Key": "World.RequiredLevel",
+    "Values": {
+      "en-us": "Reach a best level of {level:int} to unlock this world."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Reach a best level of {level:int} to unlock this world."
+  },
+  {
+    "Key": "Npc.PickUp",
+    "Values": {
+      "en-us": "Pick Up"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Pick Up"
+  },
+  {
+    "Key": "Welfare.Task.GetDog",
+    "Values": {
+      "en-us": "Pick up {target:int} dogs"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Pick up {target:int} dogs"
+  },
+  {
+    "Key": "Main.Price.DoubleStrengthButton",
+    "Values": {
+      "en-us": "Only 3"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Only 3"
+  },
+  {
+    "Key": "Main.Price.DoubleCashButton",
+    "Values": {
+      "en-us": "Only 89"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Only 89"
+  },
+  {
+    "Key": "Main.Price.StrengthPack1Button",
+    "Values": {
+      "en-us": "Only 19"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Only 19"
+  },
+  {
+    "Key": "Main.Price.StrengthPack2Button",
+    "Values": {
+      "en-us": "Only 79"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Only 79"
+  },
+  {
+    "Key": "Main.Price.StrengthPack3Button",
+    "Values": {
+      "en-us": "Only 249"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Only 249"
+  },
+  {
+    "Key": "CurrencyShop.Invalid",
+    "Values": {
+      "en-us": "This offer has changed. Please select the next upgrade."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "This offer has changed. Please select the next upgrade."
+  },
+  {
+    "Key": "CurrencyShop.NeedDiamonds",
+    "Values": {
+      "en-us": "Not enough diamonds."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Not enough diamonds."
+  },
+  {
+    "Key": "CurrencyShop.Success",
+    "Values": {
+      "en-us": "Purchase complete!"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Purchase complete!"
+  },
+  {
+    "Key": "CurrencyShop.Processing",
+    "Values": {
+      "en-us": "Payment completed. Waiting for your reward."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Payment completed. Waiting for your reward."
+  },
+  {
+    "Key": "CurrencyShop.Training",
+    "Values": {
+      "en-us": "Training x{rate}"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Training x{rate}"
+  },
+  {
+    "Key": "CurrencyShop.TrainingDesc",
+    "Values": {
+      "en-us": "Permanent training multiplier."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Permanent training multiplier."
+  },
+  {
+    "Key": "CurrencyShop.Capacity",
+    "Values": {
+      "en-us": "+{count:int} Carry Slot"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "+{count:int} Carry Slot"
+  },
+  {
+    "Key": "CurrencyShop.CapacityDesc",
+    "Values": {
+      "en-us": "Permanently carry {count:int} collectibles."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Permanently carry {count:int} collectibles."
+  },
+  {
+    "Key": "CurrencyShop.StarterDesc",
+    "Values": {
+      "en-us": "Starter offer. One purchase per player."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Starter offer. One purchase per player."
+  },
+  {
+    "Key": "CurrencyShop.DiamondsDesc",
+    "Values": {
+      "en-us": "Diamonds are added after payment is processed."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Diamonds are added after payment is processed."
+  },
+  {
+    "Key": "CurrencyShop.PassDesc",
+    "Values": {
+      "en-us": "Use for {instant} diamonds now, then {daily} daily for {days:int} claims."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Use for {instant} diamonds now, then {daily} daily for {days:int} claims."
+  },
+  {
+    "Key": "CurrencyShop.SoldOut",
+    "Values": {
+      "en-us": "Sold Out"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Sold Out"
+  },
+  {
+    "Key": "CurrencyShop.Unavailable",
+    "Values": {
+      "en-us": "Unavailable"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Unavailable"
+  },
+  {
+    "Key": "CurrencyShop.Confirm",
+    "Values": {
+      "en-us": "Buy this upgrade for {value} diamonds?"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Buy this upgrade for {value} diamonds?"
+  },
+  {
+    "Key": "Welfare.Offline",
+    "Values": {
+      "en-us": "Offline Rewards"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Offline Rewards"
+  },
+  {
+    "Key": "Welfare.OfflineTime",
+    "Values": {
+      "en-us": "Offline Time: {hours:int}h {minutes:int}m {seconds:int}s"
+    },
+    "Example": "hours=1, minutes=30, seconds=0",
+    "Context": "",
+    "Source": "Offline Time: {hours:int}h {minutes:int}m {seconds:int}s"
+  },
+  {
+    "Key": "Welfare.OfflineTraining",
+    "Values": {
+      "en-us": "Training: {value}"
+    },
+    "Example": "value=1K",
+    "Context": "",
+    "Source": "Training: {value}"
+  },
+  {
+    "Key": "Welfare.OfflineEmpty",
+    "Values": {
+      "en-us": "No offline rewards available."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "No offline rewards available."
+  },
+  {
+    "Key": "Welfare.OfflineClaim",
+    "Values": {
+      "en-us": "Claim ×{multiplier:int}"
+    },
+    "Example": "multiplier=2",
+    "Context": "",
+    "Source": "Claim ×{multiplier:int}"
+  },
+  {
+    "Key": "ShopPurchase.Category",
+    "Values": {
+      "en-us": "DIAMOND UPGRADE"
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "DIAMOND UPGRADE"
+  },
+  {
+    "Key": "ShopPurchase.Price",
+    "Values": {
+      "en-us": "{value} · Buy"
+    },
+    "Example": "value=28",
+    "Context": "",
+    "Source": "{value} · Buy"
+  },
+  {
+    "Key": "ShopPurchase.Buying",
+    "Values": {
+      "en-us": "Buying..."
+    },
+    "Example": "",
+    "Context": "",
+    "Source": "Buying..."
+  }
+]
