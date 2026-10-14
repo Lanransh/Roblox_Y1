@@ -49,6 +49,9 @@
 - 文件未变化且完整正文仍在上下文中时直接复用；否则重新读取，不创建额外缓存文件。
 
 ## 明确的禁止(必须遵守)
+- 禁止修改 `StarterPlayerScripts/Client/UI/Generated/` 及其所有子目录中的脚本；这些脚本仅可只读查看，不得为修复报错而修改。
+- 涉及 `Generated` 脚本的报错通常源于接入脚本，应优先排查并修复接入脚本，不因报错堆栈指向生成脚本就修改生成脚本。
+- 如果无法通过修改接入脚本解决问题，必须告知用户当前报错、已排查的情况和无法修复的原因；不得擅自修改 `Generated` 中的脚本。
 - 禁止一次性读取 `ReplicatedStorage/Scripts/Game/Configs/` 和 `ReplicatedStorage/Scripts/Game/Shared/` 整个目录；先使用 `rg` 定位目标配置和行号，再只读取完成任务所需的最小文件片段。
 - 手工或 AI 制作的模型禁止放入 `game.Workspace.BlockMeshs` 和 `game.ReplicatedStorage.Assets.BlockMeshs`，包括它们的子目录；这两个目录专供地图块编辑器管理，对应本地目录也不得用于保存此类模型。
 
