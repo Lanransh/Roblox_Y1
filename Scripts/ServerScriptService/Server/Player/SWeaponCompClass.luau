@@ -15,7 +15,13 @@ function Component:OnPlayerLogin()
     if type(data.owned) ~= "table" then
         data.owned = {}
     end
-    data.owned["101"] = true
+    if not data.owned["101"] then
+        self:SetTable(Fields.WeaponData, data)
+        assert(self:RequireComponent("FSRewardComp"):AddRewards({
+            {Type = "Unlock", Kind = "Weapon", Id = 101, Count = 1},
+        }), "Default weapon reward failed")
+        data = self:GetTable(Fields.WeaponData)
+    end
     data.equippedId = Weapon.GetEquippedConfig(data).ToolId
     self:SetTable(Fields.WeaponData, data)
     self._ready = true
@@ -36,12 +42,15 @@ function Component:RequestWeapon(action, weaponId)
         if data.owned[id] == true then
             return {success = false, key = "Weapon.AlreadyOwned"}
         end
-        if self:GetNumber(Fields.Coins) < config.Price
-            or (config.Price > 0 and not self:SubNumber(Fields.Coins, config.Price)) then
+        local costs = config.Price > 0 and {{Type = "Money", Currency = "Money", Count = config.Price}} or {}
+        if not self:RequireComponent("FSRewardComp"):ExchangeRewards(costs, {
+            {Type = "Unlock", Kind = "Weapon", Id = weaponId, Count = 1},
+        }) then
             return {success = false, key = "Weapon.NotEnoughCoins"}
         end
-        data.owned[id] = true
-        if config.TrainingRate > Weapon.GetEquippedConfig(data).TrainingRate then
+        local previousRate = Weapon.GetEquippedConfig(data).TrainingRate
+        data = self:GetTable(Fields.WeaponData)
+        if config.TrainingRate > previousRate then
             data.equippedId = weaponId
         end
     else
@@ -51,7 +60,7 @@ function Component:RequestWeapon(action, weaponId)
         data.equippedId = weaponId
     end
     self:SetTable(Fields.WeaponData, data)
-    return {success = true, data = data, coins = self:GetNumber(Fields.Coins)}
+    return {success = true, data = data, coins = self:GetNumber(Fields.Money)}
 end
 
 --- 离服后拒绝继续处理购买和装备。

@@ -91,7 +91,7 @@ function Component:SetValue(action, value)
         player:SetNumber(Fields.RebirthCount, value)
         player:RequireComponent("SMiscComp"):ResetTrainingProgress()
     elseif action == "SetMoney" then
-        player:SetNumber(Fields.Coins, value)
+        player:SetNumber(Fields.Money, value)
     elseif action == "SetDiamonds" then
         player:SetNumber(Fields.Diamonds, value)
     else

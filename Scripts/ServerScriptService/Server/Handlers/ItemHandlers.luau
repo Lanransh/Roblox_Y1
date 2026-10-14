@@ -1,5 +1,4 @@
 -- 处理器名与 ItemConfig.Data[itemId].UseHandler 对应，仅由服务端加载。
-local Rebirth = _G.FX.Loader:RequireShared("Scripts/Game/Shared/Rebirth")
 local ItemHandlers = {}
 
 local TrainingCardHandler = {}
@@ -28,12 +27,13 @@ ItemHandlers.WeekCard = WeekCardHandler
 ---@return boolean 是否可以使用力量卡。
 function TrainingCardHandler:CanUse(context)
     local player = context.playerObject
-    local fields = _G.PlayerDataConfig
     if not player:GetComponent("SMiscComp") then
         return false
     end
-    local count = player:GetNumber(fields.RebirthCount)
-    return player:GetNumber(fields.RockTrainingValue) < Rebirth.GetMaxTrainingValue(count)
+    local gain = player:RequireComponent("SMiscComp"):GetTrainingCardGain(context.itemDataConfig.KVTable.Time)
+    return gain > 0 and player:RequireComponent("FSRewardComp"):CanAddRewards({
+        {Type = "Money", Currency = "RockTrainingValue", Count = gain},
+    })
 end
 
 --- 按最高已解锁训练场的速率一次性结算卡片时长，并沿用现有永久倍率。
@@ -55,7 +55,11 @@ ItemHandlers.TrainingCard = TrainingCardHandler
 ---@param context FXItemContextClass 当前服务端道具使用上下文。
 ---@return boolean 是否可以使用背包扩容卡。
 function BackpackBoostCardHandler:CanUse(context)
+    local config = context.itemDataConfig.KVTable
     return context.playerObject:GetComponent("SRockLevelComp") ~= nil
+        and context.playerObject:RequireComponent("FSRewardComp"):CanAddRewards({
+            {Type = "LootCapacityBoost", Count = config.Count or 1, Duration = config.Time},
+        })
 end
 
 --- 增加 1 格关卡随身容量，并在重复使用时从当前到期时间继续延长。

@@ -35,23 +35,32 @@ function Service.Buy(player, goodsId)
         return {success = false, key = "CurrencyShop.NeedDiamonds"}
     end
     local key, arguments
+    local rewards
     if isTrainingPack then
-        player:AddNumber(Fields.RockTrainingValue, gain)
-        player:RequireComponent("SMiscComp"):RefreshProgress()
-        FX.Network:SendMsgToClient(player:GetPlayerId(), "S2C_TrainingEffect", gain, true)
+        rewards = {{Type = "Money", Currency = "RockTrainingValue", Count = gain}}
         key, arguments = "CurrencyShop.TrainingReceived", {value = gain}
     elseif goods.BuyHandler == "TrainingRateLevel" then
-        data.trainingLevel += 1
-        key, arguments = "CurrencyShop.RateUpgraded", {rate = Shop.GetTrainingRate(data)}
+        rewards = {{Type = "ShopUpgrade", Kind = "TrainingRate", Count = 1}}
+        key = "CurrencyShop.RateUpgraded"
     elseif goods.BuyHandler == "ExpandableBackpack" then
-        data.capacity += goods.NumberArray[1]
+        rewards = {{Type = "ShopUpgrade", Kind = "Capacity", Count = goods.NumberArray[1]}}
         key, arguments = "CurrencyShop.CapacityUpgraded", {count = goods.NumberArray[1]}
     else
         return {success = false, key = "CurrencyShop.Invalid"}
     end
+    local costs = goods.Price > 0 and {{Type = "Money", Currency = "Diamonds", Count = goods.Price}} or {}
+    if not player:RequireComponent("FSRewardComp"):ExchangeRewards(costs, rewards) then
+        return {success = false, key = "CurrencyShop.Invalid"}
+    end
+    data = player:GetTable(Fields.CurrencyShopData)
     data.gemBought[tostring(goodsId)] = true
-    player:SetNumber(Fields.Diamonds, diamonds - goods.Price)
     player:SetTable(Fields.CurrencyShopData, data)
+    if isTrainingPack then
+        player:RequireComponent("SMiscComp"):RefreshProgress()
+        FX.Network:SendMsgToClient(player:GetPlayerId(), "S2C_TrainingEffect", gain, true)
+    elseif goods.BuyHandler == "TrainingRateLevel" then
+        arguments = {rate = Shop.GetTrainingRate(data)}
+    end
     return {success = true, key = key, arguments = arguments, data = data}
 end
 

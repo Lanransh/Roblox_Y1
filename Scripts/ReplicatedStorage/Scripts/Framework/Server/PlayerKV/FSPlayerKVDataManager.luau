@@ -14,7 +14,7 @@ function Manager:Init()
                 task.spawn(function()
                     if not db:Save(false) then
                         local player = Players:GetPlayerByUserId(id)
-                        if player then
+                        if player and not FX.IsDeveloper(id) then
                             player:Kick("存档暂时不可用，请稍后重试")
                         end
                     end

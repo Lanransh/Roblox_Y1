@@ -1,5 +1,6 @@
 local FX = _G.FX
 local CurrencyShop = FX.Loader:Require(script.Parent.Parent, "Handlers/CurrencyShop")
+local GMRecovery = FX.Loader:Require(script.Parent.Parent, "Handlers/GMRecovery")
 local Manager = FX.Class("SPlayerObjectManagerClass", "FSPlayerObjectManagerClass")
 _G.SPlayerObjectManagerClass = Manager
 
@@ -52,7 +53,7 @@ end
 
 --- GM 协议统一注册，按引擎认证身份转发到请求者本人的玩家组件。
 function Manager:RegGMMsg()
-    --- 未建立玩家会话时拒绝请求，GM 组件负责开发者权限及数值校验。
+    --- 已登录请求转发组件，加载失败时仅允许开发者恢复本人存档。
     --- @param userId number 引擎认证的请求者身份。
     --- @param action string 七种 GM 操作之一。
     --- @param value any 数值操作的目标值或道具配置 ID。
@@ -62,7 +63,7 @@ function Manager:RegGMMsg()
         local player = self:GetPlayerObject(userId)
         local gm = player and player:GetComponent("SGMComp")
         if not gm then
-            return {success = false, key = "Common.Unknown"}
+            return GMRecovery.Request(userId, action)
         end
         return gm:Request(action, value, count)
     end)
@@ -107,7 +108,7 @@ function Manager:RegLootSellMsg()
     --- 金额与库存由出售组件校验，不接受客户端指定玩家身份。
     --- @param userId number 引擎认证的请求者。
     --- @param entryIds table 客户端当前展示的收藏品实例 ID。
-    --- @param multiplier number 普通或临时免费双倍出售。
+    --- @param multiplier number 普通出售为 1，消耗双倍出售卡的出售为 2。
     --- @return table 出售结果与英文文案 Key。
     FX.Network:RegClientMsgCallback("C2S_SellLoot", function(userId, entryIds, multiplier)
         local player = self:GetPlayerObject(userId)
@@ -121,6 +122,17 @@ end
 
 --- 简单玩家请求直接转发到杂项组件，不在管理器内执行结算。
 function Manager:RegMiscMsg()
+    --- 点击仅转发至请求者的训练组件，收益和频率由服务端决定。
+    --- @param userId number 引擎认证的玩家身份。
+    --- @param position Vector2 客户端飘字起点，不参与收益计算。
+    local function trainingClick(userId, position)
+        local player = self:GetPlayerObject(userId)
+        local misc = player and player:GetComponent("SMiscComp")
+        if misc then
+            misc:HandleTrainingClick(position)
+        end
+    end
+    FX.Network:RegClientMsgCallback("C2S_TrainingClick", trainingClick)
     --- 只操作引擎认证玩家自身的数据，忽略未加载或已离服的玩家。
     --- @param userId number 引擎认证的玩家身份。
     local function rebirth(userId)

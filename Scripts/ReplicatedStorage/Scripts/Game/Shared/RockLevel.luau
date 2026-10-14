@@ -13,7 +13,6 @@ local RockLevel = {
     },
     MaxLevel = NumericalConfig.levelCurves.input.max,
     WalkTraining = NumericalConfig.trainingSettlementsPerSecond,
-    ClickEffectValue = 2, -- 仅用于客户端点击图标文案，不发放实际收益。
     ClickInterval = 0.2,
     LootCapacity = 3, -- 尚未回基地存放的战利品基础携带上限。
     StoredLootCapacity = 12, -- 已存收藏品与随身战利品共用的 KV 存储容量。

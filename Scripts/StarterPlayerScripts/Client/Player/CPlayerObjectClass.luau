@@ -8,7 +8,11 @@ function Player:Ctor(playerId)
     Player.Super.Ctor(self, playerId)
     self:AddComponent("CSoundCompClass")
     self:AddComponent("CCommonUICompClass")
+    if FX.IsDeveloper(playerId) then
+        self:AddComponent("CGMIntegrationCompClass"):OnReady()
+    end
     self:AddComponent("CTrainingHUDCompClass")
+    self:AddComponent("CLeaderboardUICompClass")
     self:AddComponent("FCFriendCompClass")
     self:AddComponent("CRockLevelCompClass")
     self:AddComponent("CRebirthIntegrationCompClass")
@@ -20,9 +24,6 @@ function Player:Ctor(playerId)
     self:AddComponent("CShopPurchaseUICompClass")
     self:AddComponent("CWelfareUICompClass")
     self:AddComponent("CWorldTeleportUICompClass")
-    if FX.IsDeveloper(playerId) then
-        self:AddComponent("CGMIntegrationCompClass")
-    end
     self:AddComponent("CMainUICompClass")
 end
 

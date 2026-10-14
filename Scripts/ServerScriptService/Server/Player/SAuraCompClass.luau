@@ -111,12 +111,15 @@ function Component:RequestAura(action, auraId)
         if data.owned[id] == true then
             return {success = false, key = "Aura.AlreadyOwned"}
         end
-        if self:GetNumber(Fields.Coins) < config.Price
-            or (config.Price > 0 and not self:SubNumber(Fields.Coins, config.Price)) then
+        local costs = config.Price > 0 and {{Type = "Money", Currency = "Money", Count = config.Price}} or {}
+        if not self:RequireComponent("FSRewardComp"):ExchangeRewards(costs, {
+            {Type = "Unlock", Kind = "Aura", Id = auraId, Count = 1},
+        }) then
             return {success = false, key = "Aura.NotEnoughCoins"}
         end
-        data.owned[id] = true
-        if data.equippedId == 0 or config.TrainingRate > Aura.GetTrainingRate(data) then
+        local autoEquip = data.equippedId == 0 or config.TrainingRate > Aura.GetTrainingRate(data)
+        data = self:GetTable(Fields.AuraData)
+        if autoEquip then
             data.equippedId = auraId
         end
     else
@@ -126,7 +129,7 @@ function Component:RequestAura(action, auraId)
         data.equippedId = data.equippedId == auraId and 0 or auraId
     end
     self:SetTable(Fields.AuraData, data)
-    return {success = true, data = data, coins = self:GetNumber(Fields.Coins)}
+    return {success = true, data = data, coins = self:GetNumber(Fields.Money)}
 end
 
 --- 离服释放角色监听与复制实例，不改变持久装备状态。

@@ -22,7 +22,7 @@ function CSoundCompClass:Ctor(owner)
     }
     CSoundCompClass.Super.Ctor(self, owner, 4)
     self:WatchDataChanged(Fields.RockTrainingLevel, self.OnTrainingLevelChanged, self)
-    self:WatchDataChanged(Fields.Coins, self.OnCoinsChanged, self)
+    self:WatchDataChanged(Fields.Money, self.OnCoinsChanged, self)
     self:WatchDataChanged(Fields.RockLoot, self.OnRockLootChanged, self)
     FX.Network:RegServerMsgCallback("S2C_DogPickedUp", self.PlayPickupItemSound, self)
 end
@@ -56,7 +56,7 @@ function CSoundCompClass:OnTrainingLevelChanged(level, oldLevel)
     self:PlayTrainingUpgradeEffect()
 end
 
---- 用短暂金色闪光和向外散开的方框表现训练升级。
+--- 升级时角色短暂镀金，脚下白色空心方框沿环向外扩开后淡出。
 function CSoundCompClass:PlayTrainingUpgradeEffect()
     local character = self:GetPlayerCharacter()
     local humanoid = character and character:FindFirstChildOfClass("Humanoid")
@@ -68,13 +68,13 @@ function CSoundCompClass:PlayTrainingUpgradeEffect()
     local highlight = Instance.new("Highlight")
     highlight.Name = "TrainingUpgradeHighlight"
     highlight.Adornee = character
-    highlight.FillColor = Color3.fromRGB(255, 194, 47)
-    highlight.FillTransparency = 0.12
-    highlight.OutlineColor = Color3.fromRGB(255, 245, 190)
+    highlight.FillColor = Color3.fromRGB(255, 210, 55)
+    highlight.FillTransparency = 0.08
+    highlight.OutlineColor = Color3.fromRGB(255, 249, 205)
     highlight.OutlineTransparency = 0.1
     highlight.DepthMode = Enum.HighlightDepthMode.Occluded
     highlight.Parent = character
-    TweenService:Create(highlight, TweenInfo.new(0.48, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+    TweenService:Create(highlight, TweenInfo.new(0.42, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut, 0, false, 0.05), {
         FillTransparency = 1,
         OutlineTransparency = 1,
     }):Play()
@@ -82,81 +82,76 @@ function CSoundCompClass:PlayTrainingUpgradeEffect()
 
     local light = Instance.new("PointLight")
     light.Name = "TrainingUpgradeLight"
-    light.Color = Color3.fromRGB(255, 195, 58)
-    light.Brightness = 2.5
-    light.Range = 9
+    light.Color = Color3.fromRGB(255, 220, 130)
+    light.Brightness = 0.7
+    light.Range = 6
     light.Shadows = false
     light.Parent = root
-    TweenService:Create(light, TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+    TweenService:Create(light, TweenInfo.new(0.45, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
         Brightness = 0,
     }):Play()
-    Debris:AddItem(light, 0.45)
+    Debris:AddItem(light, 0.55)
 
     local raycastParams = RaycastParams.new()
     raycastParams.FilterType = Enum.RaycastFilterType.Exclude
     raycastParams.FilterDescendantsInstances = { character }
     raycastParams.IgnoreWater = true
     local floor = Workspace:Raycast(root.Position, Vector3.new(0, -12, 0), raycastParams)
-    if not floor then
-        return
+    local floorY = root.Position.Y - humanoid.HipHeight - root.Size.Y / 2 + 0.04
+    if floor then
+        floorY = floor.Position.Y + 0.04
     end
-
+    local floorCenter = Vector3.new(root.Position.X, floorY, root.Position.Z)
     local effects = Instance.new("Folder")
     effects.Name = "TrainingUpgradeEffect"
     effects.Parent = Workspace
-    local floorCenter = floor.Position + Vector3.new(0, 0.035, 0)
+    local barHeight = 0.05
+    local barWidth = 0.045
     local edges = {
-        { Offset = Vector3.new(0, 0, -1), Rotation = 0 },
-        { Offset = Vector3.new(0, 0, 1), Rotation = 0 },
-        { Offset = Vector3.new(-1, 0, 0), Rotation = math.pi / 2 },
-        { Offset = Vector3.new(1, 0, 0), Rotation = math.pi / 2 },
+        { Offset = Vector3.new(0, 0, -1), AlongX = true },
+        { Offset = Vector3.new(0, 0, 1), AlongX = true },
+        { Offset = Vector3.new(-1, 0, 0), AlongX = false },
+        { Offset = Vector3.new(1, 0, 0), AlongX = false },
     }
-
-    for index = 1, 8 do
-        local angle = math.random() * math.pi * 2
-        local startRadius = math.random(35, 145) / 100
-        local endRadius = startRadius + math.random(75, 165) / 100
-        local side = math.random(38, 72) / 100
-        local halfSide = side / 2
-        local startCenter = floorCenter + Vector3.new(math.cos(angle) * startRadius, 0, math.sin(angle) * startRadius)
-        local endCenter = floorCenter + Vector3.new(math.cos(angle) * endRadius, 0, math.sin(angle) * endRadius)
-        local rotation = math.random() * math.pi * 2
-        local startFrame = CFrame.new(startCenter) * CFrame.Angles(0, rotation, 0)
-        local endFrame = CFrame.new(endCenter) * CFrame.Angles(0, rotation, 0)
-
-        for _, edge in ipairs(edges) do
-            local part = Instance.new("Part")
-            part.Name = "UpgradeSpark"
-            part.Anchored = true
-            part.CanCollide = false
-            part.CanTouch = false
-            part.CanQuery = false
-            part.CastShadow = false
-            part.Material = Enum.Material.Neon
-            part.Color = Color3.fromRGB(255, 250, 224)
-            part.Size = Vector3.new(side, 0.035, 0.035)
-            part.CFrame = startFrame
-                * CFrame.new(edge.Offset * halfSide)
-                * CFrame.Angles(0, edge.Rotation, 0)
-            part.Parent = effects
-
-            local targetCFrame = endFrame
-                * CFrame.new(edge.Offset * halfSide * 1.12)
-                * CFrame.Angles(0, edge.Rotation, 0)
-            local tween = TweenService:Create(
-                part,
-                TweenInfo.new(0.48, Enum.EasingStyle.Quad, Enum.EasingDirection.Out, 0, false, index * 0.012),
-                {
-                    CFrame = targetCFrame,
-                    Size = Vector3.new(side * 1.12, 0.025, 0.025),
-                    Transparency = 1,
-                }
-            )
-            tween:Play()
+    local squareCount = 10
+    for index = 1, squareCount do
+        local angle = (index - 1) * math.pi * 2 / squareCount + math.random(-20, 20) / 100
+        local startRadius = 1.1 + math.random(0, 65) / 100
+        local endRadius = startRadius + 2 + math.random(0, 75) / 100
+        local startSide = 0.5 + math.random(0, 35) / 100
+        local endSide = startSide * 1.25
+        local yaw = math.random() * math.pi
+        local startFrame = CFrame.new(floorCenter + Vector3.new(math.cos(angle) * startRadius, 0, math.sin(angle) * startRadius))
+            * CFrame.Angles(0, yaw, 0)
+        local endFrame = CFrame.new(floorCenter + Vector3.new(math.cos(angle) * endRadius, 0, math.sin(angle) * endRadius))
+            * CFrame.Angles(0, yaw, 0)
+        local info = TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
+        for edgeIndex, edge in ipairs(edges) do
+            local startSize = edge.AlongX and Vector3.new(startSide, barHeight, barWidth)
+                or Vector3.new(barWidth, barHeight, startSide)
+            local endSize = edge.AlongX and Vector3.new(endSide, barHeight, barWidth)
+                or Vector3.new(barWidth, barHeight, endSide)
+            local bar = Instance.new("Part")
+            bar.Name = "UpgradeSquareBar" .. edgeIndex
+            bar.Anchored = true
+            bar.CanCollide = false
+            bar.CanTouch = false
+            bar.CanQuery = false
+            bar.CastShadow = false
+            bar.Material = Enum.Material.Neon
+            bar.Color = Color3.fromRGB(255, 255, 255)
+            bar.Transparency = 0.05
+            bar.Size = startSize
+            bar.CFrame = startFrame * CFrame.new(edge.Offset * (startSide / 2))
+            bar.Parent = effects
+            TweenService:Create(bar, info, {
+                CFrame = endFrame * CFrame.new(edge.Offset * (endSide / 2)),
+                Size = endSize,
+                Transparency = 1,
+            }):Play()
         end
     end
-
-    Debris:AddItem(effects, 0.75)
+    Debris:AddItem(effects, 0.7)
 end
 
 --- 金币到账时突出收益音效并暂时压低音乐，首次同步、消费和重置不播放。

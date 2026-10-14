@@ -3,7 +3,6 @@ local Fields = _G.PlayerDataConfig
 local Welfare = FX.Loader:RequireShared("Scripts/Game/Shared/Welfare")
 local Rebirth = FX.Loader:RequireShared("Scripts/Game/Shared/Rebirth")
 local Component = FX.Class("SActivityCompClass", "FSPlayerCompClass")
-local MAX_INTEGER = 9007199254740991
 local Players = game:GetService("Players")
 
 --- 返回玩家内协作名，供道具使用与福利协议定位。
@@ -220,7 +219,7 @@ function Component:Dtor()
     Component.Super.Dtor(self)
 end
 
---- 使用前验证即时钻石不会越过安全整数上限，避免先消耗卡片再拒绝发奖。
+--- 使用前由统一奖励接口验证即时钻石，避免先消耗卡片再拒绝发奖。
 --- @param itemId number 服务端道具上下文提供的配置 ID。
 --- @return boolean 当前是否允许激活。
 function Component:CanActivateWeekCard(itemId)
@@ -228,8 +227,9 @@ function Component:CanActivateWeekCard(itemId)
     if not self._lastTime or not config or config.Type ~= "WeekCard" then
         return false
     end
-    local balance = self:GetNumber(Fields.Diamonds)
-    return balance >= 0 and balance + config.KVTable.InstantGemCount <= MAX_INTEGER
+    return self:RequireComponent("FSRewardComp"):CanAddRewards({
+        {Type = "Money", Currency = "Diamonds", Count = config.KVTable.InstantGemCount},
+    })
 end
 
 --- 即时发奖并增加后续领取次数；首次激活次日可领，续卡保留当天领取记录。
@@ -241,6 +241,11 @@ function Component:ActivateWeekCard(itemId)
     end
     self:UpdateTime(os.time())
     local config = _G.ItemConfig.Data[itemId].KVTable
+    if not self:RequireComponent("FSRewardComp"):AddRewards({
+        {Type = "Money", Currency = "Diamonds", Count = config.InstantGemCount},
+    }) then
+        return false
+    end
     local data = self:GetTable(Fields.WelfareData)
     local key = tostring(itemId)
     local card = data.cards[key] or {remaining = 0, lastClaimDay = -1}
@@ -250,27 +255,30 @@ function Component:ActivateWeekCard(itemId)
     card.dailyAmount = config.DurationDays
     card.remaining += config.DayTime
     data.cards[key] = card
-    self:AddNumber(Fields.Diamonds, config.InstantGemCount)
     self:SetTable(Fields.WelfareData, data)
     self:PublishState()
-    self:GetPlayerObject():ShowLocalizedTips("Welfare.PassActivated", {value = config.InstantGemCount})
+    local player = self:GetPlayerObject()
+    local notified, message = pcall(player.ShowLocalizedTips, player,
+        "Welfare.PassActivated", {value = config.InstantGemCount})
+    if not notified then
+        warn("[WeekCard] activation notification failed", message)
+    end
     return true
 end
 
---- 统一发放现有活动单项奖励，道具容量由框架整批校验。
---- @param reward table 服务端配置中的 Type、Id、Count。
+--- 统一转换活动配置并整批发放，任一项不满足时保留全部领取资格。
+--- @param rewards table 服务端配置中的奖励列表。
 --- @return boolean 是否发放成功。
-function Component:GrantReward(reward)
-    if reward.Type == "Gem" then
-        if self:GetNumber(Fields.Diamonds) + reward.Count > MAX_INTEGER then
-            return false
+function Component:GrantRewards(rewards)
+    local batch = {}
+    for index, reward in ipairs(rewards) do
+        if reward.Type == "Gem" then
+            table.insert(batch, {Type = "Money", Currency = "Diamonds", Count = reward.Count})
+        else
+            table.insert(batch, {Type = "Item", ItemId = reward.Id, Count = reward.Count})
         end
-        self:AddNumber(Fields.Diamonds, reward.Count)
-        return true
     end
-    return self:RequireComponent("FSRewardComp"):AddRewards({
-        {Type = "Item", ItemId = reward.Id, Count = reward.Count},
-    })
+    return self:RequireComponent("FSRewardComp"):AddRewards(batch)
 end
 
 --- RPC 只领取本人配置档位；全程不 yield，发奖失败保留领取资格。
@@ -295,13 +303,14 @@ function Component:Claim(kind, rewardId, multiplier)
             local remaining = Rebirth.GetMaxTrainingValue(self:GetNumber(Fields.RebirthCount))
                 - self:GetNumber(Fields.RockTrainingValue)
             local gain = math.max(0, math.min(data.offline.training * rate / config.Rate, remaining))
-            if gain > 0 then
+            if gain > 0 and self:RequireComponent("FSRewardComp"):AddRewards({
+                {Type = "Money", Currency = "RockTrainingValue", Count = gain},
+            }) then
                 -- 发奖和批次消费不 yield，重复请求只能命中已领取状态。
                 data.offlineClaimDay = data.day
                 data.offline.seconds = 0
                 data.offline.training = 0
                 self:SetTable(Fields.WelfareData, data)
-                self:AddNumber(Fields.RockTrainingValue, gain)
                 self:RequireComponent("SMiscComp"):RefreshProgress()
                 FX.Network:SendMsgToClient(self:GetPlayerId(), "S2C_TrainingEffect", gain, true)
                 success = true
@@ -309,7 +318,7 @@ function Component:Claim(kind, rewardId, multiplier)
         end
     elseif kind == "diamonds" and rewardId == "daily_diamonds" then
         local amount = self:GetDailyAmount()
-        if amount > 0 and self:GrantReward({Type = "Gem", Count = amount}) then
+        if amount > 0 and self:GrantRewards({{Type = "Gem", Count = amount}}) then
             data.lastClaimDay = data.day
             for id, card in pairs(data.cards) do
                 if card.remaining > 0 and card.lastClaimDay ~= data.day then
@@ -333,10 +342,9 @@ function Component:Claim(kind, rewardId, multiplier)
                 key = "Welfare.AlreadyClaimed"
             elseif eligible then
                 if kind == "task" then
-                    -- 当前任务配置均为单项奖励，与展示契约保持一致。
-                    success = self:GrantReward(config.Rewards[1])
+                    success = self:GrantRewards(config.Rewards)
                 else
-                    success = self:GrantReward(config.Reward)
+                    success = self:GrantRewards({config.Reward})
                 end
                 if success then
                     claimed[rewardId] = true

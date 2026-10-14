@@ -1,4 +1,5 @@
 local FX = _G.FX
+local TextService = game:GetService("TextService")
 local FXLoader = FX.Loader
 local Fields = _G.PlayerDataConfig
 local Rebirth = FXLoader:RequireShared("Scripts/Game/Shared/Rebirth")
@@ -130,13 +131,13 @@ function Component:BindStrengthCharacter(character)
     end
 end
 
---- 由服务端创建角色下的 BillboardGui，限制字号避免短数字撑满显示区域。
+--- 由服务端创建按世界尺寸缩放的头顶显示，图标与数字整体居中。
 --- @param head BasePart 当前角色头部，兼容 R6 和 R15。
 function Component:CreateStrengthBillboard(head)
     local billboard = Instance.new("BillboardGui")
     billboard.Name = "StrengthBillboard"
     billboard.Adornee = head
-    billboard.Size = UDim2.fromOffset(180, 44)
+    billboard.Size = UDim2.fromScale(1, 0.9)
     billboard.StudsOffsetWorldSpace = Vector3.new(0, 3, 0)
     billboard.AlwaysOnTop = true
     billboard.MaxDistance = 100
@@ -144,7 +145,7 @@ function Component:CreateStrengthBillboard(head)
     local icon = Instance.new("ImageLabel")
     icon.Name = "StrengthIcon"
     icon.BackgroundTransparency = 1
-    icon.Size = UDim2.fromOffset(44, 44)
+    icon.Size = UDim2.fromScale(1, 1)
     icon.Image = "rbxassetid://123326023432901"
     icon.ScaleType = Enum.ScaleType.Fit
     icon.Parent = billboard
@@ -152,19 +153,15 @@ function Component:CreateStrengthBillboard(head)
     local text = Instance.new("TextLabel")
     text.Name = "StrengthText"
     text.BackgroundTransparency = 1
-    text.Position = UDim2.fromOffset(50, 0)
-    text.Size = UDim2.new(1, -50, 1, 0)
+    text.AnchorPoint = Vector2.new(0, 0.5)
+    text.Position = UDim2.fromScale(0, 0.5)
+    text.Size = UDim2.fromScale(1, 28 / 44)
     text.Font = Enum.Font.GothamBlack
     text.TextColor3 = Color3.new(1, 1, 1)
     text.TextScaled = true
-    text.TextXAlignment = Enum.TextXAlignment.Left
+    text.TextXAlignment = Enum.TextXAlignment.Center
     text.AutoLocalize = false
-    text.Text = GameUtility.NumberToText(self._strengthStat.Value)
     text.Parent = billboard
-
-    local textSizeConstraint = Instance.new("UITextSizeConstraint")
-    textSizeConstraint.MaxTextSize = 28
-    textSizeConstraint.Parent = text
 
     local stroke = Instance.new("UIStroke")
     stroke.Color = Color3.new(0, 0, 0)
@@ -173,7 +170,21 @@ function Component:CreateStrengthBillboard(head)
 
     self._strengthBillboard = billboard
     self._strengthText = text
+    self:RefreshStrengthBillboard()
     billboard.Parent = head
+end
+
+--- 按格式化数字的实际宽度调整整组世界尺寸，保持不同位数的力量显示居中。
+function Component:RefreshStrengthBillboard()
+    local text = self._strengthText
+    local value = GameUtility.NumberToText(self._strengthStat.Value)
+    local textWidth = TextService:GetTextSize(value, 28, text.Font, Vector2.new(1000, 44)).X + 4
+    local width = 44 + 6 + textWidth
+    self._strengthBillboard.Size = UDim2.fromScale(width / 44 * 0.9, 0.9)
+    self._strengthBillboard.StrengthIcon.Size = UDim2.fromScale(44 / width, 1)
+    text.Position = UDim2.fromScale(50 / width, 0.5)
+    text.Size = UDim2.fromScale(textWidth / width, 28 / 44)
+    text.Text = value
 end
 
 --- 校验世界序号与历史最高等级后，把角色移动到配置落点并同步当前世界。
@@ -220,7 +231,7 @@ function Component:RefreshProgress()
     self._levelStat.Value = level
     self._strengthStat.Value = strength
     if self._strengthText then
-        self._strengthText.Text = GameUtility.NumberToText(strength)
+        self:RefreshStrengthBillboard()
     end
 end
 
@@ -261,10 +272,44 @@ function Component:ApplyTrainingCard(seconds)
     if gain <= 0 then
         return false
     end
-    self:AddNumber(Fields.RockTrainingValue, gain)
+    if not self:RequireComponent("FSRewardComp"):AddRewards({
+        {Type = "Money", Currency = "RockTrainingValue", Count = gain},
+    }) then
+        return false
+    end
     self:RefreshProgress()
-    FX.Network:SendMsgToClient(self:GetPlayerId(), "S2C_TrainingEffect", gain, true)
+    local notified, message = pcall(FX.Network.SendMsgToClient, FX.Network,
+        self:GetPlayerId(), "S2C_TrainingEffect", gain, true)
+    if not notified then
+        warn("[TrainingCard] reward notification failed", message)
+    end
     return true
+end
+
+--- 点击复用真实训练速率与永久倍率；服务端限速并检查存活状态，不接受客户端收益。
+--- @param position Vector2 客户端飘字起点，仅用于表现。
+function Component:HandleTrainingClick(position)
+    if typeof(position) ~= "Vector2" or position.X ~= position.X or position.Y ~= position.Y
+        or math.abs(position.X) == math.huge or math.abs(position.Y) == math.huge then
+        return
+    end
+    local now = os.clock()
+    if self._lastTrainingClick and now - self._lastTrainingClick < RockLevel.ClickInterval then
+        return
+    end
+    local character = self:GetPlayerCharacter()
+    local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+    if not humanoid or humanoid.Health <= 0 then
+        return
+    end
+    self._lastTrainingClick = now
+    local gain = self:GetTrainingCardGain(1)
+    if gain > 0 and self:RequireComponent("FSRewardComp"):AddRewards({
+        {Type = "Money", Currency = "RockTrainingValue", Count = gain},
+    }) then
+        self:RefreshProgress()
+        FX.Network:SendMsgToClient(self:GetPlayerId(), "S2C_TrainingEffect", gain, false, position)
+    end
 end
 
 --- 同一结算周期多次有效命中只计一份基础击打收益。
@@ -332,8 +377,9 @@ function Component:TickTraining()
     baseGain *= CurrencyShop.GetTrainingRate(self:GetTable(Fields.CurrencyShopData))
     local gain = Rebirth.GetTrainingGain(self:GetNumber(Fields.RockTrainingValue), baseGain,
         self:GetNumber(Fields.RebirthCount))
-    if gain > 0 then
-        self:AddNumber(Fields.RockTrainingValue, gain)
+    if gain > 0 and self:RequireComponent("FSRewardComp"):AddRewards({
+        {Type = "Money", Currency = "RockTrainingValue", Count = gain},
+    }) then
         self:RefreshProgress()
         FX.Network:SendMsgToClient(self:GetPlayerId(), "S2C_TrainingEffect", gain)
     end

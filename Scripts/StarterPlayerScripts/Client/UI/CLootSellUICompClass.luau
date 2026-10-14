@@ -41,7 +41,7 @@ function Component:OnReady()
         ["TitleBox/TitleTxt"] = "SELL LOOT",
         ["PopupPanelImg/TotalImg/TotalLabelTxt"] = "Total Value",
         ["PopupPanelImg/TotalImg/SellAllBtn/ButtonTxt"] = "Sell All",
-        ["PopupPanelImg/TotalImg/SellDoubleBtn/ButtonTxt"] = "Sell x2",
+        ["PopupPanelImg/TotalImg/SellDoubleBtn/ButtonTxt"] = "Sell x2 (1 Card)",
     }
     for path, text in pairs(labels) do
         local label = FXLoader:Here(root, path)

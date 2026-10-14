@@ -56,7 +56,7 @@ end
 --- 监听立即回放，关闭后同步只刷新内容，不重新打开窗口。
 function Component:BindUIData()
     self:WatchDataChanged(Fields.WeaponData, self.RefreshWeapon, self)
-    self:WatchDataChanged(Fields.Coins, self.RefreshWeapon, self)
+    self:WatchDataChanged(Fields.Money, self.RefreshWeapon, self)
 end
 
 --- 将权威存档转换为展示状态，并及时更新小屋的购买与装备提醒。
@@ -64,7 +64,7 @@ function Component:RefreshWeapon()
     local data = self:GetTable(Fields.WeaponData)
     self.State.owned = data.owned
     self.State.equippedId = tostring(data.equippedId)
-    self.State.coins = self:GetNumber(Fields.Coins)
+    self.State.coins = self:GetNumber(Fields.Money)
     self._shopAreas:Refresh(self.Config.weapons, self.State)
     self:RefreshUI()
 end

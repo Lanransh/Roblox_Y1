@@ -25,8 +25,11 @@ function Component:Ctor(owner)
     self.State = {pending = false}
 end
 
---- 复用生成类交互，仅开发者挂载；面板始终等待主动打开。
+--- 开发者提前初始化面板，入口统一使用主界面按钮，Ready 回放时不重复绑定。
 function Component:OnReady()
+    if self._initialized then
+        return
+    end
     self._commonUI = self:GetPlayerObject():RequireComponent("FCCommonUIComp")
     Component.Super.OnReady(self)
     local root = self:GetRootNode()
@@ -41,6 +44,7 @@ function Component:OnReady()
     end
     self:BindUIData()
     self:Hide()
+    self._initialized = true
 end
 
 --- 即使其他客户端组件直接调用，也只允许开发者显示面板。

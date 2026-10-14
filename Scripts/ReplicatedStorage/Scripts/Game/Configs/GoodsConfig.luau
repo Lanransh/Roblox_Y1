@@ -1,32 +1,284 @@
 return {
-    -- DevGoodsId 为业务 ID；RobloxProductId 配置真实 Developer Product ID 后才开放购买。
     GoodsData = {
-        [100] = {DevGoodsId = 100, RobloxProductId = 0, BuyHandler = "AddGem", Price = 3, BuyLimit = 1, NumberArray = {48}},
-        [101] = {DevGoodsId = 101, RobloxProductId = 0, BuyHandler = "AddGem", Price = 19, NumberArray = {152}},
-        [102] = {DevGoodsId = 102, RobloxProductId = 0, BuyHandler = "AddGem", Price = 69, NumberArray = {618}},
-        [103] = {DevGoodsId = 103, RobloxProductId = 0, BuyHandler = "AddGem", Price = 169, NumberArray = {1698}},
-        [111] = {DevGoodsId = 111, RobloxProductId = 0, BuyHandler = "AddItem", Price = 18, KVTable = {ItemId = 101, Count = 1}},
-        [112] = {DevGoodsId = 112, RobloxProductId = 0, BuyHandler = "AddItem", Price = 68, KVTable = {ItemId = 102, Count = 1}},
+        [1] = {
+            DevGoodsId = 1,
+            BuyHandler = [[UnlockVip]],
+            Name = [[解锁VIP]],
+            Desc = [[解锁VIP]],
+            Price = 68,
+            BuyLimit = nil,
+            NumberArray = nil,
+            KVTable = nil
+        },
+        [100] = {
+            DevGoodsId = 100,
+            BuyHandler = [[AddGem]],
+            Name = [[新手优惠5折钻石包]],
+            Desc = [[获得48颗钻石(超值!)]],
+            Price = 3,
+            BuyLimit = 1,
+            NumberArray = {
+                [1] = 48,
+            },
+            KVTable = nil
+        },
+        [101] = {
+            DevGoodsId = 101,
+            BuyHandler = [[AddGem]],
+            Name = [[小额钻石包]],
+            Desc = [[获得152颗钻石]],
+            Price = 19,
+            BuyLimit = nil,
+            NumberArray = {
+                [1] = 152,
+            },
+            KVTable = nil
+        },
+        [102] = {
+            DevGoodsId = 102,
+            BuyHandler = [[AddGem]],
+            Name = [[中额钻石包]],
+            Desc = [[获得618颗钻石]],
+            Price = 69,
+            BuyLimit = nil,
+            NumberArray = {
+                [1] = 618,
+            },
+            KVTable = nil
+        },
+        [103] = {
+            DevGoodsId = 103,
+            BuyHandler = [[AddGem]],
+            Name = [[获得1698颗钻石]],
+            Desc = [[获得1698颗钻石]],
+            Price = 169,
+            BuyLimit = nil,
+            NumberArray = {
+                [1] = 1698,
+            },
+            KVTable = nil
+        },
+        [111] = {
+            DevGoodsId = 111,
+            BuyHandler = [[AddItem]],
+            Name = [[小周卡X1]],
+            Desc = [[立即获得100钻石,每天签到多获得30钻石(6天)]],
+            Price = 18,
+            BuyLimit = nil,
+            NumberArray = nil,
+            KVTable = {
+                ItemId = 101,
+                Count = 1
+            }
+        },
+        [112] = {
+            DevGoodsId = 112,
+            BuyHandler = [[AddItem]],
+            Name = [[大周卡X1]],
+            Desc = [[立即获得400钻石,每天签到多获得120钻石(6天)]],
+            Price = 68,
+            BuyLimit = nil,
+            NumberArray = nil,
+            KVTable = {
+                ItemId = 102,
+                Count = 1
+            }
+        },
+        [201] = {
+            DevGoodsId = 201,
+            BuyHandler = [[SendRedPacket]],
+            Name = [[发送一次钻石红包]],
+            Desc = [[发送一次钻石红包]],
+            Price = 6,
+            BuyLimit = nil,
+            NumberArray = nil,
+            KVTable = nil
+        }
     },
-    -- 沿用 Studio_Y3 的价格；当前版本训练倍率最高第 9 档（512 倍）。
-    MaxTrainingRateLevel = 9,
     GemGoodsData = {
-        [150] = {GemGoodsId = 150, BuyHandler = "TrainingRateLevel", Price = 28},
-        [151] = {GemGoodsId = 151, BuyHandler = "TrainingRateLevel", Price = 38},
-        [152] = {GemGoodsId = 152, BuyHandler = "TrainingRateLevel", Price = 48},
-        [153] = {GemGoodsId = 153, BuyHandler = "TrainingRateLevel", Price = 78},
-        [154] = {GemGoodsId = 154, BuyHandler = "TrainingRateLevel", Price = 228},
-        [155] = {GemGoodsId = 155, BuyHandler = "TrainingRateLevel", Price = 418},
-        [156] = {GemGoodsId = 156, BuyHandler = "TrainingRateLevel", Price = 758},
-        [157] = {GemGoodsId = 157, BuyHandler = "TrainingRateLevel", Price = 1498},
-        [158] = {GemGoodsId = 158, BuyHandler = "TrainingRateLevel", Price = 2688},
-        [159] = {GemGoodsId = 159, BuyHandler = "TrainingRateLevel", Price = 5688},
-        [160] = {GemGoodsId = 160, BuyHandler = "TrainingRateLevel", Price = 10288},
-        [201] = {GemGoodsId = 201, BuyHandler = "ExpandableBackpack", Price = 52, NumberArray = {1}},
-        [202] = {GemGoodsId = 202, BuyHandler = "ExpandableBackpack", Price = 368, NumberArray = {1}},
-        [203] = {GemGoodsId = 203, BuyHandler = "ExpandableBackpack", Price = 688, NumberArray = {1}},
-        [301] = {GemGoodsId = 301, BuyHandler = "BuyTrainingValue", Price = 98, NumberArray = {1800}},
-        [302] = {GemGoodsId = 302, BuyHandler = "BuyTrainingValue", Price = 388, NumberArray = {7200}},
+        [1] = {
+            GemGoodsId = 1,
+            BuyHandler = [[VIPOfflineReward]],
+            BuyLimit = nil,
+            Desc = nil,
+            Price = 96,
+            NumberArray = nil,
+            KVTable = nil
+        },
+        [150] = {
+            GemGoodsId = 150,
+            BuyHandler = [[TrainingRateLevel]],
+            BuyLimit = nil,
+            Desc = [[训练倍率X2]],
+            Price = 28,
+            NumberArray = nil,
+            KVTable = nil
+        },
+        [151] = {
+            GemGoodsId = 151,
+            BuyHandler = [[TrainingRateLevel]],
+            BuyLimit = nil,
+            Desc = [[训练倍率X4]],
+            Price = 38,
+            NumberArray = nil,
+            KVTable = nil
+        },
+        [152] = {
+            GemGoodsId = 152,
+            BuyHandler = [[TrainingRateLevel]],
+            BuyLimit = nil,
+            Desc = [[训练倍率X8]],
+            Price = 48,
+            NumberArray = nil,
+            KVTable = nil
+        },
+        [153] = {
+            GemGoodsId = 153,
+            BuyHandler = [[TrainingRateLevel]],
+            BuyLimit = nil,
+            Desc = [[训练倍率X16]],
+            Price = 78,
+            NumberArray = nil,
+            KVTable = nil
+        },
+        [154] = {
+            GemGoodsId = 154,
+            BuyHandler = [[TrainingRateLevel]],
+            BuyLimit = nil,
+            Desc = [[训练倍率X32]],
+            Price = 228,
+            NumberArray = nil,
+            KVTable = nil
+        },
+        [155] = {
+            GemGoodsId = 155,
+            BuyHandler = [[TrainingRateLevel]],
+            BuyLimit = nil,
+            Desc = [[训练倍率X64]],
+            Price = 418,
+            NumberArray = nil,
+            KVTable = nil
+        },
+        [156] = {
+            GemGoodsId = 156,
+            BuyHandler = [[TrainingRateLevel]],
+            BuyLimit = nil,
+            Desc = [[训练倍率X128]],
+            Price = 758,
+            NumberArray = nil,
+            KVTable = nil
+        },
+        [157] = {
+            GemGoodsId = 157,
+            BuyHandler = [[TrainingRateLevel]],
+            BuyLimit = nil,
+            Desc = [[训练倍率X256]],
+            Price = 1498,
+            NumberArray = nil,
+            KVTable = nil
+        },
+        [158] = {
+            GemGoodsId = 158,
+            BuyHandler = [[TrainingRateLevel]],
+            BuyLimit = nil,
+            Desc = [[训练倍率X512]],
+            Price = 2688,
+            NumberArray = nil,
+            KVTable = nil
+        },
+        [159] = {
+            GemGoodsId = 159,
+            BuyHandler = [[TrainingRateLevel]],
+            BuyLimit = nil,
+            Desc = [[训练倍率X1024]],
+            Price = 5688,
+            NumberArray = nil,
+            KVTable = nil
+        },
+        [160] = {
+            GemGoodsId = 160,
+            BuyHandler = [[TrainingRateLevel]],
+            BuyLimit = nil,
+            Desc = [[训练倍率X2048]],
+            Price = 10288,
+            NumberArray = nil,
+            KVTable = nil
+        },
+        [201] = {
+            GemGoodsId = 201,
+            BuyHandler = [[ExpandableBackpack]],
+            BuyLimit = nil,
+            Desc = [[扩容背包格子+1]],
+            Price = 52,
+            NumberArray = {
+                [1] = 1,
+            },
+            KVTable = nil
+        },
+        [202] = {
+            GemGoodsId = 202,
+            BuyHandler = [[ExpandableBackpack]],
+            BuyLimit = nil,
+            Desc = [[扩容背包格子+1]],
+            Price = 368,
+            NumberArray = {
+                [1] = 1,
+            },
+            KVTable = nil
+        },
+        [203] = {
+            GemGoodsId = 203,
+            BuyHandler = [[ExpandableBackpack]],
+            BuyLimit = nil,
+            Desc = [[扩容背包格子+1]],
+            Price = 688,
+            NumberArray = {
+                [1] = 1,
+            },
+            KVTable = nil
+        },
+        [301] = {
+            GemGoodsId = 301,
+            BuyHandler = [[BuyTrainingValue]],
+            BuyLimit = nil,
+            Desc = [[小训练力量包]],
+            Price = 98,
+            NumberArray = {
+                [1] = 1800,
+            },
+            KVTable = nil
+        },
+        [302] = {
+            GemGoodsId = 302,
+            BuyHandler = [[BuyTrainingValue]],
+            BuyLimit = nil,
+            Desc = [[中训练力量包]],
+            Price = 388,
+            NumberArray = {
+                [1] = 7200,
+            },
+            KVTable = nil
+        },
+        [303] = {
+            GemGoodsId = 303,
+            BuyHandler = [[BuyTrainingValue]],
+            BuyLimit = nil,
+            Desc = [[大训练力量包]],
+            Price = 9999,
+            NumberArray = {
+                [1] = 1,
+            },
+            KVTable = nil
+        },
+        [311] = {
+            GemGoodsId = 311,
+            BuyHandler = [[DoubleSell]],
+            BuyLimit = nil,
+            Desc = [[双倍出售]],
+            Price = 40,
+            NumberArray = nil,
+            KVTable = nil
+        }
     },
     GoodsItemData = {}
 }

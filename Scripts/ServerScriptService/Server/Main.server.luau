@@ -3,6 +3,7 @@ require(Scripts:WaitForChild("GameInit"))
 local Handlers = script.Parent.Handlers
 _G.Provider.ItemHandlers = require(Handlers.ItemHandlers)
 _G.Provider.BuyHandlers = require(Handlers.BuyHandlers)
+_G.Provider.RewardHandlers = require(Handlers.RewardHandlers)
 local Player = script.Parent.Player
 local Service = script.Parent.Service
 
@@ -21,5 +22,7 @@ local PurchaseReceiptService = require(Service.SPurchaseReceiptService)
 
 _G.SRankingService = RankingClass.New()
 _G.SPlayerObjectManager = ManagerClass.New()
+_G.SGiftDropService = require(Service.SGiftDropService)
+_G.SGiftDropService.Init()
 PurchaseReceiptService.Init()
 _G.SDogNpcService = DogNpcClass.New()

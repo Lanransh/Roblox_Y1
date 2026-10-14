@@ -27,11 +27,11 @@ FS.RankingManager:Init()
 FS.ShopService:Init()
 FS.FriendService:Init()
 
---- 存档加载失败时终止当前玩家会话，禁止使用空档继续游戏。
+--- 普通玩家加载失败时退出；开发者仅保留恢复入口，不发送游戏 Ready。
 --- @param id number 存档加载失败的玩家 ID。
 FS.Events.OnPlayerDataLoadFailed.Event:Connect(function(id)
     local player = Players:GetPlayerByUserId(id)
-    if player then
+    if player and not FX.IsDeveloper(id) then
         player:Kick("存档加载失败或仍在其他服务器，请稍后重试")
     end
 end)

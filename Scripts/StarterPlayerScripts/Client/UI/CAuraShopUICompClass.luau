@@ -56,7 +56,7 @@ end
 --- 数据监听立即回放，关闭后同步只刷新条目，不重新打开窗口。
 function Component:BindUIData()
     self:WatchDataChanged(Fields.AuraData, self.RefreshAura, self)
-    self:WatchDataChanged(Fields.Coins, self.RefreshAura, self)
+    self:WatchDataChanged(Fields.Money, self.RefreshAura, self)
 end
 
 --- 将同步存档转换为展示状态，并及时更新小屋的购买与装备提醒。
@@ -64,7 +64,7 @@ function Component:RefreshAura()
     local data = self:GetTable(Fields.AuraData)
     self.State.owned = data.owned
     self.State.equippedId = data.equippedId == 0 and "" or tostring(data.equippedId)
-    self.State.coins = self:GetNumber(Fields.Coins)
+    self.State.coins = self:GetNumber(Fields.Money)
     self._shopAreas:Refresh(self.Config.auras, self.State)
     self:RefreshUI()
 end

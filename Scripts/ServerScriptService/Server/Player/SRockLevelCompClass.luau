@@ -62,16 +62,9 @@ end
 ---@param duration number 本次卡片持续秒数。
 ---@return boolean 是否成功写入扩容状态。
 function Component:ApplyLootCapacityBoost(count, duration)
-    local now = workspace:GetServerTimeNow()
-    local boost = self:GetTable(Fields.RockLootCapacityBoost)
-    local active = type(boost) == "table" and (boost.expiresAt or 0) > now
-    local expiresAt = (active and boost.expiresAt or now) + duration
-    local currentCount = active and math.max(0, math.floor(boost.count or 0)) or 0
-    self:SetTable(Fields.RockLootCapacityBoost, {
-        count = math.max(currentCount, math.floor(count)),
-        expiresAt = expiresAt,
+    return self:RequireComponent("FSRewardComp"):AddRewards({
+        {Type = "LootCapacityBoost", Count = count, Duration = duration},
     })
-    return true
 end
 
 --- 读档后缓存武器模板、校验奖池模型、同步地板颜色并启动位置检查。
@@ -577,7 +570,7 @@ function Component:PickupDrop(dropId)
         self:GetPlayerObject():ShowLocalizedTips("Loot.BagFull")
         return
     end
-    table.insert(loot, {
+    local entry = {
         TemplateName = drop.Template.Name,
         ItemId = drop.ItemId,
         DisplayModelId = drop.DisplayModelId,
@@ -585,8 +578,11 @@ function Component:PickupDrop(dropId)
         IsLucky = drop.IsLucky,
         LuckRate = drop.LuckRate,
         DisplayName = English:FormatByKey(CollectibleText.GetNameKey(drop.Template.Name)),
-    })
-    self:SetTable(Fields.RockLoot, loot)
+    }
+    if not self:RequireComponent("FSRewardComp"):AddRewards({{Type = "Loot", Count = 1, Data = entry}}) then
+        drop.Picking = false
+        return
+    end
     self:RemoveDrop(dropId)
     local nameKey = CollectibleText.GetNameKey(drop.Template.Name)
     self:RequireComponent("SActivityComp"):RecordPickup()

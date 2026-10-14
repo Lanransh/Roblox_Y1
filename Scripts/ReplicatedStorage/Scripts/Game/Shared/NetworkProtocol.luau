@@ -2,6 +2,8 @@
 -- 框架已有的 Ready、玩家数据和服务器数据同步协议继续由 FrameworkInit 声明。
 return {
     ClientMsgID = {
+        -- dropId: string，RPC 返回 boolean；校验个人礼盒资格、落地时间与距离，固定发放 100 金币并去重。
+        "C2S_OpenGiftDrop",
         -- goodsId: number，服务端校验钻石余额与下一档；返回 success、key、data。
         "C2S_BuyCurrencyShopGoods",
         -- kind: "online"|"signin"|"diamonds"，rewardId: string 稳定配置 ID；身份来自引擎。
@@ -38,14 +40,20 @@ return {
         -- index: number，世界传送列表序号，从 1 开始；接受过哪些世界的重生门槛与落点由服务端配置决定。
         -- RPC 返回 {success: boolean, key: string?, arguments: table?, index: number?}，不接受客户端坐标。
         "C2S_TransferWorld",
+        -- position: Vector2，仅用于飘字起点；服务端限速并按真实配置结算，不接受收益参数。
+        "C2S_TrainingClick",
     },
     ServerMsgID = {
+        -- dropId: string、options: {Position: Vector3, Height: number, Duration: number}，个人客户端生成礼盒表现。
+        "S2C_SpawnGiftDrop",
+        -- amount: number，服务端实际到账金币；客户端复用拾取奖励 UI。
+        "S2C_GiftDropOpened",
         -- 无参数；服务端确认公共小狗拾取成功后，仅通知拾取者播放现有拾取音效。
         "S2C_DogPickedUp",
         -- key: string、arguments: table?、duration: number?，项目提示在客户端翻译，单向消息。
         "S2C_ShowLocalizedTips",
         -- gain: number，服务端实际训练收益；rewardRain: boolean?，力量卡结算为 true，播放力量图标雨。
-        -- 普通走路及击打不传 rewardRain；点击图标由客户端立即播放，无需回包。
+        -- position: Vector2?，点击结算返回飘字起点；走路及击打不传，力量卡不传位置。
         "S2C_TrainingEffect",
         -- round: number、brokenCells: string[]?；新轮重置，或同轮恢复个人已击破格号。
         "S2C_RockReset",

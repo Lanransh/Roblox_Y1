@@ -31,9 +31,9 @@ return {
             offline = {id = "", seconds = 0, training = 0, status = "Locked"}},
     },
     -- 金币余额。
-    Coins = {
+    Money = {
         Type = "number",
-        Key = "Coins",
+        Key = "Money",
         DefVal = 0,
         KVTable = PlayerKVEnum.ePlayerData,
         Sync = true,
@@ -46,11 +46,11 @@ return {
         KVTable = PlayerKVEnum.ePlayerData,
         Sync = true,
     },
-    -- 钻石余额，新玩家默认拥有 500 钻石。
+    -- 钻石余额；首次缺失该存档字段时由统一奖励组件发放 500 钻石。
     Diamonds = {
         Type = "number",
         Key = "Diamonds",
-        DefVal = 500,
+        DefVal = 0,
         KVTable = PlayerKVEnum.ePlayerData,
         Sync = true,
     },
@@ -105,7 +105,7 @@ return {
     WeaponData = {
         Type = "table",
         Key = "WeaponData",
-        DefVal = {owned = {["101"] = true}, equippedId = 101},
+        DefVal = {owned = {}, equippedId = 101},
         KVTable = PlayerKVEnum.ePlayerData,
         Sync = true,
     },

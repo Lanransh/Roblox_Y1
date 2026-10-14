@@ -22,22 +22,22 @@ local function RecordPurchase(context)
     context.playerObject:SetTable(Fields.CurrencyShopData, data)
 end
 
---- 钻石奖励不超过安全整数范围；预检不发奖。
+--- 钻石奖励通过统一接口校验有限数值；预检不发奖。
 --- @param context table 框架购买上下文。
 --- @return boolean 是否允许购买。
 function Handlers.AddGem:CanBuy(context)
-    return CanBuy(context) and context.playerObject:GetNumber(Fields.Diamonds)
-        + context.goodsConfig.NumberArray[1] <= 9007199254740991
+    context.extraData = {{Type = "Money", Currency = "Diamonds", Count = context.goodsConfig.NumberArray[1]}}
+    return CanBuy(context) and context.playerObject:RequireComponent("FSRewardComp"):CanAddRewards(context.extraData)
 end
 
 --- 仅收据处理器调用；不依赖客户端购买完成通知发奖。
 --- @param context table 框架购买上下文。
 --- @return boolean 奖励是否已写入档案。
 function Handlers.AddGem:Buy(context)
-    if not self:CanBuy(context) then
+    if not self:CanBuy(context)
+        or not context.playerObject:RequireComponent("FSRewardComp"):AddRewards(context.extraData) then
         return false
     end
-    context.playerObject:AddNumber(Fields.Diamonds, context.goodsConfig.NumberArray[1])
     RecordPurchase(context)
     return true
 end

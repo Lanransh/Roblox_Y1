@@ -96,16 +96,19 @@ function Component:SellLoot(entryIds, multiplier)
     -- Price 已包含幸运倍率，不重复乘 LuckRate；图鉴激活记录始终保留。
     amount *= Rebirth.GetMoneyRate(self:GetNumber(Fields.RebirthCount)) * multiplier
     if not (amount >= 0 and amount < math.huge)
-        or self:GetNumber(Fields.Coins) + amount >= math.huge then
+        or self:GetNumber(Fields.Money) + amount >= math.huge then
         return {success = false, key = "Common.Unknown"}
     end
-    local rewardComp = self:GetComponent("FSRewardComp")
-    local cost = {{Type = "Item", ItemId = 103, Count = 1}}
-    if multiplier == 2 and (not rewardComp or not rewardComp:ConsumeRewards(cost)) then
+    local rewardComp = self:RequireComponent("FSRewardComp")
+    local cost = multiplier == 2 and {{Type = "Item", ItemId = 103, Count = 1}} or {}
+    if multiplier == 2 and not rewardComp:CanConsumeRewards(cost) then
+        return {success = false, key = "LootSell.NeedDoubleCard"}
+    end
+    local rewards = amount > 0 and {{Type = "Money", Currency = "Money", Count = amount}} or {}
+    if not rewardComp:ExchangeRewards(cost, rewards) then
         return {success = false, key = "Common.Unknown"}
     end
     self:SetTable(Fields.StoredLoot, remaining)
-    self:AddNumber(Fields.Coins, amount)
     return {
         success = true, key = "LootSell.Success", count = count, amount = amount,
         entries = self:RefreshEntries(),

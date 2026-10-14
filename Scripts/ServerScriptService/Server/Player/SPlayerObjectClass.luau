@@ -1,4 +1,4 @@
-local FX = _G.FX
+local FX, FS = _G.FX, _G.FS
 local FXLoader = FX.Loader
 local Rebirth = FXLoader:RequireShared("Scripts/Game/Shared/Rebirth")
 local RockLevel = FXLoader:RequireShared("Scripts/Game/Shared/RockLevel")
@@ -45,6 +45,59 @@ end
 
 function Inventory:OnAllChanged()
     self:SyncTools()
+end
+
+--- 当前卡片的消耗、奖励和权益统一回滚；禁止 yield，避免恢复时覆盖其他请求。
+--- @param grid number 已验证归属的背包格号。
+--- @param useCount number 本次使用的整数数量。
+--- @return boolean 道具效果是否完整完成。
+function Inventory:UseItem(grid, useCount)
+    if self._usingItem then
+        return false
+    end
+    local allowed, context = self:CanUseItem(grid, useCount)
+    if not allowed then
+        return false
+    end
+    local player = self:GetPlayerObject()
+    local fields = {
+        PlayerDataConfig.Inventory, PlayerDataConfig.Diamonds,
+        PlayerDataConfig.WelfareData, PlayerDataConfig.WelfareState,
+        PlayerDataConfig.RockTrainingValue, PlayerDataConfig.RockTrainingLevel,
+        PlayerDataConfig.MaxTrainingLevel, PlayerDataConfig.RockLootCapacityBoost,
+    }
+    local original = {}
+    for index, field in ipairs(fields) do
+        original[index] = player:_GetData(field)
+    end
+    local activity = player:RequireComponent("SActivityComp")
+    local lastTime = activity._lastTime
+    self._usingItem = true
+    --- 消耗与处理器放在同一个不让出执行的事务内，异常按失败回滚。
+    --- @return boolean 消耗与效果是否完整成功。
+    local thread = coroutine.create(function()
+        if context.consumeCount > 0 and not self:RemoveItemFromGridId(grid, context.consumeCount) then
+            return false
+        end
+        return context:Use()
+    end)
+    local ok, result = coroutine.resume(thread)
+    local finished = coroutine.status(thread) == "dead"
+    if not finished then
+        task.cancel(thread)
+    end
+    local success = ok and finished and result == true
+    if not success then
+        for index, field in ipairs(fields) do
+            player:_SetData(field, original[index], false)
+        end
+        activity._lastTime = lastTime
+    end
+    self._usingItem = nil
+    if not success then
+        player:RequireComponent("SMiscComp"):RefreshProgress()
+    end
+    return success
 end
 
 --- 仅将普通框架道具投影为原生 Tool，展示信息读取 ItemConfig.Display，收藏品仍由 KV 保存。
@@ -204,8 +257,19 @@ function Player:MigrateData(version)
     end
 end
 
---- 先同步初始数据，再向玩家组件发布登录事件。
+--- 未写入过的初始赠送通过统一奖励组件发放；已有余额和武器档案不重复奖励。
 function Player:OnPlayerLogin()
+    local rewards = {}
+    local diamonds = PlayerDataConfig.Diamonds
+    local kv = FS.PlayerKVDataManager:GetKVTable(self:GetPlayerId(), diamonds.KVTable)
+    if kv:GetDeep(diamonds.Key .. ".RealData") == nil then
+        table.insert(rewards, {Type = "Money", Currency = "Diamonds", Count = 500})
+    end
+    local weapon = PlayerDataConfig.WeaponData
+    if kv:GetDeep(weapon.Key .. ".RealData") == nil then
+        table.insert(rewards, {Type = "Unlock", Kind = "Weapon", Id = 101, Count = 1})
+    end
+    assert(self:RequireComponent("FSRewardComp"):AddRewards(rewards), "Initial rewards failed")
     Player.Super.OnPlayerLogin(self)
     self:PublishEvent("PlayerLogin")
 end

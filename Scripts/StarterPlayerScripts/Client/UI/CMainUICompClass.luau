@@ -85,20 +85,26 @@ function Component:OnReady()
     --- 普通训练沿用飞行图标，力量卡成功结算后改为力量图标雨。
     --- @param gain number 服务端确认的训练收益。
     --- @param rewardRain boolean? 是否来自力量卡结算。
-    FX.Network:RegServerMsgCallback("S2C_TrainingEffect", function(gain, rewardRain)
+    --- @param position Vector2? 点击结算的屏幕飘字起点。
+    FX.Network:RegServerMsgCallback("S2C_TrainingEffect", function(gain, rewardRain, position)
         if rewardRain then
             self:ShowRewardRain(self._bar.StrengthIcon)
             self:PulseStrength()
         else
-            self:ShowTrainingEffect(gain)
+            self:ShowTrainingEffect(gain, position)
         end
     end)
     self:WatchDataChanged(Fields.RockTrainingValue, self.RefreshProgress, self)
+    --- 仅在礼盒金币由服务端发放成功后，复用拾取奖励表现。
+    --- @param amount number 服务端确认的实际金币奖励。
+    FX.Network:RegServerMsgCallback("S2C_GiftDropOpened", function(amount)
+        self:ShowPickupEffect({MoneyAmount = amount})
+    end)
     self:WatchDataChanged(Fields.TrainingFieldIndex, self.RefreshTrainingStatus, self)
     self:WatchDataChanged(Fields.RebirthCount, function()
         self:RefreshProgress(self:GetNumber(Fields.RockTrainingValue))
     end, self)
-    self:WatchDataChanged(Fields.Coins, self.RefreshCoins, self)
+    self:WatchDataChanged(Fields.Money, self.RefreshCoins, self)
     self:WatchDataChanged(Fields.RebirthCount, self.RefreshRebirthCount, self)
     self:WatchDataChanged(Fields.Diamonds, self.RefreshDiamonds, self)
     self:WatchDataChanged(Fields.RockLoot, self.RefreshLoot, self)
@@ -108,7 +114,7 @@ function Component:OnReady()
             self:RefreshStrengthOffers()
         end)
     end
-    --- 鼠标只在未被按钮、背包等 UI 消耗时播放点击图标。
+    --- 鼠标只在未被按钮、背包等 UI 消耗时请求点击训练。
     --- @param input InputObject 本次输入。
     --- @param processed boolean 是否已被引擎 UI 消耗。
     self:TrackConnection(UserInputService.InputBegan:Connect(function(input, processed)
@@ -116,7 +122,7 @@ function Component:OnReady()
             self:ShowClickTrainingEffect(Vector2.new(input.Position.X, input.Position.Y))
         end
     end))
-    --- 触屏只为世界轻触播放点击图标，忽略摇杆拖动和界面点击。
+    --- 触屏只为世界轻触请求点击训练，忽略摇杆拖动和界面点击。
     --- @param position Vector2 引擎提供的轻触位置，作为图标飞行起点。
     --- @param processed boolean 是否被界面消耗。
     self:TrackConnection(UserInputService.TouchTapInWorld:Connect(function(position, processed)
@@ -157,7 +163,7 @@ function Component:IsBlankMainArea(position)
     return true
 end
 
---- 主界面空白区域本地限速后播放点击图标，仅做表现，不发送请求或增加训练值。
+--- 主界面空白区域本地限速后请求真实训练收益，服务端确认后才播放飘字。
 --- @param position Vector2 本次点击或轻触的屏幕像素坐标。
 function Component:ShowClickTrainingEffect(position)
     local now = os.clock()
@@ -166,7 +172,7 @@ function Component:ShowClickTrainingEffect(position)
         return
     end
     self._lastClick = now
-    self:ShowTrainingEffect(RockLevel.ClickEffectValue, position)
+    FX.Network:SendMsgToServer("C2S_TrainingClick", position)
 end
 
 --- 标记主界面实际内容区域，弹窗入口交给对应业务组件。
@@ -371,12 +377,13 @@ function Component:RefreshLootCapacity(loot)
     self._leftDown.BackpackStat.Value.Text = string.format("%d/%d", #loot, capacity)
 end
 
---- 在屏幕中央展示旋转道具与放射光芒，再一起缩小飞向背包图标。
---- @param entry table 服务端确认入袋的道具，使用其稳定展示模型路径。
+--- 在屏幕中央展示道具或金币与放射光芒，再一起缩小飞向对应统计图标。
+--- @param entry table 服务端确认的道具 DisplayModelId 或礼盒金币 MoneyAmount。
 function Component:ShowPickupEffect(entry)
     local path = type(entry.DisplayModelId) == "string" and string.match(entry.DisplayModelId, "^game%.(.+)$")
     local template = path and FXLoader:Find(game, path)
-    if not template or not template:IsA("Model") then
+    local isMoney = entry.MoneyAmount ~= nil
+    if not isMoney and (not template or not template:IsA("Model")) then
         return
     end
     local effect = Instance.new("Frame")
@@ -422,28 +429,71 @@ function Component:ShowPickupEffect(entry)
     viewport.Ambient = Color3.fromRGB(200, 200, 200)
     viewport.LightColor = Color3.new(1, 1, 1)
     viewport.LightDirection = Vector3.new(-1, -1, -1)
-    local model = template:Clone()
-    for index, node in ipairs(model:GetDescendants()) do
-        if node:IsA("BasePart") then
-            node.Anchored = true
-            node.CanCollide = false
-            node.CanTouch = false
-            node.CanQuery = false
+    local model
+    local pivot
+    local moneyIcon
+    local moneyText
+    if isMoney then
+        viewport.Visible = false
+        moneyIcon = FXLoader:Here(self._leftDown, "CashStat/Icon"):Clone()
+        moneyIcon.Name = "Money"
+        moneyIcon.AnchorPoint = Vector2.new(0.5, 0.5)
+        moneyIcon.Position = UDim2.fromScale(0.5, 0.5)
+        moneyIcon.Size = UDim2.fromScale(0.75, 0.75)
+        moneyIcon.BackgroundTransparency = 1
+        moneyIcon.ImageTransparency = 0
+        moneyIcon.Visible = true
+        moneyIcon.ZIndex = 2
+        moneyIcon.Parent = effect
+        moneyText = Instance.new("TextLabel")
+        moneyText.Name = "RewardAmount"
+        moneyText.AnchorPoint = Vector2.new(0.5, 0)
+        moneyText.Position = UDim2.fromScale(0.5, 0.95)
+        moneyText.Size = UDim2.fromScale(1.5, 0.22)
+        moneyText.BackgroundTransparency = 1
+        moneyText.Font = Enum.Font.GothamBold
+        moneyText.TextScaled = true
+        moneyText.TextColor3 = Color3.new(1, 1, 1)
+        moneyText.Text = GameUtility.NumberToText(entry.MoneyAmount) .. "元"
+        moneyText.AutoLocalize = false
+        moneyText.ZIndex = 3
+        moneyText.Parent = effect
+        local gradient = Instance.new("UIGradient")
+        gradient.Rotation = 90
+        gradient.Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 248, 185)),
+            ColorSequenceKeypoint.new(0.5, Color3.fromRGB(255, 210, 65)),
+            ColorSequenceKeypoint.new(1, Color3.fromRGB(205, 135, 20)),
+        })
+        gradient.Parent = moneyText
+        local stroke = Instance.new("UIStroke")
+        stroke.Color = Color3.new(0, 0, 0)
+        stroke.Thickness = 2
+        stroke.Parent = moneyText
+    else
+        model = template:Clone()
+        for index, node in ipairs(model:GetDescendants()) do
+            if node:IsA("BasePart") then
+                node.Anchored = true
+                node.CanCollide = false
+                node.CanTouch = false
+                node.CanQuery = false
+            end
         end
+        local bounds, size = model:GetBoundingBox()
+        pivot = model:GetPivot() - bounds.Position
+        model:PivotTo(pivot)
+        model.Parent = viewport
+        local camera = Instance.new("Camera")
+        camera.FieldOfView = 35
+        local distance = size.Magnitude * 0.6 / math.sin(math.rad(camera.FieldOfView / 2))
+        camera.CFrame = CFrame.lookAt(Vector3.new(0, 0, distance), Vector3.zero)
+        camera.Parent = viewport
+        viewport.CurrentCamera = camera
     end
-    local bounds, size = model:GetBoundingBox()
-    local pivot = model:GetPivot() - bounds.Position
-    model:PivotTo(pivot)
-    model.Parent = viewport
-    local camera = Instance.new("Camera")
-    camera.FieldOfView = 35
-    local distance = size.Magnitude * 0.6 / math.sin(math.rad(camera.FieldOfView / 2))
-    camera.CFrame = CFrame.lookAt(Vector3.new(0, 0, distance), Vector3.zero)
-    camera.Parent = viewport
-    viewport.CurrentCamera = camera
     local elapsed = 0
     local connection
-    --- 道具与光芒共用屏幕位置和缩放，光芒缓慢旋转并在飞向背包时淡出。
+    --- 奖励与光芒共用屏幕位置和缩放，按奖励种类飞向背包或金币图标。
     --- @param deltaTime number 本次渲染帧间隔秒数。
     local function animate(deltaTime)
         elapsed += deltaTime
@@ -457,6 +507,9 @@ function Component:ShowPickupEffect(entry)
         local screenArea = GuiService:GetInsetArea(Enum.ScreenInsets.None)
         local center = (screenArea.Min + screenArea.Max) / 2 - origin
         local icon = self._leftDown.BackpackStat.Icon
+        if isMoney then
+            icon = FXLoader:Here(self._leftDown, "CashStat/Icon")
+        end
         local target = icon.AbsolutePosition + icon.AbsoluteSize / 2 - origin
         local fly = math.clamp((elapsed - 0.85) / 0.45, 0, 1)
         local position = center:Lerp(target, fly ^ 2)
@@ -468,7 +521,14 @@ function Component:ShowPickupEffect(entry)
         glow.Rotation = elapsed * 25
         glow.GroupTransparency = 1 - pop * (1 - fly)
         viewport.ImageTransparency = fly
-        model:PivotTo(CFrame.Angles(0, elapsed * math.pi * 2, 0) * pivot)
+        if isMoney then
+            moneyIcon.Rotation = elapsed * 90
+            moneyIcon.ImageTransparency = fly
+            moneyText.TextTransparency = fly
+            moneyText.UIStroke.Transparency = fly
+        else
+            model:PivotTo(CFrame.Angles(0, elapsed * math.pi * 2, 0) * pivot)
+        end
     end
     animate(0)
     effect.Parent = self._effectGui
@@ -507,7 +567,7 @@ function Component:RefreshProgress(value, oldValue)
 end
 
 --- 点击显示一个全额图标，走路及击打在角色周围独立随机显示三个均分图标，飞向中心时最小缩至 50%。
---- @param gain number 点击时为配置的表现数值，走路及击打时为服务器确认的收益。
+--- @param gain number 服务器确认的实际训练收益。
 --- @param position Vector2? 点击起点，走路及击打收益不传。
 function Component:ShowTrainingEffect(gain, position)
     -- 完整屏幕与角色投影都转换到共用 ScreenGui 的局部坐标，避免安全区造成偏移。
@@ -667,6 +727,7 @@ function Component:Dtor()
     end
     FX.Task:Cancel(self._homeTimer)
     FX.Network:UnRegServerMsgCallback("S2C_TrainingEffect")
+    FX.Network:UnRegServerMsgCallback("S2C_GiftDropOpened")
     for viewport, connection in pairs(self._pickupEffects or {}) do
         connection:Disconnect()
         viewport:Destroy()

@@ -16,11 +16,13 @@ function DB:Ctor(playerId)
     self._session = HttpService:GenerateGUID(false)
     self._data, self._database = {}, {}
     self._loaded, self._saving, self._released = false, false, false
+    self._loading, self._loadFailed = false, false
     self._revision = 0
 end
 
 --- 加载失败绝不创建空档继续游戏。
 function DB:LoadAsync()
+    self._loading, self._loadFailed = true, false
     task.spawn(function()
         local success, record = pcall(function()
             return self:_Update(function(old)
@@ -40,6 +42,7 @@ function DB:LoadAsync()
         end)
 
         if not success or not record then
+            self._loading, self._loadFailed = false, true
             warn("[Storage] Load failed or session locked", self._playerId, record)
             FS.Events.OnPlayerDataLoadFailed:Fire(self._playerId)
             return
@@ -49,6 +52,7 @@ function DB:LoadAsync()
         for enumKey, name in pairs(_G.Provider:GetPlayerKVEnum()) do
             local data = self._data[name]
             if data ~= nil and type(data) ~= "table" then
+                self._loading, self._loadFailed = false, true
                 warn("[Storage] Invalid KV domain", name)
                 FS.Events.OnPlayerDataLoadFailed:Fire(self._playerId)
                 return
@@ -58,7 +62,7 @@ function DB:LoadAsync()
             self._database[name] = FS.PlayerKVTableClass.New(self, name)
         end
 
-        self._loaded = true
+        self._loaded, self._loading = true, false
         if self._leaving then
             self:Save(true)
             return

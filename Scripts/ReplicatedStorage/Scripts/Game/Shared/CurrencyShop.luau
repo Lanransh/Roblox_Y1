@@ -8,7 +8,7 @@ local Aura = FXLoader:RequireShared("Scripts/Game/Shared/Aura")
 local Weapon = FXLoader:RequireShared("Scripts/Game/Shared/Weapon")
 local Fields = _G.PlayerDataConfig
 
---- 返回一个商品组的下一档；训练倍率按当前版本上限截断。
+--- 返回一个商品组的下一档；训练倍率以 TrainingRateConfig 中存在的下一档为准。
 --- @param group number ShopConfig 中的商品组。
 --- @param data table 玩家 CurrencyShopData。
 --- @return table? 下一档商店配置；全部购买后返回 nil。
@@ -18,8 +18,7 @@ function Shop.GetNextGemGoods(group, data)
             local goods = _G.GoodsConfig.GemGoodsData[item.GemGoodsId]
             if goods.BuyHandler == "TrainingRateLevel" then
                 local nextRate = _G.GameConfig.TrainingRateConfig[data.trainingLevel + 1]
-                if data.trainingLevel < _G.GoodsConfig.MaxTrainingRateLevel
-                    and nextRate and nextRate.GemGoodsId == item.GemGoodsId then
+                if nextRate and nextRate.GemGoodsId == item.GemGoodsId then
                     return item
                 end
             elseif not data.gemBought[tostring(item.GemGoodsId)] then
