@@ -26,6 +26,7 @@ export type ConfigValues = {
   levelCurves: CurveGroupValue & { input: { max: number } };
   stageCurves: CurveGroupValue;
   worldStageCount: NumberConfigValue;
+  itemsUnlockedPerStage: NumberConfigValue;
   expectedStageDuration: NumberConfigValue;
   expectedEasyStageDuration: NumberConfigValue;
   estimatedItemAcquisitionDuration: NumberConfigValue;

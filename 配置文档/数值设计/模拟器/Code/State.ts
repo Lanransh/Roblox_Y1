@@ -2,6 +2,7 @@ import { State as BaseState } from "@game-simulator/framework";
 import {
   calculateAuraValues,
   calculateBackpackExpansionValues,
+  calculateLevelStrength,
   calculateItemSaleGold,
   calculateLevelValues,
   calculatePaidMultiplierValues,
@@ -10,6 +11,7 @@ import {
   calculateRebirthValues,
   calculateSickleValues,
   calculateStageValues,
+  calculateStageCombatValues,
   calculateWeeklyCardValues,
   MAX_PAID_MULTIPLIER_ID,
   WEEKLY_CARD_REWARD_DAYS,
@@ -86,6 +88,11 @@ const highestChallengeStageCache = new WeakMap<
   object,
   HighestChallengeStageCache
 >();
+const stageCombatValueCache = new WeakMap<object, {
+  stageCurves: ProjectConfig["stageCurves"];
+  levelCurves: ProjectConfig["levelCurves"];
+  values: Map<number, ReturnType<typeof calculateStageCombatValues>>;
+}>();
 
 export class State extends BaseState<StateValues> {
   mode: GameMode;
@@ -125,7 +132,7 @@ export class State extends BaseState<StateValues> {
     this.rebirthCount = 0;
     this.level = 1;
     this.trainingValue = 0;
-    this.strength = this.getLevelValues().strength;
+    this.strength = calculateLevelStrength(this.projectConfig.levelCurves, this.level);
     this.rebirthRecoveryTargetLevel = null;
     this.rebirthRecoveryStartedAt = null;
     this.diamonds = this.projectConfig.initialDiamonds;
@@ -224,7 +231,8 @@ export class State extends BaseState<StateValues> {
     this.rebirthCount = values.rebirthCount ?? 0;
     this.level = values.level;
     this.trainingValue = values.trainingValue;
-    this.strength = values.strength;
+    // 力量只取决于等级；还原旧版状态时也按同一公式重算。
+    this.strength = calculateLevelStrength(this.projectConfig.levelCurves, this.level);
     this.rebirthRecoveryTargetLevel = values.rebirthRecoveryTargetLevel ?? null;
     this.rebirthRecoveryStartedAt = values.rebirthRecoveryStartedAt ?? null;
     this.diamonds = values.diamonds ?? this.projectConfig.initialDiamonds;
@@ -330,8 +338,20 @@ export class State extends BaseState<StateValues> {
       factors.prefix *
       catchUpMultiplier *
       factors.rebirthFieldMultiplier *
-      factors.paidTrainingMultiplier
+      factors.paidTrainingMultiplier *
+      this.getItemCollectionMultiplier()
     );
+  }
+
+  getUnlockedItemCount(): number {
+    return (
+      this.getHighestChallengeStageId() *
+      Math.max(0, Math.floor(this.projectConfig.itemsUnlockedPerStage))
+    );
+  }
+
+  getItemCollectionMultiplier(): number {
+    return 1 + this.getUnlockedItemCount() * 0.01;
   }
 
   getTotalGoldMultiplier(): number {
@@ -502,7 +522,7 @@ export class State extends BaseState<StateValues> {
     this.rebirthCount += 1;
     this.level = 1;
     this.trainingValue = 0;
-    this.strength = this.getLevelValues().strength;
+    this.strength = calculateLevelStrength(this.projectConfig.levelCurves, this.level);
     this.mode = "training";
   }
 
@@ -592,17 +612,26 @@ export class State extends BaseState<StateValues> {
   }
 
   getCurrentStageValues() {
-    return calculateStageValues(
-      this.projectConfig.stageCurves,
-      this.getCurrentGlobalStageId(),
-    );
+    return this.getStageCombatValues(this.getCurrentGlobalStageId());
   }
 
   getTargetStageValues() {
-    return calculateStageValues(
-      this.projectConfig.stageCurves,
-      Math.max(1, this.getHighestChallengeStageId()),
-    );
+    return this.getStageCombatValues(Math.max(1, this.getHighestChallengeStageId()));
+  }
+
+  private getStageCombatValues(stageId: number) {
+    const { stageCurves, levelCurves } = this.projectConfig;
+    let cached = stageCombatValueCache.get(this);
+    if (cached?.stageCurves !== stageCurves || cached.levelCurves !== levelCurves) {
+      cached = { stageCurves, levelCurves, values: new Map() };
+      stageCombatValueCache.set(this, cached);
+    }
+    let values = cached.values.get(stageId);
+    if (!values) {
+      values = calculateStageCombatValues(stageCurves, levelCurves, stageId);
+      cached.values.set(stageId, values);
+    }
+    return values;
   }
 
   getBackpackCapacity(): number {
@@ -669,7 +698,8 @@ export class State extends BaseState<StateValues> {
       settlement < this.projectConfig.trainingSettlementsPerSecond;
       settlement += 1
     ) {
-      this.trainingValue += this.getTrainingValuePerSettlement();
+      const trainingGain = this.getTrainingValuePerSettlement();
+      this.trainingValue += trainingGain;
       this.applyAutomaticLevelUps();
     }
 
@@ -826,6 +856,7 @@ export class State extends BaseState<StateValues> {
       return;
     }
 
+    const previousLevel = this.level;
     let levelValues = this.getLevelValues();
     while (this.level < this.projectConfig.levelCurves.input.max) {
       const required = levelValues.nextLevelExperience;
@@ -836,7 +867,9 @@ export class State extends BaseState<StateValues> {
       this.trainingValue -= required;
       this.level += 1;
       levelValues = this.getLevelValues();
-      this.strength = levelValues.strength;
+    }
+    if (this.level !== previousLevel) {
+      this.strength = calculateLevelStrength(this.projectConfig.levelCurves, this.level);
     }
   }
 
