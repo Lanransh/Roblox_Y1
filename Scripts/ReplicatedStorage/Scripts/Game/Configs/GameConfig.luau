@@ -55,35 +55,35 @@ return {
             NeedRebirhLevel = 0,
             DevGoodId = nil,
             TrainingRate = 1,
-            Node = [[game.Workspace.BlockMeshs["World1Root"].TrainingCenter.Training1]]
+            Node = [[game.Workspace.BlockMeshs.World1Root.TrainingCenter.Training1]]
         },
         [2] = {
             Index = 2,
             NeedRebirhLevel = 3,
             DevGoodId = nil,
             TrainingRate = 2,
-            Node = [[game.Workspace.BlockMeshs["World1Root"].TrainingCenter.Training2]]
+            Node = [[game.Workspace.BlockMeshs.World1Root.TrainingCenter.Training2]]
         },
         [3] = {
             Index = 3,
             NeedRebirhLevel = 6,
             DevGoodId = nil,
             TrainingRate = 5,
-            Node = [[game.Workspace.BlockMeshs["World1Root"].TrainingCenter.Training3]]
+            Node = [[game.Workspace.BlockMeshs.World1Root.TrainingCenter.Training3]]
         },
         [4] = {
             Index = 4,
             NeedRebirhLevel = 9,
             DevGoodId = nil,
             TrainingRate = 9,
-            Node = [[game.Workspace.BlockMeshs["World1Root"].TrainingCenter.Training4]]
+            Node = [[game.Workspace.BlockMeshs.World1Root.TrainingCenter.Training4]]
         },
         [5] = {
             Index = 5,
             NeedRebirhLevel = 12,
             DevGoodId = nil,
             TrainingRate = 14,
-            Node = [[game.Workspace.BlockMeshs["World1Root"].TrainingCenter.Training5]]
+            Node = [[game.Workspace.BlockMeshs.World1Root.TrainingCenter.Training5]]
         }
     },
     ToolConfig = {
@@ -350,7 +350,7 @@ return {
             Index = 1,
             AuraId = 101,
             Name = [[Common]],
-            Price = 3750,
+            Price = 1,
             TrainingRate = 1.5,
             Quality = 1,
             DevGoodId = nil,
@@ -361,9 +361,9 @@ return {
             Index = 2,
             AuraId = 102,
             Name = [[Uncommon]],
-            Price = 1.38e+6,
+            Price = 2,
             TrainingRate = 2.5,
-            Quality = 1,
+            Quality = 2,
             DevGoodId = nil,
             Img = [[112048940124762]],
             ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["02_Uncommon"]]=]
@@ -371,35 +371,255 @@ return {
         [3] = {
             Index = 3,
             AuraId = 103,
-            Name = [[Rare]],
-            Price = 3.32e+8,
+            Name = [[Toxic]],
+            Price = 3,
             TrainingRate = 3.5,
-            Quality = 1,
+            Quality = 3,
             DevGoodId = nil,
             Img = [[114920101659350]],
-            ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["03_Rare"]]=]
+            ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["03_Toxic"]]=]
         },
         [4] = {
             Index = 4,
             AuraId = 104,
-            Name = [[Epic]],
-            Price = 7.3e+10,
+            Name = [[Rare]],
+            Price = 4,
             TrainingRate = 4.5,
-            Quality = 1,
+            Quality = 4,
             DevGoodId = nil,
             Img = [[76680071023422]],
-            ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["04_Epic"]]=]
+            ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["04_Rare"]]=]
         },
         [5] = {
             Index = 5,
             AuraId = 105,
-            Name = [[Legendary]],
-            Price = 1.42e+13,
+            Name = [[Bronze]],
+            Price = 5,
             TrainingRate = 5.5,
-            Quality = 1,
+            Quality = 5,
             DevGoodId = nil,
             Img = [[98163950325063]],
-            ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["05_Legendary"]]=]
+            ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["05_Bronze"]]=]
+        },
+        [6] = {
+            Index = 6,
+            AuraId = 106,
+            Name = [[Abyss]],
+            Price = 6,
+            TrainingRate = 6.5,
+            Quality = 6,
+            DevGoodId = nil,
+            Img = [[98163950325063]],
+            ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["06_Abyss"]]=]
+        },
+        [7] = {
+            Index = 7,
+            AuraId = 107,
+            Name = [[Void]],
+            Price = 7,
+            TrainingRate = 7.5,
+            Quality = 7,
+            DevGoodId = nil,
+            Img = [[98163950325063]],
+            ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["07_Void"]]=]
+        },
+        [8] = {
+            Index = 8,
+            AuraId = 108,
+            Name = [[Crimson]],
+            Price = 8,
+            TrainingRate = 8.5,
+            Quality = 8,
+            DevGoodId = nil,
+            Img = [[98163950325063]],
+            ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["08_Crimson"]]=]
+        },
+        [9] = {
+            Index = 9,
+            AuraId = 109,
+            Name = [[Silver]],
+            Price = 9,
+            TrainingRate = 9.5,
+            Quality = 9,
+            DevGoodId = nil,
+            Img = [[98163950325063]],
+            ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["09_Silver"]]=]
+        },
+        [10] = {
+            Index = 10,
+            AuraId = 110,
+            Name = [[Epic]],
+            Price = 10,
+            TrainingRate = 10.5,
+            Quality = 10,
+            DevGoodId = nil,
+            Img = [[98163950325063]],
+            ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["10_Epic"]]=]
+        },
+        [11] = {
+            Index = 11,
+            AuraId = 111,
+            Name = [[Ocean]],
+            Price = 11,
+            TrainingRate = 11.5,
+            Quality = 11,
+            DevGoodId = nil,
+            Img = [[98163950325063]],
+            ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["11_Ocean"]]=]
+        },
+        [12] = {
+            Index = 12,
+            AuraId = 112,
+            Name = [[Lunar]],
+            Price = 12,
+            TrainingRate = 12.5,
+            Quality = 12,
+            DevGoodId = nil,
+            Img = [[98163950325063]],
+            ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["12_Lunar"]]=]
+        },
+        [13] = {
+            Index = 13,
+            AuraId = 113,
+            Name = [[Legendary]],
+            Price = 13,
+            TrainingRate = 13.5,
+            Quality = 13,
+            DevGoodId = nil,
+            Img = [[98163950325063]],
+            ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["13_Legendary"]]=]
+        },
+        [14] = {
+            Index = 14,
+            AuraId = 114,
+            Name = [[Emerald]],
+            Price = 14,
+            TrainingRate = 14.5,
+            Quality = 14,
+            DevGoodId = nil,
+            Img = [[98163950325063]],
+            ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["14_Emerald"]]=]
+        },
+        [15] = {
+            Index = 15,
+            AuraId = 115,
+            Name = [[Sapphire]],
+            Price = 15,
+            TrainingRate = 15.5,
+            Quality = 15,
+            DevGoodId = nil,
+            Img = [[98163950325063]],
+            ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["15_Sapphire"]]=]
+        },
+        [16] = {
+            Index = 16,
+            AuraId = 116,
+            Name = [[Ruby]],
+            Price = 16,
+            TrainingRate = 16.5,
+            Quality = 16,
+            DevGoodId = nil,
+            Img = [[98163950325063]],
+            ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["16_Ruby"]]=]
+        },
+        [17] = {
+            Index = 17,
+            AuraId = 117,
+            Name = [[Sakura]],
+            Price = 17,
+            TrainingRate = 17.5,
+            Quality = 17,
+            DevGoodId = nil,
+            Img = [[98163950325063]],
+            ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["17_Sakura"]]=]
+        },
+        [18] = {
+            Index = 18,
+            AuraId = 118,
+            Name = [[Sunset]],
+            Price = 18,
+            TrainingRate = 18.5,
+            Quality = 18,
+            DevGoodId = nil,
+            Img = [[98163950325063]],
+            ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["18_Sunset"]]=]
+        },
+        [19] = {
+            Index = 19,
+            AuraId = 119,
+            Name = [[Frost]],
+            Price = 19,
+            TrainingRate = 19.5,
+            Quality = 19,
+            DevGoodId = nil,
+            Img = [[98163950325063]],
+            ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["19_Frost"]]=]
+        },
+        [20] = {
+            Index = 20,
+            AuraId = 120,
+            Name = [[Inferno]],
+            Price = 20,
+            TrainingRate = 20.5,
+            Quality = 20,
+            DevGoodId = nil,
+            Img = [[98163950325063]],
+            ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["20_Inferno"]]=]
+        },
+        [21] = {
+            Index = 21,
+            AuraId = 121,
+            Name = [[Storm]],
+            Price = 21,
+            TrainingRate = 21.5,
+            Quality = 21,
+            DevGoodId = nil,
+            Img = [[98163950325063]],
+            ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["21_Storm"]]=]
+        },
+        [22] = {
+            Index = 22,
+            AuraId = 122,
+            Name = [[Solar]],
+            Price = 22,
+            TrainingRate = 22.5,
+            Quality = 22,
+            DevGoodId = nil,
+            Img = [[98163950325063]],
+            ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["22_Solar"]]=]
+        },
+        [23] = {
+            Index = 23,
+            AuraId = 123,
+            Name = [[Neon]],
+            Price = 23,
+            TrainingRate = 23.5,
+            Quality = 23,
+            DevGoodId = nil,
+            Img = [[98163950325063]],
+            ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["23_Neon"]]=]
+        },
+        [24] = {
+            Index = 24,
+            AuraId = 124,
+            Name = [[Prismatic]],
+            Price = 24,
+            TrainingRate = 24.5,
+            Quality = 24,
+            DevGoodId = nil,
+            Img = [[98163950325063]],
+            ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["24_Prismatic"]]=]
+        },
+        [25] = {
+            Index = 25,
+            AuraId = 125,
+            Name = [[Astral]],
+            Price = 25,
+            TrainingRate = 25.5,
+            Quality = 25,
+            DevGoodId = nil,
+            Img = [[98163950325063]],
+            ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["25_Astral"]]=]
         }
     },
     AreaRefreshData = {

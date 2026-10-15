@@ -1,5 +1,6 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
+local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local TrainingFields = {}
 local fields
 
@@ -11,8 +12,7 @@ function TrainingFields.GetFields()
     end
     fields = {}
     for index, config in ipairs(_G.GameConfig.TrainingFieldData) do
-        local worldName, fieldName = string.match(config.Node,
-            '^game%.Workspace%.BlockMeshs%["([^"]+)"%]%.TrainingCenter%.([^%.]+)$')
+        local worldName, fieldName = GameUtility.ParseTrainingFieldNode(config.Node)
         assert(worldName and fieldName, "Invalid training field Node: " .. config.Node)
         local model = FXLoader:Workspace("BlockMeshs/" .. worldName .. "/TrainingCenter/" .. fieldName)
         local platform = model:FindFirstChild("彩色训练台", true)

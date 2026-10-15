@@ -188,4 +188,18 @@ function GameUtility.HexColorToColor3(hexColor)
     return Color3.fromRGB(tonumber(red, 16), tonumber(green, 16), tonumber(blue, 16))
 end
 
+--- 从 TrainingFieldData.Node 解析世界块根名与训练台模型名；支持 BlockMeshs["World"] 与 BlockMeshs.World 两种写法。
+--- @param node string 配置中的完整节点路径。
+--- @return string? worldName BlockMeshs 下的世界根名称。
+--- @return string? fieldName TrainingCenter 下的训练台模型名。
+function GameUtility.ParseTrainingFieldNode(node)
+    local worldName, fieldName = string.match(node,
+        '^game%.Workspace%.BlockMeshs%["([^"]+)"%]%.TrainingCenter%.([^%.]+)$')
+    if worldName then
+        return worldName, fieldName
+    end
+    return string.match(node,
+        '^game%.Workspace%.BlockMeshs%.([^%.]+)%.TrainingCenter%.([^%.]+)$')
+end
+
 return GameUtility

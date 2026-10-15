@@ -135,7 +135,7 @@ function CSettingsView:OnReady()
         end))
     end
 
-    local closeButton = FXLoader:Here(root, "TitleBox.CloseSurfaceImg.CloseBtn")
+    local closeButton = FXLoader:Here(root, "TitleBox.CloseSurfaceImg")
     -- Close 由接入层转换为窗口 Hide。
     self:TrackConnection(closeButton.Activated:Connect(function()
         self:EmitUIAction("Close", {})

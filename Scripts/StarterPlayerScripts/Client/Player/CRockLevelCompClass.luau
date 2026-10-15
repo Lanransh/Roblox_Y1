@@ -535,8 +535,7 @@ function Component:PlayTrainingHitEffect(character)
     if not config or not root or not humanoid or humanoid.Health <= 0 then
         return
     end
-    local worldName, fieldName = string.match(config.Node,
-        '^game%.Workspace%.BlockMeshs%["([^"]+)"%]%.TrainingCenter%.([^%.]+)$')
+    local worldName, fieldName = GameUtility.ParseTrainingFieldNode(config.Node)
     local field = FXLoader:Find(workspace, "BlockMeshs/" .. worldName .. "/TrainingCenter/" .. fieldName)
     local core = field and field:FindFirstChild("巨岩暗色核心", true)
     if not core or not core:IsA("BasePart") then

@@ -22,10 +22,14 @@ function Component:OnReady()
     self._commonUI:RegisterTrainingClickModal(self.Root)
     self._localization = self._commonUI.Localization
     self.Config = {title = "AURAS", auras = {}, qualities = {}}
-    local color = "#" .. self.Template.BackgroundColor3:ToHex()
+    local fallbackColor = "#" .. self.Template.BackgroundColor3:ToHex()
     for index, config in ipairs(_G.GameConfig.AuraConfig) do
         local qualityId = tostring(config.Quality)
-        self.Config.qualities[qualityId] = {name = "", color = color}
+        local rowColor = config.DisplayColor or fallbackColor
+        if rowColor:sub(1, 1) ~= "#" then
+            rowColor = "#" .. rowColor
+        end
+        self.Config.qualities[qualityId] = {name = "", color = rowColor}
         table.insert(self.Config.auras, {
             id = tostring(config.AuraId), auraId = config.AuraId, name = config.Name,
             qualityId = qualityId, strength = config.TrainingRate, price = config.Price,

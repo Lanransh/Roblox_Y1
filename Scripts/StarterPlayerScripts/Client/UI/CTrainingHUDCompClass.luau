@@ -16,8 +16,7 @@ function Component:OnReady()
     self._previews = {}
     local template = FXLoader:Shared("Nodes/TrainingHUD")
     for index, config in ipairs(_G.GameConfig.TrainingFieldData) do
-        local worldName, fieldName = string.match(config.Node,
-            '^game%.Workspace%.BlockMeshs%["([^"]+)"%]%.TrainingCenter%.([^%.]+)$')
+        local worldName, fieldName = GameUtility.ParseTrainingFieldNode(config.Node)
         assert(worldName and fieldName, "Invalid training field Node: " .. config.Node)
         local field = FXLoader:Workspace("BlockMeshs/" .. worldName .. "/TrainingCenter/" .. fieldName)
         local platform = field:FindFirstChild("彩色训练台", true)
