@@ -2,6 +2,7 @@ local FX, FS = _G.FX, _G.FS
 local FXLoader = FX.Loader
 local Rebirth = FXLoader:RequireShared("Scripts/Game/Shared/Rebirth")
 local RockLevel = FXLoader:RequireShared("Scripts/Game/Shared/RockLevel")
+local ItemToolVisual = FXLoader:RequireFromParent(script, "ItemToolVisual")
 local PlayerDataConfig, ItemConfig = _G.PlayerDataConfig, _G.ItemConfig
 local TutorialGuideConfig = _G.TutorialGuideConfig
 local Inventory = FX.Class("SInventoryCompClass", "FSInventoryCompClass")
@@ -96,6 +97,8 @@ function Inventory:UseItem(grid, useCount)
     self._usingItem = nil
     if not success then
         player:RequireComponent("SMiscComp"):RefreshProgress()
+    elseif context.itemDataConfig.HeldHandler == "Image" then
+        ItemToolVisual.PlayUseEffect(self:GetPlayerNode().Character)
     end
     return success
 end
@@ -140,7 +143,9 @@ function Inventory:SyncTools()
                 tool.TextureId = display.IconId or ""
                 tool.ToolTip = display.Name
 
-                if config.ToolShape then
+                if config.HeldHandler == "Image" then
+                    ItemToolVisual.AddImageHandle(tool, display.IconId)
+                elseif config.ToolShape then
                     local handle = Instance.new("Part")
                     handle.Name = "Handle"
                     handle.Shape = Enum.PartType[config.ToolShape]

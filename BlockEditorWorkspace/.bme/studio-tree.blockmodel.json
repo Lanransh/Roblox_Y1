@@ -28,7 +28,7 @@
     },
     {
       "id": "prefab-node-359e9bdc-2e4f-487d-ad2f-94973e847164",
-      "name": "世界1",
+      "name": "World1Root",
       "parentId": "studio-block-models-root",
       "type": "PrefabReference",
       "transform": {
@@ -55,12 +55,12 @@
     },
     {
       "id": "prefab-node-3d0bc688-d1e8-4847-a256-d38016489a62",
-      "name": "世界2",
+      "name": "World2Root",
       "parentId": "studio-block-models-root",
       "type": "PrefabReference",
       "transform": {
         "position": [
-          580,
+          996,
           0,
           0
         ],
@@ -82,12 +82,12 @@
     },
     {
       "id": "prefab-node-1630c386-4a86-4f7e-a6ab-59212bd3f324",
-      "name": "世界3",
+      "name": "World3Root",
       "parentId": "studio-block-models-root",
       "type": "PrefabReference",
       "transform": {
         "position": [
-          1148.2727981916,
+          1977.9273578299199,
           0,
           7.711072368
         ],

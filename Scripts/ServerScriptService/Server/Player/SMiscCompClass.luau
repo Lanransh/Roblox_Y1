@@ -283,6 +283,7 @@ function Component:ApplyTrainingCard(seconds)
     if not notified then
         warn("[TrainingCard] reward notification failed", message)
     end
+    self:GetPlayerObject():ShowLocalizedTips("Welfare.TrainingCardGained", {value = gain})
     return true
 end
 

@@ -55,35 +55,35 @@ return {
             NeedRebirhLevel = 0,
             DevGoodId = nil,
             TrainingRate = 1,
-            Node = [[game.Workspace.BlockMeshs["世界1"].TrainingCenter.Training1]]
+            Node = [[game.Workspace.BlockMeshs["World1Root"].TrainingCenter.Training1]]
         },
         [2] = {
             Index = 2,
             NeedRebirhLevel = 3,
             DevGoodId = nil,
             TrainingRate = 2,
-            Node = [[game.Workspace.BlockMeshs["世界1"].TrainingCenter.Training2]]
+            Node = [[game.Workspace.BlockMeshs["World1Root"].TrainingCenter.Training2]]
         },
         [3] = {
             Index = 3,
             NeedRebirhLevel = 6,
             DevGoodId = nil,
             TrainingRate = 5,
-            Node = [[game.Workspace.BlockMeshs["世界1"].TrainingCenter.Training3]]
+            Node = [[game.Workspace.BlockMeshs["World1Root"].TrainingCenter.Training3]]
         },
         [4] = {
             Index = 4,
             NeedRebirhLevel = 9,
             DevGoodId = nil,
             TrainingRate = 9,
-            Node = [[game.Workspace.BlockMeshs["世界1"].TrainingCenter.Training4]]
+            Node = [[game.Workspace.BlockMeshs["World1Root"].TrainingCenter.Training4]]
         },
         [5] = {
             Index = 5,
             NeedRebirhLevel = 12,
             DevGoodId = nil,
             TrainingRate = 14,
-            Node = [[game.Workspace.BlockMeshs["世界1"].TrainingCenter.Training5]]
+            Node = [[game.Workspace.BlockMeshs["World1Root"].TrainingCenter.Training5]]
         }
     },
     ToolConfig = {

@@ -137,6 +137,29 @@ function Component:BuildProducts()
     self.Config.products = products
 end
 
+--- 创建卡片时拆出 Robux 字符图标，独立放大并随卡片统一销毁。
+--- @param product table 当前商品配置。
+--- @param style string 当前卡片渐变样式。
+--- @return table 生成类创建的卡片与清理句柄。
+function Component:CreateCard(product, style)
+    local card = Component.Super.CreateCard(self, product, style)
+    if product.currency == "Robux" then
+        FXLoader:Here(card.button, "RobuxIcon").Visible = false
+        local icon = card.price:Clone()
+        icon.Name = "RobuxGlyph"
+        icon.AutoLocalize = false
+        icon.Position = UDim2.fromOffset(8, 0)
+        icon.Size = UDim2.new(0, 32, 1, 0)
+        icon.TextScaled = false
+        icon.TextSize = 32
+        icon.Text = utf8.char(0xE002)
+        icon.Parent = card.button
+        card.price.Position = UDim2.fromOffset(44, 0)
+        card.price.Size = UDim2.new(1, -52, 1, 0)
+    end
+    return card
+end
+
 --- 保留生成类多色列表布局，补充本地化、数量缩写及业务禁用状态。
 --- @param state table 完整界面状态。
 function Component:Render(state)
@@ -153,6 +176,9 @@ function Component:Render(state)
                 or (product.unavailable and "CurrencyShop.Unavailable")
             card.price.Text = key and self._localization:FormatByKey(key)
                 or GameUtility.NumberToText(product.price)
+            if product.currency == "Robux" then
+                card.price.TextSize = key and 20 or 24
+            end
             local explainMaxRate = product.id == "group_1" and product.soldOut
             self:SetButtonEnabled(card.button, not self._busy and not product.unavailable
                 and (not product.soldOut or explainMaxRate))

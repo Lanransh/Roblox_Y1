@@ -18,13 +18,15 @@ end
 --- @return boolean 角色是否位于任一同类商店触发盒内。
 function ShopAreas:IsInside(position)
     local huts = {}
-    local original = workspace:FindFirstChild(self._hutName)
+    local decorations = workspace:FindFirstChild("Decorations")
+    local world1 = decorations and decorations:FindFirstChild("World1Decorations")
+    local original = world1 and world1:FindFirstChild(self._hutName)
     if original then
         table.insert(huts, original)
     end
-    local decorations = workspace:FindFirstChild("Decorations")
     for worldId = 2, 3 do
-        local group = decorations and decorations:FindFirstChild("World" .. worldId .. "Shops")
+        local world = decorations and decorations:FindFirstChild("World" .. worldId .. "Decorations")
+        local group = world and world:FindFirstChild("World" .. worldId .. "Shops")
         local hut = group and group:FindFirstChild(self._hutName)
         if hut then
             table.insert(huts, hut)

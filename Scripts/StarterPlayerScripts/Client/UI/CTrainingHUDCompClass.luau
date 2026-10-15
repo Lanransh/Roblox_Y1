@@ -32,7 +32,7 @@ function Component:OnReady()
         hud.Name = "TrainingHUDClient"
         hud.Adornee = platform
         hud.StudsOffsetWorldSpace = Vector3.new(0,
-            bounds.Position.Y + size.Y / 2 - platform.Position.Y + 4, 0)
+            bounds.Position.Y + size.Y / 2 - platform.Position.Y + 5, 0)
         hud.Frame.Requirement.Count.Text = tostring(config.NeedRebirhLevel)
         hud.Parent = field
         self._huds[index] = {Node = hud, Config = config}

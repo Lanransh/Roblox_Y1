@@ -76,7 +76,7 @@ function Component:OnPlayerLogin()
     self._itemHUD = FXLoader:Shared("Nodes/ItemHUD")
     self._areas = RockLevel.GetAreas()
     self:PrepareAreaDefinitions()
-    local grounds = FXLoader:Workspace("BlockMeshs/世界1/GuanQia")
+    local grounds = FXLoader:Workspace("BlockMeshs/World1Root/GuanQia")
     for index, area in ipairs(self._areas) do
         local ground = grounds:WaitForChild("Ground" .. index)
         area.Node.Color = ground.Color
@@ -794,7 +794,7 @@ function Component:ReturnHome()
         or not RockLevel.IsInArea(self._areas, root.Position) then
         return
     end
-    local spawn = FXLoader:Workspace("SpawnLocation")
+    local spawn = FXLoader:Workspace("Decorations/World1Decorations/SpawnLocation")
     character:PivotTo(spawn.CFrame * CFrame.new(0, spawn.Size.Y / 2 + humanoid.HipHeight + root.Size.Y / 2, 0))
     root.AssemblyLinearVelocity = Vector3.zero
     root.AssemblyAngularVelocity = Vector3.zero

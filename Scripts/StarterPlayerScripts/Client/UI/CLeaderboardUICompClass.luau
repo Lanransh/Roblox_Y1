@@ -53,7 +53,7 @@ end
 --- UI 留在 PlayerGui；仅通过 Adornee 绑定已存在的模型面板。
 function Component:OnReady()
     self._localization = self:GetPlayerObject():RequireComponent("FCCommonUIComp").Localization
-    local panel = FXLoader:Workspace("BlockMeshs/世界1/Base/排行榜1/橙木空白排行榜/空白深色面板")
+    local panel = FXLoader:Workspace("BlockMeshs/World1Root/Base/排行榜1/橙木空白排行榜/空白深色面板")
     self._panel = panel
     self._gui = Create("SurfaceGui", self:GetPlayerNode():WaitForChild("PlayerGui"), {
         Name = "StrengthLeaderboard", Adornee = panel, Face = Enum.NormalId.Back,
@@ -104,7 +104,7 @@ function Component:OnReady()
     self._testLabel.TextSize = 20
     self._testLabel.Name = "TestData"
     self._boards = {{Panel = panel, Gui = self._gui}}
-    local worldPaths = {"BlockMeshs/世界2/世界2/Base/排行榜1", "BlockMeshs/世界3/世界3/Base/排行榜1"}
+    local worldPaths = {"BlockMeshs/World2Root/世界2/Base/排行榜1", "BlockMeshs/World3Root/世界3/Base/排行榜1"}
     self._refreshAt = os.time() + 60
     for index, board in ipairs(self._boards) do
         self:TrackConnection(board.Gui.Panel.Refresh.Activated:Connect(function()
@@ -162,11 +162,11 @@ function Component:BindCameraView()
     })
     self._viewButton = Create("TextButton", self._viewUI, {
         Name = "View", AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.fromScale(0.97, 0.65),
-        Size = UDim2.new(0.38, 0, 0, 48), BackgroundColor3 = Gold, BorderSizePixel = 0,
-        TextColor3 = Color3.fromRGB(64, 38, 15), Font = Enum.Font.FredokaOne, TextSize = 22,
+        Size = UDim2.new(0.28, 0, 0, 36), BackgroundColor3 = Gold, BorderSizePixel = 0,
+        TextColor3 = Color3.fromRGB(64, 38, 15), Font = Enum.Font.FredokaOne, TextSize = 16,
         AutoLocalize = false, Visible = false, Text = "E · View Leaderboard",
     })
-    Create("UISizeConstraint", self._viewButton, {MaxSize = Vector2.new(310, 48)})
+    Create("UISizeConstraint", self._viewButton, {MaxSize = Vector2.new(220, 36)})
     Create("UICorner", self._viewButton, {CornerRadius = UDim.new(0, 14)})
     Create("UIStroke", self._viewButton, {Color = Color3.fromRGB(255, 225, 139), Thickness = 2, ApplyStrokeMode = Enum.ApplyStrokeMode.Border})
     self:TrackConnection(self._viewButton.Activated:Connect(function()
@@ -174,11 +174,11 @@ function Component:BindCameraView()
     end))
     self._closeButton = Create("TextButton", self._viewUI, {
         Name = "Close", AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.fromScale(0.97, 0.65),
-        Size = UDim2.new(0.38, 0, 0, 48), BackgroundColor3 = Gold, BorderSizePixel = 0,
-        TextColor3 = Color3.fromRGB(64, 38, 15), Font = Enum.Font.FredokaOne, TextSize = 22,
+        Size = UDim2.new(0.28, 0, 0, 36), BackgroundColor3 = Gold, BorderSizePixel = 0,
+        TextColor3 = Color3.fromRGB(64, 38, 15), Font = Enum.Font.FredokaOne, TextSize = 16,
         AutoLocalize = false, Visible = false, Modal = true, Text = "Close · E",
     })
-    Create("UISizeConstraint", self._closeButton, {MaxSize = Vector2.new(310, 48)})
+    Create("UISizeConstraint", self._closeButton, {MaxSize = Vector2.new(220, 36)})
     Create("UICorner", self._closeButton, {CornerRadius = UDim.new(0, 14)})
     Create("UIStroke", self._closeButton, {Color = Color3.fromRGB(255, 225, 139), Thickness = 2, ApplyStrokeMode = Enum.ApplyStrokeMode.Border})
     self:GetPlayerObject():RequireComponent("FCCommonUIComp"):RegisterTrainingClickModal(self._closeButton)

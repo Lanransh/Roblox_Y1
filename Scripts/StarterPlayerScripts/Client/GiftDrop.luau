@@ -101,8 +101,10 @@ function GiftDrop.Spawn(options, onOpened)
     light.Range = 16
     light.Parent = anchor
     local prompt = Instance.new("ProximityPrompt")
-    prompt.ActionText = ""
+    prompt.ActionText = "Pick Up"
     prompt.ObjectText = ""
+    prompt.AutoLocalize = true
+    prompt.RootLocalizationTable = FXLoader:Shared("Shared/Localization")
     prompt.KeyboardKeyCode = Enum.KeyCode.E
     prompt.MaxActivationDistance = 10
     prompt.HoldDuration = 0.5

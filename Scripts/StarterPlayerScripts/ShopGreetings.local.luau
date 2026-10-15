@@ -24,8 +24,9 @@ local function CreateGreeting(hut)
     return {torso = torso, shoulder = shoulder, parts = parts, inside = false, started = nil}
 end
 
+local world1 = workspace:WaitForChild("Decorations"):WaitForChild("World1Decorations")
 for index, name in ipairs({"Shop", "BlueHut", "PurpleHut"}) do
-    table.insert(greetings, CreateGreeting(workspace:WaitForChild(name)))
+    table.insert(greetings, CreateGreeting(world1:WaitForChild(name)))
 end
 
 --- 玩家在进入气泡区前提前挥手一次；离开外圈才重新触发，死亡或离开时还原原姿势。
