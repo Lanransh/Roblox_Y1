@@ -1257,22 +1257,6 @@
           },
           "rounding": "round"
         }
-      },
-      {
-        "key": "strength",
-        "formula": {
-          "kind": "BaseExp",
-          "base": 0,
-          "multiplier": {
-            "kind": "constant",
-            "value": 10
-          },
-          "power": {
-            "kind": "constant",
-            "value": 1.1
-          },
-          "rounding": "floor"
-        }
       }
     ],
     "editor": {
@@ -1289,9 +1273,6 @@
         "columns": {
           "nextLevelExperience": {
             "displayName": "升到下一级所需经验"
-          },
-          "strength": {
-            "displayName": "当前等级力量"
           }
         }
       }
@@ -1356,43 +1337,19 @@
         }
       },
       {
-        "key": "expectedStrength",
-        "input": {
-          "source": "column",
-          "key": "grassLevel"
-        },
-        "formula": {
-          "kind": "BaseExp",
-          "base": 0,
-          "multiplier": {
-            "kind": "constant",
-            "value": 10
-          },
-          "power": {
-            "kind": "constant",
-            "value": 1.1
-          },
-          "rounding": "floor"
-        }
-      },
-      {
-        "key": "grassHp",
-        "input": {
-          "source": "column",
-          "key": "expectedStrength"
-        },
+        "key": "hpMultiplier",
         "formula": {
           "kind": "Power",
           "base": 0,
           "multiplier": {
             "kind": "constant",
-            "value": 2.99
+            "value": 2.5
           },
           "power": {
             "kind": "constant",
-            "value": 1
+            "value": 0
           },
-          "rounding": "floor"
+          "rounding": "none"
         }
       },
       {
@@ -1431,14 +1388,11 @@
           "grassLevel": {
             "displayName": "血量计算等级"
           },
-          "expectedStrength": {
-            "displayName": "血量计算力量"
-          },
-          "grassHp": {
-            "displayName": "草血量"
-          },
           "expectedItemPrice": {
             "displayName": "期望道具价格"
+          },
+          "hpMultiplier": {
+            "displayName": "血量倍率"
           }
         }
       }
@@ -1454,6 +1408,20 @@
         "kind": "number",
         "control": "number",
         "min": 1,
+        "step": 1
+      }
+    }
+  },
+  "itemsUnlockedPerStage": {
+    "kind": "number",
+    "value": 3,
+    "editor": {
+      "displayName": "每关解锁道具数",
+      "folder": "关卡配置",
+      "display": {
+        "kind": "number",
+        "control": "number",
+        "min": 0,
         "step": 1
       }
     }

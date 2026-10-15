@@ -1,11 +1,11 @@
 import {
   sampleCurveGroup,
+  sampleCurveGroupColumnFormula,
   type CurveGroupValue,
 } from "@game-simulator/framework";
 
 export type LevelValues = {
   nextLevelExperience: number;
-  strength: number;
 };
 
 export type SickleValues = {
@@ -26,7 +26,8 @@ export type AuraValues = {
 
 export type StageValues = {
   expectedRebirthCount: number;
-  grassHp: number;
+  grassLevel: number;
+  hpMultiplier: number;
   expectedItemPrice: number;
 };
 
@@ -149,7 +150,7 @@ export function calculateAuraValues(
   };
 }
 
-/** 按当前等级采样升级所需训练值与当前等级力量。 */
+/** 按当前等级采样升到下一级所需的训练值；升级只消耗经验进度。 */
 export function calculateLevelValues(
   levelCurves: CurveGroupValue,
   level: number,
@@ -157,11 +158,43 @@ export function calculateLevelValues(
   const values = sampleCurveGroup(levelCurves, level).values;
   return {
     nextLevelExperience: values.nextLevelExperience,
-    strength: values.strength,
   };
 }
 
-/** 按全局关卡 ID 采样期望重生次数、草血量与道具单价；重生次数用于准入和装备定价。 */
+/** 计算等级力量：第 1 级至目标等级（包含目标等级）的升级需求之和，不含剩余训练值或重生次数。 */
+export function calculateLevelStrength(
+  levelCurves: CurveGroupValue,
+  targetLevel: number,
+): number {
+  // 先校验目标等级；满级也包含该等级配置的升级需求。
+  sampleCurveGroupColumnFormula(levelCurves, "nextLevelExperience", targetLevel);
+  let total = 0;
+  for (let level = levelCurves.input?.min ?? 1; level <= targetLevel; level += 1) {
+    total += sampleCurveGroupColumnFormula(levelCurves, "nextLevelExperience", level);
+  }
+  return total;
+}
+
+/** 返回等级力量首次达到目标血量的最低等级；满级仍不足时返回 null，不采样上限外等级。 */
+export function calculateOneHitKillLevel(
+  levelCurves: CurveGroupValue & { input: { max: number } },
+  grassHp: number,
+): number | null {
+  let strength = 0;
+  for (
+    let level = levelCurves.input.min ?? 1;
+    level <= levelCurves.input.max;
+    level += 1
+  ) {
+    strength += sampleCurveGroupColumnFormula(levelCurves, "nextLevelExperience", level);
+    if (strength >= grassHp) {
+      return level;
+    }
+  }
+  return null;
+}
+
+/** 按关卡 ID 采样准入、血量基准等级、血量倍率与道具单价，供定价和难度计算使用。 */
 export function calculateStageValues(
   stageCurves: CurveGroupValue,
   globalStageId: number,
@@ -169,8 +202,26 @@ export function calculateStageValues(
   const values = sampleCurveGroup(stageCurves, globalStageId).values;
   return {
     expectedRebirthCount: Math.max(0, Math.floor(values.expectedRebirthCount)),
-    grassHp: values.grassHp,
+    grassLevel: values.grassLevel,
+    hpMultiplier: values.hpMultiplier,
     expectedItemPrice: values.expectedItemPrice,
+  };
+}
+
+/** 用期望等级及之前各级的升级需求之和作为攻击力基准，再乘关卡血量倍率；起始关基准至少为 1。 */
+export function calculateStageCombatValues(
+  stageCurves: CurveGroupValue,
+  levelCurves: CurveGroupValue,
+  globalStageId: number,
+) {
+  const values = calculateStageValues(stageCurves, globalStageId);
+  const expectedStrength = values.grassLevel <= 1
+    ? 1
+    : calculateLevelStrength(levelCurves, values.grassLevel);
+  return {
+    ...values,
+    expectedStrength,
+    grassHp: Math.max(1, Math.floor(values.hpMultiplier * expectedStrength)),
   };
 }
 

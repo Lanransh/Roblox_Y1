@@ -6,6 +6,7 @@ import {
 import {
   calculateAuraValues,
   calculateSickleValues,
+  calculateStageCombatValues,
 } from "./Formulas";
 import type { ProjectConfig } from "./Main";
 
@@ -14,6 +15,7 @@ export class ProjectWorkbenches extends WorkbenchSet {
     workbenchSickleConfig: "镰刀配置",
     workbenchAuraConfig: "光环配置",
     workbenchDifficultyConfig: "难度配置工作台",
+    workbenchStageHpConfig: "关卡血量配置",
   };
 
   private get projectConfig(): ProjectConfig {
@@ -249,6 +251,66 @@ export class ProjectWorkbenches extends WorkbenchSet {
               "catchUpMultiplier",
               rebirthCount,
             ),
+        },
+      ],
+    };
+  }
+
+  workbenchStageHpConfig() {
+    const display = this.projectConfig.stageCurves.editor?.display;
+    const getValues = (stageId: number) => calculateStageCombatValues(
+      this.projectConfig.stageCurves,
+      this.projectConfig.levelCurves,
+      stageId,
+    );
+    return {
+      variable: "stageId",
+      rowLabel: "关卡 ID",
+      minRow: 1,
+      maxRow: display?.kind === "curve" ? display.sampleRange?.max ?? 1 : 1,
+      step: 1,
+      editors: [
+        {
+          id: "stageHp",
+          label: "关卡血量",
+          configKey: "stageCurves",
+          columnKeys: ["expectedRebirthCount", "grassLevel", "hpMultiplier"],
+        },
+        {
+          id: "levelTraining",
+          label: "等级训练需求",
+          configKey: "levelCurves",
+          columnKeys: ["nextLevelExperience"],
+        },
+      ],
+      columns: [
+        {
+          id: "grassLevel",
+          label: "期望等级",
+          format: "integer" as const,
+          configTarget: { configKey: "stageCurves", columnKey: "grassLevel" },
+          sample: (stageId: number) => getValues(stageId).grassLevel,
+        },
+        {
+          id: "expectedStrength",
+          label: "期望力量 / 攻击力",
+          format: "number" as const,
+          configTarget: { configKey: "levelCurves", columnKey: "nextLevelExperience" },
+          sample: (stageId: number) => getValues(stageId).expectedStrength,
+        },
+        {
+          id: "hpMultiplier",
+          label: "血量倍率",
+          format: "multiplier" as const,
+          configTarget: { configKey: "stageCurves", columnKey: "hpMultiplier" },
+          sample: (stageId: number) => getValues(stageId).hpMultiplier,
+        },
+        {
+          id: "grassHp",
+          label: "最终血量",
+          format: "number" as const,
+          configTarget: { configKey: "stageCurves", columnKey: "hpMultiplier" },
+          sample: (stageId: number) => getValues(stageId).grassHp,
         },
       ],
     };
