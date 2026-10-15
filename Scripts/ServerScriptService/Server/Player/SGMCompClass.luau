@@ -46,7 +46,7 @@ function Component:AddItem(itemId, count)
     return {success = true, key = "GM.ItemAdded"}
 end
 
---- 恢复配置默认值，并撤销尚未领取的掉落及上一轮命中凭据。
+--- 恢复配置默认值和默认武器拥有权，并撤销尚未领取的掉落及上一轮命中凭据。
 function Component:ResetData()
     local player = self:GetPlayerObject()
     player:RequireComponent("SRockLevelComp"):RestoreRocks()
@@ -59,6 +59,7 @@ function Component:ResetData()
             player:SetTable(field, nil)
         end
     end
+    player:RequireComponent("SWeaponComp"):OnPlayerLogin()
     player:RequireComponent("SMiscComp"):ResetTrainingProgress()
     player:RequireComponent("FSInventoryComp"):OnAllChanged()
     player:RequireComponent("SLootSellComp"):RefreshEntries()

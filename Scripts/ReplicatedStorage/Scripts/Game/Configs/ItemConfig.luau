@@ -71,9 +71,9 @@ return {
         },
         [107] = {
             Id = 107,
-            Type = [[NpcCard]],
+            Type = [[DogCard]],
             MaxStack = 1,
-            UseHandler = [[NpcCard]],
+            UseHandler = [[DogCard]],
             HeldHandler = [[Image]],
             NumberArray = nil,
             KVTable = nil
@@ -130,8 +130,8 @@ return {
         },
         [107] = {
             Id = 107,
-            Name = [[NPC进度卡]],
-            Desc = [[NPC任务进度加1]],
+            Name = [[DogCard]],
+            Desc = [[DogCard]],
             Quality = 12,
             IconId = [[rbxassetid://117314008364013]],
             DisplayModelId = nil

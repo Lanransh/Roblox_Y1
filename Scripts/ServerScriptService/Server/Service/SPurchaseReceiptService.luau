@@ -28,6 +28,9 @@ function Service.Init()
         -- 提示异常不能改变已保存的支付结果，也不能触发再次发奖。
         local ok, message = pcall(function()
             local goods = _G.Provider:GetGoodsConfig(receipt.ProductId)
+            if not goods then
+                return
+            end
             if goods.BuyHandler == "AddGem" then
                 player:ShowLocalizedTips("CurrencyShop.DiamondsReceived", {value = goods.NumberArray[1]})
             elseif goods.BuyHandler == "AddItem" then

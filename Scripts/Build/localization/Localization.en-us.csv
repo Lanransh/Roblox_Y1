@@ -254,7 +254,7 @@ Key,Source,Context,Example,en-us
 "Welfare.Item.104","Backpack Boost Card (1 Hour)","","","Backpack Boost Card (1 Hour)"
 "Welfare.Item.105","Strength Card (15 Minutes)","","","Strength Card (15 Minutes)"
 "Welfare.Item.106","Strength Card (30 Minutes)","","","Strength Card (30 Minutes)"
-"Welfare.Item.107","NPC Progress Card","","","NPC Progress Card"
+"Welfare.Item.107","Dog Card","","","Dog Card"
 "Welfare.ItemReward","{item} ×{value}","","","{item} ×{value}"
 "Welfare.Locked","Locked","","","Locked"
 "Welfare.LoginBonus","Daily Login","","","Daily Login"
