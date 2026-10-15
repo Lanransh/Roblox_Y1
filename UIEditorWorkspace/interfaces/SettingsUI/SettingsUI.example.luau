@@ -9,9 +9,6 @@ function CSettingsPreview:Ctor(owner)
     self.State = {
         musicVolume = 70,
         soundEffectsVolume = 85,
-        reduceEffects = false,
-        notifications = true,
-        compactText = false,
         showAura = true,
     }
 end
@@ -37,10 +34,7 @@ function CSettingsPreview:OnUIAction(action, payload)
     if setting == "musicVolume" or setting == "soundEffectsVolume" then
         assert(type(payload.value) == "number", "Volume value must be a number")
         self.State[setting] = math.clamp(math.floor(payload.value + 0.5), 0, 100)
-    elseif setting == "reduceEffects"
-        or setting == "notifications"
-        or setting == "compactText"
-        or setting == "showAura" then
+    elseif setting == "showAura" then
         assert(type(payload.value) == "boolean", "Toggle value must be a boolean")
         self.State[setting] = payload.value
     else

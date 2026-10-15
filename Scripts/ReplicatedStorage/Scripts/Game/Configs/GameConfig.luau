@@ -354,7 +354,7 @@ return {
             TrainingRate = 1.5,
             Quality = 1,
             DevGoodId = nil,
-            Img = [[91469233823349]],
+            Img = [[88151748923443]],
             ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["01_Common"]]=]
         },
         [2] = {
@@ -365,7 +365,7 @@ return {
             TrainingRate = 2.5,
             Quality = 2,
             DevGoodId = nil,
-            Img = [[112048940124762]],
+            Img = [[130646097070957]],
             ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["02_Uncommon"]]=]
         },
         [3] = {
@@ -376,7 +376,7 @@ return {
             TrainingRate = 3.5,
             Quality = 3,
             DevGoodId = nil,
-            Img = [[114920101659350]],
+            Img = [[86124893237823]],
             ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["03_Toxic"]]=]
         },
         [4] = {
@@ -387,7 +387,7 @@ return {
             TrainingRate = 4.5,
             Quality = 4,
             DevGoodId = nil,
-            Img = [[76680071023422]],
+            Img = [[117901666423784]],
             ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["04_Rare"]]=]
         },
         [5] = {
@@ -398,7 +398,7 @@ return {
             TrainingRate = 5.5,
             Quality = 5,
             DevGoodId = nil,
-            Img = [[98163950325063]],
+            Img = [[133168932011408]],
             ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["05_Bronze"]]=]
         },
         [6] = {
@@ -409,7 +409,7 @@ return {
             TrainingRate = 6.5,
             Quality = 6,
             DevGoodId = nil,
-            Img = [[98163950325063]],
+            Img = [[71089861609803]],
             ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["06_Abyss"]]=]
         },
         [7] = {
@@ -420,7 +420,7 @@ return {
             TrainingRate = 7.5,
             Quality = 7,
             DevGoodId = nil,
-            Img = [[98163950325063]],
+            Img = [[71622349623563]],
             ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["07_Void"]]=]
         },
         [8] = {
@@ -431,7 +431,7 @@ return {
             TrainingRate = 8.5,
             Quality = 8,
             DevGoodId = nil,
-            Img = [[98163950325063]],
+            Img = [[126547452796781]],
             ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["08_Crimson"]]=]
         },
         [9] = {
@@ -442,7 +442,7 @@ return {
             TrainingRate = 9.5,
             Quality = 9,
             DevGoodId = nil,
-            Img = [[98163950325063]],
+            Img = [[111693433253936]],
             ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["09_Silver"]]=]
         },
         [10] = {
@@ -453,7 +453,7 @@ return {
             TrainingRate = 10.5,
             Quality = 10,
             DevGoodId = nil,
-            Img = [[98163950325063]],
+            Img = [[126721700266409]],
             ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["10_Epic"]]=]
         },
         [11] = {
@@ -464,7 +464,7 @@ return {
             TrainingRate = 11.5,
             Quality = 11,
             DevGoodId = nil,
-            Img = [[98163950325063]],
+            Img = [[92711027530571]],
             ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["11_Ocean"]]=]
         },
         [12] = {
@@ -475,7 +475,7 @@ return {
             TrainingRate = 12.5,
             Quality = 12,
             DevGoodId = nil,
-            Img = [[98163950325063]],
+            Img = [[140129159429440]],
             ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["12_Lunar"]]=]
         },
         [13] = {
@@ -486,7 +486,7 @@ return {
             TrainingRate = 13.5,
             Quality = 13,
             DevGoodId = nil,
-            Img = [[98163950325063]],
+            Img = [[125903398380406]],
             ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["13_Legendary"]]=]
         },
         [14] = {
@@ -497,7 +497,7 @@ return {
             TrainingRate = 14.5,
             Quality = 14,
             DevGoodId = nil,
-            Img = [[98163950325063]],
+            Img = [[110859814667398]],
             ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["14_Emerald"]]=]
         },
         [15] = {
@@ -508,7 +508,7 @@ return {
             TrainingRate = 15.5,
             Quality = 15,
             DevGoodId = nil,
-            Img = [[98163950325063]],
+            Img = [[71778195177377]],
             ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["15_Sapphire"]]=]
         },
         [16] = {
@@ -519,7 +519,7 @@ return {
             TrainingRate = 16.5,
             Quality = 16,
             DevGoodId = nil,
-            Img = [[98163950325063]],
+            Img = [[82261970902739]],
             ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["16_Ruby"]]=]
         },
         [17] = {
@@ -530,7 +530,7 @@ return {
             TrainingRate = 17.5,
             Quality = 17,
             DevGoodId = nil,
-            Img = [[98163950325063]],
+            Img = [[84969691879555]],
             ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["17_Sakura"]]=]
         },
         [18] = {
@@ -541,7 +541,7 @@ return {
             TrainingRate = 18.5,
             Quality = 18,
             DevGoodId = nil,
-            Img = [[98163950325063]],
+            Img = [[135431835703650]],
             ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["18_Sunset"]]=]
         },
         [19] = {
@@ -552,7 +552,7 @@ return {
             TrainingRate = 19.5,
             Quality = 19,
             DevGoodId = nil,
-            Img = [[98163950325063]],
+            Img = [[84363202598659]],
             ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["19_Frost"]]=]
         },
         [20] = {
@@ -563,7 +563,7 @@ return {
             TrainingRate = 20.5,
             Quality = 20,
             DevGoodId = nil,
-            Img = [[98163950325063]],
+            Img = [[140502552004582]],
             ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["20_Inferno"]]=]
         },
         [21] = {
@@ -574,7 +574,7 @@ return {
             TrainingRate = 21.5,
             Quality = 21,
             DevGoodId = nil,
-            Img = [[98163950325063]],
+            Img = [[110544423490869]],
             ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["21_Storm"]]=]
         },
         [22] = {
@@ -585,7 +585,7 @@ return {
             TrainingRate = 22.5,
             Quality = 22,
             DevGoodId = nil,
-            Img = [[98163950325063]],
+            Img = [[88436670368181]],
             ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["22_Solar"]]=]
         },
         [23] = {
@@ -596,7 +596,7 @@ return {
             TrainingRate = 23.5,
             Quality = 23,
             DevGoodId = nil,
-            Img = [[98163950325063]],
+            Img = [[101523513603326]],
             ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["23_Neon"]]=]
         },
         [24] = {
@@ -607,7 +607,7 @@ return {
             TrainingRate = 24.5,
             Quality = 24,
             DevGoodId = nil,
-            Img = [[98163950325063]],
+            Img = [[117557339704806]],
             ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["24_Prismatic"]]=]
         },
         [25] = {
@@ -618,7 +618,7 @@ return {
             TrainingRate = 25.5,
             Quality = 25,
             DevGoodId = nil,
-            Img = [[98163950325063]],
+            Img = [[94281665600637]],
             ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["25_Astral"]]=]
         }
     },

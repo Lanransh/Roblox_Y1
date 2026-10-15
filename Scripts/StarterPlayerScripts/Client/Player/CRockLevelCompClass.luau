@@ -725,6 +725,7 @@ function Component:PlayHitEffect(rock, broken, impact)
     effect.CanQuery = false
     effect.CFrame = CFrame.lookAt(position + normal * 0.55, position + normal * 1.55)
     local sound = self._breakSound:Clone()
+    self:GetPlayerObject():RequireComponent("CSettingsUIComp"):ConfigureEffectSound(sound)
     sound.Parent = effect
     effect.Parent = self._folder
     if broken then

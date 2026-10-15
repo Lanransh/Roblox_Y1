@@ -6,7 +6,7 @@ local ContextActionService = game:GetService("ContextActionService")
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local Component = FX.Class("CLeaderboardUICompClass", "FCUICompClass")
 
--- 测试名次与力量不是这些账号的真实成绩；UserId 仅用于 Roblox 原生头像。
+-- 测试名次与分数不是这些账号的真实成绩；UserId 仅用于 Roblox 原生头像。
 local TestUsers = {
     {Id = 1, Name = "Builder"}, {Id = 156, Name = "StarRunner"},
     {Id = 261, Name = "RockMaster"}, {Id = 48103520, Name = "PowerHero"},
@@ -14,6 +14,22 @@ local TestUsers = {
 }
 local Gold = Color3.fromRGB(255, 194, 46)
 local Cream = Color3.fromRGB(255, 237, 198)
+local BoardTypes = {
+    {Name = "Strength", TitleKey = "Leaderboard.StrengthTitle", HeaderKey = "Leaderboard.Strength", TopScore = 35000000, PersonalScore = 6320},
+    {Name = "Rebirth", TitleKey = "Leaderboard.RebirthTitle", HeaderKey = "Leaderboard.Rebirths", TopScore = 1200, PersonalScore = 6},
+    {Name = "Playtime", TitleKey = "Leaderboard.PlaytimeTitle", HeaderKey = "Leaderboard.PlaytimeMinutes", TopScore = 6000, PersonalScore = 105},
+}
+
+--- 力量沿用统一缩写，重生次数与累计在线分钟显示整数；测试时长单位为分钟。
+--- @param kind number 榜单类型，依次为力量、重生和在线时长。
+--- @param score number 当前榜单的原始测试分数。
+--- @return string 榜单数值文案。
+local function FormatScore(kind, score)
+    if kind == 1 then
+        return GameUtility.NumberToText(score)
+    end
+    return tostring(math.floor(score))
+end
 
 --- 创建本组件拥有的节点，先设置属性再加入父级。
 --- @param className string 原生实例类型。
@@ -94,44 +110,32 @@ function Component:OnReady()
     personal.Position = UDim2.fromScale(0.03, 0.835)
     personal.Size = UDim2.fromScale(0.94, 0.075)
     self._personalName = personal.PlayerName
-    self._refresh = Create("TextButton", self._rootNode, {
-        Name = "Refresh", Position = UDim2.fromScale(0.03, 0.915), Size = UDim2.fromScale(0.61, 0.055),
-        BackgroundColor3 = Color3.fromRGB(68, 46, 32), BorderSizePixel = 0,
-        TextColor3 = Cream, TextSize = 22, Font = Enum.Font.FredokaOne,
-        AutoLocalize = false, AutoButtonColor = true, Text = "Refresh",
-    })
-    self._testLabel = Label(self._rootNode, "Test Data", UDim2.fromScale(0.66, 0.915), UDim2.fromScale(0.31, 0.055))
-    self._testLabel.TextSize = 20
-    self._testLabel.Name = "TestData"
-    self._boards = {{Panel = panel, Gui = self._gui}}
-    local worldPaths = {"BlockMeshs/World2Root/世界2/Base/排行榜1", "BlockMeshs/World3Root/世界3/Base/排行榜1"}
-    self._refreshAt = os.time() + 60
-    for index, board in ipairs(self._boards) do
-        self:TrackConnection(board.Gui.Panel.Refresh.Activated:Connect(function()
-            -- 三个世界共用同一测试榜与刷新时刻，各自保留滚动位置。
-            board.Gui.Panel.RankList.CanvasPosition = Vector2.zero
-            self._refreshAt = os.time() + 60
-            self:RefreshLocalization()
-        end))
-    end
+    self._boards = {{Panel = panel, Gui = self._gui, Kind = 1}}
+    local worldPaths = {"BlockMeshs/World1Root/Base", "BlockMeshs/World2Root/世界2/Base", "BlockMeshs/World3Root/世界3/Base"}
     self:TrackConnection(self._localization.Changed:Connect(function()
         self:RefreshLocalization()
     end))
     self:BindCameraView()
     self:RefreshLocalization()
     self._boardTasks = {}
-    for index, path in ipairs(worldPaths) do
-        self._boardTasks[index] = task.defer(function()
-            self:AttachWorldBoard(path, index + 1)
-            self._boardTasks[index] = nil
-        end)
+    for worldIndex, path in ipairs(worldPaths) do
+        for kind = 1, #BoardTypes do
+            if worldIndex ~= 1 or kind ~= 1 then
+                local taskIndex = (worldIndex - 1) * #BoardTypes + kind
+                self._boardTasks[taskIndex] = task.defer(function()
+                    self:AttachWorldBoard(path .. "/排行榜" .. kind, worldIndex, kind)
+                    self._boardTasks[taskIndex] = nil
+                end)
+            end
+        end
     end
 end
 
---- 其他世界异步等待复制完成，不能阻塞首个榜单的按钮与输入初始化。
+--- 其余八块榜单异步等待复制完成，不能阻塞首个榜单的查看与输入初始化。
 --- @param path string 已核对的世界排行榜模型路径。
 --- @param worldIndex number 世界编号，用于界面节点名。
-function Component:AttachWorldBoard(path, worldIndex)
+--- @param kind number 榜单类型，依次为力量、重生和在线时长。
+function Component:AttachWorldBoard(path, worldIndex, kind)
     local model = workspace
     for segment in string.gmatch(path, "[^/]+") do
         model = model:WaitForChild(segment)
@@ -143,15 +147,15 @@ function Component:AttachWorldBoard(path, worldIndex)
     end
     assert(display:IsA("BasePart"), "Invalid leaderboard panel: " .. path)
     local gui = self._gui:Clone()
-    gui.Name = "StrengthLeaderboardWorld" .. worldIndex
+    local config = BoardTypes[kind]
+    gui.Name = config.Name .. "LeaderboardWorld" .. worldIndex
     gui.Adornee = display
+    for rank = 1, 20 do
+        gui.Panel.RankList["Rank" .. rank].Score.Text = FormatScore(kind, config.TopScore / rank ^ 2)
+    end
+    gui.Panel.Rank101.Score.Text = FormatScore(kind, config.PersonalScore)
     gui.Parent = self._gui.Parent
-    table.insert(self._boards, {Panel = display, Gui = gui})
-    self:TrackConnection(gui.Panel.Refresh.Activated:Connect(function()
-        gui.Panel.RankList.CanvasPosition = Vector2.zero
-        self._refreshAt = os.time() + 60
-        self:RefreshLocalization()
-    end))
+    table.insert(self._boards, {Panel = display, Gui = gui, Kind = kind})
     self:RefreshLocalization()
 end
 
@@ -308,7 +312,8 @@ function Component:CreateRow(parent, rank, userId, playerName, strength, persona
     Create("UICorner", avatar, {CornerRadius = UDim.new(1, 0)})
     local name = Label(row, playerName, UDim2.fromScale(0.25, 0), UDim2.fromScale(0.43, 1))
     name.Name = "PlayerName"
-    Label(row, GameUtility.NumberToText(strength), UDim2.fromScale(0.70, 0), UDim2.fromScale(0.29, 1))
+    local score = Label(row, GameUtility.NumberToText(strength), UDim2.fromScale(0.70, 0), UDim2.fromScale(0.29, 1))
+    score.Name = "Score"
     if personal then
         for index, child in ipairs(row:GetChildren()) do
             if child:IsA("TextLabel") then
@@ -320,42 +325,23 @@ function Component:CreateRow(parent, rank, userId, playerName, strength, persona
     return row
 end
 
---- 云端译文就绪或语言切换时刷新文案，倒计时使用稳定参数 Key。
+--- 云端译文就绪或语言切换时刷新各世界榜单文案。
 function Component:RefreshLocalization()
-    self._title.Text = self._localization:FormatByKey("Leaderboard.StrengthTitle")
     self._rankHeader.Text = self._localization:FormatByKey("Leaderboard.Rank")
     self._playerHeader.Text = self._localization:FormatByKey("Leaderboard.Player")
-    self._strengthHeader.Text = self._localization:FormatByKey("Leaderboard.Strength")
     self._personalName.Text = self._localization:FormatByKey("Leaderboard.You")
-    self._testLabel.Text = self._localization:FormatByKey("Leaderboard.TestData")
     self._viewButton.Text = self._localization:FormatByKey("Leaderboard.View")
     for index, board in ipairs(self._boards) do
         local panel = board.Gui.Panel
-        for labelIndex, label in ipairs({self._title, self._rankHeader, self._playerHeader, self._strengthHeader, self._testLabel}) do
+        local config = BoardTypes[board.Kind]
+        panel.Title.Text = self._localization:FormatByKey(config.TitleKey)
+        panel.StrengthHeader.Text = self._localization:FormatByKey(config.HeaderKey)
+        for labelIndex, label in ipairs({self._rankHeader, self._playerHeader}) do
             panel[label.Name].Text = label.Text
         end
         panel.Rank101.PlayerName.Text = self._personalName.Text
     end
     self._closeButton.Text = self._localization:FormatByKey("Leaderboard.Close")
-    self:OnUpdate(os.time())
-end
-
---- 使用框架每秒更新，不创建独立循环；测试数据每分钟保持同一快照。
---- @param serverTime number 框架提供的当前秒时间。
-function Component:OnUpdate(serverTime)
-    if not self._refresh then
-        return
-    end
-    if serverTime >= self._refreshAt then
-        self._refreshAt = serverTime + 60
-    end
-    local seconds = math.max(0, self._refreshAt - serverTime)
-    local text = self._localization:FormatByKey("Leaderboard.Refresh", {
-        time = string.format("%d:%02d", math.floor(seconds / 60), seconds % 60),
-    })
-    for index, board in ipairs(self._boards) do
-        board.Gui.Panel.Refresh.Text = text
-    end
 end
 
 --- 只销毁组件创建的界面，模型和显示面保持原样。

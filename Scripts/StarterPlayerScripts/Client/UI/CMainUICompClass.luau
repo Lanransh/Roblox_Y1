@@ -25,9 +25,6 @@ function Component:OnReady()
     self._rootNode.ResetOnSpawn = false
     local top = FXLoader:Here(self._rootNode, "TopCenter")
     self._bar = FXLoader:Here(top, "LevelProgressBar")
-    -- 进度条保留边框与高光，仅关闭背景和填充层的棋格纹理。
-    FXLoader:Here(self._bar, "ToolkitUIStyle"):SetAttribute("Stud", false)
-    FXLoader:Here(self._bar, "Fill/ToolkitUIStyle"):SetAttribute("Stud", false)
     self._barLayout = {
         Position = self._bar.Position,
         Size = self._bar.Size,
@@ -220,6 +217,8 @@ function Component:BindButtons()
                     self:GetPlayerObject():RequireComponent("CWelfareUIComp"):Show()
                 elseif node.Name == "ShopBtn" then
                     self:GetPlayerObject():RequireComponent("CCurrencyShopUIComp"):Show()
+                elseif node.Name == "SettingsButton" then
+                    self:GetPlayerObject():RequireComponent("CSettingsUIComp"):Show()
                 elseif node == self._homeButton then
                     FX.Network:SendMsgToServer("C2S_ReturnHome")
                 elseif node.Name == "DoubleStrengthButton" or StrengthPacks[node.Name] then
@@ -306,7 +305,7 @@ function Component:OpenStrengthOffer(name)
     end
 end
 
---- 关卡内在回家按钮下显示紧凑等级经验条；离开或死亡时恢复完整经验条及力量。
+--- 关卡内显示无棋格的紧凑经验条；离开或死亡时恢复带棋格的完整经验条及力量。
 function Component:RefreshHomeButton()
     local character = self:GetPlayerCharacter()
     local root = character and character:FindFirstChild("HumanoidRootPart")
@@ -324,6 +323,8 @@ function Component:RefreshHomeButton()
     self._bar.AnchorPoint = inArea and Vector2.new(0.5, 0) or layout.AnchorPoint
     self._bar.Position = inArea and UDim2.new(0.5, 0, 0, 72) or layout.Position
     self._bar.Size = inArea and UDim2.fromOffset(160, 26) or layout.Size
+    FXLoader:Here(self._bar, "ToolkitUIStyle"):SetAttribute("Stud", not inArea)
+    FXLoader:Here(self._bar, "Fill/ToolkitUIStyle"):SetAttribute("Stud", not inArea)
     self._bar.LevelLabel.Position = inArea and UDim2.fromScale(0, 0) or layout.LevelPosition
     self._bar.LevelLabel.Size = inArea and UDim2.fromScale(1, 1) or layout.LevelSize
     self._bar.LevelLabel.TextXAlignment = inArea and Enum.TextXAlignment.Center or layout.LevelAlignment

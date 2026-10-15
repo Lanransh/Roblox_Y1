@@ -9,6 +9,11 @@ _G.PlayerKVEnum = {
 local PlayerKVEnum = _G.PlayerKVEnum
 
 return {
+    -- 本人客户端表现偏好，不参与装备属性和奖励计算。
+    Settings = {
+        Type = "table", Key = "Settings", KVTable = PlayerKVEnum.eStaticData, Sync = true,
+        DefVal = {musicVolume = 100, soundEffectsVolume = 100, showAura = true},
+    },
     -- 每日礼盒私有状态，累计在线与已领取档位重登保留。
     GiftData = {
         Type = "table", Key = "GiftData", KVTable = PlayerKVEnum.eActivityData, Sync = false,

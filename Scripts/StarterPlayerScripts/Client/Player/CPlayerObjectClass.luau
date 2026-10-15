@@ -24,6 +24,7 @@ function Player:Ctor(playerId)
     self:AddComponent("CShopPurchaseUICompClass")
     self:AddComponent("CWelfareUICompClass")
     self:AddComponent("CWorldTeleportUICompClass")
+    self:AddComponent("CSettingsUICompClass")
     self:AddComponent("CMainUICompClass")
 end
 

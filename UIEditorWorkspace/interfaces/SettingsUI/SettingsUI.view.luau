@@ -5,9 +5,6 @@ Config: 空表；本界面不读取配置字段。
 State: 必填完整快照，每次 RefreshUI 都提供全部字段。
   musicVolume: number，必填，音乐音量，0 到 100 的百分比整数。
   soundEffectsVolume: number，必填，音效音量，0 到 100 的百分比整数。
-  reduceEffects: boolean，必填，是否减少特效。
-  notifications: boolean，必填，是否显示通知。
-  compactText: boolean，必填，是否使用紧凑文字。
   showAura: boolean，必填，是否显示光环。
 首次刷新前由接入层准备完整 State；OnReady 绑定节点后调用 BindUIData、Show。
 业务状态更新后替换完整 State 并调用 RefreshUI。
@@ -15,7 +12,7 @@ State: 必填完整快照，每次 RefreshUI 都提供全部字段。
 必需覆写 OnUIAction(action, payload)，无返回值：
   ChangeSetting: payload = { setting: string, value: number | boolean }。
     setting 为 musicVolume / soundEffectsVolume 时，value 是 0 到 100 的音量百分比。
-    setting 为 reduceEffects / notifications / compactText / showAura 时，value 是 boolean。
+    setting 为 showAura 时，value 是 boolean。
   Close: payload = {}，由接入层 Hide。
 游戏接入负责保存设置并将完整 State 刷新回界面；拖动滑杆会持续发出 ChangeSetting。
 编辑器 Preview 只修改本地模拟状态，不写入游戏设置。
@@ -100,21 +97,6 @@ function CSettingsView:OnReady()
     end
 
     self.Toggles = {
-        reduceEffects = {
-            button = FXLoader:Here(root, "SettingsPanel.ContentBox.ReduceEffectsRowImg.ReduceEffectsBtn"),
-            edge = FXLoader:Here(root, "SettingsPanel.ContentBox.ReduceEffectsRowImg.ReduceEffectsBtn.BottomEdgeImg"),
-            text = FXLoader:Here(root, "SettingsPanel.ContentBox.ReduceEffectsRowImg.ReduceEffectsBtn.ButtonTxt"),
-        },
-        notifications = {
-            button = FXLoader:Here(root, "SettingsPanel.ContentBox.NotificationsRowImg.NotificationsBtn"),
-            edge = FXLoader:Here(root, "SettingsPanel.ContentBox.NotificationsRowImg.NotificationsBtn.BottomEdgeImg"),
-            text = FXLoader:Here(root, "SettingsPanel.ContentBox.NotificationsRowImg.NotificationsBtn.ButtonTxt"),
-        },
-        compactText = {
-            button = FXLoader:Here(root, "SettingsPanel.ContentBox.CompactTextRowImg.CompactTextBtn"),
-            edge = FXLoader:Here(root, "SettingsPanel.ContentBox.CompactTextRowImg.CompactTextBtn.BottomEdgeImg"),
-            text = FXLoader:Here(root, "SettingsPanel.ContentBox.CompactTextRowImg.CompactTextBtn.ButtonTxt"),
-        },
         showAura = {
             button = FXLoader:Here(root, "SettingsPanel.ContentBox.ShowAuraRowImg.ShowAuraBtn"),
             edge = FXLoader:Here(root, "SettingsPanel.ContentBox.ShowAuraRowImg.ShowAuraBtn.BottomEdgeImg"),

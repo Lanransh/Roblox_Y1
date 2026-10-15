@@ -16,6 +16,31 @@ function Manager:Ctor()
     self:RegGMMsg()
     self:RegActivityMsg()
     self:RegCurrencyShopMsg()
+    self:RegSettingsMsg()
+end
+
+--- 设置只保存到认证请求者的现有存档，不允许客户端提交其他玩家或字段。
+function Manager:RegSettingsMsg()
+    --- 校验完整快照后一次写入；拒绝 NaN、无穷数和越界音量。
+    --- @param userId number 网络层认证的玩家 ID。
+    --- @param settings any 客户端提交的偏好快照。
+    FX.Network:RegClientMsgCallback("C2S_SaveSettings", function(userId, settings)
+        local player = self:GetPlayerObject(userId)
+        if not player or type(settings) ~= "table" or type(settings.showAura) ~= "boolean" then
+            return
+        end
+        for index, key in ipairs({"musicVolume", "soundEffectsVolume"}) do
+            local value = settings[key]
+            if type(value) ~= "number" or value ~= value or value < 0 or value > 100 or value % 1 ~= 0 then
+                return
+            end
+        end
+        player:SetTable(_G.PlayerDataConfig.Settings, {
+            musicVolume = settings.musicVolume,
+            soundEffectsVolume = settings.soundEffectsVolume,
+            showAura = settings.showAura,
+        })
+    end)
 end
 
 --- 商店协议只注册一次；玩家身份始终取网络层认证结果。
