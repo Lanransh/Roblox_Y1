@@ -71,8 +71,6 @@ function Component:Render(state)
     end
     if state.pending then
         self.ButtonTxt.Text = self._localization:FormatByKey("ShopPurchase.Buying")
-    elseif state.status == "Purchased" then
-        self.ButtonTxt.Text = self._localization:FormatByKey("CurrencyShop.Success")
     else
         self.ButtonTxt.Text = self._localization:FormatByKey("ShopPurchase.Price", {
             value = GameUtility.NumberToText(self.Config.price),
@@ -101,8 +99,12 @@ function Component:OnUIAction(action, payload)
                     local shop = self:GetPlayerObject():RequireComponent("CCurrencyShopUIComp")
                     shop._data = result.data
                     shop:RefreshUI()
+                    self.State = {status = "Ready", pending = false}
+                    self._commonUI:ShowLocalizedTips(result.key, result.arguments)
+                    self:Hide()
+                    return
                 end
-                self.State = {status = result.success and "Purchased" or "Ready", pending = false}
+                self.State = {status = "Ready", pending = false}
                 self._commonUI:ShowLocalizedTips(result.key, result.arguments)
             else
                 self.State = {status = "Ready", pending = false}

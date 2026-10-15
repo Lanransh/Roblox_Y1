@@ -54,9 +54,10 @@ function Component:OnReady()
     self._priceTask = task.defer(function()
         for index, item in ipairs(_G.ShopConfig.MiniCoinData) do
             local goods = _G.GoodsConfig.GoodsData[item.DevGoodsId]
-            if goods.RobloxProductId > 0 then
+            local productId = goods and goods.RobloxProductId
+            if type(productId) == "number" and productId > 0 then
                 local ok, info = pcall(function()
-                    return MarketplaceService:GetProductInfoAsync(goods.RobloxProductId, Enum.InfoType.Product)
+                    return MarketplaceService:GetProductInfoAsync(productId, Enum.InfoType.Product)
                 end)
                 if ok and type(info.PriceInRobux) == "number" then
                     self._prices[item.DevGoodsId] = info.PriceInRobux

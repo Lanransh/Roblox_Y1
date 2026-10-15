@@ -161,7 +161,7 @@ function Component:BindCameraView()
         Name = "LeaderboardViewControls", ResetOnSpawn = false, DisplayOrder = 30,
     })
     self._viewButton = Create("TextButton", self._viewUI, {
-        Name = "View", AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.fromScale(0.97, 0.65),
+        Name = "View", AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.fromScale(0.92, 0.65),
         Size = UDim2.new(0.28, 0, 0, 36), BackgroundColor3 = Gold, BorderSizePixel = 0,
         TextColor3 = Color3.fromRGB(64, 38, 15), Font = Enum.Font.FredokaOne, TextSize = 16,
         AutoLocalize = false, Visible = false, Text = "E · View Leaderboard",
@@ -173,7 +173,7 @@ function Component:BindCameraView()
         self:EnterView()
     end))
     self._closeButton = Create("TextButton", self._viewUI, {
-        Name = "Close", AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.fromScale(0.97, 0.65),
+        Name = "Close", AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.fromScale(0.92, 0.65),
         Size = UDim2.new(0.28, 0, 0, 36), BackgroundColor3 = Gold, BorderSizePixel = 0,
         TextColor3 = Color3.fromRGB(64, 38, 15), Font = Enum.Font.FredokaOne, TextSize = 16,
         AutoLocalize = false, Visible = false, Modal = true, Text = "Close · E",

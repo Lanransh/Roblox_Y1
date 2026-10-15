@@ -25,6 +25,9 @@ function Component:OnReady()
     self._rootNode.ResetOnSpawn = false
     local top = FXLoader:Here(self._rootNode, "TopCenter")
     self._bar = FXLoader:Here(top, "LevelProgressBar")
+    -- 进度条保留边框与高光，仅关闭背景和填充层的棋格纹理。
+    FXLoader:Here(self._bar, "ToolkitUIStyle"):SetAttribute("Stud", false)
+    FXLoader:Here(self._bar, "Fill/ToolkitUIStyle"):SetAttribute("Stud", false)
     self._barLayout = {
         Position = self._bar.Position,
         Size = self._bar.Size,
@@ -67,6 +70,15 @@ function Component:OnReady()
         self:RefreshLocalization()
     end))
     self._leftDown = FXLoader:Here(self._rootNode, "LeftDown")
+    self._backpackBoost = self._rootNode:FindFirstChild("BackpackBoost")
+    self._ownsBackpackBoost = self._backpackBoost == nil
+    if self._ownsBackpackBoost then
+        self._backpackBoost = self._leftDown.BackpackStat:Clone()
+        self._backpackBoost.Name = "BackpackBoost"
+        self._backpackBoost.Parent = self._rootNode
+    end
+    self:ConfigureBackpackBoostLayout()
+    self._backpackBoost.Visible = false
     self._effects = {}
     self._pickupEffects = {}
     self._rainEffects = {}
@@ -80,6 +92,7 @@ function Component:OnReady()
     --- 跟随角色进出关卡及重生切换入口，不重复注册按钮事件。
     self._homeTimer = FX.Task:Interval(0.1, function()
         self:RefreshHomeButton()
+        self:RefreshGMButton()
         self:RefreshLootCapacity()
     end)
     --- 普通训练沿用飞行图标，力量卡成功结算后改为力量图标雨。
@@ -133,6 +146,12 @@ function Component:OnReady()
     self:Show()
 end
 
+--- 每次主界面布局刷新时恢复 GM 按钮的右上角位置，避免响应式布局重置到旧位置。
+function Component:RefreshGMButton()
+    self._gmButton.AnchorPoint = Vector2.new(1, 0)
+    self._gmButton.Position = UDim2.new(1, -68, 0, 10)
+end
+
 --- 只按显式禁点标记判断 UI 占用，弹窗状态由通用 UI 统一查询。
 --- @param position Vector2 本次点击或轻触的屏幕像素坐标。
 --- @return boolean 是否为可点击的主界面空白区域。
@@ -175,11 +194,14 @@ function Component:ShowClickTrainingEffect(position)
     FX.Network:SendMsgToServer("C2S_TrainingClick", position)
 end
 
---- 标记主界面实际内容区域，弹窗入口交给对应业务组件。
+--- 将 GM 入口固定在右上角并标记主界面实际内容区域，弹窗入口交给对应业务组件。
 function Component:BindButtons()
-    FXLoader:Here(self._rootNode, "GMButton").Visible = FX.IsDeveloper(self:GetPlayerNode().UserId)
+    self._gmButton = FXLoader:Here(self._rootNode, "GMButton")
+    self:RefreshGMButton()
+    self._gmButton.Visible = FX.IsDeveloper(self:GetPlayerNode().UserId)
     for index, path in ipairs({"TopCenter/LevelProgressBar", "TopCenter/Strength",
-        "LeftDown/RebirthStat", "LeftDown/BackpackStat", "LeftDown/CashStat", "LeftDown/DiamondStat"}) do
+        "LeftDown/RebirthStat", "LeftDown/BackpackStat", "LeftDown/CashStat", "LeftDown/DiamondStat",
+        "BackpackBoost"}) do
         FXLoader:Here(self._rootNode, path):SetAttribute("BlocksTrainingClick", true)
     end
     for index, node in ipairs(self._rootNode:GetDescendants()) do
@@ -300,7 +322,7 @@ function Component:RefreshHomeButton()
     local layout = self._barLayout
     self._bar.Visible = true
     self._bar.AnchorPoint = inArea and Vector2.new(0.5, 0) or layout.AnchorPoint
-    self._bar.Position = inArea and UDim2.new(0.5, 0, 0, 60) or layout.Position
+    self._bar.Position = inArea and UDim2.new(0.5, 0, 0, 72) or layout.Position
     self._bar.Size = inArea and UDim2.fromOffset(160, 26) or layout.Size
     self._bar.LevelLabel.Position = inArea and UDim2.fromScale(0, 0) or layout.LevelPosition
     self._bar.LevelLabel.Size = inArea and UDim2.fromScale(1, 1) or layout.LevelSize
@@ -365,16 +387,85 @@ function Component:RefreshLoot(loot, oldLoot)
     end
 end
 
+--- 右下角扩容 buff：图标居中，上方显示额外格数，下方显示剩余时间。
+function Component:ConfigureBackpackBoostLayout()
+    local frame = self._backpackBoost
+    frame.AnchorPoint = Vector2.new(1, 1)
+    frame.Position = UDim2.new(1, -12, 1, -12)
+    frame.BackgroundTransparency = 1
+    frame.Size = UDim2.fromOffset(72, 88)
+    frame.ClipsDescendants = false
+    for index, child in ipairs(frame:GetChildren()) do
+        if child:IsA("UICorner") or child:IsA("UIGradient") or child:IsA("UIStroke") then
+            child:Destroy()
+        end
+    end
+    local icon = frame.Icon
+    icon.AnchorPoint = Vector2.new(0.5, 0.5)
+    icon.Position = UDim2.new(0.5, 0, 0, 38)
+    icon.Size = UDim2.fromOffset(56, 56)
+    local countLabel = frame:FindFirstChild("Count")
+    if not countLabel then
+        countLabel = Instance.new("TextLabel")
+        countLabel.Name = "Count"
+        countLabel.Parent = frame
+    end
+    countLabel.AnchorPoint = Vector2.new(0.5, 0.5)
+    countLabel.Position = UDim2.new(0.5, 12, 0, 10)
+    countLabel.Size = UDim2.fromOffset(44, 22)
+    countLabel.BackgroundTransparency = 1
+    countLabel.FontFace = frame.Value.FontFace
+    countLabel.TextScaled = true
+    countLabel.TextColor3 = Color3.new(1, 1, 1)
+    countLabel.TextStrokeColor3 = frame.Value.TextStrokeColor3
+    countLabel.TextStrokeTransparency = 0
+    countLabel.TextXAlignment = Enum.TextXAlignment.Center
+    countLabel.TextYAlignment = Enum.TextYAlignment.Center
+    countLabel.AutoLocalize = false
+    countLabel.ZIndex = 2
+    self._backpackBoostCount = countLabel
+    local value = frame.Value
+    value.AnchorPoint = Vector2.new(0.5, 0.5)
+    value.Position = UDim2.new(0.5, 0, 1, -10)
+    value.Size = UDim2.fromOffset(72, 22)
+    value.TextXAlignment = Enum.TextXAlignment.Center
+    value.TextScaled = false
+    value.TextSize = 18
+    value.AutoLocalize = false
+    value.Text = ""
+end
+
+--- @param remaining number 剩余秒数。
+--- @return string 与右下角 buff 一致的倒计时文案。
+function Component:FormatBackpackBoostCountdown(remaining)
+    local hours = math.floor(remaining / 3600)
+    local minutes = math.floor((remaining % 3600) / 60)
+    local seconds = remaining % 60
+    if hours > 0 then
+        return string.format("%02d:%02d:%02d", hours, minutes, seconds)
+    end
+    return string.format("%02d:%02d", minutes, seconds)
+end
+
 --- 显示基础容量与永久扩容；临时扩容卡仅在有效期内额外增加容量。
 ---@param loot table? 当前携带的战利品；省略时读取已同步字段。
 function Component:RefreshLootCapacity(loot)
     loot = loot or self:GetTable(Fields.RockLoot)
     local boost = self:GetTable(Fields.RockLootCapacityBoost)
+    local now = workspace:GetServerTimeNow()
+    local activeBoost = type(boost) == "table" and (boost.expiresAt or 0) > now
     local capacity = RockLevel.LootCapacity + self:GetTable(Fields.CurrencyShopData).capacity
-    if type(boost) == "table" and (boost.expiresAt or 0) > workspace:GetServerTimeNow() then
+    if activeBoost then
         capacity += math.max(0, math.floor(boost.count or 0))
     end
     self._leftDown.BackpackStat.Value.Text = string.format("%d/%d", #loot, capacity)
+    self._backpackBoost.Visible = activeBoost
+    if activeBoost then
+        local remaining = math.max(0, math.ceil(boost.expiresAt - now))
+        local extraSlots = math.max(1, math.floor(boost.count or 1))
+        self._backpackBoostCount.Text = string.format("+%d", extraSlots)
+        self._backpackBoost.Value.Text = self:FormatBackpackBoostCountdown(remaining)
+    end
 end
 
 --- 在屏幕中央展示道具或金币与放射光芒，再一起缩小飞向对应统计图标。
@@ -726,6 +817,9 @@ function Component:Dtor()
     end
     if self._trainingStatus then
         self._trainingStatus:Destroy()
+    end
+    if self._ownsBackpackBoost and self._backpackBoost then
+        self._backpackBoost:Destroy()
     end
     FX.Task:Cancel(self._homeTimer)
     FX.Network:UnRegServerMsgCallback("S2C_TrainingEffect")
