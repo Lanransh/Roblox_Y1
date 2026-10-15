@@ -20,38 +20,15 @@
 - 其余业务类、组件、配置和工具使用 `.luau` ModuleScript，通过 `require` 加载，不另建执行入口。
 - 脚本通过 Studio Script Sync 同步；场景、模型和 UI 节点在 Studio 中维护，通过 Roblox MCP 查询和核对。
 
-## 共享技能
-在编写代码之前，先读取并遵循与当前任务匹配的技能文档：
-- `.agents/skills/roblox-luau-standards/SKILL.md`
-- `.agents/skills/roblox-framework-dev/SKILL.md`
-- `.agents/skills/roblox-ui-components/SKILL.md`
-- `.agents/skills/game-examples/SKILL.md`
-- `.agents/skills/server-code-critical-review/SKILL.md`
-- `.agents/skills/maintain-acceptance-checklist/SKILL.md`
+## 技能使用
 
-## 何时读取 Skill
-
-- Luau 编码与普通审查：`roblox-luau-standards`。
-- 框架、玩家数据、组件和协议：`roblox-framework-dev`。
-- 客户端 UI 与交互：`roblox-ui-components`。
-- 具体功能接入示例：`game-examples`。
-- 服务端安全与高危问题审查：`server-code-critical-review`。
-- 系统、核心规则变更或验收记录：`maintain-acceptance-checklist`；普通 bug 修复不触发。
-
-## Skill 选择优先级
-
-- 按任务选择对应专用技能。
-- 节点结构通过 Roblox MCP 核对；服务端安全审查按专用技能限定结论范围。
-
-## Skill 读取与复用
-
-- 只选任务相关技能，使用前完整读取其 `SKILL.md`；参考文件按技能路由按需读取。
-- 文件未变化且完整正文仍在上下文中时直接复用；否则重新读取，不创建额外缓存文件。
+项目技能位于 `.agents/skills/`，由 Codex 根据各技能的 name 和 description 发现并选择。使用时读取对应 `SKILL.md`，参考文档按需渐进加载；不要默认读取全部技能。
 
 ## 明确的禁止(必须遵守)
 - 禁止修改 `StarterPlayerScripts/Client/UI/Generated/` 及其所有子目录中的脚本；这些脚本仅可只读查看，不得为修复报错而修改。
 - 涉及 `Generated` 脚本的报错通常源于接入脚本，应优先排查并修复接入脚本，不因报错堆栈指向生成脚本就修改生成脚本。
 - 如果无法通过修改接入脚本解决问题，必须告知用户当前报错、已排查的情况和无法修复的原因；不得擅自修改 `Generated` 中的脚本。
+- 配置导出目录 `ReplicatedStorage/Scripts/Game/Configs/` 中由源配置生成的 `.luau` 文件仅可只读查看，禁止直接编辑、覆盖或临时修补；自定义导出目录中的生成配置同样遵守。配置变更必须通过配置 MCP 修改原始 XLSX，检查并保存成功后，再通过 MCP 导出更新对应文件。MCP 不可用或检查、保存、导出失败时，报告阻断，不绕过流程修改生成文件。
 - 禁止一次性读取 `ReplicatedStorage/Scripts/Game/Configs/` 和 `ReplicatedStorage/Scripts/Game/Shared/` 整个目录；先使用 `rg` 定位目标配置和行号，再只读取完成任务所需的最小文件片段。
 - 手工或 AI 制作的模型禁止放入 `game.Workspace.BlockMeshs` 和 `game.ReplicatedStorage.Assets.BlockMeshs`，包括它们的子目录；这两个目录专供地图块编辑器管理，对应本地目录也不得用于保存此类模型。
 
