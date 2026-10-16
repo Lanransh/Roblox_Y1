@@ -27,14 +27,4 @@ function Weapon.GetEquippedConfig(data)
     return Weapon.GetConfig(101)
 end
 
---- 只提取已确认模板目录下的名称，不执行配置中的路径文本。
---- @param config table ToolConfig 中的可信配置。
---- @return string 地图块编辑器管理的武器模板名。
-function Weapon.GetModelName(config)
-    local name = string.match(config.ModelId,
-        '^game%.ReplicatedStorage%.Assets%.BlockMeshs%.Tools%["([^"]+)"%]$')
-    assert(name, "Invalid weapon ModelId: " .. config.ModelId)
-    return name
-end
-
 return Weapon

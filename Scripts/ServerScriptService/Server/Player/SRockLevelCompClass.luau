@@ -11,6 +11,7 @@ local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local CollectibleText = FXLoader:RequireShared("Scripts/Game/Shared/CollectibleText")
 local Collection = FXLoader:RequireShared("Scripts/Game/Shared/Collection")
 local Weapon = FXLoader:RequireShared("Scripts/Game/Shared/Weapon")
+local InstancePath = FXLoader:RequireShared("Scripts/Game/Shared/InstancePath")
 local English = FXLoader:Shared("Shared/Localization"):GetTranslator("en-us")
 local Component = FX.Class("SRockLevelCompClass", "FSPlayerCompClass")
 
@@ -71,7 +72,7 @@ end
 function Component:OnPlayerLogin()
     self._weaponTemplates = {}
     for index, config in ipairs(GameConfig.ToolConfig) do
-        self._weaponTemplates[config.ToolId] = FXLoader:Shared("Assets/BlockMeshs/Tools/" .. Weapon.GetModelName(config))
+        self._weaponTemplates[config.ToolId] = InstancePath.Wait(config.ModelId)
     end
     self._itemHUD = FXLoader:Shared("Nodes/ItemHUD")
     self._areas = RockLevel.GetAreas()
@@ -586,6 +587,7 @@ function Component:PickupDrop(dropId)
     self:RemoveDrop(dropId)
     local nameKey = CollectibleText.GetNameKey(drop.Template.Name)
     self:RequireComponent("SActivityComp"):RecordPickup()
+    self:RequireComponent("TutorialGuide"):RecordPickup()
     if drop.IsLucky then
         self:GetPlayerObject():ShowLocalizedTips("Loot.LuckyPickedUp",
             {itemKey = nameKey, rate = GameUtility.NumberToText(drop.LuckRate)})
@@ -620,6 +622,7 @@ function Component:DepositLoot()
             self:SetTable(Fields.CollectionEntries, entries)
         end
         self:GetPlayerObject():ShowLocalizedTips("Loot.Deposited", {count = deposited})
+        self:PublishEvent("Tutorial.Deposited")
     end
     if #loot > 0 and not self._depositFull then
         self:GetPlayerObject():ShowLocalizedTips("Loot.DepositFull")
@@ -660,7 +663,7 @@ function Component:ClearDrops()
     self._dropByCell = {}
 end
 
---- 出生、重生与切换装备时将已解锁武器组装为右手 Tool，保留攻击动画与拖尾。
+--- 出生、重生、切换装备或尺寸偏好时重新构建武器，避免累计缩放。
 --- @param humanoid Humanoid 当前存活角色的 Humanoid。
 function Component:EquipPickaxe(humanoid)
     if self._pickaxe then
@@ -669,7 +672,8 @@ function Component:EquipPickaxe(humanoid)
     local config = Weapon.GetEquippedConfig(self:GetTable(Fields.WeaponData))
     local template = self._weaponTemplates[config.ToolId]
     local model
-    self._pickaxe, model = RockWeaponTool.Build(template)
+    self._giantPickaxe = self:GetTable(Fields.Settings).giantPickaxe
+    self._pickaxe, model = RockWeaponTool.Build(template, self._giantPickaxe)
     local handle = self._pickaxe.Handle
     self._weaponId = config.ToolId
     local nameKey = "Weapon.Name." .. tostring(config.ToolId)
@@ -751,7 +755,8 @@ function Component:Tick()
         end
         self._character = character
         self:EquipPickaxe(humanoid)
-    elseif self._weaponId ~= Weapon.GetEquippedConfig(self:GetTable(Fields.WeaponData)).ToolId then
+    elseif self._weaponId ~= Weapon.GetEquippedConfig(self:GetTable(Fields.WeaponData)).ToolId
+        or self._giantPickaxe ~= self:GetTable(Fields.Settings).giantPickaxe then
         self:EquipPickaxe(humanoid)
     end
     local firstArea = self._areas[1]

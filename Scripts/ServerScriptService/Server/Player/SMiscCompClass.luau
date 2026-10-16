@@ -42,7 +42,15 @@ function Component:GetCompName()
     return "SMiscComp"
 end
 
+--- 普通重生与已支付跳过共用无等待结算，调用方负责资格校验。
+function Component:ApplyRebirth()
+    self:AddNumber(Fields.RebirthCount, 1)
+    self:SetNumber(Fields.RockTrainingValue, 0)
+    self:ResetTrainingProgress()
+end
+
 --- 等级和次数只取服务端数据；重置后重复请求无法再次满足门槛。
+--- @return table 重生是否成功。
 function Component:HandleRebirth()
     if not self._levelStat then
         return {success = false}
@@ -58,9 +66,7 @@ function Component:HandleRebirth()
         player:ShowLocalizedTips("Rebirth.RequiredLevel", {level = required})
         return {success = false}
     end
-    self:AddNumber(Fields.RebirthCount, 1)
-    self:SetNumber(Fields.RockTrainingValue, 0)
-    self:ResetTrainingProgress()
+    self:ApplyRebirth()
     player:ShowLocalizedTips("Rebirth.Success")
     return {success = true}
 end

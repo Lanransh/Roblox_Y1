@@ -6,13 +6,17 @@ State: 必填完整快照，每次 RefreshUI 都提供全部字段。
   musicVolume: number，必填，音乐音量，0 到 100 的百分比整数。
   soundEffectsVolume: number，必填，音效音量，0 到 100 的百分比整数。
   showAura: boolean，必填，是否显示光环。
+  giantPickaxe: boolean，必填，是否启用镐子尺寸巨大化。
+最小数据示例：Config = {}；State = { musicVolume = 70, soundEffectsVolume = 85,
+  showAura = true, giantPickaxe = false }。
 首次刷新前由接入层准备完整 State；OnReady 绑定节点后调用 BindUIData、Show。
 业务状态更新后替换完整 State 并调用 RefreshUI。
 
 必需覆写 OnUIAction(action, payload)，无返回值：
   ChangeSetting: payload = { setting: string, value: number | boolean }。
     setting 为 musicVolume / soundEffectsVolume 时，value 是 0 到 100 的音量百分比。
-    setting 为 showAura 时，value 是 boolean。
+    setting 为 showAura / giantPickaxe 时，value 是 boolean。
+    giantPickaxe 的实际镐子缩放与关闭后恢复原尺寸由游戏接入层处理。
   Close: payload = {}，由接入层 Hide。
 游戏接入负责保存设置并将完整 State 刷新回界面；拖动滑杆会持续发出 ChangeSetting。
 编辑器 Preview 只修改本地模拟状态，不写入游戏设置。
@@ -97,6 +101,11 @@ function CSettingsView:OnReady()
     end
 
     self.Toggles = {
+        giantPickaxe = {
+            button = FXLoader:Here(root, "SettingsPanel.ContentBox.GiantPickaxeRowImg.GiantPickaxeBtn"),
+            edge = FXLoader:Here(root, "SettingsPanel.ContentBox.GiantPickaxeRowImg.GiantPickaxeBtn.BottomEdgeImg"),
+            text = FXLoader:Here(root, "SettingsPanel.ContentBox.GiantPickaxeRowImg.GiantPickaxeBtn.ButtonTxt"),
+        },
         showAura = {
             button = FXLoader:Here(root, "SettingsPanel.ContentBox.ShowAuraRowImg.ShowAuraBtn"),
             edge = FXLoader:Here(root, "SettingsPanel.ContentBox.ShowAuraRowImg.ShowAuraBtn.BottomEdgeImg"),

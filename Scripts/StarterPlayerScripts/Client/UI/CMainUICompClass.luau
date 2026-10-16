@@ -9,6 +9,7 @@ local GuiService = game:GetService("GuiService")
 local RockLevel = require(game:GetService("ReplicatedStorage").Scripts.Game.Shared.RockLevel)
 local GameUtility = require(game:GetService("ReplicatedStorage").Scripts.Game.Shared.GameUtility)
 local CurrencyShop = FXLoader:RequireShared("Scripts/Game/Shared/CurrencyShop")
+local InstancePath = FXLoader:RequireShared("Scripts/Game/Shared/InstancePath")
 local StrengthPacks = {StrengthPack1Button = 301, StrengthPack2Button = 302}
 local Component = FX.Class("CMainUICompClass", "FCUICompClass")
 
@@ -472,8 +473,7 @@ end
 --- 在屏幕中央展示道具或金币与放射光芒，再一起缩小飞向对应统计图标。
 --- @param entry table 服务端确认的道具 DisplayModelId 或礼盒金币 MoneyAmount。
 function Component:ShowPickupEffect(entry)
-    local path = type(entry.DisplayModelId) == "string" and string.match(entry.DisplayModelId, "^game%.(.+)$")
-    local template = path and FXLoader:Find(game, path)
+    local template = InstancePath.Find(entry.DisplayModelId)
     local isMoney = entry.MoneyAmount ~= nil
     local currencyPath = entry.Currency == "Diamonds" and "DiamondStat/Icon" or "CashStat/Icon"
     if not isMoney and (not template or not template:IsA("Model")) then

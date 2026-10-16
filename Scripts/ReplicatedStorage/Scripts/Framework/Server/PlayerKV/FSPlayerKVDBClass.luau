@@ -31,12 +31,15 @@ function DB:LoadAsync()
                 end
 
                 old = old or { Data = {} }
-                local lock = old.Session
-                if lock and lock.Id ~= self._session and os.time() - lock.Time < Config.SessionLeaseSeconds then
-                    return nil
+                if Config.SessionLockEnabled then
+                    local lock = old.Session
+                    if lock and lock.Id ~= self._session and os.time() - lock.Time < Config.SessionLeaseSeconds then
+                        return nil
+                    end
+                    old.Session = { Id = self._session, Time = os.time() }
+                else
+                    old.Session = nil
                 end
-
-                old.Session = { Id = self._session, Time = os.time() }
                 return old
             end)
         end)
@@ -72,7 +75,7 @@ function DB:LoadAsync()
     end)
 end
 
---- Studio 内存模式使用相同的会话锁逻辑，只是不调用云服务。
+--- Studio 内存模式使用相同的更新逻辑，只是不调用云服务。
 --- @param transform function 无 yield 的原子转换。
 --- @return table 更新后的记录，取消时返回 nil。
 function DB:_Update(transform)
@@ -88,7 +91,7 @@ function DB:_Update(transform)
     return nextRecord
 end
 
---- @param release boolean 离服时保存并释放会话锁。
+--- @param release boolean 离服时完成最后一次保存、释放正式服锁并停止后续写入。
 --- @return boolean 是否成功持久化本次快照。
 function DB:Save(release)
     while self._saving do
@@ -103,15 +106,17 @@ function DB:Save(release)
     local snapshot = FX.Table:DeepCopy(self._data)
     local success, result = pcall(function()
         return self:_Update(function(old)
-            if not old or not old.Session or old.Session.Id ~= self._session then
+            if not old then
+                return nil
+            end
+            if Config.SessionLockEnabled and (not old.Session or old.Session.Id ~= self._session) then
                 return nil
             end
 
             local record = { Data = snapshot }
-            if not release then
+            if Config.SessionLockEnabled and not release then
                 record.Session = { Id = self._session, Time = os.time() }
             end
-
             return record
         end)
     end)

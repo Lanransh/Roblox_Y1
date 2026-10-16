@@ -33,6 +33,8 @@ function Service.Init()
             end
             if goods.BuyHandler == "AddGem" then
                 player:ShowLocalizedTips("CurrencyShop.DiamondsReceived", {value = goods.NumberArray[1]})
+            elseif goods.BuyHandler == "SkipRebirth" then
+                player:ShowLocalizedTips("Rebirth.Success")
             elseif goods.BuyHandler == "AddItem" then
                 player:ShowLocalizedTips("CurrencyShop.ItemReceived", {
                     itemKey = "Welfare.Item." .. goods.KVTable.ItemId, count = goods.KVTable.Count,

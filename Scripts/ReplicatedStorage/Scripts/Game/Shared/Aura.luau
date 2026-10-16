@@ -27,14 +27,4 @@ function Aura.GetTrainingRate(data)
     return config.TrainingRate
 end
 
---- 配置保存的是 Studio 路径文本，仅提取已确认资源目录下的模板名，不执行文本。
---- @param config table AuraConfig 中的可信配置。
---- @return string 光环资源文件夹名称。
-function Aura.GetModelName(config)
-    local name = string.match(config.ModelId,
-        '^game%.ReplicatedStorage%.Assets%.Effects%.Aura%["([^"]+)"%]$')
-    assert(name, "Invalid aura ModelId: " .. config.ModelId)
-    return name
-end
-
 return Aura

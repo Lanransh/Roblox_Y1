@@ -12,16 +12,13 @@ function Component:GetCompName()
     return "CSettingsUIComp"
 end
 
---- 绑定展示类，隐藏未接入选项，并恢复服务端保存的偏好。
+--- 绑定当前设置展示类并恢复服务端保存的偏好，不再等待已删除的旧选项。
 function Component:OnReady()
     Component.Super.OnReady(self)
     local root = self:GetRootNode()
     root.ResetOnSpawn = false
     root.DisplayOrder = 10
     self:GetPlayerObject():RequireComponent("FCCommonUIComp"):RegisterTrainingClickModal(root)
-    for index, name in ipairs({"ReduceEffectsRowImg", "NotificationsRowImg", "CompactTextRowImg"}) do
-        FXLoader:Here(root, "SettingsPanel/ContentBox/" .. name).Visible = false
-    end
     self.Config = {}
     self._auraStates = {}
     self._musicGroup = Instance.new("SoundGroup")
@@ -56,7 +53,7 @@ function Component:BindUIData()
         if not self._saveTask and not self._drag then
             self.State = {
                 musicVolume = settings.musicVolume, soundEffectsVolume = settings.soundEffectsVolume,
-                showAura = settings.showAura, reduceEffects = false, notifications = true, compactText = false,
+                showAura = settings.showAura, giantPickaxe = settings.giantPickaxe,
             }
             self:ApplySettings()
         end
@@ -122,7 +119,8 @@ function Component:OnUIAction(action, payload)
     if action == "Close" then
         self:SaveSettings()
         self:Hide()
-    elseif action == "ChangeSetting" and (self.Sliders[payload.setting] or payload.setting == "showAura") then
+    elseif action == "ChangeSetting" and (self.Sliders[payload.setting]
+        or payload.setting == "showAura" or payload.setting == "giantPickaxe") then
         if self.State[payload.setting] == payload.value then
             return
         end
@@ -170,7 +168,7 @@ function Component:ApplyAura(node)
     node.Enabled = self.State.showAura and self._auraStates[node]
 end
 
---- 合并拖动事件，提交三个白名单字段，沿用框架自动保存与离服保存。
+--- 合并拖动事件，提交音量、光环和武器尺寸偏好，沿用框架自动保存与离服保存。
 function Component:SaveSettings()
     if self._saveTask then
         task.cancel(self._saveTask)
@@ -180,6 +178,7 @@ function Component:SaveSettings()
         musicVolume = self.State.musicVolume,
         soundEffectsVolume = self.State.soundEffectsVolume,
         showAura = self.State.showAura,
+        giantPickaxe = self.State.giantPickaxe,
     })
 end
 

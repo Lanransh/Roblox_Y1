@@ -1,10 +1,32 @@
 local RockWeaponTool = {}
 
---- 将当前 20 款导出武器克隆为可装备的右手 Tool，模板仍由地图块编辑器管理。
---- @param template Model 原点在柄底、柄沿局部 Y 轴的导出武器。
+--- 以手柄为缩放中心放大整件装备，保留握持位置并同步缩放焊接与附件。
+--- @param tool Tool 尚未挂载到角色的装备。
+local function enlargeTool(tool)
+    local container = Instance.new("Model")
+    container.WorldPivot = tool.Handle.CFrame
+    tool.Parent = container
+    container:ScaleTo(1.5)
+    tool.Parent = nil
+    container:Destroy()
+end
+
+--- 克隆已配置握点的 Tool，或将柄底为原点的模型组装为右手装备。
+--- @param template Model|Tool 导出武器模型，或已配置 Handle、Grip 和焊接的 Tool。
+--- @param giantPickaxe boolean 是否将当前基础尺寸放大至 1.5 倍。
 --- @return Tool 已修正握点、朝向和物理属性的未挂载装备。
 --- @return Model 装备中的可见模型，供调用方布置镐头拖尾。
-function RockWeaponTool.Build(template)
+function RockWeaponTool.Build(template, giantPickaxe)
+    -- AI 工具已按角色尺寸配置；重复缩放和创建手柄会将握点移到工具头部。
+    if template:IsA("Tool") then
+        local tool = template:Clone()
+        tool.CanBeDropped = false
+        tool.ManualActivationOnly = true
+        if giantPickaxe then
+            enlargeTool(tool)
+        end
+        return tool, tool.Visual
+    end
     local model = template:Clone()
     model:ScaleTo(0.4)
     model:PivotTo(CFrame.new())
@@ -48,6 +70,9 @@ function RockWeaponTool.Build(template)
         end
     end
     model.Parent = tool
+    if giantPickaxe then
+        enlargeTool(tool)
+    end
     return tool, model
 end
 

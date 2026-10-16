@@ -3,6 +3,7 @@ local FC = _G.FC
 local FXLoader = FX.Loader
 FXLoader:RequireFromParent(script, "Generated/CRebirthUICompClass")
 local Fields = _G.PlayerDataConfig
+local MarketplaceService = game:GetService("MarketplaceService")
 local Rebirth = FXLoader:RequireShared("Scripts/Game/Shared/Rebirth")
 local Component = FX.Class("CRebirthIntegrationCompClass", "CRebirthUICompClass")
 
@@ -127,6 +128,17 @@ function Component:OnReady()
         end
     end
     self.State = {Open = false, Completed = false, Pending = false}
+    --- 平台弹窗关闭只恢复交互，重生奖励仍由服务端收据处理。
+    --- @param userId number 平台回传的玩家 ID。
+    --- @param productId number 平台 Developer Product ID。
+    --- @param purchased boolean 平台支付结果，不作为发奖依据。
+    self:TrackConnection(MarketplaceService.PromptProductPurchaseFinished:Connect(function(userId, productId, purchased)
+        if userId == self:GetPlayerNode().UserId and productId == self._promptProductId then
+            self._promptProductId = nil
+            self.State.Pending = false
+            self:RefreshRebirth()
+        end
+    end))
     self:Hide()
     self:TrackConnection(self._localization.Changed:Connect(function()
         self:RefreshRebirth()
@@ -150,11 +162,16 @@ function Component:RefreshRebirth()
     self:RefreshUI()
 end
 
+--- 根据购买与普通重生请求状态更新按钮，未配置产品 ID 时禁止跳过。
+--- @param state table 当前界面状态。
 function Component:Render(state)
     Component.Super.Render(self, state)
     -- 灰色表达未达标，但保留点击以显示门槛；请求中才禁用。
     self:SetButtonEnabled(self.RebirthBtn, state.Open and not state.Pending)
-    self:SetButtonEnabled(self.SkipBtn, state.Open and not state.Pending)
+    local goods = Rebirth.GetSkipGoods(self:GetNumber(Fields.RebirthCount))
+    local productId = goods and goods.RobloxProductId
+    self:SetButtonEnabled(self.SkipBtn, state.Open and not state.Pending
+        and type(productId) == "number" and productId > 0 and productId % 1 == 0)
     self.ProgressTxt.Text = self._localization:FormatByKey("Rebirth.Progress", {
         level = state.Level, required = state.RequiredLevel,
     })
@@ -164,6 +181,31 @@ function Component:Render(state)
         self.RebirthGradient.Enabled = true
         self.WarningTxt.Text = self._localization:FormatByKey("Rebirth.MaxCount")
     end
+end
+
+--- 按当前次数选择真实平台商品，复用服务端预检和平台购买窗口。
+function Component:RequestSkip()
+    local goods = Rebirth.GetSkipGoods(self:GetNumber(Fields.RebirthCount))
+    local productId = goods and goods.RobloxProductId
+    if type(productId) ~= "number" or productId <= 0 or productId % 1 ~= 0 then
+        self._commonUI:ShowLocalizedTips("Common.InDevelopment")
+        return
+    end
+    self.State.Pending = true
+    self._promptProductId = productId
+    self:RefreshUI()
+    self._rebirthTask = task.defer(function()
+        local ok, result = pcall(function()
+            return self._commonUI:ShowDeveloperBuyUI(productId)
+        end)
+        self._rebirthTask = nil
+        if not ok or not result then
+            self._promptProductId = nil
+            self.State.Pending = false
+            self._commonUI:ShowLocalizedTips("Common.Unknown")
+        end
+        self:RefreshRebirth()
+    end)
 end
 
 function Component:OnShow()
@@ -183,13 +225,15 @@ function Component:OnUIAction(action, payload)
         self:Hide()
         return
     end
-    if self.State.Pending then return end
+    if self.State.Pending then
+        return
+    end
     if self:GetNumber(Fields.RebirthCount) >= Rebirth.MaxCount then
         self._commonUI:ShowLocalizedTips("Rebirth.MaxCount")
         return
     end
     if action == "RequestSkip" then
-        self._commonUI:ShowLocalizedTips("Common.InDevelopment")
+        self:RequestSkip()
         return
     end
     assert(action == "RequestRebirth", "Unsupported rebirth action: " .. tostring(action))

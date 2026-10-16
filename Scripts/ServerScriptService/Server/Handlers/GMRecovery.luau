@@ -3,7 +3,7 @@ local Players = game:GetService("Players")
 local Config = FX.Loader:Require(script.Parent.Parent, "Config/StorageConfig")
 local Recovery = {}
 
---- 加载失败时仅重置开发者本人；其他有效会话锁和未知锁结构均禁止覆盖。
+--- 加载失败时仅重置开发者本人，并保护正式服其他有效会话锁。
 --- @param userId number 网络层认证的请求者 ID。
 --- @param action any 客户端请求动作，仅接受 ResetData。
 --- @return table 云端重置结果；成功后重新加载并沿正常 Ready 初始化。
@@ -27,7 +27,7 @@ function Recovery.Request(userId, action)
                 or not Players:GetPlayerByUserId(userId) then
                 return nil
             end
-            if type(old) == "table" and old.Session ~= nil then
+            if Config.SessionLockEnabled and type(old) == "table" and old.Session ~= nil then
                 local lock = old.Session
                 if type(lock) ~= "table" or type(lock.Id) ~= "string" or type(lock.Time) ~= "number"
                     or lock.Time ~= lock.Time or lock.Time == math.huge or lock.Time == -math.huge then
@@ -42,7 +42,11 @@ function Recovery.Request(userId, action)
             for enumKey, name in pairs(_G.Provider:GetPlayerKVEnum()) do
                 data[name] = {}
             end
-            return {Data = data, Session = {Id = db._session, Time = os.time()}}
+            local recovered = {Data = data}
+            if Config.SessionLockEnabled then
+                recovered.Session = {Id = db._session, Time = os.time()}
+            end
+            return recovered
         end)
     end)
     db._recovering = false

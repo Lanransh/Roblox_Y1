@@ -93,6 +93,58 @@ return {
             BuyLimit = nil,
             NumberArray = nil,
             KVTable = nil
+        },
+        [401] = {
+            DevGoodsId = 401,
+            BuyHandler = [[SkipRebirth]],
+            Name = [[Skip Rebirth]],
+            Desc = [[Skip the level requirement and rebirth once.]],
+            Price = 18,
+            BuyLimit = nil,
+            NumberArray = nil,
+            KVTable = {
+                MinRebirth = 0,
+                MaxRebirth = 2
+            }
+        },
+        [402] = {
+            DevGoodsId = 402,
+            BuyHandler = [[SkipRebirth]],
+            Name = [[Skip Rebirth]],
+            Desc = [[Skip the level requirement and rebirth once.]],
+            Price = 28,
+            BuyLimit = nil,
+            NumberArray = nil,
+            KVTable = {
+                MinRebirth = 3,
+                MaxRebirth = 5
+            }
+        },
+        [403] = {
+            DevGoodsId = 403,
+            BuyHandler = [[SkipRebirth]],
+            Name = [[Skip Rebirth]],
+            Desc = [[Skip the level requirement and rebirth once.]],
+            Price = 48,
+            BuyLimit = nil,
+            NumberArray = nil,
+            KVTable = {
+                MinRebirth = 6,
+                MaxRebirth = 8
+            }
+        },
+        [404] = {
+            DevGoodsId = 404,
+            BuyHandler = [[SkipRebirth]],
+            Name = [[Skip Rebirth]],
+            Desc = [[Skip the level requirement and rebirth once.]],
+            Price = 68,
+            BuyLimit = nil,
+            NumberArray = nil,
+            KVTable = {
+                MinRebirth = 9,
+                MaxRebirth = 10
+            }
         }
     },
     GemGoodsData = {

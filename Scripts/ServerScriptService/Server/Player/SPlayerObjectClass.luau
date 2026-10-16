@@ -215,6 +215,85 @@ function Guide:GetGuideStorage()
     return PlayerDataConfig.Guide
 end
 
+--- 仅匹配当前步骤，避免提前操作或重复回调重复发放奖励。
+--- @param index number 首轮引导步骤。
+--- @return boolean 当前是否处于该步骤。
+function Guide:IsLootStep(index)
+    local data = self:GetGuideData()
+    return data.activeGuideId == "FirstLootGuide"
+        and data.guideMap.FirstLootGuide.stepIndex == index
+end
+
+--- 成功拾取后记录持久次数，重登与回基地不会清零。
+function Guide:RecordPickup()
+    if not self:IsLootStep(1) then
+        return
+    end
+    local data = self:GetGuideData()
+    data.collected = (data.collected or 0) + 1
+    self:SetGuideData(data)
+    if data.collected >= 2 then
+        self:PublishEvent("Tutorial.Collected")
+    end
+end
+
+--- 只由完成扣库存与到账的出售业务通知，客户端不能直接完成引导。
+function Guide:RecordSale()
+    self:PublishEvent("Tutorial.Sold")
+end
+
+--- 使用权威存档和场地状态恢复提前完成的操作，不新增跳步协议。
+--- @param serverTime number 框架每秒回调时间。
+function Guide:OnUpdate(serverTime)
+    if self:IsLootStep(2) and #self:GetTable(PlayerDataConfig.StoredLoot) > 0 then
+        self:PublishEvent("Tutorial.Deposited")
+    end
+    if self:IsLootStep(4) and self:GetTable(PlayerDataConfig.CurrencyShopData).trainingLevel > 0 then
+        -- 同一个无让出执行的回调先推进再奖励，重复检查不会再次发钱。
+        self:PublishEvent("Tutorial.Rate")
+        assert(self:RequireComponent("FSRewardComp"):AddRewards({{Type = "Money", Currency = "Money", Count = 100}}))
+    end
+    if self:IsLootStep(5) then
+        local weapon = FXLoader:RequireShared("Scripts/Game/Shared/Weapon")
+        local equipped = weapon.GetEquippedConfig(self:GetTable(PlayerDataConfig.WeaponData))
+        if equipped.TrainingRate > weapon.GetConfig(101).TrainingRate then
+            self:PublishEvent("Tutorial.Weapon")
+        end
+    end
+    if self:IsLootStep(6) and self:GetNumber(PlayerDataConfig.TrainingFieldIndex) == 1 then
+        self:PublishEvent("Tutorial.Training")
+    end
+    if self:IsLootStep(7) then
+        self._encouragementEnd = self._encouragementEnd or serverTime + 3
+        if serverTime >= self._encouragementEnd then
+            self:PublishEvent("Tutorial.Done")
+            self._encouragementEnd = nil
+        end
+    end
+    local data = self:GetGuideData()
+    local first = data.guideMap.FirstLootGuide
+    if not first or first.state ~= "Finished" then
+        return
+    end
+    if self:GetNumber(PlayerDataConfig.Money) >= _G.GameConfig.AuraConfig[1].Price then
+        self:PublishEvent("Tutorial.AuraAffordable")
+    end
+    if self:GetTable(PlayerDataConfig.AuraData).equippedId ~= 0 then
+        self:PublishEvent("Tutorial.AuraEntered")
+        return
+    end
+    local trigger = FXLoader:Find(workspace, "Decorations/World1Decorations/BlueHut/Trigger")
+    local character = self:GetPlayerCharacter()
+    local root = character and character:FindFirstChild("HumanoidRootPart")
+    if trigger and root then
+        local position = trigger.CFrame:PointToObjectSpace(root.Position)
+        if math.abs(position.X) <= trigger.Size.X / 2 and math.abs(position.Z) <= trigger.Size.Z / 2
+            and math.abs(position.Y) <= trigger.Size.Y / 2 + 3 then
+            self:PublishEvent("Tutorial.AuraEntered")
+        end
+    end
+end
+
 local Player = FX.Class("SPlayerObjectClass", "FSPlayerObjectClass")
 
 --- @param id number Roblox UserId。
@@ -241,7 +320,7 @@ function Player:ShowLocalizedTips(key, arguments, duration)
     FX.Network:SendMsgToClient(self:GetPlayerId(), "S2C_ShowLocalizedTips", key, arguments, duration)
 end
 
---- 为旧存档补入历史等级与离线福利结构；无离服时间的旧档不追溯奖励。
+--- 为旧存档补入历史等级、离线福利与默认开启的武器巨大化偏好。
 --- @param version number 框架传入的旧存档版本。
 function Player:MigrateData(version)
     if version < 1 then
@@ -261,6 +340,14 @@ function Player:MigrateData(version)
         self:SetTable(PlayerDataConfig.WelfareData, welfare)
         self:SetNumber(PlayerDataConfig.DataVersion, 2)
     end
+    if version < 3 then
+        local settings = self:GetTable(PlayerDataConfig.Settings)
+        if settings.giantPickaxe == nil then
+            settings.giantPickaxe = true
+            self:SetTable(PlayerDataConfig.Settings, settings)
+        end
+        self:SetNumber(PlayerDataConfig.DataVersion, 3)
+    end
 end
 
 --- 未写入过的初始赠送通过统一奖励组件发放；已有余额和武器档案不重复奖励。
@@ -268,8 +355,9 @@ function Player:OnPlayerLogin()
     local rewards = {}
     local diamonds = PlayerDataConfig.Diamonds
     local kv = FS.PlayerKVDataManager:GetKVTable(self:GetPlayerId(), diamonds.KVTable)
-    if kv:GetDeep(diamonds.Key .. ".RealData") == nil then
-        table.insert(rewards, {Type = "Money", Currency = "Diamonds", Count = 500})
+    local isNewPlayer = kv:GetDeep(diamonds.Key .. ".RealData") == nil
+    if isNewPlayer then
+        table.insert(rewards, {Type = "Money", Currency = "Diamonds", Count = 30})
     end
     local weapon = PlayerDataConfig.WeaponData
     if kv:GetDeep(weapon.Key .. ".RealData") == nil then
@@ -277,6 +365,9 @@ function Player:OnPlayerLogin()
     end
     assert(self:RequireComponent("FSRewardComp"):AddRewards(rewards), "Initial rewards failed")
     Player.Super.OnPlayerLogin(self)
+    if isNewPlayer then
+        self:PublishEvent("Tutorial.Login")
+    end
     self:PublishEvent("PlayerLogin")
 end
 
