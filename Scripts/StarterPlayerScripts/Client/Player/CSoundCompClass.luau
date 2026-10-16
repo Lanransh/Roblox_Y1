@@ -1,5 +1,6 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
+local CardUseEffect = FXLoader:RequireFromParent(script, "CardUseEffect")
 local Fields = _G.PlayerDataConfig
 local Debris = game:GetService("Debris")
 local TweenService = game:GetService("TweenService")
@@ -25,11 +26,16 @@ function CSoundCompClass:Ctor(owner)
     self:WatchDataChanged(Fields.Money, self.OnCoinsChanged, self)
     self:WatchDataChanged(Fields.RockLoot, self.OnRockLootChanged, self)
     FX.Network:RegServerMsgCallback("S2C_DogPickedUp", self.PlayPickupItemSound, self)
+    FX.Network:RegServerMsgCallback("S2C_CardActivated", self.OnCardActivated, self)
 end
 
---- 释放小狗拾取通知，再由声音基类释放音乐和短音效池。
+--- 释放拾取与卡片激活通知，再由声音基类释放音乐和短音效池。
 function CSoundCompClass:Dtor()
+    if self._cardEffectCleanup then
+        self._cardEffectCleanup()
+    end
     FX.Network:UnRegServerMsgCallback("S2C_DogPickedUp")
+    FX.Network:UnRegServerMsgCallback("S2C_CardActivated")
     CSoundCompClass.Super.Dtor(self)
 end
 
@@ -179,7 +185,22 @@ function CSoundCompClass:PlayPickupItemSound()
     self:PlayEffectSound(PICKUP_SOUND_ID, 1)
 end
 
---- 供后续领奖系统在服务端确认领取成功后调用，不在点击请求时提前播放。
+--- 服务端确认使用成功后，仅在本地播放举卡前推和对应颜色的特效。
+--- @param itemId number 已使用的道具配置 ID。
+function CSoundCompClass:OnCardActivated(itemId)
+    local config = _G.ItemConfig.Data[itemId]
+    if not config then
+        return
+    end
+    if self._cardEffectCleanup then
+        self._cardEffectCleanup()
+    end
+    self._cardEffectCleanup = CardUseEffect.Play(self:GetPlayerCharacter(), config, function()
+        self:PlayRewardSound()
+    end)
+end
+
+--- 卡片推出或领奖时复用奖励音，音量遵守现有音效分组设置。
 function CSoundCompClass:PlayRewardSound()
     self:PlayEffectSound(REWARD_SOUND_ID, 0.7)
 end

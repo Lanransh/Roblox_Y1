@@ -98,7 +98,7 @@ function Inventory:UseItem(grid, useCount)
     if not success then
         player:RequireComponent("SMiscComp"):RefreshProgress()
     elseif context.itemDataConfig.HeldHandler == "Image" then
-        ItemToolVisual.PlayUseEffect(self:GetPlayerNode().Character)
+        FX.Network:SendMsgToClient(self:GetPlayerId(), "S2C_CardActivated", context.itemDataConfig.Id)
     end
     return success
 end
@@ -116,6 +116,21 @@ function Inventory:SyncTools()
             tool:Destroy()
             self._tools[gridIndex] = nil
         end
+        return
+    end
+
+    -- 原生快捷栏按 Tool 到达顺序分配空位，出生时先让镐子占据第一个位置。
+    local character = player.Character
+    local hasPickaxe = false
+    for index, container in ipairs({backpack, character}) do
+        for childIndex, node in ipairs(container:GetChildren()) do
+            if node:IsA("Tool") and node:GetAttribute("StarterPickaxe") == true then
+                hasPickaxe = true
+                break
+            end
+        end
+    end
+    if not hasPickaxe then
         return
     end
 
@@ -240,11 +255,28 @@ end
 --- 只由完成扣库存与到账的出售业务通知，客户端不能直接完成引导。
 function Guide:RecordSale()
     self:PublishEvent("Tutorial.Sold")
+    self:GrantTrainingDiamonds()
+end
+
+--- 出售引导完成后赠送训练倍率所需钻石；领取状态随引导存档，重复事件和重登不重复发放。
+function Guide:GrantTrainingDiamonds()
+    if not self:IsLootStep(4) then
+        return
+    end
+    local data = self:GetGuideData()
+    if data.trainingDiamondsGranted then
+        return
+    end
+    assert(self:RequireComponent("FSRewardComp"):AddRewards({{Type = "Money", Currency = "Diamonds", Count = 30}}),
+        "Tutorial diamonds failed")
+    data.trainingDiamondsGranted = true
+    self:SetGuideData(data)
 end
 
 --- 使用权威存档和场地状态恢复提前完成的操作，不新增跳步协议。
 --- @param serverTime number 框架每秒回调时间。
 function Guide:OnUpdate(serverTime)
+    self:GrantTrainingDiamonds()
     if self:IsLootStep(2) and #self:GetTable(PlayerDataConfig.StoredLoot) > 0 then
         self:PublishEvent("Tutorial.Deposited")
     end
@@ -350,24 +382,17 @@ function Player:MigrateData(version)
     end
 end
 
---- 未写入过的初始赠送通过统一奖励组件发放；已有余额和武器档案不重复奖励。
+--- 未拥有初始武器时通过统一奖励组件发放；钻石由出售引导完成后赠送。
 function Player:OnPlayerLogin()
     local rewards = {}
-    local diamonds = PlayerDataConfig.Diamonds
-    local kv = FS.PlayerKVDataManager:GetKVTable(self:GetPlayerId(), diamonds.KVTable)
-    local isNewPlayer = kv:GetDeep(diamonds.Key .. ".RealData") == nil
-    if isNewPlayer then
-        table.insert(rewards, {Type = "Money", Currency = "Diamonds", Count = 30})
-    end
     local weapon = PlayerDataConfig.WeaponData
+    local kv = FS.PlayerKVDataManager:GetKVTable(self:GetPlayerId(), weapon.KVTable)
     if kv:GetDeep(weapon.Key .. ".RealData") == nil then
         table.insert(rewards, {Type = "Unlock", Kind = "Weapon", Id = 101, Count = 1})
     end
     assert(self:RequireComponent("FSRewardComp"):AddRewards(rewards), "Initial rewards failed")
     Player.Super.OnPlayerLogin(self)
-    if isNewPlayer then
-        self:PublishEvent("Tutorial.Login")
-    end
+    self:PublishEvent("Tutorial.Login")
     self:PublishEvent("PlayerLogin")
 end
 

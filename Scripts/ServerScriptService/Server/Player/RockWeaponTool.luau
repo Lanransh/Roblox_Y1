@@ -1,12 +1,18 @@
 local RockWeaponTool = {}
 
+-- 指根与掌侧同时偏移，让柄轴落在弯曲手指围成的握持区，而非穿过掌背。
+local TOOL_GRIP = CFrame.new(0.2, 0, -0.15) * CFrame.Angles(0, math.rad(90), 0)
+
 --- 以手柄为缩放中心放大整件装备，保留握持位置并同步缩放焊接与附件。
 --- @param tool Tool 尚未挂载到角色的装备。
 local function enlargeTool(tool)
+    local grip = tool.Grip
     local container = Instance.new("Model")
     container.WorldPivot = tool.Handle.CFrame
     tool.Parent = container
     container:ScaleTo(1.5)
+    -- 握点属于角色手部空间，不能随武器放大，否则会滑出手指。
+    tool.Grip = grip
     tool.Parent = nil
     container:Destroy()
 end
@@ -22,6 +28,7 @@ function RockWeaponTool.Build(template, giantPickaxe)
         local tool = template:Clone()
         tool.CanBeDropped = false
         tool.ManualActivationOnly = true
+        tool.Grip = TOOL_GRIP
         if giantPickaxe then
             enlargeTool(tool)
         end
@@ -34,8 +41,8 @@ function RockWeaponTool.Build(template, giantPickaxe)
     tool.Name = template.Name
     tool.CanBeDropped = false
     tool.ManualActivationOnly = true
-    -- 镐的局部 -X 尖端朝人物前方，握柄向指尖偏移以避开掌心。
-    tool.Grip = CFrame.new(0.1, 0, 0) * CFrame.Angles(0, math.rad(90), 0)
+    -- 镐的局部 -X 尖端朝人物前方，所有武器采用相同的指根握点。
+    tool.Grip = TOOL_GRIP
     local handle = Instance.new("Part")
     handle.Name = "Handle"
     handle.Size = Vector3.new(0.33, 0.33, 0.33)
@@ -54,9 +61,10 @@ function RockWeaponTool.Build(template, giantPickaxe)
                 or part.Name == "握持包覆下" or part.Name == "握持包覆上"
                 or part.Name == "平整握持包覆"
                 or string.match(part.Name, "^六棱柄%d+$") then
-                part.Size = Vector3.new(part.Size.X * 0.7, part.Size.Y, part.Size.Z * 0.7)
+                local widthScale = 0.7 / (giantPickaxe and 1.5 or 1)
+                part.Size = Vector3.new(part.Size.X * widthScale, part.Size.Y, part.Size.Z * widthScale)
                 local position = part.Position
-                part.CFrame = CFrame.new(position.X * 0.7, position.Y, position.Z * 0.7) * part.CFrame.Rotation
+                part.CFrame = CFrame.new(position.X * widthScale, position.Y, position.Z * widthScale) * part.CFrame.Rotation
             end
             part.Anchored = false
             part.CanCollide = false

@@ -64,5 +64,7 @@ return {
         "S2C_RockReset",
         -- key: string、round: number、accepted: boolean，确认命中或要求撤销该次本地扣血预测。
         "S2C_RockHitResult",
+        -- 无参数；卡片使用成功且进入激活阶段后，仅通知使用者播放通用激活音。
+        "S2C_CardActivated",
     },
 }

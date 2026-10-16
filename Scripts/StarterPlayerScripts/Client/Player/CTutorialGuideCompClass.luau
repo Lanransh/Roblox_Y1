@@ -137,32 +137,46 @@ function Guide:RefreshTarget()
     end
 end
 
---- 原生实体拼成有厚度的三维箭头；仅本客户端可见，不影响碰撞。
+--- 白色实体搭配加宽的黄色实体底边，保证浅色地面上也能辨认完整箭头。
 --- @param position Vector3 世界目标。
 function Guide:ShowGuideArrowToPosition(position)
     self._worldTargetPosition = position
     if not self._arrowTrans then
         local decorations = FXLoader:Workspace("Decorations")
+        local arrow = Instance.new("Model")
+        arrow.Name = "TutorialGuideArrow"
         local shaft = Instance.new("Part")
-        shaft.Name = "TutorialGuideArrow"
-        shaft.Size = Vector3.new(0.45, 0.4, 3)
+        shaft.Name = "Shaft"
+        shaft.Size = Vector3.new(0.7, 0.4, 3)
         shaft.Anchored = true
         shaft.CanCollide, shaft.CanTouch, shaft.CanQuery = false, false, false
-        shaft.Material = Enum.Material.Neon
-        shaft.Color = Color3.fromRGB(255, 215, 60)
+        shaft.Material = Enum.Material.SmoothPlastic
+        shaft.Color = Color3.fromRGB(255, 255, 255)
         shaft.CastShadow = false
+        shaft.Parent = arrow
+        arrow.PrimaryPart = shaft
         for index = 1, 2 do
             local arm = Instance.new("Part")
             arm.Name = "Head" .. index
-            arm.Size = Vector3.new(0.5, 0.4, 1.9)
+            arm.Size = Vector3.new(0.7, 0.4, 2.2)
+            local side = index == 1 and -1 or 1
+            arm.CFrame = CFrame.new(side * 0.65, 0, -1.7) * CFrame.Angles(0, math.rad(side * 45), 0)
             arm.Anchored = true
             arm.CanCollide, arm.CanTouch, arm.CanQuery = false, false, false
             arm.Material, arm.Color = shaft.Material, shaft.Color
             arm.CastShadow = false
-            arm.Parent = shaft
+            arm.Parent = arrow
         end
-        shaft.Parent = decorations
-        self._arrowTrans = shaft
+        for index, part in ipairs(arrow:GetChildren()) do
+            local border = part:Clone()
+            border.Name = part.Name .. "Border"
+            border.Size = part.Size + Vector3.new(0.3, -0.05, 0.3)
+            border.Color = Color3.fromRGB(255, 190, 0)
+            border.CFrame = part.CFrame + Vector3.new(0, -0.18, 0)
+            border.Parent = arrow
+        end
+        arrow.Parent = decorations
+        self._arrowTrans = arrow
         self._renderSteppedConn = RunService.RenderStepped:Connect(function()
             self:UpdateGuideArrow()
         end)
@@ -184,9 +198,7 @@ function Guide:UpdateGuideArrow()
         return
     end
     local frame = CFrame.lookAt(origin + direction.Unit * 3, origin + direction.Unit * 4)
-    self._arrowTrans.CFrame = frame
-    self._arrowTrans.Head1.CFrame = frame * CFrame.new(-0.55, 0, -1.7) * CFrame.Angles(0, math.rad(-45), 0)
-    self._arrowTrans.Head2.CFrame = frame * CFrame.new(0.55, 0, -1.7) * CFrame.Angles(0, math.rad(45), 0)
+    self._arrowTrans:PivotTo(frame)
 end
 
 --- 清理提示层、刷新连接与全部箭头实例。

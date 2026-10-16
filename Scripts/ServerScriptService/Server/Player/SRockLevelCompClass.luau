@@ -707,6 +707,8 @@ function Component:EquipPickaxe(humanoid)
     self._swingTrail.Parent = handle
     self._pickaxe.Parent = self:GetPlayerNode():WaitForChild("Backpack")
     humanoid:EquipTool(self._pickaxe)
+    -- 出生时卡片等待镐子入栏后再同步，避免卡片先占原生快捷栏的第一格。
+    self:RequireComponent("FSInventoryComp"):SyncTools()
     if humanoid.RigType == Enum.HumanoidRigType.R15 then
         local animator = humanoid:FindFirstChildOfClass("Animator")
         if not animator then

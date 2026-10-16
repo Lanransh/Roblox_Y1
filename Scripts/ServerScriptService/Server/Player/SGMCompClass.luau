@@ -46,7 +46,7 @@ function Component:AddItem(itemId, count)
     return {success = true, key = "GM.ItemAdded"}
 end
 
---- 恢复配置默认值和默认武器拥有权，并撤销尚未领取的掉落及上一轮命中凭据。
+--- 恢复配置默认值和默认武器拥有权，撤销旧掉落及命中凭据，完成后重新开启新手引导。
 function Component:ResetData()
     local player = self:GetPlayerObject()
     player:RequireComponent("SRockLevelComp"):RestoreRocks()
@@ -64,6 +64,7 @@ function Component:ResetData()
     player:RequireComponent("FSInventoryComp"):OnAllChanged()
     player:RequireComponent("SLootSellComp"):RefreshEntries()
     player:RequireComponent("SAuraComp"):RefreshEffects()
+    player:PublishEvent("Tutorial.Login")
 end
 
 --- 修改持久源字段，再沿用现有训练组件刷新等级、力量和排行榜显示。
