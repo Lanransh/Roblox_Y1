@@ -12,7 +12,7 @@
 | `list` | `offset?`, `limit?` | 文件名、`sourceRevision`；按 `nextOffset` 翻页 |
 | `check`（磁盘） | `filename`, `expectedSourceRevision?` | 只读诊断已保存文件，不创建草稿 |
 | `open` | `filename`, `expectedSourceRevision?`, `includeApi?` | 打开/复用版本化内存草稿；首次用 book API 时加 `includeApi:true` 获取完整接口 |
-| `execute_script` | `contextId`, `expectedDraftRevision`, `apiVersion:"1"`, `code` | 在草稿执行同步 JavaScript 函数体，顶层 `return` 返回查询结果 |
+| `execute_script` | `contextId`, `expectedDraftRevision`, `apiVersion:"1"`, `code` | 在草稿执行同步 JavaScript 函数体，用 `print(...args)` 输出查询结果到 `logs` |
 | `check`（草稿） | `contextId`, `expectedDraftRevision` | 只读检查精确版本；不能同时传 filename/sourceRevision |
 | `close` | `contextId`, `expectedDraftRevision` | 完整检查，必要时 WPS 重算，备份后保存；成功才关闭；不会更新 Luau 导出文件 |
 | `export` | `filename`, `expectedSavedRevision` | 导出精确的已保存版本；不隐式保存草稿，有脏草稿时拒绝 |
@@ -21,24 +21,28 @@
 编辑：list → open → 查询目标 → execute_script 修改 → 草稿 check → close → 按任务需要 export。
 
 - `contextId`、`draftRevision` 和源版本均取真实返回值。每次执行后使用返回的新 `draftRevision`，不要自行加一；只有实际变更才递增。
+- `execute_script` 返回 `execution`、`draftRevision`，可选 `logs`、`logsTruncated`、`check`、`error`；不再返回 `result` 或 `changes`。顶层 `return` 不作为 MCP 查询输出。
+- `print(...args)` 支持字符串、有限数值、布尔值、null、普通 JSON 对象和数组；字符串原样输出，其他值序列化为紧凑 JSON，多参数以空格分隔，不支持 printf 占位符。`logs` 是字符串数组，单次只输出一个对象/数组时可将该条日志按 JSON 解析。
+- 无输出时省略 `logs`；每次最多 100 条、合计 65536 个 UTF-16 码元，超限截断并返回 `logsTruncated:true`，不导致修改失败。遇截断需缩小范围或分页重新查询，不能把截断 JSON 当作完整数据。
+- 执行后仍自动检查草稿，但 `execute_script.check` 只在有错误或警告时出现，仅包含非空 `errors`、`warnings`；正常摘要和待检查项从独立 `sgtk.config.check` 获取。
 - close 后使用返回的 `savedRevision` 作为 export 的 `expectedSavedRevision`。导出现有磁盘版本时先重新获取并核对该版本。
 - `check` 不重算、不保存、不导出。无 errors 但仍有 `full_export`/公式 pending 不代表已完成；完整验证发生在 close/export。
-- 根据 `isError`、顶层 error、`closed`、`saved` 和检查位置报告实际结果，不依赖某个可选字段一定存在；不同服务版本可能省略空数组、重复字段或 `readyToClose`。
+- 根据 `isError`、`execution`、顶层 error、`closed`、`saved` 和检查位置报告实际结果，不依赖某个可选字段一定存在；不同服务版本可能省略空数组、重复字段或 `readyToClose`。
 - open/close/export 会检查 WPS 占用；不自动关闭用户文档、删除锁文件或终止 WPS。外部版本冲突保留草稿，不强制覆盖或自动合并。
-- 执行异常回滚本次脚本；正常执行但检查失败保留草稿。草稿仅在内存中，不承诺重启恢复；当前无丢弃/强制保存接口。
+- 执行异常回滚本次脚本；普通异常和引擎超时尽量保留已输出日志，但不能据此认为修改生效；进程终止或资源耗尽时日志可能丢失。正常执行但检查失败保留草稿。草稿仅在内存中，不承诺重启恢复；当前无丢弃/强制保存接口。
 
 ## 2. book API 和查询示例
 
-脚本是同步 JavaScript，不是 TypeScript/Node.js；无文件、网络、进程、import/require、异步能力。仅返回 JSON 可序列化数据，不返回 book/句柄本身。
-分页通常默认 50、最多 200；优先返回目标字段或记录，避免整表输出。结构、键或类型改动后重新获取对象句柄。
+脚本是同步 JavaScript，不是 TypeScript/Node.js；无文件、网络、进程、import/require、异步能力。用 `print` 输出 JSON 数据，不输出 book/句柄本身、访问器、循环对象或自定义类型；不调用自定义序列化。
+分页通常默认 50、最多 200；优先 print 目标字段或记录，避免整表输出。结构、键或类型改动后重新获取对象句柄。
 
 ```javascript
 const rows = book.struct("GoodsData");
-return {
+print({
   meta: rows.getMeta(),
   fields: rows.listFields(),
   records: rows.readRecords({ offset: 0, limit: 5 })
-};
+});
 ```
 
 实际文件应先用 `book.listConfigs()` 找到子配置。`book.listSheets()` 可找未导出页签，`book.sheet(name).readRows({startRow:1,limit:5})` 可读取表头/说明。
@@ -63,7 +67,7 @@ return {
 const cell = book.struct("GoodsData").record(111).cell("Price");
 const before = cell.read();
 cell.setValue(18);
-return { before, after: cell.read() };
+print({ before, after: cell.read() });
 ```
 
 `setValue` 不覆盖公式；改公式用 `setFormula("=...")`，清空用 `clear()`。公式缓存有 `fresh/pending/unavailable` 状态，不能把旧缓存当新计算结果。
