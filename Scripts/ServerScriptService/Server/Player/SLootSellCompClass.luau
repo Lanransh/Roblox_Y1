@@ -109,6 +109,7 @@ function Component:SellLoot(entryIds, multiplier)
         return {success = false, key = "Common.Unknown"}
     end
     self:SetTable(Fields.StoredLoot, remaining)
+    self:RequireComponent("TutorialGuide"):RecordSale()
     return {
         success = true, key = "LootSell.Success", count = count, amount = amount,
         entries = self:RefreshEntries(),

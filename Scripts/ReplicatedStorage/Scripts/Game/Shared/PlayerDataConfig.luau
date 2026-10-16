@@ -9,10 +9,10 @@ _G.PlayerKVEnum = {
 local PlayerKVEnum = _G.PlayerKVEnum
 
 return {
-    -- 本人客户端表现偏好，不参与装备属性和奖励计算。
+    -- 玩家表现偏好，不参与装备属性和奖励计算。
     Settings = {
         Type = "table", Key = "Settings", KVTable = PlayerKVEnum.eStaticData, Sync = true,
-        DefVal = {musicVolume = 100, soundEffectsVolume = 100, showAura = true},
+        DefVal = {musicVolume = 100, soundEffectsVolume = 100, showAura = true, giantPickaxe = true},
     },
     -- 每日礼盒私有状态，累计在线与已领取档位重登保留。
     GiftData = {
@@ -56,7 +56,7 @@ return {
         KVTable = PlayerKVEnum.ePlayerData,
         Sync = true,
     },
-    -- 钻石余额；首次缺失该存档字段时由统一奖励组件发放 500 钻石。
+    -- 钻石默认 0；首次缺失该存档字段时由统一奖励组件一次赠送 30 钻石。
     Diamonds = {
         Type = "number",
         Key = "Diamonds",

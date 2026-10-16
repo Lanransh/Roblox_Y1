@@ -286,6 +286,66 @@ return {
             DevGoodId = nil,
             Img = [[113127149166000]],
             ModelId = [=[game.ReplicatedStorage.Assets.BlockMeshs.Tools["20GildedCrownGreatHammer"]]=]
+        },
+        [21] = {
+            Index = 21,
+            ToolId = 121,
+            Name = [[HolyCrownPickaxe]],
+            Price = 1,
+            TrainingRate = 1,
+            DevGoodId = nil,
+            Img = [[122188029381990]],
+            ModelId = [=[game.ReplicatedStorage.Assets.AITools["01-holy-crown-pickaxe"]]=]
+        },
+        [22] = {
+            Index = 22,
+            ToolId = 122,
+            Name = [[HolyCrownHammer]],
+            Price = 2,
+            TrainingRate = 2,
+            DevGoodId = nil,
+            Img = [[111918297845046]],
+            ModelId = [=[game.ReplicatedStorage.Assets.AITools["02-holy-crown-hammer"]]=]
+        },
+        [23] = {
+            Index = 23,
+            ToolId = 123,
+            Name = [[DragonFlamePickaxe]],
+            Price = 3,
+            TrainingRate = 3,
+            DevGoodId = nil,
+            Img = [[131796875082030]],
+            ModelId = [=[game.ReplicatedStorage.Assets.AITools["03-dragon-flame-pickaxe"]]=]
+        },
+        [24] = {
+            Index = 24,
+            ToolId = 124,
+            Name = [[DragonFlameHammer]],
+            Price = 4,
+            TrainingRate = 4,
+            DevGoodId = nil,
+            Img = [[135291300946209]],
+            ModelId = [=[game.ReplicatedStorage.Assets.AITools["04-dragon-flame-hammer"]]=]
+        },
+        [25] = {
+            Index = 25,
+            ToolId = 125,
+            Name = [[ThunderPickaxe]],
+            Price = 5,
+            TrainingRate = 5,
+            DevGoodId = nil,
+            Img = [[135059340240171]],
+            ModelId = [=[game.ReplicatedStorage.Assets.AITools["05-thunder-pickaxe"]]=]
+        },
+        [26] = {
+            Index = 26,
+            ToolId = 126,
+            Name = [[ThunderHammer]],
+            Price = 6,
+            TrainingRate = 6,
+            DevGoodId = nil,
+            Img = [[138711849822666]],
+            ModelId = [=[game.ReplicatedStorage.Assets.AITools["06-thunder-hammer"]]=]
         }
     },
     TrainingRateConfig = {

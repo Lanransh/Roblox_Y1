@@ -2,6 +2,7 @@ local FX = _G.FX
 local FXLoader = FX.Loader
 local Fields = _G.PlayerDataConfig
 local Aura = FXLoader:RequireShared("Scripts/Game/Shared/Aura")
+local InstancePath = FXLoader:RequireShared("Scripts/Game/Shared/InstancePath")
 local Component = FX.Class("SAuraCompClass", "FSPlayerCompClass")
 
 -- 资源按 R6 身体部位分组；R15 使用对应的躯干或上肢、上腿承载粒子。
@@ -24,7 +25,7 @@ function Component:OnPlayerLogin()
     self._effects = {}
     self._templates = {}
     for index, config in ipairs(_G.GameConfig.AuraConfig) do
-        self._templates[config.AuraId] = FXLoader:Shared("Assets/Effects/Aura/" .. Aura.GetModelName(config))
+        self._templates[config.AuraId] = InstancePath.Wait(config.ModelId)
     end
     local player = self:GetPlayerNode()
     self:TrackConnection(player.CharacterAdded:Connect(function(character)
