@@ -1,4 +1,4 @@
-local FX = _G.FX
+local FX, FS = _G.FX, _G.FS
 local TextService = game:GetService("TextService")
 local FXLoader = FX.Loader
 local Fields = _G.PlayerDataConfig
@@ -73,6 +73,8 @@ end
 
 --- 读档后建立排行榜和公开头顶力量显示，并按原频率检查每秒结算条件。
 function Component:OnPlayerLogin()
+    self._playtimeClock = os.clock()
+    self:SetNumber(Fields.TrainingFriendCount, FS.FriendService:GetFriendCountInRoom(self:GetPlayerId()) or 0)
     TrainingFields.GetFields()
     local player = self:GetPlayerNode()
     -- 当前唯一启用的出生点位于世界 1；新角色出生时同步重置世界，恢复原世界传送资格。
@@ -105,6 +107,37 @@ function Component:OnPlayerLogin()
     self._timer = FX.Task:Interval(0.1, function()
         self:TickTraining()
     end)
+end
+
+--- 每秒提交累计在线时长，供自动保存和客户端状态同步使用。
+--- @param serverTime number 框架每秒更新传入的服务器时间；计时使用单调时钟。
+function Component:OnUpdate(serverTime)
+    self:UpdateTrainingPlaytime()
+    self:SetNumber(Fields.TrainingFriendCount, FS.FriendService:GetFriendCountInRoom(self:GetPlayerId()) or 0)
+end
+
+--- 只累计本次已登录会话的在线时间，离服时补齐不足一秒的尾差。
+function Component:UpdateTrainingPlaytime()
+    if self._playtimeClock then
+        local now = os.clock()
+        self:AddNumber(Fields.TrainingPlaytime, now - self._playtimeClock)
+        self._playtimeClock = now
+    end
+end
+
+--- 购买倍率与新手加成相加，再乘当前同服好友倍率；不使用每日任务累计人数。
+--- @param includeNewPlayerRate boolean 是否为在线训练，力量道具和离线收益不计新手倍率。
+--- @param excludeFriendRate boolean? 离线奖励传 true，不计当前同服好友。
+--- @return number 本次结算的购买、新手及好友综合倍率。
+function Component:GetTrainingBonusRate(includeNewPlayerRate, excludeFriendRate)
+    local playtime = self:GetNumber(Fields.TrainingPlaytime)
+    if self._playtimeClock then
+        playtime += os.clock() - self._playtimeClock
+    end
+    local newPlayerRate = includeNewPlayerRate and playtime < _G.GameEnum.NewPlayerTrainingDuration
+        and _G.GameEnum.NewPlayerTrainingExtraRate or 0
+    return (CurrencyShop.GetTrainingRate(self:GetTable(Fields.CurrencyShopData)) + newPlayerRate)
+        * (excludeFriendRate and 1 or CurrencyShop.GetFriendTrainingRate(self:GetPlayerObject()))
 end
 
 --- 更换角色时清理旧显示；头部尚未加载时监听其到达，不阻塞登录。
@@ -248,10 +281,12 @@ function Component:ResetTrainingProgress()
     self._lastGrowth = os.clock()
 end
 
---- 力量卡与离线奖励共用训练速率和永久倍率，不包含在线追赶收益。
+--- 力量卡与离线奖励共用训练速率；离线显式排除好友，点击可启用新手加成。
 --- @param seconds number 服务端提供的有效训练秒数。
+--- @param includeNewPlayerRate boolean? 仅在线点击传 true。
+--- @param excludeFriendRate boolean? 仅离线奖励传 true。
 --- @return number 当前阶段经验上限内的训练收益。
-function Component:GetTrainingCardGain(seconds)
+function Component:GetTrainingCardGain(seconds, includeNewPlayerRate, excludeFriendRate)
     local rebirthCount = self:GetNumber(Fields.RebirthCount)
     local currentValue = self:GetNumber(Fields.RockTrainingValue)
     local maxValue = Rebirth.GetMaxTrainingValue(rebirthCount)
@@ -263,7 +298,7 @@ function Component:GetTrainingCardGain(seconds)
     baseGain *= Collection.GetTrainingRate(self:GetTable(Fields.CollectionEntries))
     baseGain *= Aura.GetTrainingRate(self:GetTable(Fields.AuraData))
     baseGain *= Weapon.GetEquippedConfig(self:GetTable(Fields.WeaponData)).TrainingRate
-    baseGain *= CurrencyShop.GetTrainingRate(self:GetTable(Fields.CurrencyShopData))
+    baseGain *= self:GetTrainingBonusRate(includeNewPlayerRate == true, excludeFriendRate)
     return math.min(baseGain * Rebirth.GetTrainingRate(rebirthCount), maxValue - currentValue)
 end
 
@@ -310,7 +345,7 @@ function Component:HandleTrainingClick(position)
         return
     end
     self._lastTrainingClick = now
-    local gain = self:GetTrainingCardGain(1)
+    local gain = self:GetTrainingCardGain(1, true)
     if gain > 0 and self:RequireComponent("FSRewardComp"):AddRewards({
         {Type = "Money", Currency = "RockTrainingValue", Count = gain},
     }) then
@@ -381,7 +416,7 @@ function Component:TickTraining()
     baseGain *= Collection.GetTrainingRate(self:GetTable(Fields.CollectionEntries))
     baseGain *= Aura.GetTrainingRate(self:GetTable(Fields.AuraData))
     baseGain *= Weapon.GetEquippedConfig(self:GetTable(Fields.WeaponData)).TrainingRate
-    baseGain *= CurrencyShop.GetTrainingRate(self:GetTable(Fields.CurrencyShopData))
+    baseGain *= self:GetTrainingBonusRate(true)
     local gain = Rebirth.GetTrainingGain(self:GetNumber(Fields.RockTrainingValue), baseGain,
         self:GetNumber(Fields.RebirthCount))
     if gain > 0 and self:RequireComponent("FSRewardComp"):AddRewards({
@@ -397,6 +432,8 @@ end
 
 --- 离服停止训练结算并清理头顶显示，避免继续持有旧角色。
 function Component:OnPlayerLogout()
+    self:UpdateTrainingPlaytime()
+    self._playtimeClock = nil
     FX.Task:Cancel(self._timer)
     self._timer = nil
     self:BindStrengthCharacter(nil)

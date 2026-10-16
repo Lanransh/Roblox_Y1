@@ -22,7 +22,7 @@ function Component:OnPlayerLogin()
         local seconds = data.lastSeenAt > 0 and math.clamp(self._lastTime - data.lastSeenAt, 0, config.Time) or 0
         data.offline = {
             id = tostring(self._lastTime), seconds = seconds,
-            training = self:RequireComponent("SMiscComp"):GetTrainingCardGain(seconds * config.Rate),
+            training = self:RequireComponent("SMiscComp"):GetTrainingCardGain(seconds * config.Rate, false, true),
         }
     end
     -- 旧福利存档没有任务字段，仅补入本次新增结构。

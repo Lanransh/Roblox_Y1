@@ -1,6 +1,6 @@
 -- 货币商店共享规则；客户端仅用于展示，服务端重新检查同一购买顺序。
 local Shop = {}
-local FX = _G.FX
+local FX, FS = _G.FX, _G.FS
 local FXLoader = FX.Loader
 local Rebirth = FXLoader:RequireShared("Scripts/Game/Shared/Rebirth")
 local Collection = FXLoader:RequireShared("Scripts/Game/Shared/Collection")
@@ -39,8 +39,20 @@ function Shop.GetTrainingRate(data)
     return _G.GameConfig.TrainingRateConfig[data.trainingLevel].Rate
 end
 
---- 两端共用力量包预览与结算，沿用 Studio_Y3 每份基础 1 点及最高已解锁场地，不计在线追赶。
---- @param player table 客户端或服务端玩家对象，只读取已同步的永久加成。
+--- 服务端读取即时同服好友，客户端使用同步人数预览；平台未就绪时不发好友加成。
+--- @param player table 当前玩家对象。
+--- @return number 最多按配置人数计算的好友训练倍率。
+function Shop.GetFriendTrainingRate(player)
+    local count = player:GetNumber(Fields.TrainingFriendCount)
+    if game:GetService("RunService"):IsServer() then
+        count = FS.FriendService:GetFriendCountInRoom(player:GetPlayerId()) or 0
+    end
+    local config = _G.GameConfig.CommonConfig.InviteFriendData
+    return 1 + math.min(count, config.MaxCount) * config.AddRate
+end
+
+--- 两端共用力量包预览与结算，沿用 Studio_Y3 每份基础 1 点及最高已解锁场地，不计在线追赶和新手加成。
+--- @param player table 客户端或服务端玩家对象，读取永久加成及当前同服好友。
 --- @param goodsId number 已配置的力量包商品 ID。
 --- @return number 当前重生阶段经验上限内可增加的训练值。
 function Shop.GetTrainingPackGain(player, goodsId)
@@ -54,6 +66,7 @@ function Shop.GetTrainingPackGain(player, goodsId)
     local gain = _G.GoodsConfig.GemGoodsData[goodsId].NumberArray[1] * highestRate
         * Rebirth.GetTrainingRate(count)
         * Shop.GetTrainingRate(player:GetTable(Fields.CurrencyShopData))
+        * Shop.GetFriendTrainingRate(player)
         * Collection.GetTrainingRate(player:GetTable(Fields.CollectionEntries))
         * Aura.GetTrainingRate(player:GetTable(Fields.AuraData))
         * Weapon.GetEquippedConfig(player:GetTable(Fields.WeaponData)).TrainingRate

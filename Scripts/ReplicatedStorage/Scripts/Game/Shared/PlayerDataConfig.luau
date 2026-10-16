@@ -9,6 +9,13 @@ _G.PlayerKVEnum = {
 local PlayerKVEnum = _G.PlayerKVEnum
 
 return {
+    -- 当前同服好友人数为临时同步状态，不写入存档或每日任务记录。
+    TrainingFriendCount = {Type = "number", Key = "TrainingFriendCount", DefVal = 0, Sync = true},
+    -- 累计在线秒数，重生和跨日不重置；旧存档从功能上线后开始累计。
+    TrainingPlaytime = {
+        Type = "number", Key = "TrainingPlaytime", DefVal = 0,
+        KVTable = PlayerKVEnum.eStaticData, Sync = true,
+    },
     -- 玩家表现偏好，不参与装备属性和奖励计算。
     Settings = {
         Type = "table", Key = "Settings", KVTable = PlayerKVEnum.eStaticData, Sync = true,

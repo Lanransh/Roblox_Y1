@@ -120,7 +120,7 @@ function Component:OnReady()
     self:WatchDataChanged(Fields.Diamonds, self.RefreshDiamonds, self)
     self:WatchDataChanged(Fields.RockLoot, self.RefreshLoot, self)
     for index, field in ipairs({Fields.CurrencyShopData, Fields.RockTrainingValue, Fields.RebirthCount,
-        Fields.CollectionEntries, Fields.AuraData, Fields.WeaponData}) do
+        Fields.CollectionEntries, Fields.AuraData, Fields.WeaponData, Fields.TrainingFriendCount}) do
         self:WatchDataChanged(field, function()
             self:RefreshStrengthOffers()
         end)

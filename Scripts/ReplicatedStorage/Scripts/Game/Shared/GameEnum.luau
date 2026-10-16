@@ -1,5 +1,7 @@
 -- 项目公共枚举；背包与快捷栏容量由 SetupProvider 返回。
 return {
+    NewPlayerTrainingExtraRate = 3, -- 与购买训练倍率相加。
+    NewPlayerTrainingDuration = 45 * 60, -- 累计在线秒数，不计离线时间。
     RankingDataStore = "ActivityData",
     -- 小狗 NPC 配置：只在已存在的刷新标记中生成；增加世界时追加对应路径组。
     DogNpcConfig = {
