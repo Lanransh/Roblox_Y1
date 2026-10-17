@@ -79,6 +79,7 @@ function Component:OnReady()
     end
     self:ConfigureBackpackBoostLayout()
     self._backpackBoost.Visible = false
+    self:CreateFriendBoostButton()
     self._effects = {}
     self._pickupEffects = {}
     self._rainEffects = {}
@@ -121,6 +122,7 @@ function Component:OnReady()
     self:WatchDataChanged(Fields.RebirthCount, self.RefreshRebirthCount, self)
     self:WatchDataChanged(Fields.Diamonds, self.RefreshDiamonds, self)
     self:WatchDataChanged(Fields.RockLoot, self.RefreshLoot, self)
+    self:WatchDataChanged(Fields.TrainingFriendCount, self.RefreshFriendBoost, self)
     for index, field in ipairs({Fields.CurrencyShopData, Fields.RockTrainingValue, Fields.RebirthCount,
         Fields.CollectionEntries, Fields.AuraData, Fields.WeaponData, Fields.TrainingFriendCount}) do
         self:WatchDataChanged(field, function()
@@ -208,7 +210,9 @@ function Component:BindButtons()
         if node:IsA("GuiButton") then
             node:SetAttribute("BlocksTrainingClick", true)
             self:TrackConnection(node.Activated:Connect(function()
-                if node.Name == "GMButton" then
+                if node == self._friendBoost then
+                    return
+                elseif node.Name == "GMButton" then
                     if FX.IsDeveloper(self:GetPlayerNode().UserId) then
                         self:GetPlayerObject():RequireComponent("CGMUIComp"):Show()
                     end
@@ -457,6 +461,38 @@ function Component:ConfigureBackpackBoostLayout()
     value.TextSize = 18
     value.AutoLocalize = false
     value.Text = ""
+end
+
+--- 好友加成与背包加成并排，仅显示当前加成，点击不执行动作。
+function Component:CreateFriendBoostButton()
+    local button = Instance.new("ImageButton")
+    button.Name = "FriendBoost"
+    button.AnchorPoint = Vector2.new(1, 1)
+    button.Position = UDim2.new(1, -92, 1, -12)
+    button.Size = UDim2.fromOffset(72, 88)
+    button.BackgroundTransparency = 1
+    button.Image = ""
+    local icon = Instance.new("ImageLabel")
+    icon.Name = "Icon"
+    icon.AnchorPoint = Vector2.new(0.5, 0.5)
+    icon.Position = UDim2.new(0.5, 0, 0, 38)
+    icon.Size = UDim2.fromOffset(56, 56)
+    icon.BackgroundTransparency = 1
+    icon.Image = "rbxassetid://111169827429075"
+    icon.ScaleType = Enum.ScaleType.Fit
+    icon.Parent = button
+    local value = self._backpackBoost.Value:Clone()
+    value.Text = "+0%"
+    value.Parent = button
+    button.Parent = self._rootNode
+    self._friendBoost = button
+    self:RefreshFriendBoost()
+end
+
+--- 同服好友人数同步后按现有训练倍率规则刷新百分比，无加成时保留 +0%。
+function Component:RefreshFriendBoost()
+    local rate = CurrencyShop.GetFriendTrainingRate(self:GetPlayerObject())
+    self._friendBoost.Value.Text = string.format("+%g%%", math.round((rate - 1) * 10000) / 100)
 end
 
 --- @param remaining number 剩余秒数。
@@ -872,6 +908,9 @@ function Component:Dtor()
     end
     if self._ownsBackpackBoost and self._backpackBoost then
         self._backpackBoost:Destroy()
+    end
+    if self._friendBoost then
+        self._friendBoost:Destroy()
     end
     FX.Task:Cancel(self._homeTimer)
     FX.Network:UnRegServerMsgCallback("S2C_TrainingEffect")
