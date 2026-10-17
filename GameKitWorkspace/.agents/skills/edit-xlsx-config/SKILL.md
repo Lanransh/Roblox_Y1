@@ -11,7 +11,7 @@ description: 通过 StudioGameToolkit 的 sgtk.config MCP 接口安全读取和�
 1. 先调用 `sgtk.config.list` 获取授权文件名和 sourceRevision。
 2. 调用 `sgtk.config.check`，传 filename 和 expectedSourceRevision，诊断原文件；无需先创建草稿。
    errors 是本次检查的结构化诊断，不是应用日志。按 code 及可用的 part/sheet/cell/row/configKey 定位，
-   不猜测或擅自清理不支持的内容。文件已在 WPS 中打开或状态无法确认时，提示用户先关闭；不要强关 WPS 或删除锁文件。
+   不猜测或擅自清理不支持的内容。WPS 占用不阻止 open 读取磁盘版本；不要强杀 WPS 或删除锁文件。
 3. 调用 `sgtk.config.open`，传 filename 和 expectedSourceRevision。
    阅读返回的 `summary`，保存 contextId、apiVersion 和 draftRevision。
    首次使用、尚无 book API 说明时加 `includeApi:true` 获取完整 `api`；已掌握后无需重复获取。
@@ -30,12 +30,15 @@ description: 通过 StudioGameToolkit 的 sgtk.config MCP 接口安全读取和�
    check 不改变草稿和版本；检查失败保留草稿，按结构化位置修正，再检查。版本冲突先核实目标，不能盲目替换预期版本重试。
 7. 静态 check 无 error/errors 仍有 pendingChecks；这不代表失败，也不代表公式缓存已更新或已经保存。
    调用 `sgtk.config.close`，携带当前精确版本。工具会检查、必要时 WPS 重算、完整试导出、备份并保存。
+   目标文件被 WPS 打开时，close 自动先保存再关闭目标工作簿，无需再次询问用户；保存失败保留文档。
+   WPS 保存改变源版本时，工具保留草稿并返回 REVISION_CONFLICT。先核实 WPS 保存内容；明确需放弃旧草稿时，
+   用 open 的 discardDraft:true 重新加载，再按用户要求重新应用修改，不得覆盖刚保存的内容。
    失败保持打开；按 closed、saved 和 error 如实报告，不把部分步骤成功说成整体完成，也不能通过其他工具强行覆盖。
 8. 用户需要导出时，只有 close 成功后才调用 `sgtk.config.export`，传 filename 和 savedRevision。
    export 不会替你保存草稿。
 9. 分别报告修改、保存、导出结果及 backupId。版本冲突、未支持特性或 WPS 异常时明确停止相关提交。
 
-工具不提供丢弃、force 或恢复备份入口。后端退出会丢失未保存草稿，不能用重启冒充保存。
+工具不提供 force 或恢复备份入口。放弃草稿并重新读取磁盘文件用 open 的 discardDraft:true；后端退出会丢失未保存草稿，不能用重启冒充保存。
 没有这些 MCP 工具时提示连接/更新 Toolkit，不提供绕过保护的直接编辑替代方案。
 
 查询示例（名字须替换为实际索引声明）：

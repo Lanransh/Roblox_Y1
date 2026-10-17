@@ -355,7 +355,7 @@ function Component:RenderDiamonds(state)
     end
 end
 
---- 条件不足只提示具体原因；可领取时提交类别与批次，结果以服务端快照刷新。
+--- 条件不足只提示具体原因；服务端确认领取成功后播放奖励音，并以权威快照刷新。
 --- @param action string 展示层的 Claim、ClaimDiamonds 或 ClaimOffline。
 --- @param payload table 稳定 rewardId 及可选 kind、multiplier。
 function Component:OnUIAction(action, payload)
@@ -402,6 +402,7 @@ function Component:OnUIAction(action, payload)
         self._requestTask = nil
         self._pending = nil
         if ok and type(result) == "table" and result.success then
+            self:GetPlayerObject():RequireComponent("CSoundComp"):PlayRewardSound()
             self._commonUI:ShowLocalizedTips(result.key)
         else
             local key = ok and type(result) == "table" and result.key or "Common.Unknown"

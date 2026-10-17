@@ -46,6 +46,7 @@ function Component:OnReady()
     self._strength = FXLoader:Here(top, "Strength/Value")
     self._rebirthBadge = FXLoader:Here(self._rootNode, "LeftCenter/RebirthButton/Badge")
     self._rebirthBadge.AutoLocalize = false
+    self:BindNotificationBadges()
     self._commonUI = self:GetPlayerObject():RequireComponent("FCCommonUIComp")
     self._localization = self._commonUI.Localization
     self._trainingStatus = Instance.new("TextLabel")
@@ -146,6 +147,59 @@ function Component:OnReady()
         end
     end))
     self:Show()
+end
+
+--- 沿用原红点的显隐条件，以不拦截输入的感叹号徽标提示可用内容。
+function Component:BindNotificationBadges()
+    self._notificationBadges = {}
+    for index, buttonName in ipairs({"ShopBtn", "RewardBtn"}) do
+        local button = FXLoader:Here(self._rootNode, "LeftCenter/" .. buttonName)
+        local badge = FXLoader:Here(button, "RedDotImg")
+        button.ClipsDescendants = false
+        badge.Active = false
+        badge.Interactable = false
+        badge.Selectable = false
+        badge.ZIndex = 20
+        badge.Size = UDim2.fromOffset(24, 24)
+        local mark = Instance.new("TextLabel")
+        mark.Name = "NotificationMark"
+        mark.Size = UDim2.fromScale(1, 1)
+        mark.BackgroundTransparency = 1
+        mark.Text = "!"
+        mark.Font = Enum.Font.FredokaOne
+        mark.TextSize = 22
+        mark.TextColor3 = Color3.new(1, 1, 1)
+        mark.TextStrokeColor3 = Color3.fromRGB(110, 20, 30)
+        mark.TextStrokeTransparency = 0.4
+        mark.AutoLocalize = false
+        mark.Active = false
+        mark.Interactable = false
+        mark.Selectable = false
+        mark.ZIndex = badge.ZIndex + 1
+        mark.Parent = badge
+        table.insert(self._notificationBadges, {Node = badge, Mark = mark, Position = badge.Position})
+    end
+    local elapsed = 0
+    --- 每轮短暂跳起并衰减回弹，停顿后重播；隐藏的提示不做动画更新。
+    --- @param deltaTime number 本帧经过的秒数。
+    self:TrackConnection(RunService.RenderStepped:Connect(function(deltaTime)
+        elapsed = (elapsed + deltaTime) % 1.8
+        local wave = 0
+        local jump = 0
+        if elapsed < 0.9 then
+            local decay = math.exp(-5 * elapsed)
+            wave = math.sin(elapsed * 20) * decay
+            jump = math.abs(math.sin(elapsed * 10)) * decay * 14
+        end
+        for index, entry in ipairs(self._notificationBadges) do
+            local badge = entry.Node
+            if badge.Visible and self._rootNode.Enabled then
+                badge.Size = UDim2.fromOffset(24 * (1 - 0.18 * wave), 24 * (1 + 0.24 * wave))
+                badge.Position = entry.Position + UDim2.fromOffset(0, -jump)
+                badge.Rotation = -10 * wave
+            end
+        end
+    end))
 end
 
 --- 每次主界面布局刷新时恢复 GM 按钮的右上角位置，避免响应式布局重置到旧位置。
@@ -900,6 +954,12 @@ end
 
 --- 释放自建节点和未结束动画，保留共用 ScreenGui；基类负责取消数据及按钮监听。
 function Component:Dtor()
+    for index, entry in ipairs(self._notificationBadges or {}) do
+        entry.Mark:Destroy()
+        entry.Node.Position = entry.Position
+        entry.Node.Size = UDim2.fromOffset(24, 24)
+        entry.Node.Rotation = 0
+    end
     if self._rainEffects then
         self:ClearRewardRain()
     end

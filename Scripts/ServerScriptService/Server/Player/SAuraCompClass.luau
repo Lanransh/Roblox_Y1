@@ -67,7 +67,7 @@ function Component:ClearEffects()
     table.clear(self._effects)
 end
 
---- ParticleEmitter 直接挂在身体 Part 下，不能放进 Folder 导致粒子失去发射位置。
+--- 粒子和带定位的 Attachment 挂到身体 Part 下，保留素材的发射位置和设置开关标记。
 function Component:RefreshEffects()
     self:ClearEffects()
     local player = self:GetPlayerNode()
@@ -85,10 +85,18 @@ function Component:RefreshEffects()
             or character:FindFirstChild(R15_PARTS[group.Name] or group.Name)
         if part and part:IsA("BasePart") then
             for childIndex, template in ipairs(group:GetChildren()) do
-                if template:IsA("ParticleEmitter") then
+                if template:IsA("ParticleEmitter") or template:IsA("Attachment") then
                     local effect = template:Clone()
                     effect.Name = "EquippedAura"
-                    effect.Enabled = true
+                    if effect:IsA("ParticleEmitter") then
+                        effect.Enabled = true
+                    end
+                    for descendantIndex, descendant in ipairs(effect:GetDescendants()) do
+                        if descendant:IsA("ParticleEmitter") then
+                            descendant.Name = "EquippedAura"
+                            descendant.Enabled = true
+                        end
+                    end
                     effect.Parent = part
                     table.insert(self._effects, effect)
                 end

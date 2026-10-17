@@ -14,6 +14,7 @@ local TestUsers = {
 }
 local Gold = Color3.fromRGB(255, 194, 46)
 local Cream = Color3.fromRGB(255, 237, 198)
+local VisibleRankCount = 7
 local BoardTypes = {
     {Name = "Strength", TitleKey = "Leaderboard.StrengthTitle", HeaderKey = "Leaderboard.Strength", TopScore = 35000000, PersonalScore = 6320},
     {Name = "Rebirth", TitleKey = "Leaderboard.RebirthTitle", HeaderKey = "Leaderboard.Rebirths", TopScore = 1200, PersonalScore = 6},
@@ -54,7 +55,7 @@ end
 local function Label(parent, text, position, size)
     return Create("TextLabel", parent, {
         BackgroundTransparency = 1, Position = position, Size = size,
-        Text = text, TextColor3 = Cream, TextSize = 36,
+        Text = text, TextColor3 = Cream, TextSize = 42,
         Font = Enum.Font.FredokaOne, AutoLocalize = false,
         TextStrokeTransparency = 0.65, TextTruncate = Enum.TextTruncate.AtEnd,
     })
@@ -66,7 +67,7 @@ function Component:GetCompName()
     return "CLeaderboardUIComp"
 end
 
---- UI 留在 PlayerGui；仅通过 Adornee 绑定已存在的模型面板。
+--- UI 留在 PlayerGui；绑定现有模型面板，固定显示前七名和独立个人行。
 function Component:OnReady()
     self._localization = self:GetPlayerObject():RequireComponent("FCCommonUIComp").Localization
     local panel = FXLoader:Workspace("BlockMeshs/World1Root/Base/排行榜1/橙木空白排行榜/空白深色面板")
@@ -82,7 +83,7 @@ function Component:OnReady()
         BackgroundColor3 = Color3.fromRGB(39, 27, 27),
     })
     self._title = Label(self._rootNode, "Strength Leaderboard", UDim2.fromScale(0.03, 0.025), UDim2.fromScale(0.94, 0.065))
-    self._title.TextSize = 46
+    self._title.TextSize = 52
     self._title.Name = "Title"
     self._rankHeader = Label(self._rootNode, "Rank", UDim2.fromScale(0.03, 0.1), UDim2.fromScale(0.13, 0.045))
     self._playerHeader = Label(self._rootNode, "Player", UDim2.fromScale(0.26, 0.1), UDim2.fromScale(0.43, 0.045))
@@ -90,25 +91,25 @@ function Component:OnReady()
     self._rankHeader.Name = "RankHeader"
     self._playerHeader.Name = "PlayerHeader"
     self._strengthHeader.Name = "StrengthHeader"
-    self._rankHeader.TextSize = 32
-    self._playerHeader.TextSize = 32
-    self._strengthHeader.TextSize = 32
+    self._rankHeader.TextSize = 36
+    self._playerHeader.TextSize = 36
+    self._strengthHeader.TextSize = 36
     self._list = Create("ScrollingFrame", self._rootNode, {
         Name = "RankList", Position = UDim2.fromScale(0.03, 0.16), Size = UDim2.fromScale(0.94, 0.66),
         BackgroundTransparency = 1, BorderSizePixel = 0, Active = true,
-        CanvasSize = UDim2.new(), AutomaticCanvasSize = Enum.AutomaticSize.Y,
-        ScrollingDirection = Enum.ScrollingDirection.Y, ScrollBarThickness = 8,
+        CanvasSize = UDim2.new(), AutomaticCanvasSize = Enum.AutomaticSize.None,
+        ScrollingEnabled = false, ScrollBarThickness = 0,
         ScrollBarImageColor3 = Gold,
     })
     Create("UIListLayout", self._list, {SortOrder = Enum.SortOrder.LayoutOrder, Padding = UDim.new(0, 2)})
-    for rank = 1, 20 do
+    for rank = 1, VisibleRankCount do
         local user = TestUsers[(rank - 1) % #TestUsers + 1]
         self:CreateRow(self._list, rank, user.Id, user.Name, 35000000 / rank ^ 2, false)
     end
     local player = self:GetPlayerNode()
     local personal = self:CreateRow(self._rootNode, 101, player.UserId, "You", 6320, true)
     personal.Position = UDim2.fromScale(0.03, 0.835)
-    personal.Size = UDim2.fromScale(0.94, 0.075)
+    personal.Size = UDim2.fromScale(0.94, 0.095)
     self._personalName = personal.PlayerName
     self._boards = {{Panel = panel, Gui = self._gui, Kind = 1}}
     local worldPaths = {"BlockMeshs/World1Root/Base", "BlockMeshs/World2Root/世界2/Base", "BlockMeshs/World3Root/世界3/Base"}
@@ -131,7 +132,7 @@ function Component:OnReady()
     end
 end
 
---- 其余八块榜单异步等待复制完成，不能阻塞首个榜单的查看与输入初始化。
+--- 其余八块榜单沿用前七名布局，异步等待复制，避免阻塞首个榜单初始化。
 --- @param path string 已核对的世界排行榜模型路径。
 --- @param worldIndex number 世界编号，用于界面节点名。
 --- @param kind number 榜单类型，依次为力量、重生和在线时长。
@@ -150,7 +151,7 @@ function Component:AttachWorldBoard(path, worldIndex, kind)
     local config = BoardTypes[kind]
     gui.Name = config.Name .. "LeaderboardWorld" .. worldIndex
     gui.Adornee = display
-    for rank = 1, 20 do
+    for rank = 1, VisibleRankCount do
         gui.Panel.RankList["Rank" .. rank].Score.Text = FormatScore(kind, config.TopScore / rank ^ 2)
     end
     gui.Panel.Rank101.Score.Text = FormatScore(kind, config.PersonalScore)
@@ -239,7 +240,7 @@ function Component:BindCameraView()
     end))
 end
 
---- 以显示面正面为镜头轴；按屏幕比例计算距离，完整容纳榜单。
+--- 以显示面正面为镜头轴；按屏幕比例计算距离，缩小留白并完整容纳榜单。
 function Component:EnterView()
     if self._cameraState or not self._nearBoard then
         return
@@ -264,7 +265,7 @@ function Component:EnterView()
         local panel = self._panel
         local aspect = camera.ViewportSize.X / math.max(1, camera.ViewportSize.Y)
         local halfHeight = math.max(panel.Size.Y / 2, panel.Size.X / (2 * aspect))
-        local distance = halfHeight / math.tan(math.rad(camera.FieldOfView / 2)) * 1.15
+        local distance = halfHeight / math.tan(math.rad(camera.FieldOfView / 2)) * 1.08
         local target = panel.CFrame:PointToWorldSpace(Vector3.new(0, 0, panel.Size.Z / 2))
         local position = target + panel.CFrame.ZVector * distance
         local frame = CFrame.lookAt(position, target, panel.CFrame.UpVector)
@@ -290,7 +291,7 @@ function Component:ExitView()
     self._closeButton.Visible = false
 end
 
---- 创建统一三列与圆形头像；用户名、排名和数值不参与翻译。
+--- 加大行高与圆形头像以容纳七名榜单；用户名、排名和数值不参与翻译。
 --- @param parent Instance 列表或固定个人行的父节点。
 --- @param rank number 测试名次。
 --- @param userId number 头像账号 ID。
@@ -300,12 +301,12 @@ end
 --- @return Frame 排行条目。
 function Component:CreateRow(parent, rank, userId, playerName, strength, personal)
     local row = Create("Frame", parent, {
-        Name = "Rank" .. rank, LayoutOrder = rank, Size = UDim2.new(1, -12, 0, 70), BorderSizePixel = 0,
+        Name = "Rank" .. rank, LayoutOrder = rank, Size = UDim2.new(1, 0, 0, 84), BorderSizePixel = 0,
         BackgroundColor3 = personal and Gold or (rank % 2 == 0 and Color3.fromRGB(48, 33, 31) or Color3.fromRGB(59, 41, 37)),
     })
     Label(row, "#" .. rank, UDim2.fromScale(0, 0), UDim2.fromScale(0.14, 1))
     local avatar = Create("ImageLabel", row, {
-        Name = "Avatar", Position = UDim2.new(0.15, 0, 0.5, -28), Size = UDim2.fromOffset(56, 56),
+        Name = "Avatar", Position = UDim2.new(0.15, 0, 0.5, -32), Size = UDim2.fromOffset(64, 64),
         BackgroundColor3 = Color3.fromRGB(25, 25, 25), BorderSizePixel = 0,
         Image = "rbxthumb://type=AvatarHeadShot&id=" .. userId .. "&w=150&h=150",
     })

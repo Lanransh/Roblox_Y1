@@ -8,7 +8,7 @@ local Workspace = game:GetService("Workspace")
 local UPGRADE_SOUND_ID = "rbxassetid://97430098988000"
 local ADD_MONEY_SOUND_ID = "rbxassetid://99533862853751"
 local PICKUP_SOUND_ID = "rbxassetid://88292715815889"
-local REWARD_SOUND_ID = "rbxassetid://119465514998302"
+local REWARD_SOUND_ID = "rbxassetid://92949680432490"
 
 ---@class CSoundCompClass: FCSoundCompClass
 local CSoundCompClass = FX.Class("CSoundCompClass", "FCSoundCompClass")
