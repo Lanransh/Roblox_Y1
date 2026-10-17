@@ -47,7 +47,15 @@ return {
             Gem = 5,
             Count = 5,
             Time = 10
-        }
+        },
+        ToyPriceRateRange = {
+            [1] = 0.5,
+            [2] = 1.5,
+        },
+        ToyCandidateCount = 6,
+        ToyItemsPerStage = 3,
+        ToyRefreshRatio = 0.333333333333333,
+        ToyLuckyCount = 4
     },
     TrainingFieldData = {
         [1] = {
@@ -682,1210 +690,11 @@ return {
             ModelId = [=[game.ReplicatedStorage.Assets.Effects.Aura["25_Astral"]]=]
         }
     },
-    AreaRefreshData = {
-        [1] = {
-            Index = 1,
-            AreaId = 1,
-            RewardPool = {
-                [1] = {
-                    x = 1,
-                    y = 35
-                },
-                [2] = {
-                    x = 2,
-                    y = 30
-                },
-                [3] = {
-                    x = 3,
-                    y = 20
-                },
-                [4] = {
-                    x = 4,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [2] = {
-            Index = 2,
-            AreaId = 2,
-            RewardPool = {
-                [1] = {
-                    x = 5,
-                    y = 35
-                },
-                [2] = {
-                    x = 6,
-                    y = 30
-                },
-                [3] = {
-                    x = 7,
-                    y = 20
-                },
-                [4] = {
-                    x = 8,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [3] = {
-            Index = 3,
-            AreaId = 3,
-            RewardPool = {
-                [1] = {
-                    x = 9,
-                    y = 35
-                },
-                [2] = {
-                    x = 10,
-                    y = 30
-                },
-                [3] = {
-                    x = 11,
-                    y = 20
-                },
-                [4] = {
-                    x = 12,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [4] = {
-            Index = 4,
-            AreaId = 4,
-            RewardPool = {
-                [1] = {
-                    x = 13,
-                    y = 35
-                },
-                [2] = {
-                    x = 14,
-                    y = 30
-                },
-                [3] = {
-                    x = 15,
-                    y = 20
-                },
-                [4] = {
-                    x = 16,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [5] = {
-            Index = 5,
-            AreaId = 5,
-            RewardPool = {
-                [1] = {
-                    x = 17,
-                    y = 35
-                },
-                [2] = {
-                    x = 18,
-                    y = 30
-                },
-                [3] = {
-                    x = 19,
-                    y = 20
-                },
-                [4] = {
-                    x = 20,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [6] = {
-            Index = 6,
-            AreaId = 6,
-            RewardPool = {
-                [1] = {
-                    x = 21,
-                    y = 35
-                },
-                [2] = {
-                    x = 22,
-                    y = 30
-                },
-                [3] = {
-                    x = 23,
-                    y = 20
-                },
-                [4] = {
-                    x = 24,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [7] = {
-            Index = 7,
-            AreaId = 7,
-            RewardPool = {
-                [1] = {
-                    x = 25,
-                    y = 35
-                },
-                [2] = {
-                    x = 26,
-                    y = 30
-                },
-                [3] = {
-                    x = 27,
-                    y = 20
-                },
-                [4] = {
-                    x = 28,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [8] = {
-            Index = 8,
-            AreaId = 8,
-            RewardPool = {
-                [1] = {
-                    x = 29,
-                    y = 35
-                },
-                [2] = {
-                    x = 30,
-                    y = 30
-                },
-                [3] = {
-                    x = 31,
-                    y = 20
-                },
-                [4] = {
-                    x = 32,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [9] = {
-            Index = 9,
-            AreaId = 9,
-            RewardPool = {
-                [1] = {
-                    x = 33,
-                    y = 35
-                },
-                [2] = {
-                    x = 34,
-                    y = 30
-                },
-                [3] = {
-                    x = 35,
-                    y = 20
-                },
-                [4] = {
-                    x = 36,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [10] = {
-            Index = 10,
-            AreaId = 10,
-            RewardPool = {
-                [1] = {
-                    x = 37,
-                    y = 35
-                },
-                [2] = {
-                    x = 38,
-                    y = 30
-                },
-                [3] = {
-                    x = 39,
-                    y = 20
-                },
-                [4] = {
-                    x = 40,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [11] = {
-            Index = 11,
-            AreaId = 11,
-            RewardPool = {
-                [1] = {
-                    x = 41,
-                    y = 35
-                },
-                [2] = {
-                    x = 42,
-                    y = 30
-                },
-                [3] = {
-                    x = 43,
-                    y = 20
-                },
-                [4] = {
-                    x = 44,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [12] = {
-            Index = 12,
-            AreaId = 12,
-            RewardPool = {
-                [1] = {
-                    x = 45,
-                    y = 35
-                },
-                [2] = {
-                    x = 46,
-                    y = 30
-                },
-                [3] = {
-                    x = 47,
-                    y = 20
-                },
-                [4] = {
-                    x = 48,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [13] = {
-            Index = 13,
-            AreaId = 13,
-            RewardPool = {
-                [1] = {
-                    x = 49,
-                    y = 35
-                },
-                [2] = {
-                    x = 50,
-                    y = 30
-                },
-                [3] = {
-                    x = 51,
-                    y = 20
-                },
-                [4] = {
-                    x = 52,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [14] = {
-            Index = 14,
-            AreaId = 14,
-            RewardPool = {
-                [1] = {
-                    x = 53,
-                    y = 35
-                },
-                [2] = {
-                    x = 54,
-                    y = 30
-                },
-                [3] = {
-                    x = 55,
-                    y = 20
-                },
-                [4] = {
-                    x = 56,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [15] = {
-            Index = 15,
-            AreaId = 15,
-            RewardPool = {
-                [1] = {
-                    x = 57,
-                    y = 35
-                },
-                [2] = {
-                    x = 58,
-                    y = 30
-                },
-                [3] = {
-                    x = 59,
-                    y = 20
-                },
-                [4] = {
-                    x = 60,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [16] = {
-            Index = 16,
-            AreaId = 16,
-            RewardPool = {
-                [1] = {
-                    x = 61,
-                    y = 35
-                },
-                [2] = {
-                    x = 62,
-                    y = 30
-                },
-                [3] = {
-                    x = 63,
-                    y = 20
-                },
-                [4] = {
-                    x = 64,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [17] = {
-            Index = 17,
-            AreaId = 17,
-            RewardPool = {
-                [1] = {
-                    x = 65,
-                    y = 35
-                },
-                [2] = {
-                    x = 66,
-                    y = 30
-                },
-                [3] = {
-                    x = 67,
-                    y = 20
-                },
-                [4] = {
-                    x = 68,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [18] = {
-            Index = 18,
-            AreaId = 18,
-            RewardPool = {
-                [1] = {
-                    x = 69,
-                    y = 35
-                },
-                [2] = {
-                    x = 70,
-                    y = 30
-                },
-                [3] = {
-                    x = 71,
-                    y = 20
-                },
-                [4] = {
-                    x = 72,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [19] = {
-            Index = 19,
-            AreaId = 19,
-            RewardPool = {
-                [1] = {
-                    x = 73,
-                    y = 35
-                },
-                [2] = {
-                    x = 74,
-                    y = 30
-                },
-                [3] = {
-                    x = 75,
-                    y = 20
-                },
-                [4] = {
-                    x = 76,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [20] = {
-            Index = 20,
-            AreaId = 20,
-            RewardPool = {
-                [1] = {
-                    x = 77,
-                    y = 35
-                },
-                [2] = {
-                    x = 78,
-                    y = 30
-                },
-                [3] = {
-                    x = 79,
-                    y = 20
-                },
-                [4] = {
-                    x = 80,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [21] = {
-            Index = 21,
-            AreaId = 21,
-            RewardPool = {
-                [1] = {
-                    x = 81,
-                    y = 35
-                },
-                [2] = {
-                    x = 82,
-                    y = 30
-                },
-                [3] = {
-                    x = 83,
-                    y = 20
-                },
-                [4] = {
-                    x = 84,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [22] = {
-            Index = 22,
-            AreaId = 22,
-            RewardPool = {
-                [1] = {
-                    x = 85,
-                    y = 35
-                },
-                [2] = {
-                    x = 86,
-                    y = 30
-                },
-                [3] = {
-                    x = 87,
-                    y = 20
-                },
-                [4] = {
-                    x = 88,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [23] = {
-            Index = 23,
-            AreaId = 23,
-            RewardPool = {
-                [1] = {
-                    x = 89,
-                    y = 35
-                },
-                [2] = {
-                    x = 90,
-                    y = 30
-                },
-                [3] = {
-                    x = 91,
-                    y = 20
-                },
-                [4] = {
-                    x = 92,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [24] = {
-            Index = 24,
-            AreaId = 24,
-            RewardPool = {
-                [1] = {
-                    x = 93,
-                    y = 35
-                },
-                [2] = {
-                    x = 94,
-                    y = 30
-                },
-                [3] = {
-                    x = 95,
-                    y = 20
-                },
-                [4] = {
-                    x = 96,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [25] = {
-            Index = 25,
-            AreaId = 25,
-            RewardPool = {
-                [1] = {
-                    x = 97,
-                    y = 35
-                },
-                [2] = {
-                    x = 98,
-                    y = 30
-                },
-                [3] = {
-                    x = 99,
-                    y = 20
-                },
-                [4] = {
-                    x = 100,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [26] = {
-            Index = 26,
-            AreaId = 26,
-            RewardPool = {
-                [1] = {
-                    x = 101,
-                    y = 35
-                },
-                [2] = {
-                    x = 102,
-                    y = 30
-                },
-                [3] = {
-                    x = 103,
-                    y = 20
-                },
-                [4] = {
-                    x = 104,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [27] = {
-            Index = 27,
-            AreaId = 27,
-            RewardPool = {
-                [1] = {
-                    x = 105,
-                    y = 35
-                },
-                [2] = {
-                    x = 106,
-                    y = 30
-                },
-                [3] = {
-                    x = 107,
-                    y = 20
-                },
-                [4] = {
-                    x = 108,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [28] = {
-            Index = 28,
-            AreaId = 28,
-            RewardPool = {
-                [1] = {
-                    x = 109,
-                    y = 35
-                },
-                [2] = {
-                    x = 110,
-                    y = 30
-                },
-                [3] = {
-                    x = 111,
-                    y = 20
-                },
-                [4] = {
-                    x = 112,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [29] = {
-            Index = 29,
-            AreaId = 29,
-            RewardPool = {
-                [1] = {
-                    x = 113,
-                    y = 35
-                },
-                [2] = {
-                    x = 114,
-                    y = 30
-                },
-                [3] = {
-                    x = 115,
-                    y = 20
-                },
-                [4] = {
-                    x = 116,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [30] = {
-            Index = 30,
-            AreaId = 30,
-            RewardPool = {
-                [1] = {
-                    x = 117,
-                    y = 35
-                },
-                [2] = {
-                    x = 118,
-                    y = 30
-                },
-                [3] = {
-                    x = 119,
-                    y = 20
-                },
-                [4] = {
-                    x = 120,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [31] = {
-            Index = 31,
-            AreaId = 31,
-            RewardPool = {
-                [1] = {
-                    x = 121,
-                    y = 35
-                },
-                [2] = {
-                    x = 122,
-                    y = 30
-                },
-                [3] = {
-                    x = 123,
-                    y = 20
-                },
-                [4] = {
-                    x = 124,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [32] = {
-            Index = 32,
-            AreaId = 32,
-            RewardPool = {
-                [1] = {
-                    x = 125,
-                    y = 35
-                },
-                [2] = {
-                    x = 126,
-                    y = 30
-                },
-                [3] = {
-                    x = 127,
-                    y = 20
-                },
-                [4] = {
-                    x = 128,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [33] = {
-            Index = 33,
-            AreaId = 33,
-            RewardPool = {
-                [1] = {
-                    x = 129,
-                    y = 35
-                },
-                [2] = {
-                    x = 130,
-                    y = 30
-                },
-                [3] = {
-                    x = 131,
-                    y = 20
-                },
-                [4] = {
-                    x = 132,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [34] = {
-            Index = 34,
-            AreaId = 34,
-            RewardPool = {
-                [1] = {
-                    x = 133,
-                    y = 35
-                },
-                [2] = {
-                    x = 134,
-                    y = 30
-                },
-                [3] = {
-                    x = 135,
-                    y = 20
-                },
-                [4] = {
-                    x = 136,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [35] = {
-            Index = 35,
-            AreaId = 35,
-            RewardPool = {
-                [1] = {
-                    x = 137,
-                    y = 35
-                },
-                [2] = {
-                    x = 138,
-                    y = 30
-                },
-                [3] = {
-                    x = 139,
-                    y = 20
-                },
-                [4] = {
-                    x = 140,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [36] = {
-            Index = 36,
-            AreaId = 36,
-            RewardPool = {
-                [1] = {
-                    x = 141,
-                    y = 35
-                },
-                [2] = {
-                    x = 142,
-                    y = 30
-                },
-                [3] = {
-                    x = 143,
-                    y = 20
-                },
-                [4] = {
-                    x = 144,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [37] = {
-            Index = 37,
-            AreaId = 37,
-            RewardPool = {
-                [1] = {
-                    x = 145,
-                    y = 35
-                },
-                [2] = {
-                    x = 146,
-                    y = 30
-                },
-                [3] = {
-                    x = 147,
-                    y = 20
-                },
-                [4] = {
-                    x = 148,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [38] = {
-            Index = 38,
-            AreaId = 38,
-            RewardPool = {
-                [1] = {
-                    x = 149,
-                    y = 35
-                },
-                [2] = {
-                    x = 150,
-                    y = 30
-                },
-                [3] = {
-                    x = 151,
-                    y = 20
-                },
-                [4] = {
-                    x = 152,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [39] = {
-            Index = 39,
-            AreaId = 39,
-            RewardPool = {
-                [1] = {
-                    x = 153,
-                    y = 35
-                },
-                [2] = {
-                    x = 154,
-                    y = 30
-                },
-                [3] = {
-                    x = 155,
-                    y = 20
-                },
-                [4] = {
-                    x = 156,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [40] = {
-            Index = 40,
-            AreaId = 40,
-            RewardPool = {
-                [1] = {
-                    x = 157,
-                    y = 35
-                },
-                [2] = {
-                    x = 158,
-                    y = 30
-                },
-                [3] = {
-                    x = 159,
-                    y = 20
-                },
-                [4] = {
-                    x = 160,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [41] = {
-            Index = 41,
-            AreaId = 41,
-            RewardPool = {
-                [1] = {
-                    x = 161,
-                    y = 35
-                },
-                [2] = {
-                    x = 162,
-                    y = 30
-                },
-                [3] = {
-                    x = 163,
-                    y = 20
-                },
-                [4] = {
-                    x = 164,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [42] = {
-            Index = 42,
-            AreaId = 42,
-            RewardPool = {
-                [1] = {
-                    x = 165,
-                    y = 35
-                },
-                [2] = {
-                    x = 166,
-                    y = 30
-                },
-                [3] = {
-                    x = 167,
-                    y = 20
-                },
-                [4] = {
-                    x = 168,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [43] = {
-            Index = 43,
-            AreaId = 43,
-            RewardPool = {
-                [1] = {
-                    x = 169,
-                    y = 35
-                },
-                [2] = {
-                    x = 170,
-                    y = 30
-                },
-                [3] = {
-                    x = 171,
-                    y = 20
-                },
-                [4] = {
-                    x = 172,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [44] = {
-            Index = 44,
-            AreaId = 44,
-            RewardPool = {
-                [1] = {
-                    x = 173,
-                    y = 35
-                },
-                [2] = {
-                    x = 174,
-                    y = 30
-                },
-                [3] = {
-                    x = 175,
-                    y = 20
-                },
-                [4] = {
-                    x = 176,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [45] = {
-            Index = 45,
-            AreaId = 45,
-            RewardPool = {
-                [1] = {
-                    x = 177,
-                    y = 35
-                },
-                [2] = {
-                    x = 178,
-                    y = 30
-                },
-                [3] = {
-                    x = 179,
-                    y = 20
-                },
-                [4] = {
-                    x = 180,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [46] = {
-            Index = 46,
-            AreaId = 46,
-            RewardPool = {
-                [1] = {
-                    x = 181,
-                    y = 35
-                },
-                [2] = {
-                    x = 182,
-                    y = 30
-                },
-                [3] = {
-                    x = 183,
-                    y = 20
-                },
-                [4] = {
-                    x = 184,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [47] = {
-            Index = 47,
-            AreaId = 47,
-            RewardPool = {
-                [1] = {
-                    x = 185,
-                    y = 35
-                },
-                [2] = {
-                    x = 186,
-                    y = 30
-                },
-                [3] = {
-                    x = 187,
-                    y = 20
-                },
-                [4] = {
-                    x = 188,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [48] = {
-            Index = 48,
-            AreaId = 48,
-            RewardPool = {
-                [1] = {
-                    x = 189,
-                    y = 35
-                },
-                [2] = {
-                    x = 190,
-                    y = 30
-                },
-                [3] = {
-                    x = 191,
-                    y = 20
-                },
-                [4] = {
-                    x = 192,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [49] = {
-            Index = 49,
-            AreaId = 49,
-            RewardPool = {
-                [1] = {
-                    x = 193,
-                    y = 35
-                },
-                [2] = {
-                    x = 194,
-                    y = 30
-                },
-                [3] = {
-                    x = 195,
-                    y = 20
-                },
-                [4] = {
-                    x = 196,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [50] = {
-            Index = 50,
-            AreaId = 50,
-            RewardPool = {
-                [1] = {
-                    x = 197,
-                    y = 35
-                },
-                [2] = {
-                    x = 198,
-                    y = 30
-                },
-                [3] = {
-                    x = 199,
-                    y = 20
-                },
-                [4] = {
-                    x = 200,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [51] = {
-            Index = 51,
-            AreaId = 51,
-            RewardPool = {
-                [1] = {
-                    x = 201,
-                    y = 35
-                },
-                [2] = {
-                    x = 202,
-                    y = 30
-                },
-                [3] = {
-                    x = 203,
-                    y = 20
-                },
-                [4] = {
-                    x = 204,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        },
-        [52] = {
-            Index = 52,
-            AreaId = 52,
-            RewardPool = {
-                [1] = {
-                    x = 205,
-                    y = 35
-                },
-                [2] = {
-                    x = 206,
-                    y = 30
-                },
-                [3] = {
-                    x = 207,
-                    y = 20
-                },
-                [4] = {
-                    x = 208,
-                    y = 15
-                },
-            },
-            ObjectType = [[SItemObjectClass]]
-        }
-    },
     ItemData = {
         [1] = {
             Index = 1,
             Id = 1,
             Name = [[打火机]],
-            Pirce = 3,
             Quality = 1,
             IconId = [[113244405937302]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_001_Nail]],
@@ -1895,7 +704,6 @@ return {
             Index = 2,
             Id = 2,
             Name = [[矿泉水]],
-            Pirce = 4,
             Quality = 1,
             IconId = [[105711056874756]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_002_Pill]],
@@ -1905,7 +713,6 @@ return {
             Index = 3,
             Id = 3,
             Name = [[纯净水]],
-            Pirce = 6,
             Quality = 1,
             IconId = [[82693303214454]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_003_Capsule]],
@@ -1915,7 +722,6 @@ return {
             Index = 4,
             Id = 4,
             Name = [[苏打水]],
-            Pirce = 8,
             Quality = 1,
             IconId = [[102504658102706]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_004_Battery01]],
@@ -1925,7 +731,6 @@ return {
             Index = 5,
             Id = 5,
             Name = [[水桶]],
-            Pirce = 13,
             Quality = 2,
             IconId = [[83069096807916]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_005_Battery02]],
@@ -1935,7 +740,6 @@ return {
             Index = 6,
             Id = 6,
             Name = [[玻璃瓶]],
-            Pirce = 20,
             Quality = 2,
             IconId = [[80534536398974]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_006_Biscuit01]],
@@ -1945,7 +749,6 @@ return {
             Index = 7,
             Id = 7,
             Name = [[啤酒瓶]],
-            Pirce = 30,
             Quality = 2,
             IconId = [[74246671448525]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_007_Biscuit02]],
@@ -1955,7 +758,6 @@ return {
             Index = 8,
             Id = 8,
             Name = [[红酒瓶]],
-            Pirce = 38,
             Quality = 2,
             IconId = [[71499702430100]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_008_Biscuit03]],
@@ -1965,7 +767,6 @@ return {
             Index = 9,
             Id = 9,
             Name = [[香槟瓶]],
-            Pirce = 63,
             Quality = 3,
             IconId = [[122909083001205]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_009_Chocolate01]],
@@ -1975,7 +776,6 @@ return {
             Index = 10,
             Id = 10,
             Name = [[收藏酒瓶]],
-            Pirce = 100,
             Quality = 3,
             IconId = [[128658267266293]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_010_Chocolate02]],
@@ -1985,7 +785,6 @@ return {
             Index = 11,
             Id = 11,
             Name = [[钢钉]],
-            Pirce = 150,
             Quality = 3,
             IconId = [[134748387119946]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_011_Chocolate_Drink]],
@@ -1995,7 +794,6 @@ return {
             Index = 12,
             Id = 12,
             Name = [[药片]],
-            Pirce = 188,
             Quality = 3,
             IconId = [[131559815185521]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_012_Honey01]],
@@ -2005,7 +803,6 @@ return {
             Index = 13,
             Id = 13,
             Name = [[曲奇]],
-            Pirce = 313,
             Quality = 4,
             IconId = [[135406755438948]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_013_Honey02]],
@@ -2015,7 +812,6 @@ return {
             Index = 14,
             Id = 14,
             Name = [[苏打饼]],
-            Pirce = 500,
             Quality = 4,
             IconId = [[128433990441931]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_014_Jam01]],
@@ -2025,7 +821,6 @@ return {
             Index = 15,
             Id = 15,
             Name = [[夹心饼]],
-            Pirce = 750,
             Quality = 4,
             IconId = [[86357992624263]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_015_Jam02]],
@@ -2035,7 +830,6 @@ return {
             Index = 16,
             Id = 16,
             Name = [[黑巧克力]],
-            Pirce = 938,
             Quality = 4,
             IconId = [[96128137486525]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_016_Water01]],
@@ -2045,7 +839,6 @@ return {
             Index = 17,
             Id = 17,
             Name = [[牛奶巧克力]],
-            Pirce = 1563,
             Quality = 5,
             IconId = [[131913492630514]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_017_Water02]],
@@ -2055,7 +848,6 @@ return {
             Index = 18,
             Id = 18,
             Name = [[可可饮料]],
-            Pirce = 2500,
             Quality = 5,
             IconId = [[119579899338192]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_018_Water03]],
@@ -2065,7 +857,6 @@ return {
             Index = 19,
             Id = 19,
             Name = [[蜂蜜]],
-            Pirce = 3750,
             Quality = 5,
             IconId = [[82472089572732]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_019_Waterbottle01]],
@@ -2075,7 +866,6 @@ return {
             Index = 20,
             Id = 20,
             Name = [[野蜂蜜]],
-            Pirce = 4688,
             Quality = 5,
             IconId = [[104108852156434]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_020_Waterbottle02]],
@@ -2085,7 +875,6 @@ return {
             Index = 21,
             Id = 21,
             Name = [[草莓酱]],
-            Pirce = 7800,
             Quality = 6,
             IconId = [[79005623120233]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_021_Bottle01]],
@@ -2095,7 +884,6 @@ return {
             Index = 22,
             Id = 22,
             Name = [[蓝莓酱]],
-            Pirce = 12480,
             Quality = 6,
             IconId = [[97611938478078]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_022_Bottle02]],
@@ -2105,7 +893,6 @@ return {
             Index = 23,
             Id = 23,
             Name = [[肉罐头]],
-            Pirce = 18720,
             Quality = 6,
             IconId = [[81806655827798]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_023_Bottle03]],
@@ -2115,7 +902,6 @@ return {
             Index = 24,
             Id = 24,
             Name = [[鱼罐头]],
-            Pirce = 23400,
             Quality = 6,
             IconId = [[105716218867716]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_024_Bottle04]],
@@ -2125,7 +911,6 @@ return {
             Index = 25,
             Id = 25,
             Name = [[水果罐头]],
-            Pirce = 39050,
             Quality = 7,
             IconId = [[128411546772202]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_025_Bottle05]],
@@ -2135,7 +920,6 @@ return {
             Index = 26,
             Id = 26,
             Name = [[午餐肉]],
-            Pirce = 62480,
             Quality = 7,
             IconId = [[139465058617680]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_026_Can01]],
@@ -2145,7 +929,6 @@ return {
             Index = 27,
             Id = 27,
             Name = [[豆子罐头]],
-            Pirce = 93720,
             Quality = 7,
             IconId = [[81737011057690]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_027_Can02]],
@@ -2155,7 +938,6 @@ return {
             Index = 28,
             Id = 28,
             Name = [[军粮罐头]],
-            Pirce = 117150,
             Quality = 7,
             IconId = [[81445862907930]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_028_Can03]],
@@ -2165,7 +947,6 @@ return {
             Index = 29,
             Id = 29,
             Name = [[高级罐头]],
-            Pirce = 195500,
             Quality = 8,
             IconId = [[123098432383687]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_029_Can04]],
@@ -2175,7 +956,6 @@ return {
             Index = 30,
             Id = 30,
             Name = [[清洁剂]],
-            Pirce = 312800,
             Quality = 8,
             IconId = [[131796260838154]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_030_Can05]],
@@ -2185,7 +965,6 @@ return {
             Index = 31,
             Id = 31,
             Name = [[漂白水]],
-            Pirce = 469200,
             Quality = 8,
             IconId = [[116376878683736]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_031_Can06]],
@@ -2195,7 +974,6 @@ return {
             Index = 32,
             Id = 32,
             Name = [[润滑油]],
-            Pirce = 586500,
             Quality = 8,
             IconId = [[100558097057142]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_032_Can07]],
@@ -2205,7 +983,6 @@ return {
             Index = 33,
             Id = 33,
             Name = [[小油壶]],
-            Pirce = 975000,
             Quality = 9,
             IconId = [[92332707761527]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_033_Medicine_bottle01]],
@@ -2215,7 +992,6 @@ return {
             Index = 34,
             Id = 34,
             Name = [[运动水壶]],
-            Pirce = 1.56e+6,
             Quality = 6,
             IconId = [[108895787734224]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_034_Medicine_bottle02]],
@@ -2225,7 +1001,6 @@ return {
             Index = 35,
             Id = 35,
             Name = [[军用水壶]],
-            Pirce = 2.34e+6,
             Quality = 7,
             IconId = [[95471681056681]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_035_Injection]],
@@ -2235,7 +1010,6 @@ return {
             Index = 36,
             Id = 36,
             Name = [[机油壶]],
-            Pirce = 2.925e+6,
             Quality = 9,
             IconId = [[104955598295323]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_036_InjectionA]],
@@ -2245,7 +1019,6 @@ return {
             Index = 37,
             Id = 37,
             Name = [[燃油罐]],
-            Pirce = 4.885e+6,
             Quality = 10,
             IconId = [[103175883366340]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_037_First_aid_Kit_Bandage]],
@@ -2255,7 +1028,6 @@ return {
             Index = 38,
             Id = 38,
             Name = [[礼帽]],
-            Pirce = 7.816e+6,
             Quality = 10,
             IconId = [[114247164745798]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_038_Lv]],
@@ -2265,7 +1037,6 @@ return {
             Index = 39,
             Id = 39,
             Name = [[棒球帽]],
-            Pirce = 1.1724e+7,
             Quality = 10,
             IconId = [[86017047390182]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_039_First_aid_Kit01]],
@@ -2275,7 +1046,6 @@ return {
             Index = 40,
             Id = 40,
             Name = [[墨镜]],
-            Pirce = 1.4655e+7,
             Quality = 10,
             IconId = [[81373582816266]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_040_First_aid_Kit02]],
@@ -2285,7 +1055,6 @@ return {
             Index = 41,
             Id = 41,
             Name = [[太阳镜]],
-            Pirce = 2.44e+7,
             Quality = 11,
             IconId = [[132788281080826]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_041_First_aid_Kit03]],
@@ -2295,7 +1064,6 @@ return {
             Index = 42,
             Id = 42,
             Name = [[护目镜]],
-            Pirce = 3.904e+7,
             Quality = 11,
             IconId = [[95162444285252]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_042_Detergent]],
@@ -2305,7 +1073,6 @@ return {
             Index = 43,
             Id = 43,
             Name = [[战术风镜]],
-            Pirce = 5.856e+7,
             Quality = 11,
             IconId = [[95953438126479]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_043_Bleach]],
@@ -2315,7 +1082,6 @@ return {
             Index = 44,
             Id = 44,
             Name = [[口罩]],
-            Pirce = 7.32e+7,
             Quality = 11,
             IconId = [[112039222887887]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_044_WD40]],
@@ -2325,7 +1091,6 @@ return {
             Index = 45,
             Id = 45,
             Name = [[防毒面具]],
-            Pirce = 1.22e+8,
             Quality = 12,
             IconId = [[95377459606647]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_045_Pipe]],
@@ -2335,7 +1100,6 @@ return {
             Index = 46,
             Id = 46,
             Name = [[战术面具]],
-            Pirce = 1.952e+8,
             Quality = 12,
             IconId = [[113983796605688]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_046_Zippo]],
@@ -2345,7 +1109,6 @@ return {
             Index = 47,
             Id = 47,
             Name = [[皮靴]],
-            Pirce = 2.928e+8,
             Quality = 12,
             IconId = [[117157716541352]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_047_Oilcan01]],
@@ -2355,7 +1118,6 @@ return {
             Index = 48,
             Id = 48,
             Name = [[雨靴]],
-            Pirce = 3.66e+8,
             Quality = 12,
             IconId = [[100893051807474]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_048_Oilcan02]],
@@ -2365,7 +1127,6 @@ return {
             Index = 49,
             Id = 49,
             Name = [[登山靴]],
-            Pirce = 6.1e+8,
             Quality = 13,
             IconId = [[137999782231090]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_049_Oilcan03]],
@@ -2375,7 +1136,6 @@ return {
             Index = 50,
             Id = 50,
             Name = [[军靴]],
-            Pirce = 9.76e+8,
             Quality = 13,
             IconId = [[127007149281218]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_050_Mobilephone]],
@@ -2385,7 +1145,6 @@ return {
             Index = 51,
             Id = 51,
             Name = [[防弹背心]],
-            Pirce = 1.464e+9,
             Quality = 13,
             IconId = [[85273469740405]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_051_Watch01]],
@@ -2395,7 +1154,6 @@ return {
             Index = 52,
             Id = 52,
             Name = [[重型护甲]],
-            Pirce = 1.83e+9,
             Quality = 13,
             IconId = [[85750403977754]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_052_IdentificationTag]],
@@ -2405,7 +1163,6 @@ return {
             Index = 53,
             Id = 53,
             Name = [[工地头盔]],
-            Pirce = 3.05e+9,
             Quality = 14,
             IconId = [[87658125570749]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_053_Compass]],
@@ -2415,7 +1172,6 @@ return {
             Index = 54,
             Id = 54,
             Name = [[骑行头盔]],
-            Pirce = 4.88e+9,
             Quality = 14,
             IconId = [[71386503893388]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_054_CompassA]],
@@ -2425,7 +1181,6 @@ return {
             Index = 55,
             Id = 55,
             Name = [[防暴头盔]],
-            Pirce = 7.32e+9,
             Quality = 14,
             IconId = [[117660867991736]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_055_Hat]],
@@ -2435,7 +1190,6 @@ return {
             Index = 56,
             Id = 56,
             Name = [[战术头盔]],
-            Pirce = 9.15e+9,
             Quality = 14,
             IconId = [[75602786825729]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_056_Cap_A_0]],
@@ -2445,7 +1199,6 @@ return {
             Index = 57,
             Id = 57,
             Name = [[小背包]],
-            Pirce = 1.525e+10,
             Quality = 15,
             IconId = [[97494295137425]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_057_Sunglass01]],
@@ -2455,7 +1208,6 @@ return {
             Index = 58,
             Id = 58,
             Name = [[登山包]],
-            Pirce = 2.44e+10,
             Quality = 15,
             IconId = [[121387106380169]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_058_Sunglass02]],
@@ -2465,7 +1217,6 @@ return {
             Index = 59,
             Id = 59,
             Name = [[军用背包]],
-            Pirce = 3.66e+10,
             Quality = 15,
             IconId = [[77703154963129]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_059_Goggle]],
@@ -2475,7 +1226,6 @@ return {
             Index = 60,
             Id = 60,
             Name = [[铁锅]],
-            Pirce = 4.575e+10,
             Quality = 15,
             IconId = [[82745313217810]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_060_GoggleA]],
@@ -2485,7 +1235,6 @@ return {
             Index = 61,
             Id = 61,
             Name = [[木锤]],
-            Pirce = 7.65e+10,
             Quality = 16,
             IconId = [[78702263483439]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_061_MaskA]],
@@ -2495,7 +1244,6 @@ return {
             Index = 62,
             Id = 62,
             Name = [[铁锤]],
-            Pirce = 1.224e+11,
             Quality = 16,
             IconId = [[103252845267522]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_062_GasMask01]],
@@ -2505,7 +1253,6 @@ return {
             Index = 63,
             Id = 63,
             Name = [[大锤]],
-            Pirce = 1.836e+11,
             Quality = 16,
             IconId = [[93380659059014]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_063_GasMask02]],
@@ -2515,7 +1262,6 @@ return {
             Index = 64,
             Id = 64,
             Name = [[扳手]],
-            Pirce = 2.295e+11,
             Quality = 16,
             IconId = [[124070618735034]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_064_Boots01]],
@@ -2525,7 +1271,6 @@ return {
             Index = 65,
             Id = 65,
             Name = [[活动扳手]],
-            Pirce = 3.815e+11,
             Quality = 17,
             IconId = [[82229267783572]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_065_Boots02]],
@@ -2535,7 +1280,6 @@ return {
             Index = 66,
             Id = 66,
             Name = [[管钳]],
-            Pirce = 6.104e+11,
             Quality = 17,
             IconId = [[90764663625426]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_066_Boots03]],
@@ -2545,7 +1289,6 @@ return {
             Index = 67,
             Id = 67,
             Name = [[工兵铲]],
-            Pirce = 9.156e+11,
             Quality = 17,
             IconId = [[89592774326120]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_067_Boots04]],
@@ -2555,7 +1298,6 @@ return {
             Index = 68,
             Id = 68,
             Name = [[铁锹]],
-            Pirce = 1.1445e+12,
             Quality = 17,
             IconId = [[96498729983354]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_068_BulletproofJacket01]],
@@ -2565,7 +1307,6 @@ return {
             Index = 69,
             Id = 69,
             Name = [[十字镐]],
-            Pirce = 1.905e+12,
             Quality = 18,
             IconId = [[137402232463633]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_069_BulletproofJacket02]],
@@ -2575,7 +1316,6 @@ return {
             Index = 70,
             Id = 70,
             Name = [[胶囊]],
-            Pirce = 3.048e+12,
             Quality = 15,
             IconId = [[79717469784936]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_070_Helmet01]],
@@ -2585,7 +1325,6 @@ return {
             Index = 71,
             Id = 71,
             Name = [[干电池]],
-            Pirce = 4.572e+12,
             Quality = 16,
             IconId = [[86646811474956]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_071_Helmet02]],
@@ -2595,7 +1334,6 @@ return {
             Index = 72,
             Id = 72,
             Name = [[强力电池]],
-            Pirce = 5.715e+12,
             Quality = 16,
             IconId = [[128217347353354]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_072_Helmet03]],
@@ -2605,7 +1343,6 @@ return {
             Index = 73,
             Id = 73,
             Name = [[药瓶]],
-            Pirce = 9.55e+12,
             Quality = 16,
             IconId = [[126321668579357]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_073_Helmet04]],
@@ -2615,7 +1352,6 @@ return {
             Index = 74,
             Id = 74,
             Name = [[急救药瓶]],
-            Pirce = 1.528e+13,
             Quality = 16,
             IconId = [[98351529529203]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_074_Bag01]],
@@ -2625,7 +1361,6 @@ return {
             Index = 75,
             Id = 75,
             Name = [[注射器]],
-            Pirce = 2.292e+13,
             Quality = 17,
             IconId = [[81048668172712]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_075_Bag02]],
@@ -2635,7 +1370,6 @@ return {
             Index = 76,
             Id = 76,
             Name = [[强化针]],
-            Pirce = 2.865e+13,
             Quality = 17,
             IconId = [[127615544859575]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_076_Bag03]],
@@ -2645,7 +1379,6 @@ return {
             Index = 77,
             Id = 77,
             Name = [[医用绷带]],
-            Pirce = 4.77e+13,
             Quality = 17,
             IconId = [[70656304136373]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_077_Box01]],
@@ -2655,7 +1388,6 @@ return {
             Index = 78,
             Id = 78,
             Name = [[绿色徽章]],
-            Pirce = 7.632e+13,
             Quality = 17,
             IconId = [[134424174805013]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_078_Box02]],
@@ -2665,7 +1397,6 @@ return {
             Index = 79,
             Id = 79,
             Name = [[急救包]],
-            Pirce = 1.1448e+14,
             Quality = 18,
             IconId = [[127255485663084]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_079_Box03]],
@@ -2675,7 +1406,6 @@ return {
             Index = 80,
             Id = 80,
             Name = [[医疗箱]],
-            Pirce = 1.431e+14,
             Quality = 18,
             IconId = [[134027683373658]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_080_Pot01]],
@@ -2685,7 +1415,6 @@ return {
             Index = 81,
             Id = 81,
             Name = [[高级医疗箱]],
-            Pirce = 2.385e+14,
             Quality = 18,
             IconId = [[112447657334137]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_081_Drum01]],
@@ -2695,7 +1424,6 @@ return {
             Index = 82,
             Id = 82,
             Name = [[钢管]],
-            Pirce = 3.816e+14,
             Quality = 18,
             IconId = [[104595008892706]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_082_Drum02]],
@@ -2705,7 +1433,6 @@ return {
             Index = 83,
             Id = 83,
             Name = [[手机]],
-            Pirce = 5.724e+14,
             Quality = 19,
             IconId = [[82759045606098]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_083_Drum03]],
@@ -2715,7 +1442,6 @@ return {
             Index = 84,
             Id = 84,
             Name = [[手表]],
-            Pirce = 7.155e+14,
             Quality = 19,
             IconId = [[105620837789519]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_084_Drum04]],
@@ -2725,7 +1451,6 @@ return {
             Index = 85,
             Id = 85,
             Name = [[身份牌]],
-            Pirce = 1.19e+15,
             Quality = 19,
             IconId = [[111024567754480]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_085_Drum05]],
@@ -2735,7 +1460,6 @@ return {
             Index = 86,
             Id = 86,
             Name = [[指南针]],
-            Pirce = 1.904e+15,
             Quality = 19,
             IconId = [[137153989969007]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_086_Propane]],
@@ -2745,7 +1469,6 @@ return {
             Index = 87,
             Id = 87,
             Name = [[军用罗盘]],
-            Pirce = 2.856e+15,
             Quality = 20,
             IconId = [[74496996195913]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_087_RopeA]],
@@ -2755,7 +1478,6 @@ return {
             Index = 88,
             Id = 88,
             Name = [[木箱]],
-            Pirce = 3.57e+15,
             Quality = 20,
             IconId = [[132785860315163]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_088_Wire]],
@@ -2765,7 +1487,6 @@ return {
             Index = 89,
             Id = 89,
             Name = [[工具箱]],
-            Pirce = 5.95e+15,
             Quality = 20,
             IconId = [[117198962948319]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_089_Walkie_Talkie]],
@@ -2775,7 +1496,6 @@ return {
             Index = 90,
             Id = 90,
             Name = [[补给箱]],
-            Pirce = 9.52e+15,
             Quality = 20,
             IconId = [[124449160476895]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_090_Walkie_TalkieA]],
@@ -2785,7 +1505,6 @@ return {
             Index = 91,
             Id = 91,
             Name = [[油桶]],
-            Pirce = 1.428e+16,
             Quality = 21,
             IconId = [[125887863438527]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_091_Flashlight01]],
@@ -2795,7 +1514,6 @@ return {
             Index = 92,
             Id = 92,
             Name = [[储物桶]],
-            Pirce = 1.785e+16,
             Quality = 21,
             IconId = [[137692564728429]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_092_HeadLantern]],
@@ -2805,7 +1523,6 @@ return {
             Index = 93,
             Id = 93,
             Name = [[密封桶]],
-            Pirce = 2.98e+16,
             Quality = 21,
             IconId = [[82350951870220]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_093_Lantern]],
@@ -2815,7 +1532,6 @@ return {
             Index = 94,
             Id = 94,
             Name = [[大铁桶]],
-            Pirce = 4.768e+16,
             Quality = 21,
             IconId = [[133019385929561]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_094_Telescope01]],
@@ -2825,7 +1541,6 @@ return {
             Index = 95,
             Id = 95,
             Name = [[煤气罐]],
-            Pirce = 7.152e+16,
             Quality = 22,
             IconId = [[82714807302588]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_095_Telescope02]],
@@ -2835,7 +1550,6 @@ return {
             Index = 96,
             Id = 96,
             Name = [[粗绳]],
-            Pirce = 8.94e+16,
             Quality = 22,
             IconId = [[120409278538446]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_096_Hammer01]],
@@ -2845,7 +1559,6 @@ return {
             Index = 97,
             Id = 97,
             Name = [[电线]],
-            Pirce = 1.49e+17,
             Quality = 22,
             IconId = [[136303201068741]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_097_Hammer02]],
@@ -2855,7 +1568,6 @@ return {
             Index = 98,
             Id = 98,
             Name = [[对讲机]],
-            Pirce = 2.384e+17,
             Quality = 22,
             IconId = [[76724781858184]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_098_Hammer03]],
@@ -2865,7 +1577,6 @@ return {
             Index = 99,
             Id = 99,
             Name = [[军用电台]],
-            Pirce = 3.576e+17,
             Quality = 23,
             IconId = [[120125979830927]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_099_Wrench01]],
@@ -2875,7 +1586,6 @@ return {
             Index = 100,
             Id = 100,
             Name = [[手电筒]],
-            Pirce = 4.47e+17,
             Quality = 23,
             IconId = [[86921870572603]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_100_Wrench02]],
@@ -2885,7 +1595,6 @@ return {
             Index = 101,
             Id = 101,
             Name = [[头灯]],
-            Pirce = 7.45e+17,
             Quality = 23,
             IconId = [[126355990231048]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_101_Wrench03]],
@@ -2895,7 +1604,6 @@ return {
             Index = 102,
             Id = 102,
             Name = [[提灯]],
-            Pirce = 1.192e+18,
             Quality = 23,
             IconId = [[72326444062448]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_102_Shovel01]],
@@ -2905,7 +1613,6 @@ return {
             Index = 103,
             Id = 103,
             Name = [[望远镜]],
-            Pirce = 1.788e+18,
             Quality = 24,
             IconId = [[72257499044823]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_103_Shovel02]],
@@ -2915,7 +1622,6 @@ return {
             Index = 104,
             Id = 104,
             Name = [[高倍望远镜]],
-            Pirce = 2.235e+18,
             Quality = 24,
             IconId = [[74695865349139]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_104_Pickax]],
@@ -2925,7 +1631,6 @@ return {
             Index = 105,
             Id = 105,
             Name = [[高尔夫球杆]],
-            Pirce = 3.725e+18,
             Quality = 24,
             IconId = [[98358488442985]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_105_GolfClub]],
@@ -2935,7 +1640,6 @@ return {
             Index = 106,
             Id = 106,
             Name = [[冰球杆]],
-            Pirce = 5.96e+18,
             Quality = 24,
             IconId = [[113636295509693]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_106_Hockey]],
@@ -2945,7 +1649,6 @@ return {
             Index = 107,
             Id = 107,
             Name = [[木棒]],
-            Pirce = 8.94e+18,
             Quality = 25,
             IconId = [[114047124407739]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_107_Bat01]],
@@ -2955,7 +1658,6 @@ return {
             Index = 108,
             Id = 108,
             Name = [[球棒]],
-            Pirce = 1.1175e+19,
             Quality = 25,
             IconId = [[95771403493939]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_108_Bat02]],
@@ -2965,7 +1667,6 @@ return {
             Index = 109,
             Id = 109,
             Name = [[铁棒]],
-            Pirce = 1.865e+19,
             Quality = 25,
             IconId = [[140393673870516]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_109_Bat03]],
@@ -2975,7 +1676,6 @@ return {
             Index = 110,
             Id = 110,
             Name = [[战术棍]],
-            Pirce = 2.984e+19,
             Quality = 25,
             IconId = [[123109322631502]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_110_Bat04]],
@@ -2985,7 +1685,6 @@ return {
             Index = 111,
             Id = 111,
             Name = [[电锯]],
-            Pirce = 4.476e+19,
             Quality = 26,
             IconId = [[98614967981417]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_111_ElectricSaw]],
@@ -2995,7 +1694,6 @@ return {
             Index = 112,
             Id = 112,
             Name = [[木斧]],
-            Pirce = 5.595e+19,
             Quality = 26,
             IconId = [[127369769981706]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_112_Ax01]],
@@ -3005,7 +1703,6 @@ return {
             Index = 113,
             Id = 113,
             Name = [[消防斧]],
-            Pirce = 9.3e+19,
             Quality = 26,
             IconId = [[134574393827781]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_113_Ax02]],
@@ -3015,7 +1712,6 @@ return {
             Index = 114,
             Id = 114,
             Name = [[战斧]],
-            Pirce = 1.488e+20,
             Quality = 26,
             IconId = [[130258203281991]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_114_Ax03]],
@@ -3025,7 +1721,6 @@ return {
             Index = 115,
             Id = 115,
             Name = [[小刀]],
-            Pirce = 2.232e+20,
             Quality = 27,
             IconId = [[93953823085119]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_115_Knife01]],
@@ -3035,7 +1730,6 @@ return {
             Index = 116,
             Id = 116,
             Name = [[猎刀]],
-            Pirce = 2.79e+20,
             Quality = 27,
             IconId = [[109802560542166]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_116_Knife02]],
@@ -3045,7 +1739,6 @@ return {
             Index = 117,
             Id = 117,
             Name = [[军刀]],
-            Pirce = 4.655e+20,
             Quality = 27,
             IconId = [[130989494782889]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_117_Knife03]],
@@ -3055,7 +1748,6 @@ return {
             Index = 118,
             Id = 118,
             Name = [[开山刀]],
-            Pirce = 7.448e+20,
             Quality = 27,
             IconId = [[129408716253336]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_118_Knife04]],
@@ -3065,7 +1757,6 @@ return {
             Index = 119,
             Id = 119,
             Name = [[匕首]],
-            Pirce = 1.1172e+21,
             Quality = 28,
             IconId = [[127772866805590]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_119_Knife05]],
@@ -3075,7 +1766,6 @@ return {
             Index = 120,
             Id = 120,
             Name = [[战术刀]],
-            Pirce = 1.396499999999999868928e+21,
             Quality = 28,
             IconId = [[91938109188463]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_120_Knife06]],
@@ -3085,7 +1775,6 @@ return {
             Index = 121,
             Id = 121,
             Name = [[狼牙棒]],
-            Pirce = 2.33e+21,
             Quality = 28,
             IconId = [[85077262752129]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_121_Ironmace]],
@@ -3095,7 +1784,6 @@ return {
             Index = 122,
             Id = 122,
             Name = [[炸药罐]],
-            Pirce = 3.728e+21,
             Quality = 28,
             IconId = [[140335958193244]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_122_Dynamite01]],
@@ -3105,7 +1793,6 @@ return {
             Index = 123,
             Id = 123,
             Name = [[捆装炸药]],
-            Pirce = 5.592e+21,
             Quality = 29,
             IconId = [[86732012145983]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_123_Dynamite02]],
@@ -3115,7 +1802,6 @@ return {
             Index = 124,
             Id = 124,
             Name = [[遥控炸弹]],
-            Pirce = 6.990000000000000524288e+21,
             Quality = 29,
             IconId = [[78044122276865]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_124_Dynamite03]],
@@ -3125,7 +1811,6 @@ return {
             Index = 125,
             Id = 125,
             Name = [[圆形手雷]],
-            Pirce = 1.1649999999999999475712e+22,
             Quality = 29,
             IconId = [[114974638199136]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_125_Grenade01]],
@@ -3135,7 +1820,6 @@ return {
             Index = 126,
             Id = 126,
             Name = [[高爆手雷]],
-            Pirce = 1.864e+22,
             Quality = 29,
             IconId = [[83652207307759]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_126_Grenade02]],
@@ -3145,7 +1829,6 @@ return {
             Index = 127,
             Id = 127,
             Name = [[等离子手雷]],
-            Pirce = 2.7960000000000002097152e+22,
             Quality = 30,
             IconId = [[131787091355052]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_127_Grenade03]],
@@ -3155,7 +1838,6 @@ return {
             Index = 128,
             Id = 128,
             Name = [[感应地雷]],
-            Pirce = 3.4949999999999998427136e+22,
             Quality = 30,
             IconId = [[99348381699835]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_128_Mine]],
@@ -3165,7 +1847,6 @@ return {
             Index = 129,
             Id = 129,
             Name = [[捕兽夹]],
-            Pirce = 5.7999999999999995805696e+22,
             Quality = 30,
             IconId = [[75412160560516]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_129_Trap]],
@@ -3175,7 +1856,6 @@ return {
             Index = 130,
             Id = 130,
             Name = [[手枪子弹]],
-            Pirce = 9.28e+22,
             Quality = 30,
             IconId = [[105475505052937]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_130_Bullet01]],
@@ -3185,7 +1865,6 @@ return {
             Index = 131,
             Id = 131,
             Name = [[手枪弹药]],
-            Pirce = 1.392e+23,
             Quality = 31,
             IconId = [[125484119033793]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_131_Bullet02]],
@@ -3195,7 +1874,6 @@ return {
             Index = 132,
             Id = 132,
             Name = [[整箱弹药]],
-            Pirce = 1.73999999999999987417088e+23,
             Quality = 31,
             IconId = [[140608831780254]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_132_Bullet03]],
@@ -3205,7 +1883,6 @@ return {
             Index = 133,
             Id = 133,
             Name = [[盒装弹药]],
-            Pirce = 2.91000000000000002097152e+23,
             Quality = 31,
             IconId = [[124177358025481]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_133_Bullet04]],
@@ -3215,7 +1892,6 @@ return {
             Index = 134,
             Id = 134,
             Name = [[直式弹匣]],
-            Pirce = 4.65600000000000016777216e+23,
             Quality = 31,
             IconId = [[129385390119523]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_134_Bullet05]],
@@ -3225,7 +1901,6 @@ return {
             Index = 135,
             Id = 135,
             Name = [[弯式弹匣]],
-            Pirce = 6.98400000000000058720256e+23,
             Quality = 32,
             IconId = [[84940520003035]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_135_Bullet06]],
@@ -3235,7 +1910,6 @@ return {
             Index = 136,
             Id = 136,
             Name = [[霰弹盒]],
-            Pirce = 8.73000000000000006291456e+23,
             Quality = 32,
             IconId = [[90031364711610]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_136_Bullet07]],
@@ -3245,7 +1919,6 @@ return {
             Index = 137,
             Id = 137,
             Name = [[军用弹药箱]],
-            Pirce = 1.45500000000000001048576e+24,
             Quality = 32,
             IconId = [[84418341821320]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_137_Cartridge]],
@@ -3255,7 +1928,6 @@ return {
             Index = 138,
             Id = 138,
             Name = [[左轮手枪]],
-            Pirce = 2.328000000000000016777216e+24,
             Quality = 32,
             IconId = [[130255705800444]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_138_Gun01]],
@@ -3265,7 +1937,6 @@ return {
             Index = 139,
             Id = 139,
             Name = [[单发手枪]],
-            Pirce = 3.492000000000000025165824e+24,
             Quality = 33,
             IconId = [[123568265278671]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_139_Gun02]],
@@ -3275,7 +1946,6 @@ return {
             Index = 140,
             Id = 140,
             Name = [[短管突击步枪]],
-            Pirce = 4.364999999999999763021824e+24,
             Quality = 33,
             IconId = [[75689117044416]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_140_Rifle01]],
@@ -3285,7 +1955,6 @@ return {
             Index = 141,
             Id = 141,
             Name = [[战术突击步枪]],
-            Pirce = 7.299999999999999823839232e+24,
             Quality = 33,
             IconId = [[92309488435591]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_141_Rifle02]],
@@ -3295,7 +1964,6 @@ return {
             Index = 142,
             Id = 142,
             Name = [[木托突击步枪]],
-            Pirce = 1.168000000000000100663296e+25,
             Quality = 33,
             IconId = [[106319308889290]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_142_Rifle03]],
@@ -3305,7 +1973,6 @@ return {
             Index = 143,
             Id = 143,
             Name = [[战斗霰弹枪]],
-            Pirce = 1.7520000000000000436207616e+25,
             Quality = 34,
             IconId = [[123120949699520]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_143_Rifle04]],
@@ -3315,7 +1982,6 @@ return {
             Index = 144,
             Id = 144,
             Name = [[狙击步枪]],
-            Pirce = 2.190000000000000054525952e+25,
             Quality = 34,
             IconId = [[111674856010497]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_144_Rifle05]],
@@ -3325,7 +1991,6 @@ return {
             Index = 145,
             Id = 145,
             Name = [[冲锋枪]],
-            Pirce = 3.6399999999999997886070784e+25,
             Quality = 34,
             IconId = [[118080816505555]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_145_MachineGun01]],
@@ -3335,7 +2000,6 @@ return {
             Index = 146,
             Id = 146,
             Name = [[消音冲锋枪]],
-            Pirce = 5.8240000000000003489660928e+25,
             Quality = 34,
             IconId = [[105021574817966]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_146_MachineGun02]],
@@ -3345,7 +2009,6 @@ return {
             Index = 147,
             Id = 147,
             Name = [[微型冲锋枪]],
-            Pirce = 8.7360000000000005234491392e+25,
             Quality = 35,
             IconId = [[72690180103558]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_147_MachineGun03]],
@@ -3355,7 +2018,6 @@ return {
             Index = 148,
             Id = 148,
             Name = [[木托冲锋枪]],
-            Pirce = 1.09200000000000002248146944e+26,
             Quality = 35,
             IconId = [[94914272618995]],
             DisplayModelId = [[game.ReplicatedStorage.Assets.ItemModel.Y1_148_MachineGun04]],

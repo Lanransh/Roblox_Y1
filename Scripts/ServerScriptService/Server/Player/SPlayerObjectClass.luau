@@ -230,6 +230,18 @@ function Guide:GetGuideStorage()
     return PlayerDataConfig.Guide
 end
 
+--- 登录续接时清除上一会话的坐标，等待本轮进入首关后重新锁定。
+--- @param eventName string 框架或业务发布的引导事件。
+function Guide:OnGuideEvent(eventName)
+    Guide.Super.OnGuideEvent(self, eventName)
+    if eventName == "Tutorial.Login" and self:IsLootStep(1) then
+        local data = self:GetGuideData()
+        data.target.cell = nil
+        data.target.position = nil
+        self:SetGuideData(data)
+    end
+end
+
 --- 仅匹配当前步骤，避免提前操作或重复回调重复发放奖励。
 --- @param index number 首轮引导步骤。
 --- @return boolean 当前是否处于该步骤。
@@ -273,9 +285,70 @@ function Guide:GrantTrainingDiamonds()
     self:SetGuideData(data)
 end
 
+--- 只读关卡组件的已生成内容，锁定状态由引导持有，不触发生成或修改奖励。
+--- @param rock table 玩家的服务端关卡组件。
+--- @param position Vector3 服务端角色当前位置。
+--- @return string? 当前轮次内锁定的石头格号。
+--- @return Vector3? 道具所在格子的固定世界坐标。
+function Guide:GetLootTarget(rock, position)
+    local area = rock._areas and rock._areas[1]
+    local state = rock._areaStates[1]
+    if not area or not state then
+        return nil, nil
+    end
+    local cellSize = RockLevel.CellSize
+    if self._lootRound ~= rock._round then
+        if position.X < area.MinX or position.X >= area.MinX + area.Columns * cellSize
+            or position.Z < area.MinZ or position.Z >= area.MinZ + area.Rows * cellSize
+            or math.abs(position.Y - area.FloorY) >= 12 then
+            return nil, nil
+        end
+        self._lootRound = rock._round
+        self._lootOrigin = position
+        self._lootCell = nil
+    end
+    local selected, target, distance = nil, nil, math.huge
+    local now = workspace:GetServerTimeNow()
+    for cell, content in pairs(state.Contents) do
+        local key = "1:" .. cell
+        local dropId = rock._dropByCell[key]
+        local drop = dropId and rock._dropNodes[dropId]
+        if not rock._claimed[key] or (drop and drop.ExpiresAt > now and drop.Model.Parent == workspace) then
+            local candidate = Vector3.new(area.MinX + ((cell - 1) % area.Columns + 0.5) * cellSize,
+                area.FloorY + 1, area.MinZ + (math.floor((cell - 1) / area.Columns) + 0.5) * cellSize)
+            if cell == self._lootCell then
+                return key, candidate
+            end
+            local delta = (candidate - self._lootOrigin).Magnitude
+            if delta < distance or (delta == distance and cell < selected) then
+                selected, target, distance = cell, candidate, delta
+            end
+        end
+    end
+    self._lootCell = selected
+    return selected and "1:" .. selected or nil, target
+end
+
 --- 使用权威存档和场地状态恢复提前完成的操作，不新增跳步协议。
 --- @param serverTime number 框架每秒回调时间。
 function Guide:OnUpdate(serverTime)
+    if self:IsLootStep(1) then
+        local character = self:GetPlayerCharacter()
+        local root = character and character:FindFirstChild("HumanoidRootPart")
+        local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+        if root and humanoid and humanoid.Health > 0 then
+            local cell, position = self:GetLootTarget(self:RequireComponent("SRockLevelComp"), root.Position)
+            local data = self:GetGuideData()
+            local coordinates = position and {position.X, position.Y, position.Z} or nil
+            local previous = data.target.position
+            if data.target.cell ~= cell or (coordinates and (not previous
+                or previous[1] ~= coordinates[1] or previous[2] ~= coordinates[2] or previous[3] ~= coordinates[3])) then
+                data.target.cell = cell
+                data.target.position = coordinates
+                self:SetGuideData(data)
+            end
+        end
+    end
     self:GrantTrainingDiamonds()
     if self:IsLootStep(2) and #self:GetTable(PlayerDataConfig.StoredLoot) > 0 then
         self:PublishEvent("Tutorial.Deposited")

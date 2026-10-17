@@ -3,6 +3,17 @@ local FXLoader = FX.Loader
 local InstancePath = FXLoader:RequireShared("Scripts/Game/Shared/InstancePath")
 local Collectible = {}
 
+-- 按现有 1～35 品质编号提供独立 HUD 配色，不改变配置中的品质或掉落规则。
+local QualityColors = {
+    "C5CAD8", "76E65A", "42ADFF", "BA79FF", "FFD34E",
+    "FF963F", "FF5555", "FF80C8", "4DE5DD", "A3B6FF",
+    "D9EEFF", "B7F58A", "74D3FF", "DBA5FF", "FFF18A",
+    "FFBC78", "FF8F9D", "FFACE8", "98FFF0", "C2A7FF",
+    "88A7C4", "36D69A", "5987FF", "E45DFF", "E5B53C",
+    "FF713D", "F13D82", "ED6EB6", "22BDD5", "8F79FF",
+    "E8EAF5", "D2FF52", "44F2FF", "FF54DD", "FFE5B4",
+}
+
 Collectible.PickupDistance = 10
 Collectible.DropLifetime = 10
 
@@ -17,7 +28,7 @@ function Collectible.ResolveModel(displayModelId)
     return instance
 end
 
---- 在原掉落尺寸上累计放大 56.25%，客户端背景光芒按模型尺寸同步放大，再焊接为单个装配。
+--- 在现有掉落尺寸上再放大 30%，客户端光芒随尺寸放大，再焊接为单个装配。
 --- @param template Model 已导入的收藏品模板。
 --- @return Model 以 PrimaryPart 为锚点、无碰撞的收藏品副本。
 function Collectible.CreateModel(template)
@@ -28,7 +39,7 @@ function Collectible.CreateModel(template)
     if longestSide < 2.4 then
         model:ScaleTo(model:GetScale() * 2.4 / longestSide)
     end
-    model:ScaleTo(model:GetScale() * 1.5625)
+    model:ScaleTo(model:GetScale() * 2.03125)
     local root = model.PrimaryPart
     for index, node in ipairs(model:GetDescendants()) do
         if node:IsA("BasePart") then
@@ -46,6 +57,50 @@ function Collectible.CreateModel(template)
         end
     end
     return model
+end
+
+--- 用模型包围盒顶部定位 HUD；品质文字按编号显示上亮下深的渐变，倒计时保持较小。
+--- @param hud BillboardGui 本次掉落独有的 HUD 副本。
+--- @param model Model 已完成缩放及摆放的掉落模型。
+--- @param quality number 配置中的道具品质编号。
+function Collectible.StyleHUD(hud, model, quality)
+    local box, size = model:GetBoundingBox()
+    hud.Size = UDim2.fromScale(6.5, 3.5)
+    hud.StudsOffsetWorldSpace = box.Position - model.PrimaryPart.Position
+        + Vector3.new(0, size.Y / 2 + 2, 0)
+    local frame = hud.Frame
+    frame.ItemName.Position = UDim2.fromScale(0.5, 0.16)
+    frame.ItemName.Size = UDim2.fromScale(0.98, 0.28)
+    frame.ItemName.TextColor3 = Color3.new(1, 1, 1)
+    frame.Rarity.Position = UDim2.fromScale(0.5, 0.46)
+    frame.Rarity.Size = UDim2.fromScale(0.72, 0.22)
+    local qualityColor = Color3.fromHex(QualityColors[quality] or "C5CAD8")
+    -- UIGradient 与文字底色相乘，白色底色才能保留各品质的完整渐变色。
+    frame.Rarity.TextColor3 = Color3.new(1, 1, 1)
+    local gradient = frame.Rarity:FindFirstChildOfClass("UIGradient") or Instance.new("UIGradient")
+    gradient.Name = "QualityGradient"
+    gradient.Enabled = true
+    gradient.Rotation = 90
+    gradient.Offset = Vector2.zero
+    gradient.Transparency = NumberSequence.new(0)
+    gradient.Color = ColorSequence.new({
+        ColorSequenceKeypoint.new(0, qualityColor:Lerp(Color3.new(1, 1, 1), 0.35)),
+        ColorSequenceKeypoint.new(0.45, qualityColor),
+        ColorSequenceKeypoint.new(1, qualityColor:Lerp(Color3.new(0, 0, 0), 0.22)),
+    })
+    gradient.Parent = frame.Rarity
+    frame.Price.Position = UDim2.fromScale(0.5, 0.70)
+    frame.Price.Size = UDim2.fromScale(0.9, 0.30)
+    frame.Price.TextColor3 = Color3.fromRGB(86, 255, 101)
+    frame.Timer.Size = UDim2.fromScale(0.3, 0.14)
+    frame.LuckIcon.Position = UDim2.fromScale(0.08, 0.57)
+    for index, label in ipairs({frame.ItemName, frame.Rarity, frame.Price, frame.Timer}) do
+        label.Font = Enum.Font.GothamBlack
+        label.TextScaled = true
+        label.TextWrapped = false
+        label.TextOutline.Color = Color3.fromRGB(12, 12, 16)
+        label.TextOutline.Thickness = 3
+    end
 end
 
 return Collectible

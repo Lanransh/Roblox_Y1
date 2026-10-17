@@ -3,6 +3,7 @@ local FXLoader = FX.Loader
 local RunService = game:GetService("RunService")
 local Fields = _G.PlayerDataConfig
 local Guide = FX.Class("CTutorialGuideCompClass", "FCTutorialGuideCompClass")
+local UPGRADE_TEXT = {Weapon = "Buy a stronger pickaxe!", Aura = "Buy a stronger aura!"}
 
 --- 使用现有同步字段，不向服务端发送完成请求。
 --- @return string 组件协作名称。
@@ -29,6 +30,7 @@ function Guide:OnReady()
     self._screen.Name = "TutorialGuideUI"
     self._screen.ResetOnSpawn = false
     self._screen.DisplayOrder = 20
+    self._screen.RootLocalizationTable = FXLoader:Shared("Shared/Localization")
     self._label = Instance.new("TextLabel")
     self._label.Name = "Instruction"
     self._label.AnchorPoint = Vector2.new(0.5, 0)
@@ -48,62 +50,99 @@ function Guide:OnReady()
         self:RefreshText()
     end))
     Guide.Super.OnReady(self)
-end
-
---- 切换语言时按稳定 Key 更新提示。
-function Guide:RefreshText()
-    self._label.Text = self._activeTarget and self._localization:FormatByKey(self._activeTarget.key) or ""
-end
-
---- 每四分之一秒重选动态掉落目标，不重复创建箭头。
---- @param target table 服务端同步的目标。
-function Guide:OnEnterGuide(target)
-    self._activeTarget = target
-    self:RefreshText()
-    self:RefreshTarget()
+    self:WatchDataChanged(Fields.Money, self.RefreshUpgradeHint, self)
+    self:WatchDataChanged(Fields.WeaponData, self.RefreshUpgradeHint, self)
+    self:WatchDataChanged(Fields.AuraData, self.RefreshUpgradeHint, self)
     local elapsed = 0
-    self._targetConnection = RunService.Heartbeat:Connect(function(dt)
+    self:TrackConnection(RunService.Heartbeat:Connect(function(dt)
         elapsed += dt
         if elapsed >= 0.25 then
             elapsed = 0
             self:RefreshTarget()
         end
-    end)
+    end))
+end
+
+--- 切换语言时按稳定 Key 更新提示。
+function Guide:RefreshText()
+    local target = self._activeTarget
+    self._label.AutoLocalize = target ~= nil and target.upgrade == true
+    if target and target.upgrade then
+        -- 固定英文源文案交由 Roblox 自动本地化，动态新手文案沿用项目翻译器。
+        self._label.Text = UPGRADE_TEXT[target.type]
+    else
+        self._label.Text = target and self._localization:FormatByKey(target.key) or ""
+    end
+end
+
+--- 主流程完成后由余额与解锁状态决定购买提示，替代一次性的首光环表现。
+--- @param guideData table 服务端同步的引导进度。
+function Guide:OnGuideDataChanged(guideData)
+    local first = guideData.guideMap and guideData.guideMap.FirstLootGuide
+    self._mainGuideFinished = first ~= nil and first.state == "Finished"
+    if self._mainGuideFinished then
+        Guide.Super.OnGuideDataChanged(self, {target = {type = "None"}})
+        self:RefreshUpgradeHint()
+    else
+        Guide.Super.OnGuideDataChanged(self, guideData)
+    end
+end
+
+--- 只推荐强于全部已拥有装备且尚未购买的商品；同时可升级时优先镐子。
+--- @return string? 可购买升级的商店类型。
+function Guide:GetAffordableUpgradeType()
+    local coins = self:GetNumber(Fields.Money)
+    local shops = {
+        {type = "Weapon", configs = _G.GameConfig.ToolConfig, field = Fields.WeaponData, id = "ToolId"},
+        {type = "Aura", configs = _G.GameConfig.AuraConfig, field = Fields.AuraData, id = "AuraId"},
+    }
+    for index, shop in ipairs(shops) do
+        local owned = self:GetTable(shop.field).owned
+        local strongest = 1
+        for configIndex, config in ipairs(shop.configs) do
+            if owned[tostring(config[shop.id])] == true then
+                strongest = math.max(strongest, config.TrainingRate)
+            end
+        end
+        for configIndex, config in ipairs(shop.configs) do
+            if config.TrainingRate > strongest and config.Price <= coins
+                and owned[tostring(config[shop.id])] ~= true then
+                return shop.type
+            end
+        end
+    end
+    return nil
+end
+
+--- 金币变化、购买与装备同步后立即切换或隐藏主界面的购买提示。
+function Guide:RefreshUpgradeHint()
+    if not self._mainGuideFinished then
+        return
+    end
+    local shopType = self:GetAffordableUpgradeType()
+    if self._activeTarget and self._activeTarget.type == shopType then
+        return
+    end
+    self:OnExitGuide(self._activeTarget)
+    if shopType then
+        self:OnEnterGuide({type = shopType, key = "Upgrade." .. shopType, upgrade = true})
+    end
+end
+
+--- 进入步骤时展示服务端目标，定期恢复角色重生后的箭头。
+--- @param target table 服务端同步的目标。
+function Guide:OnEnterGuide(target)
+    self._activeTarget = target
+    self:RefreshText()
+    self:RefreshTarget()
 end
 
 --- 退出步骤清理动态目标与旧提示。
 --- @param target table 刚结束的目标，由框架提供。
 function Guide:OnExitGuide(target)
-    if self._targetConnection then
-        self._targetConnection:Disconnect()
-        self._targetConnection = nil
-    end
     self._activeTarget = nil
     self:HideGuideArrow()
     self:RefreshText()
-end
-
---- 仅指向本人的有效掉落；尚无掉落时指向首关开路。
---- @return Vector3? 最近目标坐标。
-function Guide:GetNearestLootPosition()
-    local character = self:GetPlayerCharacter()
-    local root = character and character:FindFirstChild("HumanoidRootPart")
-    if not root then
-        return nil
-    end
-    local position, distance = nil, math.huge
-    for index, node in ipairs(workspace:GetChildren()) do
-        if node:IsA("Model") and node:GetAttribute("OwnerUserId") == self:GetPlayerId()
-            and node:GetAttribute("DropId") and node:GetAttribute("DropExpiresAt") > workspace:GetServerTimeNow() then
-            local candidate = node:GetPivot().Position
-            local delta = (candidate - root.Position).Magnitude
-            if delta < distance then
-                position, distance = candidate, delta
-            end
-        end
-    end
-    local firstArea = FXLoader:Find(workspace, "GameLevelList/World1/Level_1")
-    return position or (firstArea and firstArea.Position)
 end
 
 --- 解析当前地图实际节点；流出、死亡时隐藏而不保留错误方向。
@@ -117,7 +156,8 @@ function Guide:RefreshTarget()
     end
     local position
     if target.type == "NearestItem" then
-        position = self:GetNearestLootPosition()
+        local coordinates = target.position
+        position = coordinates and Vector3.new(coordinates[1], coordinates[2], coordinates[3])
     elseif target.type == "Base" then
         position = _G.GameEnum.WorldTransferConfig[1].Position
     elseif target.type == "Training" then
@@ -137,68 +177,87 @@ function Guide:RefreshTarget()
     end
 end
 
---- 白色实体搭配加宽的黄色实体底边，保证浅色地面上也能辨认完整箭头。
+--- 两个连接点把空中的箭头光束直接连接到当前目标。
 --- @param position Vector3 世界目标。
 function Guide:ShowGuideArrowToPosition(position)
     self._worldTargetPosition = position
     if not self._arrowTrans then
         local decorations = FXLoader:Workspace("Decorations")
-        local arrow = Instance.new("Model")
+        local arrow = Instance.new("Part")
         arrow.Name = "TutorialGuideArrow"
-        local shaft = Instance.new("Part")
-        shaft.Name = "Shaft"
-        shaft.Size = Vector3.new(0.7, 0.4, 3)
-        shaft.Anchored = true
-        shaft.CanCollide, shaft.CanTouch, shaft.CanQuery = false, false, false
-        shaft.Material = Enum.Material.SmoothPlastic
-        shaft.Color = Color3.fromRGB(255, 255, 255)
-        shaft.CastShadow = false
-        shaft.Parent = arrow
-        arrow.PrimaryPart = shaft
-        for index = 1, 2 do
-            local arm = Instance.new("Part")
-            arm.Name = "Head" .. index
-            arm.Size = Vector3.new(0.7, 0.4, 2.2)
-            local side = index == 1 and -1 or 1
-            arm.CFrame = CFrame.new(side * 0.65, 0, -1.7) * CFrame.Angles(0, math.rad(side * 45), 0)
-            arm.Anchored = true
-            arm.CanCollide, arm.CanTouch, arm.CanQuery = false, false, false
-            arm.Material, arm.Color = shaft.Material, shaft.Color
-            arm.CastShadow = false
-            arm.Parent = arrow
-        end
-        for index, part in ipairs(arrow:GetChildren()) do
-            local border = part:Clone()
-            border.Name = part.Name .. "Border"
-            border.Size = part.Size + Vector3.new(0.3, -0.05, 0.3)
-            border.Color = Color3.fromRGB(255, 190, 0)
-            border.CFrame = part.CFrame + Vector3.new(0, -0.18, 0)
-            border.Parent = arrow
-        end
+        arrow.Size = Vector3.new(0.1, 0.1, 0.1)
+        arrow.Anchored = true
+        arrow.CanCollide, arrow.CanTouch, arrow.CanQuery = false, false, false
+        arrow.Transparency = 1
+        arrow.CastShadow = false
+        self._arrowStart = Instance.new("Attachment")
+        self._arrowStart.Name = "Start"
+        self._arrowStart.Parent = arrow
+        self._arrowTarget = Instance.new("Attachment")
+        self._arrowTarget.Name = "Target"
+        self._arrowTarget.Parent = arrow
+        local beam = Instance.new("Beam")
+        beam.Name = "TargetArrows"
+        beam.Attachment0 = self._arrowStart
+        beam.Attachment1 = self._arrowTarget
+        beam.Texture = FXLoader:Shared("Assets/TutorialArrowTexture").Texture
+        beam.TextureMode = Enum.TextureMode.Wrap
+        beam.TextureLength = 3
+        beam.TextureSpeed = 1.5
+        beam.Width0, beam.Width1 = 1.4, 1.4
+        beam.FaceCamera = true
+        beam.Segments = 32
+        beam.LightInfluence = 0
+        beam.LightEmission = 0.2
+        beam.Transparency = NumberSequence.new(0.05)
+        beam.Enabled = false
+        beam.Parent = arrow
         arrow.Parent = decorations
         self._arrowTrans = arrow
+        self._arrowEffect = beam
         self._renderSteppedConn = RunService.RenderStepped:Connect(function()
             self:UpdateGuideArrow()
+            self:UpdateGuideArrowAppearance()
         end)
     end
     self:UpdateGuideArrow()
+    self:UpdateGuideArrowAppearance()
 end
 
---- 箭头保持水平、从角色前方指向目标，重生时自动重新跟随。
+--- 起点跟随角色，终点直达目标上方；目标高度参与三维朝向计算。
 function Guide:UpdateGuideArrow()
     local character = self:GetPlayerCharacter()
     local root = character and character:FindFirstChild("HumanoidRootPart")
-    if not root or not self._arrowTrans or not self._worldTargetPosition then
+    if not self._arrowTrans then
         return
     end
-    local origin = root.Position + Vector3.new(0, 3.5 + math.sin(os.clock() * 3) * 0.25, 0)
-    local delta = self._worldTargetPosition - origin
-    local direction = Vector3.new(delta.X, 0, delta.Z)
-    if direction.Magnitude < 0.01 then
+    if not root or not self._worldTargetPosition then
+        self._arrowEffect.Enabled = false
         return
     end
-    local frame = CFrame.lookAt(origin + direction.Unit * 3, origin + direction.Unit * 4)
-    self._arrowTrans:PivotTo(frame)
+    local lootGuide = self._activeTarget and self._activeTarget.type == "NearestItem"
+    local origin = root.Position + Vector3.new(0, lootGuide and 4 or 0.5, 0)
+    local target = self._worldTargetPosition + Vector3.new(0, lootGuide and 7 or 2, 0)
+    local direction = target - origin
+    if direction.Magnitude < 2.5 then
+        self._arrowEffect.Enabled = false
+        return
+    end
+    self._arrowTrans.Position = origin
+    self._arrowStart.WorldPosition = origin + direction.Unit * 2
+    self._arrowTarget.WorldPosition = target
+    self._arrowEffect.Enabled = true
+end
+
+--- 光束使用沿连接线分布的彩虹渐变，箭头纹理由 Beam 自动向目标滚动。
+function Guide:UpdateGuideArrowAppearance()
+    local now = os.clock()
+    local colors = {}
+    for index = 0, 8 do
+        local position = index / 8
+        colors[index + 1] = ColorSequenceKeypoint.new(position, Color3.fromHSV((position - now * 0.2) % 1, 0.95, 1))
+    end
+    self._arrowEffect.Color = ColorSequence.new(colors)
 end
 
 --- 清理提示层、刷新连接与全部箭头实例。

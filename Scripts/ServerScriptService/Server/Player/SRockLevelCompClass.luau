@@ -408,6 +408,7 @@ function Component:RequestDrop(key, round)
 end
 
 --- 创建已通过击破校验的固定奖励；失败由位置 Tick 最多自动重试三次，不依赖旧角色凭据。
+--- 幸运掉落仅通过 HUD 图标标识，品质文案不显示幸运倍率。
 --- @param key string 已击破的石头格号。
 --- @param area table 奖励所属区域。
 --- @param cell number 区域内格号。
@@ -444,18 +445,16 @@ function Component:CreateDrop(key, area, cell, result, round)
         model:SetAttribute("DropExpiresAt", expiresAt)
         local hud = self._itemHUD:Clone()
         hud.Adornee = root
-        hud.StudsOffsetWorldSpace = Vector3.new(0, size.Y / 2 + 1.5, 0)
+        Collectible.StyleHUD(hud, model, result.Quality)
         local nameKey = CollectibleText.GetNameKey(result.Template.Name)
-        local rarityKey = result.IsLucky and "Loot.LuckyRarity" or "Rarity.Quality"
+        local rarityKey = "Rarity.Quality"
         local rarityArguments = {level = result.Quality}
-        if result.IsLucky then
-            rarityArguments.rate = GameUtility.NumberToText(result.LuckRate)
-        end
         hud:SetAttribute("DisplayNameKey", nameKey)
         hud:SetAttribute("RarityKey", rarityKey)
         hud:SetAttribute("RarityLevel", result.Quality)
         hud:SetAttribute("IsLucky", result.IsLucky)
         hud:SetAttribute("LuckRate", result.LuckRate)
+        hud.Frame.LuckIcon.Visible = result.IsLucky == true
         hud.Frame.ItemName.Text = English:FormatByKey(nameKey)
         hud.Frame.Rarity.Text = English:FormatByKey(rarityKey, rarityArguments)
         hud.Frame.ItemName.AutoLocalize = false

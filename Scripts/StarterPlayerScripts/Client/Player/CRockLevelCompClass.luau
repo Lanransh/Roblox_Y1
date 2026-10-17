@@ -6,6 +6,7 @@ local Debris = game:GetService("Debris")
 local TweenService = game:GetService("TweenService")
 local RockLevel = require(ReplicatedStorage.Scripts.Game.Shared.RockLevel)
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
+local GameEnum = FXLoader:RequireShared("Scripts/Game/Shared/GameEnum")
 local Fields = _G.PlayerDataConfig
 local Component = FX.Class("CRockLevelCompClass", "FCPlayerCompClass")
 local ColliderHeight = 16
@@ -26,13 +27,16 @@ function Component:Ctor(owner)
     self._health = {}
     self._fragments = {}
     self._fragmentPool = {}
+    self._trainingFragmentPool = {}
     self._hitReactions = {}
+    self._trainingHitReactions = {}
     self._nextChunkCheck = 0
     self._lastAttack = -math.huge
     self._nextAttackCheck = 0
     self._pendingHits = {}
     self._nextDropTimerCheck = 0
     self._dropVisuals = {}
+    self._luckLabels = {}
 end
 
 --- 返回项目关卡组件协作名称。
@@ -41,7 +45,7 @@ function Component:GetCompName()
     return "CRockLevelComp"
 end
 
---- 同步握手后加载受击、秒杀气场及个人石头资源，订阅轮次和命中校验结果。
+--- 同步握手后加载关卡幸运牌、受击、秒杀气场及个人石头资源，订阅轮次和命中校验结果。
 function Component:OnReady()
     self._localization = self:GetPlayerObject():RequireComponent("FCCommonUIComp").Localization
     local assets = FXLoader:Shared("Assets")
@@ -102,6 +106,7 @@ function Component:OnReady()
     self._folder = Instance.new("Folder")
     self._folder.Name = "RockLevelVisuals"
     self._folder.Parent = workspace
+    self:CreateLevelLuckSigns()
     for index = 1, #self._areas do
         local area = self._areas[index]
         for row = 0, area.Rows - 1, 6 do
@@ -122,6 +127,61 @@ function Component:OnReady()
         self:UpdateDropVisuals()
         self:UpdateVisuals()
     end))
+end
+
+--- 在所有世界的关卡中心上方创建幸运牌，随场景遮挡和距离隐藏，避免远处牌子叠在一起。
+function Component:CreateLevelLuckSigns()
+    local config = GameEnum.LevelLuckDisplay
+    for worldName, rates in pairs(config.WorldRates) do
+        local world = FXLoader:Workspace("GameLevelList/" .. worldName)
+        for index, rate in ipairs(rates) do
+            local area = FXLoader:Here(world, "Level_" .. index)
+            local billboard = Instance.new("BillboardGui")
+            billboard.Name = worldName .. "_Level_" .. index .. "_Luck"
+            billboard.Adornee = area
+            billboard.StudsOffsetWorldSpace = Vector3.new(0, config.Height, 0)
+            billboard.Size = UDim2.fromScale(30, 7)
+            billboard.AlwaysOnTop = false
+            billboard.LightInfluence = 0
+            billboard.MaxDistance = 150
+            local icon = Instance.new("ImageLabel")
+            icon.Name = "LuckIcon"
+            icon.BackgroundTransparency = 1
+            icon.Size = UDim2.fromScale(0.23, 1)
+            icon.Image = config.Icon
+            icon.ScaleType = Enum.ScaleType.Fit
+            icon.Parent = billboard
+            local label = Instance.new("TextLabel")
+            label.Name = "LuckText"
+            label.BackgroundTransparency = 1
+            label.Position = UDim2.fromScale(0.25, 0)
+            label.Size = UDim2.fromScale(0.75, 1)
+            label.Font = Enum.Font.GothamBlack
+            label.TextScaled = true
+            label.TextColor3 = Color3.new(1, 1, 1)
+            label.AutoLocalize = false
+            local stroke = Instance.new("UIStroke")
+            stroke.Color = Color3.fromRGB(15, 20, 30)
+            stroke.Thickness = 3
+            stroke.Parent = label
+            label.Parent = billboard
+            billboard.Parent = self._folder
+            table.insert(self._luckLabels, {Label = label, Rate = rate})
+        end
+    end
+    self:RefreshLevelLuckSigns()
+    self:TrackConnection(self._localization.Changed:Connect(function()
+        self:RefreshLevelLuckSigns()
+    end))
+end
+
+--- 云端翻译加载或语言变化后刷新幸运牌，数量格式沿用项目公共方法。
+function Component:RefreshLevelLuckSigns()
+    for index, entry in ipairs(self._luckLabels) do
+        entry.Label.Text = self._localization:FormatByKey("Level.Luck", {
+            rate = GameUtility.NumberToText(entry.Rate),
+        })
+    end
 end
 
 --- 按复制的到期时间和文案 Key 刷新掉落 HUD，云端加载或语言变化后同步显示。
@@ -523,7 +583,7 @@ function Component:SwingPickaxe(humanoid, key, area, instantBreak)
     end)
 end
 
---- 对已解锁场地巨石的实际表面播放火花、碎屑和声音，不改模型、血量或关卡命中记录。
+--- 对已解锁场地巨石播放火花、碎屑、声音及短暂缩放，不改血量或关卡命中记录。
 --- @param character Model 开始本次挥镐的角色，切换角色后不播放旧动作的特效。
 function Component:PlayTrainingHitEffect(character)
     if character ~= self:GetPlayerCharacter() then
@@ -557,6 +617,44 @@ function Component:PlayTrainingHitEffect(character)
     local impact = workspace:Raycast(root.Position, direction.Unit * (direction.Magnitude + core.Size.Magnitude), params)
     if impact then
         self:PlayHitEffect(core.Parent, false, impact)
+        local reaction = self._trainingHitReactions[core.Parent]
+        if not reaction then
+            reaction = {Origin = core.CFrame, Parts = {}}
+            for index, part in ipairs(rockParts) do
+                table.insert(reaction.Parts, {
+                    Part = part, Size = part.Size, Pose = part.CFrame,
+                    LocalPose = core.CFrame:ToObjectSpace(part.CFrame),
+                })
+            end
+            self._trainingHitReactions[core.Parent] = reaction
+        end
+        reaction.Started = os.clock()
+    end
+end
+
+--- 仅让训练巨石部件放大后回缩；保存原始姿态，重触发不累积缩放，角色缺失时也继续恢复。
+--- @param reset boolean? 组件释放时立即恢复全部原始尺寸和位置。
+function Component:UpdateTrainingHitReactions(reset)
+    local now = os.clock()
+    for rock, reaction in pairs(self._trainingHitReactions) do
+        local progress = reset and 1 or math.clamp((now - reaction.Started) / 0.35, 0, 1)
+        local scale = 1 + math.sin(progress * math.pi * 2) * (1 - progress) * 0.18
+        for index, entry in ipairs(reaction.Parts) do
+            local part = entry.Part
+            if part.Parent then
+                if progress >= 1 then
+                    part.Size = entry.Size
+                    part.CFrame = entry.Pose
+                else
+                    part.Size = entry.Size * scale
+                    part.CFrame = reaction.Origin * CFrame.new(entry.LocalPose.Position * scale)
+                        * entry.LocalPose.Rotation
+                end
+            end
+        end
+        if progress >= 1 then
+            self._trainingHitReactions[rock] = nil
+        end
     end
 end
 
@@ -752,7 +850,8 @@ function Component:PlayHitEffect(rock, broken, impact)
         self._hitReactions[rock] = {Started = os.clock(), Direction = away}
     end
     local fragmentOrigin = broken and CFrame.lookAt(center, center + normal) or effect.CFrame
-    self:SpawnFragments(fragmentOrigin, impact and rockPart.Color or rock:GetAttribute("GroundColor"), rockPart.Size, broken)
+    self:SpawnFragments(fragmentOrigin, impact and rockPart.Color or rock:GetAttribute("GroundColor"), rockPart.Size,
+        broken, impact ~= nil)
     Debris:AddItem(effect, math.max(3, sound.TimeLength + 0.1))
 end
 
@@ -822,40 +921,51 @@ function Component:PlayImpactParticles(effect, radius, broken, color)
     sparks:Emit(broken and 28 or 18)
 end
 
---- 优先复用碎石，普通命中喷出三块小碎屑，击破爆散四块；重置透明度避免复用时不可见。
+--- 训练命中喷出同色发光方块，关卡保留原碎石；分别复用对象，避免两种外观串用。
 --- @param origin CFrame 普通命中的表面位置或击破的石头中心，朝向表面外侧。
---- @param color Color3 对应地板的原始颜色，以 20% 强度叠加到碎石底色。
+--- @param color Color3 训练使用受击部件原色，关卡以地板颜色轻微染色。
 --- @param rockSize Vector3 当前石头尺寸，用于限定击破碎块的生成范围。
 --- @param broken boolean 是否击破，控制碎屑数量、尺寸及生成范围。
-function Component:SpawnFragments(origin, color, rockSize, broken)
+--- @param training boolean? 是否为训练巨石命中，控制方块外观和飞散轨迹。
+function Component:SpawnFragments(origin, color, rockSize, broken, training)
     local source = self._fragmentTemplate
     local tint = Color3.new(1, 1, 1):Lerp(color, 0.2)
     local fragmentColor = Color3.new(source.Color.R * tint.R, source.Color.G * tint.G, source.Color.B * tint.B)
-    local count = broken and 4 or 3
+    local pool = training and self._trainingFragmentPool or self._fragmentPool
+    local count = training and 9 or (broken and 4 or 3)
     local phase = math.random() * math.pi * 2
     for index = 1, count do
-        local fragment = table.remove(self._fragmentPool) or source:Clone()
+        local fragment = table.remove(pool)
+        if not fragment then
+            fragment = training and Instance.new("Part") or source:Clone()
+        end
         fragment.Name = "RockFragment"
         fragment.Anchored = true
         fragment.CanCollide = false
         fragment.CanTouch = false
         fragment.CanQuery = false
         fragment.CastShadow = false
-        fragment.Color = fragmentColor
-        fragment.Transparency = source.Transparency
+        fragment.Color = training and color or fragmentColor
+        fragment.Transparency = training and 0 or source.Transparency
         local size = (0.5 + math.random() * 0.4) * (broken and 1.8 or 0.65)
         fragment.Size = source.Size * (size / math.max(source.Size.X, source.Size.Y, source.Size.Z))
+        if training then
+            size = 0.3 + math.random() * 0.45
+            fragment.Size = Vector3.new(size, size, size)
+            fragment.Material = Enum.Material.Neon
+        end
         local rotation = CFrame.Angles(math.random() * math.pi, math.random() * math.pi, math.random() * math.pi)
         local offset = broken and Vector3.new((math.random() - 0.5) * rockSize.X * 0.7,
             (math.random() - 0.5) * rockSize.Y * 0.5, (math.random() - 0.5) * rockSize.Z * 0.7) or Vector3.zero
         fragment.CFrame = CFrame.new(origin.Position + offset) * rotation
         fragment.Parent = self._folder
         local angle = phase + (index - 1 + math.random() * 0.4) / count * math.pi * 2
-        local spread = broken and (7 + math.random() * 5) or 2
+        local spread = (training or broken) and (7 + math.random() * 5) or 2
         table.insert(self._fragments, {
             Part = fragment, Size = fragment.Size, Position = origin.Position + offset, Rotation = rotation,
-            Started = os.clock(), Lifetime = 0.45 + math.random() * 0.1,
-            Velocity = Vector3.new(math.cos(angle) * spread, broken and (8 + math.random() * 3) or 5,
+            Started = os.clock(), Lifetime = training and (0.8 + math.random() * 0.2) or (0.45 + math.random() * 0.1),
+            Pool = pool,
+            Velocity = Vector3.new(math.cos(angle) * spread, (training or broken) and (8 + math.random() * 3) or 5,
                 math.sin(angle) * spread) + (broken and Vector3.zero or origin.LookVector * 6),
             Spin = Vector3.new(math.random() * 10 - 5, math.random() * 10 - 5, math.random() * 10 - 5),
         })
@@ -870,7 +980,7 @@ function Component:UpdateFragments()
         local elapsed = now - fragment.Started
         if elapsed >= fragment.Lifetime then
             fragment.Part.Parent = nil
-            table.insert(self._fragmentPool, fragment.Part)
+            table.insert(fragment.Pool, fragment.Part)
             table.remove(self._fragments, index)
         else
             local fade = math.clamp((elapsed / fragment.Lifetime - 0.7) / 0.3, 0, 1)
@@ -1033,9 +1143,10 @@ function Component:UpdateDogVisibility(position)
     end
 end
 
---- 每 0.1 秒检查分块、攀爬和小狗显隐，每帧最多生成 6 块石头；气场由身体节点随角色移动。
+--- 每帧更新碎屑及训练缩放，每 0.1 秒检查分块、攀爬和小狗显隐，每帧最多生成 6 块石头。
 function Component:UpdateVisuals()
     self:UpdateFragments()
+    self:UpdateTrainingHitReactions()
     self:UpdateAttacks()
     local character = self:GetPlayerCharacter()
     local root = character and character:FindFirstChild("HumanoidRootPart")
@@ -1142,8 +1253,9 @@ function Component:ResetVisuals()
     end
 end
 
---- 释放掉落光环、秒杀气场、场景及对象池并恢复攀爬和小狗显示，基类负责断开监听。
+--- 释放特效、场景及对象池，恢复训练巨石、攀爬和小狗显示，基类负责断开监听。
 function Component:Dtor()
+    self:UpdateTrainingHitReactions(true)
     self:UpdateDogVisibility(nil)
     for model, visual in pairs(self._dropVisuals) do
         self:RemoveDropVisual(model)
@@ -1169,6 +1281,10 @@ function Component:Dtor()
         fragment:Destroy()
     end
     self._fragmentPool = {}
+    for index, fragment in ipairs(self._trainingFragmentPool) do
+        fragment:Destroy()
+    end
+    self._trainingFragmentPool = {}
     if self._folder then
         self._folder:Destroy()
     end

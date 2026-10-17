@@ -6,6 +6,8 @@ local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
 local GuiService = game:GetService("GuiService")
+local SocialService = game:GetService("SocialService")
+local ContentProvider = game:GetService("ContentProvider")
 local RockLevel = require(game:GetService("ReplicatedStorage").Scripts.Game.Shared.RockLevel)
 local GameUtility = require(game:GetService("ReplicatedStorage").Scripts.Game.Shared.GameUtility)
 local CurrencyShop = FXLoader:RequireShared("Scripts/Game/Shared/CurrencyShop")
@@ -212,6 +214,8 @@ function Component:BindButtons()
                     end
                 elseif node.Name == "CollectionBtn" then
                     self:GetPlayerObject():RequireComponent("CCollectionUIComp"):Show()
+                elseif node.Name == "InviteBtn" then
+                    self:PromptFriendInvite()
                 elseif node.Name == "RebirthButton" then
                     self:GetPlayerObject():RequireComponent("CRebirthUIComp"):Show()
                 elseif node.Name == "RewardBtn" then
@@ -229,6 +233,24 @@ function Component:BindButtons()
                 end
             end))
         end
+    end
+end
+
+--- 平台允许邀请时打开原生好友选择窗口，防止重复点击叠加请求。
+function Component:PromptFriendInvite()
+    if self._invitePending then
+        return
+    end
+    self._invitePending = true
+    local success, message = pcall(function()
+        local player = self:GetPlayerNode()
+        if SocialService:CanSendGameInviteAsync(player) then
+            SocialService:PromptGameInvite(player)
+        end
+    end)
+    self._invitePending = false
+    if not success then
+        warn("Unable to open friend invite:", message)
     end
 end
 
@@ -470,7 +492,7 @@ function Component:RefreshLootCapacity(loot)
     end
 end
 
---- 在屏幕中央展示道具或金币与放射光芒，再一起缩小飞向对应统计图标。
+--- 资源预加载并预热渲染后，同时展示奖励与光芒，再一起缩小飞向对应统计图标。
 --- @param entry table 服务端确认的道具 DisplayModelId 或礼盒金币 MoneyAmount。
 function Component:ShowPickupEffect(entry)
     local template = InstancePath.Find(entry.DisplayModelId)
@@ -585,11 +607,33 @@ function Component:ShowPickupEffect(entry)
         camera.Parent = viewport
         viewport.CurrentCamera = camera
     end
+    local assetsReady = isMoney
+    local warmupFrames = 0
+    if not isMoney then
+        --- 异步加载网格与贴图，不阻塞战利品数据刷新。
+        task.spawn(function()
+            local success, message = pcall(function()
+                ContentProvider:PreloadAsync({model})
+            end)
+            if not success then
+                warn("Unable to preload pickup preview:", message)
+            end
+            assetsReady = true
+        end)
+    end
     local elapsed = 0
     local connection
     --- 奖励与光芒共用屏幕位置和缩放，按奖励种类飞向背包或金币图标。
     --- @param deltaTime number 本次渲染帧间隔秒数。
     local function animate(deltaTime)
+        if not isMoney and (not assetsReady or warmupFrames < 2) then
+            if assetsReady then
+                warmupFrames += 1
+            end
+            glow.GroupTransparency = 1
+            viewport.ImageTransparency = 1
+            return
+        end
         elapsed += deltaTime
         if elapsed >= 1.3 then
             connection:Disconnect()
@@ -609,7 +653,7 @@ function Component:ShowPickupEffect(entry)
         local position = center:Lerp(target, fly ^ 2)
         local pop = math.clamp(elapsed / 0.18, 0, 1)
         local scale = (0.25 + 0.75 * (1 - (1 - pop) ^ 3)) * (1 - 0.9 * fly)
-        local diameter = math.min(self._effectGui.AbsoluteSize.X, self._effectGui.AbsoluteSize.Y) * 0.30 * scale
+        local diameter = math.min(self._effectGui.AbsoluteSize.X, self._effectGui.AbsoluteSize.Y) * (isMoney and 0.30 or 0.45) * scale
         effect.Position = UDim2.fromOffset(position.X, position.Y)
         effect.Size = UDim2.fromOffset(diameter, diameter)
         glow.Rotation = elapsed * 25
@@ -625,6 +669,13 @@ function Component:ShowPickupEffect(entry)
         end
     end
     animate(0)
+    if not isMoney then
+        local screenArea = GuiService:GetInsetArea(Enum.ScreenInsets.None)
+        local center = (screenArea.Min + screenArea.Max) / 2 - self._effectGui.AbsolutePosition
+        local diameter = math.min(self._effectGui.AbsoluteSize.X, self._effectGui.AbsoluteSize.Y) * 0.45
+        effect.Position = UDim2.fromOffset(center.X, center.Y)
+        effect.Size = UDim2.fromOffset(diameter, diameter)
+    end
     effect.Parent = self._effectGui
     connection = RunService.RenderStepped:Connect(animate)
     self._pickupEffects[effect] = connection
