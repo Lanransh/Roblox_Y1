@@ -10,10 +10,10 @@
 | 工具 | 参数 | 作用 |
 | --- | --- | --- |
 | `list` | `offset?`, `limit?` | 文件名、`sourceRevision`；按 `nextOffset` 翻页 |
-| `check`（磁盘） | `filename`, `expectedSourceRevision?` | 只读诊断已保存文件，不创建草稿 |
-| `open` | `filename`, `expectedSourceRevision?`, `includeApi?` | 打开/复用版本化内存草稿；首次用 book API 时加 `includeApi:true` 获取完整接口 |
+| `check`（磁盘） | `filename`, `expectedSourceRevision?` | 在私有临时副本中按需重算并实际试导表；不修改源表或创建草稿 |
+| `open` | `filename`, `expectedSourceRevision?`, `includeApi?`, `discardDraft?` | 打开/复用草稿；干净旧会话自动刷新；`discardDraft:true` 显式放弃旧草稿重载；首次用 book API 时加 `includeApi:true` |
 | `execute_script` | `contextId`, `expectedDraftRevision`, `apiVersion:"1"`, `code` | 在草稿执行同步 JavaScript 函数体，用 `print(...args)` 输出查询结果到 `logs` |
-| `check`（草稿） | `contextId`, `expectedDraftRevision` | 只读检查精确版本；不能同时传 filename/sourceRevision |
+| `check`（草稿） | `contextId`, `expectedDraftRevision` | 在临时副本中完整试导表，不修改草稿及其版本；不能同时传 filename/sourceRevision |
 | `close` | `contextId`, `expectedDraftRevision` | 完整检查，必要时 WPS 重算，备份后保存；成功才关闭；不会更新 Luau 导出文件 |
 | `export` | `filename`, `expectedSavedRevision` | 导出精确的已保存版本；不隐式保存草稿，有脏草稿时拒绝 |
 
@@ -26,10 +26,18 @@
 - 无输出时省略 `logs`；每次最多 100 条、合计 65536 个 UTF-16 码元，超限截断并返回 `logsTruncated:true`，不导致修改失败。遇截断需缩小范围或分页重新查询，不能把截断 JSON 当作完整数据。
 - 执行后仍自动检查草稿，但 `execute_script.check` 只在有错误或警告时出现，仅包含非空 `errors`、`warnings`；正常摘要和待检查项从独立 `sgtk.config.check` 获取。
 - close 后使用返回的 `savedRevision` 作为 export 的 `expectedSavedRevision`。导出现有磁盘版本时先重新获取并核对该版本。
-- `check` 不重算、不保存、不导出。无 errors 但仍有 `full_export`/公式 pending 不代表已完成；完整验证发生在 close/export。
+- 独立 `sgtk.config.check` 在私有临时副本中按需调用 WPS 重算并执行完整解析和 Lua/Luau 序列化；不保存源表、不更新草稿缓存、不覆盖正式导出文件。成功时 `export` 为 passed，不再有 `full_export` 待检查项。通过试导表不等于原表可保真保存，仍须 close；脚本内 `book.check()` 和 execute_script 附带检查不替代独立试导表。旧服务仍可能返回 pending，以实际响应为准，不把它当作已完成。
 - 根据 `isError`、`execution`、顶层 error、`closed`、`saved` 和检查位置报告实际结果，不依赖某个可选字段一定存在；不同服务版本可能省略空数组、重复字段或 `readyToClose`。
-- open/close/export 会检查 WPS 占用；不自动关闭用户文档、删除锁文件或终止 WPS。外部版本冲突保留草稿，不强制覆盖或自动合并。
-- 执行异常回滚本次脚本；普通异常和引擎超时尽量保留已输出日志，但不能据此认为修改生效；进程终止或资源耗尽时日志可能丢失。正常执行但检查失败保留草稿。草稿仅在内存中，不承诺重启恢复；当前无丢弃/强制保存接口。
+- open 读取磁盘版本，不因 WPS 占用或无法确认状态直接拒绝打开；不会接管 WPS 中尚未保存的内容。check/close/export 仍检查占用；不关闭用户文档、删除锁文件或终止 WPS。外部版本冲突不强制覆盖或自动合并。
+- 执行异常回滚本次脚本；普通异常和引擎超时尽量保留已输出日志，但不能据此认为修改生效；进程终止或资源耗尽时日志可能丢失。正常执行但检查失败保留草稿。草稿仅在内存中，不承诺重启恢复；可显式丢弃重载，但没有强制保存或自动合并接口。
+
+### 重开、外部修改和丢弃草稿
+
+- 磁盘内容未变时复用原 contextId 和草稿；磁盘已更新且没有未保存修改时自动重载。
+- 有未保存修改且磁盘已变化时，默认报 REVISION_CONFLICT 并保留草稿。先判断旧草稿是否仍有需要保留的改动，不自动覆盖或丢弃。
+- 确定以磁盘版本为准时，重新 list 获取最新 sourceRevision，再调用 open，传 filename、expectedSourceRevision 和 `discardDraft:true`。这会放弃该文件旧草稿的全部未保存修改，不写回旧内容。
+- 只有加载成功后才替换旧草稿；返回新 contextId、draftRevision 为 0，旧上下文不可继续使用。加载失败、版本不匹配或超出配额时旧草稿仍保留。不要继续使用旧句柄或版本。
+- 若当前服务 schema 未提供 discardDraft，不发送未知参数；报告需要加载新版服务，不用直接改文件、清后台状态或反复重启来绕过草稿保护。
 
 ## 2. book API 和查询示例
 
@@ -57,7 +65,7 @@ print({
 | Table | `readEntries`, `entry(key)`, `addEntry`, `removeEntry` |
 | Entry | `getMeta`, `setMeta`, `keyCell`, `valueCell` |
 | Sheet | `getInfo`, `getUsedRange`, `getOccupiedRows`, `getOccupiedColumns`, `readRows`, `cell("A1")`, `insertRows`, `deleteRows`, `rename`, `remove` |
-| Cell | `read`, `getValue`, `getFormula`, `getCachedResult`, `setValue`, `setFormula`, `clear` |
+| Cell | `read`, `getValue`, `getFormula`, `getCachedResult`, `setValue`, `setFormula`, `clear`, `getHyperlink`, `setHyperlink({sheet,cell})`, `clearHyperlink` |
 
 以实际 `includeApi:true` 返回的签名为准。CellValue 是 `string | number | boolean | null`；数组和 KV 在单元格中仍写协议字符串，不传 JS 数组/对象。
 
@@ -71,8 +79,26 @@ print({ before, after: cell.read() });
 ```
 
 `setValue` 不覆盖公式；改公式用 `setFormula("=...")`，清空用 `clear()`。公式缓存有 `fresh/pending/unavailable` 状态，不能把旧缓存当新计算结果。
-含公式的候选由宿主在 close/export 中使用独立 WPS 实例重算；不以 AI 手算或静默删除公式替代。
-公式/布局引用可能阻断物理移动、删除和页签重命名；不要为了完成修改而移除这些保护。
+check/close/export 按需在独立 WPS 实例中重算导出字段及其递归公式依赖；无关辅助公式不执行。条件格式、数据验证和链接从临时计算副本移除，原表保持不变，不以 AI 手算或静默删除公式替代。
+行列尺寸、冻结窗格、分页符本身不再阻断结构操作；实际公式、合并或尚不能维护的引用仍可能阻断移动、删除和重命名。只修改任务涉及的引用，不无差别移除保护。日期等非脚本标量可按文本及 sourceType 读取，源单元格保持原类型；需要修复时使用现有单元格操作。
+
+### 当前工作簿内的超链接修复
+
+失效导航链接本身不参与配置数据导出校验。仅在任务需要修复或移除链接时操作，先核对实际页签和锚点，不从显示文字猜跳转目标。
+
+- `getHyperlink()` 返回原始 `{location,target}` 或 null；`read().hyperlink` 也可查看链接，失效链接仍可读取。
+- `setHyperlink({sheet,cell})` 的 sheet 必须是当前工作簿已有页签，cell 必须是有效大写单格 A1 地址；不接受 URL、其他 XLSX 文件、范围或任意跳转字符串。
+- 修正目标保留已有单元格文字、公式及链接提示；空白单元格以规范化内部地址作显示文字。`clearHyperlink()` 只移除链接；`clear()` 只清值或公式，不移除链接。
+- 仅链接修改也会产生草稿版本；按返回版本继续 check、close、export，不把链接修好当作已保存或已导出。移除最后一个链接后，可继续其他允许的结构操作；其他实际引用限制仍有效。
+
+示例仅用于已核实 Rule!E4 应指向本文件 ToolConfig 页签且任务要求修复的情况；实际名称以查询为准：
+
+```javascript
+const cell = book.sheet("Rule").cell("E4");
+print({ before: cell.getHyperlink(), text: cell.getValue() });
+cell.setHyperlink({ sheet: "ToolConfig", cell: "A1" });
+print({ after: cell.read() });
+```
 
 ## 3. 工作簿布局与三种 Meta
 

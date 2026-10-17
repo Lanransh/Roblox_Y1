@@ -5,6 +5,7 @@ local TweenService = game:GetService("TweenService")
 local HttpService = game:GetService("HttpService")
 local RockLevel = require(game:GetService("ReplicatedStorage").Scripts.Game.Shared.RockLevel)
 local Collectible = require(script.Parent.RockCollectible)
+local ToyRoller = FXLoader:RequireFromParent(script, "ToyRoller")
 local RockWeaponTool = require(script.Parent.RockWeaponTool)
 local GameConfig = _G.GameConfig
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
@@ -87,7 +88,7 @@ function Component:OnPlayerLogin()
     end)
 end
 
---- 按 AreaId 建立索引，并在玩家进入区域前验证数量、倍率、奖池和展示模型。
+--- 按石头总数与通用比例确定刷新件数，按 AreaId 校验幸运倍率并缓存候选模型。
 function Component:PrepareAreaDefinitions()
     local configsById, duplicateConfigs = {}, {}
     local areaConfigs = type(GameConfig.AreaConfig) == "table" and GameConfig.AreaConfig or {}
@@ -101,39 +102,21 @@ function Component:PrepareAreaDefinitions()
             end
         end
     end
-    local refreshById, duplicateRefreshes = {}, {}
-    local refreshRows = type(GameConfig.AreaRefreshData) == "table" and GameConfig.AreaRefreshData or {}
-    for _, refresh in pairs(refreshRows) do
-        local areaId = type(refresh) == "table" and refresh.AreaId
-        if isFiniteNumber(areaId) then
-            if refreshById[areaId] then
-                duplicateRefreshes[areaId] = true
-            else
-                refreshById[areaId] = refresh
-            end
-        end
-    end
-
     self._areaDefinitions = {}
     local itemDataById = type(GameConfig.ItemData) == "table" and GameConfig.ItemData or {}
     for _, area in ipairs(self._areas) do
         local areaId = area.Index
-        local definition = {AreaId = areaId, Pool = {}, TotalWeight = 0}
+        local definition = {AreaId = areaId, Pool = {}}
         self._areaDefinitions[areaId] = definition
         local config = configsById[areaId]
         if duplicateConfigs[areaId] then
             definition.Error = "duplicate AreaConfig rows"
         elseif not config or config.AreaId ~= areaId then
             definition.Error = "missing AreaConfig for world 1 area"
-        elseif not isFiniteNumber(config.NormalRefreshCount) or config.NormalRefreshCount < 0
-            or config.NormalRefreshCount % 1 ~= 0 or not isFiniteNumber(config.LuckRefreshCount)
-            or config.LuckRefreshCount < 0 or config.LuckRefreshCount % 1 ~= 0 then
-            definition.Error = "refresh counts must be non-negative integers"
-        elseif config.NormalRefreshCount + config.LuckRefreshCount > area.Columns * area.Rows then
-            definition.Error = "refresh count exceeds available cells"
         else
-            definition.NormalCount = config.NormalRefreshCount
-            definition.LuckCount = config.LuckRefreshCount
+            local count = math.floor(area.Columns * area.Rows * GameConfig.CommonConfig.ToyRefreshRatio)
+            definition.LuckCount = math.min(GameConfig.CommonConfig.ToyLuckyCount, count)
+            definition.NormalCount = count - definition.LuckCount
             if definition.LuckCount > 0 then
                 local rate = config.LuckRefreshRate
                 if type(rate) ~= "table" or not isFiniteNumber(rate[1]) or not isFiniteNumber(rate[2])
@@ -145,42 +128,28 @@ function Component:PrepareAreaDefinitions()
                 end
             end
             if not definition.Error and definition.NormalCount + definition.LuckCount > 0 then
-                local refresh = refreshById[areaId]
-                if duplicateRefreshes[areaId] then
-                    definition.Error = "duplicate AreaRefreshData rows"
-                elseif not refresh or refresh.AreaId ~= areaId or type(refresh.RewardPool) ~= "table" then
-                    definition.Error = "missing reward pool for AreaId"
-                else
-                    for _, reward in pairs(refresh.RewardPool) do
-                        local itemId = type(reward) == "table" and reward.x
-                        local weight = type(reward) == "table" and reward.y
-                        local itemData = isFiniteNumber(itemId) and itemDataById[itemId]
-                        local template = type(itemData) == "table" and Collectible.ResolveModel(itemData.DisplayModelId)
-                        if not isFiniteNumber(itemId) or itemId % 1 ~= 0 or type(itemData) ~= "table"
-                            or itemData.Id ~= itemId or not isFiniteNumber(weight) or weight < 0
-                            or not template or not isFiniteNumber(itemData.Pirce) or itemData.Pirce < 0
-                            or not isFiniteNumber(itemData.Quality) or itemData.Quality < 0
-                            or itemData.Quality % 1 ~= 0 then
-                            definition.Error = "reward has invalid item, model, quality, price, or weight"
-                            break
-                        end
-                        table.insert(definition.Pool, {
-                            ItemId = itemId,
-                            DisplayModelId = itemData.DisplayModelId,
-                            Template = template,
-                            Quality = itemData.Quality,
-                            Price = itemData.Pirce,
-                            Weight = weight,
-                        })
-                        definition.TotalWeight += weight
-                        if not isFiniteNumber(definition.TotalWeight) then
-                            definition.Error = "reward pool weight sum is not finite"
-                            break
-                        end
+                local pool, averagePrice, areaLuck = ToyRoller.CreatePool(1, areaId)
+                definition.AveragePrice = averagePrice
+                definition.AreaLuck = areaLuck
+                for _, reward in ipairs(pool) do
+                    local itemId = reward.ItemId
+                    local itemData = isFiniteNumber(itemId) and itemDataById[itemId]
+                    local template = type(itemData) == "table" and Collectible.ResolveModel(itemData.DisplayModelId)
+                    if not isFiniteNumber(itemId) or itemId % 1 ~= 0 or type(itemData) ~= "table"
+                        or itemData.Id ~= itemId or not template
+                        or not isFiniteNumber(itemData.Quality) or itemData.Quality < 0
+                        or itemData.Quality % 1 ~= 0 then
+                        definition.Error = "reward has invalid item, model, or quality"
+                        break
                     end
-                    if not definition.Error and definition.TotalWeight <= 0 then
-                        definition.Error = "reward pool has no positive weight"
-                    end
+                    table.insert(definition.Pool, {
+                        ItemId = itemId,
+                        DisplayModelId = itemData.DisplayModelId,
+                        Template = template,
+                        Quality = itemData.Quality,
+                        PriceRateMin = reward.PriceRateMin,
+                        PriceRateMax = reward.PriceRateMax,
+                    })
                 end
             end
         end
@@ -190,8 +159,8 @@ function Component:PrepareAreaDefinitions()
     end
 end
 
---- 首次进入区域时一次性生成本轮内容；完整抽取后才登记，失败不会留下半份状态。
---- @param area table 服务端位置确认过的关卡边界。
+--- 按 2×2 分区轮流抽取固定比例的石头格，分散道具后打乱幸运位置；已有区域不重抽。
+--- @param area table 服务端加载的当前关或下一关边界。
 --- @return boolean 区域是否已可用于本轮。
 function Component:InitializeArea(area)
     local areaId = area.Index
@@ -204,9 +173,34 @@ function Component:InitializeArea(area)
     end
     local cells = {}
     local count = definition.NormalCount + definition.LuckCount
-    for cell = 1, area.Columns * area.Rows do
-        cells[cell] = cell
+    local zones = {}
+    for row = 0, area.Rows - 1, 2 do
+        for column = 0, area.Columns - 1, 2 do
+            local zone = {}
+            for zoneRow = row, math.min(row + 1, area.Rows - 1) do
+                for zoneColumn = column, math.min(column + 1, area.Columns - 1) do
+                    table.insert(zone, zoneRow * area.Columns + zoneColumn + 1)
+                end
+            end
+            table.insert(zones, zone)
+        end
     end
+    -- 每个分区先抽一格再开始下一轮，避免道具集中在一侧；分区顺序随机。
+    for index = 1, #zones do
+        local swap = self._random:NextInteger(index, #zones)
+        zones[index], zones[swap] = zones[swap], zones[index]
+    end
+    while #cells < count do
+        for zoneIndex, zone in ipairs(zones) do
+            if #zone > 0 then
+                table.insert(cells, table.remove(zone, self._random:NextInteger(1, #zone)))
+                if #cells == count then
+                    break
+                end
+            end
+        end
+    end
+    -- 幸运件数按最终顺序分配，打乱后不会固定落在最后遍历的几个分区。
     for index = 1, count do
         local swap = self._random:NextInteger(index, #cells)
         cells[index], cells[swap] = cells[swap], cells[index]
@@ -214,22 +208,12 @@ function Component:InitializeArea(area)
 
     local contents = {}
     for index = 1, count do
-        local roll = self._random:NextNumber() * definition.TotalWeight
-        local selected, lastWeighted, cumulative = nil, nil, 0
-        for _, reward in ipairs(definition.Pool) do
-            if reward.Weight > 0 then
-                lastWeighted = reward
-                cumulative += reward.Weight
-                if roll < cumulative then
-                    selected = reward
-                    break
-                end
-            end
-        end
-        selected = selected or lastWeighted
+        local selected = definition.Pool[self._random:NextInteger(1, #definition.Pool)]
         local isLucky = index > definition.NormalCount
         local luckRate = isLucky and self._random:NextNumber(definition.LuckRateMin, definition.LuckRateMax) or 1
-        local price = selected.Price * luckRate
+        -- 每种道具使用本关固定档次的价格区间，同款浮动，幸运倍率额外叠加。
+        local price = definition.AveragePrice
+            * self._random:NextNumber(selected.PriceRateMin, selected.PriceRateMax) * luckRate
         if not isFiniteNumber(price) or price < 0 then
             definition.Error = "generated reward price is not finite"
             warn(string.format("Rock rewards disabled for AreaId %s: %s", tostring(areaId), definition.Error))
@@ -723,7 +707,7 @@ function Component:EquipPickaxe(humanoid)
     end
 end
 
---- 服务端处理掉落、角色与入库，并在装备数据变化后替换当前武器；死亡期间仍回收掉落。
+--- 服务端处理掉落、角色与入库，进入当前关时预生成当前关及下一关；死亡期间仍回收掉落。
 function Component:Tick()
     local now = workspace:GetServerTimeNow()
     for dropId, drop in pairs(self._dropNodes) do
@@ -782,9 +766,10 @@ function Component:Tick()
             if position.X >= area.MinX and position.X < area.MinX + area.Columns * RockLevel.CellSize
                 and position.Z >= area.MinZ and position.Z < area.MinZ + area.Rows * RockLevel.CellSize
                 and math.abs(position.Y - area.FloorY) < 12 then
-                local definition = self._areaDefinitions[area.Index]
-                if definition and not definition.Error then
-                    self:InitializeArea(area)
+                self:InitializeArea(area)
+                local nextArea = self._areas[area.Index + 1]
+                if nextArea then
+                    self:InitializeArea(nextArea)
                 end
                 break
             end
