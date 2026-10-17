@@ -6,6 +6,7 @@ return {
             Name = [[解锁VIP]],
             Desc = [[解锁VIP]],
             Price = 68,
+            RobloxProductId = 3.718980394e+9,
             BuyLimit = nil,
             NumberArray = nil,
             KVTable = nil
@@ -16,6 +17,7 @@ return {
             Name = [[新手优惠5折钻石包]],
             Desc = [[获得48颗钻石(超值!)]],
             Price = 3,
+            RobloxProductId = nil,
             BuyLimit = 1,
             NumberArray = {
                 [1] = 48,
@@ -28,6 +30,7 @@ return {
             Name = [[小额钻石包]],
             Desc = [[获得152颗钻石]],
             Price = 19,
+            RobloxProductId = nil,
             BuyLimit = nil,
             NumberArray = {
                 [1] = 152,
@@ -40,6 +43,7 @@ return {
             Name = [[中额钻石包]],
             Desc = [[获得618颗钻石]],
             Price = 69,
+            RobloxProductId = nil,
             BuyLimit = nil,
             NumberArray = {
                 [1] = 618,
@@ -52,6 +56,7 @@ return {
             Name = [[获得1698颗钻石]],
             Desc = [[获得1698颗钻石]],
             Price = 169,
+            RobloxProductId = nil,
             BuyLimit = nil,
             NumberArray = {
                 [1] = 1698,
@@ -64,6 +69,7 @@ return {
             Name = [[小周卡X1]],
             Desc = [[立即获得100钻石,每天签到多获得30钻石(6天)]],
             Price = 18,
+            RobloxProductId = nil,
             BuyLimit = nil,
             NumberArray = nil,
             KVTable = {
@@ -77,6 +83,7 @@ return {
             Name = [[大周卡X1]],
             Desc = [[立即获得400钻石,每天签到多获得120钻石(6天)]],
             Price = 68,
+            RobloxProductId = nil,
             BuyLimit = nil,
             NumberArray = nil,
             KVTable = {
@@ -90,6 +97,7 @@ return {
             Name = [[发送一次钻石红包]],
             Desc = [[发送一次钻石红包]],
             Price = 6,
+            RobloxProductId = nil,
             BuyLimit = nil,
             NumberArray = nil,
             KVTable = nil
@@ -100,6 +108,7 @@ return {
             Name = [[Skip Rebirth]],
             Desc = [[Skip the level requirement and rebirth once.]],
             Price = 18,
+            RobloxProductId = nil,
             BuyLimit = nil,
             NumberArray = nil,
             KVTable = {
@@ -113,6 +122,7 @@ return {
             Name = [[Skip Rebirth]],
             Desc = [[Skip the level requirement and rebirth once.]],
             Price = 28,
+            RobloxProductId = nil,
             BuyLimit = nil,
             NumberArray = nil,
             KVTable = {
@@ -126,6 +136,7 @@ return {
             Name = [[Skip Rebirth]],
             Desc = [[Skip the level requirement and rebirth once.]],
             Price = 48,
+            RobloxProductId = nil,
             BuyLimit = nil,
             NumberArray = nil,
             KVTable = {
@@ -139,6 +150,7 @@ return {
             Name = [[Skip Rebirth]],
             Desc = [[Skip the level requirement and rebirth once.]],
             Price = 68,
+            RobloxProductId = nil,
             BuyLimit = nil,
             NumberArray = nil,
             KVTable = {

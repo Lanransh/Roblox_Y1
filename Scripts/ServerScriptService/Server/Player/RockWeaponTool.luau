@@ -35,7 +35,10 @@ function RockWeaponTool.Build(template, giantPickaxe)
         return tool, tool.Visual
     end
     local model = template:Clone()
-    model:ScaleTo(0.4)
+    -- 21–26 的源模型柄长为 4.6，按 0.6 缩放后与旧款 6.9 × 0.4 一致。
+    local toolNumber = tonumber(string.sub(template.Name, 1, 2))
+    local isNewPixelTool = toolNumber and toolNumber >= 21 and toolNumber <= 26
+    model:ScaleTo(isNewPixelTool and 0.6 or 0.4)
     model:PivotTo(CFrame.new())
     local tool = Instance.new("Tool")
     tool.Name = template.Name
@@ -60,9 +63,18 @@ function RockWeaponTool.Build(template, giantPickaxe)
                 or part.Name == "方木柄" or part.Name == "红棕方木柄"
                 or part.Name == "握持包覆下" or part.Name == "握持包覆上"
                 or part.Name == "平整握持包覆"
+                or (isNewPixelTool and (part.Name == "柄芯_1"
+                    or string.match(part.Name, "^宽握持包覆下_%d+$")
+                    or string.match(part.Name, "^宽握持包覆上_%d+$")
+                    or string.match(part.Name, "^收口箍_%d+$")))
                 or string.match(part.Name, "^六棱柄%d+$") then
                 local widthScale = 0.7 / (giantPickaxe and 1.5 or 1)
-                part.Size = Vector3.new(part.Size.X * widthScale, part.Size.Y, part.Size.Z * widthScale)
+                -- 新柄芯为沿局部 X 轴的圆柱，保留轴向长度，只收窄截面。
+                if isNewPixelTool and part.Name == "柄芯_1" then
+                    part.Size = Vector3.new(part.Size.X, part.Size.Y * widthScale, part.Size.Z * widthScale)
+                else
+                    part.Size = Vector3.new(part.Size.X * widthScale, part.Size.Y, part.Size.Z * widthScale)
+                end
                 local position = part.Position
                 part.CFrame = CFrame.new(position.X * widthScale, position.Y, position.Z * widthScale) * part.CFrame.Rotation
             end

@@ -298,6 +298,66 @@ return {
         [21] = {
             Index = 21,
             ToolId = 121,
+            Name = [[DeepSeaAnchorHammer]],
+            Price = 8.45e+16,
+            TrainingRate = 8.01e+13,
+            DevGoodId = nil,
+            Img = [[96227746339558]],
+            ModelId = [=[game.ReplicatedStorage.Assets.BlockMeshs.Tools["21DeepSeaAnchorHammer"]]=]
+        },
+        [22] = {
+            Index = 22,
+            ToolId = 122,
+            Name = [[DeepSeaHookPickaxe]],
+            Price = 4.23e+17,
+            TrainingRate = 2.4e+14,
+            DevGoodId = nil,
+            Img = [[134869410236813]],
+            ModelId = [=[game.ReplicatedStorage.Assets.BlockMeshs.Tools["22DeepSeaHookPickaxe"]]=]
+        },
+        [23] = {
+            Index = 23,
+            ToolId = 123,
+            Name = [[DesertColossusBoneHammer]],
+            Price = 2.12e+18,
+            TrainingRate = 7.2e+14,
+            DevGoodId = nil,
+            Img = [[121268665996978]],
+            ModelId = [=[game.ReplicatedStorage.Assets.BlockMeshs.Tools["23DesertColossusBoneHammer"]]=]
+        },
+        [24] = {
+            Index = 24,
+            ToolId = 124,
+            Name = [[SandKingFangPickaxe]],
+            Price = 1.06e+19,
+            TrainingRate = 2.16e+15,
+            DevGoodId = nil,
+            Img = [[89972874141623]],
+            ModelId = [=[game.ReplicatedStorage.Assets.BlockMeshs.Tools["24SandKingFangPickaxe"]]=]
+        },
+        [25] = {
+            Index = 25,
+            ToolId = 125,
+            Name = [[AmethystStarRingHammer]],
+            Price = 5.3e+19,
+            TrainingRate = 6.48e+15,
+            DevGoodId = nil,
+            Img = [[88597169256101]],
+            ModelId = [=[game.ReplicatedStorage.Assets.BlockMeshs.Tools["25AmethystStarRingHammer"]]=]
+        },
+        [26] = {
+            Index = 26,
+            ToolId = 126,
+            Name = [[AmethystStarRingPickaxe]],
+            Price = 2.65e+20,
+            TrainingRate = 1.94e+16,
+            DevGoodId = nil,
+            Img = [[85002040484327]],
+            ModelId = [=[game.ReplicatedStorage.Assets.BlockMeshs.Tools["26AmethystStarRingPickaxe"]]=]
+        },
+        [27] = {
+            Index = 27,
+            ToolId = 127,
             Name = [[HolyCrownPickaxe]],
             Price = 1,
             TrainingRate = 1,
@@ -305,9 +365,9 @@ return {
             Img = [[122188029381990]],
             ModelId = [=[game.ReplicatedStorage.Assets.AITools["01-holy-crown-pickaxe"]]=]
         },
-        [22] = {
-            Index = 22,
-            ToolId = 122,
+        [28] = {
+            Index = 28,
+            ToolId = 128,
             Name = [[HolyCrownHammer]],
             Price = 2,
             TrainingRate = 2,
@@ -315,9 +375,9 @@ return {
             Img = [[111918297845046]],
             ModelId = [=[game.ReplicatedStorage.Assets.AITools["02-holy-crown-hammer"]]=]
         },
-        [23] = {
-            Index = 23,
-            ToolId = 123,
+        [29] = {
+            Index = 29,
+            ToolId = 129,
             Name = [[DragonFlamePickaxe]],
             Price = 3,
             TrainingRate = 3,
@@ -325,9 +385,9 @@ return {
             Img = [[131796875082030]],
             ModelId = [=[game.ReplicatedStorage.Assets.AITools["03-dragon-flame-pickaxe"]]=]
         },
-        [24] = {
-            Index = 24,
-            ToolId = 124,
+        [30] = {
+            Index = 30,
+            ToolId = 130,
             Name = [[DragonFlameHammer]],
             Price = 4,
             TrainingRate = 4,
@@ -335,9 +395,9 @@ return {
             Img = [[135291300946209]],
             ModelId = [=[game.ReplicatedStorage.Assets.AITools["04-dragon-flame-hammer"]]=]
         },
-        [25] = {
-            Index = 25,
-            ToolId = 125,
+        [31] = {
+            Index = 31,
+            ToolId = 131,
             Name = [[ThunderPickaxe]],
             Price = 5,
             TrainingRate = 5,
@@ -345,15 +405,95 @@ return {
             Img = [[135059340240171]],
             ModelId = [=[game.ReplicatedStorage.Assets.AITools["05-thunder-pickaxe"]]=]
         },
-        [26] = {
-            Index = 26,
-            ToolId = 126,
+        [32] = {
+            Index = 32,
+            ToolId = 132,
             Name = [[ThunderHammer]],
             Price = 6,
             TrainingRate = 6,
             DevGoodId = nil,
             Img = [[138711849822666]],
             ModelId = [=[game.ReplicatedStorage.Assets.AITools["06-thunder-hammer"]]=]
+        },
+        [33] = {
+            Index = 33,
+            ToolId = 133,
+            Name = [[EasternCloudsPickaxe]],
+            Price = 7,
+            TrainingRate = 7,
+            DevGoodId = nil,
+            Img = [[103077185243615]],
+            ModelId = [=[game.ReplicatedStorage.Assets.AITools["07-eastern-clouds-pickaxe"]]=]
+        },
+        [34] = {
+            Index = 34,
+            ToolId = 134,
+            Name = [[EasternCloudsHammer]],
+            Price = 8,
+            TrainingRate = 8,
+            DevGoodId = nil,
+            Img = [[119720961929827]],
+            ModelId = [=[game.ReplicatedStorage.Assets.AITools["08-eastern-clouds-hammer"]]=]
+        },
+        [35] = {
+            Index = 35,
+            ToolId = 135,
+            Name = [[ForestGuardianPickaxe]],
+            Price = 9,
+            TrainingRate = 9,
+            DevGoodId = nil,
+            Img = [[104288707111612]],
+            ModelId = [=[game.ReplicatedStorage.Assets.AITools["09-forest-guardian-pickaxe"]]=]
+        },
+        [36] = {
+            Index = 36,
+            ToolId = 136,
+            Name = [[ForestGuardianHammer]],
+            Price = 10,
+            TrainingRate = 10,
+            DevGoodId = nil,
+            Img = [[93955605202823]],
+            ModelId = [=[game.ReplicatedStorage.Assets.AITools["10-forest-guardian-hammer"]]=]
+        },
+        [37] = {
+            Index = 37,
+            ToolId = 137,
+            Name = [[IceCrystalPickaxe]],
+            Price = 11,
+            TrainingRate = 11,
+            DevGoodId = nil,
+            Img = [[94920898798936]],
+            ModelId = [=[game.ReplicatedStorage.Assets.AITools["11-ice-crystal-pickaxe"]]=]
+        },
+        [38] = {
+            Index = 38,
+            ToolId = 138,
+            Name = [[IceCrystalHammer]],
+            Price = 12,
+            TrainingRate = 12,
+            DevGoodId = nil,
+            Img = [[98900726428144]],
+            ModelId = [=[game.ReplicatedStorage.Assets.AITools["12-ice-crystal-hammer"]]=]
+        },
+        [39] = {
+            Index = 39,
+            ToolId = 139,
+            Name = [[ShadowDemonPickaxe]],
+            Price = 13,
+            TrainingRate = 13,
+            DevGoodId = nil,
+            Img = [[97673689505764]],
+            ModelId = [=[game.ReplicatedStorage.Assets.AITools["13-shadow-demon-pickaxe"]]=]
+        },
+        [40] = {
+            Index = 40,
+            ToolId = 140,
+            Name = [[ShadowDemonHammer]],
+            Price = 14,
+            TrainingRate = 14,
+            DevGoodId = nil,
+            Img = [[133737570876290]],
+            ModelId = [=[game.ReplicatedStorage.Assets.AITools["14-shadow-demon-hammer"]]=]
         }
     },
     TrainingRateConfig = {

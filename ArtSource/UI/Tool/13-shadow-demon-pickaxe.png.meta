@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "id": "3a8cb82360334c10b33d7e9c3e618b5a",
+  "kind": "Image",
+  "tags": [],
+  "uploads": [
+    {
+      "ownerType": "user",
+      "ownerId": "2563885143",
+      "sha256": "0302410c2a657ffcf350bf15f6e5d33e5fae0bfd2d786fa6dd92b390ca3e1b0f",
+      "assetType": "Image",
+      "assetId": "97673689505764",
+      "uploadedAt": "2026-10-17T12:42:14.735485+00:00",
+      "grantedUniverseId": "10768714039"
+    }
+  ]
+}

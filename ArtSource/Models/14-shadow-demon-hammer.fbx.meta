@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "id": "dfa93e5ae7ee4520bb1b87d548ec2a89",
+  "kind": "Model",
+  "tags": [],
+  "uploads": [
+    {
+      "ownerType": "user",
+      "ownerId": "2563885143",
+      "assetType": "Mesh",
+      "sha256": "75b9927cf776013dee929d9829ef841434e604c2c716d0601ade5532ba3fadae",
+      "assetId": "80352486560017",
+      "uploadedAt": "2026-10-17T12:10:53.101346+00:00",
+      "grantedUniverseId": "10768714039"
+    }
+  ]
+}

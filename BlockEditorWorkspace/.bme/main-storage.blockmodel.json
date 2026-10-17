@@ -588,6 +588,168 @@
         "kind": "project",
         "projectGuid": "3f4d7bf3-ca9e-4599-889f-5e252e61afaf"
       }
+    },
+    {
+      "id": "prefab-node-a337b6fc-956e-418b-933e-6a49d339f5ae",
+      "name": "21DeepSeaAnchorHammer",
+      "parentId": "transform-1",
+      "type": "PrefabReference",
+      "transform": {
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "target": {
+        "kind": "project",
+        "projectGuid": "fe3e469c-7c0c-47a5-b457-6e5f73027e36"
+      }
+    },
+    {
+      "id": "prefab-node-ebc1c63e-d944-4246-b8ad-eb90ed062806",
+      "name": "22DeepSeaHookPickaxe",
+      "parentId": "transform-1",
+      "type": "PrefabReference",
+      "transform": {
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "target": {
+        "kind": "project",
+        "projectGuid": "843c7ca5-5a60-43eb-a9d1-98d98ef04a35"
+      }
+    },
+    {
+      "id": "prefab-node-91f0bd9f-c215-4926-a31c-fef27ed83cab",
+      "name": "23DesertColossusBoneHammer",
+      "parentId": "transform-1",
+      "type": "PrefabReference",
+      "transform": {
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "target": {
+        "kind": "project",
+        "projectGuid": "2949745f-fa8c-4f9e-9d4d-a0b314dc6a03"
+      }
+    },
+    {
+      "id": "prefab-node-11fd8580-2f15-4fb7-b65b-f674993dfe8e",
+      "name": "24SandKingFangPickaxe",
+      "parentId": "transform-1",
+      "type": "PrefabReference",
+      "transform": {
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "target": {
+        "kind": "project",
+        "projectGuid": "a3124c98-ed3b-4bf5-a16e-14873283f372"
+      }
+    },
+    {
+      "id": "prefab-node-655c0667-6222-4f0a-9f0b-da2cd458a932",
+      "name": "25AmethystStarRingHammer",
+      "parentId": "transform-1",
+      "type": "PrefabReference",
+      "transform": {
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "target": {
+        "kind": "project",
+        "projectGuid": "934642b3-f59d-48be-926f-1ce51cf54004"
+      }
+    },
+    {
+      "id": "prefab-node-c41f2bc9-6a1d-4f8c-935e-ed631a1db943",
+      "name": "26AmethystStarRingPickaxe",
+      "parentId": "transform-1",
+      "type": "PrefabReference",
+      "transform": {
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "target": {
+        "kind": "project",
+        "projectGuid": "5b79928a-25fb-4b01-8882-e4ea380b38dc"
+      }
     }
   ],
   "prefabFolders": [],
@@ -676,6 +838,30 @@
     {
       "projectGuid": "3f4d7bf3-ca9e-4599-889f-5e252e61afaf",
       "name": "20鎏金王冠巨锤"
+    },
+    {
+      "projectGuid": "fe3e469c-7c0c-47a5-b457-6e5f73027e36",
+      "name": "21深海沉锚重锤"
+    },
+    {
+      "projectGuid": "843c7ca5-5a60-43eb-a9d1-98d98ef04a35",
+      "name": "22深海逆钩战镐"
+    },
+    {
+      "projectGuid": "2949745f-fa8c-4f9e-9d4d-a0b314dc6a03",
+      "name": "23荒漠巨骸战锤"
+    },
+    {
+      "projectGuid": "a3124c98-ed3b-4bf5-a16e-14873283f372",
+      "name": "24沙王獠骨战镐"
+    },
+    {
+      "projectGuid": "934642b3-f59d-48be-926f-1ce51cf54004",
+      "name": "25紫晶星环重锤"
+    },
+    {
+      "projectGuid": "5b79928a-25fb-4b01-8882-e4ea380b38dc",
+      "name": "26紫晶星环战镐"
     }
   ]
 }
