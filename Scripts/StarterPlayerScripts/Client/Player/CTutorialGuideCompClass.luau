@@ -177,7 +177,7 @@ function Guide:RefreshTarget()
     end
 end
 
---- 两个连接点把空中的箭头光束直接连接到当前目标。
+--- 两片薄楔形拼出尖端朝向目标的三角形，避免纹理透明度和朝向影响识别。
 --- @param position Vector3 世界目标。
 function Guide:ShowGuideArrowToPosition(position)
     self._worldTargetPosition = position
@@ -190,74 +190,78 @@ function Guide:ShowGuideArrowToPosition(position)
         arrow.CanCollide, arrow.CanTouch, arrow.CanQuery = false, false, false
         arrow.Transparency = 1
         arrow.CastShadow = false
-        self._arrowStart = Instance.new("Attachment")
-        self._arrowStart.Name = "Start"
-        self._arrowStart.Parent = arrow
-        self._arrowTarget = Instance.new("Attachment")
-        self._arrowTarget.Name = "Target"
-        self._arrowTarget.Parent = arrow
-        local beam = Instance.new("Beam")
-        beam.Name = "TargetArrows"
-        beam.Attachment0 = self._arrowStart
-        beam.Attachment1 = self._arrowTarget
-        beam.Texture = FXLoader:Shared("Assets/TutorialArrowTexture").Texture
-        beam.TextureMode = Enum.TextureMode.Wrap
-        beam.TextureLength = 3
-        beam.TextureSpeed = 1.5
-        beam.Width0, beam.Width1 = 1.4, 1.4
-        beam.FaceCamera = true
-        beam.Segments = 32
-        beam.LightInfluence = 0
-        beam.LightEmission = 0.2
-        beam.Transparency = NumberSequence.new(0.05)
-        beam.Enabled = false
-        beam.Parent = arrow
+        self._arrowTriangles = {}
+        self._arrowSide = nil
         arrow.Parent = decorations
         self._arrowTrans = arrow
-        self._arrowEffect = beam
         self._renderSteppedConn = RunService.RenderStepped:Connect(function()
             self:UpdateGuideArrow()
-            self:UpdateGuideArrowAppearance()
         end)
     end
     self:UpdateGuideArrow()
-    self:UpdateGuideArrowAppearance()
 end
 
---- 起点跟随角色，终点直达目标上方；目标高度参与三维朝向计算。
+--- 固定间距与滚动周期，移动时只增减末端三角；稳定带面朝向并平滑隐藏首尾。
 function Guide:UpdateGuideArrow()
     local character = self:GetPlayerCharacter()
     local root = character and character:FindFirstChild("HumanoidRootPart")
     if not self._arrowTrans then
         return
     end
-    if not root or not self._worldTargetPosition then
-        self._arrowEffect.Enabled = false
-        return
-    end
-    local lootGuide = self._activeTarget and self._activeTarget.type == "NearestItem"
-    local origin = root.Position + Vector3.new(0, lootGuide and 4 or 0.5, 0)
-    local target = self._worldTargetPosition + Vector3.new(0, lootGuide and 7 or 2, 0)
-    local direction = target - origin
-    if direction.Magnitude < 2.5 then
-        self._arrowEffect.Enabled = false
-        return
-    end
-    self._arrowTrans.Position = origin
-    self._arrowStart.WorldPosition = origin + direction.Unit * 2
-    self._arrowTarget.WorldPosition = target
-    self._arrowEffect.Enabled = true
-end
-
---- 光束使用沿连接线分布的彩虹渐变，箭头纹理由 Beam 自动向目标滚动。
-function Guide:UpdateGuideArrowAppearance()
+    local camera = workspace.CurrentCamera
+    local origin = root and root.Position + Vector3.new(0, 0.5, 0)
+    local target = self._worldTargetPosition and self._worldTargetPosition + Vector3.new(0, 2, 0)
+    local direction = origin and target and target - origin
+    local distance = direction and direction.Magnitude or 0
+    local spacing = 4
+    local count = root and camera and math.min(32, math.max(0, math.ceil((distance - 3.1) / spacing))) or 0
     local now = os.clock()
-    local colors = {}
-    for index = 0, 8 do
-        local position = index / 8
-        colors[index + 1] = ColorSequenceKeypoint.new(position, Color3.fromHSV((position - now * 0.2) % 1, 0.95, 1))
+    local forward, side, normal
+    if count > 0 then
+        forward = direction.Unit
+        local cameraUp = camera.CFrame.UpVector
+        side = cameraUp - forward * cameraUp:Dot(forward)
+        if side.Magnitude < 0.1 then
+            local cameraRight = camera.CFrame.RightVector
+            side = cameraRight - forward * cameraRight:Dot(forward)
+        end
+        side = side.Unit
+        if self._arrowSide and side:Dot(self._arrowSide) < 0 then
+            side = -side
+        end
+        self._arrowSide = side
+        normal = side:Cross(-forward)
     end
-    self._arrowEffect.Color = ColorSequence.new(colors)
+    for index = 1, math.max(count, #self._arrowTriangles) do
+        local triangle = self._arrowTriangles[index]
+        if not triangle then
+            triangle = {}
+            for half = 1, 2 do
+                local wedge = Instance.new("WedgePart")
+                wedge.Name = "Triangle" .. index .. "Half" .. half
+                wedge.Size = Vector3.new(0.04, 1, 2.2)
+                wedge.Anchored = true
+                wedge.CanCollide, wedge.CanTouch, wedge.CanQuery = false, false, false
+                wedge.CastShadow = false
+                wedge.Material = Enum.Material.Neon
+                wedge.Parent = self._arrowTrans
+                triangle[half] = wedge
+            end
+            self._arrowTriangles[index] = triangle
+        end
+        local along = index <= count and 2 + (index - 1) * spacing + (now * 1.5) % spacing
+        local visible = along and along < distance - 1.1
+        for half, wedge in ipairs(triangle) do
+            local visibility = visible and math.clamp(math.min(along - 2, distance - 1.1 - along) / 0.6, 0, 1) or 0
+            wedge.Transparency = 1 - 0.95 * visibility
+            if visible then
+                local sign = half == 1 and 1 or -1
+                local center = origin + forward * along + side * (sign * 0.5)
+                wedge.CFrame = CFrame.fromMatrix(center, normal * sign, side * sign, -forward)
+                wedge.Color = Color3.fromHSV((along / distance - now * 0.2) % 1, 0.85, 1)
+            end
+        end
+    end
 end
 
 --- 清理提示层、刷新连接与全部箭头实例。

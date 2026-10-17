@@ -285,24 +285,25 @@ function Guide:GrantTrainingDiamonds()
     self:SetGuideData(data)
 end
 
---- 只读关卡组件的已生成内容，锁定状态由引导持有，不触发生成或修改奖励。
+--- 关卡外先指向首关入口，进入后再锁定本轮道具；不触发生成或修改奖励。
 --- @param rock table 玩家的服务端关卡组件。
 --- @param position Vector3 服务端角色当前位置。
 --- @return string? 当前轮次内锁定的石头格号。
---- @return Vector3? 道具所在格子的固定世界坐标。
+--- @return Vector3? 首关入口或道具所在格子的固定世界坐标。
 function Guide:GetLootTarget(rock, position)
     local area = rock._areas and rock._areas[1]
     local state = rock._areaStates[1]
-    if not area or not state then
+    if not area then
         return nil, nil
     end
     local cellSize = RockLevel.CellSize
+    if position.X < area.MinX or position.X >= area.MinX + area.Columns * cellSize
+        or position.Z < area.MinZ or position.Z >= area.MinZ + area.Rows * cellSize
+        or math.abs(position.Y - area.FloorY) >= 12 or not state then
+        return nil, Vector3.new(area.MinX + area.Columns * cellSize / 2,
+            area.FloorY + 1, area.MinZ + cellSize / 2)
+    end
     if self._lootRound ~= rock._round then
-        if position.X < area.MinX or position.X >= area.MinX + area.Columns * cellSize
-            or position.Z < area.MinZ or position.Z >= area.MinZ + area.Rows * cellSize
-            or math.abs(position.Y - area.FloorY) >= 12 then
-            return nil, nil
-        end
         self._lootRound = rock._round
         self._lootOrigin = position
         self._lootCell = nil
@@ -342,7 +343,8 @@ function Guide:OnUpdate(serverTime)
             local coordinates = position and {position.X, position.Y, position.Z} or nil
             local previous = data.target.position
             if data.target.cell ~= cell or (coordinates and (not previous
-                or previous[1] ~= coordinates[1] or previous[2] ~= coordinates[2] or previous[3] ~= coordinates[3])) then
+                or previous[1] ~= coordinates[1] or previous[2] ~= coordinates[2] or previous[3] ~= coordinates[3]))
+                or (previous and not coordinates) then
                 data.target.cell = cell
                 data.target.position = coordinates
                 self:SetGuideData(data)
