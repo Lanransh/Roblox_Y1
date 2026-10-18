@@ -30,6 +30,10 @@ function Component:OnReady()
     self._commonUI = self:GetPlayerObject():RequireComponent("FCCommonUIComp")
     self._commonUI:RegisterTrainingClickModal(root)
     self._localization = self._commonUI.Localization
+    self._title = FXLoader:Here(root, "WindowBox/TitleBox/TitleTxt")
+    self._title.AutoLocalize = false
+    self.EmptyTxt.AutoLocalize = false
+    self.ErrorTxt.AutoLocalize = false
     -- 展示契约按等级判断解锁；使用历史最高等级，重生后保留传送资格。
     self.Config = {worlds = {}}
     for index, world in ipairs(GameEnum.WorldTransferConfig) do
@@ -40,6 +44,9 @@ function Component:OnReady()
         })
     end
     self.State = {level = 0, currentWorldId = nil}
+    self:TrackConnection(self._localization.Changed:Connect(function()
+        self:RefreshUI()
+    end))
     self:Hide()
     self:BindUIData()
     self:BindPortalArea()
@@ -131,6 +138,7 @@ end
 
 --- 每次打开清空上次失败提示，列表沿用数据订阅的最新状态。
 function Component:OnShow()
+    self._failure = nil
     self.State.error = nil
     Component.Super.OnShow(self)
 end
@@ -140,6 +148,8 @@ end
 --- @return table 父类创建并管理的条目。
 function Component:CreateRow(worldId)
     local record = Component.Super.CreateRow(self, worldId)
+    record.nameTxt.AutoLocalize = false
+    record.buttonTxt.AutoLocalize = false
     self:TrackConnection(record.button.Activated:Connect(function()
         local world = record.world
         if not self.State.pendingWorldId and self.State.level < world.requiredLevel then
@@ -149,11 +159,26 @@ function Component:CreateRow(worldId)
     return record
 end
 
---- 保留锁定配色与门槛文案，但允许点击查看原因；传送期间仍禁用。
+--- 按当前语言刷新世界名、等级门槛与错误提示，保留父类配色和交互状态。
 --- @param state table 权威等级、当前世界与请求状态。
 function Component:Render(state)
+    for index, world in ipairs(self.Config.worlds) do
+        world.name = self._localization:FormatByKey("World.Name." .. world.id)
+    end
+    self._title.Text = self._localization:FormatByKey("World.Title")
+    self.EmptyTxt.Text = self._localization:FormatByKey("World.Empty")
+    state.error = self._failure and self._localization:FormatByKey(self._failure.key, self._failure.arguments) or nil
     Component.Super.Render(self, state)
     for worldId, record in pairs(self._rows) do
+        local key = "World.Go"
+        if state.pendingWorldId == worldId then
+            key = "World.Teleporting"
+        elseif state.currentWorldId == worldId then
+            key = "World.Here"
+        elseif state.level < record.world.requiredLevel then
+            key = "World.LockedLevel"
+        end
+        record.buttonTxt.Text = self._localization:FormatByKey(key, {level = record.world.requiredLevel})
         self:SetButtonEnabled(record.button, state.currentWorldId ~= worldId and not state.pendingWorldId)
     end
 end
@@ -173,6 +198,7 @@ function Component:OnUIAction(action, payload)
     local index = self:_FindWorldIndex(payload.worldId)
     assert(index ~= nil, "Unknown world id: " .. tostring(payload.worldId))
     self.State.pendingWorldId = payload.worldId
+    self._failure = nil
     self.State.error = nil
     self:RefreshUI()
     self._transferTask = task.defer(function()
@@ -188,7 +214,7 @@ function Component:OnUIAction(action, payload)
         elseif not result.success then
             failure = {key = result.key or "Common.Unknown", arguments = result.arguments}
         end
-        self.State.error = failure and self._localization:FormatByKey(failure.key, failure.arguments) or nil
+        self._failure = failure
         if failure then
             self._commonUI:ShowLocalizedTips(failure.key, failure.arguments)
         end

@@ -259,7 +259,7 @@ function Component:ActivateWeekCard(itemId)
     self:PublishState()
     local player = self:GetPlayerObject()
     local notified, message = pcall(player.ShowLocalizedTips, player,
-        "Welfare.PassActivated", {value = config.InstantGemCount, days = config.DurationDays})
+        "Welfare.PassActivated", {value = config.InstantGemCount, days = config.DayTime})
     if not notified then
         warn("[WeekCard] activation notification failed", message)
     end

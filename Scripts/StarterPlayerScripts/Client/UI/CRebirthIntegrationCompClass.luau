@@ -127,6 +127,8 @@ function Component:OnReady()
             node.AutoLocalize = true
         end
     end
+    self.ProgressTxt.AutoLocalize = false
+    self.WarningTxt.AutoLocalize = false
     self.State = {Open = false, Completed = false, Pending = false}
     --- 平台弹窗关闭只恢复交互，重生奖励仍由服务端收据处理。
     --- @param userId number 平台回传的玩家 ID。
