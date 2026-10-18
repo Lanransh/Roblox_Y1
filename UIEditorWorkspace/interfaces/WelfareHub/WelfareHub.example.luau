@@ -27,7 +27,7 @@ function CWelfarePreview:Ctor(owner)
                     { id = "day_4", day = 4, reward = { type = "Currency", id = "Diamond", amount = 50 }},
                     { id = "day_5", day = 5, reward = { type = "Currency", id = "Gold", amount = 500 }},
                     { id = "day_6", day = 6, reward = { type = "Currency", id = "Diamond", amount = 100 }},
-                    { id = "day_7", day = 7, reward = { type = "Item", id = "RareEgg", amount = 1 }, featured = true, badge = "Weekly Reward", color = { 102, 80, 25 }}
+                    { id = "day_7", day = 7, reward = { type = "Item", id = "RareEgg", amount = 1 }, featured = true, badge = "Weekly Reward", color = { 209, 139, 35 }}
                 }
             },
             {

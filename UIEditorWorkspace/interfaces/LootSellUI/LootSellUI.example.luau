@@ -8,11 +8,18 @@ function CLootSellPreview:Ctor(owner)
     self.Config = {
         capacity = 12,
         qualities = {
-            common = "#A5ADB8",
-            uncommon = "#55CE35",
-            rare = "#30A7F4",
-            epic = "#A85BE0",
-            legendary = "#F2A532",
+            common = "#E5E9EF",
+            uncommon = "#D8F2CF",
+            rare = "#D7EDFC",
+            epic = "#EADCF7",
+            legendary = "#FCEBC8",
+        },
+        qualityGradientEnds = {
+            common = "#C8D1DD",
+            uncommon = "#B0DC9E",
+            rare = "#A9D4F4",
+            epic = "#CFB3E9",
+            legendary = "#F3D396",
         },
     }
     local qualities = {"common", "uncommon", "rare", "epic", "legendary"}

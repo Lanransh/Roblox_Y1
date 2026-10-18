@@ -234,5 +234,9 @@ return {
                 Count = 1
             }
         }
+    },
+    MenuRetentionConfig = {
+        TriggerMinutes = 5,
+        OnlineRewardId = 1
     }
 }

@@ -8,7 +8,7 @@ return {
             {finishEvent = "Tutorial.Sold", target = {type = "Sell", key = "Tutorial.Sell"}},
             {finishEvent = "Tutorial.Rate", target = {type = "Text", key = "Tutorial.Rate"}},
             {finishEvent = "Tutorial.Weapon", target = {type = "Weapon", key = "Tutorial.Weapon"}},
-            {finishEvent = "Tutorial.Training", duration = 3, target = {type = "Text", key = "Tutorial.Training"}},
+            {finishEvent = "Tutorial.Training", duration = 3, target = {type = "Text", key = "Tutorial.AutomaticTraining"}},
             {finishEvent = "Tutorial.Done", duration = 3, target = {type = "Text", key = "Tutorial.Done"}},
             {finishEvent = "Tutorial.Rewards", duration = 3, target = {type = "Rewards", key = "Tutorial.Rewards"}},
         },

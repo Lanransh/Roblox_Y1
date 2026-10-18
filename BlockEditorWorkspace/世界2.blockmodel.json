@@ -97309,7 +97309,58 @@
       "type": "Geometry",
       "transform": {
         "position": [
-          33.25,
+          28.75,
+          -0.35,
+          -6.95
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.5,
+          0.3,
+          45.9
+        ],
+        "color": "#e3bd7c",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "solid",
+            "bottom": "solid",
+            "left": "solid",
+            "right": "solid",
+            "front": "solid",
+            "back": "solid"
+          }
+        }
+      }
+    },
+    {
+      "id": "block-2359",
+      "name": "第二级",
+      "parentId": "group-829",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          30.25,
           -0.2,
           -6.95
         ],
@@ -97354,65 +97405,14 @@
       }
     },
     {
-      "id": "block-2359",
-      "name": "第二级",
-      "parentId": "group-829",
-      "type": "Geometry",
-      "transform": {
-        "position": [
-          34.75,
-          0.1,
-          -6.95
-        ],
-        "rotation": [
-          0,
-          0,
-          0
-        ],
-        "scale": [
-          1,
-          1,
-          1
-        ]
-      },
-      "geometry": {
-        "type": "Box",
-        "size": [
-          1.5,
-          1.2,
-          45.9
-        ],
-        "color": "#e3bd7c",
-        "texturePattern": "solid",
-        "roblox": {
-          "surfaces": {
-            "top": "Studs",
-            "bottom": "Studs",
-            "left": "Studs",
-            "right": "Studs",
-            "front": "Studs",
-            "back": "Studs"
-          },
-          "faceTextures": {
-            "top": "solid",
-            "bottom": "solid",
-            "left": "solid",
-            "right": "solid",
-            "front": "solid",
-            "back": "solid"
-          }
-        }
-      }
-    },
-    {
       "id": "block-2360",
       "name": "第三级",
       "parentId": "group-829",
       "type": "Geometry",
       "transform": {
         "position": [
-          36.25,
-          0.4,
+          31.75,
+          -0.050000000000000044,
           -6.95
         ],
         "rotation": [
@@ -97430,7 +97430,7 @@
         "type": "Box",
         "size": [
           1.5,
-          1.7999999999999998,
+          0.8999999999999999,
           45.9
         ],
         "color": "#e3bd7c",
@@ -98994,9 +98994,9 @@
       "type": "PrefabReference",
       "transform": {
         "position": [
-          7.199999999999999,
-          0,
-          -6.8999999999999995
+          7.200000000000003,
+          -0.5,
+          -6.900000000000002
         ],
         "rotation": [
           0,
@@ -99021,9 +99021,9 @@
       "type": "PrefabReference",
       "transform": {
         "position": [
-          7.199999999999999,
-          -0.15,
-          -2.0999999999999996
+          7.200000000000003,
+          -0.15000000000000002,
+          -2.1000000000000005
         ],
         "rotation": [
           0,
@@ -99048,8 +99048,8 @@
       "type": "PrefabReference",
       "transform": {
         "position": [
-          7.199999999999999,
-          -0.15,
+          7.200000000000003,
+          -0.15000000000000002,
           2.7
         ],
         "rotation": [
@@ -99075,8 +99075,8 @@
       "type": "PrefabReference",
       "transform": {
         "position": [
-          12.825,
-          0.39,
+          12.825000000000003,
+          0.3900000000000001,
           -5.4
         ],
         "rotation": [
@@ -99102,9 +99102,9 @@
       "type": "PrefabReference",
       "transform": {
         "position": [
-          12.825,
-          0.39,
-          0.8999999999999999
+          12.825000000000003,
+          0.3900000000000001,
+          0.9000000000000004
         ],
         "rotation": [
           0,
@@ -99875,6 +99875,159 @@
             "right": "Smooth",
             "front": "Smooth",
             "back": "Smooth"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-17",
+      "name": "第四级",
+      "parentId": "group-829",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          33.25,
+          0.09999999999999998,
+          -6.95
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.5,
+          1.2,
+          45.9
+        ],
+        "color": "#e3bd7c",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "solid",
+            "bottom": "solid",
+            "left": "solid",
+            "right": "solid",
+            "front": "solid",
+            "back": "solid"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-18",
+      "name": "第五级",
+      "parentId": "group-829",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          34.75,
+          0.25,
+          -6.95
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.5,
+          1.5,
+          45.9
+        ],
+        "color": "#e3bd7c",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "solid",
+            "bottom": "solid",
+            "left": "solid",
+            "right": "solid",
+            "front": "solid",
+            "back": "solid"
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-node-19",
+      "name": "第六级",
+      "parentId": "group-829",
+      "type": "Geometry",
+      "transform": {
+        "position": [
+          36.25,
+          0.3999999999999999,
+          -6.95
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "geometry": {
+        "type": "Box",
+        "size": [
+          1.5,
+          1.7999999999999998,
+          45.9
+        ],
+        "color": "#e3bd7c",
+        "texturePattern": "solid",
+        "roblox": {
+          "surfaces": {
+            "top": "Studs",
+            "bottom": "Studs",
+            "left": "Studs",
+            "right": "Studs",
+            "front": "Studs",
+            "back": "Studs"
+          },
+          "faceTextures": {
+            "top": "solid",
+            "bottom": "solid",
+            "left": "solid",
+            "right": "solid",
+            "front": "solid",
+            "back": "solid"
           }
         }
       }

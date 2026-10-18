@@ -473,7 +473,7 @@ function Component:ResetRound(round, brokenCells)
     self:ResetVisuals()
 end
 
---- 命中失败时回滚预测；认可后使用服务端血量决定击碎，避免等级复制延迟造成提前或延后开奖。
+--- 已预测击碎的石头不恢复，回包只决定是否请求掉落；非致命预测仍按服务端结果校正。
 --- @param key string 本次命中的格号。
 --- @param round number 本次命中所属轮次。
 --- @param accepted boolean 是否通过服务端位置、装备及频率校验。
@@ -485,6 +485,12 @@ function Component:OnHitResult(key, round, accepted, health)
     end
     self._pendingHits[key] = nil
     if pending.Character ~= self:GetPlayerCharacter() then
+        return
+    end
+    if pending.Value == 0 then
+        if accepted and health == 0 then
+            FX.Network:SendMsgToServer("C2S_RequestRockDrop", key, round)
+        end
         return
     end
     if not accepted then
@@ -508,7 +514,7 @@ function Component:OnHitResult(key, round, accepted, health)
     self._refreshRocks = true
 end
 
---- 非致命命中即时预测，致命命中保留石头直到服务器认可，避免秒杀回滚时重复碎裂。
+--- 命中即时预测血量与碎裂，致命命中不等待服务器回包，掉落仍由服务端确认。
 --- @param key string 已经过本地目标检查的格号。
 --- @param area table 目标所属关卡。
 function Component:ApplyHit(key, area)
@@ -522,14 +528,12 @@ function Component:ApplyHit(key, area)
     end
     local value = math.max(0, oldValue - damage)
     self._pendingHits[key] = {Round = self._round, Health = oldValue, Value = value, Character = self:GetPlayerCharacter()}
-    if value > 0 then
-        self._health[key] = value
-        for index, chunk in ipairs(self._chunks) do
-            local rock = chunk.Rocks and chunk.Rocks[key]
-            if rock then
-                self:PlayHitEffect(rock, false)
-                break
-            end
+    self._health[key] = value
+    for index, chunk in ipairs(self._chunks) do
+        local rock = chunk.Rocks and chunk.Rocks[key]
+        if rock then
+            self:PlayHitEffect(rock, value == 0)
+            break
         end
     end
     self._refreshRocks = true

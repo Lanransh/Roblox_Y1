@@ -18,7 +18,7 @@ local VisibleRankCount = 7
 local BoardTypes = {
     {Name = "Strength", TitleKey = "Leaderboard.StrengthTitle", HeaderKey = "Leaderboard.Strength", TopScore = 35000000, PersonalScore = 6320, TextColor = Gold},
     {Name = "Rebirth", TitleKey = "Leaderboard.RebirthTitle", HeaderKey = "Leaderboard.Rebirths", TopScore = 1200, PersonalScore = 6, TextColor = Color3.fromRGB(210, 165, 255)},
-    {Name = "Playtime", TitleKey = "Leaderboard.PlaytimeTitle", HeaderKey = "Leaderboard.PlaytimeMinutes", TopScore = 6000, PersonalScore = 105, TextColor = Color3.fromRGB(110, 235, 245)},
+    {Name = "Playtime", TitleKey = "Leaderboard.PlaytimeTitle", HeaderKey = "Leaderboard.PlaytimeLabel", TopScore = 6000, PersonalScore = 105, TextColor = Color3.fromRGB(110, 235, 245)},
 }
 
 --- 力量沿用统一缩写，重生次数显示整数；在线不足一小时显示分钟，其余显示整小时或天和剩余小时。

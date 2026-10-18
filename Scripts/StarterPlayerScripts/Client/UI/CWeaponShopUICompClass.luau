@@ -13,7 +13,7 @@ function Component:GetCompName()
     return "CWeaponShopUIComp"
 end
 
---- 从 ToolConfig 提供完整展示契约，数据、语言和区域监听只绑定一次。
+--- 从 ToolConfig 提供展示契约，按工具顺序循环配色，数据与区域监听只绑定一次。
 function Component:OnReady()
     Component.Super.OnReady(self)
     self.Root.ResetOnSpawn = false
@@ -23,12 +23,22 @@ function Component:OnReady()
     self._commonUI:RegisterTrainingClickModal(self.Root)
     self._localization = self._commonUI.Localization
     self.Config = {
-        title = "WEAPONS", weapons = {},
-        qualities = {weapon = {name = "", color = "#" .. self.Template.BackgroundColor3:ToHex()}},
+        title = "WEAPONS", weapons = {}, qualities = {},
+    }
+    -- 工具没有品质字段，展示配色按顺序循环，不增加虚构的品质文案。
+    local rowColors = {
+        {"#D8F2CF", "#B0DC9E"},
+        {"#D7EDFC", "#A9D4F4"},
+        {"#EADCF7", "#CFB3E9"},
+        {"#FADCEB", "#EDAFD0"},
+        {"#FCEBC8", "#F3D396"},
     }
     for index, config in ipairs(_G.GameConfig.ToolConfig) do
+        local colorId = tostring((index - 1) % #rowColors + 1)
+        local colors = rowColors[(index - 1) % #rowColors + 1]
+        self.Config.qualities[colorId] = {name = "", color = colors[1], colorEnd = colors[2]}
         table.insert(self.Config.weapons, {
-            id = tostring(config.ToolId), name = config.Name, qualityId = "weapon",
+            id = tostring(config.ToolId), name = config.Name, qualityId = colorId,
             strength = config.TrainingRate, price = config.Price, icon = "rbxassetid://" .. config.Img,
         })
     end

@@ -1521,7 +1521,22 @@
                 }
               },
               {
-                "children": [],
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UIGradient",
+                    "id": "51a61b76-478f-410b-a103-9f24ad36f24d",
+                    "name": "QualityGradient",
+                    "properties": {
+                      "ColorEnd": "#c8d1dd",
+                      "ColorStart": "#e5e9ef",
+                      "Enabled": true,
+                      "Rotation": 90,
+                      "TransparencyEnd": 0,
+                      "TransparencyStart": 0
+                    }
+                  }
+                ],
                 "className": "ImageLabel",
                 "id": "54598e96-5333-47ad-90ea-1357f8641322",
                 "name": "StudTileImg",
@@ -1936,6 +1951,20 @@
                   },
                   "Visible": true,
                   "ZIndex": 6
+                }
+              },
+              {
+                "children": [],
+                "className": "UIGradient",
+                "id": "65f3abc3-b7c2-485a-8b48-268c3589b63b",
+                "name": "QualityGradient",
+                "properties": {
+                  "ColorEnd": "#c8d1dd",
+                  "ColorStart": "#e5e9ef",
+                  "Enabled": true,
+                  "Rotation": 90,
+                  "TransparencyEnd": 0,
+                  "TransparencyStart": 0
                 }
               }
             ],

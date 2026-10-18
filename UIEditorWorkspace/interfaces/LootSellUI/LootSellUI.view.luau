@@ -2,6 +2,7 @@
 道具列表接入契约（全部界面文案使用英文）：
 Config.qualities:table<string, string>，必填，品质 ID 到 #RRGGBB 十六进制颜色的字典。
 所有 items[i].qualityId 必须在此字典中存在；品质 ID 由游戏配置定义，不硬编码枚举。
+Config.qualityGradientEnds:table<string, string>，可选，品质 ID 到 #RRGGBB 渐变终色；缺省使用 qualities 中的颜色。条目从上到下渐变。
 Config.capacity:number，必填，正整数，背包条目容量，当前为 12，无默认值。
 State 为完整输入，不是增量，所有必填字段无默认值：
   isOpen:boolean 窗口显示；
@@ -28,7 +29,7 @@ RefreshUI 调用 Render(GetUIState())，不合并补丁。
   Close：{}。
 可选覆写 GetItemQualityColor(item)，输入为当前完整道具条目，返回 Color3；
 默认读取 Config.qualities[item.qualityId]，缺失时明确报错，不沿用上一条颜色。
-用于图标底色、边框和条目左侧色条；真实图标仍待资源接入。
+用于条目渐变起色、图标底色、边框和左侧色条；真实图标仍待资源接入。
 游戏层校验实际库存、双倍资格及出售结果，
 请求时 pending=true，结果返回后更新 items/message 并将 pending=false，再刷新。
 失败时保留最新库存并填写英文 message。模拟接入只清空模拟列表，不发放金币。
@@ -122,6 +123,9 @@ function CLootSellView:Render(state)
                 icon = FXLoader:Here(row, "LootIconImg"),
                 stripe = FXLoader:Here(row, "QualityStripeImg"),
                 border = FXLoader:Here(row, "LootIconImg.UIStroke"),
+                gradient = FXLoader:Here(row, "QualityGradient"),
+                studGradient = FXLoader:Here(row, "StudTileImg.QualityGradient"),
+                iconBackground = FXLoader:Here(row, "LootIconBackgroundImg"),
             }
             -- 此清理函数仅拥有本次克隆的行。
             record.release = self:TrackCleanup(function()
@@ -133,6 +137,23 @@ function CLootSellView:Render(state)
         record.name.Text = item.name
         record.value.Text = FormatCoins(item.value)
         local qualityColor = self:GetItemQualityColor(item)
+        local gradientEnds = self:GetUIConfig().qualityGradientEnds
+        local endColor = qualityColor
+        if gradientEnds and gradientEnds[item.qualityId] then
+            endColor = Color3.fromHex(gradientEnds[item.qualityId])
+        end
+        -- Roblox 使用原生色序列；App 预览仅支持起止色属性。
+        if ColorSequence then
+            local colors = ColorSequence.new(qualityColor, endColor)
+            record.gradient.Color = colors
+            record.studGradient.Color = colors
+        else
+            record.gradient.ColorStart = qualityColor
+            record.gradient.ColorEnd = endColor
+            record.studGradient.ColorStart = qualityColor
+            record.studGradient.ColorEnd = endColor
+        end
+        record.iconBackground.BackgroundColor3 = qualityColor
         record.icon.BackgroundColor3 = qualityColor
         record.stripe.BackgroundColor3 = qualityColor
         record.border.Color = qualityColor

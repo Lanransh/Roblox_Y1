@@ -13,7 +13,7 @@ function Component:GetCompName()
     return "CAuraShopUIComp"
 end
 
---- 复用编辑器布局与按钮事件，绑定真实配置、存档和场景触发盒。
+--- 复用编辑器布局与按钮事件，按真实品质接入渐变色、存档和场景触发盒。
 function Component:OnReady()
     Component.Super.OnReady(self)
     self.Root.ResetOnSpawn = false
@@ -22,14 +22,25 @@ function Component:OnReady()
     self._commonUI:RegisterTrainingClickModal(self.Root)
     self._localization = self._commonUI.Localization
     self.Config = {title = "AURAS", auras = {}, qualities = {}}
-    local fallbackColor = "#" .. self.Template.BackgroundColor3:ToHex()
+    -- 与出售界面的浅色渐变风格保持一致，未配置专色时按品质循环配色。
+    local qualityColors = {
+        {"#D8F2CF", "#B0DC9E"},
+        {"#D7EDFC", "#A9D4F4"},
+        {"#EADCF7", "#CFB3E9"},
+        {"#FADCEB", "#EDAFD0"},
+        {"#FCEBC8", "#F3D396"},
+    }
     for index, config in ipairs(_G.GameConfig.AuraConfig) do
         local qualityId = tostring(config.Quality)
-        local rowColor = config.DisplayColor or fallbackColor
+        local colors = qualityColors[(config.Quality - 1) % #qualityColors + 1]
+        local rowColor = config.DisplayColor or colors[1]
         if rowColor:sub(1, 1) ~= "#" then
             rowColor = "#" .. rowColor
         end
-        self.Config.qualities[qualityId] = {name = "", color = rowColor}
+        self.Config.qualities[qualityId] = {
+            name = "", color = rowColor,
+            colorEnd = config.DisplayColor and rowColor or colors[2],
+        }
         table.insert(self.Config.auras, {
             id = tostring(config.AuraId), auraId = config.AuraId, name = config.Name,
             qualityId = qualityId, strength = config.TrainingRate, price = config.Price,

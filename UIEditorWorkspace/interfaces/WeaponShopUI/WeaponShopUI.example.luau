@@ -9,10 +9,10 @@ function CWeaponShopPreview:Ctor(owner)
     self.Config = {
         title = "WEAPONS",
         qualities = {
-            common = {name = "Common", color = "#FAFCF9"},
-            rare = {name = "Rare", color = "#73BBEF"},
-            epic = {name = "Epic", color = "#BC85E5"},
-            legendary = {name = "Legendary", color = "#F4BF52"},
+            common = {name = "Common", color = "#A5ADB8", colorEnd = "#68778E"},
+            rare = {name = "Rare", color = "#73BBEF", colorEnd = "#397BC7"},
+            epic = {name = "Epic", color = "#BC85E5", colorEnd = "#7242B2"},
+            legendary = {name = "Legendary", color = "#F4BF52", colorEnd = "#C77B20"},
         },
         weapons = {
             {id = "sickle", name = "Sickle", qualityId = "common", strength = 1, price = 0},

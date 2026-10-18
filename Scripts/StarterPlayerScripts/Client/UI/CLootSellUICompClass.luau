@@ -26,11 +26,20 @@ function Component:OnReady()
     self._commonUI = self:GetPlayerObject():RequireComponent("FCCommonUIComp")
     self._commonUI:RegisterTrainingClickModal(root)
     self._localization = self._commonUI.Localization
-    self.Config = {capacity = RockLevel.StoredLootCapacity, qualities = {}}
-    -- 项目尚无品质颜色配置，保留设计模板配色，不虚构品质等级与颜色规则。
-    local color = FXLoader:Here(self.Template, "QualityStripeImg").BackgroundColor3:ToHex()
+    self.Config = {capacity = RockLevel.StoredLootCapacity, qualities = {}, qualityGradientEnds = {}}
+    -- 沿用示例浅色方案，每五档循环配色，键仍使用真实配置品质 ID。
+    local qualityColors = {
+        {"#E5E9EF", "#C8D1DD"},
+        {"#D8F2CF", "#B0DC9E"},
+        {"#D7EDFC", "#A9D4F4"},
+        {"#EADCF7", "#CFB3E9"},
+        {"#FCEBC8", "#F3D396"},
+    }
     for itemId, config in pairs(GameConfig.ItemData) do
-        self.Config.qualities[tostring(config.Quality)] = color
+        local qualityId = tostring(config.Quality)
+        local colors = qualityColors[(config.Quality - 1) % #qualityColors + 1]
+        self.Config.qualities[qualityId] = colors[1]
+        self.Config.qualityGradientEnds[qualityId] = colors[2]
     end
     self.State = {isOpen = false, items = {}, pending = false}
     for index, label in ipairs({self.Total, self.CapacityTxt, self.StatusTxt}) do

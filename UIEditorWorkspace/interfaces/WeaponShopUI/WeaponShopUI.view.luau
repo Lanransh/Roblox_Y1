@@ -2,6 +2,7 @@
 武器列表接入契约（完整状态，非增量）
 Config.title: string，必填标题。
 Config.qualities: 字典，键为品质 ID；值 {name: string, color: string} 均必填，color 为 #RRGGBB 卡片底色。
+每项可选 colorEnd:string，#RRGGBB 渐变终色，缺省与 color 相同；卡片从上到下由 color 渐变至 colorEnd。
 Config.weapons: 数组，显示顺序；每项 {id: string, name: string, qualityId: string,
  strength: number, price: number, icon: string?}。前五项必填；price 单位金币，显示为钞票图标与 +$金额；strength 为加成点数；
  id 唯一稳定，qualityId 对应 qualities 键；icon 可选 Roblox 图片 ID，缺省或空字符串显示问号占位。
@@ -88,7 +89,22 @@ function CWeaponShopView:Render(state)
             local row = entry.row
             local quality = config.qualities[weapon.qualityId]
             row.Position = UDim2.fromOffset(2, (index - 1) * 172 + 2)
-            row.BackgroundColor3 = Color3.fromHex(quality.color)
+            row.BackgroundColor3 = Color3.fromHex("#FFFFFF")
+            local startColor = Color3.fromHex(quality.color)
+            local endColor = Color3.fromHex(quality.colorEnd or quality.color)
+            local gradient = FXLoader:Here(row, "QualityGradient")
+            local studGradient = FXLoader:Here(row, "StudTileImg.QualityGradient")
+            -- Roblox 使用原生色序列；App 预览仅支持起止色属性。
+            if ColorSequence then
+                local colors = ColorSequence.new(startColor, endColor)
+                gradient.Color = colors
+                studGradient.Color = colors
+            else
+                gradient.ColorStart = startColor
+                gradient.ColorEnd = endColor
+                studGradient.ColorStart = startColor
+                studGradient.ColorEnd = endColor
+            end
             FXLoader:Here(row, "NameTxt").Text = weapon.name
             FXLoader:Here(row, "RarityTxt").Text = quality.name
             FXLoader:Here(row, "StrengthTxt").Text = "Strength +" .. tostring(weapon.strength)

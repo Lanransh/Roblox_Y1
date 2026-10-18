@@ -644,7 +644,22 @@
                 }
               },
               {
-                "children": [],
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UIGradient",
+                    "id": "5016ddae-d4f4-4aab-ac8a-117846a5292c",
+                    "name": "QualityGradient",
+                    "properties": {
+                      "ColorEnd": "#68778e",
+                      "ColorStart": "#a5adb8",
+                      "Enabled": true,
+                      "Rotation": 90,
+                      "TransparencyEnd": 0,
+                      "TransparencyStart": 0
+                    }
+                  }
+                ],
                 "className": "ImageLabel",
                 "id": "0658546f-ec7d-4a16-b58a-3cdc2d8a4d27",
                 "imageAssetId": "builtin:roblox:stud",
@@ -1416,6 +1431,20 @@
                   "Visible": true,
                   "ZIndex": 7
                 }
+              },
+              {
+                "children": [],
+                "className": "UIGradient",
+                "id": "1842a6cf-03da-4c7b-9d72-fb93c170cf5a",
+                "name": "QualityGradient",
+                "properties": {
+                  "ColorEnd": "#68778e",
+                  "ColorStart": "#a5adb8",
+                  "Enabled": true,
+                  "Rotation": 90,
+                  "TransparencyEnd": 0,
+                  "TransparencyStart": 0
+                }
               }
             ],
             "className": "Frame",
@@ -1427,7 +1456,7 @@
                 "y": 0
               },
               "AutoLocalize": true,
-              "BackgroundColor3": "#FAFCF9",
+              "BackgroundColor3": "#ffffff",
               "BackgroundTransparency": 0,
               "ClipsDescendants": false,
               "LayoutOrder": 0,
