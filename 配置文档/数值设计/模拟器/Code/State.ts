@@ -141,7 +141,7 @@ export class State extends BaseState<StateValues> {
     this.smallWeeklyCardElapsedSeconds = 0;
     this.largeWeeklyCardRemainingRewards = 0;
     this.largeWeeklyCardElapsedSeconds = 0;
-    this.paidTrainingMultiplierId = 0;
+    this.paidTrainingMultiplierId = 1;
     this.autoPaidTrainingUpgradeEnabled = true;
     this.backpackExpansionLevel = 0;
     this.autoBackpackUpgradeEnabled = false;

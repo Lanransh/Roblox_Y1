@@ -1213,7 +1213,7 @@ export class Game extends BaseGame<ProjectConfig, State> implements EditorRender
       this.state.getDiamondGiftRemainingSeconds(),
     );
     this.paidMultiplierSummaryLabel.Text =
-      `<b>付费系统</b>` +
+      `<b>付费系统</b> · 训练倍率封顶 ×128` +
       ` · 钻石 <b>${numberToText(this.state.diamonds)}</b>` +
       ` · ${giftCountdown} 后赠送 ${numberToText(Math.max(0, Math.floor(this.config.dailyGiftDiamondAmount)))}`;
     this.updatePaidMultiplierCard(
@@ -1546,7 +1546,7 @@ export class Game extends BaseGame<ProjectConfig, State> implements EditorRender
       `<b>档位 ${numberToText(this.state.paidTrainingMultiplierId)} · ×${numberToText(current.multiplier)}</b>` +
       ` · 钻石自动${this.state.autoPaidTrainingUpgradeEnabled ? "开" : "关"}`;
     diamondButton.Text = maxed
-      ? "已达最高档"
+      ? "已封顶 ×128"
       : `自动${this.state.autoPaidTrainingUpgradeEnabled ? "开" : "关"}（${numberToText(next.diamondCost)} 钻）`;
     diamondButton.Disabled = maxed;
     diamondButton.ButtonColor = maxed
@@ -1556,7 +1556,7 @@ export class Game extends BaseGame<ProjectConfig, State> implements EditorRender
         : "#f79009";
     diamondButton.TextColor = maxed ? "#98a2b3" : "#ffffff";
     purchaseButton.Text = maxed
-      ? "已达最高档"
+      ? "已封顶 ×128"
       : "付费提升";
     purchaseButton.Disabled = paidBlocked;
     purchaseButton.ButtonColor = paidBlocked ? "#eef2f6" : "#b54708";

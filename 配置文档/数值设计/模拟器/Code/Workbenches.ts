@@ -291,27 +291,6 @@ export class ProjectWorkbenches extends WorkbenchSet {
           configTarget: { configKey: "stageCurves", columnKey: "grassLevel" },
           sample: (stageId: number) => getValues(stageId).grassLevel,
         },
-        {
-          id: "expectedStrength",
-          label: "期望力量 / 攻击力",
-          format: "number" as const,
-          configTarget: { configKey: "levelCurves", columnKey: "nextLevelExperience" },
-          sample: (stageId: number) => getValues(stageId).expectedStrength,
-        },
-        {
-          id: "hpMultiplier",
-          label: "血量倍率",
-          format: "multiplier" as const,
-          configTarget: { configKey: "stageCurves", columnKey: "hpMultiplier" },
-          sample: (stageId: number) => getValues(stageId).hpMultiplier,
-        },
-        {
-          id: "grassHp",
-          label: "最终血量",
-          format: "number" as const,
-          configTarget: { configKey: "stageCurves", columnKey: "hpMultiplier" },
-          sample: (stageId: number) => getValues(stageId).grassHp,
-        },
       ],
     };
   }
