@@ -3,33 +3,33 @@ return {
         [101] = {
             Id = 101,
             Type = [[WeekCard]],
-            MaxStack = 1,
+            MaxStack = 99,
             UseHandler = [[WeekCard]],
             HeldHandler = [[Image]],
             NumberArray = nil,
             KVTable = {
-                InstantGemCount = 100,
+                InstantGemCount = 108,
                 DayTime = 6,
-                DurationDays = 30
+                DurationDays = 12
             }
         },
         [102] = {
             Id = 102,
             Type = [[WeekCard]],
-            MaxStack = 1,
+            MaxStack = 99,
             UseHandler = [[WeekCard]],
             HeldHandler = [[Image]],
             NumberArray = nil,
             KVTable = {
                 InstantGemCount = 400,
                 DayTime = 6,
-                DurationDays = 120
+                DurationDays = 63
             }
         },
         [103] = {
             Id = 103,
             Type = [[DoubleSaleCard]],
-            MaxStack = 1,
+            MaxStack = 99,
             UseHandler = nil,
             HeldHandler = [[Image]],
             NumberArray = nil,
@@ -38,7 +38,7 @@ return {
         [104] = {
             Id = 104,
             Type = [[ExpandableBackpackCard]],
-            MaxStack = 1,
+            MaxStack = 99,
             UseHandler = [[ExpandableBackpackCard]],
             HeldHandler = [[Image]],
             NumberArray = nil,
@@ -50,7 +50,7 @@ return {
         [105] = {
             Id = 105,
             Type = [[TrainingCard]],
-            MaxStack = 1,
+            MaxStack = 99,
             UseHandler = [[TrainingCard]],
             HeldHandler = [[Image]],
             NumberArray = nil,
@@ -61,7 +61,7 @@ return {
         [106] = {
             Id = 106,
             Type = [[TrainingCard]],
-            MaxStack = 1,
+            MaxStack = 99,
             UseHandler = [[TrainingCard]],
             HeldHandler = [[Image]],
             NumberArray = nil,
@@ -72,7 +72,7 @@ return {
         [107] = {
             Id = 107,
             Type = [[DogCard]],
-            MaxStack = 1,
+            MaxStack = 99,
             UseHandler = [[DogCard]],
             HeldHandler = [[Image]],
             NumberArray = nil,
@@ -83,7 +83,7 @@ return {
         [101] = {
             Id = 101,
             Name = [[Small Weekly Diamond Pass]],
-            Desc = [[Get 100 Diamonds instantly, plus 30 bonus Diamonds each day you check in for the next 6 days.]],
+            Desc = [[Get 108 Diamonds instantly, plus 12 bonus Diamonds each day you check in for the next 6 days.]],
             Quality = 12,
             IconId = [[rbxassetid://131496626025159]],
             DisplayModelId = nil
@@ -91,7 +91,7 @@ return {
         [102] = {
             Id = 102,
             Name = [[Large Weekly Diamond Pass]],
-            Desc = [[Get 400 Diamonds instantly, plus 120 bonus Diamonds each day you check in for the next 6 days.]],
+            Desc = [[Get 400 Diamonds instantly, plus 63 bonus Diamonds each day you check in for the next 6 days.]],
             Quality = 12,
             IconId = [[rbxassetid://106263117856612]],
             DisplayModelId = nil

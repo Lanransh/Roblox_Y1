@@ -10,23 +10,29 @@ local Sides = {
     Bottom = {Direction = Vector2.new(0, 1), Rotation = -90},
 }
 
---- 裁去原图透明留白，以大号黄色箭头和黑色外轮廓突出目标，不新增云端资源。
---- @param screen ScreenGui 承载引导的屏幕界面。
+--- 创建独立于业务界面的引导层，供任意界面绑定目标，不拦截点击。
+--- @param playerGui PlayerGui 所属玩家的界面容器。
 --- @return table 可绑定、隐藏和销毁的箭头控制器。
-function UIGuideArrow.New(screen)
+function UIGuideArrow.New(playerGui)
     local self = setmetatable({}, UIGuideArrow)
-    self._playerGui = screen.Parent
+    self._playerGui = playerGui
+    self._screen = Instance.new("ScreenGui")
+    self._screen.Name = "UIGuideArrowUI"
+    self._screen.ResetOnSpawn = false
+    self._screen.DisplayOrder = 100
+    self._screen.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    self._screen.Parent = playerGui
     self._root = Instance.new("Frame")
     self._root.Name = "UIGuideArrowLayer"
     self._root.Size = UDim2.fromScale(1, 1)
     self._root.BackgroundTransparency = 1
     self._root.Active = false
     self._root.ZIndex = 100
-    self._root.Parent = screen
+    self._root.Parent = self._screen
     self._image = Instance.new("ImageLabel")
     self._image.Name = "Arrow"
     self._image.AnchorPoint = Vector2.new(0.5, 0.5)
-    self._image.Size = UDim2.fromOffset(104, 73)
+    self._image.Size = UDim2.fromOffset(52, 37)
     self._image.BackgroundTransparency = 1
     self._image.Image = "rbxassetid://124911070183024"
     self._image.ImageRectOffset = Vector2.new(12, 15)
@@ -40,7 +46,7 @@ function UIGuideArrow.New(screen)
     self._shadow = self._image:Clone()
     self._shadow.Name = "Outline"
     self._shadow.ImageColor3 = Color3.new(0, 0, 0)
-    self._shadow.Size = UDim2.fromOffset(114, 83)
+    self._shadow.Size = UDim2.fromOffset(57, 42)
     self._shadow.ZIndex = 99
     self._shadow.Parent = self._root
     return self
@@ -84,16 +90,16 @@ function UIGuideArrow:_Update()
     local direction = side.Direction
     local halfTarget = (math.abs(direction.X) * size.X + math.abs(direction.Y) * size.Y) / 2
     local pulse = (1 + math.sin(os.clock() * 4)) / 2
-    local width = 104 + 6 * pulse
+    local width = 52 + 3 * pulse
     local height = width * 44 / 62
-    local gap = 8 + 18 * pulse
+    local gap = 4 + 9 * pulse
     local position = center - self._root.AbsolutePosition + direction * (halfTarget + width / 2 + gap)
     self._image.Size = UDim2.fromOffset(width, height)
     self._image.Position = UDim2.fromOffset(position.X, position.Y)
     self._image.Rotation = side.Rotation
     self._image.Visible = true
-    self._shadow.Size = UDim2.fromOffset(width + 10, height + 10)
-    self._shadow.Position = UDim2.fromOffset(position.X, position.Y + 3)
+    self._shadow.Size = UDim2.fromOffset(width + 5, height + 5)
+    self._shadow.Position = UDim2.fromOffset(position.X, position.Y + 1.5)
     self._shadow.Rotation = side.Rotation
     self._shadow.Visible = true
 end
@@ -126,7 +132,7 @@ end
 --- 释放控制器拥有的节点和连接，不销毁调用方的界面或目标。
 function UIGuideArrow:Destroy()
     self:Hide()
-    self._root:Destroy()
+    self._screen:Destroy()
 end
 
 return UIGuideArrow

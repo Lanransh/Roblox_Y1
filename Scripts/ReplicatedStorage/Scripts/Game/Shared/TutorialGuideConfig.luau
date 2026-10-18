@@ -1,4 +1,4 @@
--- 当前项目多一步基地入库；所有步骤只接受服务端业务结果。
+-- 前五步由服务端业务结果推进，最后三步由服务端计时展示提醒。
 return {
     FirstLootGuide = {
         startEvent = "Tutorial.Login",
@@ -8,8 +8,9 @@ return {
             {finishEvent = "Tutorial.Sold", target = {type = "Sell", key = "Tutorial.Sell"}},
             {finishEvent = "Tutorial.Rate", target = {type = "Text", key = "Tutorial.Rate"}},
             {finishEvent = "Tutorial.Weapon", target = {type = "Weapon", key = "Tutorial.Weapon"}},
-            {finishEvent = "Tutorial.Training", target = {type = "Training", key = "Tutorial.Training"}},
-            {finishEvent = "Tutorial.Done", target = {type = "Text", key = "Tutorial.Done"}},
+            {finishEvent = "Tutorial.Training", duration = 3, target = {type = "Text", key = "Tutorial.Training"}},
+            {finishEvent = "Tutorial.Done", duration = 3, target = {type = "Text", key = "Tutorial.Done"}},
+            {finishEvent = "Tutorial.Rewards", duration = 3, target = {type = "Rewards", key = "Tutorial.Rewards"}},
         },
     },
     FirstAuraGuide = {

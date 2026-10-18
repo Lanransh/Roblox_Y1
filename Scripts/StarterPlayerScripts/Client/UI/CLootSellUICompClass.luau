@@ -99,7 +99,7 @@ function Component:BindUIData()
     end, self)
 end
 
---- 将真实实例转换为展示契约；幸运价格已包含倍率，重生加成只计算一次。
+--- 将真实实例转换为展示契约并补全图标资源 URI；幸运价格已包含倍率，重生加成只计算一次。
 --- @param entries table? 服务端快照；省略时读取最新同步值。
 function Component:RefreshLoot(entries)
     entries = entries or self:GetTable(Fields.LootSellEntries)
@@ -116,7 +116,7 @@ function Component:RefreshLoot(entries)
         end
         table.insert(items, {
             id = entry.id, name = name, qualityId = tostring(config.Quality),
-            value = entry.price * rate, icon = config.IconId,
+            value = entry.price * rate, icon = "rbxassetid://" .. config.IconId,
         })
     end
     self.State.items = items

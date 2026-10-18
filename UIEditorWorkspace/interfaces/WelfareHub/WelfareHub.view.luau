@@ -440,22 +440,20 @@ function CWelfareView:RenderOffline(state)
     end
     local hours = math.floor(seconds / 3600)
     local minutes = math.floor(seconds % 3600 / 60)
-    local remaining = math.floor(seconds % 60)
-    local timeText = tostring(remaining) .. "s"
-    if hours > 0 then
-        timeText = hours .. "h " .. minutes .. "m " .. remaining .. "s"
-    elseif minutes > 0 then
-        timeText = minutes .. "m " .. remaining .. "s"
-    end
-    Loader:Here(page, "TimeTxt").Text = "Offline Time: " .. timeText
-    Loader:Here(page, "AmountTxt").Text = "Training: " .. tostring(training)
+    Loader:Here(page, "TimeTxt").Text = string.format("You were away for %dh %02dm", hours, minutes)
+    Loader:Here(page, "AmountTxt").Text = "+" .. tostring(training)
     local claimable = state.status == "Claimable" and training > 0
     local single = Loader:Here(page, "SingleClaimBtn")
     local double = Loader:Here(page, "DoubleClaimBtn")
     single.Visible = claimable
     double.Visible = claimable
-    self:RenderButton(single, "Claim ×1", claimable and not state.pending)
-    self:RenderButton(double, "Claim ×2", claimable and not state.pending)
+    self:RenderButton(single, "Claim Rewards!", claimable and not state.pending)
+    self:RenderButton(double, "2× Rewards!", claimable and not state.pending)
+    if claimable and not state.pending then
+        single.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        double.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        Loader:Here(double, "BottomEdgeImg").BackgroundColor3 = Color3.fromRGB(176, 101, 0)
+    end
     local status = Loader:Here(page, "StatusTxt")
     status.Visible = not claimable or state.error ~= nil
     status.Text = state.error or "No offline rewards"

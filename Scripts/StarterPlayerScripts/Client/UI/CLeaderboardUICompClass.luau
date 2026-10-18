@@ -16,18 +16,28 @@ local Gold = Color3.fromRGB(255, 194, 46)
 local Cream = Color3.fromRGB(255, 237, 198)
 local VisibleRankCount = 7
 local BoardTypes = {
-    {Name = "Strength", TitleKey = "Leaderboard.StrengthTitle", HeaderKey = "Leaderboard.Strength", TopScore = 35000000, PersonalScore = 6320},
-    {Name = "Rebirth", TitleKey = "Leaderboard.RebirthTitle", HeaderKey = "Leaderboard.Rebirths", TopScore = 1200, PersonalScore = 6},
-    {Name = "Playtime", TitleKey = "Leaderboard.PlaytimeTitle", HeaderKey = "Leaderboard.PlaytimeMinutes", TopScore = 6000, PersonalScore = 105},
+    {Name = "Strength", TitleKey = "Leaderboard.StrengthTitle", HeaderKey = "Leaderboard.Strength", TopScore = 35000000, PersonalScore = 6320, TextColor = Gold},
+    {Name = "Rebirth", TitleKey = "Leaderboard.RebirthTitle", HeaderKey = "Leaderboard.Rebirths", TopScore = 1200, PersonalScore = 6, TextColor = Color3.fromRGB(210, 165, 255)},
+    {Name = "Playtime", TitleKey = "Leaderboard.PlaytimeTitle", HeaderKey = "Leaderboard.PlaytimeMinutes", TopScore = 6000, PersonalScore = 105, TextColor = Color3.fromRGB(110, 235, 245)},
 }
 
---- 力量沿用统一缩写，重生次数与累计在线分钟显示整数；测试时长单位为分钟。
+--- 力量沿用统一缩写，重生次数显示整数；在线不足一小时显示分钟，其余显示整小时或天和剩余小时。
 --- @param kind number 榜单类型，依次为力量、重生和在线时长。
 --- @param score number 当前榜单的原始测试分数。
 --- @return string 榜单数值文案。
 local function FormatScore(kind, score)
     if kind == 1 then
         return GameUtility.NumberToText(score)
+    end
+    if kind == 3 then
+        if score < 60 then
+            return math.floor(score) .. "min"
+        end
+        local hours = math.floor(score / 60)
+        if hours > 24 then
+            return math.floor(hours / 24) .. "d" .. hours % 24 .. "h"
+        end
+        return hours .. "h"
     end
     return tostring(math.floor(score))
 end
@@ -326,7 +336,7 @@ function Component:CreateRow(parent, rank, userId, playerName, strength, persona
     return row
 end
 
---- 云端译文就绪或语言切换时刷新各世界榜单文案。
+--- 刷新各世界榜单文案和分类字色；个人行使用深色版本，确保金色背景上的可读性。
 function Component:RefreshLocalization()
     self._rankHeader.Text = self._localization:FormatByKey("Leaderboard.Rank")
     self._playerHeader.Text = self._localization:FormatByKey("Leaderboard.Player")
@@ -335,6 +345,12 @@ function Component:RefreshLocalization()
     for index, board in ipairs(self._boards) do
         local panel = board.Gui.Panel
         local config = BoardTypes[board.Kind]
+        for labelIndex, label in ipairs(panel:GetDescendants()) do
+            if label:IsA("TextLabel") then
+                label.TextColor3 = label:IsDescendantOf(panel.Rank101)
+                    and config.TextColor:Lerp(Color3.new(0, 0, 0), 0.75) or config.TextColor
+            end
+        end
         panel.Title.Text = self._localization:FormatByKey(config.TitleKey)
         panel.StrengthHeader.Text = self._localization:FormatByKey(config.HeaderKey)
         for labelIndex, label in ipairs({self._rankHeader, self._playerHeader}) do

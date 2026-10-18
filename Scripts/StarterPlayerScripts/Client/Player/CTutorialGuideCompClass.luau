@@ -38,7 +38,7 @@ function Guide:OnReady()
     self._label.Size = UDim2.new(0.8, 0, 0, 104)
     self._label.BackgroundTransparency = 1
     self._label.Font = Enum.Font.GothamBold
-    self._label.TextSize = 36
+    self._label.TextSize = 28
     self._label.TextWrapped = true
     self._label.TextColor3 = Color3.fromRGB(255, 223, 75)
     self._label.TextStrokeTransparency = 1
@@ -52,8 +52,10 @@ function Guide:OnReady()
     self._label.Text = ""
     self._label.Parent = self._screen
     self._screen.Parent = self:GetPlayerNode():WaitForChild("PlayerGui")
-    self._uiArrow = UIGuideArrow.New(self._screen)
+    self._uiArrow = UIGuideArrow.New(self._screen.Parent)
     self._rateButton = FXLoader:PlayerGui("MainUI/RightCenter/DoubleStrengthButton")
+    self._homeButton = FXLoader:PlayerGui("MainUI/TopCenter/HomeButton")
+    self._rewardButton = FXLoader:PlayerGui("MainUI/LeftCenter/RewardBtn")
     self._purchaseScreen = FXLoader:PlayerGui("ShopPurchaseUI")
     self:TrackConnection(self._localization.Changed:Connect(function()
         self:RefreshText()
@@ -79,7 +81,7 @@ function Guide:RefreshText()
     self._label.Text = target and self._localization:FormatByKey(target.key) or ""
 end
 
---- 主流程完成后由余额与解锁状态决定购买提示，替代一次性的首光环表现。
+--- 主流程完成后只补充尚未拥有首件升级装备的购买提示。
 --- @param guideData table 服务端同步的引导进度。
 function Guide:OnGuideDataChanged(guideData)
     local first = guideData.guideMap and guideData.guideMap.FirstLootGuide
@@ -92,7 +94,7 @@ function Guide:OnGuideDataChanged(guideData)
     end
 end
 
---- 只推荐强于全部已拥有装备且尚未购买的商品；同时可升级时优先镐子。
+--- 镐子和光环各拥有一件升级装备后停止提醒；尚未购买且同时买得起时优先镐子。
 --- @return string? 可购买升级的商店类型。
 function Guide:GetAffordableUpgradeType()
     local coins = self:GetNumber(Fields.Money)
@@ -109,7 +111,7 @@ function Guide:GetAffordableUpgradeType()
             end
         end
         for configIndex, config in ipairs(shop.configs) do
-            if config.TrainingRate > strongest and config.Price <= coins
+            if strongest == 1 and config.TrainingRate > strongest and config.Price <= coins
                 and owned[tostring(config[shop.id])] ~= true then
                 return shop.type
             end
@@ -145,36 +147,119 @@ end
 --- @param target table 刚结束的目标，由框架提供。
 function Guide:OnExitGuide(target)
     self._activeTarget = nil
+    self._uiGuideButton = nil
     self:HideGuideArrow()
     self._uiArrow:Hide()
     self:RefreshText()
 end
 
---- 倍率步骤指向主界面按钮，其余步骤解析世界节点；购买弹窗打开或死亡时隐藏界面箭头。
+--- 商店内优先指向已拥有的更强装备，其次选择买得起的升级；持续购买提醒只推荐未拥有商品。
+--- @param target table 当前主引导或持续升级提醒目标。
+--- @return GuiButton? 当前可执行操作的按钮。
+function Guide:GetShopGuideButton(target)
+    local isWeapon = target.type == "Weapon"
+    local shop = self:RequireComponent(isWeapon and "CWeaponShopUIComp" or "CAuraShopUIComp")
+    if not shop.Root.Enabled or not shop.State.open or shop._requestTask then
+        return nil
+    end
+    local items = isWeapon and shop.Config.weapons or shop.Config.auras
+    local strongest = 1
+    for index, item in ipairs(items) do
+        if shop.State.owned[item.id] then
+            strongest = math.max(strongest, item.strength)
+        end
+    end
+    local selected
+    if not target.upgrade then
+        for index, item in ipairs(items) do
+            if shop.State.owned[item.id] and item.strength > 1 and item.id ~= shop.State.equippedId
+                and (not selected or item.strength > selected.strength) then
+                selected = item
+            end
+        end
+    end
+    if not selected then
+        for index, item in ipairs(items) do
+            if not shop.State.owned[item.id] and item.strength > strongest and item.price <= shop.State.coins
+                and (not selected or item.price < selected.price) then
+                selected = item
+            end
+        end
+    end
+    local entry = selected and shop.Rows[selected.id]
+    return entry and entry.button
+end
+
+--- 按当前步骤选择实际按钮，确认页只引导训练倍率商品，避免误导购买其他商品。
+--- @param target table 当前引导目标。
+--- @return GuiButton? 当前可见界面中需要操作的按钮。
+function Guide:GetUIGuideButton(target)
+    if target.key == "Tutorial.Rate" then
+        if self._purchaseScreen.Enabled then
+            local purchase = self:RequireComponent("CShopPurchaseUIComp")
+            local product = purchase._product
+            if product and _G.GoodsConfig.GemGoodsData[product.goodsId].BuyHandler == "TrainingRateLevel"
+                and not purchase.State.pending then
+                return purchase.BuyBtn
+            end
+        elseif not self:RequireComponent("FCCommonUIComp"):IsTrainingClickBlocked() then
+            return self._rateButton
+        end
+    elseif target.type == "Base" then
+        if not self:RequireComponent("FCCommonUIComp"):IsTrainingClickBlocked() and self._homeButton.Visible then
+            return self._homeButton
+        end
+    elseif target.type == "Rewards" then
+        if not self:RequireComponent("FCCommonUIComp"):IsTrainingClickBlocked() then
+            return self._rewardButton
+        end
+    elseif target.type == "Sell" then
+        local sell = self:RequireComponent("CLootSellUIComp")
+        if sell:GetRootNode().Enabled and sell.State.isOpen and not sell.State.pending and #sell.State.items > 0 then
+            return sell.SellAllBtn
+        end
+    elseif target.type == "Weapon" or target.type == "Aura" then
+        return self:GetShopGuideButton(target)
+    end
+    return nil
+end
+
+--- 有界面操作时切换到 UI 箭头，否则用世界箭头带路；死亡和步骤退出时清理。
 function Guide:RefreshTarget()
     local target = self._activeTarget
     local character = self:GetPlayerCharacter()
     local humanoid = character and character:FindFirstChildOfClass("Humanoid")
     if not target or not humanoid or humanoid.Health <= 0 then
+        self._uiGuideButton = nil
         self:HideGuideArrow()
         self._uiArrow:Hide()
         return
     end
-    if target.key == "Tutorial.Rate" and not self._purchaseScreen.Enabled then
-        self._uiArrow:Show(self._rateButton, "Left")
-    else
-        self._uiArrow:Hide()
+    local button = self:GetUIGuideButton(target)
+    if button then
+        -- 切换商品时将目标滚入视野；同一目标不反复改动玩家的滚动位置。
+        if self._uiGuideButton ~= button then
+            local list = button:FindFirstAncestorWhichIsA("ScrollingFrame")
+            if list then
+                local offset = button.AbsolutePosition.Y - list.AbsolutePosition.Y + list.CanvasPosition.Y
+                local maximum = math.max(0, list.AbsoluteCanvasSize.Y - list.AbsoluteWindowSize.Y)
+                list.CanvasPosition = Vector2.new(list.CanvasPosition.X,
+                    math.clamp(offset - (list.AbsoluteWindowSize.Y - button.AbsoluteSize.Y) / 2, 0, maximum))
+            end
+        end
+        self._uiGuideButton = button
+        self._uiArrow:Show(button, target.type == "Rewards" and "Right" or "Left")
+        self:HideGuideArrow()
+        return
     end
+    self._uiGuideButton = nil
+    self._uiArrow:Hide()
     local position
     if target.type == "NearestItem" then
         local coordinates = target.position
         position = coordinates and Vector3.new(coordinates[1], coordinates[2], coordinates[3])
     elseif target.type == "Base" then
         position = _G.GameEnum.WorldTransferConfig[1].Position
-    elseif target.type == "Training" then
-        local field = FXLoader:Find(workspace, "BlockMeshs/World1Root/TrainingCenter/Training1")
-        local platform = field and field:FindFirstChild("彩色训练台", true)
-        position = platform and platform.Position
     else
         local names = {Sell = "Shop", Weapon = "PurpleHut", Aura = "BlueHut"}
         local name = names[target.type]

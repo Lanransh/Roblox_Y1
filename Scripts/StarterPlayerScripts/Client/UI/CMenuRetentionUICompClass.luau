@@ -12,7 +12,7 @@ local Fields = _G.PlayerDataConfig
 local Component = FX.Class("CMenuRetentionUICompClass", "FCUICompClass")
 local Templates = {
     ["MenuRetention.Offline"] = "You can earn up to {amount} Strength while offline!",
-    ["MenuRetention.Online"] = "Play for {minutes} more minutes to claim your reward!",
+    ["MenuRetention.Online"] = "Your next online reward is available in {time}!",
     ["MenuRetention.Ready"] = "Your online reward is ready to claim!",
     ["MenuRetention.Complete"] = "You have claimed all of today's online rewards!",
 }
@@ -93,6 +93,7 @@ function Component:OnReady()
     self._topText = self:CreateBanner("TopBar", false)
     self._bottomText = self:CreateBanner("BottomBar", true)
     self._rootNode.Parent = FXLoader:Player("PlayerGui")
+    self:WatchDataChanged(Fields.WelfareState, self.OnWelfareChanged, self)
     self:TrackConnection(GuiService.MenuOpened:Connect(function()
         self:RefreshText()
         self:Show()
@@ -107,6 +108,12 @@ function Component:OnReady()
         self:RefreshText()
         self:Show()
     end
+end
+
+--- 收到服务端快照时校准显示计时，菜单关闭期间也保留计时起点。
+function Component:OnWelfareChanged()
+    self._snapshotReceivedAt = os.clock()
+    self:RefreshText()
 end
 
 --- 本地表尚未同步新条目时仍保留英文提示；已有条目通过项目翻译入口显示。
@@ -142,7 +149,7 @@ function Component:GetOfflineMaximum()
         Rebirth.GetMaxTrainingValue(rebirthCount) - self:GetNumber(Fields.RockTrainingValue)))
 end
 
---- 仅展示服务端同步的奖励资格，不推算提前领奖，不改变收益或领取规则。
+--- 快照间逐秒递减显示时间；可领取状态仍以服务端同步的奖励资格为准。
 function Component:RefreshText()
     self._topText.Text = self:FormatText("MenuRetention.Offline", {
         amount = GameUtility.NumberToText(self:GetOfflineMaximum()),
@@ -161,11 +168,15 @@ function Component:RefreshText()
     end
     local key = remaining == nil and "MenuRetention.Complete"
         or remaining == 0 and "MenuRetention.Ready" or "MenuRetention.Online"
-    self._bottomText.Text = self:FormatText(key, {minutes = math.ceil((remaining or 0) / 60)})
+    local elapsed = math.floor(os.clock() - self._snapshotReceivedAt)
+    local seconds = math.max(0, math.ceil((remaining or 0) - elapsed))
+    self._bottomText.Text = self:FormatText(key, {
+        time = string.format("%02d:%02d", math.floor(seconds / 60), seconds % 60),
+    })
 end
 
 --- 菜单打开时随框架秒更新刷新，关闭时不计算文案。
---- @param serverTime number 框架服务器时间，本组件直接读取奖励快照。
+--- @param serverTime number 框架服务器时间；显示计时使用快照接收后的本地经过时间。
 function Component:OnUpdate(serverTime)
     if self._rootNode and self._rootNode.Enabled then
         self:RefreshText()

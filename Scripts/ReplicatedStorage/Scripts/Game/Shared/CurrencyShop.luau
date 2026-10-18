@@ -51,7 +51,7 @@ function Shop.GetFriendTrainingRate(player)
     return 1 + math.min(count, config.MaxCount) * config.AddRate
 end
 
---- 两端共用力量包预览与结算，沿用 Studio_Y3 每份基础 1 点及最高已解锁场地，不计在线追赶和新手加成。
+--- 两端共用力量包预览与结算，沿用 Studio_Y3 每份基础 1 点及最高已解锁场地，不计在线追赶。
 --- @param player table 客户端或服务端玩家对象，读取永久加成及当前同服好友。
 --- @param goodsId number 已配置的力量包商品 ID。
 --- @return number 当前重生阶段经验上限内可增加的训练值。

@@ -1,7 +1,5 @@
 -- 项目公共枚举；背包与快捷栏容量由 SetupProvider 返回。
 return {
-    NewPlayerTrainingExtraRate = 3, -- 与购买训练倍率相加。
-    NewPlayerTrainingDuration = 45 * 60, -- 累计在线秒数，不计离线时间。
     RankingDataStore = "ActivityData",
     -- 关卡头顶幸运牌：按世界名称与 RockLevel.WorldLevelCount 遍历，倍率由 RockLevel.GetLuck 计算。
     LevelLuckDisplay = {

@@ -73,7 +73,6 @@ end
 
 --- 读档后建立排行榜和公开头顶力量显示，并按原频率检查每秒结算条件。
 function Component:OnPlayerLogin()
-    self._playtimeClock = os.clock()
     self:SetNumber(Fields.TrainingFriendCount, FS.FriendService:GetFriendCountInRoom(self:GetPlayerId()) or 0)
     TrainingFields.GetFields()
     local player = self:GetPlayerNode()
@@ -109,34 +108,17 @@ function Component:OnPlayerLogin()
     end)
 end
 
---- 每秒提交累计在线时长，供自动保存和客户端状态同步使用。
---- @param serverTime number 框架每秒更新传入的服务器时间；计时使用单调时钟。
+--- 每秒刷新同服好友人数，供客户端倍率预览使用。
+--- @param serverTime number 框架每秒更新传入的服务器时间，本组件不使用。
 function Component:OnUpdate(serverTime)
-    self:UpdateTrainingPlaytime()
     self:SetNumber(Fields.TrainingFriendCount, FS.FriendService:GetFriendCountInRoom(self:GetPlayerId()) or 0)
 end
 
---- 只累计本次已登录会话的在线时间，离服时补齐不足一秒的尾差。
-function Component:UpdateTrainingPlaytime()
-    if self._playtimeClock then
-        local now = os.clock()
-        self:AddNumber(Fields.TrainingPlaytime, now - self._playtimeClock)
-        self._playtimeClock = now
-    end
-end
-
---- 购买倍率与新手加成相加，再乘当前同服好友倍率；不使用每日任务累计人数。
---- @param includeNewPlayerRate boolean 是否为在线训练，力量道具和离线收益不计新手倍率。
+--- 购买倍率乘当前同服好友倍率；不使用每日任务累计人数。
 --- @param excludeFriendRate boolean? 离线奖励传 true，不计当前同服好友。
---- @return number 本次结算的购买、新手及好友综合倍率。
-function Component:GetTrainingBonusRate(includeNewPlayerRate, excludeFriendRate)
-    local playtime = self:GetNumber(Fields.TrainingPlaytime)
-    if self._playtimeClock then
-        playtime += os.clock() - self._playtimeClock
-    end
-    local newPlayerRate = includeNewPlayerRate and playtime < _G.GameEnum.NewPlayerTrainingDuration
-        and _G.GameEnum.NewPlayerTrainingExtraRate or 0
-    return (CurrencyShop.GetTrainingRate(self:GetTable(Fields.CurrencyShopData)) + newPlayerRate)
+--- @return number 本次结算的购买及好友综合倍率。
+function Component:GetTrainingBonusRate(excludeFriendRate)
+    return CurrencyShop.GetTrainingRate(self:GetTable(Fields.CurrencyShopData))
         * (excludeFriendRate and 1 or CurrencyShop.GetFriendTrainingRate(self:GetPlayerObject()))
 end
 
@@ -281,12 +263,11 @@ function Component:ResetTrainingProgress()
     self._lastGrowth = os.clock()
 end
 
---- 力量卡与离线奖励共用训练速率；离线显式排除好友，点击可启用新手加成。
+--- 力量卡、离线奖励与点击共用训练速率；离线显式排除好友。
 --- @param seconds number 服务端提供的有效训练秒数。
---- @param includeNewPlayerRate boolean? 仅在线点击传 true。
 --- @param excludeFriendRate boolean? 仅离线奖励传 true。
 --- @return number 当前阶段经验上限内的训练收益。
-function Component:GetTrainingCardGain(seconds, includeNewPlayerRate, excludeFriendRate)
+function Component:GetTrainingCardGain(seconds, excludeFriendRate)
     local rebirthCount = self:GetNumber(Fields.RebirthCount)
     local currentValue = self:GetNumber(Fields.RockTrainingValue)
     local maxValue = Rebirth.GetMaxTrainingValue(rebirthCount)
@@ -298,7 +279,7 @@ function Component:GetTrainingCardGain(seconds, includeNewPlayerRate, excludeFri
     baseGain *= Collection.GetTrainingRate(self:GetTable(Fields.CollectionEntries))
     baseGain *= Aura.GetTrainingRate(self:GetTable(Fields.AuraData))
     baseGain *= Weapon.GetEquippedConfig(self:GetTable(Fields.WeaponData)).TrainingRate
-    baseGain *= self:GetTrainingBonusRate(includeNewPlayerRate == true, excludeFriendRate)
+    baseGain *= self:GetTrainingBonusRate(excludeFriendRate)
     return math.min(baseGain * Rebirth.GetTrainingRate(rebirthCount), maxValue - currentValue)
 end
 
@@ -345,7 +326,7 @@ function Component:HandleTrainingClick(position)
         return
     end
     self._lastTrainingClick = now
-    local gain = self:GetTrainingCardGain(1, true)
+    local gain = self:GetTrainingCardGain(1)
     if gain > 0 and self:RequireComponent("FSRewardComp"):AddRewards({
         {Type = "Money", Currency = "RockTrainingValue", Count = gain},
     }) then
@@ -409,14 +390,14 @@ function Component:TickTraining()
     local velocity = root.AssemblyLinearVelocity
     local walking = humanoid.FloorMaterial ~= Enum.Material.Air and not humanoid.Sit
         and Vector3.new(velocity.X, 0, velocity.Z).Magnitude > 0.5
-    local baseGain = (walking and RockLevel.WalkTraining or 0) + (self._hit and 2 or 0)
+    local baseGain = (walking and RockLevel.WalkTraining or 0) + (self._hit and 1 or 0)
     if fieldRate > 0 then
         baseGain = _G.NumericalConfig.trainingSettlementsPerSecond * fieldRate
     end
     baseGain *= Collection.GetTrainingRate(self:GetTable(Fields.CollectionEntries))
     baseGain *= Aura.GetTrainingRate(self:GetTable(Fields.AuraData))
     baseGain *= Weapon.GetEquippedConfig(self:GetTable(Fields.WeaponData)).TrainingRate
-    baseGain *= self:GetTrainingBonusRate(true)
+    baseGain *= self:GetTrainingBonusRate()
     local gain = Rebirth.GetTrainingGain(self:GetNumber(Fields.RockTrainingValue), baseGain,
         self:GetNumber(Fields.RebirthCount))
     if gain > 0 and self:RequireComponent("FSRewardComp"):AddRewards({
@@ -432,8 +413,6 @@ end
 
 --- 离服停止训练结算并清理头顶显示，避免继续持有旧角色。
 function Component:OnPlayerLogout()
-    self:UpdateTrainingPlaytime()
-    self._playtimeClock = nil
     FX.Task:Cancel(self._timer)
     self._timer = nil
     self:BindStrengthCharacter(nil)

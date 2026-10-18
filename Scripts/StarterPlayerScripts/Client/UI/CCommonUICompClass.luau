@@ -2,7 +2,9 @@ local FX = _G.FX
 local FXLoader = FX.Loader
 local Localization = FXLoader:Require(script.Parent.Parent, "Localization")
 local ButtonHover = FXLoader:RequireFromParent(script, "ButtonHover")
+local ToolDescription = FXLoader:RequireFromParent(script, "ToolDescription")
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
+local ItemConfig = FXLoader:RequireShared("Scripts/Game/Configs/ItemConfig")
 local UI = FX.Class("CCommonUICompClass", "FCCommonUICompClass")
 
 --- 使用项目英文提示与通用高层浮窗，避免被业务弹窗遮挡。
@@ -10,6 +12,8 @@ local UI = FX.Class("CCommonUICompClass", "FCCommonUICompClass")
 function UI:Ctor(owner)
     UI.Super.Ctor(self, owner)
     self.Localization = Localization.New(self:GetPlayerNode())
+    self._toolDescription = ToolDescription.New(FXLoader:PlayerGui("MainUI/TopCenter/Strength"))
+    self._selectedToolConnections = {}
     self._confirmKey, self._cancelKey = "Common.Confirm", "Common.Cancel"
     for index, node in ipairs({self.Tips, self.Description, self.Confirm, self.Cancel}) do
         node.AutoLocalize = false
@@ -31,6 +35,10 @@ function UI:Ctor(owner)
     --- @param character Model 引擎创建的当前玩家角色。
     self:TrackConnection(self:GetPlayerNode().CharacterAdded:Connect(function(character)
         self:BindCharacterTools(character)
+    end))
+    --- 角色整体移除时不保证逐个移出 Tool，因此主动清空旧角色说明。
+    self:TrackConnection(self:GetPlayerNode().CharacterRemoving:Connect(function()
+        self:SetSelectedTool(nil)
     end))
     if self:GetPlayerNode().Character then
         self:BindCharacterTools(self:GetPlayerNode().Character)
@@ -163,6 +171,40 @@ function UI:RefreshLocalization()
     if self._cancelKey then
         self.Cancel.Text = self.Localization:FormatByKey(self._cancelKey)
     end
+    self:RefreshSelectedTool()
+end
+
+--- 仅显示道具表中的框架道具；镐子等表外特殊工具不显示说明框。
+function UI:RefreshSelectedTool()
+    local tool = self._selectedTool
+    local itemId = tool and tool:GetAttribute("FrameworkItemId")
+    if not itemId or not ItemConfig.Data[itemId] then
+        self._toolDescription:SetTool(nil)
+        return
+    end
+    local description = self.Localization:FormatByKey("Item.Description." .. itemId)
+    self._toolDescription:SetTool(tool, description)
+end
+
+--- 装备变化时替换道具属性监听，避免旧道具继续覆盖当前说明。
+--- @param tool Tool? 当前角色持有的道具。
+function UI:SetSelectedTool(tool)
+    for index, connection in ipairs(self._selectedToolConnections) do
+        connection:Disconnect()
+    end
+    table.clear(self._selectedToolConnections)
+    self._selectedTool = tool
+    if tool then
+        for index, property in ipairs({"Name", "ToolTip", "TextureId"}) do
+            table.insert(self._selectedToolConnections, tool:GetPropertyChangedSignal(property):Connect(function()
+                self:RefreshSelectedTool()
+            end))
+        end
+        table.insert(self._selectedToolConnections, tool:GetAttributeChangedSignal("FrameworkItemId"):Connect(function()
+            self:RefreshSelectedTool()
+        end))
+    end
+    self:RefreshSelectedTool()
 end
 
 --- 原生背包不依赖自动文本采集，显示名与查找属性、存档模板名分离。
@@ -193,16 +235,29 @@ function UI:BindCharacterTools(character)
     if self._characterToolConnection then
         self._characterToolConnection:Disconnect()
     end
+    if self._characterToolRemovedConnection then
+        self._characterToolRemovedConnection:Disconnect()
+    end
+    self:SetSelectedTool(nil)
     --- Tool 已由服务器设置文案属性后才复制到角色。
     --- @param node Instance 角色新增的直接子节点。
     self._characterToolConnection = character.ChildAdded:Connect(function(node)
         if node:IsA("Tool") then
             self:LocalizeTool(node)
+            self:SetSelectedTool(node)
+        end
+    end)
+    --- 收起、消耗或销毁当前道具后立即隐藏，也覆盖角色死亡的清理过程。
+    --- @param node Instance 从角色移出的直接子节点。
+    self._characterToolRemovedConnection = character.ChildRemoved:Connect(function(node)
+        if node == self._selectedTool then
+            self:SetSelectedTool(character:FindFirstChildOfClass("Tool"))
         end
     end)
     for index, node in ipairs(character:GetChildren()) do
         if node:IsA("Tool") then
             self:LocalizeTool(node)
+            self:SetSelectedTool(node)
         end
     end
 end
@@ -212,6 +267,11 @@ function UI:Dtor()
     if self._characterToolConnection then
         self._characterToolConnection:Disconnect()
     end
+    if self._characterToolRemovedConnection then
+        self._characterToolRemovedConnection:Disconnect()
+    end
+    self:SetSelectedTool(nil)
+    self._toolDescription:Destroy()
     self._buttonHover:Destroy()
     FX.Network:UnRegServerMsgCallback("S2C_ShowLocalizedTips")
     self.Localization:Destroy()

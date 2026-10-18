@@ -2711,56 +2711,20 @@
           {
             "children": [
               {
-                "children": [],
-                "className": "TextLabel",
-                "id": "76f01afe-df30-4490-afc6-131cb5260a6c",
-                "name": "HeadingTxt",
-                "properties": {
-                  "AnchorPoint": {
-                    "x": 0,
-                    "y": 0
-                  },
-                  "AutoLocalize": true,
-                  "BackgroundColor3": "#ffffff",
-                  "BackgroundTransparency": 1,
-                  "ClipsDescendants": false,
-                  "Font": "GothamBold",
-                  "LayoutOrder": 0,
-                  "Position": {
-                    "x": {
-                      "offset": 0,
-                      "scale": 0
-                    },
-                    "y": {
-                      "offset": 0,
-                      "scale": 0
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "fa0d72d1-0a7a-4371-abfb-6400534ca7f9",
+                    "name": "TextStroke",
+                    "properties": {
+                      "Color": "#000000",
+                      "Enabled": true,
+                      "Thickness": 2,
+                      "Transparency": 0
                     }
-                  },
-                  "Rotation": 0,
-                  "Size": {
-                    "x": {
-                      "offset": 788,
-                      "scale": 0
-                    },
-                    "y": {
-                      "offset": 32,
-                      "scale": 0
-                    }
-                  },
-                  "Text": "Offline Rewards",
-                  "TextColor3": "#ffffff",
-                  "TextScaled": false,
-                  "TextSize": 26,
-                  "TextTransparency": 0,
-                  "TextWrapped": true,
-                  "TextXAlignment": "Center",
-                  "TextYAlignment": "Center",
-                  "Visible": true,
-                  "ZIndex": 9
-                }
-              },
-              {
-                "children": [],
+                  }
+                ],
                 "className": "TextLabel",
                 "id": "a8cc0c01-0195-4b06-8803-142a0d579a23",
                 "name": "TimeTxt",
@@ -2781,7 +2745,7 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 44,
+                      "offset": 30,
                       "scale": 0
                     }
                   },
@@ -2792,14 +2756,14 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 32,
+                      "offset": 44,
                       "scale": 0
                     }
                   },
-                  "Text": "Offline Time: 2h 30m 0s",
-                  "TextColor3": "#d6ddda",
+                  "Text": "You were away for 2h 30m",
+                  "TextColor3": "#ffffff",
                   "TextScaled": false,
-                  "TextSize": 20,
+                  "TextSize": 30,
                   "TextTransparency": 0,
                   "TextWrapped": true,
                   "TextXAlignment": "Center",
@@ -2816,10 +2780,24 @@
                     "id": "b65cb0f6-7155-42a5-a66c-1c5759d7a03a",
                     "name": "TextStroke",
                     "properties": {
-                      "Color": "#20231c",
+                      "Color": "#000000",
                       "Enabled": true,
-                      "Thickness": 2,
+                      "Thickness": 4,
                       "Transparency": 0
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "UIGradient",
+                    "id": "3a7ca2a1-9cfe-4bcf-a2b9-118d9d61ca0f",
+                    "name": "StrengthGradient",
+                    "properties": {
+                      "ColorEnd": "#ff7a1a",
+                      "ColorStart": "#ffe75a",
+                      "Enabled": true,
+                      "Rotation": 90,
+                      "TransparencyEnd": 0,
+                      "TransparencyStart": 0
                     }
                   }
                 ],
@@ -2839,32 +2817,32 @@
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
-                      "offset": 320,
+                      "offset": 326,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 126,
+                      "offset": 118,
                       "scale": 0
                     }
                   },
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 310,
+                      "offset": 270,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 80,
+                      "offset": 100,
                       "scale": 0
                     }
                   },
-                  "Text": "Training: 1500",
+                  "Text": "+1500",
                   "TextColor3": "#ffffff",
                   "TextScaled": false,
-                  "TextSize": 34,
+                  "TextSize": 68,
                   "TextTransparency": 0,
                   "TextWrapped": true,
-                  "TextXAlignment": "Center",
+                  "TextXAlignment": "Left",
                   "TextYAlignment": "Center",
                   "Visible": true,
                   "ZIndex": 9
@@ -2892,7 +2870,7 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 338,
+                      "offset": 366,
                       "scale": 0
                     }
                   },
@@ -2957,7 +2935,7 @@
                       },
                       "AutoLocalize": true,
                       "BackgroundColor3": "#ffffff",
-                      "BackgroundTransparency": 0.58,
+                      "BackgroundTransparency": 0.25,
                       "ClipsDescendants": false,
                       "LayoutOrder": 0,
                       "Position": {
@@ -2973,11 +2951,11 @@
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 220,
-                          "scale": 0
+                          "offset": 0,
+                          "scale": 1
                         },
                         "y": {
-                          "offset": 2,
+                          "offset": 3,
                           "scale": 0
                         }
                       },
@@ -3006,18 +2984,18 @@
                           "scale": 0
                         },
                         "y": {
-                          "offset": 54,
-                          "scale": 0
+                          "offset": -5,
+                          "scale": 1
                         }
                       },
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 220,
-                          "scale": 0
+                          "offset": 0,
+                          "scale": 1
                         },
                         "y": {
-                          "offset": 4,
+                          "offset": 5,
                           "scale": 0
                         }
                       },
@@ -3075,16 +3053,30 @@
                           "scale": 1
                         }
                       },
-                      "Text": "Claim ×1",
+                      "Text": "Claim Rewards!",
                       "TextColor3": "#ffffff",
                       "TextScaled": false,
-                      "TextSize": 24,
+                      "TextSize": 30,
                       "TextTransparency": 0,
                       "TextWrapped": true,
                       "TextXAlignment": "Center",
                       "TextYAlignment": "Center",
                       "Visible": true,
                       "ZIndex": 9
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "UIGradient",
+                    "id": "088febb1-0c6f-4e6b-8162-6b396d8f2f25",
+                    "name": "RewardGradient",
+                    "properties": {
+                      "ColorEnd": "#18ac00",
+                      "ColorStart": "#9aff35",
+                      "Enabled": true,
+                      "Rotation": 90,
+                      "TransparencyEnd": 0,
+                      "TransparencyStart": 0
                     }
                   }
                 ],
@@ -3101,20 +3093,20 @@
                     "y": 0
                   },
                   "AutoLocalize": true,
-                  "BackgroundColor3": "#67ed14",
+                  "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 0,
                   "ClipsDescendants": false,
                   "Image": "rbxassetid://82793028306773",
                   "ImageColor3": "#ffffff",
-                  "ImageTransparency": 0,
+                  "ImageTransparency": 0.92,
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
-                      "offset": 144,
+                      "offset": 18,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 278,
+                      "offset": 266,
                       "scale": 0
                     }
                   },
@@ -3122,11 +3114,11 @@
                   "ScaleType": "Tile",
                   "Size": {
                     "x": {
-                      "offset": 220,
+                      "offset": 368,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 58,
+                      "offset": 96,
                       "scale": 0
                     }
                   },
@@ -3182,7 +3174,7 @@
                       },
                       "AutoLocalize": true,
                       "BackgroundColor3": "#ffffff",
-                      "BackgroundTransparency": 0.58,
+                      "BackgroundTransparency": 0.25,
                       "ClipsDescendants": false,
                       "LayoutOrder": 0,
                       "Position": {
@@ -3198,11 +3190,11 @@
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 220,
-                          "scale": 0
+                          "offset": 0,
+                          "scale": 1
                         },
                         "y": {
-                          "offset": 2,
+                          "offset": 3,
                           "scale": 0
                         }
                       },
@@ -3221,7 +3213,7 @@
                         "y": 0
                       },
                       "AutoLocalize": true,
-                      "BackgroundColor3": "#225a07",
+                      "BackgroundColor3": "#b06500",
                       "BackgroundTransparency": 0.2,
                       "ClipsDescendants": false,
                       "LayoutOrder": 0,
@@ -3231,18 +3223,18 @@
                           "scale": 0
                         },
                         "y": {
-                          "offset": 54,
-                          "scale": 0
+                          "offset": -5,
+                          "scale": 1
                         }
                       },
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 220,
-                          "scale": 0
+                          "offset": 0,
+                          "scale": 1
                         },
                         "y": {
-                          "offset": 4,
+                          "offset": 5,
                           "scale": 0
                         }
                       },
@@ -3300,16 +3292,30 @@
                           "scale": 1
                         }
                       },
-                      "Text": "Claim ×2",
+                      "Text": "2× Rewards!",
                       "TextColor3": "#ffffff",
                       "TextScaled": false,
-                      "TextSize": 24,
+                      "TextSize": 30,
                       "TextTransparency": 0,
                       "TextWrapped": true,
                       "TextXAlignment": "Center",
                       "TextYAlignment": "Center",
                       "Visible": true,
                       "ZIndex": 9
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "UIGradient",
+                    "id": "d15b075d-6dc3-4a1f-bdd6-0e0831b6a3b7",
+                    "name": "RewardGradient",
+                    "properties": {
+                      "ColorEnd": "#ffa000",
+                      "ColorStart": "#ffe85a",
+                      "Enabled": true,
+                      "Rotation": 90,
+                      "TransparencyEnd": 0,
+                      "TransparencyStart": 0
                     }
                   }
                 ],
@@ -3326,20 +3332,20 @@
                     "y": 0
                   },
                   "AutoLocalize": true,
-                  "BackgroundColor3": "#67ed14",
+                  "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 0,
                   "ClipsDescendants": false,
                   "Image": "rbxassetid://82793028306773",
                   "ImageColor3": "#ffffff",
-                  "ImageTransparency": 0,
+                  "ImageTransparency": 0.92,
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
-                      "offset": 424,
+                      "offset": 402,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 278,
+                      "offset": 266,
                       "scale": 0
                     }
                   },
@@ -3347,11 +3353,11 @@
                   "ScaleType": "Tile",
                   "Size": {
                     "x": {
-                      "offset": 220,
+                      "offset": 368,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 58,
+                      "offset": 96,
                       "scale": 0
                     }
                   },
@@ -3362,165 +3368,6 @@
                     },
                     "y": {
                       "offset": 28,
-                      "scale": 0
-                    }
-                  },
-                  "Visible": true,
-                  "ZIndex": 7
-                }
-              },
-              {
-                "children": [
-                  {
-                    "children": [],
-                    "className": "UICorner",
-                    "id": "bb7a9e37-004f-445c-9c85-ec90da58385f",
-                    "name": "UICorner",
-                    "properties": {
-                      "CornerRadius": {
-                        "offset": 6,
-                        "scale": 0
-                      }
-                    }
-                  },
-                  {
-                    "children": [],
-                    "className": "UIStroke",
-                    "id": "a5611df2-53da-443f-8ef9-71559433f320",
-                    "name": "UIStroke",
-                    "properties": {
-                      "Color": "#000000",
-                      "Enabled": true,
-                      "Thickness": 2,
-                      "Transparency": 0
-                    }
-                  },
-                  {
-                    "children": [],
-                    "className": "UIGradient",
-                    "id": "9da9ff8f-d2d0-4da2-bdcf-54207308654b",
-                    "name": "ThemeGradient",
-                    "properties": {
-                      "ColorEnd": "#ffb51b",
-                      "ColorStart": "#fff23d",
-                      "Enabled": true,
-                      "Rotation": 90,
-                      "TransparencyEnd": 0,
-                      "TransparencyStart": 0
-                    }
-                  },
-                  {
-                    "children": [],
-                    "className": "Frame",
-                    "id": "1c1fd2da-10a3-4c71-8681-d4b84dc8825e",
-                    "name": "TopHighlightImg",
-                    "properties": {
-                      "AnchorPoint": {
-                        "x": 0,
-                        "y": 0
-                      },
-                      "AutoLocalize": true,
-                      "BackgroundColor3": "#ffffff",
-                      "BackgroundTransparency": 0.65,
-                      "ClipsDescendants": false,
-                      "LayoutOrder": 0,
-                      "Position": {
-                        "x": {
-                          "offset": 0,
-                          "scale": 0
-                        },
-                        "y": {
-                          "offset": 0,
-                          "scale": 0
-                        }
-                      },
-                      "Rotation": 0,
-                      "Size": {
-                        "x": {
-                          "offset": 0,
-                          "scale": 1
-                        },
-                        "y": {
-                          "offset": 2,
-                          "scale": 0
-                        }
-                      },
-                      "Visible": true,
-                      "ZIndex": 8
-                    }
-                  },
-                  {
-                    "children": [],
-                    "className": "Frame",
-                    "id": "c22f689c-817f-4558-ac2e-c754a8d6839f",
-                    "name": "BottomEdgeImg",
-                    "properties": {
-                      "AnchorPoint": {
-                        "x": 0,
-                        "y": 0
-                      },
-                      "AutoLocalize": true,
-                      "BackgroundColor3": "#e68c0a",
-                      "BackgroundTransparency": 0.2,
-                      "ClipsDescendants": false,
-                      "LayoutOrder": 0,
-                      "Position": {
-                        "x": {
-                          "offset": 0,
-                          "scale": 0
-                        },
-                        "y": {
-                          "offset": -4,
-                          "scale": 1
-                        }
-                      },
-                      "Rotation": 0,
-                      "Size": {
-                        "x": {
-                          "offset": 0,
-                          "scale": 1
-                        },
-                        "y": {
-                          "offset": 4,
-                          "scale": 0
-                        }
-                      },
-                      "Visible": true,
-                      "ZIndex": 8
-                    }
-                  }
-                ],
-                "className": "Frame",
-                "id": "45784271-7d20-4da1-900b-cd3738b64ceb",
-                "name": "StrengthRewardImg",
-                "properties": {
-                  "AnchorPoint": {
-                    "x": 0,
-                    "y": 0
-                  },
-                  "AutoLocalize": true,
-                  "BackgroundColor3": "#ffffff",
-                  "BackgroundTransparency": 0,
-                  "ClipsDescendants": false,
-                  "LayoutOrder": 0,
-                  "Position": {
-                    "x": {
-                      "offset": 130,
-                      "scale": 0
-                    },
-                    "y": {
-                      "offset": 88,
-                      "scale": 0
-                    }
-                  },
-                  "Rotation": 0,
-                  "Size": {
-                    "x": {
-                      "offset": 528,
-                      "scale": 0
-                    },
-                    "y": {
-                      "offset": 156,
                       "scale": 0
                     }
                   },
@@ -3553,11 +3400,11 @@
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
-                      "offset": 180,
+                      "offset": 220,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 100,
+                      "offset": 118,
                       "scale": 0
                     }
                   },
@@ -3565,11 +3412,11 @@
                   "ScaleType": "Fit",
                   "Size": {
                     "x": {
-                      "offset": 128,
+                      "offset": 100,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 128,
+                      "offset": 100,
                       "scale": 0
                     }
                   },

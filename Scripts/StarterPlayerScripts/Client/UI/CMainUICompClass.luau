@@ -66,7 +66,7 @@ function Component:OnReady()
     self._strength.AutoLocalize = false
     self._bar.ProgressLabel.AutoLocalize = false
     self._homeButton.AutoLocalize = false
-    self._homeButton.Text = self._localization:FormatByKey("Main.Home")
+    self._homeButton.Text = self._localization:FormatByKey("Main.GoHome")
     --- 翻译就绪或语言切换时刷新主界面，出售界面自行监听语言变化。
     self:TrackConnection(self._localization.Changed:Connect(function()
         self:RefreshLocalization()
@@ -88,8 +88,6 @@ function Component:OnReady()
     self._lastClick = -math.huge
     -- 复用 Rojo 管理的 ScreenGui，飘字直属该节点，不受 Canvas 缩放影响。
     self._effectGui = FXLoader:Here(self._playerGui, "ScreenGui")
-    self._pulseScale = Instance.new("UIScale")
-    self._pulseScale.Parent = self._strength
     self:BindButtons()
     self:RefreshHomeButton()
     --- 跟随角色进出关卡及重生切换入口，不重复注册按钮事件。
@@ -105,7 +103,6 @@ function Component:OnReady()
     FX.Network:RegServerMsgCallback("S2C_TrainingEffect", function(gain, rewardRain, position)
         if rewardRain then
             self:ShowRewardRain(self._bar.StrengthIcon)
-            self:PulseStrength()
         else
             self:ShowTrainingEffect(gain, position)
         end
@@ -150,10 +147,11 @@ function Component:OnReady()
     self:Show()
 end
 
---- 沿用原红点的显隐条件，以不拦截输入的感叹号徽标提示可用内容。
+--- 商店不显示提示徽标；奖励沿用原红点显隐条件，以不拦截输入的感叹号提示可用内容。
 function Component:BindNotificationBadges()
     self._notificationBadges = {}
-    for index, buttonName in ipairs({"ShopBtn", "RewardBtn"}) do
+    FXLoader:Here(self._rootNode, "LeftCenter/ShopBtn/RedDotImg").Visible = false
+    for index, buttonName in ipairs({"RewardBtn"}) do
         local button = FXLoader:Here(self._rootNode, "LeftCenter/" .. buttonName)
         local badge = FXLoader:Here(button, "RedDotImg")
         button.ClipsDescendants = false
@@ -313,7 +311,26 @@ function Component:PromptFriendInvite()
     end
 end
 
---- 下一档倍率与力量包只展示真实配置；满级仍允许点击查看不可购买原因。
+--- 价格与钻石紧邻排列，整组贴近商品图标上沿并略微偏右。
+--- @param button GuiButton 力量倍率或力量包按钮。
+--- @param centerY number 价格行中心相对按钮顶部的偏移。
+function Component:LayoutStrengthOfferPrice(button, centerY)
+    local price, diamond = button.Price, button.PriceDiamond
+    local textSize = game:GetService("TextService"):GetTextSize(
+        price.Text, price.TextSize, price.Font, Vector2.new(1000, 24))
+    local width = math.ceil(textSize.X)
+    local diamondWidth = diamond.Visible and 26 or 0
+    local left = -(width + diamondWidth) / 2 + 8
+    price.AnchorPoint = Vector2.new(0, 0.5)
+    price.Position = UDim2.new(0.5, left, 0, centerY)
+    price.Size = UDim2.fromOffset(width, 24)
+    price.TextXAlignment = Enum.TextXAlignment.Left
+    diamond.AnchorPoint = Vector2.new(0, 0.5)
+    diamond.Position = UDim2.new(0.5, left + width + 2, 0, centerY)
+    diamond.Size = UDim2.fromOffset(24, 24)
+end
+
+--- 只调整价格行位置，保留商品图标、收益和按钮原有布局。
 function Component:RefreshStrengthOffers()
     local right = FXLoader:Here(self._rootNode, "RightCenter")
     right.StrengthPack3Button.Visible = false
@@ -325,9 +342,7 @@ function Component:RefreshStrengthOffers()
     rateButton.Background.Label.AutoLocalize = false
     rateButton.PriceDiamond.Visible = nextItem ~= nil
     if nextItem then
-        rateButton.Price.Text = self._localization:FormatByKey("Main.OfferPrice", {
-            value = GameUtility.NumberToText(_G.GoodsConfig.GemGoodsData[nextItem.GemGoodsId].Price),
-        })
+        rateButton.Price.Text = GameUtility.NumberToText(_G.GoodsConfig.GemGoodsData[nextItem.GemGoodsId].Price)
         rateButton.Background.Label.Text = self._localization:FormatByKey("Main.StrengthRate", {
             rate = GameUtility.NumberToText(_G.GameConfig.TrainingRateConfig[data.trainingLevel + 1].Rate),
         })
@@ -337,16 +352,16 @@ function Component:RefreshStrengthOffers()
             rate = GameUtility.NumberToText(CurrencyShop.GetTrainingRate(data)),
         })
     end
+    self:LayoutStrengthOfferPrice(rateButton, 10)
     for name, goodsId in pairs(StrengthPacks) do
         local button = right[name]
         local gain = CurrencyShop.GetTrainingPackGain(self:GetPlayerObject(), goodsId)
         button.Interactable = true
         button.Price.AutoLocalize = false
         button.Amount.AutoLocalize = false
-        button.Price.Text = self._localization:FormatByKey("Main.OfferPrice", {
-            value = GameUtility.NumberToText(_G.GoodsConfig.GemGoodsData[goodsId].Price),
-        })
+        button.Price.Text = GameUtility.NumberToText(_G.GoodsConfig.GemGoodsData[goodsId].Price)
         button.Amount.Text = "+" .. GameUtility.NumberToText(gain)
+        self:LayoutStrengthOfferPrice(button, 10)
     end
 end
 
@@ -420,7 +435,7 @@ end
 
 --- 语言变化只刷新当前数据显示，不播放训练收益动画或重新打开已关闭弹窗。
 function Component:RefreshLocalization()
-    self._homeButton.Text = self._localization:FormatByKey("Main.Home")
+    self._homeButton.Text = self._localization:FormatByKey("Main.GoHome")
     self:RefreshProgress(self:GetNumber(Fields.RockTrainingValue))
     self:RefreshTrainingStatus(self:GetNumber(Fields.TrainingFieldIndex))
     self:RefreshStrengthOffers()
@@ -523,10 +538,11 @@ function Component:ConfigureBackpackBoostLayout()
     value.Text = ""
 end
 
---- 好友加成与背包加成并排，仅显示当前加成，点击不执行动作。
+--- 好友加成与背包加成并排，仅显示当前加成，不响应悬停缩放和点击。
 function Component:CreateFriendBoostButton()
     local button = Instance.new("ImageButton")
     button.Name = "FriendBoost"
+    button:SetAttribute("HoverEnabled", false)
     button.AnchorPoint = Vector2.new(1, 1)
     button.Position = UDim2.new(1, -92, 1, -12)
     button.Size = UDim2.fromOffset(72, 88)
@@ -868,7 +884,7 @@ function Component:ShowTrainingEffect(gain, position)
         end
         effect.SizeConnection = icon:GetPropertyChangedSignal("Position"):Connect(UpdateSize)
         UpdateSize()
-        --- 动画结束后释放本次飘字与尺寸监听，走路及击打收益保留力量栏到账反馈。
+        --- 动画结束后释放本次飘字与尺寸监听。
         effect.Task = task.spawn(function()
             effect.Tween = TweenService:Create(icon,
                 TweenInfo.new(0.62, Enum.EasingStyle.Quart, Enum.EasingDirection.In), {
@@ -880,9 +896,6 @@ function Component:ShowTrainingEffect(gain, position)
             effect.Tween:Destroy()
             self._effects[icon] = nil
             icon:Destroy()
-            if not position then
-                self:PulseStrength()
-            end
         end)
     end
 end
@@ -946,18 +959,6 @@ function Component:ClearRewardRain()
     table.clear(self._rainEffects)
 end
 
---- 到账时轻微放大力量文字再复原，连续动画不累加缩放。
-function Component:PulseStrength()
-    if self._pulseTween then
-        self._pulseTween:Cancel()
-        self._pulseTween:Destroy()
-    end
-    self._pulseScale.Scale = 1
-    self._pulseTween = TweenService:Create(self._pulseScale,
-        TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out, 0, true), {Scale = 1.1})
-    self._pulseTween:Play()
-end
-
 --- 释放自建节点和未结束动画，保留共用 ScreenGui；基类负责取消数据及按钮监听。
 function Component:Dtor()
     for index, entry in ipairs(self._notificationBadges or {}) do
@@ -992,12 +993,9 @@ function Component:Dtor()
         effect.Tween:Destroy()
         icon:Destroy()
     end
-    for name, tween in pairs({Progress = self._progressTween, Pulse = self._pulseTween}) do
+    for name, tween in pairs({Progress = self._progressTween}) do
         tween:Cancel()
         tween:Destroy()
-    end
-    for name, node in pairs({Pulse = self._pulseScale}) do
-        node:Destroy()
     end
     Component.Super.Dtor(self)
 end

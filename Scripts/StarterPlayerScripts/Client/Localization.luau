@@ -1,6 +1,7 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
 local LocalizationService = game:GetService("LocalizationService")
+local RunService = game:GetService("RunService")
 local SourceTable = FXLoader:Shared("Shared/Localization")
 local Localization = {}
 Localization.__index = Localization
@@ -22,9 +23,12 @@ function Localization.New(player)
     self._loadTask = task.defer(function()
         -- 平台请求可能失败；有限重试后继续使用本地英文。
         for attempt = 1, 3 do
-            --- 请求玩家当前体验语言的云端翻译器。
+            --- Studio 跟随模拟语言，正式游戏跟随玩家当前体验语言。
             --- @return Translator 平台加载的翻译器。
             local success, translator = pcall(function()
+                if RunService:IsStudio() then
+                    return LocalizationService:GetTranslatorForLocaleAsync(LocalizationService.RobloxLocaleId)
+                end
                 return LocalizationService:GetTranslatorForPlayerAsync(player)
             end)
             if self._destroyed then

@@ -330,7 +330,7 @@ function Guide:GetLootTarget(rock, position)
     return selected and "1:" .. selected or nil, target
 end
 
---- 使用权威存档和场地状态恢复提前完成的操作，不新增跳步协议。
+--- 使用权威存档恢复提前完成的操作，末尾提醒按配置计时推进，不新增跳步协议。
 --- @param serverTime number 框架每秒回调时间。
 function Guide:OnUpdate(serverTime)
     if self:IsLootStep(1) then
@@ -367,18 +367,25 @@ function Guide:OnUpdate(serverTime)
             self:PublishEvent("Tutorial.Weapon")
         end
     end
-    if self:IsLootStep(6) and self:GetNumber(PlayerDataConfig.TrainingFieldIndex) == 1 then
-        self:PublishEvent("Tutorial.Training")
-    end
-    if self:IsLootStep(7) then
-        self._encouragementEnd = self._encouragementEnd or serverTime + 3
-        if serverTime >= self._encouragementEnd then
-            self:PublishEvent("Tutorial.Done")
-            self._encouragementEnd = nil
-        end
-    end
     local data = self:GetGuideData()
     local first = data.guideMap.FirstLootGuide
+    if data.activeGuideId == "FirstLootGuide" then
+        local step = TutorialGuideConfig.FirstLootGuide.steps[first.stepIndex]
+        if step.duration then
+            -- 每条提醒独立计时，不要求进入训练台或点击领奖；重登后重新完整展示。
+            if self._reminderStep ~= first.stepIndex then
+                self._reminderStep = first.stepIndex
+                self._reminderEnd = serverTime + step.duration
+            end
+            if serverTime >= self._reminderEnd then
+                self:PublishEvent(step.finishEvent)
+                self._reminderStep = nil
+                self._reminderEnd = nil
+            end
+        end
+    end
+    data = self:GetGuideData()
+    first = data.guideMap.FirstLootGuide
     if not first or first.state ~= "Finished" then
         return
     end

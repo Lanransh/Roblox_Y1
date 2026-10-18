@@ -1157,7 +1157,49 @@ function Component:CreateRock(area, column, row)
     return rock
 end
 
---- 受损与受击只改变外观；碰撞盒保持竖直及固定高度，避免缩小或倾斜后可跳上石头。
+--- 受损后按需创建世界尺寸血条，随镜头拉远缩小；复用石头时按当前血量恢复显隐。
+--- @param rock Model 本组件拥有的客户端石头。
+--- @param healthRatio number 当前血量占最大血量的比例。
+function Component:UpdateRockHealthBar(rock, healthRatio)
+    local billboard = rock:FindFirstChild("RockHealthBar")
+    if healthRatio >= 1 then
+        if billboard then
+            billboard.Enabled = false
+        end
+        return
+    end
+    if not billboard then
+        billboard = Instance.new("BillboardGui")
+        billboard.Name = "RockHealthBar"
+        billboard.Adornee = rock.Root
+        billboard.Size = UDim2.fromScale(5, 0.6)
+        billboard.AlwaysOnTop = true
+        billboard.LightInfluence = 0
+        billboard.MaxDistance = 80
+        local background = Instance.new("Frame")
+        background.Name = "Background"
+        background.Size = UDim2.fromScale(1, 1)
+        background.BackgroundColor3 = Color3.fromRGB(25, 29, 35)
+        background.BorderSizePixel = 0
+        background.Parent = billboard
+        local corner = Instance.new("UICorner")
+        corner.CornerRadius = UDim.new(0, 6)
+        corner.Parent = background
+        local fill = Instance.new("Frame")
+        fill.Name = "Fill"
+        fill.BackgroundColor3 = Color3.fromRGB(80, 220, 105)
+        fill.BorderSizePixel = 0
+        fill.Parent = background
+        local fillCorner = corner:Clone()
+        fillCorner.Parent = fill
+        billboard.Parent = rock
+    end
+    billboard.Enabled = healthRatio > 0
+    billboard.StudsOffsetWorldSpace = Vector3.new(0, rock.Root.Size.Y / 2 + 1.2, 0)
+    billboard.Background.Fill.Size = UDim2.fromScale(math.clamp(healthRatio, 0, 1), 1)
+end
+
+--- 受损与受击更新外观和血条；碰撞盒保持竖直及固定高度，避免缩小或倾斜后可跳上石头。
 --- @param rock Model 当前客户端石头。
 --- @param area table 所属关卡及常驻颜色标记。
 --- @param health number 大于零的当前血量。
@@ -1189,6 +1231,7 @@ function Component:UpdateRockAppearance(rock, area, health)
             * pivot.Rotation
         rock:SetAttribute("HealthRatio", ratio)
     end
+    self:UpdateRockHealthBar(rock, healthRatio)
     local color = area.Node.Color
     if rock:GetAttribute("GroundColor") ~= color then
         local baseColor = rock:GetAttribute("BaseColor")
