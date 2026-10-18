@@ -13,6 +13,7 @@ local GameUtility = require(game:GetService("ReplicatedStorage").Scripts.Game.Sh
 local CurrencyShop = FXLoader:RequireShared("Scripts/Game/Shared/CurrencyShop")
 local InstancePath = FXLoader:RequireShared("Scripts/Game/Shared/InstancePath")
 local StrengthPacks = {StrengthPack1Button = 301, StrengthPack2Button = 302}
+local AREA_EXIT_PADDING = 2
 local Component = FX.Class("CMainUICompClass", "FCUICompClass")
 
 --- 返回主界面业务组件名，供项目组件协作使用。
@@ -391,8 +392,12 @@ function Component:RefreshHomeButton()
     local character = self:GetPlayerCharacter()
     local root = character and character:FindFirstChild("HumanoidRootPart")
     local humanoid = character and character:FindFirstChildOfClass("Humanoid")
-    local inArea = root ~= nil and humanoid ~= nil and humanoid.Health > 0
-        and RockLevel.IsInArea(self._areas, root.Position)
+    local inArea = false
+    if root ~= nil and humanoid ~= nil and humanoid.Health > 0 then
+        -- 已在关卡内时用外扩边界判定，避免角色在边界附近来回切换 HUD。
+        local padding = self._inLevelArea and AREA_EXIT_PADDING or 0
+        inArea = RockLevel.IsInArea(self._areas, root.Position, padding)
+    end
     self._homeButton.Visible = inArea
     self._strength.Parent.Visible = not inArea
     if self._inLevelArea == inArea then
@@ -469,7 +474,7 @@ function Component:RefreshLoot(loot, oldLoot)
     end
 end
 
---- 右下角扩容 buff：图标居中，上方显示额外格数，下方显示剩余时间。
+--- 右下角扩容 buff：背包图案缩小至与好友加成接近的视觉尺寸，保留数量与倒计时位置。
 function Component:ConfigureBackpackBoostLayout()
     local frame = self._backpackBoost
     frame.AnchorPoint = Vector2.new(1, 1)
@@ -485,7 +490,8 @@ function Component:ConfigureBackpackBoostLayout()
     local icon = frame.Icon
     icon.AnchorPoint = Vector2.new(0.5, 0.5)
     icon.Position = UDim2.new(0.5, 0, 0, 38)
-    icon.Size = UDim2.fromOffset(56, 56)
+    icon.Size = UDim2.fromOffset(44, 44)
+    icon.ScaleType = Enum.ScaleType.Fit
     local countLabel = frame:FindFirstChild("Count")
     if not countLabel then
         countLabel = Instance.new("TextLabel")

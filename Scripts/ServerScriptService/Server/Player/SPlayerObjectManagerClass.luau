@@ -200,6 +200,19 @@ function Manager:RegRockDropMsg()
         end
     end
     FX.Network:RegClientMsgCallback("C2S_RequestRockDrop", requestDrop)
+    --- 只接受本人服务器掉落 ID，归属、距离、到期和容量均由组件校验。
+    --- @param userId number 引擎认证的玩家身份。
+    --- @param dropId string 服务端签发的掉落 ID。
+    --- @return boolean 是否成功拾取并发奖。
+    local function pickupDrop(userId, dropId)
+        local player = self:GetPlayerObject(userId)
+        local rocks = player and player:GetComponent("SRockLevelComp")
+        if rocks then
+            return rocks:PickupDrop(dropId)
+        end
+        return false
+    end
+    FX.Network:RegClientMsgCallback("C2S_PickupRockDrop", pickupDrop)
     --- 服务端只记录通过边界校验的命中，回包校正血量或撤销客户端无效预测。
     --- @param userId number 引擎认证的玩家身份。
     --- @param key string 客户端命中的格号。

@@ -3,19 +3,18 @@ local TweenService = game:GetService("TweenService")
 local Reminder = {}
 Reminder.__index = Reminder
 
---- 在对应小屋上方创建醒目的大号立体感叹号，抬高位置保持屋顶间距，不参与碰撞或交互。
+--- 以已加载的招牌顶部定位感叹号，避免小屋分批流入时包围盒偏低，不参与碰撞或交互。
 --- @param hut Model 已确认的商店小屋。
+--- @param sign BasePart 小屋上方已加载的招牌。
 --- @return table 由商店组件持有并释放的提醒对象。
-function Reminder.New(hut)
+function Reminder.New(hut, sign)
     local self = setmetatable({}, Reminder)
     self._container = FX.Loader:Workspace("Decorations")
     self._model = Instance.new("Model")
     self._model.Name = hut.Name .. "ShopReminder"
     self._visible = false
     self._parts = {}
-    local bounds, size = hut:GetBoundingBox()
-    local center = bounds:PointToWorldSpace(Vector3.new(0, size.Y * 0.5, 0))
-        + Vector3.new(0, 5, 0)
+    local center = sign.Position + Vector3.new(0, sign.Size.Y * 0.5 + 5, 0)
     local shapes = {
         {name = "Stem", size = Vector3.new(1.8, 5.2, 1.8), offset = 1.4, shape = Enum.PartType.Block},
         {name = "Dot", size = Vector3.new(1.8, 1.8, 1.8), offset = -2.8, shape = Enum.PartType.Ball},

@@ -67,7 +67,7 @@ function Component:GetCompName()
     return "CLeaderboardUIComp"
 end
 
---- UI 留在 PlayerGui；绑定现有模型面板，固定显示前七名和独立个人行。
+--- UI 留在 PlayerGui；绑定现有模型面板，前七名纵向滚动，个人行固定显示。
 function Component:OnReady()
     self._localization = self:GetPlayerObject():RequireComponent("FCCommonUIComp").Localization
     local panel = FXLoader:Workspace("BlockMeshs/World1Root/Base/排行榜1/橙木空白排行榜/空白深色面板")
@@ -97,8 +97,8 @@ function Component:OnReady()
     self._list = Create("ScrollingFrame", self._rootNode, {
         Name = "RankList", Position = UDim2.fromScale(0.03, 0.16), Size = UDim2.fromScale(0.94, 0.66),
         BackgroundTransparency = 1, BorderSizePixel = 0, Active = true,
-        CanvasSize = UDim2.new(), AutomaticCanvasSize = Enum.AutomaticSize.None,
-        ScrollingEnabled = false, ScrollBarThickness = 0,
+        CanvasSize = UDim2.new(), AutomaticCanvasSize = Enum.AutomaticSize.Y,
+        ScrollingEnabled = true, ScrollingDirection = Enum.ScrollingDirection.Y, ScrollBarThickness = 8,
         ScrollBarImageColor3 = Gold,
     })
     Create("UIListLayout", self._list, {SortOrder = Enum.SortOrder.LayoutOrder, Padding = UDim.new(0, 2)})
@@ -291,7 +291,7 @@ function Component:ExitView()
     self._closeButton.Visible = false
 end
 
---- 加大行高与圆形头像以容纳七名榜单；用户名、排名和数值不参与翻译。
+--- 列表行高保证七名榜单有实际滚动范围，右侧留出滚动条空间；个人行由调用方固定尺寸。
 --- @param parent Instance 列表或固定个人行的父节点。
 --- @param rank number 测试名次。
 --- @param userId number 头像账号 ID。
@@ -301,7 +301,7 @@ end
 --- @return Frame 排行条目。
 function Component:CreateRow(parent, rank, userId, playerName, strength, personal)
     local row = Create("Frame", parent, {
-        Name = "Rank" .. rank, LayoutOrder = rank, Size = UDim2.new(1, 0, 0, 84), BorderSizePixel = 0,
+        Name = "Rank" .. rank, LayoutOrder = rank, Size = UDim2.new(1, -12, 0, 104), BorderSizePixel = 0,
         BackgroundColor3 = personal and Gold or (rank % 2 == 0 and Color3.fromRGB(48, 33, 31) or Color3.fromRGB(59, 41, 37)),
     })
     Label(row, "#" .. rank, UDim2.fromScale(0, 0), UDim2.fromScale(0.14, 1))

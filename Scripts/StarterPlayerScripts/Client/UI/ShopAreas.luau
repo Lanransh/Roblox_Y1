@@ -13,7 +13,7 @@ function ShopAreas.New(hutName, withReminders)
     }, ShopAreas)
 end
 
---- 只获取当前已加载的小屋；流出后释放提醒，流入后按最新存档重新创建。
+--- 只获取当前已加载的小屋；招牌流入后创建提醒，小屋流出后释放提醒。
 --- @param position Vector3? 存活角色的位置，省略时只同步提醒。
 --- @return boolean 角色是否位于任一同类商店触发盒内。
 function ShopAreas:IsInside(position)
@@ -38,8 +38,10 @@ function ShopAreas:IsInside(position)
         loaded[hut] = true
         local trigger = hut:FindFirstChild("Trigger")
         if trigger and trigger:IsA("BasePart") then
-            if self._withReminders and self._state and not self._reminders[hut] then
-                local reminder = ShopReminder.New(hut)
+            local sign = hut:FindFirstChild("ShopSign")
+            if self._withReminders and self._state and not self._reminders[hut]
+                and sign and sign:IsA("BasePart") then
+                local reminder = ShopReminder.New(hut, sign)
                 reminder:Refresh(self._items, self._state)
                 self._reminders[hut] = reminder
             end

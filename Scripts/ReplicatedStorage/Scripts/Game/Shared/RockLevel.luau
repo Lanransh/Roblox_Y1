@@ -12,6 +12,7 @@ local RockLevel = {
         Color3.fromRGB(255, 205, 35), -- 金。
     },
     MaxLevel = NumericalConfig.levelCurves.input.max,
+    WorldLevelCount = NumericalConfig.worldStageCount,
     WalkTraining = NumericalConfig.trainingSettlementsPerSecond,
     ClickInterval = 0.2,
     LootCapacity = 3, -- 尚未回基地存放的战利品基础携带上限。
@@ -38,11 +39,11 @@ function RockLevel.GetNextExperience(level)
     return CurveSampler:SampleCurveGroupColumnFormula(NumericalConfig.levelCurves, "nextLevelExperience", level)
 end
 
---- 累计配置中的升级门槛，力量使用同一份 levelCurves 采样。
+--- 累计配置中的升级门槛；力量直接使用当前阶段累计训练值，不再按等级采样曲线。
 --- @param value number 服务端持久化的累计训练值。
 --- @param maxLevel number? 当前重生阶段允许达到的等级。
 --- @return number 训练等级。
---- @return number 对应力量。
+--- @return number 已累计的力量，与训练值同步增长并在重生时归零。
 --- @return number 当前等级内的训练进度。
 --- @return number 当前等级升级需求。
 function RockLevel.GetProgress(value, maxLevel)
@@ -56,7 +57,7 @@ function RockLevel.GetProgress(value, maxLevel)
         end
         level += 1
     end
-    return level, CurveSampler:SampleCurveGroupColumnFormula(NumericalConfig.levelCurves, "strength", level),
+    return level, value,
         value - thresholds[level], RockLevel.GetNextExperience(level)
 end
 
@@ -68,6 +69,19 @@ function RockLevel.GetDamage(level, index)
     local strength = CurveSampler:SampleCurveGroupColumnFormula(NumericalConfig.levelCurves, "strength", level)
     local recommendedLevel = CurveSampler:SampleCurveGroupColumn(NumericalConfig.stageCurves, "grassLevel", index)
     return strength * math.max(0, 1 - math.max(0, recommendedLevel - level) * 0.07)
+end
+
+--- 本关幸运倍率：相对全局第一关期望道具价格向上取整，用于关卡头顶展示。
+--- @param world number 从 1 开始的世界序号。
+--- @param index number 本世界从 1 开始的关卡序号。
+--- @return number 相对第一关的幸运倍率。
+function RockLevel.GetLuck(world, index)
+    local stage = (world - 1) * NumericalConfig.worldStageCount + index
+    local price = CurveSampler:SampleCurveGroupColumnFormula(
+        NumericalConfig.stageCurves, "expectedItemPrice", stage)
+    local firstPrice = CurveSampler:SampleCurveGroupColumnFormula(
+        NumericalConfig.stageCurves, "expectedItemPrice", 1)
+    return math.ceil(price / firstPrice)
 end
 
 --- 关卡标记位于 Persistent 模型内，不受距离流出影响；等待初始复制完成后读取边界。
@@ -93,12 +107,16 @@ end
 --- 客户端显示回家入口与服务端传送校验共用关卡边界，不把基地或关卡外算作关卡。
 --- @param areas table 已加载的关卡边界。
 --- @param position Vector3 当前角色根节点位置。
+--- @param padding number? 向区域外扩展的判定容差，默认 0。
 --- @return boolean 是否位于任一关卡区域。
-function RockLevel.IsInArea(areas, position)
+function RockLevel.IsInArea(areas, position, padding)
+    padding = padding or 0
     for index, area in ipairs(areas) do
-        if position.X >= area.MinX and position.X < area.MinX + area.Columns * RockLevel.CellSize
-            and position.Z >= area.MinZ and position.Z < area.MinZ + area.Rows * RockLevel.CellSize
-            and math.abs(position.Y - area.FloorY) < 12 then
+        if position.X >= area.MinX - padding
+            and position.X < area.MinX + area.Columns * RockLevel.CellSize + padding
+            and position.Z >= area.MinZ - padding
+            and position.Z < area.MinZ + area.Rows * RockLevel.CellSize + padding
+            and math.abs(position.Y - area.FloorY) < 12 + padding then
             return true
         end
     end

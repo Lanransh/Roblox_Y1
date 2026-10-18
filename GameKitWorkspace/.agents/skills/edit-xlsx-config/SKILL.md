@@ -24,6 +24,10 @@ description: 通过 StudioGameToolkit 的 sgtk.config MCP 接口安全读取和�
    异常和引擎超时尽量保留已输出日志，但修改会回滚；进程被终止或资源耗尽时日志可能丢失。
 5. 仅修改用户请求范围。普通值用 setValue，公式用 setFormula，明确清空用 clear。
    新字段/行不猜默认值；增删配置声明和物理页签是不同动作。结构或键变化后重新定位对象。
+   新增字段用 struct.addField，新增记录/条目用 struct.addRecord 或 table.addEntry，工具自动继承格式：
+   数据行参考最后一条数据行，字段列优先参考最近的相同类型列，再参考对应可选/必填类型，最后参考最近字段列。
+   复制字体、字号、对齐、边框、填充和数字格式等单元格样式；保留目标已有模板格式，不复制值、公式或链接。
+   没有数据行时不套用表头格式；没有参考列时保留默认格式。直接 cell.setValue 或 insertRows 不提供这项自动继承。
 6. 每次读取返回的 draftRevision 并用于下一次调用；execution 成功不代表检查或保存成功。
    execute_script 的 check 只在有错误或警告时出现，不含通过状态和待检查项。
    修改后调用 `sgtk.config.check`，仅传 contextId 和当前 expectedDraftRevision，不与 filename 或 expectedSourceRevision 混用。

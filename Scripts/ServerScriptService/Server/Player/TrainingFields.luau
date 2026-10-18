@@ -22,7 +22,7 @@ function TrainingFields.GetFields()
     return fields
 end
 
---- 按训练台局部坐标检测角色根节点；上方限定高度，防止远离场地仍获得收益。
+--- 按训练台局部坐标检测角色根节点；四周留出余量，高度覆盖石顶站立与跳跃，仍限制场外收益。
 --- @param position Vector3 服务端观察到的角色位置。
 --- @return table? 当前所在场地的配置，场外为 nil。
 function TrainingFields.GetAtPosition(position)
@@ -30,9 +30,9 @@ function TrainingFields.GetAtPosition(position)
         local platform = field.Platform
         local localPosition = platform.CFrame:PointToObjectSpace(position)
         local top = platform.Size.Y / 2
-        if math.abs(localPosition.X) <= platform.Size.X / 2
-            and math.abs(localPosition.Z) <= platform.Size.Z / 2
-            and localPosition.Y >= top - 1 and localPosition.Y <= top + 10 then
+        if math.abs(localPosition.X) <= platform.Size.X / 2 + 2
+            and math.abs(localPosition.Z) <= platform.Size.Z / 2 + 2
+            and localPosition.Y >= top - 1 and localPosition.Y <= top + 24 then
             return field.Config
         end
     end

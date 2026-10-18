@@ -31,6 +31,9 @@ return {
         -- key: string、round: number，击破格号与轮次；服务器按有效命中记录揭露预生成结果一次。
         -- 单向请求，不接受客户端提供道具、价格、位置或玩家身份。
         "C2S_RequestRockDrop",
+        -- dropId: string，仅提交服务端签发给本人的掉落 ID；身份来自引擎认证。
+        -- RPC 返回 boolean；服务端校验归属、到期、距离和容量后发奖并通知客户端移除本地表现。
+        "C2S_PickupRockDrop",
         -- key: string、round: number，本地预测命中；服务器校验近身目标、装备与攻击频率，不接受伤害值。
         "C2S_RockHit",
         -- 无参数，客户端就绪或角色变化后请求当前轮次和个人已击破格号快照。
@@ -64,6 +67,11 @@ return {
         "S2C_RockReset",
         -- key: string、round: number、accepted: boolean，确认命中或要求撤销该次本地扣血预测。
         "S2C_RockHitResult",
+        -- data: {DropId, DisplayModelId, NameKey, Quality, Price, IsLucky, LuckRate, GroundPosition, ExpiresAt}。
+        -- 仅发送给掉落拥有者，由客户端本地创建模型、HUD 和拾取提示。
+        "S2C_SpawnRockDrop",
+        -- dropId: string；拾取成功、到期或轮次重置时通知拥有者移除本地掉落表现。
+        "S2C_RemoveRockDrop",
         -- 无参数；卡片使用成功且进入激活阶段后，仅通知使用者播放通用激活音。
         "S2C_CardActivated",
     },

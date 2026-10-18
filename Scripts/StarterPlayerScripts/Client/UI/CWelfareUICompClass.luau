@@ -80,7 +80,7 @@ function Component:BindUIData()
     self:WatchDataChanged(Fields.WelfareState, self.RefreshWelfare, self)
 end
 
---- 将服务端快照转换为完整条目状态，pending 只代表当前网络请求。
+--- 将服务端快照转换为完整条目状态；主引导未完成时跳过首次自动弹窗，手动领取不受影响。
 --- @param data table? 数据订阅或 RPC 提供的快照，省略时读取框架数据。
 function Component:RefreshWelfare(data)
     data = data or self:GetTable(Fields.WelfareState)
@@ -133,7 +133,10 @@ function Component:RefreshWelfare(data)
     self:RefreshUI()
     if data.ready and self._firstSnapshot then
         self._firstSnapshot = false
-        if data.offline.status == "Claimable" or data.dailyAmount > 0 then
+        local guide = self:GetTable(Fields.Guide)
+        local first = guide.guideMap and guide.guideMap.FirstLootGuide
+        if first and first.state == "Finished"
+            and (data.offline.status == "Claimable" or data.dailyAmount > 0) then
             self:Show()
         end
     end
