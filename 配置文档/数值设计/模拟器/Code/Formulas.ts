@@ -65,7 +65,8 @@ export type WeeklyCardValues = {
   totalDiamonds: number;
 };
 
-export const MAX_PAID_MULTIPLIER_ID = 11;
+// 暂时限制为第 7 档，即 ×128；保留更高档配置供后续恢复。
+export const MAX_PAID_MULTIPLIER_ID = 7;
 export const WEEKLY_CARD_REWARD_DAYS = 7;
 
 /** 读取关卡配置的期望重生次数对应的金币倍率，用于装备定价。 */

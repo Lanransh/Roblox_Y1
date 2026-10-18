@@ -489,7 +489,7 @@ export class UpgradePaidTrainingMultiplierAction extends BaseAction<
     if (this.state.isPaidTrainingMultiplierMaxed()) {
       return {
         kind: "paidMultiplierMaxed",
-        reason: "付费训练倍率已达到 ×2048。",
+        reason: "付费训练倍率已达到暂时上限 ×128。",
       };
     }
 
