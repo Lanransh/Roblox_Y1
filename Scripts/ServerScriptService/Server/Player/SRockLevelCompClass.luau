@@ -1,10 +1,9 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
 local Fields = _G.PlayerDataConfig
-local TweenService = game:GetService("TweenService")
 local HttpService = game:GetService("HttpService")
 local RockLevel = require(game:GetService("ReplicatedStorage").Scripts.Game.Shared.RockLevel)
-local Collectible = require(script.Parent.RockCollectible)
+local Collectible = FXLoader:RequireShared("Scripts/Game/Shared/RockCollectible")
 local ToyRoller = FXLoader:RequireFromParent(script, "ToyRoller")
 local RockWeaponTool = require(script.Parent.RockWeaponTool)
 local GameConfig = _G.GameConfig
@@ -33,9 +32,6 @@ function Component:Ctor(owner)
     self._nextHit = 0
     self._dropNodes = {}
     self._dropByCell = {}
-    self._dropRetryAfter = {}
-    self._dropAttempts = {}
-    self._dropFailureWarned = {}
     self._areaDefinitions = {}
     self._areaStates = {}
     self._inSafeArea = nil
@@ -75,7 +71,6 @@ function Component:OnPlayerLogin()
     for index, config in ipairs(GameConfig.ToolConfig) do
         self._weaponTemplates[config.ToolId] = InstancePath.Wait(config.ModelId)
     end
-    self._itemHUD = FXLoader:Shared("Nodes/ItemHUD")
     self._areas = RockLevel.GetAreas()
     self:PrepareAreaDefinitions()
     local grounds = FXLoader:Workspace("BlockMeshs/World1Root/GuanQia")
@@ -252,9 +247,6 @@ function Component:RestoreRocks()
     self._areaStates = {}
     self._attackRecords = {}
     self._claimed = {}
-    self._dropRetryAfter = {}
-    self._dropAttempts = {}
-    self._dropFailureWarned = {}
     self._round += 1
     self._nextHit = 0
     self._hitInterval = nil
@@ -262,9 +254,15 @@ function Component:RestoreRocks()
     self:SendRockRound()
 end
 
---- 回放轮次及个人已击破格号；客户端可区分新轮和同轮状态恢复。
+--- 回放轮次及个人已击破格号，并补发本人仍有效的掉落；客户端可区分新轮和同轮状态恢复。
 function Component:SendRockRound()
     FX.Network:SendMsgToClient(self:GetPlayerId(), "S2C_RockReset", self._round, self:GetBrokenCells())
+    local now = workspace:GetServerTimeNow()
+    for dropId, drop in pairs(self._dropNodes) do
+        if now < drop.ExpiresAt then
+            self:SendDrop(dropId, drop)
+        end
+    end
 end
 
 --- 命中记录只保存服务端认可的等级与次数，并回传累计减伤后的剩余血量。
@@ -385,160 +383,90 @@ function Component:RequestDrop(key, round)
         self._claimed[key] = true
         return
     end
-    if self._dropByCell[key] or os.clock() < (self._dropRetryAfter[key] or 0) then
+    if self._dropByCell[key] then
         return
     end
     self:CreateDrop(key, area, cell, result, round)
 end
 
---- 创建已通过击破校验的固定奖励；失败由位置 Tick 最多自动重试三次，不依赖旧角色凭据。
---- 幸运掉落仅通过 HUD 图标标识，品质文案不显示幸运倍率。
+--- 把已登记掉落的数据发给拥有者，由客户端本地生成模型、HUD 和拾取提示。
+--- @param dropId string 服务端掉落 ID。
+--- @param drop table 服务端登记的掉落数据。
+function Component:SendDrop(dropId, drop)
+    FX.Network:SendMsgToClient(self:GetPlayerId(), "S2C_SpawnRockDrop", {
+        DropId = dropId,
+        DisplayModelId = drop.DisplayModelId,
+        NameKey = CollectibleText.GetNameKey(drop.Template.Name),
+        Quality = drop.Quality,
+        Price = drop.Price,
+        IsLucky = drop.IsLucky,
+        LuckRate = drop.LuckRate,
+        GroundPosition = drop.Position,
+        ExpiresAt = drop.ExpiresAt,
+    })
+end
+
+--- 创建已通过击破校验的固定奖励，只把掉落数据和落点发给拥有者，由客户端本地生成表现。
+--- 幸运掉落由客户端 HUD 图标和品质倍率共同标识。
 --- @param key string 已击破的石头格号。
 --- @param area table 奖励所属区域。
 --- @param cell number 区域内格号。
 --- @param result table 本轮预生成且已揭露的奖励。
 --- @param round number 击破所属轮次。
 function Component:CreateDrop(key, area, cell, result, round)
-    if round ~= self._round or self._claimed[key] or self._dropByCell[key]
-        or (self._dropAttempts[key] or 0) >= 4 then
+    if round ~= self._round or self._claimed[key] or self._dropByCell[key] then
         return
     end
-    self._dropRetryAfter[key] = nil
-    self._dropAttempts[key] = (self._dropAttempts[key] or 0) + 1
 
     local dropId = HttpService:GenerateGUID(false)
-    local model, prompt, drop
-    --- 模型、HUD 和提示同步创建且不等待；异常时释放局部实例并保留预生成奖励。
-    local success, failure = pcall(function()
-        model = Collectible.CreateModel(result.Template)
-        local box, size = model:GetBoundingBox()
-        local position = Vector3.new(area.MinX + ((cell - 1) % area.Columns + 0.5) * RockLevel.CellSize,
-            area.FloorY, area.MinZ + (math.floor((cell - 1) / area.Columns) + 0.5) * RockLevel.CellSize)
-        model:PivotTo(CFrame.new(position + Vector3.new(0, size.Y / 2 + 0.2, 0) - box.Position))
-        local root = model.PrimaryPart
-        local landing = root.CFrame
-        model:PivotTo(model:GetPivot() - Vector3.new(0, 0.5, 0))
-        model:SetAttribute("OwnerUserId", self:GetPlayerId())
-        model:SetAttribute("Price", result.Price)
-        model:SetAttribute("ItemId", result.ItemId)
-        model:SetAttribute("DisplayModelId", result.DisplayModelId)
-        model:SetAttribute("IsLucky", result.IsLucky)
-        model:SetAttribute("LuckRate", result.LuckRate)
-        model:SetAttribute("DropId", dropId)
-        local expiresAt = workspace:GetServerTimeNow() + Collectible.DropLifetime
-        model:SetAttribute("DropExpiresAt", expiresAt)
-        local hud = self._itemHUD:Clone()
-        hud.Adornee = root
-        Collectible.StyleHUD(hud, model, result.Quality)
-        local nameKey = CollectibleText.GetNameKey(result.Template.Name)
-        local rarityKey = "Rarity.Quality"
-        local rarityArguments = {level = result.Quality}
-        hud:SetAttribute("DisplayNameKey", nameKey)
-        hud:SetAttribute("RarityKey", rarityKey)
-        hud:SetAttribute("RarityLevel", result.Quality)
-        hud:SetAttribute("IsLucky", result.IsLucky)
-        hud:SetAttribute("LuckRate", result.LuckRate)
-        hud.Frame.LuckIcon.Visible = result.IsLucky == true
-        hud.Frame.ItemName.Text = English:FormatByKey(nameKey)
-        hud.Frame.Rarity.Text = English:FormatByKey(rarityKey, rarityArguments)
-        hud.Frame.ItemName.AutoLocalize = false
-        hud.Frame.Rarity.AutoLocalize = false
-        hud.Frame.Price.Text = "$" .. GameUtility.NumberToText(result.Price)
-        hud.Frame.Price.AutoLocalize = false
-        hud.Frame.Timer.Text = string.format("%ds", Collectible.DropLifetime)
-        hud.Frame.Timer.AutoLocalize = false
-        hud.Frame.Timer.Visible = true
-        hud.Parent = root
-        prompt = Instance.new("ProximityPrompt")
-        -- 原生拾取提示只显示操作文案，复用英文源表并交给 Roblox 自动本地化。
-        prompt.ActionText = "Pick Up"
-        prompt.ObjectText = ""
-        prompt.AutoLocalize = true
-        prompt.RootLocalizationTable = FXLoader:Shared("Shared/Localization")
-        prompt.KeyboardKeyCode = Enum.KeyCode.E
-        prompt.HoldDuration = 0.5
-        prompt.MaxActivationDistance = Collectible.PickupDistance
-        prompt.RequiresLineOfSight = false
-        prompt.Enabled = false
-        prompt.Parent = root
-        drop = {Model = model, Prompt = prompt, Price = result.Price, Template = result.Template,
-            ItemId = result.ItemId, DisplayModelId = result.DisplayModelId, IsLucky = result.IsLucky,
-            LuckRate = result.LuckRate, ExpiresAt = expiresAt, CellKey = key, Round = round, Landing = landing}
-    end)
-    if not success then
-        if prompt then
-            prompt:Destroy()
-        end
-        if model then
-            model:Destroy()
-        end
-        if self._dropAttempts[key] < 4 then
-            self._dropRetryAfter[key] = os.clock() + 1
-        end
-        if not self._dropFailureWarned[key] then
-            self._dropFailureWarned[key] = true
-            warn("Rock reward drop creation failed for " .. key .. ": " .. tostring(failure))
-        end
-        return
-    end
-
+    local now = workspace:GetServerTimeNow()
+    local position = Vector3.new(area.MinX + ((cell - 1) % area.Columns + 0.5) * RockLevel.CellSize,
+        area.FloorY, area.MinZ + (math.floor((cell - 1) / area.Columns) + 0.5) * RockLevel.CellSize)
+    local expiresAt = now + Collectible.DropLifetime
     self._claimed[key] = true
-    self._dropAttempts[key] = nil
-    self._dropNodes[dropId] = drop
+    self._dropNodes[dropId] = {
+        CellKey = key,
+        Round = round,
+        ExpiresAt = expiresAt,
+        ReadyAt = now + 0.6,
+        Position = position,
+        Quality = result.Quality,
+        Price = result.Price,
+        Template = result.Template,
+        ItemId = result.ItemId,
+        DisplayModelId = result.DisplayModelId,
+        IsLucky = result.IsLucky,
+        LuckRate = result.LuckRate,
+    }
     self._dropByCell[key] = dropId
-    --- 原生提示回调只允许该石头的拥有者发起拾取。
-    --- @param player Player 引擎报告的实际触发玩家。
-    local function pickup(player)
-        if player == self:GetPlayerNode() then
-            self:PickupDrop(dropId)
-        end
-    end
-    drop.Connection = prompt.Triggered:Connect(pickup)
-    model.Parent = workspace
-    --- 弹起结束后交给客户端播放待拾取表现，服务端保留固定拾取位置。
-    drop.Task = task.spawn(function()
-        local root = model.PrimaryPart
-        drop.Tween = TweenService:Create(root, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-            {CFrame = drop.Landing + Vector3.new(0, 4, 0)})
-        drop.Tween:Play()
-        task.wait(0.25)
-        if self._round ~= drop.Round or self._dropNodes[dropId] ~= drop then
-            return
-        end
-        drop.Tween = TweenService:Create(root, TweenInfo.new(0.35, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out),
-            {CFrame = drop.Landing})
-        drop.Tween:Play()
-        task.wait(0.35)
-        if self._round ~= drop.Round or self._dropNodes[dropId] ~= drop then
-            return
-        end
-        drop.Task = nil
-        drop.Tween:Destroy()
-        drop.Tween = nil
-        root.CFrame = drop.Landing
-        model:SetAttribute("DropRestPivot", model:GetPivot())
-        model:SetAttribute("DropVisualStartedAt", workspace:GetServerTimeNow())
-        prompt.Enabled = true
-    end)
+    self:SendDrop(dropId, self._dropNodes[dropId])
 end
 
 --- 按服务端掉落 ID 校验有效期、存活、距离和容量，仅使用记录中的真实奖励。
 --- @param dropId string 当前玩家的服务器掉落 ID。
+--- @return boolean 是否成功拾取并发奖。
 function Component:PickupDrop(dropId)
-    local drop = self._dropNodes[dropId]
-    if drop and workspace:GetServerTimeNow() >= drop.ExpiresAt then
-        self:RemoveDrop(dropId)
-        return
+    if type(dropId) ~= "string" then
+        return false
     end
-    if not drop or drop.Picking or not drop.Prompt.Enabled then
-        return
+    local now = workspace:GetServerTimeNow()
+    local drop = self._dropNodes[dropId]
+    if not drop then
+        return false
+    end
+    if now >= drop.ExpiresAt then
+        self:RemoveDrop(dropId)
+        return false
+    end
+    if drop.Picking or now < drop.ReadyAt then
+        return false
     end
     local character = self:GetPlayerCharacter()
     local root = character and character:FindFirstChild("HumanoidRootPart")
     local humanoid = character and character:FindFirstChildOfClass("Humanoid")
     if not root or not humanoid or humanoid.Health <= 0
-        or (root.Position - drop.Model.PrimaryPart.Position).Magnitude > Collectible.PickupDistance then
-        return
+        or (root.Position - drop.Position).Magnitude > Collectible.PickupDistance then
+        return false
     end
     drop.Picking = true
     local loot = self:GetTable(Fields.RockLoot)
@@ -547,12 +475,12 @@ function Component:PickupDrop(dropId)
     if #stored + #loot >= capacity then
         drop.Picking = false
         self:GetPlayerObject():ShowLocalizedTips("Loot.InventoryFull", {capacity = capacity})
-        return
+        return false
     end
     if #loot >= self:GetLootCapacity() then
         drop.Picking = false
         self:GetPlayerObject():ShowLocalizedTips("Loot.BagFull")
-        return
+        return false
     end
     local entry = {
         TemplateName = drop.Template.Name,
@@ -565,7 +493,7 @@ function Component:PickupDrop(dropId)
     }
     if not self:RequireComponent("FSRewardComp"):AddRewards({{Type = "Loot", Count = 1, Data = entry}}) then
         drop.Picking = false
-        return
+        return false
     end
     self:RemoveDrop(dropId)
     local nameKey = CollectibleText.GetNameKey(drop.Template.Name)
@@ -577,6 +505,7 @@ function Component:PickupDrop(dropId)
     else
         self:GetPlayerObject():ShowLocalizedTips("Loot.PickedUp", {itemKey = nameKey})
     end
+    return true
 end
 
 --- 仅在基地转存玩家 KV 并激活图鉴，不创建背包道具；满存储保留随身战利品。
@@ -613,7 +542,7 @@ function Component:DepositLoot()
     self._depositFull = #loot > 0
 end
 
---- 先注销掉落 ID，再释放实例、连接和动画，避免超时或重复拾取后继续领奖。
+--- 先注销掉落 ID，再通知拥有者移除本地表现，避免超时或重复拾取后继续领奖。
 --- @param dropId string 已登记的服务器掉落 ID。
 function Component:RemoveDrop(dropId)
     local drop = self._dropNodes[dropId]
@@ -624,20 +553,10 @@ function Component:RemoveDrop(dropId)
     if self._dropByCell[drop.CellKey] == dropId then
         self._dropByCell[drop.CellKey] = nil
     end
-    if drop.Connection then
-        drop.Connection:Disconnect()
-    end
-    if drop.Task then
-        task.cancel(drop.Task)
-    end
-    if drop.Tween then
-        drop.Tween:Cancel()
-        drop.Tween:Destroy()
-    end
-    drop.Model:Destroy()
+    FX.Network:SendMsgToClient(self:GetPlayerId(), "S2C_RemoveRockDrop", dropId)
 end
 
---- 结束个人关卡轮次时注销全部掉落 ID，并释放提示连接和仍在播放的补间任务。
+--- 结束个人关卡轮次时注销全部掉落 ID，并通知拥有者清理本地表现。
 function Component:ClearDrops()
     for dropId in pairs(self._dropNodes) do
         self:RemoveDrop(dropId)
@@ -712,16 +631,6 @@ function Component:Tick()
     for dropId, drop in pairs(self._dropNodes) do
         if now >= drop.ExpiresAt then
             self:RemoveDrop(dropId)
-        end
-    end
-    local retryTime = os.clock()
-    for key, retryAfter in pairs(self._dropRetryAfter) do
-        if retryTime >= retryAfter then
-            local areaIndex, cellIndex = string.match(key, "^(%d+):(%d+)$")
-            local area = self._areas[tonumber(areaIndex)]
-            local cell = tonumber(cellIndex)
-            local areaState = self._areaStates[area.Index]
-            self:CreateDrop(key, area, cell, areaState.Contents[cell], self._round)
         end
     end
     local character = self:GetPlayerCharacter()
@@ -803,9 +712,6 @@ function Component:OnPlayerLogout()
     self._swingTrail = nil
     self._attackRecords = {}
     self._claimed = {}
-    self._dropRetryAfter = {}
-    self._dropAttempts = {}
-    self._dropFailureWarned = {}
     self._areaStates = {}
     self._areaDefinitions = {}
 end

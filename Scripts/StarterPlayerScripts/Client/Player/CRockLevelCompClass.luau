@@ -1,10 +1,12 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
+local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 local Debris = game:GetService("Debris")
 local TweenService = game:GetService("TweenService")
 local RockLevel = require(ReplicatedStorage.Scripts.Game.Shared.RockLevel)
+local Collectible = FXLoader:RequireShared("Scripts/Game/Shared/RockCollectible")
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local GameEnum = FXLoader:RequireShared("Scripts/Game/Shared/GameEnum")
 local Fields = _G.PlayerDataConfig
@@ -57,8 +59,8 @@ function Component:Ctor(owner)
     self._lastAttack = -math.huge
     self._nextAttackCheck = 0
     self._pendingHits = {}
-    self._nextDropTimerCheck = 0
-    self._dropVisuals = {}
+    self._nextDropUpdate = 0
+    self._drops = {}
     self._luckLabels = {}
 end
 
@@ -71,6 +73,7 @@ end
 --- 同步握手后加载关卡幸运牌、受击、秒杀气场及个人石头资源，订阅轮次和命中校验结果。
 function Component:OnReady()
     self._localization = self:GetPlayerObject():RequireComponent("FCCommonUIComp").Localization
+    self._itemHUD = FXLoader:Shared("Nodes/ItemHUD")
     local assets = FXLoader:Shared("Assets")
     self._powerAuraTemplate = FXLoader:Here(assets, "Effects/Goku (SSJ)/Torso")
     local effects = FXLoader:Here(assets, "Effects/ROCK")
@@ -144,10 +147,11 @@ function Component:OnReady()
     end
     FX.Network:RegServerMsgCallback("S2C_RockReset", self.ResetRound, self)
     FX.Network:RegServerMsgCallback("S2C_RockHitResult", self.OnHitResult, self)
+    FX.Network:RegServerMsgCallback("S2C_SpawnRockDrop", self.SpawnDrop, self)
+    FX.Network:RegServerMsgCallback("S2C_RemoveRockDrop", self.RemoveDrop, self)
     FX.Network:SendMsgToServer("C2S_RequestRockRound")
     self:TrackConnection(RunService.Heartbeat:Connect(function()
-        self:UpdateDropTimers()
-        self:UpdateDropVisuals()
+        self:UpdateDrops()
         self:UpdateVisuals()
     end))
 end
@@ -207,52 +211,131 @@ function Component:RefreshLevelLuckSigns()
     end
 end
 
---- 按复制的到期时间和文案 Key 刷新掉落 HUD，云端加载或语言变化后同步显示。
-function Component:UpdateDropTimers()
-    local now = workspace:GetServerTimeNow()
-    if now < self._nextDropTimerCheck then
+--- 只使用服务端签发给本人的掉落数据创建本地模型，其他玩家不会收到该实例。
+--- @param data table S2C_SpawnRockDrop 携带的掉落数据。
+function Component:SpawnDrop(data)
+    if type(data) ~= "table" or type(data.DropId) ~= "string" or self._drops[data.DropId]
+        or typeof(data.GroundPosition) ~= "Vector3" or type(data.ExpiresAt) ~= "number"
+        or type(data.Quality) ~= "number" or type(data.Price) ~= "number" then
         return
     end
-    self._nextDropTimerCheck = now + 0.1
-    for index, model in ipairs(workspace:GetChildren()) do
-        local expiresAt = model:GetAttribute("DropExpiresAt")
-        if model:IsA("Model") and model:GetAttribute("DropId") and type(expiresAt) == "number" then
-            local root = model.PrimaryPart
-            if root and now < expiresAt and not self._dropVisuals[model] then
-                self:RegisterDropVisual(model)
-            end
-            local hud = root and root:FindFirstChild("ItemHUD")
-            local timer = hud and FXLoader:Find(hud, "Frame/Timer")
-            local nameLabel = hud and FXLoader:Find(hud, "Frame/ItemName")
-            local rarityLabel = hud and FXLoader:Find(hud, "Frame/Rarity")
-            local nameKey = hud and hud:GetAttribute("DisplayNameKey")
-            local rarityKey = hud and hud:GetAttribute("RarityKey")
-            if nameLabel and rarityLabel and nameKey and rarityKey then
-                nameLabel.Text = self._localization:FormatByKey(nameKey)
-                local rarityArguments = {level = hud:GetAttribute("RarityLevel")}
-                if hud:GetAttribute("IsLucky") == true then
-                    rarityArguments.rate = GameUtility.NumberToText(hud:GetAttribute("LuckRate") or 1)
-                end
-                rarityLabel.Text = self._localization:FormatByKey(rarityKey, rarityArguments)
-            end
-            if timer then
-                local text = string.format("%ds", math.max(0, math.ceil(expiresAt - now)))
-                if timer.Text ~= text then
-                    timer.Text = text
-                end
-            end
-        end
+    if not self._folder or not self._itemHUD then
+        return
     end
+    local template = Collectible.ResolveModel(data.DisplayModelId)
+    if not template then
+        warn("Rock drop model is unavailable: " .. tostring(data.DisplayModelId))
+        return
+    end
+
+    local model = Collectible.CreateModel(template)
+    local box, size = model:GetBoundingBox()
+    model:PivotTo(CFrame.new(data.GroundPosition + Vector3.new(0, size.Y / 2 + 0.2, 0) - box.Position))
+    local root = model.PrimaryPart
+    local landing = root.CFrame
+    model:PivotTo(model:GetPivot() - Vector3.new(0, 0.5, 0))
+
+    local hud = self._itemHUD:Clone()
+    hud.Adornee = root
+    Collectible.StyleHUD(hud, model, data.Quality)
+    hud.Frame.LuckIcon.Visible = data.IsLucky == true
+    hud.Frame.ItemName.AutoLocalize = false
+    hud.Frame.Rarity.AutoLocalize = false
+    hud.Frame.Price.AutoLocalize = false
+    hud.Frame.Timer.AutoLocalize = false
+    hud.Frame.Timer.Visible = true
+    hud.Parent = root
+
+    local prompt = Instance.new("ProximityPrompt")
+    -- 原生拾取提示只显示操作文案，复用英文源表并交给 Roblox 自动本地化。
+    prompt.ActionText = "Pick Up"
+    prompt.ObjectText = ""
+    prompt.AutoLocalize = true
+    prompt.RootLocalizationTable = FXLoader:Shared("Shared/Localization")
+    prompt.KeyboardKeyCode = Enum.KeyCode.E
+    prompt.HoldDuration = 0.5
+    prompt.MaxActivationDistance = Collectible.PickupDistance
+    prompt.RequiresLineOfSight = false
+    prompt.Enabled = false
+    prompt.Parent = root
+
+    local drop = {
+        DropId = data.DropId,
+        Model = model,
+        Prompt = prompt,
+        Hud = hud,
+        NameKey = data.NameKey,
+        Quality = data.Quality,
+        Price = data.Price,
+        IsLucky = data.IsLucky,
+        LuckRate = data.LuckRate,
+        ExpiresAt = data.ExpiresAt,
+        Landing = landing,
+    }
+    self._drops[drop.DropId] = drop
+    drop.Connection = prompt.Triggered:Connect(function(player)
+        if player ~= Players.LocalPlayer then
+            return
+        end
+        prompt.Enabled = false
+        -- 网络层拒绝或超时会抛错；恢复提示，保留掉落直到服务端确认移除。
+        local ok, accepted = pcall(function()
+            return FX.Network:InvokeServer("C2S_PickupRockDrop", drop.DropId)
+        end)
+        if (not ok or not accepted) and self._drops[drop.DropId] == drop then
+            prompt.Enabled = true
+        end
+    end)
+    model.Parent = self._folder
+    self:UpdateDropText(drop, workspace:GetServerTimeNow())
+
+    --- 本地播放弹起与落地，完成后启用拾取并开始待拾取动画。
+    drop.Task = task.spawn(function()
+        local tween = TweenService:Create(root, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+            {CFrame = landing + Vector3.new(0, 4, 0)})
+        drop.Tween = tween
+        tween:Play()
+        task.wait(0.25)
+        if self._drops[drop.DropId] ~= drop then
+            return
+        end
+        tween = TweenService:Create(root, TweenInfo.new(0.35, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out),
+            {CFrame = landing})
+        drop.Tween = tween
+        tween:Play()
+        task.wait(0.35)
+        if self._drops[drop.DropId] ~= drop then
+            return
+        end
+        drop.Task = nil
+        drop.Tween = nil
+        root.CFrame = landing
+        drop.LandedAt = workspace:GetServerTimeNow()
+        prompt.Enabled = true
+        self:RegisterDropVisual(drop)
+    end)
 end
 
---- 复制齐全且弹出结束后，以固定落点注册放射光环和客户端动画。
---- @param model Model 服务端创建的场景战利品。
-function Component:RegisterDropVisual(model)
-    local rest = model:GetAttribute("DropRestPivot")
-    local startedAt = model:GetAttribute("DropVisualStartedAt")
-    if typeof(rest) ~= "CFrame" or type(startedAt) ~= "number" then
-        return
+--- 刷新掉落 HUD 的名称、品质、价格和倒计时，云端翻译就绪后也会同步更新。
+--- @param drop table 当前客户端持有的掉落。
+--- @param now number 当前服务器同步时间。
+function Component:UpdateDropText(drop, now)
+    if drop.NameKey then
+        drop.Hud.Frame.ItemName.Text = self._localization:FormatByKey(drop.NameKey)
     end
+    local rarityArguments = {level = drop.Quality}
+    if drop.IsLucky == true then
+        rarityArguments.rate = GameUtility.NumberToText(drop.LuckRate or 1)
+    end
+    drop.Hud.Frame.Rarity.Text = self._localization:FormatByKey("Rarity.Quality", rarityArguments)
+    drop.Hud.Frame.Price.Text = "$" .. GameUtility.NumberToText(drop.Price)
+    drop.Hud.Frame.Timer.Text = string.format("%ds", math.max(0, math.ceil(drop.ExpiresAt - now)))
+end
+
+--- 落地后注册放射光环和漂浮动画所需的固定落点数据。
+--- @param drop table 已完成落地的本地掉落。
+function Component:RegisterDropVisual(drop)
+    local model = drop.Model
     local root = model.PrimaryPart
     local box, size = model:GetBoundingBox()
     local centerOffset = model:GetPivot():ToObjectSpace(box)
@@ -296,42 +379,71 @@ function Component:RegisterDropVisual(model)
         ray.Parent = rays
     end
     glow.Parent = root
-    self._dropVisuals[model] = {
-        Center = rest * centerOffset, PivotOffset = centerOffset:Inverse(),
-        Rest = rest, StartedAt = startedAt, Anchor = anchor, Glow = glow, Rays = rays,
-    }
+    drop.Anchor = anchor
+    drop.Glow = glow
+    drop.Rays = rays
+    drop.Center = drop.Landing * centerOffset
+    drop.PivotOffset = centerOffset:Inverse()
 end
 
---- 从固定基准合成自转和漂浮；注销过期或流出场景的模型，避免残留光环。
-function Component:UpdateDropVisuals()
+--- 按到期时间更新文案并驱动本地漂浮、自转和光环，过期后直接释放。
+function Component:UpdateDrops()
     local now = workspace:GetServerTimeNow()
-    for model, visual in pairs(self._dropVisuals) do
-        local expiresAt = model:GetAttribute("DropExpiresAt")
-        if not model:IsDescendantOf(workspace) or not model.PrimaryPart
-            or type(expiresAt) ~= "number" or now >= expiresAt then
-            self:RemoveDropVisual(model)
+    local refreshText = now >= self._nextDropUpdate
+    if refreshText then
+        self._nextDropUpdate = now + 0.1
+    end
+    for dropId, drop in pairs(self._drops) do
+        if now >= drop.ExpiresAt then
+            self:RemoveDrop(dropId)
         else
-            local elapsed = math.max(0, now - visual.StartedAt)
-            -- 从落点起步，完整行程为 0.3 stud，最低点不会低于原落点。
-            local height = 0.15 * (1 - math.cos(elapsed * math.pi * 2 / 2.6))
-            local center = visual.Center
-            model:PivotTo(CFrame.new(center.Position + Vector3.new(0, height, 0))
-                * CFrame.Angles(0, elapsed * math.rad(45), 0) * center.Rotation * visual.PivotOffset)
-            visual.Rays.Rotation = elapsed * 15
+            if refreshText then
+                self:UpdateDropText(drop, now)
+            end
+            if drop.LandedAt then
+                local elapsed = math.max(0, now - drop.LandedAt)
+                -- 从落点起步，完整行程为 0.3 stud，最低点不会低于原落点。
+                local height = 0.15 * (1 - math.cos(elapsed * math.pi * 2 / 2.6))
+                local center = drop.Center
+                drop.Model:PivotTo(CFrame.new(center.Position + Vector3.new(0, height, 0))
+                    * CFrame.Angles(0, elapsed * math.rad(45), 0) * center.Rotation * drop.PivotOffset)
+                drop.Rays.Rotation = elapsed * 15
+            end
         end
     end
 end
 
---- 仅释放本组件创建的光环，并恢复仍存在的权威落点姿态。
---- @param model Model 已注册的战利品模型。
-function Component:RemoveDropVisual(model)
-    local visual = self._dropVisuals[model]
-    visual.Glow:Destroy()
-    visual.Anchor:Destroy()
-    if model:IsDescendantOf(workspace) and model.PrimaryPart then
-        model:PivotTo(visual.Rest)
+--- 释放本人客户端创建的掉落模型、提示连接、补间和光环。
+--- @param dropId string 服务端签发的掉落 ID。
+function Component:RemoveDrop(dropId)
+    local drop = self._drops[dropId]
+    if not drop then
+        return
     end
-    self._dropVisuals[model] = nil
+    self._drops[dropId] = nil
+    if drop.Connection then
+        drop.Connection:Disconnect()
+    end
+    if drop.Task then
+        task.cancel(drop.Task)
+    end
+    if drop.Tween then
+        drop.Tween:Cancel()
+    end
+    if drop.Glow then
+        drop.Glow:Destroy()
+    end
+    if drop.Anchor then
+        drop.Anchor:Destroy()
+    end
+    drop.Model:Destroy()
+end
+
+--- 轮次切换或组件销毁时释放全部本地掉落。
+function Component:ClearDrops()
+    for dropId in pairs(self._drops) do
+        self:RemoveDrop(dropId)
+    end
 end
 
 --- 新轮时清除旧命中；同轮快照只补已击破格号，保留未击破石头的本地血量。
@@ -350,6 +462,7 @@ function Component:ResetRound(round, brokenCells)
         return
     end
     self:StopSwing()
+    self:ClearDrops()
     self._round = round
     self._health = {}
     self._pendingHits = {}
@@ -1280,11 +1393,11 @@ end
 function Component:Dtor()
     self:UpdateTrainingHitReactions(true)
     self:UpdateDogVisibility(nil)
-    for model, visual in pairs(self._dropVisuals) do
-        self:RemoveDropVisual(model)
-    end
+    self:ClearDrops()
     FX.Network:UnRegServerMsgCallback("S2C_RockReset")
     FX.Network:UnRegServerMsgCallback("S2C_RockHitResult")
+    FX.Network:UnRegServerMsgCallback("S2C_SpawnRockDrop")
+    FX.Network:UnRegServerMsgCallback("S2C_RemoveRockDrop")
     self:StopSwing()
     self:SetPowerAura(nil)
     if self._swingTrack then

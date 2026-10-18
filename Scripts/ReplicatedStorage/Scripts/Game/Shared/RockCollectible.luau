@@ -1,3 +1,4 @@
+-- 掉落表现由拥有者客户端本地创建，模型与 HUD 样式在客户端和服务端共享。
 local FX = _G.FX
 local FXLoader = FX.Loader
 local InstancePath = FXLoader:RequireShared("Scripts/Game/Shared/InstancePath")
