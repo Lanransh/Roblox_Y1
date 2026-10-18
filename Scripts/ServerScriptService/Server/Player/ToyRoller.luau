@@ -1,7 +1,9 @@
 -- 服务端玩具奖池：按 CommonConfig 分配世界道具、关卡候选和价格区间，幸运另行加价。
 local FX = _G.FX
+local FXLoader = FX.Loader
 local NumericalConfig = _G.NumericalConfig
 local CommonConfig = _G.GameConfig.CommonConfig
+local RockLevel = FXLoader:RequireShared("Scripts/Game/Shared/RockLevel")
 local ToyRoller = {}
 
 --- 按关卡进度移动配置的候选范围；每种对应独立价格区间，刷新件数由玩家组件配置控制。
@@ -9,7 +11,7 @@ local ToyRoller = {}
 --- @param level number 本世界从 1 开始的关卡序号。
 --- @return table 等概率候选道具及基础价格倍率区间，单件价格由玩家组件独立抽取。
 --- @return number 本关普通道具期望价格。
---- @return number 相对本世界第一关的区域幸运，仅供展示，不重复乘价格。
+--- @return number 相对全局第一关的向上取整幸运倍率，仅供展示，不重复乘价格。
 function ToyRoller.CreatePool(world, level)
     local firstStage = (world - 1) * NumericalConfig.worldStageCount + 1
     local stage = firstStage + level - 1
@@ -27,10 +29,7 @@ function ToyRoller.CreatePool(world, level)
     local firstId = (world - 1) * itemCount + 1 + math.floor(progress * (itemCount - count) + 0.5)
     local averagePrice = FX.CurveSampler:SampleCurveGroupColumnFormula(
         NumericalConfig.stageCurves, "expectedItemPrice", stage)
-    local firstAveragePrice = FX.CurveSampler:SampleCurveGroupColumnFormula(
-        NumericalConfig.stageCurves, "expectedItemPrice", firstStage)
     assert(averagePrice > 0 and averagePrice < math.huge, "Expected item price must be finite and positive")
-    assert(firstAveragePrice > 0 and firstAveragePrice < math.huge, "First expected item price must be finite and positive")
 
     local pool = {}
     -- 等分配置区间，候选等概率且各区间均匀抽价时，整体基础倍率期望为 1。
@@ -41,7 +40,7 @@ function ToyRoller.CreatePool(world, level)
             PriceRateMax = priceRateMin + index * priceRateStep,
         }
     end
-    return pool, averagePrice, averagePrice / firstAveragePrice
+    return pool, averagePrice, RockLevel.GetLuck(world, level)
 end
 
 return ToyRoller

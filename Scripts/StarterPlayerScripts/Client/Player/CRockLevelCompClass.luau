@@ -16,6 +16,29 @@ local RockColors = {
     Color3.fromRGB(224, 228, 226), Color3.fromRGB(235, 233, 223),
     Color3.fromRGB(219, 224, 218),
 }
+local LuckUnits = {
+    {1e36, "Ud"}, {1e33, "Dc"}, {1e30, "No"}, {1e27, "Oc"},
+    {1e24, "Sp"}, {1e21, "Sx"}, {1e18, "Qi"}, {1e15, "Qa"},
+    {1e12, "T"}, {1e9, "B"}, {1e6, "M"}, {1e3, "K"},
+}
+
+--- 幸运牌文案：不足千的整数直接显示，大数四舍五入到一位小数并去掉末尾的零。
+--- @param rate number 关卡幸运倍率。
+--- @return string 幸运倍率文本。
+local function FormatLuck(rate)
+    local absRate = math.abs(rate)
+    if absRate < 1e3 then
+        return tostring(math.floor(rate))
+    end
+    for index, entry in ipairs(LuckUnits) do
+        local value, unit = entry[1], entry[2]
+        if absRate >= value then
+            local text = string.format("%.1f", rate / value):gsub("%.0$", "")
+            return text .. unit
+        end
+    end
+    return tostring(math.floor(rate))
+end
 
 --- 只拥有本客户端生成的石头；不会修改公共 SyntyRocks 模板。
 --- @param owner FCPlayerObjectClass 客户端玩家对象。
@@ -132,9 +155,9 @@ end
 --- 在所有世界的关卡中心上方创建幸运牌，随场景遮挡和距离隐藏，避免远处牌子叠在一起。
 function Component:CreateLevelLuckSigns()
     local config = GameEnum.LevelLuckDisplay
-    for worldName, rates in pairs(config.WorldRates) do
+    for worldIndex, worldName in ipairs(config.Worlds) do
         local world = FXLoader:Workspace("GameLevelList/" .. worldName)
-        for index, rate in ipairs(rates) do
+        for index = 1, RockLevel.WorldLevelCount do
             local area = FXLoader:Here(world, "Level_" .. index)
             local billboard = Instance.new("BillboardGui")
             billboard.Name = worldName .. "_Level_" .. index .. "_Luck"
@@ -166,7 +189,7 @@ function Component:CreateLevelLuckSigns()
             stroke.Parent = label
             label.Parent = billboard
             billboard.Parent = self._folder
-            table.insert(self._luckLabels, {Label = label, Rate = rate})
+            table.insert(self._luckLabels, {Label = label, Rate = RockLevel.GetLuck(worldIndex, index)})
         end
     end
     self:RefreshLevelLuckSigns()
@@ -175,11 +198,11 @@ function Component:CreateLevelLuckSigns()
     end))
 end
 
---- 云端翻译加载或语言变化后刷新幸运牌，数量格式沿用项目公共方法。
+--- 云端翻译加载或语言变化后刷新幸运牌，幸运倍率使用一位小数格式。
 function Component:RefreshLevelLuckSigns()
     for index, entry in ipairs(self._luckLabels) do
         entry.Label.Text = self._localization:FormatByKey("Level.Luck", {
-            rate = GameUtility.NumberToText(entry.Rate),
+            rate = FormatLuck(entry.Rate),
         })
     end
 end

@@ -12,6 +12,7 @@ local RockLevel = {
         Color3.fromRGB(255, 205, 35), -- 金。
     },
     MaxLevel = NumericalConfig.levelCurves.input.max,
+    WorldLevelCount = NumericalConfig.worldStageCount,
     WalkTraining = NumericalConfig.trainingSettlementsPerSecond,
     ClickInterval = 0.2,
     LootCapacity = 3, -- 尚未回基地存放的战利品基础携带上限。
@@ -68,6 +69,19 @@ function RockLevel.GetDamage(level, index)
     local strength = CurveSampler:SampleCurveGroupColumnFormula(NumericalConfig.levelCurves, "strength", level)
     local recommendedLevel = CurveSampler:SampleCurveGroupColumn(NumericalConfig.stageCurves, "grassLevel", index)
     return strength * math.max(0, 1 - math.max(0, recommendedLevel - level) * 0.07)
+end
+
+--- 本关幸运倍率：相对全局第一关期望道具价格向上取整，用于关卡头顶展示。
+--- @param world number 从 1 开始的世界序号。
+--- @param index number 本世界从 1 开始的关卡序号。
+--- @return number 相对第一关的幸运倍率。
+function RockLevel.GetLuck(world, index)
+    local stage = (world - 1) * NumericalConfig.worldStageCount + index
+    local price = CurveSampler:SampleCurveGroupColumnFormula(
+        NumericalConfig.stageCurves, "expectedItemPrice", stage)
+    local firstPrice = CurveSampler:SampleCurveGroupColumnFormula(
+        NumericalConfig.stageCurves, "expectedItemPrice", 1)
+    return math.ceil(price / firstPrice)
 end
 
 --- 关卡标记位于 Persistent 模型内，不受距离流出影响；等待初始复制完成后读取边界。

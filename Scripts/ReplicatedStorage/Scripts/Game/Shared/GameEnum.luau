@@ -3,15 +3,11 @@ return {
     NewPlayerTrainingExtraRate = 3, -- 与购买训练倍率相加。
     NewPlayerTrainingDuration = 45 * 60, -- 累计在线秒数，不计离线时间。
     RankingDataStore = "ActivityData",
-    -- 关卡头顶幸运牌：各世界数组按 Level_1～Level_13 排列，仅控制展示，不参与掉落计算。
+    -- 关卡头顶幸运牌：按世界名称与 RockLevel.WorldLevelCount 遍历，倍率由 RockLevel.GetLuck 计算。
     LevelLuckDisplay = {
         Icon = "rbxassetid://99859137989503",
         Height = 26, -- 相对区域中心的悬空高度，单位 studs。
-        WorldRates = {
-            World1 = {1, 2, 3, 5, 8, 10, 15, 20, 30, 40, 50, 75, 100},
-            World2 = {1, 2, 3, 5, 8, 10, 15, 20, 30, 40, 50, 75, 100},
-            World3 = {1, 2, 3, 5, 8, 10, 15, 20, 30, 40, 50, 75, 100},
-        },
+        Worlds = {"World1", "World2", "World3"},
     },
     -- 小狗 NPC 配置：只在已存在的刷新标记中生成；增加世界时追加对应路径组。
     DogNpcConfig = {
