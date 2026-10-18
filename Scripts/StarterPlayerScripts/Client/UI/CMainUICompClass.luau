@@ -13,6 +13,7 @@ local GameUtility = require(game:GetService("ReplicatedStorage").Scripts.Game.Sh
 local CurrencyShop = FXLoader:RequireShared("Scripts/Game/Shared/CurrencyShop")
 local InstancePath = FXLoader:RequireShared("Scripts/Game/Shared/InstancePath")
 local StrengthPacks = {StrengthPack1Button = 301, StrengthPack2Button = 302}
+local AREA_EXIT_PADDING = 2
 local Component = FX.Class("CMainUICompClass", "FCUICompClass")
 
 --- 返回主界面业务组件名，供项目组件协作使用。
@@ -391,8 +392,12 @@ function Component:RefreshHomeButton()
     local character = self:GetPlayerCharacter()
     local root = character and character:FindFirstChild("HumanoidRootPart")
     local humanoid = character and character:FindFirstChildOfClass("Humanoid")
-    local inArea = root ~= nil and humanoid ~= nil and humanoid.Health > 0
-        and RockLevel.IsInArea(self._areas, root.Position)
+    local inArea = false
+    if root ~= nil and humanoid ~= nil and humanoid.Health > 0 then
+        -- 已在关卡内时用外扩边界判定，避免角色在边界附近来回切换 HUD。
+        local padding = self._inLevelArea and AREA_EXIT_PADDING or 0
+        inArea = RockLevel.IsInArea(self._areas, root.Position, padding)
+    end
     self._homeButton.Visible = inArea
     self._strength.Parent.Visible = not inArea
     if self._inLevelArea == inArea then

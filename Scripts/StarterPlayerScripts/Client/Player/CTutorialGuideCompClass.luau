@@ -191,7 +191,6 @@ function Guide:ShowGuideArrowToPosition(position)
         arrow.Transparency = 1
         arrow.CastShadow = false
         self._arrowTriangles = {}
-        self._arrowSide = nil
         arrow.Parent = decorations
         self._arrowTrans = arrow
         self._renderSteppedConn = RunService.RenderStepped:Connect(function()
@@ -201,7 +200,7 @@ function Guide:ShowGuideArrowToPosition(position)
     self:UpdateGuideArrow()
 end
 
---- 固定间距与滚动周期，移动时只增减末端三角；稳定带面朝向并平滑隐藏首尾。
+--- 固定间距与滚动周期，移动时只增减末端三角；箭头平铺在水平面并平滑隐藏首尾。
 function Guide:UpdateGuideArrow()
     local character = self:GetPlayerCharacter()
     local root = character and character:FindFirstChild("HumanoidRootPart")
@@ -209,28 +208,23 @@ function Guide:UpdateGuideArrow()
         return
     end
     local camera = workspace.CurrentCamera
-    local origin = root and root.Position + Vector3.new(0, 0.5, 0)
-    local target = self._worldTargetPosition and self._worldTargetPosition + Vector3.new(0, 2, 0)
+    local origin = root and root.Position - Vector3.new(0, 2.5, 0)
+    local target = self._worldTargetPosition and self._worldTargetPosition + Vector3.new(0, 0.5, 0)
     local direction = origin and target and target - origin
     local distance = direction and direction.Magnitude or 0
     local spacing = 4
     local count = root and camera and math.min(32, math.max(0, math.ceil((distance - 3.1) / spacing))) or 0
     local now = os.clock()
-    local forward, side, normal
-    if count > 0 then
+    local forward, side, normal, flatForward
+    local flatDirection = direction and Vector3.new(direction.X, 0, direction.Z)
+    local flatDistance = flatDirection and flatDirection.Magnitude or 0
+    if count > 0 and flatDistance > 0.01 then
         forward = direction.Unit
-        local cameraUp = camera.CFrame.UpVector
-        side = cameraUp - forward * cameraUp:Dot(forward)
-        if side.Magnitude < 0.1 then
-            local cameraRight = camera.CFrame.RightVector
-            side = cameraRight - forward * cameraRight:Dot(forward)
-        end
-        side = side.Unit
-        if self._arrowSide and side:Dot(self._arrowSide) < 0 then
-            side = -side
-        end
-        self._arrowSide = side
-        normal = side:Cross(-forward)
+        flatForward = flatDirection / flatDistance
+        side = Vector3.new(0, 1, 0):Cross(flatForward)
+        normal = Vector3.new(0, 1, 0)
+    else
+        count = 0
     end
     for index = 1, math.max(count, #self._arrowTriangles) do
         local triangle = self._arrowTriangles[index]
@@ -257,7 +251,7 @@ function Guide:UpdateGuideArrow()
             if visible then
                 local sign = half == 1 and 1 or -1
                 local center = origin + forward * along + side * (sign * 0.5)
-                wedge.CFrame = CFrame.fromMatrix(center, normal * sign, side * sign, -forward)
+                wedge.CFrame = CFrame.fromMatrix(center, normal * sign, side * sign, -flatForward)
                 wedge.Color = Color3.fromHSV((along / distance - now * 0.2) % 1, 0.85, 1)
             end
         end
