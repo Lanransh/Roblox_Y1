@@ -28,7 +28,7 @@ function Collectible.ResolveModel(displayModelId)
     return instance
 end
 
---- 在现有掉落尺寸上再放大 30%，客户端光芒随尺寸放大，再焊接为单个装配。
+--- 过小模板先归一到 2.4 studs，再整体放大 1.2 倍；较大模板按原尺寸放大，再焊接为单个装配。
 --- @param template Model 已导入的收藏品模板。
 --- @return Model 以 PrimaryPart 为锚点、无碰撞的收藏品副本。
 function Collectible.CreateModel(template)
@@ -39,7 +39,7 @@ function Collectible.CreateModel(template)
     if longestSide < 2.4 then
         model:ScaleTo(model:GetScale() * 2.4 / longestSide)
     end
-    model:ScaleTo(model:GetScale() * 2.03125)
+    model:ScaleTo(model:GetScale() * 1.2)
     local root = model.PrimaryPart
     for index, node in ipairs(model:GetDescendants()) do
         if node:IsA("BasePart") then
@@ -59,7 +59,7 @@ function Collectible.CreateModel(template)
     return model
 end
 
---- 用模型包围盒顶部定位 HUD；品质文字按编号显示上亮下深的渐变，倒计时保持较小。
+--- 用模型包围盒顶部定位 HUD；四行统一字号并保留垂直间距，随距离自然缩放。
 --- @param hud BillboardGui 本次掉落独有的 HUD 副本。
 --- @param model Model 已完成缩放及摆放的掉落模型。
 --- @param quality number 配置中的道具品质编号。
@@ -67,13 +67,17 @@ function Collectible.StyleHUD(hud, model, quality)
     local box, size = model:GetBoundingBox()
     hud.Size = UDim2.fromScale(6.5, 3.5)
     hud.StudsOffsetWorldSpace = box.Position - model.PrimaryPart.Position
-        + Vector3.new(0, size.Y / 2 + 2, 0)
+        + Vector3.new(0, size.Y / 2 + 3.5, 0)
     local frame = hud.Frame
-    frame.ItemName.Position = UDim2.fromScale(0.5, 0.16)
-    frame.ItemName.Size = UDim2.fromScale(0.98, 0.28)
+    frame.Timer.AnchorPoint = Vector2.new(0.5, 0)
+    frame.Timer.Position = UDim2.new(0.5, 0, 0.05, 0)
+    frame.Timer.Size = UDim2.fromScale(0.3, 0.21)
+    frame.Timer.TextXAlignment = Enum.TextXAlignment.Center
+    frame.ItemName.Position = UDim2.new(0.5, 0, 0.28, 0)
+    frame.ItemName.Size = UDim2.fromScale(0.95, 0.21)
     frame.ItemName.TextColor3 = Color3.new(1, 1, 1)
-    frame.Rarity.Position = UDim2.fromScale(0.5, 0.46)
-    frame.Rarity.Size = UDim2.fromScale(0.72, 0.22)
+    frame.Rarity.Position = UDim2.new(0.5, 0, 0.51, 0)
+    frame.Rarity.Size = UDim2.fromScale(0.84, 0.21)
     local qualityColor = Color3.fromHex(QualityColors[quality] or "C5CAD8")
     -- UIGradient 与文字底色相乘，白色底色才能保留各品质的完整渐变色。
     frame.Rarity.TextColor3 = Color3.new(1, 1, 1)
@@ -89,17 +93,20 @@ function Collectible.StyleHUD(hud, model, quality)
         ColorSequenceKeypoint.new(1, qualityColor:Lerp(Color3.new(0, 0, 0), 0.22)),
     })
     gradient.Parent = frame.Rarity
-    frame.Price.Position = UDim2.fromScale(0.5, 0.70)
-    frame.Price.Size = UDim2.fromScale(0.9, 0.30)
+    frame.Price.Position = UDim2.new(0.5, 0, 0.74, 0)
+    frame.Price.Size = UDim2.fromScale(0.9, 0.21)
     frame.Price.TextColor3 = Color3.fromRGB(86, 255, 101)
-    frame.Timer.Size = UDim2.fromScale(0.3, 0.14)
-    frame.LuckIcon.Position = UDim2.fromScale(0.08, 0.57)
+    frame.LuckIcon.AnchorPoint = Vector2.new(0.5, 0.5)
+    frame.LuckIcon.Position = UDim2.new(0.04, 0, 0.845, 0)
+    frame.LuckIcon.Size = UDim2.fromScale(0.09, 0.16)
     for index, label in ipairs({frame.ItemName, frame.Rarity, frame.Price, frame.Timer}) do
         label.Font = Enum.Font.GothamBlack
-        label.TextScaled = true
+        label.TextSize = 18
+        -- TextWrapped 会重置 TextScaled，必须先关闭换行再启用缩放。
         label.TextWrapped = false
+        label.TextScaled = true
         label.TextOutline.Color = Color3.fromRGB(12, 12, 16)
-        label.TextOutline.Thickness = 3
+        label.TextOutline.Thickness = 2
     end
 end
 
