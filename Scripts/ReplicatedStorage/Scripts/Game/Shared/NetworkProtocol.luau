@@ -74,5 +74,7 @@ return {
         "S2C_RemoveRockDrop",
         -- 无参数；卡片使用成功且进入激活阶段后，仅通知使用者播放通用激活音。
         "S2C_CardActivated",
+        -- seconds: number，下一档剩余在线秒数，-1 为今日全部到期；hasDrops: boolean，是否有待领取礼盒。
+        "S2C_GiftDropCountdown",
     },
 }

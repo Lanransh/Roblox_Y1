@@ -2,16 +2,16 @@
 local Players = game:GetService("Players")
 local HttpService = game:GetService("HttpService")
 local FX, FS = _G.FX, _G.FS
+local FXLoader = FX.Loader
 local Service = {}
 local drops = {}
 local startupTasks = {}
 local lastTimes = {}
 local Fields = _G.PlayerDataConfig
 local Config = _G.GameConfig.CommonConfig.GiftData
--- 开局个人礼盒参数；落点取玩家出生位置附近的实际地面。
+-- 个人礼盒到期时落到玩家当前世界的固定降落台。
 local STARTUP_HEIGHT = 60
 local STARTUP_DURATION = 5
-local STARTUP_OFFSET = Vector3.new(6, 0, 0)
 
 --- 累计在线时间并清理跨日礼盒，未领取档位在重进时重新生成。
 --- @param playerObject table 当前登录会话的玩家对象。
@@ -39,7 +39,12 @@ end
 
 --- 注册每日计时和一次领取协议；只认可服务端签发且已经落地的礼盒。
 function Service.Init()
-    --- 玩家握手就绪后累计在线时间，存活且有地面时恢复或生成到期档位。
+    local dropOrigins = {}
+    for worldIndex = 1, 3 do
+        dropOrigins[worldIndex] = FXLoader:Workspace(
+            "Decorations/World" .. worldIndex .. "Decorations/MysteryGiftLanding/DropOrigin")
+    end
+    --- 玩家握手就绪后累计在线时间，在固定台面恢复或生成到期档位并同步倒计时。
     --- @param userId number 框架已完成登录的玩家 ID。
     FS.Events.OnPlayerReady.Event:Connect(function(userId)
         local player = Players:GetPlayerByUserId(userId)
@@ -53,32 +58,29 @@ function Service.Init()
                 local humanoid = character and character:FindFirstChildOfClass("Humanoid")
                 local data = Service.UpdateTime(playerObject, os.time())
                 if root and humanoid and humanoid.Health > 0 then
-                    local params = RaycastParams.new()
-                    params.FilterType = Enum.RaycastFilterType.Exclude
-                    params.FilterDescendantsInstances = {character}
-                    local origin = root.Position + STARTUP_OFFSET + Vector3.new(0, 8, 0)
-                    local hit = workspace:Raycast(origin, Vector3.new(0, -64, 0), params)
-                    if hit then
-                        local active = {}
-                        for dropId, drop in pairs(drops[userId] or {}) do
-                            if drop.Index then
-                                active[drop.Index] = true
-                            end
+                    local active = {}
+                    for dropId, drop in pairs(drops[userId] or {}) do
+                        if drop.Index then
+                            active[drop.Index] = true
                         end
-                        local due = math.min(Config.Count, math.floor(data.onlineSeconds / Config.Time))
-                        for index = 1, due do
-                            if not data.claimed[tostring(index)] and not active[index] then
-                                local dropId = Service.Spawn(player, {
-                                    Position = hit.Position,
-                                    Height = STARTUP_HEIGHT,
-                                    Duration = STARTUP_DURATION,
-                                })
-                                drops[userId][dropId].Index = index
-                                drops[userId][dropId].Day = data.day
-                            end
+                    end
+                    local due = math.min(Config.Count, math.floor(data.onlineSeconds / Config.Time))
+                    for index = 1, due do
+                        if not data.claimed[tostring(index)] and not active[index] then
+                            local dropId = Service.Spawn(player, {
+                                Position = dropOrigins[playerObject:GetNumber(Fields.WorldIndex)].Position,
+                                Height = STARTUP_HEIGHT,
+                                Duration = STARTUP_DURATION,
+                            })
+                            drops[userId][dropId].Index = index
+                            drops[userId][dropId].Day = data.day
                         end
                     end
                 end
+                local due = math.min(Config.Count, math.floor(data.onlineSeconds / Config.Time))
+                local seconds = due < Config.Count and (due + 1) * Config.Time - data.onlineSeconds or -1
+                FX.Network:SendMsgToClient(userId, "S2C_GiftDropCountdown", seconds,
+                    next(drops[userId] or {}) ~= nil)
                 task.wait(1)
             end
             startupTasks[userId] = nil

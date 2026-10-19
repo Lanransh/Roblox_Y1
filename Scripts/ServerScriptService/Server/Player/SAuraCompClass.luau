@@ -67,6 +67,30 @@ function Component:ClearEffects()
     table.clear(self._effects)
 end
 
+--- 装备时保留鲜明主色并补少量白色亮部，避免深色光环发暗。
+--- @param emitter ParticleEmitter 本组件克隆的光环粒子。
+local function EnhanceAuraColor(emitter)
+    local colors = {}
+    for index, keypoint in ipairs(emitter.Color.Keypoints) do
+        local hue, saturation, value = keypoint.Value:ToHSV()
+        if saturation > 0.05 then
+            saturation = math.min(1, saturation * 1.5 + 0.15)
+        end
+        local color = Color3.fromHSV(hue, saturation, math.max(value, 0.8))
+        colors[index] = ColorSequenceKeypoint.new(keypoint.Time, color:Lerp(Color3.new(1, 1, 1), 0.08))
+    end
+    emitter.Color = ColorSequence.new(colors)
+    local transparency = {}
+    for index, keypoint in ipairs(emitter.Transparency.Keypoints) do
+        transparency[index] = NumberSequenceKeypoint.new(keypoint.Time,
+            keypoint.Value ^ 1.6, math.min(keypoint.Envelope, keypoint.Value ^ 1.6))
+    end
+    emitter.Transparency = NumberSequence.new(transparency)
+    -- 多张光效贴图依赖黑底加色混合；压低此值会露出黑色矩形。
+    emitter.LightEmission = 1
+    emitter.Enabled = true
+end
+
 --- 粒子和带定位的 Attachment 挂到身体 Part 下，保留素材的发射位置和设置开关标记。
 function Component:RefreshEffects()
     self:ClearEffects()
@@ -89,12 +113,12 @@ function Component:RefreshEffects()
                     local effect = template:Clone()
                     effect.Name = "EquippedAura"
                     if effect:IsA("ParticleEmitter") then
-                        effect.Enabled = true
+                        EnhanceAuraColor(effect)
                     end
                     for descendantIndex, descendant in ipairs(effect:GetDescendants()) do
                         if descendant:IsA("ParticleEmitter") then
                             descendant.Name = "EquippedAura"
-                            descendant.Enabled = true
+                            EnhanceAuraColor(descendant)
                         end
                     end
                     effect.Parent = part

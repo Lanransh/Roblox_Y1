@@ -1,5 +1,6 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
+local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local RunService = game:GetService("RunService")
 FXLoader:RequireFromParent(script, "Generated/CWorldTeleportView")
 local GameEnum = _G.GameEnum
@@ -163,11 +164,11 @@ end
 --- @param state table 权威等级、当前世界与请求状态。
 function Component:Render(state)
     for index, world in ipairs(self.Config.worlds) do
-        world.name = self._localization:FormatByKey("World.Name." .. world.id)
+        world.name = Text.Tr(GameEnum.WorldTransferConfig[index].Name)
     end
-    self._title.Text = self._localization:FormatByKey("World.Title")
-    self.EmptyTxt.Text = self._localization:FormatByKey("World.Empty")
-    state.error = self._failure and self._localization:FormatByKey(self._failure.key, self._failure.arguments) or nil
+    self._title.Text = Text.Tr("WORLDS")
+    self.EmptyTxt.Text = Text.Tr("No worlds available")
+    state.error = self._failure and Text.Tr(self._failure.key, self._failure.arguments) or nil
     Component.Super.Render(self, state)
     for worldId, record in pairs(self._rows) do
         local key = "World.Go"
@@ -178,7 +179,7 @@ function Component:Render(state)
         elseif state.level < record.world.requiredLevel then
             key = "World.LockedLevel"
         end
-        record.buttonTxt.Text = self._localization:FormatByKey(key, {level = record.world.requiredLevel})
+        record.buttonTxt.Text = Text.Tr(key, {level = record.world.requiredLevel})
         self:SetButtonEnabled(record.button, state.currentWorldId ~= worldId and not state.pendingWorldId)
     end
 end

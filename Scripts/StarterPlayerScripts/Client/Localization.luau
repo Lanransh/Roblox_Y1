@@ -3,6 +3,7 @@ local FXLoader = FX.Loader
 local LocalizationService = game:GetService("LocalizationService")
 local RunService = game:GetService("RunService")
 local SourceTable = FXLoader:Shared("Shared/Localization")
+local LegacyTextSources = FXLoader:RequireShared("Scripts/Game/Shared/LegacyTextSources")
 local Localization = {}
 Localization.__index = Localization
 local warnedCloudLocales = {}
@@ -14,8 +15,10 @@ function Localization.New(player)
     local self = setmetatable({}, Localization)
     self._english = SourceTable:GetTranslator("en-us")
     self._keys = {}
+    self._legacyKeys = {}
     for index, entry in ipairs(SourceTable:GetEntries()) do
         self._keys[entry.Key] = true
+        self._legacyKeys[entry.Source] = entry.Key
     end
     self._changed = Instance.new("BindableEvent")
     self.Changed = self._changed.Event
@@ -89,9 +92,31 @@ end
 
 --- 英文原文直接作为 Key；尚未收集的模板仅在独立的运行时英文表中格式化，不修改发布文案表。
 --- @param source string 英文原文或原生参数模板。
---- @param arguments table? 原生模板参数，不使用旧接口的 itemKey 扩展。
+--- @param arguments table? 原生模板参数；旧协议的 itemKey 只在客户端解析。
 --- @return string 当前玩家语言的文案，缺少译文时使用格式化后的英文。
 function Localization:Tr(source, arguments)
+    if arguments and arguments.itemKey then
+        arguments = table.clone(arguments)
+        arguments.item = self:Tr(arguments.itemKey)
+        arguments.itemKey = nil
+    end
+    local toolId = string.match(source, "^Weapon%.Name%.(%d+)$")
+    local itemId = string.match(source, "^Welfare%.Item%.(%d+)$")
+    local descriptionId = string.match(source, "^Item%.Description%.(%d+)$")
+    if toolId then
+        for index, config in ipairs(_G.GameConfig.ToolConfig) do
+            if config.ToolId == tonumber(toolId) then
+                source = config.Name
+                break
+            end
+        end
+    elseif itemId then
+        source = _G.ItemConfig.Display[tonumber(itemId)].Name
+    elseif descriptionId then
+        source = _G.ItemConfig.Display[tonumber(descriptionId)].Desc
+    else
+        source = LegacyTextSources[source] or source
+    end
     if self._keys[source] then
         return self:FormatByKey(source, arguments)
     end
@@ -104,6 +129,11 @@ function Localization:Tr(source, arguments)
         if success and text ~= "" then
             return text
         end
+    end
+    -- 原文 Key 尚未上传时继续复用现有旧 Key 译文，不要求重建翻译表。
+    local legacyKey = self._legacyKeys[source]
+    if legacyKey then
+        return self:FormatByKey(legacyKey, arguments)
     end
     if not arguments then
         return source

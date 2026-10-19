@@ -1,5 +1,6 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
+local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
 local ContextActionService = game:GetService("ContextActionService")
@@ -338,10 +339,10 @@ end
 
 --- 刷新各世界榜单文案和分类字色；个人行使用深色版本，确保金色背景上的可读性。
 function Component:RefreshLocalization()
-    self._rankHeader.Text = self._localization:FormatByKey("Leaderboard.Rank")
-    self._playerHeader.Text = self._localization:FormatByKey("Leaderboard.Player")
-    self._personalName.Text = self._localization:FormatByKey("Leaderboard.You")
-    self._viewButton.Text = self._localization:FormatByKey("Leaderboard.View")
+    self._rankHeader.Text = Text.Tr("Rank")
+    self._playerHeader.Text = Text.Tr("Player")
+    self._personalName.Text = Text.Tr("You")
+    self._viewButton.Text = Text.Tr("E · View Leaderboard")
     for index, board in ipairs(self._boards) do
         local panel = board.Gui.Panel
         local config = BoardTypes[board.Kind]
@@ -351,14 +352,14 @@ function Component:RefreshLocalization()
                     and config.TextColor:Lerp(Color3.new(0, 0, 0), 0.75) or config.TextColor
             end
         end
-        panel.Title.Text = self._localization:FormatByKey(config.TitleKey)
-        panel.StrengthHeader.Text = self._localization:FormatByKey(config.HeaderKey)
+        panel.Title.Text = Text.Tr(config.TitleKey)
+        panel.StrengthHeader.Text = Text.Tr(config.HeaderKey)
         for labelIndex, label in ipairs({self._rankHeader, self._playerHeader}) do
             panel[label.Name].Text = label.Text
         end
         panel.Rank101.PlayerName.Text = self._personalName.Text
     end
-    self._closeButton.Text = self._localization:FormatByKey("Leaderboard.Close")
+    self._closeButton.Text = Text.Tr("Close · E")
 end
 
 --- 只销毁组件创建的界面，模型和显示面保持原样。

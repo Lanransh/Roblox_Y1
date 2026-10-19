@@ -1,5 +1,6 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
+local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
@@ -205,7 +206,7 @@ end
 --- 云端翻译加载或语言变化后刷新幸运牌，幸运倍率使用一位小数格式。
 function Component:RefreshLevelLuckSigns()
     for index, entry in ipairs(self._luckLabels) do
-        entry.Label.Text = self._localization:FormatByKey("Level.Luck", {
+        entry.Label.Text = Text.Tr("x{rate} Luck", {
             rate = FormatLuck(entry.Rate),
         })
     end
@@ -247,10 +248,10 @@ function Component:SpawnDrop(data)
     hud.Parent = root
 
     local prompt = Instance.new("ProximityPrompt")
-    -- 原生拾取提示只显示操作文案，复用英文源表并交给 Roblox 自动本地化。
-    prompt.ActionText = "Pick Up"
+    -- 原生提示与掉落 HUD 共用客户端翻译及语言刷新入口。
+    prompt.ActionText = Text.Tr("Pick Up")
     prompt.ObjectText = ""
-    prompt.AutoLocalize = true
+    prompt.AutoLocalize = false
     prompt.RootLocalizationTable = FXLoader:Shared("Shared/Localization")
     prompt.KeyboardKeyCode = Enum.KeyCode.E
     prompt.HoldDuration = 0.5
@@ -320,14 +321,15 @@ end
 --- @param drop table 当前客户端持有的掉落。
 --- @param now number 当前服务器同步时间。
 function Component:UpdateDropText(drop, now)
+    drop.Prompt.ActionText = Text.Tr("Pick Up")
     if drop.NameKey then
-        drop.Hud.Frame.ItemName.Text = self._localization:FormatByKey(drop.NameKey)
+        drop.Hud.Frame.ItemName.Text = Text.Tr(drop.NameKey)
     end
     local rarityArguments = {level = drop.Quality}
     if drop.IsLucky == true then
         rarityArguments.rate = GameUtility.NumberToText(drop.LuckRate or 1)
     end
-    drop.Hud.Frame.Rarity.Text = self._localization:FormatByKey("Rarity.Quality", rarityArguments)
+    drop.Hud.Frame.Rarity.Text = Text.Tr("Quality {level:int}", rarityArguments)
     drop.Hud.Frame.Price.Text = "$" .. GameUtility.NumberToText(drop.Price)
     drop.Hud.Frame.Timer.Text = string.format("%ds", math.max(0, math.ceil(drop.ExpiresAt - now)))
 end

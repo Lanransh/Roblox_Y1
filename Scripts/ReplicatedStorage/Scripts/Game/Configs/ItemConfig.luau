@@ -130,8 +130,8 @@ return {
         },
         [107] = {
             Id = 107,
-            Name = [[DogCard]],
-            Desc = [[DogCard]],
+            Name = [[Dog Card]],
+            Desc = [[Adds one progress to today's Dog task.]],
             Quality = 12,
             IconId = [[rbxassetid://117314008364013]],
             DisplayModelId = nil

@@ -1,5 +1,6 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
+local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 FXLoader:RequireFromParent(script, "Generated/CCollectionView")
 local Fields = _G.PlayerDataConfig
 local GameConfig = _G.GameConfig
@@ -23,10 +24,8 @@ function Component:OnReady()
     self._localization = self._commonUI.Localization
     self._hint = FXLoader:Here(self.Root, "PopupPanelImg/SummaryImg/HintTxt")
     self._boostLabel = FXLoader:Here(self.Root, "PopupPanelImg/SummaryImg/BoostLabelTxt")
-    self._hint.Text = "Store items at your base to unlock them."
-    self._boostLabel.Text = "Total Training Bonus"
-    self._hint.AutoLocalize = true
-    self._boostLabel.AutoLocalize = true
+    self._hint.AutoLocalize = false
+    self._boostLabel.AutoLocalize = false
     self.Count.AutoLocalize = false
     self.Rule.AutoLocalize = false
     self.Boost.AutoLocalize = false
@@ -63,7 +62,7 @@ function Component:RefreshCollection()
     local entries = self:GetTable(Fields.CollectionEntries)
     for index, item in ipairs(self.Config.items) do
         local config = GameConfig.ItemData[item.itemId]
-        item.name = self._localization:FormatByKey(CollectibleText.GetNameKey(config.DisplayModelId))
+        item.name = Text.Tr(CollectibleText.GetNameKey(config.DisplayModelId))
         self.State.entries[item.id] = {active = entries[item.id] == true}
     end
     self.State.totalStrengthPercent = (Collection.GetTrainingRate(entries) - 1) * 100
@@ -74,11 +73,13 @@ end
 --- @param state table 服务端记录派生的完整展示状态。
 function Component:Render(state)
     Component.Super.Render(self, state)
+    self._hint.Text = Text.Tr("Store items at your base to unlock them.")
+    self._boostLabel.Text = Text.Tr("Total Training Bonus")
     local rules = GameConfig.CommonConfig.CollectionData
-    self.Rule.Text = self._localization:FormatByKey("Collection.Rule", {
+    self.Rule.Text = Text.Tr("Collect {count:int} items for +{percent}% training.", {
         count = rules.UnlockCount, percent = rules.TrainingRate * 100,
     })
-    self.Count.Text = self._localization:FormatByKey("Collection.Count", {
+    self.Count.Text = Text.Tr("{count:int}/{total:int} collected", {
         count = Collection.GetCount(self:GetTable(Fields.CollectionEntries)), total = #self.Config.items,
     })
     for index, item in ipairs(self.Config.items) do

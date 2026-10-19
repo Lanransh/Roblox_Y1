@@ -1,0 +1,503 @@
+﻿Key,Source,来源
++{count:int} Carry Slot,+{count:int} Carry Slot,"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:304
+../Scripts/StarterPlayerScripts/Client/UI/CCurrencyShopUICompClass.luau:101"
++{value} Diamonds per day,+{value} Diamonds per day,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:221
+7-Day Login,7-Day Login,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:244
+AURAS,AURAS,../Scripts/StarterPlayerScripts/Client/UI/CAuraShopUICompClass.luau:114
+Abyss,Abyss,GameConfig.AuraConfig.C9
+Adds one progress to today's Dog task.,Adds one progress to today's Dog task.,ItemConfig.Display.C10
+All gifts collected today,All gifts collected today,../Scripts/StarterPlayerScripts/Client/GiftDrop.luau:31
+Amethyst Star Ring Hammer,Amethyst Star Ring Hammer,GameConfig.ToolConfig.C28
+Amethyst Star Ring Pickaxe,Amethyst Star Ring Pickaxe,GameConfig.ToolConfig.C29
+Astral,Astral,GameConfig.AuraConfig.C28
+Automatic training is now active!,Automatic training is now active!,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:285
+Available today,Available today,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:217
+Axe 1,Axe 1,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:129
+Axe 2,Axe 2,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:130
+Axe 3,Axe 3,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:131
+Backpack Boost Card (1 Hour),Backpack Boost Card (1 Hour),ItemConfig.Display.B7
+Bag 1,Bag 1,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:91
+Bag 2,Bag 2,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:92
+Bag 3,Bag 3,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:93
+Bandage,Bandage,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:54
+Barrel 1,Barrel 1,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:98
+Barrel 2,Barrel 2,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:99
+Barrel 3,Barrel 3,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:100
+Barrel 4,Barrel 4,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:101
+Barrel 5,Barrel 5,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:102
+Baseball Bat 1,Baseball Bat 1,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:124
+Baseball Bat 2,Baseball Bat 2,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:125
+Baseball Bat 3,Baseball Bat 3,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:126
+Baseball Bat 4,Baseball Bat 4,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:127
+Battery 1,Battery 1,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:21
+Battery 2,Battery 2,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:22
+Biscuit 1,Biscuit 1,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:23
+Biscuit 2,Biscuit 2,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:24
+Biscuit 3,Biscuit 3,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:25
+Bleach,Bleach,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:60
+Boots 1,Boots 1,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:81
+Boots 2,Boots 2,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:82
+Boots 3,Boots 3,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:83
+Boots 4,Boots 4,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:84
+Bottle 1,Bottle 1,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:38
+Bottle 2,Bottle 2,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:39
+Bottle 3,Bottle 3,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:40
+Bottle 4,Bottle 4,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:41
+Bottle 5,Bottle 5,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:42
+Box 1,Box 1,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:94
+Box 2,Box 2,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:95
+Box 3,Box 3,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:96
+Brass Mechanical Hammer,Brass Mechanical Hammer,GameConfig.ToolConfig.C13
+Brass Mechanical Pickaxe,Brass Mechanical Pickaxe,GameConfig.ToolConfig.C12
+Bronze,Bronze,GameConfig.AuraConfig.C8
+Bullet 1,Bullet 1,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:147
+Bullet 2,Bullet 2,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:148
+Bullet 3,Bullet 3,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:149
+Bullet 4,Bullet 4,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:150
+Bullet 5,Bullet 5,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:151
+Bullet 6,Bullet 6,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:152
+Bullet 7,Bullet 7,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:153
+Bulletproof Vest 1,Bulletproof Vest 1,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:85
+Bulletproof Vest 2,Bulletproof Vest 2,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:86
+Buy a stronger aura!,Buy a stronger aura!,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:337
+Buy a stronger pickaxe!,Buy a stronger pickaxe!,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:336
+Buy this upgrade for {value} diamonds?,Buy this upgrade for {value} diamonds?,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:311
+Buy: {value} Coins,Buy: {value} Coins,"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:15
+../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:208"
+Buying...,Buying...,"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:263
+../Scripts/StarterPlayerScripts/Client/UI/CShopPurchaseUICompClass.luau:74"
+Can 1,Can 1,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:43
+Can 2,Can 2,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:44
+Can 3,Can 3,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:45
+Can 4,Can 4,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:46
+Can 5,Can 5,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:47
+Can 6,Can 6,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:48
+Can 7,Can 7,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:49
+Cancel,Cancel,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:168
+Cap,Cap,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:73
+Capsule,Capsule,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:20
+Cartridge,Cartridge,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:154
+Chainsaw,Chainsaw,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:128
+Chocolate 1,Chocolate 1,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:26
+Chocolate 2,Chocolate 2,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:27
+Chocolate Drink,Chocolate Drink,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:28
+Claim,Claim,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:218
+Claim your rewards from the Rewards button!,Claim your rewards from the Rewards button!,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:286
+Claim ×{multiplier:int},Claim ×{multiplier:int},"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:216
+../Scripts/StarterPlayerScripts/Client/UI/CWelfareUICompClass.luau:324"
+Claimed,Claimed,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:219
+Claiming...,Claiming...,"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:241
+../Scripts/StarterPlayerScripts/Client/UI/CWelfareUICompClass.luau:323"
+Close,Close,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:169
+Close the Roblox menu to claim your gift.,Close the Roblox menu to claim your gift.,../Scripts/StarterPlayerScripts/Client/UI/CMenuRetentionUICompClass.luau:22
+Close · E,Close · E,"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:321
+../Scripts/StarterPlayerScripts/Client/UI/CLeaderboardUICompClass.luau:362"
+Collect {count:int} items for +{percent}% training.,Collect {count:int} items for +{percent}% training.,"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:167
+../Scripts/StarterPlayerScripts/Client/UI/CCollectionUICompClass.luau:79"
+Collect {target:int} items,Collect {target:int} items,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:248
+Coming soon.,Coming soon.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:171
+Common,Common,GameConfig.AuraConfig.C4
+Compass,Compass,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:70
+Compass A,Compass A,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:71
+Complete this task before claiming ({current:int}/{target:int}).,Complete this task before claiming ({current:int}/{target:int}).,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:277
+Confirm,Confirm,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:170
+Cooking Pot 1,Cooking Pot 1,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:97
+Crimson,Crimson,GameConfig.AuraConfig.C11
+Crude Silver Hammer,Crude Silver Hammer,GameConfig.ToolConfig.C7
+Crude Silver Pickaxe,Crude Silver Pickaxe,GameConfig.ToolConfig.C6
+DIAMOND SHOP,DIAMOND SHOP,../Scripts/StarterPlayerScripts/Client/UI/CCurrencyShopUICompClass.luau:172
+DIAMOND UPGRADE,DIAMOND UPGRADE,"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:261
+../Scripts/StarterPlayerScripts/Client/UI/CShopPurchaseUICompClass.luau:66"
+Daily Diamonds,Daily Diamonds,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:220
+Daily Login,Daily Login,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:230
+Daily Tasks,Daily Tasks,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:251
+Daily login reward and active weekly passes,Daily login reward and active weekly passes,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:223
+Day {day:int},Day {day:int},../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:224
+Deep Sea Anchor Hammer,Deep Sea Anchor Hammer,GameConfig.ToolConfig.C24
+Deep Sea Hook Pickaxe,Deep Sea Hook Pickaxe,GameConfig.ToolConfig.C25
+Desert Colossus Bone Hammer,Desert Colossus Bone Hammer,GameConfig.ToolConfig.C26
+Detergent,Detergent,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:59
+Diamonds,Diamonds,../Scripts/StarterPlayerScripts/Client/UI/CWelfareUICompClass.luau:164
+Diamonds are added after payment is processed.,Diamonds are added after payment is processed.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:307
+Dog Card,Dog Card,ItemConfig.Display.B10
+Don't leave yet! A gift is ready for you!,Don't leave yet! A gift is ready for you!,../Scripts/StarterPlayerScripts/Client/UI/CMenuRetentionUICompClass.luau:20
+Double Sell Value Card,Double Sell Value Card,ItemConfig.Display.B6
+Dragon Flame Hammer,Dragon Flame Hammer,GameConfig.ToolConfig.C33
+Dragon Flame Pickaxe,Dragon Flame Pickaxe,GameConfig.ToolConfig.C32
+Dynamite 1,Dynamite 1,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:139
+Dynamite 2,Dynamite 2,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:140
+Dynamite 3,Dynamite 3,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:141
+E · View Leaderboard,E · View Leaderboard,"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:320
+../Scripts/StarterPlayerScripts/Client/UI/CLeaderboardUICompClass.luau:345"
+Eastern Clouds Hammer,Eastern Clouds Hammer,GameConfig.ToolConfig.C37
+Eastern Clouds Pickaxe,Eastern Clouds Pickaxe,GameConfig.ToolConfig.C36
+Emerald,Emerald,GameConfig.AuraConfig.C17
+Emerald Guardian Hammer,Emerald Guardian Hammer,GameConfig.ToolConfig.C17
+Emerald Guardian Pickaxe,Emerald Guardian Pickaxe,GameConfig.ToolConfig.C16
+Epic,Epic,GameConfig.AuraConfig.C13
+Equip,Equip,"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:11
+../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:203"
+Equipped,Equipped,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:204
+Fine Steel Maul,Fine Steel Maul,GameConfig.ToolConfig.C11
+Fine Steel Mining Pickaxe,Fine Steel Mining Pickaxe,GameConfig.ToolConfig.C10
+First Aid Kit 1,First Aid Kit 1,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:56
+First Aid Kit 2,First Aid Kit 2,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:57
+First Aid Kit 3,First Aid Kit 3,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:58
+Flashlight 1,Flashlight 1,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:108
+Forest Guardian Hammer,Forest Guardian Hammer,GameConfig.ToolConfig.C39
+Forest Guardian Pickaxe,Forest Guardian Pickaxe,GameConfig.ToolConfig.C38
+Frost,Frost,GameConfig.AuraConfig.C22
+"Gain {value} training XP, up to your current rebirth limit.","Gain {value} training XP, up to your current rebirth limit.","../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:267
+../Scripts/StarterPlayerScripts/Client/UI/CMainUICompClass.luau:397"
+Gained {value} Diamonds and activated a {days:int}-day weekly pass!,Gained {value} Diamonds and activated a {days:int}-day weekly pass!,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:237
+Gained {value} Strength.,Gained {value} Strength.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:324
+Gas Mask 1,Gas Mask 1,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:79
+Gas Mask 2,Gas Mask 2,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:80
+"Get 108 Diamonds instantly, plus 12 bonus Diamonds each day you check in for the next 6 days.","Get 108 Diamonds instantly, plus 12 bonus Diamonds each day you check in for the next 6 days.",ItemConfig.Display.C4
+"Get 400 Diamonds instantly, plus 63 bonus Diamonds each day you check in for the next 6 days.","Get 400 Diamonds instantly, plus 63 bonus Diamonds each day you check in for the next 6 days.",ItemConfig.Display.C5
+Gifts ready to collect!,Gifts ready to collect!,../Scripts/StarterPlayerScripts/Client/GiftDrop.luau:29
+Gilded Crown Great Hammer,Gilded Crown Great Hammer,GameConfig.ToolConfig.C23
+Gilded Crown Pickaxe,Gilded Crown Pickaxe,GameConfig.ToolConfig.C22
+Go,Go,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:255
+Goggles,Goggles,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:76
+Goggles A,Goggles A,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:77
+Golf Club,Golf Club,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:122
+Grenade 1,Grenade 1,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:142
+Grenade 2,Grenade 2,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:143
+Grenade 3,Grenade 3,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:144
+Gun 1,Gun 1,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:155
+Gun 2,Gun 2,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:156
+HOME,HOME,"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:189
+../Scripts/StarterPlayerScripts/Client/UI/CMainUICompClass.luau:70
+../Scripts/StarterPlayerScripts/Client/UI/CMainUICompClass.luau:439"
+Hammer 1,Hammer 1,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:113
+Hammer 2,Hammer 2,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:114
+Hammer 3,Hammer 3,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:115
+Hat,Hat,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:72
+Head into the rocks! Your pickaxe clears the way. Pick up 2 pieces of loot.,Head into the rocks! Your pickaxe clears the way. Pick up 2 pieces of loot.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:278
+Headlamp,Headlamp,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:109
+Heavy Wooden Hammer,Heavy Wooden Hammer,GameConfig.ToolConfig.C5
+Helmet 1,Helmet 1,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:87
+Helmet 2,Helmet 2,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:88
+Helmet 3,Helmet 3,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:89
+Helmet 4,Helmet 4,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:90
+Here,Here,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:256
+Hockey Stick,Hockey Stick,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:123
+Holy Crown Hammer,Holy Crown Hammer,GameConfig.ToolConfig.C31
+Holy Crown Pickaxe,Holy Crown Pickaxe,GameConfig.ToolConfig.C30
+Honey 1,Honey 1,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:29
+Honey 2,Honey 2,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:30
+Ice Crystal Hammer,Ice Crystal Hammer,GameConfig.ToolConfig.C41
+Ice Crystal Pickaxe,Ice Crystal Pickaxe,GameConfig.ToolConfig.C40
+Ice-Blue Star Crystal Hammer,Ice-Blue Star Crystal Hammer,GameConfig.ToolConfig.C21
+Ice-Blue Star Crystal Pickaxe,Ice-Blue Star Crystal Pickaxe,GameConfig.ToolConfig.C20
+Identification Tag,Identification Tag,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:69
+In Progress,In Progress,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:226
+Increases backpack capacity for 1 hour.,Increases backpack capacity for 1 hour.,ItemConfig.Display.C7
+Inferno,Inferno,GameConfig.AuraConfig.C23
+Instantly gain 15 minutes' worth of Strength.,Instantly gain 15 minutes' worth of Strength.,ItemConfig.Display.C8
+Instantly gain 30 minutes' worth of Strength.,Instantly gain 30 minutes' worth of Strength.,ItemConfig.Display.C9
+Invite,Invite,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:335
+Iron Mace,Iron Mace,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:138
+Items sold!,Items sold!,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:188
+Jam 1,Jam 1,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:31
+Jam 2,Jam 2,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:32
+Keep getting stronger and discover more valuable loot!,Keep getting stronger and discover more valuable loot!,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:284
+Knife 1,Knife 1,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:132
+Knife 2,Knife 2,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:133
+Knife 3,Knife 3,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:134
+Knife 4,Knife 4,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:135
+Knife 5,Knife 5,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:136
+Knife 6,Knife 6,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:137
+Land Mine,Land Mine,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:145
+Lantern,Lantern,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:110
+Large Diamond Pack,Large Diamond Pack,GoodsConfig.GoodsData.C9
+Large Weekly Diamond Pass,Large Weekly Diamond Pass,ItemConfig.Display.B5
+Large Weekly Diamond Pass x1,Large Weekly Diamond Pass x1,GoodsConfig.GoodsData.C12
+Leaderboard,Leaderboard,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:322
+Legendary,Legendary,GameConfig.AuraConfig.C16
+Level {level:int},Level {level:int},../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:339
+Level {level:int}/{required:int},Level {level:int}/{required:int},"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:194
+../Scripts/StarterPlayerScripts/Client/UI/CRebirthIntegrationCompClass.luau:178"
+Lighter,Lighter,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:63
+Loading weapons...,Loading weapons...,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:205
+Loading...,Loading...,../Scripts/StarterPlayerScripts/Client/UI/CAuraShopUICompClass.luau:124
+Locked,Locked,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:229
+Log in on 7 different days. Missing a day does not reset your progress.,Log in on 7 different days. Missing a day does not reset your progress.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:245
+Log in on {days:int} days to claim this reward.,Log in on {days:int} days to claim this reward.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:276
+Loot stored: {count:int},Loot stored: {count:int},../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:174
+Lubricant Spray,Lubricant Spray,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:61
+Lucky {item} (×{rate}),Lucky {item} (×{rate}),"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:187
+../Scripts/StarterPlayerScripts/Client/UI/CLootSellUICompClass.luau:123"
+Lunar,Lunar,GameConfig.AuraConfig.C15
+MAX LEVEL,MAX LEVEL,"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:190
+../Scripts/StarterPlayerScripts/Client/UI/CMainUICompClass.luau:811"
+Machine Gun 1,Machine Gun 1,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:162
+Machine Gun 2,Machine Gun 2,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:163
+Machine Gun 3,Machine Gun 3,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:164
+Machine Gun 4,Machine Gun 4,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:165
+Mask,Mask,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:78
+Medical Supplies,Medical Supplies,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:55
+Medicine Bottle 1,Medicine Bottle 1,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:50
+Medicine Bottle 2,Medicine Bottle 2,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:51
+Medium Diamond Pack,Medium Diamond Pack,GoodsConfig.GoodsData.C8
+Minutes,Minutes,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:328
+Mobile Phone,Mobile Phone,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:67
+Nail,Nail,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:18
+Need {value} Coins,Need {value} Coins,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:12
+Neon,Neon,GameConfig.AuraConfig.C26
+New passes start their daily rewards tomorrow. Unclaimed pass rewards do not expire.,New passes start their daily rewards tomorrow. Unclaimed pass rewards do not expire.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:222
+Next claim tomorrow,Next claim tomorrow,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:240
+No auras available,No auras available,../Scripts/StarterPlayerScripts/Client/UI/CAuraShopUICompClass.luau:124
+No offline rewards available.,No offline rewards available.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:215
+No weapons available.,No weapons available.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:202
+No worlds available,No worlds available,"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:338
+../Scripts/StarterPlayerScripts/Client/UI/CWorldTeleportUICompClass.luau:170"
+Not enough Coins.,Not enough Coins.,"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:13
+../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:206"
+Not enough diamonds.,Not enough diamonds.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:299
+Not enough inventory space. Your reward is still available.,Not enough inventory space. Your reward is still available.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:227
+OFF,OFF,../Scripts/StarterPlayerScripts/Client/UI/CSettingsUICompClass.luau:164
+ON,ON,../Scripts/StarterPlayerScripts/Client/UI/CSettingsUICompClass.luau:164
+Obsidian Battle Pickaxe,Obsidian Battle Pickaxe,GameConfig.ToolConfig.C14
+Obsidian Great Hammer,Obsidian Great Hammer,GameConfig.ToolConfig.C15
+Ocean,Ocean,GameConfig.AuraConfig.C14
+Offline Rewards,Offline Rewards,"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:212
+../Scripts/StarterPlayerScripts/Client/UI/CWelfareUICompClass.luau:328"
+Offline Time: {hours:int}h {minutes:int}m {seconds:int}s,Offline Time: {hours:int}h {minutes:int}m {seconds:int}s,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:213
+Oil Can 1,Oil Can 1,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:64
+Oil Can 2,Oil Can 2,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:65
+Oil Can 3,Oil Can 3,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:66
+Online Rewards,Online Rewards,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:234
+Online time adds up throughout the day. Each reward can be claimed once per day.,Online time adds up throughout the day. Each reward can be claimed once per day.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:235
+Online: {minutes:int} min · Resets daily,Online: {minutes:int} min · Resets daily,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:236
+Only 19,Only 19,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:295
+Only 249,Only 249,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:297
+Only 3,Only 3,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:293
+Only 79,Only 79,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:296
+Only 89,Only 89,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:294
+Only {value},Only {value},../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:264
+Payment completed. Waiting for your reward.,Payment completed. Waiting for your reward.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:301
+Permanent training multiplier.,Permanent training multiplier.,"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:303
+../Scripts/StarterPlayerScripts/Client/UI/CCurrencyShopUICompClass.luau:99"
+Permanently carry {count:int} collectibles.,Permanently carry {count:int} collectibles.,"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:305
+../Scripts/StarterPlayerScripts/Client/UI/CCurrencyShopUICompClass.luau:102"
+Pick Up,Pick Up,"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:291
+../Scripts/ServerScriptService/Server/Service/SDogNpcServiceClass.luau:114
+../Scripts/StarterPlayerScripts/Client/GiftDrop.luau:159
+../Scripts/StarterPlayerScripts/Client/GiftDrop.luau:176
+../Scripts/StarterPlayerScripts/Client/Player/CRockLevelCompClass.luau:252
+../Scripts/StarterPlayerScripts/Client/Player/CRockLevelCompClass.luau:324"
+Pick up {target:int} dogs,Pick up {target:int} dogs,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:292
+Pickaxe,Pickaxe,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:121
+Picked up lucky {item} (×{rate})!,Picked up lucky {item} (×{rate})!,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:177
+Picked up {item}!,Picked up {item}!,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:180
+Pill,Pill,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:19
+Pipe,Pipe,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:62
+Play for {minutes} more minutes to claim your reward!,Play for {minutes} more minutes to claim your reward!,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:331
+Play for {target:int} minutes,Play for {target:int} minutes,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:249
+Play with {target:int} friends in the same server,Play with {target:int} friends in the same server,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:247
+Player,Player,"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:315
+../Scripts/StarterPlayerScripts/Client/UI/CLeaderboardUICompClass.luau:343"
+Playtime,Playtime,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:327
+Playtime Leaderboard,Playtime Leaderboard,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:326
+Prismatic,Prismatic,GameConfig.AuraConfig.C27
+Progress and rewards reset daily at 00:00 UTC.,Progress and rewards reset daily at 00:00 UTC.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:250
+Propane Tank,Propane Tank,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:103
+Purchase complete!,Purchase complete!,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:300
+Purchase complete! +{value} training XP.,Purchase complete! +{value} training XP.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:269
+Purchase complete! Backpack capacity +{count:int}.,Purchase complete! Backpack capacity +{count:int}.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:271
+Purchase complete! Training multiplier upgraded to x{rate}.,Purchase complete! Training multiplier upgraded to x{rate}.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:270
+Purchase received! +{value} Diamonds.,Purchase received! +{value} Diamonds.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:273
+Purchase received! {item} x{count:int} added to your inventory.,Purchase received! {item} x{count:int} added to your inventory.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:274
+Quality {level:int},Quality {level:int},"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:192
+../Scripts/StarterPlayerScripts/Client/Player/CRockLevelCompClass.luau:332
+../Scripts/StarterPlayerScripts/Client/UI/CAuraShopUICompClass.luau:119"
+Quality {level:int} · Lucky ×{rate},Quality {level:int} · Lucky ×{rate},../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:178
+REWARDS,REWARDS,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:252
+ROBUX SHOP,ROBUX SHOP,../Scripts/StarterPlayerScripts/Client/UI/CCurrencyShopUICompClass.luau:172
+Rank,Rank,"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:314
+../Scripts/StarterPlayerScripts/Client/UI/CLeaderboardUICompClass.luau:342"
+Rare,Rare,GameConfig.AuraConfig.C7
+Reach a best level of {level:int} to unlock this world.,Reach a best level of {level:int} to unlock this world.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:290
+Reach level {level:int} to rebirth.,Reach level {level:int} to rebirth.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:195
+Ready to claim,Ready to claim,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:242
+Rebirth Leaderboard,Rebirth Leaderboard,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:329
+Rebirth complete!,Rebirth complete!,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:197
+Rebirth complete!  {previous:int} → {current:int},Rebirth complete!  {previous:int} → {current:int},../Scripts/StarterPlayerScripts/Client/UI/CRebirthIntegrationCompClass.luau:89
+Rebirth resets your Strength!,Rebirth resets your Strength!,"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:196
+../Scripts/StarterPlayerScripts/Client/UI/CRebirthIntegrationCompClass.luau:181"
+Rebirths,Rebirths,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:325
+Rebirths {count:int},Rebirths {count:int},../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:257
+Red Crystal Forge Hammer,Red Crystal Forge Hammer,GameConfig.ToolConfig.C19
+Red Crystal Forge Pickaxe,Red Crystal Forge Pickaxe,GameConfig.ToolConfig.C18
+Refresh · {time},Refresh · {time},../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:319
+Reinforced Iron Hammer,Reinforced Iron Hammer,GameConfig.ToolConfig.C9
+Reinforced Iron Pickaxe,Reinforced Iron Pickaxe,GameConfig.ToolConfig.C8
+Requires {count:int} rebirths to train here.,Requires {count:int} rebirths to train here.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:200
+Requires {count:int} rebirths to travel here.,Requires {count:int} rebirths to travel here.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:258
+Retry,Retry,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:243
+Return to your base to store your loot. You can also use HOME.,Return to your base to store your loot. You can also use HOME.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:279
+Reward claimed!,Reward claimed!,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:246
+Reward ready! Claim now!,Reward ready! Claim now!,../Scripts/StarterPlayerScripts/Client/UI/CMenuRetentionUICompClass.luau:21
+Rifle 1,Rifle 1,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:157
+Rifle 2,Rifle 2,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:158
+Rifle 3,Rifle 3,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:159
+Rifle 4,Rifle 4,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:160
+Rifle 5,Rifle 5,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:161
+Rope,Rope,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:104
+Ruby,Ruby,GameConfig.AuraConfig.C19
+Sakura,Sakura,GameConfig.AuraConfig.C20
+Sand King Fang Pickaxe,Sand King Fang Pickaxe,GameConfig.ToolConfig.C27
+Sapphire,Sapphire,GameConfig.AuraConfig.C18
+Sell items for twice their normal value.,Sell items for twice their normal value.,ItemConfig.Display.C6
+Send a Diamond Red Packet,Send a Diamond Red Packet,GoodsConfig.GoodsData.C13
+Shadow Demon Hammer,Shadow Demon Hammer,GameConfig.ToolConfig.C43
+Shadow Demon Pickaxe,Shadow Demon Pickaxe,GameConfig.ToolConfig.C42
+Shovel 1,Shovel 1,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:119
+Shovel 2,Shovel 2,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:120
+Silver,Silver,GameConfig.AuraConfig.C12
+Skip Rebirth,Skip Rebirth,"GoodsConfig.GoodsData.C14
+GoodsConfig.GoodsData.C15
+GoodsConfig.GoodsData.C16
+GoodsConfig.GoodsData.C17"
+Small Diamond Pack,Small Diamond Pack,GoodsConfig.GoodsData.C7
+Small Weekly Diamond Pass,Small Weekly Diamond Pass,ItemConfig.Display.B4
+Small Weekly Diamond Pass x1,Small Weekly Diamond Pass x1,GoodsConfig.GoodsData.C11
+Solar,Solar,GameConfig.AuraConfig.C25
+Sold Out,Sold Out,"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:309
+../Scripts/StarterPlayerScripts/Client/UI/CMainUICompClass.luau:351"
+Something went wrong. Please try again.,Something went wrong. Please try again.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:172
+Starter Diamond Pack (50% Off),Starter Diamond Pack (50% Off),GoodsConfig.GoodsData.C6
+Starter offer. One purchase per player.,Starter offer. One purchase per player.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:306
+Stay online for {minutes:int} more minute(s) to claim this reward.,Stay online for {minutes:int} more minute(s) to claim this reward.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:275
+Step onto the first training platform to train automatically. Rebirth to unlock better platforms!,Step onto the first training platform to train automatically. Rebirth to unlock better platforms!,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:283
+Storage limit reached: {capacity:int} items.,Storage limit reached: {capacity:int} items.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:176
+Store items at your base to unlock them.,Store items at your base to unlock them.,../Scripts/StarterPlayerScripts/Client/UI/CCollectionUICompClass.luau:76
+Storm,Storm,GameConfig.AuraConfig.C24
+Strength,Strength,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:316
+Strength Card (15 Minutes),Strength Card (15 Minutes),ItemConfig.Display.B8
+Strength Card (30 Minutes),Strength Card (30 Minutes),ItemConfig.Display.B9
+Strength Leaderboard,Strength Leaderboard,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:313
+Strength: {value},Strength: {value},"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:191
+../Scripts/StarterPlayerScripts/Client/UI/CMainUICompClass.luau:808"
+Sunglasses 1,Sunglasses 1,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:74
+Sunglasses 2,Sunglasses 2,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:75
+Sunset,Sunset,GameConfig.AuraConfig.C21
+Syringe,Syringe,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:52
+Syringe A,Syringe A,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:53
+Teleporting,Teleporting,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:259
+Telescope 1,Telescope 1,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:111
+Telescope 2,Telescope 2,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:112
+Test Data,Test Data,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:318
+This offer has changed. Please select the next upgrade.,This offer has changed. Please select the next upgrade.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:298
+This reward is not available yet.,This reward is not available yet.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:233
+Thunder Hammer,Thunder Hammer,GameConfig.ToolConfig.C35
+Thunder Pickaxe,Thunder Pickaxe,GameConfig.ToolConfig.C34
+Today's rewards claimed · Come back tomorrow,Today's rewards claimed · Come back tomorrow,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:253
+Total Training Bonus,Total Training Bonus,../Scripts/StarterPlayerScripts/Client/UI/CCollectionUICompClass.luau:77
+Total login days: {day:int},Total login days: {day:int},../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:231
+Toxic,Toxic,GameConfig.AuraConfig.C6
+Training Pack,Training Pack,"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:266
+../Scripts/StarterPlayerScripts/Client/UI/CMainUICompClass.luau:396"
+Training XP is full. Rebirth before buying a training pack.,Training XP is full. Rebirth before buying a training pack.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:268
+Training active · ×{rate},Training active · ×{rate},"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:198
+../Scripts/StarterPlayerScripts/Client/UI/CMainUICompClass.luau:451"
+Training x{rate},Training x{rate},"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:302
+../Scripts/StarterPlayerScripts/Client/UI/CCurrencyShopUICompClass.luau:96"
+Training ×{rate},Training ×{rate},"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:16
+../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:199
+../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:210
+../Scripts/StarterPlayerScripts/Client/UI/CAuraShopUICompClass.luau:136
+../Scripts/StarterPlayerScripts/Client/UI/CTrainingHUDCompClass.luau:50
+../Scripts/StarterPlayerScripts/Client/UI/CWeaponShopUICompClass.luau:126"
+Training: {value},Training: {value},../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:214
+Trap,Trap,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:146
+Unavailable,Unavailable,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:310
+Uncommon,Uncommon,GameConfig.AuraConfig.C5
+Unequip,Unequip,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:17
+Unlock VIP,Unlock VIP,GoodsConfig.GoodsData.C5
+"Use for {instant} diamonds now, then {daily} daily for {days:int} claims.","Use for {instant} diamonds now, then {daily} daily for {days:int} claims.","../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:308
+../Scripts/StarterPlayerScripts/Client/UI/CCurrencyShopUICompClass.luau:125"
+Use this pass from your backpack to activate it.,Use this pass from your backpack to activate it.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:238
+Use your 30 welcome diamonds to buy the training multiplier on the right!,Use your 30 welcome diamonds to buy the training multiplier on the right!,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:281
+Used {item},Used {item},../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:323
+Visit the merchant and sell your stored loot for coins!,Visit the merchant and sell your stored loot for coins!,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:280
+Void,Void,GameConfig.AuraConfig.C10
+WEAPONS,WEAPONS,"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:209
+../Scripts/StarterPlayerScripts/Client/UI/CWeaponShopUICompClass.luau:109"
+WORLDS,WORLDS,"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:260
+../Scripts/StarterPlayerScripts/Client/UI/CWorldTeleportUICompClass.luau:169"
+Walkie-Talkie,Walkie-Talkie,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:106
+Walkie-Talkie A,Walkie-Talkie A,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:107
+Watch 1,Watch 1,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:68
+Water 1,Water 1,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:33
+Water 2,Water 2,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:34
+Water 3,Water 3,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:35
+Waterbottle 1,Waterbottle 1,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:36
+Waterbottle 2,Waterbottle 2,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:37
+Weekly Reward,Weekly Reward,"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:254
+../Scripts/StarterPlayerScripts/Client/UI/CWelfareUICompClass.luau:59"
+Wire,Wire,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:105
+World 1,World 1,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:7
+World 2,World 2,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:8
+World 3,World 3,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:9
+Worlds,Worlds,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:289
+Worn Wooden Pickaxe,Worn Wooden Pickaxe,GameConfig.ToolConfig.C4
+Wrench 1,Wrench 1,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:116
+Wrench 2,Wrench 2,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:117
+Wrench 3,Wrench 3,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:118
+You,You,"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:317
+../Scripts/StarterPlayerScripts/Client/UI/CLeaderboardUICompClass.luau:344"
+You already own this aura.,You already own this aura.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:10
+You already own this weapon.,You already own this weapon.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:201
+You can afford your first aura! Visit the blue shop to boost your training.,You can afford your first aura! Visit the blue shop to boost your training.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:287
+You can earn up to {amount} Strength while offline!,You can earn up to {amount} Strength while offline!,"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:332
+../Scripts/StarterPlayerScripts/Client/UI/CMenuRetentionUICompClass.luau:16"
+You do not own this aura.,You do not own this aura.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:14
+You do not own this weapon.,You do not own this weapon.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:207
+You earned 100 coins! Visit the weapon shop and equip a better pickaxe.,You earned 100 coins! Visit the weapon shop and equip a better pickaxe.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:282
+You earned {value} Coins!,You earned {value} Coins!,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:186
+You have already claimed this reward.,You have already claimed this reward.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:211
+You have claimed all of today's online rewards!,You have claimed all of today's online rewards!,"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:330
+../Scripts/StarterPlayerScripts/Client/UI/CMenuRetentionUICompClass.luau:19"
+You have no items to sell.,You have no items to sell.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:185
+You have reached the maximum training multiplier.,You have reached the maximum training multiplier.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:272
+You have reached the rebirth limit.,You have reached the rebirth limit.,"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:193
+../Scripts/StarterPlayerScripts/Client/UI/CRebirthIntegrationCompClass.luau:185"
+You need a Double Sell Value Card to sell for double value.,You need a Double Sell Value Card to sell for double value.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:312
+Your backpack is full. Return to your base to store your loot.,Your backpack is full. Return to your base to store your loot.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:173
+Your items have changed. Please try again.,Your items have changed. Please try again.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:182
+Your next online reward is available in {time}!,Your next online reward is available in {time}!,../Scripts/StarterPlayerScripts/Client/UI/CMenuRetentionUICompClass.luau:17
+Your online reward is ready to claim!,Your online reward is ready to claim!,"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:333
+../Scripts/StarterPlayerScripts/Client/UI/CMenuRetentionUICompClass.luau:18"
+Your storage is full.,Your storage is full.,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:175
+x{rate} Luck,x{rate} Luck,"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:334
+../Scripts/StarterPlayerScripts/Client/Player/CRockLevelCompClass.luau:209"
+x{rate} Strength,x{rate} Strength,"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:265
+../Scripts/StarterPlayerScripts/Client/UI/CMainUICompClass.luau:347
+../Scripts/StarterPlayerScripts/Client/UI/CMainUICompClass.luau:352"
+{count:int}/{capacity:int},{count:int}/{capacity:int},"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:184
+../Scripts/StarterPlayerScripts/Client/UI/CLootSellUICompClass.luau:154"
+{count:int}/{total:int} collected,{count:int}/{total:int} collected,"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:166
+../Scripts/StarterPlayerScripts/Client/UI/CCollectionUICompClass.luau:82"
+{days:int} claims left · {status},{days:int} claims left · {status},../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:239
+{item} · Lucky ×{rate} · {price} Coins,{item} · Lucky ×{rate} · {price} Coins,"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:179
+../Scripts/StarterPlayerScripts/Client/UI/CCommonUICompClass.luau:231"
+{item} · {price} Coins,{item} · {price} Coins,"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:181
+../Scripts/StarterPlayerScripts/Client/UI/CCommonUICompClass.luau:233"
+{item} ×{value},{item} ×{value},"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:228
+../Scripts/StarterPlayerScripts/Client/UI/CMenuRetentionUICompClass.luau:227
+../Scripts/StarterPlayerScripts/Client/UI/CWelfareUICompClass.luau:174"
+{minutes:int} min,{minutes:int} min,../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:232
+{value} Coins,{value} Coins,"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:183
+../Scripts/StarterPlayerScripts/Client/UI/CLootSellUICompClass.luau:146
+../Scripts/StarterPlayerScripts/Client/UI/CLootSellUICompClass.luau:151"
+{value} Diamonds,{value} Diamonds,"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:225
+../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:288
+../Scripts/StarterPlayerScripts/Client/UI/CCurrencyShopUICompClass.luau:116
+../Scripts/StarterPlayerScripts/Client/UI/CMenuRetentionUICompClass.luau:226
+../Scripts/StarterPlayerScripts/Client/UI/CWelfareUICompClass.luau:253
+../Scripts/StarterPlayerScripts/Client/UI/CWelfareUICompClass.luau:271"
+{value} · Buy,{value} · Buy,"../Scripts/ReplicatedStorage/Scripts/Game/Shared/LegacyTextSources.luau:262
+../Scripts/StarterPlayerScripts/Client/UI/CShopPurchaseUICompClass.luau:76"

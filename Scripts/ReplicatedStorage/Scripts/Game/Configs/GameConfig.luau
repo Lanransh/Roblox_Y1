@@ -45,8 +45,8 @@ return {
         },
         GiftData = {
             Gem = 5,
-            Count = 5,
-            Time = 10
+            Count = 1,
+            Time = 600
         },
         ToyPriceRateRange = {
             [1] = 0.5,
@@ -58,7 +58,7 @@ return {
         ToyLuckyCount = 4,
         AnalyticsEnabled = true,
         AnalyticsExcludedUserIds = {
-            [1] = 2.563885143e+9,
+            [1] = 0,
         }
     },
     TrainingFieldData = {
@@ -102,7 +102,7 @@ return {
         [1] = {
             Index = 1,
             ToolId = 101,
-            Name = [[WornWoodenPickaxe]],
+            Name = [[Worn Wooden Pickaxe]],
             Price = 0,
             TrainingRate = 1,
             DevGoodId = nil,
@@ -112,7 +112,7 @@ return {
         [2] = {
             Index = 2,
             ToolId = 102,
-            Name = [[HeavyWoodenHammer]],
+            Name = [[Heavy Wooden Hammer]],
             Price = 25,
             TrainingRate = 39,
             DevGoodId = nil,
@@ -122,7 +122,7 @@ return {
         [3] = {
             Index = 3,
             ToolId = 103,
-            Name = [[CrudeSilverPickaxe]],
+            Name = [[Crude Silver Pickaxe]],
             Price = 450,
             TrainingRate = 450,
             DevGoodId = nil,
@@ -132,7 +132,7 @@ return {
         [4] = {
             Index = 4,
             ToolId = 104,
-            Name = [[CrudeSilverHammer]],
+            Name = [[Crude Silver Hammer]],
             Price = 4375,
             TrainingRate = 3282,
             DevGoodId = nil,
@@ -142,7 +142,7 @@ return {
         [5] = {
             Index = 5,
             ToolId = 105,
-            Name = [[ReinforcedIronPickaxe]],
+            Name = [[Reinforced Iron Pickaxe]],
             Price = 35000,
             TrainingRate = 19000,
             DevGoodId = nil,
@@ -152,7 +152,7 @@ return {
         [6] = {
             Index = 6,
             ToolId = 106,
-            Name = [[ReinforcedIronHammer]],
+            Name = [[Reinforced Iron Hammer]],
             Price = 253000,
             TrainingRate = 95500,
             DevGoodId = nil,
@@ -162,7 +162,7 @@ return {
         [7] = {
             Index = 7,
             ToolId = 107,
-            Name = [[FineSteelMiningPickaxe]],
+            Name = [[Fine Steel Mining Pickaxe]],
             Price = 1.89e+6,
             TrainingRate = 442000,
             DevGoodId = nil,
@@ -172,7 +172,7 @@ return {
         [8] = {
             Index = 8,
             ToolId = 108,
-            Name = [[FineSteelMaul]],
+            Name = [[Fine Steel Maul]],
             Price = 1.22e+7,
             TrainingRate = 1.93e+6,
             DevGoodId = nil,
@@ -182,7 +182,7 @@ return {
         [9] = {
             Index = 9,
             ToolId = 109,
-            Name = [[BrassMechanicalPickaxe]],
+            Name = [[Brass Mechanical Pickaxe]],
             Price = 7.62e+7,
             TrainingRate = 8.1e+6,
             DevGoodId = nil,
@@ -192,7 +192,7 @@ return {
         [10] = {
             Index = 10,
             ToolId = 110,
-            Name = [[BrassMechanicalHammer]],
+            Name = [[Brass Mechanical Hammer]],
             Price = 4.65e+8,
             TrainingRate = 3.31e+7,
             DevGoodId = nil,
@@ -202,7 +202,7 @@ return {
         [11] = {
             Index = 11,
             ToolId = 111,
-            Name = [[ObsidianBattlePickaxe]],
+            Name = [[Obsidian Battle Pickaxe]],
             Price = 2.78e+9,
             TrainingRate = 1.33e+8,
             DevGoodId = nil,
@@ -212,7 +212,7 @@ return {
         [12] = {
             Index = 12,
             ToolId = 112,
-            Name = [[ObsidianGreatHammer]],
+            Name = [[Obsidian Great Hammer]],
             Price = 1.64e+10,
             TrainingRate = 5.25e+8,
             DevGoodId = nil,
@@ -222,7 +222,7 @@ return {
         [13] = {
             Index = 13,
             ToolId = 113,
-            Name = [[EmeraldGuardianPickaxe]],
+            Name = [[Emerald Guardian Pickaxe]],
             Price = 9.55e+10,
             TrainingRate = 2.05e+9,
             DevGoodId = nil,
@@ -232,7 +232,7 @@ return {
         [14] = {
             Index = 14,
             ToolId = 114,
-            Name = [[EmeraldGuardianHammer]],
+            Name = [[Emerald Guardian Hammer]],
             Price = 5.49e+11,
             TrainingRate = 7.99e+9,
             DevGoodId = nil,
@@ -242,7 +242,7 @@ return {
         [15] = {
             Index = 15,
             ToolId = 115,
-            Name = [[RedCrystalForgePickaxe]],
+            Name = [[Red Crystal Forge Pickaxe]],
             Price = 3.13e+12,
             TrainingRate = 3.1e+10,
             DevGoodId = nil,
@@ -252,7 +252,7 @@ return {
         [16] = {
             Index = 16,
             ToolId = 116,
-            Name = [[RedCrystalForgeHammer]],
+            Name = [[Red Crystal Forge Hammer]],
             Price = 1.77e+13,
             TrainingRate = 1.2e+11,
             DevGoodId = nil,
@@ -262,7 +262,7 @@ return {
         [17] = {
             Index = 17,
             ToolId = 117,
-            Name = [[IceBlueStarCrystalPickaxe]],
+            Name = [[Ice-Blue Star Crystal Pickaxe]],
             Price = 9.93e+13,
             TrainingRate = 4.62e+11,
             DevGoodId = nil,
@@ -272,7 +272,7 @@ return {
         [18] = {
             Index = 18,
             ToolId = 118,
-            Name = [[IceBlueStarCrystalHammer]],
+            Name = [[Ice-Blue Star Crystal Hammer]],
             Price = 5.54e+14,
             TrainingRate = 1.78e+12,
             DevGoodId = nil,
@@ -282,7 +282,7 @@ return {
         [19] = {
             Index = 19,
             ToolId = 119,
-            Name = [[GildedCrownPickaxe]],
+            Name = [[Gilded Crown Pickaxe]],
             Price = 3.07e+15,
             TrainingRate = 6.9e+12,
             DevGoodId = nil,
@@ -292,7 +292,7 @@ return {
         [20] = {
             Index = 20,
             ToolId = 120,
-            Name = [[GildedCrownGreatHammer]],
+            Name = [[Gilded Crown Great Hammer]],
             Price = 1.69e+16,
             TrainingRate = 2.67e+13,
             DevGoodId = nil,
@@ -302,7 +302,7 @@ return {
         [21] = {
             Index = 21,
             ToolId = 121,
-            Name = [[DeepSeaAnchorHammer]],
+            Name = [[Deep Sea Anchor Hammer]],
             Price = 8.45e+16,
             TrainingRate = 8.01e+13,
             DevGoodId = nil,
@@ -312,7 +312,7 @@ return {
         [22] = {
             Index = 22,
             ToolId = 122,
-            Name = [[DeepSeaHookPickaxe]],
+            Name = [[Deep Sea Hook Pickaxe]],
             Price = 4.23e+17,
             TrainingRate = 2.4e+14,
             DevGoodId = nil,
@@ -322,7 +322,7 @@ return {
         [23] = {
             Index = 23,
             ToolId = 123,
-            Name = [[DesertColossusBoneHammer]],
+            Name = [[Desert Colossus Bone Hammer]],
             Price = 2.12e+18,
             TrainingRate = 7.2e+14,
             DevGoodId = nil,
@@ -332,7 +332,7 @@ return {
         [24] = {
             Index = 24,
             ToolId = 124,
-            Name = [[SandKingFangPickaxe]],
+            Name = [[Sand King Fang Pickaxe]],
             Price = 1.06e+19,
             TrainingRate = 2.16e+15,
             DevGoodId = nil,
@@ -342,7 +342,7 @@ return {
         [25] = {
             Index = 25,
             ToolId = 125,
-            Name = [[AmethystStarRingHammer]],
+            Name = [[Amethyst Star Ring Hammer]],
             Price = 5.3e+19,
             TrainingRate = 6.48e+15,
             DevGoodId = nil,
@@ -352,7 +352,7 @@ return {
         [26] = {
             Index = 26,
             ToolId = 126,
-            Name = [[AmethystStarRingPickaxe]],
+            Name = [[Amethyst Star Ring Pickaxe]],
             Price = 2.65e+20,
             TrainingRate = 1.94e+16,
             DevGoodId = nil,
@@ -362,7 +362,7 @@ return {
         [27] = {
             Index = 27,
             ToolId = 127,
-            Name = [[HolyCrownPickaxe]],
+            Name = [[Holy Crown Pickaxe]],
             Price = 1,
             TrainingRate = 1,
             DevGoodId = nil,
@@ -372,7 +372,7 @@ return {
         [28] = {
             Index = 28,
             ToolId = 128,
-            Name = [[HolyCrownHammer]],
+            Name = [[Holy Crown Hammer]],
             Price = 2,
             TrainingRate = 2,
             DevGoodId = nil,
@@ -382,7 +382,7 @@ return {
         [29] = {
             Index = 29,
             ToolId = 129,
-            Name = [[DragonFlamePickaxe]],
+            Name = [[Dragon Flame Pickaxe]],
             Price = 3,
             TrainingRate = 3,
             DevGoodId = nil,
@@ -392,7 +392,7 @@ return {
         [30] = {
             Index = 30,
             ToolId = 130,
-            Name = [[DragonFlameHammer]],
+            Name = [[Dragon Flame Hammer]],
             Price = 4,
             TrainingRate = 4,
             DevGoodId = nil,
@@ -402,7 +402,7 @@ return {
         [31] = {
             Index = 31,
             ToolId = 131,
-            Name = [[ThunderPickaxe]],
+            Name = [[Thunder Pickaxe]],
             Price = 5,
             TrainingRate = 5,
             DevGoodId = nil,
@@ -412,7 +412,7 @@ return {
         [32] = {
             Index = 32,
             ToolId = 132,
-            Name = [[ThunderHammer]],
+            Name = [[Thunder Hammer]],
             Price = 6,
             TrainingRate = 6,
             DevGoodId = nil,
@@ -422,7 +422,7 @@ return {
         [33] = {
             Index = 33,
             ToolId = 133,
-            Name = [[EasternCloudsPickaxe]],
+            Name = [[Eastern Clouds Pickaxe]],
             Price = 7,
             TrainingRate = 7,
             DevGoodId = nil,
@@ -432,7 +432,7 @@ return {
         [34] = {
             Index = 34,
             ToolId = 134,
-            Name = [[EasternCloudsHammer]],
+            Name = [[Eastern Clouds Hammer]],
             Price = 8,
             TrainingRate = 8,
             DevGoodId = nil,
@@ -442,7 +442,7 @@ return {
         [35] = {
             Index = 35,
             ToolId = 135,
-            Name = [[ForestGuardianPickaxe]],
+            Name = [[Forest Guardian Pickaxe]],
             Price = 9,
             TrainingRate = 9,
             DevGoodId = nil,
@@ -452,7 +452,7 @@ return {
         [36] = {
             Index = 36,
             ToolId = 136,
-            Name = [[ForestGuardianHammer]],
+            Name = [[Forest Guardian Hammer]],
             Price = 10,
             TrainingRate = 10,
             DevGoodId = nil,
@@ -462,7 +462,7 @@ return {
         [37] = {
             Index = 37,
             ToolId = 137,
-            Name = [[IceCrystalPickaxe]],
+            Name = [[Ice Crystal Pickaxe]],
             Price = 11,
             TrainingRate = 11,
             DevGoodId = nil,
@@ -472,7 +472,7 @@ return {
         [38] = {
             Index = 38,
             ToolId = 138,
-            Name = [[IceCrystalHammer]],
+            Name = [[Ice Crystal Hammer]],
             Price = 12,
             TrainingRate = 12,
             DevGoodId = nil,
@@ -482,7 +482,7 @@ return {
         [39] = {
             Index = 39,
             ToolId = 139,
-            Name = [[ShadowDemonPickaxe]],
+            Name = [[Shadow Demon Pickaxe]],
             Price = 13,
             TrainingRate = 13,
             DevGoodId = nil,
@@ -492,7 +492,7 @@ return {
         [40] = {
             Index = 40,
             ToolId = 140,
-            Name = [[ShadowDemonHammer]],
+            Name = [[Shadow Demon Hammer]],
             Price = 14,
             TrainingRate = 14,
             DevGoodId = nil,

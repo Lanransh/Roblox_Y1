@@ -1,6 +1,7 @@
 local FX = _G.FX
 local FC = _G.FC
 local FXLoader = FX.Loader
+local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 FXLoader:RequireFromParent(script, "Generated/CRebirthUICompClass")
 local Fields = _G.PlayerDataConfig
 local MarketplaceService = game:GetService("MarketplaceService")
@@ -85,9 +86,9 @@ function Component:RefreshRebirthNotice()
     if self._rebirthNoticePrevious == nil then
         return
     end
-    local successText = self._localization:FormatByKey("Rebirth.Success")
-    self._rebirthNoticeText.Text = string.format("%s  %d → %d", successText,
-        self._rebirthNoticePrevious, self._rebirthNoticeCurrent)
+    self._rebirthNoticeText.Text = Text.Tr("Rebirth complete!  {previous:int} → {current:int}", {
+        previous = self._rebirthNoticePrevious, current = self._rebirthNoticeCurrent,
+    })
 end
 
 --- 显示服务端确认成功后的重生次数变化，并在短暂展示后淡出。
@@ -174,14 +175,14 @@ function Component:Render(state)
     local productId = goods and goods.RobloxProductId
     self:SetButtonEnabled(self.SkipBtn, state.Open and not state.Pending
         and type(productId) == "number" and productId > 0 and productId % 1 == 0)
-    self.ProgressTxt.Text = self._localization:FormatByKey("Rebirth.Progress", {
+    self.ProgressTxt.Text = Text.Tr("Level {level:int}/{required:int}", {
         level = state.Level, required = state.RequiredLevel,
     })
-    self.WarningTxt.Text = self._localization:FormatByKey("Rebirth.ResetWarning")
+    self.WarningTxt.Text = Text.Tr("Rebirth resets your Strength!")
     if self:GetNumber(Fields.RebirthCount) >= Rebirth.MaxCount then
         self.RebirthBtn.BackgroundColor3 = Color3.fromHex("#B7B7B7")
         self.RebirthGradient.Enabled = true
-        self.WarningTxt.Text = self._localization:FormatByKey("Rebirth.MaxCount")
+        self.WarningTxt.Text = Text.Tr("You have reached the rebirth limit.")
     end
 end
 

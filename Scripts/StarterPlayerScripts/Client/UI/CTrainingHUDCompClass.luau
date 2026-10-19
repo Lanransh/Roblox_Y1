@@ -1,5 +1,6 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
+local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local Component = FX.Class("CTrainingHUDCompClass", "FCPlayerCompClass")
 
@@ -46,7 +47,7 @@ end
 --- 数量沿用通用格式化，英文兜底由现有本地化入口提供。
 function Component:RefreshLocalization()
     for index, entry in ipairs(self._huds) do
-        entry.Node.Frame.Strength.Text = self._localization:FormatByKey("Training.HUDStrength", {
+        entry.Node.Frame.Strength.Text = Text.Tr("Training ×{rate}", {
             rate = GameUtility.NumberToText(entry.Config.TrainingRate),
         })
     end

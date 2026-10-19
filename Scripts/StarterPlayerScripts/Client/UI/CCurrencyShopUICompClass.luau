@@ -1,6 +1,7 @@
 -- 货币商店业务子类：配置驱动展示，钻石由服务端结算，Robux 交给平台收据。
 local FX = _G.FX
 local FXLoader = FX.Loader
+local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 FXLoader:RequireFromParent(script, "Generated/CCurrencyShopView")
 local Shop = FXLoader:RequireShared("Scripts/Game/Shared/CurrencyShop")
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
@@ -92,13 +93,13 @@ function Component:BuildProducts()
             local title, description
             if goods.BuyHandler == "TrainingRateLevel" then
                 local level = nextItem and self._data.trainingLevel + 1 or self._data.trainingLevel
-                title = self._localization:FormatByKey("CurrencyShop.Training", {
+                title = Text.Tr("Training x{rate}", {
                     rate = GameUtility.NumberToText(_G.GameConfig.TrainingRateConfig[level].Rate),
                 })
-                description = self._localization:FormatByKey("CurrencyShop.TrainingDesc")
+                description = Text.Tr("Permanent training multiplier.")
             else
-                title = self._localization:FormatByKey("CurrencyShop.Capacity", {count = goods.NumberArray[1]})
-                description = self._localization:FormatByKey("CurrencyShop.CapacityDesc", {
+                title = Text.Tr("+{count:int} Carry Slot", {count = goods.NumberArray[1]})
+                description = Text.Tr("Permanently carry {count:int} collectibles.", {
                     count = RockLevel.LootCapacity + self._data.capacity + (nextItem and goods.NumberArray[1] or 0),
                 })
             end
@@ -112,16 +113,16 @@ function Component:BuildProducts()
         local goods = _G.GoodsConfig.GoodsData[item.DevGoodsId]
         local title, description
         if goods.BuyHandler == "AddGem" then
-            title = self._localization:FormatByKey("CurrencyShop.Diamonds", {
+            title = Text.Tr("{value} Diamonds", {
                 value = GameUtility.NumberToText(goods.NumberArray[1]),
             })
-            description = self._localization:FormatByKey(goods.BuyLimit
+            description = Text.Tr(goods.BuyLimit
                 and "CurrencyShop.StarterDesc" or "CurrencyShop.DiamondsDesc")
         else
             local itemId = goods.KVTable.ItemId
             local pass = _G.ItemConfig.Data[itemId].KVTable
-            title = self._localization:FormatByKey("Welfare.Item." .. itemId)
-            description = self._localization:FormatByKey("CurrencyShop.PassDesc", {
+            title = Text.Tr(_G.ItemConfig.Display[itemId].Name)
+            description = Text.Tr("Use for {instant} diamonds now, then {daily} daily for {days:int} claims.", {
                 instant = GameUtility.NumberToText(pass.InstantGemCount),
                 daily = GameUtility.NumberToText(pass.DurationDays), days = pass.DayTime,
             })
@@ -165,8 +166,10 @@ end
 --- @param state table 完整界面状态。
 function Component:Render(state)
     self:BuildProducts()
-    state.message = self._messageKey and self._localization:FormatByKey(self._messageKey) or ""
+    state.message = self._messageKey and Text.Tr(self._messageKey) or ""
     Component.Super.Render(self, state)
+    self.ContentTitle.AutoLocalize = false
+    self.ContentTitle.Text = state.tab == "Diamond" and Text.Tr("DIAMOND SHOP") or Text.Tr("ROBUX SHOP")
     for index, product in ipairs(self.Config.products) do
         local card = self.Cards[product.id]
         if card then
@@ -175,7 +178,7 @@ function Component:Render(state)
             card.price.AutoLocalize = false
             local key = product.soldOut and "CurrencyShop.SoldOut"
                 or (product.unavailable and "CurrencyShop.Unavailable")
-            card.price.Text = key and self._localization:FormatByKey(key)
+            card.price.Text = key and Text.Tr(key)
                 or GameUtility.NumberToText(product.price)
             if product.currency == "Robux" then
                 card.price.TextSize = key and 20 or 24

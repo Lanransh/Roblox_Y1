@@ -1,5 +1,6 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
+local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local RunService = game:GetService("RunService")
 FXLoader:RequireFromParent(script, "Generated/CLootSellView")
 local Fields = _G.PlayerDataConfig
@@ -117,9 +118,9 @@ function Component:RefreshLoot(entries)
     for index, entry in ipairs(entries) do
         local config = GameConfig.ItemData[entry.itemId]
         local nameKey = CollectibleText.GetNameKey(config.DisplayModelId)
-        local name = self._localization:FormatByKey(nameKey)
+        local name = Text.Tr(nameKey)
         if entry.isLucky then
-            name = self._localization:FormatByKey("LootSell.LuckyName", {
+            name = Text.Tr("Lucky {item} (×{rate})", {
                 itemKey = nameKey, rate = GameUtility.NumberToText(entry.luckRate),
             })
         end
@@ -142,15 +143,15 @@ function Component:Render(state)
         row.name.AutoLocalize = false
         row.value.AutoLocalize = false
         row.icon.Image = item.icon
-        row.value.Text = self._localization:FormatByKey("LootSell.Coins", {
+        row.value.Text = Text.Tr("{value} Coins", {
             value = GameUtility.NumberToText(item.value),
         })
         total += item.value
     end
-    self.Total.Text = self._localization:FormatByKey("LootSell.Coins", {
+    self.Total.Text = Text.Tr("{value} Coins", {
         value = GameUtility.NumberToText(total),
     })
-    self.CapacityTxt.Text = self._localization:FormatByKey("LootSell.Count", {
+    self.CapacityTxt.Text = Text.Tr("{count:int}/{capacity:int}", {
         count = #state.items, capacity = self.Config.capacity,
     })
     -- 空包点击仍需反馈，仅请求处理中禁用按钮，覆盖展示类的空包禁用规则。

@@ -9,16 +9,17 @@ local Aura = FXLoader:RequireShared("Scripts/Game/Shared/Aura")
 local Weapon = FXLoader:RequireShared("Scripts/Game/Shared/Weapon")
 local CurrencyShop = FXLoader:RequireShared("Scripts/Game/Shared/CurrencyShop")
 local Welfare = FXLoader:RequireShared("Scripts/Game/Shared/Welfare")
+local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local Fields = _G.PlayerDataConfig
 local Component = FX.Class("CMenuRetentionUICompClass", "FCUICompClass")
 local Templates = {
-    ["MenuRetention.Offline"] = "You can earn up to {amount} Strength while offline!",
-    ["MenuRetention.OnlineCountdown"] = "Your next online reward is available in {time}!",
-    ["MenuRetention.Ready"] = "Your online reward is ready to claim!",
-    ["MenuRetention.Complete"] = "You have claimed all of today's online rewards!",
-    ["MenuRetention.Stay"] = "Don't leave yet! A gift is ready for you!",
-    ["MenuRetention.Available"] = "Reward ready! Claim now!",
-    ["MenuRetention.Resume"] = "Close the Roblox menu to claim your gift.",
+    ["MenuRetention.Offline"] = Text.Mark("You can earn up to {amount} Strength while offline!"),
+    ["MenuRetention.OnlineCountdown"] = Text.Mark("Your next online reward is available in {time}!"),
+    ["MenuRetention.Ready"] = Text.Mark("Your online reward is ready to claim!"),
+    ["MenuRetention.Complete"] = Text.Mark("You have claimed all of today's online rewards!"),
+    ["MenuRetention.Stay"] = Text.Mark("Don't leave yet! A gift is ready for you!"),
+    ["MenuRetention.Available"] = Text.Mark("Reward ready! Claim now!"),
+    ["MenuRetention.Resume"] = Text.Mark("Close the Roblox menu to claim your gift."),
 }
 
 --- 创建礼包文字；动态文案统一使用项目本地化入口。
@@ -44,7 +45,7 @@ local function CreateGiftText(parent, name, position, size)
     return text
 end
 
---- 创建礼包和两侧带底框的加粗渐变提示；大箭头指向礼包，菜单关闭后可领取。
+--- 创建礼包和两侧提示；光环奖励使用配置图标，其他奖励保留礼物图标，菜单关闭后可领取。
 function Component:CreateGiftPanel()
     local rewardButton = FXLoader:PlayerGui("MainUI/LeftCenter/RewardBtn")
     self._sideTexts = {}
@@ -120,7 +121,10 @@ function Component:CreateGiftPanel()
     image.Name = "Gift"
     image.BackgroundTransparency = 1
     image.Position, image.Size = UDim2.fromScale(0.25, 0.23), UDim2.fromScale(0.5, 0.38)
-    image.Image = FXLoader:Here(rewardButton, "IconImg").Image
+    local reward = self._retention.Reward
+    image.Image = reward.Type == "Aura"
+        and "rbxassetid://" .. Aura.GetConfig(reward.Id).Img
+        or FXLoader:Here(rewardButton, "IconImg").Image
     image.ScaleType = Enum.ScaleType.Fit
     image.Parent = panel
     self._giftReward = CreateGiftText(panel, "Reward", UDim2.fromScale(0.05, 0.61), UDim2.fromScale(0.9, 0.12))
@@ -215,15 +219,18 @@ function Component:RefreshGift()
     self._giftHint.Text = self:FormatText("MenuRetention.Resume")
     self._giftHint.Visible = GuiService.MenuIsOpen
     local reward = Welfare.ToDisplayReward(self._retention.Reward)
+    local rewardName = reward.type == "Aura"
+        and Text.Tr(Aura.GetConfig(self._retention.Reward.Id).Name)
+        or Text.Tr(_G.ItemConfig.Display[reward.id].Name)
     self._giftReward.Text = reward.type == "Gem"
-        and self._localization:FormatByKey("Welfare.Diamonds", {value = GameUtility.NumberToText(reward.amount)})
-        or self._localization:FormatByKey("Welfare.ItemReward", {
-            item = self._localization:FormatByKey("Welfare.Item." .. reward.id),
+        and Text.Tr("{value} Diamonds", {value = GameUtility.NumberToText(reward.amount)})
+        or Text.Tr("{item} ×{value}", {
+            item = rewardName,
             value = GameUtility.NumberToText(reward.amount),
         })
     local pending = self._requestTask ~= nil
     self._giftClaim.Interactable = available and not pending and not GuiService.MenuIsOpen
-    self._giftClaimText.Text = self._localization:FormatByKey(pending and "Welfare.Pending" or "Welfare.Claim")
+    self._giftClaimText.Text = Text.Tr(pending and "Welfare.Pending" or "Welfare.Claim")
 end
 
 --- 返回菜单提示组件的协作名称。
@@ -291,10 +298,6 @@ function Component:OnReady()
     self._commonUI = self:GetPlayerObject():RequireComponent("FCCommonUIComp")
     self._localization = self._commonUI.Localization
     self._retention = _G.ActivityConfig.MenuRetentionConfig
-    self._sourceKeys = {}
-    for index, entry in ipairs(FXLoader:Shared("Shared/Localization"):GetEntries()) do
-        self._sourceKeys[entry.Key] = true
-    end
     self._rootNode = Instance.new("ScreenGui")
     self._rootNode.Name = "MenuRetentionUI"
     self._rootNode.ResetOnSpawn = false
@@ -334,11 +337,7 @@ end
 --- @param arguments table? 原生模板参数。
 --- @return string 当前语言文案或英文兜底。
 function Component:FormatText(key, arguments)
-    if self._sourceKeys[key] then
-        return self._localization:FormatByKey(key, arguments)
-    end
-    local text = string.gsub(Templates[key], "{(%w+)}", arguments or {})
-    return text
+    return Text.Tr(Templates[key] or key, arguments)
 end
 
 --- 使用与服务端离线奖励一致的永久倍率和阶段上限，展示普通领取的最大收益。

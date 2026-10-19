@@ -3,7 +3,7 @@ return {
         [1] = {
             DevGoodsId = 1,
             BuyHandler = [[UnlockVip]],
-            Name = [[解锁VIP]],
+            Name = [[Unlock VIP]],
             Desc = [[解锁VIP]],
             Price = 68,
             RobloxProductId = 3.718980394e+9,
@@ -14,7 +14,7 @@ return {
         [100] = {
             DevGoodsId = 100,
             BuyHandler = [[AddGem]],
-            Name = [[新手优惠5折钻石包]],
+            Name = [[Starter Diamond Pack (50% Off)]],
             Desc = [[获得48颗钻石(超值!)]],
             Price = 3,
             RobloxProductId = nil,
@@ -27,7 +27,7 @@ return {
         [101] = {
             DevGoodsId = 101,
             BuyHandler = [[AddGem]],
-            Name = [[小额钻石包]],
+            Name = [[Small Diamond Pack]],
             Desc = [[获得152颗钻石]],
             Price = 19,
             RobloxProductId = nil,
@@ -40,7 +40,7 @@ return {
         [102] = {
             DevGoodsId = 102,
             BuyHandler = [[AddGem]],
-            Name = [[中额钻石包]],
+            Name = [[Medium Diamond Pack]],
             Desc = [[获得618颗钻石]],
             Price = 69,
             RobloxProductId = nil,
@@ -53,7 +53,7 @@ return {
         [103] = {
             DevGoodsId = 103,
             BuyHandler = [[AddGem]],
-            Name = [[获得1698颗钻石]],
+            Name = [[Large Diamond Pack]],
             Desc = [[获得1698颗钻石]],
             Price = 169,
             RobloxProductId = nil,
@@ -66,7 +66,7 @@ return {
         [111] = {
             DevGoodsId = 111,
             BuyHandler = [[AddItem]],
-            Name = [[小周卡X1]],
+            Name = [[Small Weekly Diamond Pass x1]],
             Desc = [[立即获得108钻石,每天签到多获得12钻石(6天)]],
             Price = 18,
             RobloxProductId = nil,
@@ -80,7 +80,7 @@ return {
         [112] = {
             DevGoodsId = 112,
             BuyHandler = [[AddItem]],
-            Name = [[大周卡X1]],
+            Name = [[Large Weekly Diamond Pass x1]],
             Desc = [[立即获得400钻石,每天签到多获得63钻石(6天)]],
             Price = 68,
             RobloxProductId = nil,
@@ -94,7 +94,7 @@ return {
         [201] = {
             DevGoodsId = 201,
             BuyHandler = [[SendRedPacket]],
-            Name = [[发送一次钻石红包]],
+            Name = [[Send a Diamond Red Packet]],
             Desc = [[发送一次钻石红包]],
             Price = 6,
             RobloxProductId = nil,

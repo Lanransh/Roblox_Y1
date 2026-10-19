@@ -1,6 +1,7 @@
 -- 公共小狗 NPC：定时换批、原地旋转和黄金描边，所有玩家可竞争拾取。
 local FX = _G.FX
 local FXLoader = FX.Loader
+local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local Config = FXLoader:RequireShared("Scripts/Game/Shared/GameEnum").DogNpcConfig
 local Service = FX.Class("SDogNpcServiceClass")
 
@@ -110,7 +111,7 @@ function Service:RefreshWorld(world, serverTime)
         })
         particles.Parent = root
         local prompt = Instance.new("ProximityPrompt")
-        prompt.ActionText = "Pick Up"
+        prompt.ActionText = Text.Mark("Pick Up")
         prompt.ObjectText = ""
         prompt.AutoLocalize = true
         prompt.RootLocalizationTable = self._localization

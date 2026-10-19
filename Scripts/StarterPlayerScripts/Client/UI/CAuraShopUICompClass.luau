@@ -1,5 +1,6 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
+local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local RunService = game:GetService("RunService")
 FXLoader:RequireFromParent(script, "Generated/CAuraShopView")
 local Fields = _G.PlayerDataConfig
@@ -110,13 +111,21 @@ end
 --- 保留父类列表与配色，只接入倍率文案、数值格式化和当前装备的卸下操作。
 --- @param state table 权威数据派生的完整 UI 状态。
 function Component:Render(state)
+    self.Config.title = Text.Tr("AURAS")
+    for index, aura in ipairs(self.Config.auras) do
+        aura.name = Text.Tr(_G.GameConfig.AuraConfig[index].Name)
+    end
     for qualityId, quality in pairs(self.Config.qualities) do
-        quality.name = self._localization:FormatByKey("Rarity.Quality", {level = tonumber(qualityId)})
+        quality.name = Text.Tr("Quality {level:int}", {level = tonumber(qualityId)})
     end
     Component.Super.Render(self, state)
+    self.TitleTxt.AutoLocalize = false
+    self.EmptyTxt.AutoLocalize = false
+    self.EmptyTxt.Text = state.loading and Text.Tr("Loading...") or Text.Tr("No auras available")
     for index, aura in ipairs(self.Config.auras) do
         local entry = self.Rows[aura.id]
         local row = entry.row
+        FXLoader:Here(row, "NameTxt").AutoLocalize = false
         local rate = FXLoader:Here(row, "StrengthTxt")
         local quality = FXLoader:Here(row, "RarityTxt")
         local caption = FXLoader:Here(row, "ActionBtn/ButtonTxt")
@@ -124,7 +133,7 @@ function Component:Render(state)
         rate.TextScaled = true
         quality.AutoLocalize = false
         caption.AutoLocalize = false
-        rate.Text = self._localization:FormatByKey("Aura.TrainingRate", {
+        rate.Text = Text.Tr("Training ×{rate}", {
             rate = GameUtility.NumberToText(aura.strength),
         })
         local owned = state.owned[aura.id] == true
@@ -137,7 +146,7 @@ function Component:Render(state)
         elseif state.coins < aura.price then
             key = "Aura.NeedCoins"
         end
-        caption.Text = self._localization:FormatByKey(key, {value = GameUtility.NumberToText(aura.price)})
+        caption.Text = Text.Tr(key, {value = GameUtility.NumberToText(aura.price)})
         -- 请求期间保持原有显示；余额不足由服务端提示，已装备允许卸下。
         self:SetButtonEnabled(entry.button, true)
     end

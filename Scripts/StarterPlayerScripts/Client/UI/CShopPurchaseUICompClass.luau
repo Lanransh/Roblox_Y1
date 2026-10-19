@@ -1,6 +1,7 @@
 -- 钻石单件购买业务：复用生成页面，余额与升级资格始终由服务端结算。
 local FX = _G.FX
 local FXLoader = FX.Loader
+local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 FXLoader:RequireFromParent(script, "Generated/CShopPurchaseView")
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local Component = FX.Class("CShopPurchaseUICompClass", "CShopPurchaseView")
@@ -62,7 +63,7 @@ function Component:Render(state)
         end
     end
     self.Config = {itemId = tostring(self._product.goodsId), name = product.title,
-        category = self._localization:FormatByKey("ShopPurchase.Category"),
+        category = Text.Tr("DIAMOND UPGRADE"),
         description = product.description,
         price = self._product.price, icon = self._product.icon}
     Component.Super.Render(self, state)
@@ -70,9 +71,9 @@ function Component:Render(state)
         label.AutoLocalize = false
     end
     if state.pending then
-        self.ButtonTxt.Text = self._localization:FormatByKey("ShopPurchase.Buying")
+        self.ButtonTxt.Text = Text.Tr("Buying...")
     else
-        self.ButtonTxt.Text = self._localization:FormatByKey("ShopPurchase.Price", {
+        self.ButtonTxt.Text = Text.Tr("{value} · Buy", {
             value = GameUtility.NumberToText(self.Config.price),
         })
     end

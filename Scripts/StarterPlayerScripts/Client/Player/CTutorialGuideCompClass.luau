@@ -1,5 +1,6 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
+local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local UIGuideArrow = FXLoader:Require(script.Parent.Parent, "UI/UIGuideArrow")
 local RunService = game:GetService("RunService")
 local Fields = _G.PlayerDataConfig
@@ -23,7 +24,7 @@ function Guide:GetGuideStorage()
     return Fields.Guide
 end
 
---- 创建独立提示层，放大文字并加黑色描边；先准备展示再回放同步状态，角色重生不销毁。
+--- 创建等比缩放的上方提示层，短句保持字号，长句自动缩小；角色重生不销毁。
 function Guide:OnReady()
     self._localization = self:RequireComponent("FCCommonUIComp").Localization
     self._screen = Instance.new("ScreenGui")
@@ -34,12 +35,17 @@ function Guide:OnReady()
     self._label = Instance.new("TextLabel")
     self._label.Name = "Instruction"
     self._label.AnchorPoint = Vector2.new(0.5, 0)
-    self._label.Position = UDim2.fromScale(0.5, 0.17)
-    self._label.Size = UDim2.new(0.8, 0, 0, 104)
+    self._label.Position = UDim2.fromScale(0.5, 0.13)
+    self._label.Size = UDim2.fromOffset(1024, 48)
     self._label.BackgroundTransparency = 1
     self._label.Font = Enum.Font.GothamBold
     self._label.TextSize = 28
+    self._label.TextScaled = true
     self._label.TextWrapped = true
+    local textSizeConstraint = Instance.new("UITextSizeConstraint")
+    textSizeConstraint.MinTextSize = 12
+    textSizeConstraint.MaxTextSize = 28
+    textSizeConstraint.Parent = self._label
     self._label.TextColor3 = Color3.fromRGB(255, 223, 75)
     self._label.TextStrokeTransparency = 1
     local stroke = Instance.new("UIStroke")
@@ -51,7 +57,19 @@ function Guide:OnReady()
     self._label.AutoLocalize = false
     self._label.Text = ""
     self._label.Parent = self._screen
+    local scale = Instance.new("UIScale")
+    scale.Parent = self._label
+    --- 与其他界面使用相同设计分辨率，字体和描边随屏幕一起缩放。
+    local function updateScale()
+        local size = self._screen.AbsoluteSize
+        if size.X <= 0 or size.Y <= 0 then
+            return
+        end
+        scale.Scale = math.min(size.X / 1280, size.Y / 720)
+    end
+    self:TrackConnection(self._screen:GetPropertyChangedSignal("AbsoluteSize"):Connect(updateScale))
     self._screen.Parent = self:GetPlayerNode():WaitForChild("PlayerGui")
+    updateScale()
     self._uiArrow = UIGuideArrow.New(self._screen.Parent)
     self._rateButton = FXLoader:PlayerGui("MainUI/RightCenter/DoubleStrengthButton")
     self._homeButton = FXLoader:PlayerGui("MainUI/TopCenter/HomeButton")
@@ -78,7 +96,7 @@ end
 function Guide:RefreshText()
     local target = self._activeTarget
     self._label.AutoLocalize = false
-    self._label.Text = target and self._localization:FormatByKey(target.key) or ""
+    self._label.Text = target and Text.Tr(target.key) or ""
 end
 
 --- 主流程完成后只补充尚未拥有首件升级装备的购买提示。

@@ -1,0 +1,34 @@
+{
+  "defaultsInitialized": true,
+  "rules": [
+    {
+      "workbook": "GoodsConfig.xlsx",
+      "config": "GoodsData",
+      "fields": [
+        "Name"
+      ]
+    },
+    {
+      "workbook": "GameConfig.xlsx",
+      "config": "AuraConfig",
+      "fields": [
+        "Name"
+      ]
+    },
+    {
+      "workbook": "GameConfig.xlsx",
+      "config": "ToolConfig",
+      "fields": [
+        "Name"
+      ]
+    },
+    {
+      "workbook": "ItemConfig.xlsx",
+      "config": "Display",
+      "fields": [
+        "Name",
+        "Desc"
+      ]
+    }
+  ]
+}

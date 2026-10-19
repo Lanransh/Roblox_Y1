@@ -3,6 +3,7 @@ local FXLoader = FX.Loader
 local ButtonHover = FXLoader:RequireFromParent(script, "ButtonHover")
 local ToolDescription = FXLoader:RequireFromParent(script, "ToolDescription")
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
+local LegacyTextSources = FXLoader:RequireShared("Scripts/Game/Shared/LegacyTextSources")
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local ItemConfig = FXLoader:RequireShared("Scripts/Game/Configs/ItemConfig")
 local UI = FX.Class("CCommonUICompClass", "FCCommonUICompClass")
@@ -107,6 +108,13 @@ end
 --- @param arguments table? 提示模板参数。
 --- @param duration number? 显示时长，单位为秒。
 function UI:ShowLocalizedTips(key, arguments, duration)
+    for index, legacyKey in ipairs({"CurrencyShop.TrainingReceived", "CurrencyShop.DiamondsReceived",
+        "CurrencyShop.RateUpgraded", "Welfare.PassActivated", "Welfare.TrainingCardGained"}) do
+        if key == LegacyTextSources[legacyKey] then
+            key = legacyKey
+            break
+        end
+    end
     if key == "CurrencyShop.TrainingReceived" or key == "CurrencyShop.DiamondsReceived"
         or key == "CurrencyShop.RateUpgraded" or key == "Welfare.PassActivated"
         or key == "Welfare.TrainingCardGained" then
@@ -126,13 +134,13 @@ function UI:ShowTooltips(params)
     self._cancelKey = params.CancelKey or (not params.CancelBtnTxt and "Common.Cancel")
     local options = table.clone(params)
     if self._descriptionKey then
-        options.Desc = self.Localization:FormatByKey(self._descriptionKey, self._descriptionArguments)
+        options.Desc = Text.Tr(self._descriptionKey, self._descriptionArguments)
     end
     if self._confirmKey then
-        options.ConfirmBtnTxt = self.Localization:FormatByKey(self._confirmKey)
+        options.ConfirmBtnTxt = Text.Tr(self._confirmKey)
     end
     if self._cancelKey then
-        options.CancelBtnTxt = self.Localization:FormatByKey(self._cancelKey)
+        options.CancelBtnTxt = Text.Tr(self._cancelKey)
     end
     UI.Super.ShowTooltips(self, options)
     self.TooltipParams = params
@@ -163,13 +171,13 @@ function UI:RefreshLocalization()
         self._tipLabel.Text = Text.Tr(self._tipKey, self._tipArguments)
     end
     if self._descriptionKey then
-        self.Description.Text = self.Localization:FormatByKey(self._descriptionKey, self._descriptionArguments)
+        self.Description.Text = Text.Tr(self._descriptionKey, self._descriptionArguments)
     end
     if self._confirmKey then
-        self.Confirm.Text = self.Localization:FormatByKey(self._confirmKey)
+        self.Confirm.Text = Text.Tr(self._confirmKey)
     end
     if self._cancelKey then
-        self.Cancel.Text = self.Localization:FormatByKey(self._cancelKey)
+        self.Cancel.Text = Text.Tr(self._cancelKey)
     end
     self:RefreshSelectedTool()
 end
@@ -182,7 +190,7 @@ function UI:RefreshSelectedTool()
         self._toolDescription:SetTool(nil)
         return
     end
-    local description = self.Localization:FormatByKey("Item.Description." .. itemId)
+    local description = Text.Tr(ItemConfig.Display[itemId].Desc)
     self._toolDescription:SetTool(tool, description)
 end
 
@@ -214,15 +222,15 @@ function UI:LocalizeTool(tool)
     if not key then
         return
     end
-    tool.Name = self.Localization:FormatByKey(key)
+    tool.Name = Text.Tr(key)
     local price = tool:GetAttribute("Price")
     if price then
         local arguments = {itemKey = key, price = GameUtility.NumberToText(price)}
         if tool:GetAttribute("IsLucky") == true then
             arguments.rate = GameUtility.NumberToText(tool:GetAttribute("LuckRate") or 1)
-            tool.ToolTip = self.Localization:FormatByKey("Loot.LuckyTooltip", arguments)
+            tool.ToolTip = Text.Tr("{item} · Lucky ×{rate} · {price} Coins", arguments)
         else
-            tool.ToolTip = self.Localization:FormatByKey("Loot.Tooltip", arguments)
+            tool.ToolTip = Text.Tr("{item} · {price} Coins", arguments)
         end
     else
         tool.ToolTip = tool.Name

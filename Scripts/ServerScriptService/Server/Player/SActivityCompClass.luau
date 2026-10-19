@@ -268,7 +268,7 @@ function Component:ActivateWeekCard(itemId)
     return true
 end
 
---- 统一转换活动配置并整批发放，任一项不满足时保留全部领取资格。
+--- 统一转换活动配置并整批发放；已拥有的永久光环不重复解锁，其余失败保留领取资格。
 --- @param rewards table 服务端配置中的奖励列表。
 --- @return boolean 是否发放成功。
 function Component:GrantRewards(rewards)
@@ -276,6 +276,13 @@ function Component:GrantRewards(rewards)
     for index, reward in ipairs(rewards) do
         if reward.Type == "Gem" then
             table.insert(batch, {Type = "Money", Currency = "Diamonds", Count = reward.Count})
+        elseif reward.Type == "Aura" then
+            if reward.Count ~= 1 then
+                return false
+            end
+            if not self:GetTable(Fields.AuraData).owned[tostring(reward.Id)] then
+                table.insert(batch, {Type = "Unlock", Kind = "Aura", Id = reward.Id, Count = reward.Count})
+            end
         else
             table.insert(batch, {Type = "Item", ItemId = reward.Id, Count = reward.Count})
         end

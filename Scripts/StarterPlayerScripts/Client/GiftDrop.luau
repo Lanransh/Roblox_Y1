@@ -1,13 +1,49 @@
 -- 客户端圣光礼盒：仅负责表现与一次性开盒回调，不处理奖励或刷新规则。
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
-local FX = _G.FX
+local FX, FC = _G.FX, _G.FC
 local FXLoader = FX.Loader
+local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local GiftDrop = {}
 
 --- 注册个人礼盒通知；生成表现与领取请求分离，客户端不能自行签发奖励资格。
 function GiftDrop.Init()
     local handles = {}
+    local countdowns = {}
+    for worldIndex = 1, 3 do
+        local countdown = FXLoader:Workspace("Decorations/World" .. worldIndex
+            .. "Decorations/MysteryGiftLanding/CountdownSign/Display/Countdown")
+        countdown.AutoLocalize = false
+        table.insert(countdowns, countdown)
+    end
+    local secondsLeft
+    local hasDrops = false
+    --- 根据服务端个人在线进度刷新世界牌子，云端语言变化时复用最新状态。
+    local function RefreshCountdown()
+        local text
+        if secondsLeft == nil then
+            text = "--:--"
+        elseif secondsLeft >= 0 then
+            text = string.format("%02d:%02d", math.floor(secondsLeft / 60), secondsLeft % 60)
+        elseif hasDrops then
+            text = Text.Tr("Gifts ready to collect!")
+        else
+            text = Text.Tr("All gifts collected today")
+        end
+        for countdownIndex, countdown in ipairs(countdowns) do
+            countdown.Text = text
+        end
+    end
+    --- 仅展示服务端计算的剩余时间，不在客户端签发到期资格。
+    --- @param seconds number 下一档剩余秒数，-1 表示今日档位全部到期。
+    --- @param pending boolean 是否仍有待领取的礼盒。
+    FX.Network:RegServerMsgCallback("S2C_GiftDropCountdown", function(seconds, pending)
+        secondsLeft = seconds
+        hasDrops = pending
+        RefreshCountdown()
+    end)
+    FC.Localization.Changed:Connect(RefreshCountdown)
+    RefreshCountdown()
     --- 跨日释放旧礼盒，移除已经失效的领取资格。
     FX.Network:RegServerMsgCallback("S2C_ClearGiftDrops", function()
         for dropId, handle in pairs(handles) do
@@ -79,6 +115,25 @@ function GiftDrop.Spawn(options, onOpened)
     anchor.Transparency = 1
     anchor.Position = options.Position
     anchor.Parent = container
+    local landingRing = Instance.new("Model")
+    landingRing.Name = "LandingRing"
+    for segment = 1, 24 do
+        local angle = (segment - 1) * math.pi * 2 / 24
+        local marker = Instance.new("Part")
+        marker.Name = "LightSegment"
+        marker.Size = Vector3.new(0.16, 0.06, 6.8 * math.sin(math.pi / 24))
+        marker.CFrame = CFrame.new(options.Position + Vector3.new(0, 0.07, 0))
+            * CFrame.Angles(0, angle, 0) * CFrame.new(3.4, 0, 0)
+        marker.Color = Color3.fromRGB(255, 224, 145)
+        marker.Material = Enum.Material.Neon
+        marker.Transparency = 0.35
+        marker.Anchored = true
+        marker.CanCollide = false
+        marker.CanTouch = false
+        marker.CanQuery = false
+        marker.Parent = landingRing
+    end
+    landingRing.Parent = container
     local bottom = Instance.new("Attachment")
     bottom.Parent = anchor
     local top = Instance.new("Attachment")
@@ -101,9 +156,9 @@ function GiftDrop.Spawn(options, onOpened)
     light.Range = 16
     light.Parent = anchor
     local prompt = Instance.new("ProximityPrompt")
-    prompt.ActionText = "Pick Up"
+    prompt.ActionText = Text.Tr("Pick Up")
     prompt.ObjectText = ""
-    prompt.AutoLocalize = true
+    prompt.AutoLocalize = false
     prompt.RootLocalizationTable = FXLoader:Shared("Shared/Localization")
     prompt.KeyboardKeyCode = Enum.KeyCode.E
     prompt.MaxActivationDistance = 10
@@ -117,6 +172,9 @@ function GiftDrop.Spawn(options, onOpened)
     local opening = false
     local updateConnection
     local promptConnection
+    local languageConnection = FC.Localization.Changed:Connect(function()
+        prompt.ActionText = Text.Tr("Pick Up")
+    end)
 
     --- 提前取消本地礼盒，释放动画、交互连接与全部生成实例。
     function handle:Destroy()
@@ -126,6 +184,7 @@ function GiftDrop.Spawn(options, onOpened)
         destroyed = true
         updateConnection:Disconnect()
         promptConnection:Disconnect()
+        languageConnection:Disconnect()
         container:Destroy()
     end
 
@@ -169,6 +228,7 @@ function GiftDrop.Spawn(options, onOpened)
         gift:PivotTo(landing + Vector3.new(0, options.Height * (1 - progress), 0))
         prompt.Enabled = progress >= 1
         if progress >= 1 then
+            landingRing:Destroy()
             updateConnection:Disconnect()
         end
     end)

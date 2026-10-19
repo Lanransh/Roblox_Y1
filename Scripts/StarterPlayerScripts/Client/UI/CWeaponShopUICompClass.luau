@@ -1,5 +1,6 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
+local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local RunService = game:GetService("RunService")
 FXLoader:RequireFromParent(script, "Generated/CWeaponShopView")
 local Fields = _G.PlayerDataConfig
@@ -105,14 +106,14 @@ end
 --- 保留生成列表，仅接入翻译与数量格式；配置无品质字段时不虚构品质。
 --- @param state table 服务端数据派生的完整 UI 状态。
 function Component:Render(state)
-    self.Config.title = self._localization:FormatByKey("Weapon.Title")
+    self.Config.title = Text.Tr("WEAPONS")
     for index, weapon in ipairs(self.Config.weapons) do
-        weapon.name = self._localization:FormatByKey("Weapon.Name." .. weapon.id)
+        weapon.name = Text.Tr(_G.GameConfig.ToolConfig[index].Name)
     end
     Component.Super.Render(self, state)
     self.TitleTxt.AutoLocalize = false
     self.EmptyTxt.AutoLocalize = false
-    self.EmptyTxt.Text = self._localization:FormatByKey(state.loading and "Weapon.Loading" or "Weapon.Empty")
+    self.EmptyTxt.Text = Text.Tr(state.loading and "Weapon.Loading" or "Weapon.Empty")
     for index, weapon in ipairs(self.Config.weapons) do
         local entry = self.Rows[weapon.id]
         if entry then
@@ -122,7 +123,7 @@ function Component:Render(state)
             local rate = FXLoader:Here(row, "StrengthTxt")
             rate.TextScaled = true
             rate.AutoLocalize = false
-            rate.Text = self._localization:FormatByKey("Weapon.TrainingRate", {
+            rate.Text = Text.Tr("Training ×{rate}", {
                 rate = GameUtility.NumberToText(weapon.strength),
             })
             local owned = state.owned[weapon.id] == true
@@ -135,7 +136,7 @@ function Component:Render(state)
             end
             local caption = FXLoader:Here(row, "ActionBtn/ButtonTxt")
             caption.AutoLocalize = false
-            caption.Text = self._localization:FormatByKey(key, {value = GameUtility.NumberToText(weapon.price)})
+            caption.Text = Text.Tr(key, {value = GameUtility.NumberToText(weapon.price)})
             -- 请求期间保持原有显示；余额不足也允许服务端返回提示。
             self:SetButtonEnabled(entry.button, not equipped)
         end

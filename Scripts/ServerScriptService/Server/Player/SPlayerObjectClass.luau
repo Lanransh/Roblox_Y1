@@ -1,5 +1,6 @@
 local FX, FS = _G.FX, _G.FS
 local FXLoader = FX.Loader
+local LegacyTextSources = FXLoader:RequireShared("Scripts/Game/Shared/LegacyTextSources")
 local Rebirth = FXLoader:RequireShared("Scripts/Game/Shared/Rebirth")
 local RockLevel = FXLoader:RequireShared("Scripts/Game/Shared/RockLevel")
 local ItemToolVisual = FXLoader:RequireFromParent(script, "ItemToolVisual")
@@ -444,7 +445,7 @@ end
 --- @param arguments table? 提示模板参数。
 --- @param duration number? 显示时长，单位为秒。
 function Player:ShowLocalizedTips(key, arguments, duration)
-    FX.Network:SendMsgToClient(self:GetPlayerId(), "S2C_ShowLocalizedTips", key, arguments, duration)
+    FX.Network:SendMsgToClient(self:GetPlayerId(), "S2C_ShowLocalizedTips", LegacyTextSources[key] or key, arguments, duration)
 end
 
 --- 为旧存档补入历史等级、离线福利与默认开启的武器巨大化偏好。

@@ -1,5 +1,6 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
+local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 FXLoader:RequireFromParent(script, "Generated/CWelfareView")
 local Welfare = FXLoader:RequireShared("Scripts/Game/Shared/Welfare")
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
@@ -55,14 +56,14 @@ function Component:OnReady()
             id = tostring(config.Index), day = config.LoginDays,
             reward = Welfare.ToDisplayReward(config.Reward),
             featured = config.LoginDays == 7,
-            badge = self._localization:FormatByKey("Welfare.WeeklyReward"),
+            badge = Text.Tr("Weekly Reward"),
             color = {102, 80, 25},
         })
     end
     for index, config in ipairs(_G.ActivityConfig.DailyTaskConfig) do
         table.insert(self.Config.groups[3].items, {
             id = tostring(config.Index), target = config.Target, taskType = config.Type,
-            title = self._localization:FormatByKey("Welfare.Task." .. config.Type, {target = config.Target}),
+            title = Text.Tr("Welfare.Task." .. config.Type, {target = config.Target}),
             reward = Welfare.ToDisplayReward(config.Rewards[1]),
         })
     end
@@ -130,7 +131,7 @@ function Component:RefreshWelfare(data)
         if entry.status == "Claimed" then
             self._failure = nil
         else
-            entry.error = self._localization:FormatByKey(self._failure.key)
+            entry.error = Text.Tr(self._failure.key)
         end
     end
     self:RefreshUI()
@@ -160,9 +161,9 @@ end
 --- @return table 本地化名称和展示槽。
 function Component:GetRewardDisplay(reward)
     if reward.type == "Gem" then
-        return {name = "Diamonds", icon = "Gem"}
+        return {name = Text.Tr("Diamonds"), icon = "Gem"}
     end
-    return {name = self._localization:FormatByKey("Welfare.Item." .. reward.id), icon = "Egg"}
+    return {name = Text.Tr(_G.ItemConfig.Display[reward.id].Name), icon = "Egg"}
 end
 
 --- 仅格式化数量文案，原始数值仍用于服务端结算。
@@ -170,7 +171,7 @@ end
 --- @param amount number 原始奖励数量。
 --- @return string 奖励说明。
 function Component:FormatReward(name, amount)
-    return self._localization:FormatByKey("Welfare.ItemReward", {item = name, value = GameUtility.NumberToText(amount)})
+    return Text.Tr("{item} ×{value}", {item = name, value = GameUtility.NumberToText(amount)})
 end
 
 --- 动态文本关闭自动本地化，使用项目现有翻译入口。
@@ -181,7 +182,7 @@ end
 function Component:SetText(root, path, key, arguments)
     local node = FXLoader:Here(root, path)
     node.AutoLocalize = false
-    node.Text = self._localization:FormatByKey(key, arguments)
+    node.Text = Text.Tr(key, arguments)
 end
 
 --- 保留父类状态配色；不可领取的按钮允许点击解释原因，请求期间仍禁用。
@@ -193,7 +194,7 @@ function Component:RenderButton(button, label, enabled)
         ["Checked In"] = "Welfare.Claimed", Locked = "Welfare.Locked", ["Claiming..."] = "Welfare.Pending",
         Retry = "Welfare.Retry", ["Online\nRewards"] = "Welfare.Online", ["Daily Login"] = "Welfare.SignIn",
         Diamonds = "Welfare.Daily", Tasks = "Welfare.Tasks", ["In Progress"] = "Welfare.InProgress"}
-    Component.Super.RenderButton(self, button, keys[label] and self._localization:FormatByKey(keys[label]) or label, enabled)
+    Component.Super.RenderButton(self, button, keys[label] and Text.Tr(keys[label]) or label, enabled)
     self:SetButtonEnabled(button, enabled or (not self._requestTask and not self._pending))
     FXLoader:Here(button, "ButtonTxt").AutoLocalize = false
 end
@@ -202,7 +203,7 @@ end
 --- @param state table 当前完整福利展示状态。
 function Component:Render(state)
     for index, config in ipairs(self.Config.groups[3].items) do
-        config.title = self._localization:FormatByKey("Welfare.Task." .. config.taskType, {target = config.target})
+        config.title = Text.Tr("Welfare.Task." .. config.taskType, {target = config.target})
     end
     Component.Super.Render(self, state)
     local hasClaimable = state.offline.status == "Claimable" and not state.offline.pending
@@ -249,7 +250,7 @@ function Component:_RenderRewardRow(kind, row)
         local label = FXLoader:Here(root, "RewardTxt")
         label.AutoLocalize = false
         label.Text = reward.type == "Gem"
-            and self._localization:FormatByKey("Welfare.Diamonds", {value = GameUtility.NumberToText(reward.amount)})
+            and Text.Tr("{value} Diamonds", {value = GameUtility.NumberToText(reward.amount)})
             or self:FormatReward(self:GetRewardDisplay(reward).name, reward.amount)
         FXLoader:Here(root, "ProgressBarImg/ProgressTxt").AutoLocalize = false
         -- 导出新任务原型前，旧模板仍只包含文字；避免同步顺序导致等待缺失节点。
@@ -267,7 +268,7 @@ function Component:_RenderRewardRow(kind, row)
     label.AutoLocalize = false
     label.TextScaled = true
     label.Text = reward.type == "Gem"
-        and self._localization:FormatByKey("Welfare.Diamonds", {value = GameUtility.NumberToText(reward.amount)})
+        and Text.Tr("{value} Diamonds", {value = GameUtility.NumberToText(reward.amount)})
         or self:FormatReward(self:GetRewardDisplay(reward).name, reward.amount)
     if config.featured then
         self:SetText(root, "WeeklyTxt", "Welfare.WeeklyReward")
@@ -319,12 +320,12 @@ function Component:RenderOffline(state)
     local statusKey = state.status == "Claimed" and "Welfare.Claimed" or "Welfare.OfflineEmpty"
     self:SetText(page, "StatusTxt", self._failure and self._failure.kind == "offline" and self._failure.key or statusKey)
     for multiplier, name in ipairs({"SingleClaimBtn", "DoubleClaimBtn"}) do
-        local label = state.pending and self._localization:FormatByKey("Welfare.Pending")
-            or self._localization:FormatByKey("Welfare.OfflineClaim", {multiplier = multiplier})
+        local label = state.pending and Text.Tr("Claiming...")
+            or Text.Tr("Claim ×{multiplier:int}", {multiplier = multiplier})
         self:RenderButton(FXLoader:Here(page, name), label, state.status == "Claimable" and not state.pending)
     end
     local tab = FXLoader:Here(self.Root, "TabsBox/OfflineTabBtn")
-    self:RenderButton(tab, self._localization:FormatByKey("Welfare.Offline"), true)
+    self:RenderButton(tab, Text.Tr("Offline Rewards"), true)
     if self.ActiveTab ~= "offline" then
         tab.BackgroundColor3 = Color3.fromRGB(99, 128, 121)
         FXLoader:Here(tab, "BottomEdgeImg").BackgroundColor3 = Color3.fromRGB(38, 62, 54)
@@ -351,7 +352,7 @@ function Component:RenderDiamonds(state)
         self:SetText(box, "TitleTxt", "Welfare.Item." .. info.id)
         self:SetText(box, "AmountTxt", "Welfare.DailyAmount", {value = GameUtility.NumberToText(config.DurationDays)})
         if card and card.remaining > 0 then
-            local status = self._localization:FormatByKey(card.lastClaimDay == self._snapshot.day and "Welfare.PassTomorrow" or "Welfare.Ready")
+            local status = Text.Tr(card.lastClaimDay == self._snapshot.day and "Welfare.PassTomorrow" or "Welfare.Ready")
             self:SetText(box, "HintTxt", "Welfare.PassRemaining", {days = card.remaining, status = status})
         else
             self:SetText(box, "HintTxt", "Welfare.PassInactive")

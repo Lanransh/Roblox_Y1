@@ -1,5 +1,6 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
+local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local Rebirth = FXLoader:RequireShared("Scripts/Game/Shared/Rebirth")
 local Fields = _G.PlayerDataConfig
 local UserInputService = game:GetService("UserInputService")
@@ -66,7 +67,7 @@ function Component:OnReady()
     self._strength.AutoLocalize = false
     self._bar.ProgressLabel.AutoLocalize = false
     self._homeButton.AutoLocalize = false
-    self._homeButton.Text = self._localization:FormatByKey("Main.GoHome")
+    self._homeButton.Text = Text.Tr("HOME")
     --- 翻译就绪或语言切换时刷新主界面，出售界面自行监听语言变化。
     self:TrackConnection(self._localization.Changed:Connect(function()
         self:RefreshLocalization()
@@ -343,12 +344,12 @@ function Component:RefreshStrengthOffers()
     rateButton.PriceDiamond.Visible = nextItem ~= nil
     if nextItem then
         rateButton.Price.Text = GameUtility.NumberToText(_G.GoodsConfig.GemGoodsData[nextItem.GemGoodsId].Price)
-        rateButton.Background.Label.Text = self._localization:FormatByKey("Main.StrengthRate", {
+        rateButton.Background.Label.Text = Text.Tr("x{rate} Strength", {
             rate = GameUtility.NumberToText(_G.GameConfig.TrainingRateConfig[data.trainingLevel + 1].Rate),
         })
     else
-        rateButton.Price.Text = self._localization:FormatByKey("CurrencyShop.SoldOut")
-        rateButton.Background.Label.Text = self._localization:FormatByKey("Main.StrengthRate", {
+        rateButton.Price.Text = Text.Tr("Sold Out")
+        rateButton.Background.Label.Text = Text.Tr("x{rate} Strength", {
             rate = GameUtility.NumberToText(CurrencyShop.GetTrainingRate(data)),
         })
     end
@@ -392,8 +393,8 @@ function Component:OpenStrengthOffer(name)
         local button = self._rootNode.RightCenter[name]
         product = {goodsId = goodsId, currency = "Diamond", icon = button.Icon.Image,
             price = _G.GoodsConfig.GemGoodsData[goodsId].Price,
-            title = self._localization:FormatByKey("Main.TrainingPack"),
-            description = self._localization:FormatByKey("Main.TrainingPackDesc", {
+            title = Text.Tr("Training Pack"),
+            description = Text.Tr("Gain {value} training XP, up to your current rebirth limit.", {
                 value = GameUtility.NumberToText(gain),
             })}
     end
@@ -435,7 +436,7 @@ end
 
 --- 语言变化只刷新当前数据显示，不播放训练收益动画或重新打开已关闭弹窗。
 function Component:RefreshLocalization()
-    self._homeButton.Text = self._localization:FormatByKey("Main.GoHome")
+    self._homeButton.Text = Text.Tr("HOME")
     self:RefreshProgress(self:GetNumber(Fields.RockTrainingValue))
     self:RefreshTrainingStatus(self:GetNumber(Fields.TrainingFieldIndex))
     self:RefreshStrengthOffers()
@@ -447,7 +448,7 @@ function Component:RefreshTrainingStatus(index)
     local config = _G.GameConfig.TrainingFieldData[index]
     self._trainingStatus.Visible = config ~= nil
     if config then
-        self._trainingStatus.Text = self._localization:FormatByKey("Training.Active", {
+        self._trainingStatus.Text = Text.Tr("Training active · ×{rate}", {
             rate = GameUtility.NumberToText(config.TrainingRate),
         })
     end
@@ -804,10 +805,10 @@ function Component:RefreshProgress(value, oldValue)
     self._bar.LevelLabel.Text = string.format("Lv.%d", level)
     self._bar.ProgressLabel.Text = string.format("%s/%s",
         GameUtility.NumberToText(math.min(progressValue, required)), GameUtility.NumberToText(required))
-    self._strength.Text = self._localization:FormatByKey("Main.Strength", {value = GameUtility.NumberToText(strength)})
+    self._strength.Text = Text.Tr("Strength: {value}", {value = GameUtility.NumberToText(strength)})
     if level >= RockLevel.MaxLevel then
         progress = 1
-        self._bar.ProgressLabel.Text = self._localization:FormatByKey("Main.MaxLevel")
+        self._bar.ProgressLabel.Text = Text.Tr("MAX LEVEL")
     end
     local size = UDim2.new(progress, 0, 1, 0)
     if self._progressTween then
