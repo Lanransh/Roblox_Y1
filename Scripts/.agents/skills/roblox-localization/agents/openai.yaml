@@ -1,0 +1,4 @@
+interface:
+  display_name: "Roblox 项目本地化"
+  short_description: "Studio 保持 AutoLocalize 开启，客户端脚本运行时关闭动态节点并翻译"
+  default_prompt: "使用 $roblox-localization，保留 Studio 模板 AutoLocalize 开启，仅在客户端脚本运行时关闭动态目标节点并调用 Text.Tr；以 Text.Mark 标记原文，不操作翻译表或启动试玩。"

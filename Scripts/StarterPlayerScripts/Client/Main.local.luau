@@ -7,13 +7,6 @@ local FXLoader = FX.Loader
 local Localization = FXLoader:RequireFromParent(script, "Localization")
 FC.Localization = Localization.New(Players.LocalPlayer)
 
---- 以英文原文为 Key 复用当前玩家的翻译对象，供代码和配置显示统一调用。
---- @param source string 英文原文或原生参数模板。
---- @param arguments table? 原生模板参数。
---- @return string 当前玩家语言的文案，缺少译文时使用英文。
-function FC.Tr(source, arguments)
-    return FC.Localization:Tr(source, arguments)
-end
 FC.GiftDrop = require(script.Parent.GiftDrop)
 FC.GiftDrop.Init()
 require(script.Parent.Player.CSoundCompClass)

@@ -2,6 +2,7 @@ local FX, FC = _G.FX, _G.FC
 local FXLoader = FX.Loader
 local ButtonHover = FXLoader:RequireFromParent(script, "ButtonHover")
 local ToolDescription = FXLoader:RequireFromParent(script, "ToolDescription")
+local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local ItemConfig = FXLoader:RequireShared("Scripts/Game/Configs/ItemConfig")
 local UI = FX.Class("CCommonUICompClass", "FCCommonUICompClass")
@@ -101,8 +102,8 @@ function UI:ShowTips(message, duration)
     UI.Super.ShowTips(self, message, duration)
 end
 
---- 服务端和客户端共用 Key 提示入口；数值收益使用原始数值，显示时统一缩写。
---- @param key string 本地文案表中的提示 Key。
+--- 服务端和客户端共用提示入口；英文原文直接翻译，旧 Key 的数量缩写保持兼容。
+--- @param key string Text.Mark 标记的英文原文或本地文案表中的旧提示 Key。
 --- @param arguments table? 提示模板参数。
 --- @param duration number? 显示时长，单位为秒。
 function UI:ShowLocalizedTips(key, arguments, duration)
@@ -113,7 +114,7 @@ function UI:ShowLocalizedTips(key, arguments, duration)
         local field = key == "CurrencyShop.RateUpgraded" and "rate" or "value"
         arguments[field] = GameUtility.NumberToText(arguments[field])
     end
-    self:ShowTips(self.Localization:FormatByKey(key, arguments), duration)
+    self:ShowTips(Text.Tr(key, arguments), duration)
     self._tipKey, self._tipArguments = key, arguments
 end
 
@@ -159,7 +160,7 @@ function UI:RefreshLocalization()
         end
     end
     if self._tipKey and self._tipLabel then
-        self._tipLabel.Text = self.Localization:FormatByKey(self._tipKey, self._tipArguments)
+        self._tipLabel.Text = Text.Tr(self._tipKey, self._tipArguments)
     end
     if self._descriptionKey then
         self.Description.Text = self.Localization:FormatByKey(self._descriptionKey, self._descriptionArguments)
@@ -274,7 +275,6 @@ function UI:Dtor()
     self._buttonHover:Destroy()
     FX.Network:UnRegServerMsgCallback("S2C_ShowLocalizedTips")
     self.Localization:Destroy()
-    FC.Tr = nil
     FC.Localization = nil
     UI.Super.Dtor(self)
 end
