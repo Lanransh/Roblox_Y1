@@ -1,6 +1,5 @@
-local FX = _G.FX
+local FX, FC = _G.FX, _G.FC
 local FXLoader = FX.Loader
-local Localization = FXLoader:Require(script.Parent.Parent, "Localization")
 local ButtonHover = FXLoader:RequireFromParent(script, "ButtonHover")
 local ToolDescription = FXLoader:RequireFromParent(script, "ToolDescription")
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
@@ -11,7 +10,7 @@ local UI = FX.Class("CCommonUICompClass", "FCCommonUICompClass")
 --- @param owner table 所属客户端玩家对象。
 function UI:Ctor(owner)
     UI.Super.Ctor(self, owner)
-    self.Localization = Localization.New(self:GetPlayerNode())
+    self.Localization = FC.Localization
     self._toolDescription = ToolDescription.New(FXLoader:PlayerGui("MainUI/TopCenter/Strength"))
     self._selectedToolConnections = {}
     self._confirmKey, self._cancelKey = "Common.Confirm", "Common.Cancel"
@@ -275,6 +274,8 @@ function UI:Dtor()
     self._buttonHover:Destroy()
     FX.Network:UnRegServerMsgCallback("S2C_ShowLocalizedTips")
     self.Localization:Destroy()
+    FC.Tr = nil
+    FC.Localization = nil
     UI.Super.Dtor(self)
 end
 

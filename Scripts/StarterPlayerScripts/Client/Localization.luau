@@ -87,7 +87,36 @@ function Localization:FormatByKey(key, arguments)
     return self._english:FormatByKey(key, arguments)
 end
 
---- 释放本对象的后台请求任务和语言监听，避免销毁后更新界面。
+--- 英文原文直接作为 Key；尚未收集的模板仅在独立的运行时英文表中格式化，不修改发布文案表。
+--- @param source string 英文原文或原生参数模板。
+--- @param arguments table? 原生模板参数，不使用旧接口的 itemKey 扩展。
+--- @return string 当前玩家语言的文案，缺少译文时使用格式化后的英文。
+function Localization:Tr(source, arguments)
+    if self._keys[source] then
+        return self:FormatByKey(source, arguments)
+    end
+    if self._cloud and string.match(string.lower(self._cloud.LocaleId), "^[^-]+") ~= "en" then
+        --- 云端条目可能早于本地收集更新，直接以英文原文查找。
+        --- @return string 格式化后的云端译文。
+        local success, text = pcall(function()
+            return self._cloud:FormatByKey(source, arguments)
+        end)
+        if success and text ~= "" then
+            return text
+        end
+    end
+    if not arguments then
+        return source
+    end
+    if not self._sourceFallback then
+        self._sourceFallback = Instance.new("LocalizationTable")
+        self._sourceFallback.SourceLocaleId = "en-us"
+    end
+    self._sourceFallback:SetEntryValue(source, source, "", "en-us", source)
+    return self._sourceFallback:GetTranslator("en-us"):FormatByKey(source, arguments)
+end
+
+--- 释放本对象的后台请求任务、临时英文表和语言监听，避免销毁后更新界面。
 function Localization:Destroy()
     self._destroyed = true
     if self._loadTask then
@@ -96,6 +125,9 @@ function Localization:Destroy()
     end
     if self._cloudConnection then
         self._cloudConnection:Disconnect()
+    end
+    if self._sourceFallback then
+        self._sourceFallback:Destroy()
     end
     self._changed:Destroy()
 end
