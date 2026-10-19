@@ -40,6 +40,9 @@ online 项必填 minutes: number（分钟）；signin 项必填 day: number（�
 task 项必填 title: string、target: number（目标，<=0 显示空进度）。
 signin 项可选 featured: boolean，默认 false；true 时必填 badge: string、
 color: {number, number, number}（RGB 0–255），显示双行大奖。
+签到普通卡按 day <3 / <6 / >=6 使用青绿、蓝、紫色原型；featured 使用独立双行大奖原型。
+签到 Locked 且没有 label 时显示与 signInDay 的天数差；明天显示 Tomorrow。
+签到的 Gem 使用项目钻石素材，Egg 使用可编辑占位图，正式图可在签到原型中替换。
 previewValue: number 仅模拟层读取，缺省 0，不属于游戏必需配置。
 
 State 必填 onlineMinutes: number（分钟）、signInDay: number（当前签到天）、
@@ -73,7 +76,15 @@ self.State = { onlineMinutes=0, signInDay=1, entries={
 } }
 
 必需覆写 GetRewardDisplay(reward)，返回 {name: string, icon: "Coin"|"Gem"|"Egg"}；
-Coin 类奖励使用项目钞票图片与 +$金额；Gem/Egg 图标仍为几何占位，不作为物品身份。
+Coin 类奖励使用项目钞票图片与 +$金额；在线、签到和任务页 Gem 使用项目钻石素材。
+任务页 EggIconBox.RewardIconImg 是道具图片槽，App 用问号占位；
+游戏接入在每次刷新中按 reward.id 查询真实道具图片，覆盖此槽并清除旧图。
+任务图标显示规则与 GetRewardDisplay 一致，任务文字保留独立 RewardTxt；不按显示名称识别奖励。
+其他页保留原有图标；占位图不作为物品身份，正式蛋图可替换在线原型的 EggIconBox。
+在线页按 minutes <15 / <45 / <60 / >=60 选择青绿、蓝、紫、金色原型，不改变奖励价值。
+Locked 且未提供 label 时，按 onlineMinutes 与 minutes 差值显示 mm:ss；
+倒计时没有本地计时器，接入层须更新 onlineMinutes（允许小数分钟）并 RefreshUI。
+下一档取大于 onlineMinutes 的最小分钟数；全部达成后显示最终档进度，空列表显示 No rewards。
 必需覆写 OnUIAction(action, payload)，无返回值：
 action="Claim"，payload={kind: string, rewardId: string}，rewardId 对应 items.id。
 资格校验及发奖由游戏接入负责；请求期间 pending=true，成功改 Claimed，
@@ -104,7 +115,7 @@ self.State.offline = { seconds = 9000, training = 1500, status = "Claimable" }
 seconds=0、training=0、status="Claimed"、pending=false，再 RefreshUI。
 失败保留数值及 Claimable，pending=false、error=提示后刷新。
 模拟立即成功，双倍仅模拟两倍训练值；没有添加支付或广告流程。
-]]
+]]
 local FX = _G.FX
 local Loader = FX.Loader
 local CWelfareView = FX.Class("CWelfareView", "CUIView")
@@ -141,8 +152,10 @@ function RewardRow:Update(config, state)
     Loader:Here(moneyBox, "AmountTxt").Text = "+$" .. tostring(config.reward.amount)
     local rewardLabel = Loader:Here(root, "RewardTxt")
     rewardLabel.Visible = not isMoney
-    rewardLabel.Text = self.Kind == "task" and ("Reward: " .. rewardText) or rewardText
+    rewardLabel.Text = rewardText
     if self.Kind == "task" then
+        Loader:Here(root, "GemIconBox").Visible = display.icon == "Gem"
+        Loader:Here(root, "EggIconBox").Visible = display.icon == "Egg"
         Loader:Here(root, "TaskNameTxt").Text = config.title
         local bar = Loader:Here(root, "ProgressBarImg")
         local target = config.target
@@ -169,10 +182,48 @@ function RewardRow:Update(config, state)
         label = state.error and "Retry" or (self.Kind == "signin" and "Check In" or "Claim")
     elseif state.status == "Locked" then
         label = state.label or (self.Kind == "task" and "In Progress" or "Locked")
+        if self.Kind == "online" and not state.label then
+            local seconds = math.max(0, math.ceil((config.minutes - self.View:GetUIState().onlineMinutes) * 60))
+            label = string.format("%02d:%02d", math.floor(seconds / 60), seconds % 60)
+        elseif self.Kind == "signin" and not state.label then
+            local days = config.day - self.View:GetUIState().signInDay
+            if days == 1 then
+                label = "Tomorrow"
+            elseif days > 1 then
+                label = "In " .. days .. " days"
+            end
+        end
     else
         error("Unknown reward status: " .. tostring(state.status))
     end
     self.View:RenderButton(self.Button, label, state.status == "Claimable" and not state.pending)
+    if self.Kind == "online" or self.Kind == "signin" then
+        local claimed = state.status == "Claimed"
+        local claimable = state.status == "Claimable" and not state.pending
+        Loader:Here(root, "ClaimedTxt").Visible = claimed
+        local isGrand = config.featured == true
+        if self.Kind == "online" then
+            isGrand = config.minutes >= 60
+            Loader:Here(root, "BadgeTxt").Visible = isGrand and not claimed
+        end
+        local stroke = Loader:Here(root, "UIStroke")
+        stroke.Color = Color3.fromRGB(15, 29, 36)
+        stroke.Thickness = 2
+        if isGrand then
+            stroke.Color = Color3.fromRGB(255, 207, 101)
+            stroke.Thickness = 3
+        end
+        if claimable then
+            stroke.Color = Color3.fromRGB(145, 255, 90)
+            stroke.Thickness = 3
+        elseif claimed then
+            self.Button.BackgroundColor3 = Color3.fromRGB(84, 100, 105)
+            Loader:Here(self.Button, "BottomEdgeImg").BackgroundColor3 = Color3.fromRGB(36, 48, 54)
+        else
+            self.Button.BackgroundColor3 = Color3.fromRGB(63, 91, 112)
+            Loader:Here(self.Button, "BottomEdgeImg").BackgroundColor3 = Color3.fromRGB(25, 46, 63)
+        end
+    end
 end
 
 -- 释放条目拥有的事件与克隆根；不删除页面设计模板。
@@ -283,7 +334,29 @@ function CWelfareView:SyncItems(group, states)
             row = nil
         end
         if not row then
-            local root = template:Clone()
+            local itemTemplate = template
+            if group.kind == "online" then
+                local templateName = "OnlineBoxTemplateImg"
+                if config.minutes >= 60 then
+                    templateName = "OnlineGrandTemplateImg"
+                elseif config.minutes >= 45 then
+                    templateName = "OnlinePurpleTemplateImg"
+                elseif config.minutes >= 15 then
+                    templateName = "OnlineBlueTemplateImg"
+                end
+                itemTemplate = Loader:Here(self.Root, "Templates." .. templateName)
+            elseif group.kind == "signin" then
+                local templateName = "SignInBoxTemplateImg"
+                if config.featured then
+                    templateName = "SignInGrandTemplateImg"
+                elseif config.day >= 6 then
+                    templateName = "SignInPurpleTemplateImg"
+                elseif config.day >= 3 then
+                    templateName = "SignInBlueTemplateImg"
+                end
+                itemTemplate = Loader:Here(self.Root, "Templates." .. templateName)
+            end
+            local root = itemTemplate:Clone()
             root.Name = "Item_" .. config.id .. "Img"
             root.Parent = container
             root.Visible = true
@@ -320,30 +393,13 @@ function CWelfareView:SyncItems(group, states)
     container.CanvasPosition = Vector2.new(0, math.min(container.CanvasPosition.Y, maxScroll))
 end
 
--- 沿用设计模板的双行大奖布局。
+-- 大奖布局保存在独立设计原型，只更新配置指定的颜色与标记。
 -- @param row Instance 克隆条目
 -- @param config table 大奖外观配置
 function CWelfareView:StyleFeatured(row, config)
     row.BackgroundColor3 = Color3.fromRGB(config.color[1], config.color[2], config.color[3])
     local label = Loader:Here(row, "WeeklyTxt")
     label.Visible, label.Text = true, config.badge
-    local width = row.Size.X.Offset
-    for _, iconType in ipairs({ "Coin", "Gem", "Egg" }) do
-        local box = Loader:Here(row, iconType .. "IconBox")
-        local icon = Loader:Here(box, "RewardIconImg")
-        icon.Position = UDim2.fromOffset((width - 112) / 2, 84)
-        icon.Size = UDim2.fromOffset(112, 112)
-        for _, child in ipairs(box:GetChildren()) do
-            if child.Name == "IconMarkTxt" then
-                child.Position, child.Size = icon.Position, icon.Size
-            end
-        end
-    end
-    Loader:Here(row, "MoneyRewardBox").Position = UDim2.fromOffset(0, 208)
-    local reward = Loader:Here(row, "RewardTxt")
-    reward.Position, reward.Size = UDim2.fromOffset(0, 208), UDim2.fromOffset(width, 48)
-    local button = Loader:Here(row, "ClaimBtn")
-    button.Position = UDim2.fromOffset(button.Position.X.Offset, row.Size.Y.Offset - 48)
 end
 
 -- 保留风格按钮表面，只更新状态。
@@ -399,7 +455,7 @@ end
 
 -- 接入提供状态，View 只组织页面和条目展示，不改根节点的显隐。
 -- @param state table entries、onlineMinutes 与 signInDay
-function CWelfareView:Render(state)
+function CWelfareView:Render(state)
     self:RenderOffline(state.offline)
     self:RenderDiamonds(state.diamonds)
     local tabs = { online = "OnlineTabBtn", signin = "SignInTabBtn", task = "TasksTabBtn" }
@@ -426,15 +482,54 @@ function CWelfareView:Render(state)
             self:SyncItems(group, assert(state.entries[group.kind], "Missing group state: " .. group.kind))
         end
     end
-    Loader:Here(self.Root, "PopupPanelImg.OnlineBox.SubtitleTxt").Text = "Online: " .. state.onlineMinutes .. " min · Resets daily"
+    for _, group in ipairs(self:GetUIConfig().groups) do
+        if group.kind == "online" then
+            self:RenderOnlineProgress(group, state)
+        end
+    end
     Loader:Here(self.Root, "PopupPanelImg.SignInBox.HeadingTxt").Text = "Daily Login · Day " .. state.signInDay
 end
 
--- 离线奖励只展示业务状态；领取后清零并隐藏按钮，不重置在线时长。
+-- 下一档按分钟阈值查询，不依赖配置顺序；空组与全部达成都有明确展示。
+-- @param group table 在线奖励配置分组
+-- @param state table 完整福利状态，onlineMinutes 单位为分钟
+function CWelfareView:RenderOnlineProgress(group, state)
+    local page = Loader:Here(self.Root, "PopupPanelImg.OnlineBox")
+    local bar = Loader:Here(page, "ProgressBarImg")
+    local nextMinutes = nil
+    local lastMinutes = 0
+    for _, config in ipairs(group.items) do
+        lastMinutes = math.max(lastMinutes, config.minutes)
+        if config.minutes > state.onlineMinutes and (not nextMinutes or config.minutes < nextMinutes) then
+            nextMinutes = config.minutes
+        end
+    end
+    local target = nextMinutes or lastMinutes
+    local ratio = 0
+    if target > 0 then
+        ratio = math.clamp(state.onlineMinutes / target, 0, 1)
+    end
+    Loader:Here(bar, "ProgressFillImg").Size = UDim2.fromScale(ratio, 1)
+    local progress = "No rewards"
+    local hint = "All milestones reached!"
+    if target > 0 then
+        progress = string.format("%d / %d min", math.floor(state.onlineMinutes), target)
+    else
+        hint = "No online rewards available"
+    end
+    if nextMinutes then
+        local seconds = math.max(0, math.ceil((nextMinutes - state.onlineMinutes) * 60))
+        hint = string.format("Next reward in %02d:%02d", math.floor(seconds / 60), seconds % 60)
+    end
+    Loader:Here(bar, "ProgressTxt").Text = progress
+    Loader:Here(page, "SubtitleTxt").Text = hint
+end
+
+-- 离线奖励只展示业务状态；领���后清零并隐藏按钮，不重置在线时长。
 -- @param state table seconds、training、status 及可选 pending/error，见离线契约
 function CWelfareView:RenderOffline(state)
     local page = Loader:Here(self.Root, "PopupPanelImg.OfflineBox")
-    page.Visible = self.ActiveTab == "offline"
+    page.Visible = self.ActiveTab == "offline"
     local seconds = state.seconds
     local training = state.training
     if state.status == "Claimed" then
@@ -443,37 +538,35 @@ function CWelfareView:RenderOffline(state)
     end
     local hours = math.floor(seconds / 3600)
     local minutes = math.floor(seconds % 3600 / 60)
-    local remaining = math.floor(seconds % 60)
-    local timeText = tostring(remaining) .. "s"
-    if hours > 0 then
-        timeText = hours .. "h " .. minutes .. "m " .. remaining .. "s"
-    elseif minutes > 0 then
-        timeText = minutes .. "m " .. remaining .. "s"
-    end
-    Loader:Here(page, "TimeTxt").Text = "Offline Time: " .. timeText
-    Loader:Here(page, "AmountTxt").Text = "Training: " .. tostring(training)
+    Loader:Here(page, "TimeTxt").Text = string.format("You were away for %dh %02dm", hours, minutes)
+    Loader:Here(page, "AmountTxt").Text = "+" .. tostring(training)
     local claimable = state.status == "Claimable" and training > 0
     local single = Loader:Here(page, "SingleClaimBtn")
     local double = Loader:Here(page, "DoubleClaimBtn")
     single.Visible = claimable
     double.Visible = claimable
-    self:RenderButton(single, "Claim ×1", claimable and not state.pending)
-    self:RenderButton(double, "Claim ×2", claimable and not state.pending)
+    self:RenderButton(single, "Claim Rewards!", claimable and not state.pending)
+    self:RenderButton(double, "2× Rewards!", claimable and not state.pending)
+    if claimable and not state.pending then
+        single.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        double.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        Loader:Here(double, "BottomEdgeImg").BackgroundColor3 = Color3.fromRGB(176, 101, 0)
+    end
     local status = Loader:Here(page, "StatusTxt")
     status.Visible = not claimable or state.error ~= nil
     status.Text = state.error or "No offline rewards"
     if state.status == "Claimed" then
         status.Text = "Claimed"
     end
-    local tab = Loader:Here(self.Root, "TabsBox.OfflineTabBtn")
-    Loader:Here(tab, "RedDotImg").Visible = claimable and not state.pending
-    self:RenderButton(tab, "Offline\nRewards", true)
-    if self.ActiveTab ~= "offline" then
-        tab.BackgroundColor3 = Color3.fromRGB(99, 128, 121)
-        Loader:Here(tab, "BottomEdgeImg").BackgroundColor3 = Color3.fromRGB(38, 62, 54)
-    end
-end
-
+    local tab = Loader:Here(self.Root, "TabsBox.OfflineTabBtn")
+    Loader:Here(tab, "RedDotImg").Visible = claimable and not state.pending
+    self:RenderButton(tab, "Offline\nRewards", true)
+    if self.ActiveTab ~= "offline" then
+        tab.BackgroundColor3 = Color3.fromRGB(99, 128, 121)
+        Loader:Here(tab, "BottomEdgeImg").BackgroundColor3 = Color3.fromRGB(38, 62, 54)
+    end
+end
+
 return CWelfareView
 
 end)()

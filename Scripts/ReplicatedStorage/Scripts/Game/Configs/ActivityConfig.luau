@@ -237,6 +237,10 @@ return {
     },
     MenuRetentionConfig = {
         TriggerMinutes = 5,
-        OnlineRewardId = 1
+        Reward = {
+            Type = [[Item]],
+            Id = 107,
+            Count = 2
+        }
     }
 }

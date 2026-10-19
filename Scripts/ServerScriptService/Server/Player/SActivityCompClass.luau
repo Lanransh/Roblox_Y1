@@ -11,9 +11,10 @@ function Component:GetCompName()
     return "SActivityComp"
 end
 
---- 读档后记录登录日及离线批次；当天领取记录与尚未领取的批次重登保留。
+--- 读档后记录本次进服时间、登录日及离线批次；礼包永久领取记录不重置。
 function Component:OnPlayerLogin()
     self._lastTime = os.time()
+    self._retentionStartedAt = workspace:GetServerTimeNow()
     self._nextSync = self._lastTime + 10
     local data = self:GetTable(Fields.WelfareData)
     local day = math.floor(self._lastTime / 86400)
@@ -84,6 +85,7 @@ function Component:PublishState()
     self._revision = (self._revision or 0) + 1
     self:SetTable(Fields.WelfareState, {
         ready = true, revision = self._revision, day = data.day, onlineSeconds = data.onlineSeconds, loginDays = data.loginDays,
+        retentionStartedAt = self._retentionStartedAt,
         onlineClaimed = FX.Table:DeepCopy(data.onlineClaimed),
         signInClaimed = FX.Table:DeepCopy(data.signInClaimed),
         taskProgress = FX.Table:DeepCopy(data.taskProgress),
@@ -282,7 +284,7 @@ function Component:GrantRewards(rewards)
 end
 
 --- RPC 只领取本人配置档位；全程不 yield，发奖失败保留领取资格。
---- @param kind any 客户端类别，仅接受 online、signin、task、diamonds、offline。
+--- @param kind any 客户端类别，仅接受 online、signin、task、diamonds、offline、retention。
 --- @param rewardId any 稳定字符串 ID，不接受客户端金额或玩家身份。
 --- @param multiplier any 离线领取方式，仅接受数值 1 或 2；双倍暂时免费。
 --- @return table 成功标记、提示 Key 和最新权威快照。
@@ -294,7 +296,22 @@ function Component:Claim(kind, rewardId, multiplier)
     local data = self:GetTable(Fields.WelfareData)
     local key = "Welfare.NotReady"
     local success = false
-    if kind == "offline" then
+    if kind == "retention" and rewardId == "once" then
+        local retention = self:GetTable(Fields.MenuRetentionData)
+        local config = _G.ActivityConfig.MenuRetentionConfig
+        if retention.claimed then
+            key = "Welfare.AlreadyClaimed"
+        elseif workspace:GetServerTimeNow() - self._retentionStartedAt < config.TriggerMinutes * 60 then
+            if self:GrantRewards({config.Reward}) then
+                -- 发奖与永久标记均不 yield，重复请求不能再次进入发奖分支。
+                retention.claimed = true
+                self:SetTable(Fields.MenuRetentionData, retention)
+                success = true
+            else
+                key = "Welfare.InventoryFull"
+            end
+        end
+    elseif kind == "offline" then
         if data.offlineClaimDay == data.day then
             key = "Welfare.AlreadyClaimed"
         elseif rewardId == data.offline.id and data.offline.training > 0 and (multiplier == 1 or multiplier == 2) then

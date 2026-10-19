@@ -17,17 +17,22 @@ local function Node(className, parent, properties)
     return node
 end
 
---- 按视觉设计稿创建紧凑暖棕卡片，保留米金边框、内部雾光和粗体描边。
+--- 与力量栏同级挂载，避免关卡隐藏力量栏时连带隐藏道具说明。
 --- @param strength GuiObject 主界面的力量栏。
 --- @return table 可复用的道具说明展示对象。
 function ToolDescription.New(strength)
     local self = setmetatable({}, ToolDescription)
-    self._root = Node("Frame", strength, {
+    local position, size, anchor = strength.Position, strength.Size, strength.AnchorPoint
+    self._root = Node("Frame", strength.Parent, {
         Name = "ToolDescription", AnchorPoint = Vector2.new(0.5, 0),
-        Position = UDim2.new(0.5, 0, 1, 10), Size = UDim2.fromOffset(220, 72),
+        Position = position + UDim2.new(
+            size.X.Scale * (0.5 - anchor.X), size.X.Offset * (0.5 - anchor.X),
+            size.Y.Scale * (1 - anchor.Y), size.Y.Offset * (1 - anchor.Y) + 10),
+        Size = UDim2.fromOffset(220, 72),
         AutomaticSize = Enum.AutomaticSize.Y,
         BackgroundTransparency = 1, BorderSizePixel = 0, Visible = false,
     })
+    self._root:SetAttribute("BlocksTrainingClick", true)
     Node("UICorner", self._root, {CornerRadius = UDim.new(0, 12)})
     Node("UIStroke", self._root, {
         Name = "OuterOutline", ApplyStrokeMode = Enum.ApplyStrokeMode.Border,

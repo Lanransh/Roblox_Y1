@@ -1,4 +1,4 @@
--- Roblox 系统菜单背后的挽留礼包，领取复用福利组件和服务端去重。
+-- Roblox 系统菜单背后的一次性挽留礼包，由服务端永久记录领取状态。
 local FX = _G.FX
 local FXLoader = FX.Loader
 local GuiService = game:GetService("GuiService")
@@ -44,13 +44,63 @@ local function CreateGiftText(parent, name, position, size)
     return text
 end
 
---- 独立创建普通礼包界面，透过半透明系统菜单可见，菜单关闭后可点击。
+--- 创建礼包和两侧带底框的加粗渐变提示；大箭头指向礼包，菜单关闭后可领取。
 function Component:CreateGiftPanel()
     local rewardButton = FXLoader:PlayerGui("MainUI/LeftCenter/RewardBtn")
-    self._sideText = CreateGiftText(rewardButton, "RetentionHint", UDim2.fromScale(1.08, 0), UDim2.fromScale(2, 1))
-    self._sideText.BackgroundTransparency = 0.15
-    self._sideText.BackgroundColor3 = Color3.fromRGB(30, 70, 40)
-    self._sideText.Visible = false
+    self._sideTexts = {}
+    for index, side in ipairs({"Left", "Right"}) do
+        local text = CreateGiftText(self._rootNode, side .. "RetentionHint",
+            UDim2.fromScale(index == 1 and 0.015 or 0.875, 0.38), UDim2.fromScale(0.11, 0.24))
+        text.Font = Enum.Font.GothamBlack
+        text.TextStrokeColor3 = Color3.fromRGB(20, 12, 36)
+        text.TextStrokeTransparency = 0.2
+        text.Visible = false
+        local background = Instance.new("Frame", text)
+        background.Name = "Background"
+        background.Size = UDim2.fromScale(1, 1)
+        background.BackgroundColor3 = Color3.fromRGB(28, 22, 48)
+        background.BackgroundTransparency = 0.12
+        background.BorderSizePixel = 0
+        background.ZIndex = text.ZIndex - 1
+        Instance.new("UICorner", background).CornerRadius = UDim.new(0.08, 0)
+        local border = Instance.new("UIStroke", background)
+        border.Color = Color3.fromRGB(193, 126, 255)
+        border.Transparency = 0.25
+        border.Thickness = 2
+        local gradient = Instance.new("UIGradient", text)
+        gradient.Rotation = 90
+        gradient.Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, Color3.fromRGB(100, 240, 255)),
+            ColorSequenceKeypoint.new(0.5, Color3.fromRGB(193, 126, 255)),
+            ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 137, 210)),
+        })
+        local padding = Instance.new("UIPadding", text)
+        padding.PaddingLeft, padding.PaddingRight = UDim.new(0.06, 0), UDim.new(0.06, 0)
+        padding.PaddingTop, padding.PaddingBottom = UDim.new(0.06, 0), UDim.new(0.06, 0)
+        -- 使用图形构造粗箭头，避免字体缺失箭头字符时显示方框。
+        local arrow = Instance.new("Frame", text)
+        arrow.Name = "InwardArrow"
+        arrow.BackgroundTransparency = 1
+        arrow.Position = UDim2.fromScale(0.05, 1.04)
+        arrow.Size = UDim2.fromScale(0.9, 0.75)
+        Instance.new("UIAspectRatioConstraint", arrow).AspectRatio = 1
+        arrow.Rotation = index == 1 and 0 or 180
+        for partIndex, segment in ipairs({
+            {position = Vector2.new(0.42, 0.5), size = Vector2.new(0.7, 0.16), rotation = 0},
+            {position = Vector2.new(0.68, 0.365), size = Vector2.new(0.45, 0.16), rotation = 45},
+            {position = Vector2.new(0.68, 0.635), size = Vector2.new(0.45, 0.16), rotation = -45},
+        }) do
+            local part = Instance.new("Frame", arrow)
+            part.Name = "Segment" .. partIndex
+            part.AnchorPoint = Vector2.new(0.5, 0.5)
+            part.Position = UDim2.fromScale(segment.position.X, segment.position.Y)
+            part.Size = UDim2.fromScale(segment.size.X, segment.size.Y)
+            part.Rotation = segment.rotation
+            part.BorderSizePixel = 0
+            part.BackgroundColor3 = Color3.fromRGB(193, 126, 255)
+        end
+        self._sideTexts[index] = text
+    end
     local panel = Instance.new("Frame")
     panel.Name = "GiftPanel"
     panel.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -85,10 +135,7 @@ function Component:CreateGiftPanel()
     self._giftClaimText = CreateGiftText(claim, "Label", UDim2.fromScale(0.05, 0.05), UDim2.fromScale(0.9, 0.9))
     self._giftClaim = claim
     self:TrackConnection(claim.Activated:Connect(function()
-        if self:IsGiftAvailable() and not GuiService.MenuIsOpen then
-            self._welfare:OnUIAction("Claim", {kind = "online", rewardId = self._rewardId})
-            self:RefreshGift()
-        end
+        self:ClaimGift()
     end))
     local close = Instance.new("TextButton")
     close.Name = "Close"
@@ -103,38 +150,78 @@ function Component:CreateGiftPanel()
     end))
 end
 
---- 仅提示服务端确认已达门槛且尚未领取的配置奖励，不额外创建奖励资格。
+--- 仅在本次进服后的配置分钟数之内提示永久未领取的一次性礼包。
 --- @return boolean 当前礼包是否可以领取。
 function Component:IsGiftAvailable()
     local state = self:GetTable(Fields.WelfareState)
-    -- OnReady 遍历顺序不固定；福利展示状态建立后才开放礼包入口。
-    local entry = self._welfare.State and self._welfare.State.entries.online[self._rewardId]
-    return state.ready and state.onlineSeconds >= self._retention.TriggerMinutes * 60
-        and state.onlineSeconds >= self._rewardConfig.TargetMinutes * 60
-        and not state.onlineClaimed[self._rewardId] and entry ~= nil and entry.status == "Claimable"
+    local retention = self:GetTable(Fields.MenuRetentionData)
+    return state.ready and not self._claimed and not retention.claimed
+        and workspace:GetServerTimeNow() - state.retentionStartedAt < self._retention.TriggerMinutes * 60
 end
 
---- 同步左侧提示和中央礼包，两个入口共享福利领取状态。
+--- 先关闭 Main 以外的游戏弹窗，关闭完成且仍在提示期限内时才显示礼包。
+function Component:OpenGift()
+    if self._openTask or not self:IsGiftAvailable() then
+        return
+    end
+    self._offerOpen = false
+    self:RefreshGift()
+    self._openTask = task.defer(function()
+        self:GetPlayerObject():CloseOtherUI(self)
+        self._openTask = nil
+        self._offerOpen = self:IsGiftAvailable()
+        self:RefreshText()
+    end)
+end
+
+--- 请求独立的一次性礼包，服务端校验提示期限并永久去重；失败可重试。
+function Component:ClaimGift()
+    if self._requestTask or GuiService.MenuIsOpen or not self:IsGiftAvailable() then
+        return
+    end
+    self._requestTask = task.defer(function()
+        --- 网络失败保留礼包，不在客户端推断发奖成功。
+        --- @return table 服务端领取结果。
+        local ok, result = pcall(function()
+            return FX.Network:InvokeServer("C2S_ClaimWelfareReward", "retention", "once")
+        end)
+        self._requestTask = nil
+        if ok and type(result) == "table" and result.success then
+            self._claimed = true
+            self:GetPlayerObject():RequireComponent("CSoundComp"):PlayRewardSound()
+            self._commonUI:ShowLocalizedTips(result.key)
+        else
+            local key = ok and type(result) == "table" and result.key or "Common.Unknown"
+            self._commonUI:ShowLocalizedTips(key)
+        end
+        self:RefreshGift()
+    end)
+    self:RefreshGift()
+end
+
+--- 同步屏幕两侧提示和中央礼包，领取后永久隐藏，与每日福利状态独立。
 function Component:RefreshGift()
     local available = self:IsGiftAvailable()
     if not available then
         self._offerOpen = false
     end
-    self._sideText.Visible = available
-    self._sideText.Text = self:FormatText("MenuRetention.Available")
+    local sideText = self:FormatText("MenuRetention.Available")
+    for index, text in ipairs(self._sideTexts) do
+        text.Visible = available and GuiService.MenuIsOpen
+        text.Text = sideText
+    end
     self._giftPanel.Visible = available and self._offerOpen == true
     self._giftTitle.Text = self:FormatText("MenuRetention.Stay")
     self._giftHint.Text = self:FormatText("MenuRetention.Resume")
     self._giftHint.Visible = GuiService.MenuIsOpen
-    local reward = Welfare.ToDisplayReward(self._rewardConfig.Reward)
+    local reward = Welfare.ToDisplayReward(self._retention.Reward)
     self._giftReward.Text = reward.type == "Gem"
         and self._localization:FormatByKey("Welfare.Diamonds", {value = GameUtility.NumberToText(reward.amount)})
         or self._localization:FormatByKey("Welfare.ItemReward", {
             item = self._localization:FormatByKey("Welfare.Item." .. reward.id),
             value = GameUtility.NumberToText(reward.amount),
         })
-    local entry = self._welfare.State and self._welfare.State.entries.online[self._rewardId]
-    local pending = entry ~= nil and entry.pending == true
+    local pending = self._requestTask ~= nil
     self._giftClaim.Interactable = available and not pending and not GuiService.MenuIsOpen
     self._giftClaimText.Text = self._localization:FormatByKey(pending and "Welfare.Pending" or "Welfare.Claim")
 end
@@ -203,10 +290,7 @@ end
 function Component:OnReady()
     self._commonUI = self:GetPlayerObject():RequireComponent("FCCommonUIComp")
     self._localization = self._commonUI.Localization
-    self._welfare = self:GetPlayerObject():RequireComponent("CWelfareUIComp")
     self._retention = _G.ActivityConfig.MenuRetentionConfig
-    self._rewardId = tostring(self._retention.OnlineRewardId)
-    self._rewardConfig = assert(Welfare.GetReward("online", self._rewardId), "Invalid retention online reward ID")
     self._sourceKeys = {}
     for index, entry in ipairs(FXLoader:Shared("Shared/Localization"):GetEntries()) do
         self._sourceKeys[entry.Key] = true
@@ -222,8 +306,9 @@ function Component:OnReady()
     self._rootNode.Parent = FXLoader:Player("PlayerGui")
     self:CreateGiftPanel()
     self:WatchDataChanged(Fields.WelfareState, self.OnWelfareChanged, self)
+    self:WatchDataChanged(Fields.MenuRetentionData, self.RefreshGift, self)
     self:TrackConnection(GuiService.MenuOpened:Connect(function()
-        self._offerOpen = self:IsGiftAvailable()
+        self:OpenGift()
         self:RefreshText()
     end))
     self:TrackConnection(GuiService.MenuClosed:Connect(function()
@@ -233,7 +318,7 @@ function Component:OnReady()
         self:RefreshText()
     end))
     if GuiService.MenuIsOpen then
-        self._offerOpen = self:IsGiftAvailable()
+        self:OpenGift()
         self:RefreshText()
     end
 end
@@ -314,10 +399,15 @@ function Component:OnUpdate(serverTime)
     end
 end
 
---- 只销毁本组件拥有的黑边、礼包和左侧提示。
+--- 只销毁本组件拥有的黑边、礼包和两侧提示。
 function Component:Dtor()
-    if self._sideText then
-        self._sideText:Destroy()
+    if self._openTask then
+        task.cancel(self._openTask)
+        self._openTask = nil
+    end
+    if self._requestTask then
+        task.cancel(self._requestTask)
+        self._requestTask = nil
     end
     if self._rootNode then
         self._rootNode:Destroy()

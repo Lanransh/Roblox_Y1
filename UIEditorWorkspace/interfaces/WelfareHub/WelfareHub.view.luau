@@ -73,7 +73,10 @@ self.State = { onlineMinutes=0, signInDay=1, entries={
 } }
 
 必需覆写 GetRewardDisplay(reward)，返回 {name: string, icon: "Coin"|"Gem"|"Egg"}；
-Coin 类奖励使用项目钞票图片与 +$金额；在线页 Gem 使用项目钻石素材，Egg 为可编辑占位图。
+Coin 类奖励使用项目钞票图片与 +$金额；在线、签到和任务页 Gem 使用项目钻石素材。
+任务页 EggIconBox.RewardIconImg 是道具图片槽，App 用问号占位；
+游戏接入在每次刷新中按 reward.id 查询真实道具图片，覆盖此槽并清除旧图。
+任务图标显示规则与 GetRewardDisplay 一致，任务文字保留独立 RewardTxt；不按显示名称识别奖励。
 其他页保留原有图标；占位图不作为物品身份，正式蛋图可替换在线原型的 EggIconBox。
 在线页按 minutes <15 / <45 / <60 / >=60 选择青绿、蓝、紫、金色原型，不改变奖励价值。
 Locked 且未提供 label 时，按 onlineMinutes 与 minutes 差值显示 mm:ss；
@@ -146,8 +149,10 @@ function RewardRow:Update(config, state)
     Loader:Here(moneyBox, "AmountTxt").Text = "+$" .. tostring(config.reward.amount)
     local rewardLabel = Loader:Here(root, "RewardTxt")
     rewardLabel.Visible = not isMoney
-    rewardLabel.Text = self.Kind == "task" and ("Reward: " .. rewardText) or rewardText
+    rewardLabel.Text = rewardText
     if self.Kind == "task" then
+        Loader:Here(root, "GemIconBox").Visible = display.icon == "Gem"
+        Loader:Here(root, "EggIconBox").Visible = display.icon == "Egg"
         Loader:Here(root, "TaskNameTxt").Text = config.title
         local bar = Loader:Here(root, "ProgressBarImg")
         local target = config.target

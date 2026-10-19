@@ -87,11 +87,14 @@ function Component:RefreshWelfare(data)
     if self._snapshot and self._snapshot.revision > data.revision then
         data = self._snapshot
     end
+    if not self._snapshot or self._snapshot.revision ~= data.revision then
+        self._snapshotTime = os.time()
+    end
     self._snapshot = data
     self.Config.offline.rewardId = data.offline.id
     self.State = {
         offline = table.clone(data.offline),
-        onlineMinutes = math.floor(data.onlineSeconds / 60),
+        onlineMinutes = (data.onlineSeconds + math.max(0, os.time() - self._snapshotTime)) / 60,
         signInDay = data.loginDays,
         entries = {online = {}, signin = {}, task = {}},
         diamonds = {
@@ -140,6 +143,16 @@ function Component:RefreshWelfare(data)
             self:Show()
         end
     end
+end
+
+--- 在线页每秒插值展示倒计时，领取资格仍只使用服务端快照。
+--- @param serverTime number 框架提供的当前秒级时间戳。
+function Component:OnUpdate(serverTime)
+    if not self._snapshot or not self._snapshot.ready or not self.Root.Enabled or self.ActiveTab ~= "online" then
+        return
+    end
+    self.State.onlineMinutes = (self._snapshot.onlineSeconds + math.max(0, serverTime - self._snapshotTime)) / 60
+    self:RefreshUI()
 end
 
 --- 奖励身份读取真实配置，Egg 展示槽用来放道具实际图标。
@@ -213,7 +226,6 @@ function Component:Render(state)
     self:SetText(self.Root, "PopupPanelImg/TasksBox/FooterTxt", "Welfare.TaskRule")
     self:SetText(self.Root, "TitleBox/TitleTxt", "Welfare.Title")
     self:SetText(self.Root, "PopupPanelImg/OnlineBox/HeadingTxt", "Welfare.Online")
-    self:SetText(self.Root, "PopupPanelImg/OnlineBox/SubtitleTxt", "Welfare.OnlineTime", {minutes = state.onlineMinutes})
     self:SetText(self.Root, "PopupPanelImg/OnlineBox/FooterTxt", "Welfare.OnlineRule")
     self:SetText(self.Root, "PopupPanelImg/SignInBox/HeadingTxt", "Welfare.LoginDay", {day = state.signInDay})
     self:SetText(self.Root, "PopupPanelImg/SignInBox/SubtitleTxt", "Welfare.SignIn")
@@ -240,6 +252,11 @@ function Component:_RenderRewardRow(kind, row)
             and self._localization:FormatByKey("Welfare.Diamonds", {value = GameUtility.NumberToText(reward.amount)})
             or self:FormatReward(self:GetRewardDisplay(reward).name, reward.amount)
         FXLoader:Here(root, "ProgressBarImg/ProgressTxt").AutoLocalize = false
+        -- 导出新任务原型前，旧模板仍只包含文字；避免同步顺序导致等待缺失节点。
+        local iconBoxName = reward.type == "Gem" and "GemIconBox" or "EggIconBox"
+        if FXLoader:Find(root, iconBoxName) then
+            self:_RenderRewardIcon(root, reward)
+        end
         return
     end
     self:SetText(root, kind == "online" and "TimeTxt" or "DayTxt",
@@ -255,26 +272,24 @@ function Component:_RenderRewardRow(kind, row)
     if config.featured then
         self:SetText(root, "WeeklyTxt", "Welfare.WeeklyReward")
     end
-    self:_RenderRewardIcon(root, reward, config.featured)
+    local size = kind == "signin" and (config.featured and FeaturedRewardIconSize or NormalRewardIconSize) or nil
+    self:_RenderRewardIcon(root, reward, size)
 end
 
---- 复用已有图片节点，按普通奖励或精选奖励尺寸展示真实图标。
+--- 复用已有图片节点；在线页保留新版模板尺寸，签到页沿用原有图标尺寸。
 --- @param root GuiObject 奖励行根节点。
 --- @param reward table 展示契约中的奖励类型和 ID。
---- @param featured boolean? 是否使用精选奖励尺寸。
-function Component:_RenderRewardIcon(root, reward, featured)
+--- @param size number? 签到图标边长，在线图标使用模板尺寸。
+function Component:_RenderRewardIcon(root, reward, size)
     if reward.type ~= "Item" and reward.type ~= "Gem" then
         return
     end
     local box = FXLoader:Here(root, reward.type == "Gem" and "GemIconBox" or "EggIconBox")
     local placeholder = FXLoader:Here(box, "RewardIconImg")
-    ResizeRewardIcon(placeholder, featured and FeaturedRewardIconSize or NormalRewardIconSize)
-    placeholder.Visible = false
-    if reward.type == "Item" then
-        local mark = FXLoader:Here(box, "IconMarkTxt")
-        mark.Position, mark.Size = placeholder.Position, placeholder.Size
-        mark.Visible = false
+    if size then
+        ResizeRewardIcon(placeholder, size)
     end
+    placeholder.Visible = false
     local imageName = reward.type .. "Image"
     local image = box:FindFirstChild(imageName)
     if not image then
@@ -296,7 +311,6 @@ function Component:RenderOffline(state)
     local page = FXLoader:Here(self.Root, "PopupPanelImg/OfflineBox")
     local seconds = state.status == "Claimed" and 0 or state.seconds
     local training = state.status == "Claimed" and 0 or state.training
-    self:SetText(page, "HeadingTxt", "Welfare.Offline")
     self:SetText(page, "TimeTxt", "Welfare.OfflineTime", {
         hours = math.floor(seconds / 3600), minutes = math.floor(seconds % 3600 / 60),
         seconds = math.floor(seconds % 60),

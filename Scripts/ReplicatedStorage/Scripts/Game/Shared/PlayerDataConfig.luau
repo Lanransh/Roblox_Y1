@@ -31,6 +31,11 @@ return {
         Type = "table", Key = "CurrencyShopData", KVTable = PlayerKVEnum.eStaticData, Sync = true,
         DefVal = {trainingLevel = 0, capacity = 0, gemBought = {}, robuxBought = {}},
     },
+    -- ESC 礼包仅保存永久领取状态；提示期限按本次进服时间计算。
+    MenuRetentionData = {
+        Type = "table", Key = "MenuRetentionData", KVTable = PlayerKVEnum.eStaticData, Sync = true,
+        DefVal = {claimed = false},
+    },
     -- 福利存档只由服务端读取；周卡 remaining 为剩余领取次数，不按漏登扣减。
     WelfareData = {
         Type = "table", Key = "WelfareData", KVTable = PlayerKVEnum.eActivityData, Sync = false,
@@ -43,6 +48,7 @@ return {
     WelfareState = {
         Type = "table", Key = "WelfareState", Sync = true,
         DefVal = {ready = false, revision = 0, day = -1, onlineSeconds = 0, loginDays = 0,
+            retentionStartedAt = 0,
             onlineClaimed = {}, signInClaimed = {}, dailyAmount = 0, cards = {},
             taskProgress = {}, taskClaimed = {},
             offline = {id = "", seconds = 0, training = 0, status = "Locked"}},
