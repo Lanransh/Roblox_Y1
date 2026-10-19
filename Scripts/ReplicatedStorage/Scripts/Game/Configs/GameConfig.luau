@@ -55,7 +55,11 @@ return {
         ToyCandidateCount = 6,
         ToyItemsPerStage = 3,
         ToyRefreshRatio = 0.333333333333333,
-        ToyLuckyCount = 4
+        ToyLuckyCount = 4,
+        AnalyticsEnabled = true,
+        AnalyticsExcludedUserIds = {
+            [1] = 2.563885143e+9,
+        }
     },
     TrainingFieldData = {
         [1] = {

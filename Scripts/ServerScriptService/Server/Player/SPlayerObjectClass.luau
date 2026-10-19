@@ -215,6 +215,18 @@ end
 
 local Guide = FX.Class("STutorialGuideCompClass", "FSTutorialGuideCompClass")
 
+--- 所有权威进度提交共用此处，分析异常不能阻止引导推进。
+--- @param guideData table 完整引导状态。
+--- @return boolean 状态是否提交。
+function Guide:SetGuideData(guideData)
+    local result = Guide.Super.SetGuideData(self, guideData)
+    local analytics = self:GetPlayerObject():GetComponent("SAnalyticsComp")
+    if analytics then
+        pcall(analytics.RecordGuide, analytics, guideData)
+    end
+    return result
+end
+
 --- @return string 玩家组件名。
 function Guide:GetCompName()
     return "TutorialGuide"
@@ -413,6 +425,7 @@ local Player = FX.Class("SPlayerObjectClass", "FSPlayerObjectClass")
 --- @param id number Roblox UserId。
 function Player:Ctor(id)
     Player.Super.Ctor(self, id)
+    self:AddComponent("SAnalyticsCompClass")
     self:AddComponent("SInventoryCompClass")
     self:AddComponent("FSRewardCompClass")
     self:AddComponent("SActivityCompClass")
@@ -474,8 +487,15 @@ function Player:OnPlayerLogin()
     end
     assert(self:RequireComponent("FSRewardComp"):AddRewards(rewards), "Initial rewards failed")
     Player.Super.OnPlayerLogin(self)
+    self:RequireComponent("SAnalyticsComp"):StartSession()
     self:PublishEvent("Tutorial.Login")
     self:PublishEvent("PlayerLogin")
+end
+
+--- 分析快照先于任意业务组件登出清理，随后沿用框架离服保存。
+function Player:OnPlayerLogout()
+    self:RequireComponent("SAnalyticsComp"):EndSession()
+    Player.Super.OnPlayerLogout(self)
 end
 
 return Player

@@ -138,6 +138,10 @@ function Component:RequestAura(action, auraId)
         data.equippedId = data.equippedId == auraId and 0 or auraId
     end
     self:SetTable(Fields.AuraData, data)
+    if action == "Buy" then
+        self:RequireComponent("SAnalyticsComp"):Sink("Money", config.Price,
+            self:GetNumber(Fields.Money), "Aura:" .. id)
+    end
     return {success = true, data = data, coins = self:GetNumber(Fields.Money)}
 end
 

@@ -17,6 +17,7 @@ end
 require(root.SItemClass)
 require(root.Modules.FSRankingServiceClass)
 require(root.Modules.FSShopService)
+require(root.Modules.FSAnalyticsManager)
 require(root.Modules.FSFriendService)
 
 local FX, FS = _G.FX, _G.FS

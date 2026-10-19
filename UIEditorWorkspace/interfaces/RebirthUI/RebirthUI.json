@@ -70,6 +70,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 0.58,
                   "ClipsDescendants": false,
@@ -96,8 +97,7 @@
                     }
                   },
                   "Visible": true,
-                  "ZIndex": 4,
-                  "AutoLocalize": true
+                  "ZIndex": 4
                 }
               },
               {
@@ -110,6 +110,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#a85d07",
                   "BackgroundTransparency": 0.2,
                   "ClipsDescendants": false,
@@ -136,8 +137,7 @@
                     }
                   },
                   "Visible": true,
-                  "ZIndex": 4,
-                  "AutoLocalize": true
+                  "ZIndex": 4
                 }
               },
               {
@@ -154,6 +154,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 1,
                   "ClipsDescendants": false,
@@ -194,8 +195,7 @@
                     }
                   },
                   "Visible": true,
-                  "ZIndex": 4,
-                  "AutoLocalize": true
+                  "ZIndex": 4
                 }
               },
               {
@@ -235,6 +235,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 1,
                   "ClipsDescendants": false,
@@ -270,8 +271,7 @@
                   "TextXAlignment": "Center",
                   "TextYAlignment": "Center",
                   "Visible": true,
-                  "ZIndex": 7,
-                  "AutoLocalize": true
+                  "ZIndex": 7
                 }
               }
             ],
@@ -283,6 +283,7 @@
                 "x": 0,
                 "y": 0
               },
+              "AutoLocalize": true,
               "BackgroundColor3": "#ffffff",
               "BackgroundTransparency": 0,
               "ClipsDescendants": false,
@@ -309,8 +310,7 @@
                 }
               },
               "Visible": true,
-              "ZIndex": 3,
-              "AutoLocalize": true
+              "ZIndex": 3
             }
           },
           {
@@ -328,6 +328,7 @@
                 "x": 0,
                 "y": 0
               },
+              "AutoLocalize": true,
               "BackgroundColor3": "#ffffff",
               "BackgroundTransparency": 1,
               "ClipsDescendants": false,
@@ -368,8 +369,7 @@
                 }
               },
               "Visible": true,
-              "ZIndex": 8,
-              "AutoLocalize": true
+              "ZIndex": 8
             }
           },
           {
@@ -408,6 +408,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 0.58,
                   "ClipsDescendants": false,
@@ -434,8 +435,7 @@
                     }
                   },
                   "Visible": true,
-                  "ZIndex": 4,
-                  "AutoLocalize": true
+                  "ZIndex": 4
                 }
               },
               {
@@ -448,6 +448,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#a85d07",
                   "BackgroundTransparency": 0.2,
                   "ClipsDescendants": false,
@@ -474,8 +475,7 @@
                     }
                   },
                   "Visible": true,
-                  "ZIndex": 4,
-                  "AutoLocalize": true
+                  "ZIndex": 4
                 }
               },
               {
@@ -492,6 +492,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 1,
                   "ClipsDescendants": false,
@@ -532,8 +533,7 @@
                     }
                   },
                   "Visible": true,
-                  "ZIndex": 4,
-                  "AutoLocalize": true
+                  "ZIndex": 4
                 }
               },
               {
@@ -573,6 +573,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 1,
                   "ClipsDescendants": false,
@@ -608,8 +609,7 @@
                   "TextXAlignment": "Center",
                   "TextYAlignment": "Center",
                   "Visible": true,
-                  "ZIndex": 7,
-                  "AutoLocalize": true
+                  "ZIndex": 7
                 }
               }
             ],
@@ -621,6 +621,7 @@
                 "x": 0,
                 "y": 0
               },
+              "AutoLocalize": true,
               "BackgroundColor3": "#ffffff",
               "BackgroundTransparency": 0,
               "ClipsDescendants": false,
@@ -647,8 +648,7 @@
                 }
               },
               "Visible": true,
-              "ZIndex": 3,
-              "AutoLocalize": true
+              "ZIndex": 3
             }
           },
           {
@@ -666,6 +666,7 @@
                 "x": 0,
                 "y": 0
               },
+              "AutoLocalize": true,
               "BackgroundColor3": "#ffffff",
               "BackgroundTransparency": 1,
               "ClipsDescendants": false,
@@ -706,8 +707,7 @@
                 }
               },
               "Visible": true,
-              "ZIndex": 8,
-              "AutoLocalize": true
+              "ZIndex": 8
             }
           },
           {
@@ -746,6 +746,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 0.58,
                   "ClipsDescendants": false,
@@ -772,8 +773,7 @@
                     }
                   },
                   "Visible": true,
-                  "ZIndex": 4,
-                  "AutoLocalize": true
+                  "ZIndex": 4
                 }
               },
               {
@@ -786,6 +786,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#146808",
                   "BackgroundTransparency": 0.2,
                   "ClipsDescendants": false,
@@ -812,8 +813,7 @@
                     }
                   },
                   "Visible": true,
-                  "ZIndex": 4,
-                  "AutoLocalize": true
+                  "ZIndex": 4
                 }
               },
               {
@@ -830,6 +830,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 1,
                   "ClipsDescendants": false,
@@ -870,8 +871,7 @@
                     }
                   },
                   "Visible": true,
-                  "ZIndex": 4,
-                  "AutoLocalize": true
+                  "ZIndex": 4
                 }
               },
               {
@@ -911,6 +911,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 1,
                   "ClipsDescendants": false,
@@ -946,8 +947,7 @@
                   "TextXAlignment": "Center",
                   "TextYAlignment": "Center",
                   "Visible": true,
-                  "ZIndex": 7,
-                  "AutoLocalize": true
+                  "ZIndex": 7
                 }
               }
             ],
@@ -959,6 +959,7 @@
                 "x": 0,
                 "y": 0
               },
+              "AutoLocalize": true,
               "BackgroundColor3": "#ffffff",
               "BackgroundTransparency": 0,
               "ClipsDescendants": false,
@@ -985,8 +986,7 @@
                 }
               },
               "Visible": true,
-              "ZIndex": 3,
-              "AutoLocalize": true
+              "ZIndex": 3
             }
           },
           {
@@ -1004,6 +1004,7 @@
                 "x": 0,
                 "y": 0
               },
+              "AutoLocalize": true,
               "BackgroundColor3": "#ffffff",
               "BackgroundTransparency": 1,
               "ClipsDescendants": false,
@@ -1044,8 +1045,7 @@
                 }
               },
               "Visible": true,
-              "ZIndex": 8,
-              "AutoLocalize": true
+              "ZIndex": 8
             }
           },
           {
@@ -1084,6 +1084,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 0.58,
                   "ClipsDescendants": false,
@@ -1110,8 +1111,7 @@
                     }
                   },
                   "Visible": true,
-                  "ZIndex": 4,
-                  "AutoLocalize": true
+                  "ZIndex": 4
                 }
               },
               {
@@ -1124,6 +1124,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#146808",
                   "BackgroundTransparency": 0.2,
                   "ClipsDescendants": false,
@@ -1150,8 +1151,7 @@
                     }
                   },
                   "Visible": true,
-                  "ZIndex": 4,
-                  "AutoLocalize": true
+                  "ZIndex": 4
                 }
               },
               {
@@ -1168,6 +1168,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 1,
                   "ClipsDescendants": false,
@@ -1208,8 +1209,7 @@
                     }
                   },
                   "Visible": true,
-                  "ZIndex": 4,
-                  "AutoLocalize": true
+                  "ZIndex": 4
                 }
               },
               {
@@ -1249,6 +1249,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 1,
                   "ClipsDescendants": false,
@@ -1284,8 +1285,7 @@
                   "TextXAlignment": "Center",
                   "TextYAlignment": "Center",
                   "Visible": true,
-                  "ZIndex": 7,
-                  "AutoLocalize": true
+                  "ZIndex": 7
                 }
               }
             ],
@@ -1297,6 +1297,7 @@
                 "x": 0,
                 "y": 0
               },
+              "AutoLocalize": true,
               "BackgroundColor3": "#ffffff",
               "BackgroundTransparency": 0,
               "ClipsDescendants": false,
@@ -1323,8 +1324,7 @@
                 }
               },
               "Visible": true,
-              "ZIndex": 3,
-              "AutoLocalize": true
+              "ZIndex": 3
             }
           },
           {
@@ -1342,6 +1342,7 @@
                 "x": 0,
                 "y": 0
               },
+              "AutoLocalize": true,
               "BackgroundColor3": "#ffffff",
               "BackgroundTransparency": 1,
               "ClipsDescendants": false,
@@ -1382,8 +1383,7 @@
                 }
               },
               "Visible": true,
-              "ZIndex": 8,
-              "AutoLocalize": true
+              "ZIndex": 8
             }
           },
           {
@@ -1401,6 +1401,7 @@
                 "x": 0,
                 "y": 0
               },
+              "AutoLocalize": true,
               "BackgroundColor3": "#ffffff",
               "BackgroundTransparency": 1,
               "ClipsDescendants": false,
@@ -1441,8 +1442,7 @@
                 }
               },
               "Visible": true,
-              "ZIndex": 7,
-              "AutoLocalize": true
+              "ZIndex": 7
             }
           },
           {
@@ -1468,6 +1468,7 @@
                 "x": 0,
                 "y": 0
               },
+              "AutoLocalize": true,
               "BackgroundColor3": "#ffffff",
               "BackgroundTransparency": 1,
               "ClipsDescendants": false,
@@ -1503,8 +1504,7 @@
               "TextXAlignment": "Center",
               "TextYAlignment": "Center",
               "Visible": true,
-              "ZIndex": 7,
-              "AutoLocalize": true
+              "ZIndex": 7
             }
           },
           {
@@ -1561,6 +1561,7 @@
                         "x": 0,
                         "y": 0
                       },
+                      "AutoLocalize": true,
                       "BackgroundColor3": "#ffffff",
                       "BackgroundTransparency": 1,
                       "ClipsDescendants": false,
@@ -1601,8 +1602,7 @@
                         }
                       },
                       "Visible": true,
-                      "ZIndex": 4,
-                      "AutoLocalize": true
+                      "ZIndex": 4
                     }
                   },
                   {
@@ -1615,6 +1615,7 @@
                         "x": 0,
                         "y": 0
                       },
+                      "AutoLocalize": true,
                       "BackgroundColor3": "#ab690d",
                       "BackgroundTransparency": 0.5,
                       "ClipsDescendants": false,
@@ -1641,8 +1642,7 @@
                         }
                       },
                       "Visible": true,
-                      "ZIndex": 5,
-                      "AutoLocalize": true
+                      "ZIndex": 5
                     }
                   },
                   {
@@ -1668,6 +1668,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 0,
                   "ClipsDescendants": true,
@@ -1694,8 +1695,7 @@
                     }
                   },
                   "Visible": true,
-                  "ZIndex": 3,
-                  "AutoLocalize": true
+                  "ZIndex": 3
                 }
               },
               {
@@ -1712,6 +1712,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 1,
                   "ClipsDescendants": false,
@@ -1752,8 +1753,7 @@
                     }
                   },
                   "Visible": true,
-                  "ZIndex": 3,
-                  "AutoLocalize": true
+                  "ZIndex": 3
                 }
               },
               {
@@ -1766,6 +1766,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ab690d",
                   "BackgroundTransparency": 0.5,
                   "ClipsDescendants": false,
@@ -1792,8 +1793,7 @@
                     }
                   },
                   "Visible": true,
-                  "ZIndex": 5,
-                  "AutoLocalize": true
+                  "ZIndex": 5
                 }
               },
               {
@@ -1819,6 +1819,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 1,
                   "ClipsDescendants": false,
@@ -1854,8 +1855,7 @@
                   "TextXAlignment": "Center",
                   "TextYAlignment": "Center",
                   "Visible": true,
-                  "ZIndex": 8,
-                  "AutoLocalize": true
+                  "ZIndex": 8
                 }
               }
             ],
@@ -1867,6 +1867,7 @@
                 "x": 0,
                 "y": 0
               },
+              "AutoLocalize": true,
               "BackgroundColor3": "#80600c",
               "BackgroundTransparency": 0,
               "ClipsDescendants": false,
@@ -1893,8 +1894,7 @@
                 }
               },
               "Visible": true,
-              "ZIndex": 2,
-              "AutoLocalize": true
+              "ZIndex": 2
             }
           },
           {
@@ -1933,6 +1933,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 0.58,
                   "ClipsDescendants": false,
@@ -1959,8 +1960,7 @@
                     }
                   },
                   "Visible": true,
-                  "ZIndex": 4,
-                  "AutoLocalize": true
+                  "ZIndex": 4
                 }
               },
               {
@@ -1973,6 +1973,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#535353",
                   "BackgroundTransparency": 0.2,
                   "ClipsDescendants": false,
@@ -1999,8 +2000,7 @@
                     }
                   },
                   "Visible": true,
-                  "ZIndex": 4,
-                  "AutoLocalize": true
+                  "ZIndex": 4
                 }
               },
               {
@@ -2026,6 +2026,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 1,
                   "ClipsDescendants": false,
@@ -2061,8 +2062,7 @@
                   "TextXAlignment": "Center",
                   "TextYAlignment": "Center",
                   "Visible": true,
-                  "ZIndex": 7,
-                  "AutoLocalize": true
+                  "ZIndex": 7
                 }
               },
               {
@@ -2092,6 +2092,7 @@
                 "x": 0,
                 "y": 0
               },
+              "AutoLocalize": true,
               "BackgroundColor3": "#b7b7b7",
               "BackgroundTransparency": 0,
               "ClipsDescendants": false,
@@ -2132,8 +2133,7 @@
                 }
               },
               "Visible": true,
-              "ZIndex": 3,
-              "AutoLocalize": true
+              "ZIndex": 3
             }
           },
           {
@@ -2172,6 +2172,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 0.58,
                   "ClipsDescendants": false,
@@ -2198,8 +2199,7 @@
                     }
                   },
                   "Visible": true,
-                  "ZIndex": 4,
-                  "AutoLocalize": true
+                  "ZIndex": 4
                 }
               },
               {
@@ -2212,6 +2212,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#a86b09",
                   "BackgroundTransparency": 0.2,
                   "ClipsDescendants": false,
@@ -2238,8 +2239,7 @@
                     }
                   },
                   "Visible": true,
-                  "ZIndex": 4,
-                  "AutoLocalize": true
+                  "ZIndex": 4
                 }
               },
               {
@@ -2265,6 +2265,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 1,
                   "ClipsDescendants": false,
@@ -2300,8 +2301,7 @@
                   "TextXAlignment": "Center",
                   "TextYAlignment": "Center",
                   "Visible": true,
-                  "ZIndex": 7,
-                  "AutoLocalize": true
+                  "ZIndex": 7
                 }
               },
               {
@@ -2331,6 +2331,7 @@
                 "x": 0,
                 "y": 0
               },
+              "AutoLocalize": true,
               "BackgroundColor3": "#ffffff",
               "BackgroundTransparency": 0,
               "ClipsDescendants": false,
@@ -2371,8 +2372,7 @@
                 }
               },
               "Visible": true,
-              "ZIndex": 3,
-              "AutoLocalize": true
+              "ZIndex": 3
             }
           },
           {
@@ -2390,11 +2390,16 @@
             "id": "d23f8efd-a277-405d-974a-0fa184f867fa",
             "imageAssetId": "4913ddf74c294c2bbfcaea19c847c425",
             "name": "MoneyArrowImg",
+            "previewImage": {
+              "dataUrl": "data:image/png;base64,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",
+              "name": "StrengthArrowTxt.png"
+            },
             "properties": {
               "AnchorPoint": {
                 "x": 0,
                 "y": 0
               },
+              "AutoLocalize": true,
               "BackgroundColor3": "#ffffff",
               "BackgroundTransparency": 1,
               "ClipsDescendants": false,
@@ -2435,12 +2440,7 @@
                 }
               },
               "Visible": true,
-              "ZIndex": 7,
-              "AutoLocalize": true
-            },
-            "previewImage": {
-              "name": "StrengthArrowTxt.png",
-              "dataUrl": "data:image/png;base64,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"
+              "ZIndex": 7
             }
           }
         ],
@@ -2452,6 +2452,7 @@
             "x": 0,
             "y": 0
           },
+          "AutoLocalize": true,
           "BackgroundColor3": "#000000",
           "BackgroundTransparency": 0.3,
           "ClipsDescendants": false,
@@ -2478,8 +2479,7 @@
             }
           },
           "Visible": true,
-          "ZIndex": 2,
-          "AutoLocalize": true
+          "ZIndex": 2
         }
       },
       {
@@ -2524,6 +2524,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 1,
                   "ClipsDescendants": false,
@@ -2564,8 +2565,7 @@
                     }
                   },
                   "Visible": true,
-                  "ZIndex": 4,
-                  "AutoLocalize": true
+                  "ZIndex": 4
                 }
               },
               {
@@ -2578,6 +2578,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 0.58,
                   "ClipsDescendants": false,
@@ -2604,8 +2605,7 @@
                     }
                   },
                   "Visible": true,
-                  "ZIndex": 5,
-                  "AutoLocalize": true
+                  "ZIndex": 5
                 }
               },
               {
@@ -2618,6 +2618,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 0.75,
                   "ClipsDescendants": false,
@@ -2644,8 +2645,7 @@
                     }
                   },
                   "Visible": true,
-                  "ZIndex": 5,
-                  "AutoLocalize": true
+                  "ZIndex": 5
                 }
               },
               {
@@ -2658,6 +2658,7 @@
                     "x": 0,
                     "y": 0
                   },
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#8a163d",
                   "BackgroundTransparency": 0.2,
                   "ClipsDescendants": false,
@@ -2684,8 +2685,7 @@
                     }
                   },
                   "Visible": true,
-                  "ZIndex": 5,
-                  "AutoLocalize": true
+                  "ZIndex": 5
                 }
               },
               {
@@ -2711,6 +2711,7 @@
                 "x": 0,
                 "y": 0
               },
+              "AutoLocalize": true,
               "BackgroundColor3": "#ffffff",
               "BackgroundTransparency": 0,
               "ClipsDescendants": true,
@@ -2737,8 +2738,7 @@
                 }
               },
               "Visible": true,
-              "ZIndex": 3,
-              "AutoLocalize": true
+              "ZIndex": 3
             }
           },
           {
@@ -2764,6 +2764,7 @@
                 "x": 0,
                 "y": 0
               },
+              "AutoLocalize": true,
               "BackgroundColor3": "#ffffff",
               "BackgroundTransparency": 1,
               "ClipsDescendants": false,
@@ -2771,7 +2772,7 @@
               "LayoutOrder": 0,
               "Position": {
                 "x": {
-                  "offset": 100,
+                  "offset": 124,
                   "scale": 0
                 },
                 "y": {
@@ -2799,8 +2800,7 @@
               "TextXAlignment": "Left",
               "TextYAlignment": "Center",
               "Visible": true,
-              "ZIndex": 6,
-              "AutoLocalize": true
+              "ZIndex": 6
             }
           },
           {
@@ -2818,6 +2818,7 @@
                 "x": 0,
                 "y": 0
               },
+              "AutoLocalize": true,
               "BackgroundColor3": "#ffffff",
               "BackgroundTransparency": 1,
               "ClipsDescendants": false,
@@ -2858,8 +2859,7 @@
                 }
               },
               "Visible": true,
-              "ZIndex": 6,
-              "AutoLocalize": true
+              "ZIndex": 6
             }
           },
           {
@@ -2877,6 +2877,7 @@
                 "x": 0,
                 "y": 0
               },
+              "AutoLocalize": true,
               "BackgroundColor3": "#ffffff",
               "BackgroundTransparency": 1,
               "ClipsDescendants": false,
@@ -2886,11 +2887,11 @@
               "LayoutOrder": 0,
               "Position": {
                 "x": {
-                  "offset": 18,
+                  "offset": 16,
                   "scale": 0
                 },
                 "y": {
-                  "offset": 6,
+                  "offset": 4,
                   "scale": 0
                 }
               },
@@ -2898,11 +2899,11 @@
               "ScaleType": "Fit",
               "Size": {
                 "x": {
-                  "offset": 58,
+                  "offset": 83,
                   "scale": 0
                 },
                 "y": {
-                  "offset": 58,
+                  "offset": 69,
                   "scale": 0
                 }
               },
@@ -2917,8 +2918,7 @@
                 }
               },
               "Visible": true,
-              "ZIndex": 8,
-              "AutoLocalize": true
+              "ZIndex": 8
             }
           },
           {
@@ -2939,6 +2939,7 @@
             "x": 0,
             "y": 0
           },
+          "AutoLocalize": true,
           "BackgroundColor3": "#ffffff",
           "BackgroundTransparency": 1,
           "ClipsDescendants": false,
@@ -2965,8 +2966,7 @@
             }
           },
           "Visible": true,
-          "ZIndex": 3,
-          "AutoLocalize": true
+          "ZIndex": 3
         }
       }
     ],
@@ -2974,9 +2974,9 @@
     "id": "24ae450f-9afc-4f07-b1c0-2d853d3f0f89",
     "name": "RebirthUI",
     "properties": {
+      "AutoLocalize": true,
       "DisplayOrder": 0,
-      "Enabled": true,
-      "AutoLocalize": true
+      "Enabled": true
     }
   },
   "version": 4

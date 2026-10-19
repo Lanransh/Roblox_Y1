@@ -971,7 +971,7 @@
               "LayoutOrder": 0,
               "Position": {
                 "x": {
-                  "offset": 24,
+                  "offset": 124,
                   "scale": 0
                 },
                 "y": {
@@ -982,7 +982,7 @@
               "Rotation": 0,
               "Size": {
                 "x": {
-                  "offset": 540,
+                  "offset": 438,
                   "scale": 0
                 },
                 "y": {
@@ -996,7 +996,7 @@
               "TextSize": 30,
               "TextTransparency": 0,
               "TextWrapped": false,
-              "TextXAlignment": "Center",
+              "TextXAlignment": "Left",
               "TextYAlignment": "Center",
               "Visible": true,
               "ZIndex": 6

@@ -1,6 +1,6 @@
 local FX, FS = _G.FX, _G.FS
 local MarketplaceService = game:GetService("MarketplaceService")
-local Shop = { _busy = {} }
+local Shop = { _busy = {}, _pendingAnalytics = setmetatable({}, {__mode = "k"}) }
 FS.ShopService = Shop
 
 --- 商品处理器不得 yield，防止同一档案在结算中交叉修改。
@@ -93,11 +93,39 @@ function Shop:ProcessReceipt(receipt)
                 return retry
             end
 
-            receipts[receipt.PurchaseId] = true
+            -- 项目回调仅生成元数据，不发送；异常或 yield 不改变支付结果。
+            local metadata
+            if self.CaptureReceiptAnalytics then
+                Immediate(function()
+                    metadata = self.CaptureReceiptAnalytics(player, receipt, receipts)
+                    return true
+                end)
+            end
+            local record = {analytics = metadata, analyticsAttemptScheduled = true}
+            receipts[receipt.PurchaseId] = record
+            local pending = self._pendingAnalytics[db]
+            if not pending then
+                pending = {}
+                self._pendingAnalytics[db] = pending
+            end
+            pending[receipt.PurchaseId] = record
         end
 
         if not db:Save(false) then
             return retry
+        end
+
+        -- 首次保存失败后保留内存快照，重试保存成功才消费；历史记录不会进入 pending。
+        -- 持久标记先于分析副作用，崩溃或平台失败允许漏报，不为分析重试支付。
+        local pending = self._pendingAnalytics[db]
+        local record = pending and pending[receipt.PurchaseId]
+        if record then
+            pending[receipt.PurchaseId] = nil
+            if record.analytics and self.OnReceiptAnalyticsSaved and not db._leaving
+                and FS.PlayerManager:GetPlayerObject(id) == player
+                and FS.PlayerKVDataManager._playerDBMap[id] == db then
+                pcall(self.OnReceiptAnalyticsSaved, player, FX.Table:DeepCopy(record.analytics))
+            end
         end
 
         return Enum.ProductPurchaseDecision.PurchaseGranted

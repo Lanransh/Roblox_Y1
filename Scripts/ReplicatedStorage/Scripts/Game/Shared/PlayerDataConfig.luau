@@ -9,6 +9,11 @@ _G.PlayerKVEnum = {
 local PlayerKVEnum = _G.PlayerKVEnum
 
 return {
+    -- 首局标记私有持久化；首付权威状态保留在 PurchaseReceipts 的分析快照内。
+    AnalyticsData = {
+        Type = "table", Key = "AnalyticsData", DefVal = {started = false},
+        KVTable = PlayerKVEnum.eStaticData, Sync = false,
+    },
     -- 当前同服好友人数为临时同步状态，不写入存档或每日任务记录。
     TrainingFriendCount = {Type = "number", Key = "TrainingFriendCount", DefVal = 0, Sync = true},
     -- 累计在线秒数，重生和跨日不重置；旧存档从功能上线后开始累计。

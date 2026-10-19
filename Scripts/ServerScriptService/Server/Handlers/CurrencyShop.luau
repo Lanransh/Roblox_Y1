@@ -55,6 +55,8 @@ function Service.Buy(player, goodsId)
     data = player:GetTable(Fields.CurrencyShopData)
     data.gemBought[tostring(goodsId)] = true
     player:SetTable(Fields.CurrencyShopData, data)
+    player:RequireComponent("SAnalyticsComp"):Sink("Diamonds", goods.Price,
+        player:GetNumber(Fields.Diamonds), "GemGoods:" .. goodsId)
     if isTrainingPack then
         player:RequireComponent("SMiscComp"):RefreshProgress()
         FX.Network:SendMsgToClient(player:GetPlayerId(), "S2C_TrainingEffect", gain, true)

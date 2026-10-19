@@ -60,6 +60,10 @@ function Component:RequestWeapon(action, weaponId)
         data.equippedId = weaponId
     end
     self:SetTable(Fields.WeaponData, data)
+    if action == "Buy" then
+        self:RequireComponent("SAnalyticsComp"):Sink("Money", config.Price,
+            self:GetNumber(Fields.Money), "Weapon:" .. id)
+    end
     return {success = true, data = data, coins = self:GetNumber(Fields.Money)}
 end
 
