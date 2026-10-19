@@ -439,8 +439,8 @@ function Player:Ctor(id)
     self:AddComponent("SGMCompClass")
 end
 
---- 服务端仅发送文案 Key 和业务参数，不按服务器语言提前生成提示。
---- @param key string 本地文案表中的提示 Key。
+--- 服务端仅发送英文原文或旧 Key 和业务参数，由客户端翻译，不提前拼接提示。
+--- @param key string Text.Mark 标记的英文原文或本地文案表中的旧提示 Key。
 --- @param arguments table? 提示模板参数。
 --- @param duration number? 显示时长，单位为秒。
 function Player:ShowLocalizedTips(key, arguments, duration)
