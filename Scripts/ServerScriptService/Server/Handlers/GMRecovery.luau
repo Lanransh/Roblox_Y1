@@ -1,4 +1,11 @@
 local FX, FS = _G.FX, _G.FS
+local TranslationTexts = {
+    ["GM.Forbidden"] = { Key = "GMRecovery.GM.Forbidden", Source = "Only developers can use these controls." },
+    ["Common.Unknown"] = { Key = "GMRecovery.Common.Unknown", Source = "Something went wrong. Please try again." },
+    ["GM.Busy"] = { Key = "GMRecovery.GM.Busy", Source = "An operation is in progress. Please try again shortly." },
+    ["GM.SaveFailed"] = { Key = "GMRecovery.GM.SaveFailed", Source = "Save failed. Please try again." },
+    ["GM.Success"] = { Key = "GMRecovery.GM.Success", Source = "Operation completed." },
+}
 local Players = game:GetService("Players")
 local Config = FX.Loader:Require(script.Parent.Parent, "Config/StorageConfig")
 local Recovery = {}
@@ -9,15 +16,15 @@ local Recovery = {}
 --- @return table 云端重置结果；成功后重新加载并沿正常 Ready 初始化。
 function Recovery.Request(userId, action)
     if not FX.IsDeveloper(userId) then
-        return {success = false, key = "GM.Forbidden"}
+        return {success = false, key = TranslationTexts["GM.Forbidden"]}
     end
     local db = FS.PlayerKVDataManager._playerDBMap[userId]
     if action ~= "ResetData" or not db or not db._loadFailed or db._leaving then
-        return {success = false, key = "Common.Unknown"}
+        return {success = false, key = TranslationTexts["Common.Unknown"]}
     end
     local now = os.clock()
     if db._loading or db._saving or db._recovering or now < (db._nextRecovery or 0) then
-        return {success = false, key = "GM.Busy"}
+        return {success = false, key = TranslationTexts["GM.Busy"]}
     end
     db._recovering = true
     db._nextRecovery = now + 5
@@ -52,13 +59,13 @@ function Recovery.Request(userId, action)
     db._recovering = false
     if not ok or not record then
         warn("[GM] Profile recovery failed", userId, record)
-        return {success = false, key = "GM.SaveFailed"}
+        return {success = false, key = TranslationTexts["GM.SaveFailed"]}
     end
     if not db._leaving and FS.PlayerKVDataManager._playerDBMap[userId] == db
         and Players:GetPlayerByUserId(userId) then
         db:LoadAsync()
     end
-    return {success = true, key = "GM.Success"}
+    return {success = true, key = TranslationTexts["GM.Success"]}
 end
 
 return Recovery

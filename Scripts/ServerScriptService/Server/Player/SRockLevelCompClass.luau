@@ -1,4 +1,13 @@
 local FX = _G.FX
+local TranslationTexts = {
+    ["Loot.InventoryFull"] = { Key = "SRockLevelCompClass.Loot.InventoryFull", Source = "Storage limit reached: {capacity:int} items." },
+    ["Loot.BagFull"] = { Key = "SRockLevelCompClass.Loot.BagFull", Source = "Your backpack is full. Return to your base to store your loot." },
+    ["Loot.LuckyPickedUp"] = { Key = "SRockLevelCompClass.Loot.LuckyPickedUp", Source = "Picked up lucky {item} (×{rate})!" },
+    ["Loot.PickedUp"] = { Key = "SRockLevelCompClass.Loot.PickedUp", Source = "Picked up {item}!" },
+    ["Loot.Deposited"] = { Key = "SRockLevelCompClass.Loot.Deposited", Source = "Loot stored: {count:int}" },
+    ["Loot.DepositFull"] = { Key = "SRockLevelCompClass.Loot.DepositFull", Source = "Your storage is full." },
+}
+
 local FXLoader = FX.Loader
 local Fields = _G.PlayerDataConfig
 local HttpService = game:GetService("HttpService")
@@ -8,11 +17,9 @@ local ToyRoller = FXLoader:RequireFromParent(script, "ToyRoller")
 local RockWeaponTool = require(script.Parent.RockWeaponTool)
 local GameConfig = _G.GameConfig
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
-local CollectibleText = FXLoader:RequireShared("Scripts/Game/Shared/CollectibleText")
 local Collection = FXLoader:RequireShared("Scripts/Game/Shared/Collection")
 local Weapon = FXLoader:RequireShared("Scripts/Game/Shared/Weapon")
 local InstancePath = FXLoader:RequireShared("Scripts/Game/Shared/InstancePath")
-local English = FXLoader:Shared("Shared/Localization"):GetTranslator("en-us")
 local Component = FX.Class("SRockLevelCompClass", "FSPlayerCompClass")
 
 --- 配置校验和倍率计算共用的有限数检查，拒绝 NaN 与无穷值。
@@ -396,7 +403,7 @@ function Component:SendDrop(dropId, drop)
     FX.Network:SendMsgToClient(self:GetPlayerId(), "S2C_SpawnRockDrop", {
         DropId = dropId,
         DisplayModelId = drop.DisplayModelId,
-        NameKey = CollectibleText.GetNameKey(drop.Template.Name),
+        NameSource = GameConfig.ItemData[drop.ItemId].Name,
         Quality = drop.Quality,
         Price = drop.Price,
         IsLucky = drop.IsLucky,
@@ -474,12 +481,12 @@ function Component:PickupDrop(dropId)
     local capacity = RockLevel.StoredLootCapacity
     if #stored + #loot >= capacity then
         drop.Picking = false
-        self:GetPlayerObject():ShowLocalizedTips("Loot.InventoryFull", {capacity = capacity})
+        self:GetPlayerObject():ShowLocalizedTips(TranslationTexts["Loot.InventoryFull"], {capacity = capacity})
         return false
     end
     if #loot >= self:GetLootCapacity() then
         drop.Picking = false
-        self:GetPlayerObject():ShowLocalizedTips("Loot.BagFull")
+        self:GetPlayerObject():ShowLocalizedTips(TranslationTexts["Loot.BagFull"])
         return false
     end
     local entry = {
@@ -489,21 +496,21 @@ function Component:PickupDrop(dropId)
         Price = drop.Price,
         IsLucky = drop.IsLucky,
         LuckRate = drop.LuckRate,
-        DisplayName = English:FormatByKey(CollectibleText.GetNameKey(drop.Template.Name)),
+        DisplayName = GameConfig.ItemData[drop.ItemId].Name,
     }
     if not self:RequireComponent("FSRewardComp"):AddRewards({{Type = "Loot", Count = 1, Data = entry}}) then
         drop.Picking = false
         return false
     end
     self:RemoveDrop(dropId)
-    local nameKey = CollectibleText.GetNameKey(drop.Template.Name)
+    local nameSource = GameConfig.ItemData[drop.ItemId].Name
     self:RequireComponent("SActivityComp"):RecordPickup()
     self:RequireComponent("TutorialGuide"):RecordPickup()
     if drop.IsLucky then
-        self:GetPlayerObject():ShowLocalizedTips("Loot.LuckyPickedUp",
-            {itemKey = nameKey, rate = GameUtility.NumberToText(drop.LuckRate)})
+        self:GetPlayerObject():ShowLocalizedTips(TranslationTexts["Loot.LuckyPickedUp"],
+            {itemSource = nameSource, rate = GameUtility.NumberToText(drop.LuckRate)})
     else
-        self:GetPlayerObject():ShowLocalizedTips("Loot.PickedUp", {itemKey = nameKey})
+        self:GetPlayerObject():ShowLocalizedTips(TranslationTexts["Loot.PickedUp"], {itemSource = nameSource})
     end
     return true
 end
@@ -533,11 +540,11 @@ function Component:DepositLoot()
         if collectionChanged then
             self:SetTable(Fields.CollectionEntries, entries)
         end
-        self:GetPlayerObject():ShowLocalizedTips("Loot.Deposited", {count = deposited})
+        self:GetPlayerObject():ShowLocalizedTips(TranslationTexts["Loot.Deposited"], {count = deposited})
         self:PublishEvent("Tutorial.Deposited")
     end
     if #loot > 0 and not self._depositFull then
-        self:GetPlayerObject():ShowLocalizedTips("Loot.DepositFull")
+        self:GetPlayerObject():ShowLocalizedTips(TranslationTexts["Loot.DepositFull"])
     end
     self._depositFull = #loot > 0
 end
@@ -578,13 +585,13 @@ function Component:EquipPickaxe(humanoid)
     self._pickaxe, model = RockWeaponTool.Build(template, self._giantPickaxe)
     local handle = self._pickaxe.Handle
     self._weaponId = config.ToolId
-    local nameKey = "Weapon.Name." .. tostring(config.ToolId)
-    self._pickaxe.Name = English:FormatByKey(nameKey)
+    local nameSource = config.Name
+    self._pickaxe.Name = nameSource
     self._pickaxe.ToolTip = self._pickaxe.Name
     self._pickaxe.TextureId = "rbxassetid://" .. config.Img
     self._pickaxe:SetAttribute("WeaponId", config.ToolId)
     self._pickaxe:SetAttribute("StarterPickaxe", true)
-    self._pickaxe:SetAttribute("DisplayNameKey", nameKey)
+    self._pickaxe:SetAttribute("DisplayNameSource", nameSource)
     local headCFrame, modelSize = model:GetBoundingBox()
     local headY = headCFrame.Position.Y + modelSize.Y * 0.5 - 0.2 - handle.Position.Y
     local start = Instance.new("Attachment")

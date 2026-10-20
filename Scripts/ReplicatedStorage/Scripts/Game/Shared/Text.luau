@@ -1,21 +1,36 @@
 local RunService = game:GetService("RunService")
 local Text = {}
 
---- 在原文定义处标记待收集文本；两端均只返回原文，不翻译或格式化。
---- @param source string 英文原文或原生参数模板。
---- @return string 未修改的英文原文。
-function Text.Mark(source)
-    return source
+--- 校验按 Key 查询的脚本文案或网络定义；不把字符串隐式当作 Key。
+--- @param definition table 含非空字符串 Key、Source 的文案定义。
+--- @return table 校验后的定义。
+function Text.ValidateDefinition(definition)
+    assert(type(definition) == "table", "Text: expected a Key/Source definition")
+    assert(type(definition.Key) == "string" and string.find(definition.Key, "%S"),
+        "Text: definition.Key must be a non-empty string")
+    assert(type(definition.Source) == "string" and string.find(definition.Source, "%S"),
+        "Text: definition.Source must be a non-empty string")
+    return definition
 end
 
---- 客户端显示时复用入口创建的翻译对象；服务端必须发送原文和参数。
---- @param source string 英文原文、原生参数模板或兼容的旧 Key。
---- @param arguments table? 原生模板参数；旧 Key 保留 itemKey 扩展。
---- @return string 当前玩家语言的文案，缺少译文时使用英文。
-function Text.Tr(source, arguments)
-    assert(RunService:IsClient(), "Text.Tr is client-only; use Text.Mark on the server")
+--- 仅客户端可翻译；服务端只传定义和参数，不接受旧原文或字符串 Key。
+--- @param definition table 静态脚本文案或显式配置文案定义。
+--- @param arguments table? 原生模板参数；itemDefinition 或配置原文 itemSource 在客户端求值为 item。
+--- @return string 当前语言文案，缺译时使用定义中的英文兜底。
+function Text.Tr(definition, arguments)
+    assert(RunService:IsClient(), "Text.Tr is client-only; send the definition and arguments from the server")
+    Text.ValidateDefinition(definition)
     local FC = _G.FC
-    return FC.Localization:Tr(source, arguments)
+    return FC.Localization:Tr(definition, arguments)
+end
+
+--- 仅客户端按原文查询已有译文；不需要 Key，不登记原文或格式化模板参数。
+--- @param source string 待查找的完整原文。
+--- @return string 当前语言译文，未加载或查询失败时返回原文。
+function Text.TrSource(source)
+    assert(RunService:IsClient(), "Text.TrSource is client-only")
+    local FC = _G.FC
+    return FC.Localization:TrSource(source)
 end
 
 return Text

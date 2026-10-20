@@ -1,5 +1,13 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
+local TranslationTexts = {
+    ["World.RequiredLevel"] = { Key = "CWorldTeleportUICompClass.World.RequiredLevel", Source = "Reach a best level of {level:int} to unlock this world." },
+    ["World.Go"] = { Key = "CWorldTeleportUICompClass.World.Go", Source = "Go" },
+    ["World.Teleporting"] = { Key = "CWorldTeleportUICompClass.World.Teleporting", Source = "Teleporting" },
+    ["World.Here"] = { Key = "CWorldTeleportUICompClass.World.Here", Source = "Here" },
+    ["World.LockedLevel"] = { Key = "CWorldTeleportUICompClass.World.LockedLevel", Source = "Level {level:int}" },
+    ["Common.Unknown"] = { Key = "CWorldTeleportUICompClass.Common.Unknown", Source = "Something went wrong. Please try again." },
+}
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local RunService = game:GetService("RunService")
 FXLoader:RequireFromParent(script, "Generated/CWorldTeleportView")
@@ -31,9 +39,6 @@ function Component:OnReady()
     self._commonUI = self:GetPlayerObject():RequireComponent("FCCommonUIComp")
     self._commonUI:RegisterTrainingClickModal(root)
     self._localization = self._commonUI.Localization
-    self._title = FXLoader:Here(root, "WindowBox/TitleBox/TitleTxt")
-    self._title.AutoLocalize = false
-    self.EmptyTxt.AutoLocalize = false
     self.ErrorTxt.AutoLocalize = false
     -- 展示契约按等级判断解锁；使用历史最高等级，重生后保留传送资格。
     self.Config = {worlds = {}}
@@ -154,7 +159,7 @@ function Component:CreateRow(worldId)
     self:TrackConnection(record.button.Activated:Connect(function()
         local world = record.world
         if not self.State.pendingWorldId and self.State.level < world.requiredLevel then
-            self._commonUI:ShowLocalizedTips("World.RequiredLevel", {level = world.requiredLevel})
+            self._commonUI:ShowLocalizedTips(TranslationTexts["World.RequiredLevel"], {level = world.requiredLevel})
         end
     end))
     return record
@@ -164,20 +169,18 @@ end
 --- @param state table 权威等级、当前世界与请求状态。
 function Component:Render(state)
     for index, world in ipairs(self.Config.worlds) do
-        world.name = Text.Tr(GameEnum.WorldTransferConfig[index].Name)
+        world.name = Text.TrSource(GameEnum.WorldTransferConfig[index].Name)
     end
-    self._title.Text = Text.Tr("WORLDS")
-    self.EmptyTxt.Text = Text.Tr("No worlds available")
     state.error = self._failure and Text.Tr(self._failure.key, self._failure.arguments) or nil
     Component.Super.Render(self, state)
     for worldId, record in pairs(self._rows) do
-        local key = "World.Go"
+        local key = TranslationTexts["World.Go"]
         if state.pendingWorldId == worldId then
-            key = "World.Teleporting"
+            key = TranslationTexts["World.Teleporting"]
         elseif state.currentWorldId == worldId then
-            key = "World.Here"
+            key = TranslationTexts["World.Here"]
         elseif state.level < record.world.requiredLevel then
-            key = "World.LockedLevel"
+            key = TranslationTexts["World.LockedLevel"]
         end
         record.buttonTxt.Text = Text.Tr(key, {level = record.world.requiredLevel})
         self:SetButtonEnabled(record.button, state.currentWorldId ~= worldId and not state.pendingWorldId)
@@ -211,9 +214,9 @@ function Component:OnUIAction(action, payload)
         self.State.pendingWorldId = nil
         local failure
         if not ok or type(result) ~= "table" then
-            failure = {key = "Common.Unknown"}
+            failure = {key = TranslationTexts["Common.Unknown"]}
         elseif not result.success then
-            failure = {key = result.key or "Common.Unknown", arguments = result.arguments}
+            failure = {key = result.key or TranslationTexts["Common.Unknown"], arguments = result.arguments}
         end
         self._failure = failure
         if failure then

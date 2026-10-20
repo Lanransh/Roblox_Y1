@@ -1,4 +1,13 @@
 local FX, FS = _G.FX, _G.FS
+local TranslationTexts = {
+    ["Common.InDevelopment"] = { Key = "SMiscCompClass.Common.InDevelopment", Source = "Coming soon." },
+    ["Rebirth.RequiredLevel"] = { Key = "SMiscCompClass.Rebirth.RequiredLevel", Source = "Reach level {level:int} to rebirth." },
+    ["Rebirth.Success"] = { Key = "SMiscCompClass.Rebirth.Success", Source = "Rebirth complete!" },
+    ["Common.Unknown"] = { Key = "SMiscCompClass.Common.Unknown", Source = "Something went wrong. Please try again." },
+    ["World.RequiredLevel"] = { Key = "SMiscCompClass.World.RequiredLevel", Source = "Reach a best level of {level:int} to unlock this world." },
+    ["Welfare.TrainingCardGained"] = { Key = "SMiscCompClass.Welfare.TrainingCardGained", Source = "Gained {value} Strength." },
+    ["Training.RequiredRebirths"] = { Key = "SMiscCompClass.Training.RequiredRebirths", Source = "Requires {count:int} rebirths to train here." },
+}
 local TextService = game:GetService("TextService")
 local FXLoader = FX.Loader
 local Fields = _G.PlayerDataConfig
@@ -58,16 +67,16 @@ function Component:HandleRebirth()
     local player = self:GetPlayerObject()
     local count = self:GetNumber(Fields.RebirthCount)
     if count >= Rebirth.MaxCount then
-        player:ShowLocalizedTips("Common.InDevelopment")
+        player:ShowLocalizedTips(TranslationTexts["Common.InDevelopment"])
         return {success = false}
     end
     local required = Rebirth.GetRequiredLevel(count)
     if self:GetNumber(Fields.RockTrainingLevel) < required then
-        player:ShowLocalizedTips("Rebirth.RequiredLevel", {level = required})
+        player:ShowLocalizedTips(TranslationTexts["Rebirth.RequiredLevel"], {level = required})
         return {success = false}
     end
     self:ApplyRebirth()
-    player:ShowLocalizedTips("Rebirth.Success")
+    player:ShowLocalizedTips(TranslationTexts["Rebirth.Success"])
     return {success = true}
 end
 
@@ -216,19 +225,19 @@ function Component:HandleTransferWorld(index)
     if type(index) ~= "number" or index ~= math.floor(index)
         or index < 1 or index > #worldConfig
     then
-        return {success = false, key = "Common.Unknown"}
+        return {success = false, key = TranslationTexts["Common.Unknown"]}
     end
     local world = worldConfig[index]
     if self:GetNumber(Fields.MaxTrainingLevel) < world.NeedTrainingLevel then
         return {
             success = false,
-            key = "World.RequiredLevel",
+            key = TranslationTexts["World.RequiredLevel"],
             arguments = {level = world.NeedTrainingLevel},
         }
     end
     local character = self:GetPlayerCharacter()
     if character == nil then
-        return {success = false, key = "Common.Unknown"}
+        return {success = false, key = TranslationTexts["Common.Unknown"]}
     end
     -- 落点只取服务端配置，离场后训练基地按新位置自动结算。
     character:PivotTo(CFrame.new(world.Position))
@@ -305,7 +314,7 @@ function Component:ApplyTrainingCard(seconds)
     if not notified then
         warn("[TrainingCard] reward notification failed", message)
     end
-    self:GetPlayerObject():ShowLocalizedTips("Welfare.TrainingCardGained", {value = gain})
+    self:GetPlayerObject():ShowLocalizedTips(TranslationTexts["Welfare.TrainingCardGained"], {value = GameUtility.NumberToText(gain)})
     return true
 end
 
@@ -354,7 +363,7 @@ function Component:RefreshTrainingField(config, now)
     local unlocked = config and self:GetNumber(Fields.RebirthCount) >= config.NeedRebirhLevel
     local activeIndex = unlocked and fieldIndex or 0
     if fieldIndex ~= self._trainingFieldIndex and config and not unlocked then
-        self:GetPlayerObject():ShowLocalizedTips("Training.RequiredRebirths", {count = config.NeedRebirhLevel})
+        self:GetPlayerObject():ShowLocalizedTips(TranslationTexts["Training.RequiredRebirths"], {count = config.NeedRebirhLevel})
     end
     self._trainingFieldIndex = fieldIndex
     if activeIndex ~= self:GetNumber(Fields.TrainingFieldIndex) then

@@ -1,6 +1,18 @@
 -- Roblox 系统菜单背后的一次性挽留礼包，由服务端永久记录领取状态。
 local FX = _G.FX
 local FXLoader = FX.Loader
+local TranslationTexts = {
+    ["MenuRetention.OnlineCountdown"] = { Key = "MenuRetention.OnlineCountdown", Source = "Your next online reward is available in {time}!" },
+    ["MenuRetention.Available"] = { Key = "MenuRetention.Available", Source = "Reward ready! Claim now!" },
+    ["Common.Unknown"] = { Key = "CMenuRetentionUICompClass.Common.Unknown", Source = "Something went wrong. Please try again." },
+    ["Welfare.Diamonds"] = { Key = "CMenuRetentionUICompClass.Welfare.Diamonds", Source = "{value} Diamonds" },
+    ["Welfare.ItemReward"] = { Key = "CMenuRetentionUICompClass.Welfare.ItemReward", Source = "{item} ×{value}" },
+    ["Welfare.Pending"] = { Key = "CMenuRetentionUICompClass.Welfare.Pending", Source = "Claiming..." },
+    ["Welfare.Claim"] = { Key = "CMenuRetentionUICompClass.Welfare.Claim", Source = "Claim" },
+    ["MenuRetention.Offline"] = { Key = "CMenuRetentionUICompClass.MenuRetention.Offline", Source = "You can earn up to {amount} Strength while offline!" },
+    ["MenuRetention.Complete"] = { Key = "CMenuRetentionUICompClass.MenuRetention.Complete", Source = "You have claimed all of today's online rewards!" },
+    ["MenuRetention.Ready"] = { Key = "CMenuRetentionUICompClass.MenuRetention.Ready", Source = "Your online reward is ready to claim!" },
+}
 local GuiService = game:GetService("GuiService")
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local Rebirth = FXLoader:RequireShared("Scripts/Game/Shared/Rebirth")
@@ -12,15 +24,6 @@ local Welfare = FXLoader:RequireShared("Scripts/Game/Shared/Welfare")
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local Fields = _G.PlayerDataConfig
 local Component = FX.Class("CMenuRetentionUICompClass", "FCUICompClass")
-local Templates = {
-    ["MenuRetention.Offline"] = Text.Mark("You can earn up to {amount} Strength while offline!"),
-    ["MenuRetention.OnlineCountdown"] = Text.Mark("Your next online reward is available in {time}!"),
-    ["MenuRetention.Ready"] = Text.Mark("Your online reward is ready to claim!"),
-    ["MenuRetention.Complete"] = Text.Mark("You have claimed all of today's online rewards!"),
-    ["MenuRetention.Stay"] = Text.Mark("Don't leave yet! A gift is ready for you!"),
-    ["MenuRetention.Available"] = Text.Mark("Reward ready! Claim now!"),
-    ["MenuRetention.Resume"] = Text.Mark("Close the Roblox menu to claim your gift."),
-}
 
 --- 创建礼包文字；动态文案统一使用项目本地化入口。
 --- @param parent Instance 本组件拥有的容器。
@@ -195,7 +198,7 @@ function Component:ClaimGift()
             self:GetPlayerObject():RequireComponent("CSoundComp"):PlayRewardSound()
             self._commonUI:ShowLocalizedTips(result.key)
         else
-            local key = ok and type(result) == "table" and result.key or "Common.Unknown"
+            local key = ok and type(result) == "table" and result.key or TranslationTexts["Common.Unknown"]
             self._commonUI:ShowLocalizedTips(key)
         end
         self:RefreshGift()
@@ -209,28 +212,30 @@ function Component:RefreshGift()
     if not available then
         self._offerOpen = false
     end
-    local sideText = self:FormatText("MenuRetention.Available")
+    local sideText = self:FormatText(TranslationTexts["MenuRetention.Available"])
     for index, text in ipairs(self._sideTexts) do
         text.Visible = available and GuiService.MenuIsOpen
         text.Text = sideText
     end
     self._giftPanel.Visible = available and self._offerOpen == true
-    self._giftTitle.Text = self:FormatText("MenuRetention.Stay")
-    self._giftHint.Text = self:FormatText("MenuRetention.Resume")
+    self._giftTitle.AutoLocalize = true
+    self._giftTitle.Text = "Don't leave yet! A gift is ready for you!"
+    self._giftHint.AutoLocalize = true
+    self._giftHint.Text = "Close the Roblox menu to claim your gift."
     self._giftHint.Visible = GuiService.MenuIsOpen
     local reward = Welfare.ToDisplayReward(self._retention.Reward)
     local rewardName = reward.type == "Aura"
-        and Text.Tr(Aura.GetConfig(self._retention.Reward.Id).Name)
-        or Text.Tr(_G.ItemConfig.Display[reward.id].Name)
+        and Text.TrSource(Aura.GetConfig(self._retention.Reward.Id).Name)
+        or Text.TrSource(_G.ItemConfig.Display[reward.id].Name)
     self._giftReward.Text = reward.type == "Gem"
-        and Text.Tr("{value} Diamonds", {value = GameUtility.NumberToText(reward.amount)})
-        or Text.Tr("{item} ×{value}", {
+        and Text.Tr(TranslationTexts["Welfare.Diamonds"], {value = GameUtility.NumberToText(reward.amount)})
+        or Text.Tr(TranslationTexts["Welfare.ItemReward"], {
             item = rewardName,
             value = GameUtility.NumberToText(reward.amount),
         })
     local pending = self._requestTask ~= nil
     self._giftClaim.Interactable = available and not pending and not GuiService.MenuIsOpen
-    self._giftClaimText.Text = Text.Tr(pending and "Welfare.Pending" or "Welfare.Claim")
+    self._giftClaimText.Text = Text.Tr(pending and TranslationTexts["Welfare.Pending"] or TranslationTexts["Welfare.Claim"])
 end
 
 --- 返回菜单提示组件的协作名称。
@@ -337,7 +342,7 @@ end
 --- @param arguments table? 原生模板参数。
 --- @return string 当前语言文案或英文兜底。
 function Component:FormatText(key, arguments)
-    return Text.Tr(Templates[key] or key, arguments)
+    return Text.Tr(key, arguments)
 end
 
 --- 使用与服务端离线奖励一致的永久倍率和阶段上限，展示普通领取的最大收益。
@@ -366,7 +371,7 @@ function Component:RefreshText()
     self:RefreshGift()
     self._topText.Parent.Visible = GuiService.MenuIsOpen
     self._bottomText.Parent.Visible = GuiService.MenuIsOpen
-    self._topText.Text = self:FormatText("MenuRetention.Offline", {
+    self._topText.Text = self:FormatText(TranslationTexts["MenuRetention.Offline"], {
         amount = GameUtility.NumberToText(self:GetOfflineMaximum()),
     })
     local state = self:GetTable(Fields.WelfareState)
@@ -381,8 +386,8 @@ function Component:RefreshText()
             remaining = remaining and math.min(remaining, seconds) or seconds
         end
     end
-    local key = remaining == nil and "MenuRetention.Complete"
-        or remaining == 0 and "MenuRetention.Ready" or "MenuRetention.OnlineCountdown"
+    local key = remaining == nil and TranslationTexts["MenuRetention.Complete"]
+        or remaining == 0 and TranslationTexts["MenuRetention.Ready"] or TranslationTexts["MenuRetention.OnlineCountdown"]
     local elapsed = math.floor(os.clock() - self._snapshotReceivedAt)
     local seconds = math.max(0, math.ceil((remaining or 0) - elapsed))
     self._bottomText.Text = self:FormatText(key, {

@@ -58,7 +58,8 @@ return {
         "S2C_GiftDropOpened",
         -- 无参数；服务端确认公共小狗拾取成功后，仅通知拾取者播放现有拾取音效。
         "S2C_DogPickedUp",
-        -- key: string、arguments: table?、duration: number?，项目提示在客户端翻译，单向消息。
+        -- definition: {Key: string, Source: string}、arguments: table?、duration: number?。
+        -- 服务端仅发送完整定义，由客户端翻译，单向消息。
         "S2C_ShowLocalizedTips",
         -- gain: number，服务端实际训练收益；rewardRain: boolean?，力量卡结算为 true，播放力量图标雨。
         -- position: Vector2?，点击结算返回飘字起点；走路及击打不传，力量卡不传位置。
@@ -67,7 +68,7 @@ return {
         "S2C_RockReset",
         -- key: string、round: number、accepted: boolean，确认命中或要求撤销该次本地扣血预测。
         "S2C_RockHitResult",
-        -- data: {DropId, DisplayModelId, NameKey, Quality, Price, IsLucky, LuckRate, GroundPosition, ExpiresAt}。
+        -- data: {DropId, DisplayModelId, NameSource, Quality, Price, IsLucky, LuckRate, GroundPosition, ExpiresAt}。
         -- 仅发送给掉落拥有者，由客户端本地创建模型、HUD 和拾取提示。
         "S2C_SpawnRockDrop",
         -- dropId: string；拾取成功、到期或轮次重置时通知拥有者移除本地掉落表现。

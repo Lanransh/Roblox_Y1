@@ -1,11 +1,15 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
+local TranslationTexts = {
+    ["Collection.Rule"] = { Key = "CCollectionUICompClass.Collection.Rule", Source = "Collect {count:int} items for +{percent}% training." },
+    ["Collection.Count"] = { Key = "CCollectionUICompClass.Collection.Count", Source = "{count:int}/{total:int} collected" },
+}
+
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 FXLoader:RequireFromParent(script, "Generated/CCollectionView")
 local Fields = _G.PlayerDataConfig
 local GameConfig = _G.GameConfig
 local Collection = FXLoader:RequireShared("Scripts/Game/Shared/Collection")
-local CollectibleText = FXLoader:RequireShared("Scripts/Game/Shared/CollectibleText")
 local Component = FX.Class("CCollectionUICompClass", "CCollectionView")
 
 --- 返回主界面打开图鉴时使用的组件名称。
@@ -22,10 +26,6 @@ function Component:OnReady()
     self._commonUI = self:GetPlayerObject():RequireComponent("FCCommonUIComp")
     self._commonUI:RegisterTrainingClickModal(self.Root)
     self._localization = self._commonUI.Localization
-    self._hint = FXLoader:Here(self.Root, "PopupPanelImg/SummaryImg/HintTxt")
-    self._boostLabel = FXLoader:Here(self.Root, "PopupPanelImg/SummaryImg/BoostLabelTxt")
-    self._hint.AutoLocalize = false
-    self._boostLabel.AutoLocalize = false
     self.Count.AutoLocalize = false
     self.Rule.AutoLocalize = false
     self.Boost.AutoLocalize = false
@@ -62,24 +62,22 @@ function Component:RefreshCollection()
     local entries = self:GetTable(Fields.CollectionEntries)
     for index, item in ipairs(self.Config.items) do
         local config = GameConfig.ItemData[item.itemId]
-        item.name = Text.Tr(CollectibleText.GetNameKey(config.DisplayModelId))
+        item.name = Text.TrSource(config.Name)
         self.State.entries[item.id] = {active = entries[item.id] == true}
     end
     self.State.totalStrengthPercent = (Collection.GetTrainingRate(entries) - 1) * 100
     self:RefreshUI()
 end
 
---- 复用生成列表，显示真实训练门槛；未激活图标使用道具原图的黑色剪影。
+--- 生成类仅拼接英文统计；这里只补动态规则与数量翻译，固定摘要由工具处理。
 --- @param state table 服务端记录派生的完整展示状态。
 function Component:Render(state)
     Component.Super.Render(self, state)
-    self._hint.Text = Text.Tr("Store items at your base to unlock them.")
-    self._boostLabel.Text = Text.Tr("Total Training Bonus")
     local rules = GameConfig.CommonConfig.CollectionData
-    self.Rule.Text = Text.Tr("Collect {count:int} items for +{percent}% training.", {
+    self.Rule.Text = Text.Tr(TranslationTexts["Collection.Rule"], {
         count = rules.UnlockCount, percent = rules.TrainingRate * 100,
     })
-    self.Count.Text = Text.Tr("{count:int}/{total:int} collected", {
+    self.Count.Text = Text.Tr(TranslationTexts["Collection.Count"], {
         count = Collection.GetCount(self:GetTable(Fields.CollectionEntries)), total = #self.Config.items,
     })
     for index, item in ipairs(self.Config.items) do

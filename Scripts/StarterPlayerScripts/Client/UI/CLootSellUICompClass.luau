@@ -1,12 +1,20 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
+local TranslationTexts = {
+    ["LootSell.LuckyName"] = { Key = "CLootSellUICompClass.LootSell.LuckyName", Source = "Lucky {item} (×{rate})" },
+    ["LootSell.Coins"] = { Key = "CLootSellUICompClass.LootSell.Coins", Source = "{value} Coins" },
+    ["LootSell.Count"] = { Key = "CLootSellUICompClass.LootSell.Count", Source = "{count:int}/{capacity:int}" },
+    ["LootSell.Empty"] = { Key = "CLootSellUICompClass.LootSell.Empty", Source = "You have no items to sell." },
+    ["LootSell.Gained"] = { Key = "CLootSellUICompClass.LootSell.Gained", Source = "You earned {value} Coins!" },
+    ["Common.Unknown"] = { Key = "CLootSellUICompClass.Common.Unknown", Source = "Something went wrong. Please try again." },
+}
+
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local RunService = game:GetService("RunService")
 FXLoader:RequireFromParent(script, "Generated/CLootSellView")
 local Fields = _G.PlayerDataConfig
 local GameConfig = _G.GameConfig
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
-local CollectibleText = FXLoader:RequireShared("Scripts/Game/Shared/CollectibleText")
 local Rebirth = FXLoader:RequireShared("Scripts/Game/Shared/Rebirth")
 local RockLevel = FXLoader:RequireShared("Scripts/Game/Shared/RockLevel")
 local ShopAreas = FXLoader:RequireFromParent(script, "ShopAreas")
@@ -47,17 +55,6 @@ function Component:OnReady()
         label.AutoLocalize = false
     end
     self.StatusTxt.Visible = false
-    local labels = {
-        ["TitleBox/TitleTxt"] = "SELL LOOT",
-        ["PopupPanelImg/TotalImg/TotalLabelTxt"] = "Total Value",
-        ["PopupPanelImg/TotalImg/SellAllBtn/ButtonTxt"] = "Sell All",
-        ["PopupPanelImg/TotalImg/SellDoubleBtn/ButtonTxt"] = "Sell x2 (1 Card)",
-    }
-    for path, text in pairs(labels) do
-        local label = FXLoader:Here(root, path)
-        label.Text = text
-        label.AutoLocalize = true
-    end
     self:Hide()
     self:TrackConnection(self._localization.Changed:Connect(function()
         self:RefreshLoot()
@@ -117,11 +114,10 @@ function Component:RefreshLoot(entries)
     local rate = Rebirth.GetMoneyRate(self:GetNumber(Fields.RebirthCount))
     for index, entry in ipairs(entries) do
         local config = GameConfig.ItemData[entry.itemId]
-        local nameKey = CollectibleText.GetNameKey(config.DisplayModelId)
-        local name = Text.Tr(nameKey)
+        local name = Text.TrSource(config.Name)
         if entry.isLucky then
-            name = Text.Tr("Lucky {item} (×{rate})", {
-                itemKey = nameKey, rate = GameUtility.NumberToText(entry.luckRate),
+            name = Text.Tr(TranslationTexts["LootSell.LuckyName"], {
+                item = name, rate = GameUtility.NumberToText(entry.luckRate),
             })
         end
         table.insert(items, {
@@ -143,15 +139,15 @@ function Component:Render(state)
         row.name.AutoLocalize = false
         row.value.AutoLocalize = false
         row.icon.Image = item.icon
-        row.value.Text = Text.Tr("{value} Coins", {
+        row.value.Text = Text.Tr(TranslationTexts["LootSell.Coins"], {
             value = GameUtility.NumberToText(item.value),
         })
         total += item.value
     end
-    self.Total.Text = Text.Tr("{value} Coins", {
+    self.Total.Text = Text.Tr(TranslationTexts["LootSell.Coins"], {
         value = GameUtility.NumberToText(total),
     })
-    self.CapacityTxt.Text = Text.Tr("{count:int}/{capacity:int}", {
+    self.CapacityTxt.Text = Text.Tr(TranslationTexts["LootSell.Count"], {
         count = #state.items, capacity = self.Config.capacity,
     })
     -- 空包点击仍需反馈，仅请求处理中禁用按钮，覆盖展示类的空包禁用规则。
@@ -187,7 +183,7 @@ function Component:OnUIAction(action, payload)
         return
     end
     if #self.State.items == 0 then
-        self._commonUI:ShowLocalizedTips("LootSell.Empty")
+        self._commonUI:ShowLocalizedTips(TranslationTexts["LootSell.Empty"])
         return
     end
     self.State.pending = true
@@ -202,7 +198,7 @@ function Component:OnUIAction(action, payload)
         self._sellTask = nil
         self.State.pending = false
         if ok and result.success then
-            self._commonUI:ShowLocalizedTips("LootSell.Gained", {
+            self._commonUI:ShowLocalizedTips(TranslationTexts["LootSell.Gained"], {
                 value = GameUtility.NumberToText(result.amount),
             })
             if result.amount > 0 then
@@ -210,7 +206,7 @@ function Component:OnUIAction(action, payload)
                 self:Hide()
             end
         else
-            self._commonUI:ShowLocalizedTips(ok and result.key or "Common.Unknown")
+            self._commonUI:ShowLocalizedTips(ok and result.key or TranslationTexts["Common.Unknown"])
         end
         self:RefreshLoot(ok and result.entries or nil)
     end)

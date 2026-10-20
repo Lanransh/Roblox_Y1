@@ -4,6 +4,10 @@ local RunService = game:GetService("RunService")
 local FX, FC = _G.FX, _G.FC
 local FXLoader = FX.Loader
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
+local TranslationTexts = {
+    ["Ready"] = { Key = "GiftDrop.Ready", Source = "Gifts ready to collect!" },
+    ["Complete"] = { Key = "GiftDrop.Complete", Source = "All gifts collected today" },
+}
 local GiftDrop = {}
 
 --- 注册个人礼盒通知；生成表现与领取请求分离，客户端不能自行签发奖励资格。
@@ -26,9 +30,9 @@ function GiftDrop.Init()
         elseif secondsLeft >= 0 then
             text = string.format("%02d:%02d", math.floor(secondsLeft / 60), secondsLeft % 60)
         elseif hasDrops then
-            text = Text.Tr("Gifts ready to collect!")
+            text = Text.Tr(TranslationTexts.Ready)
         else
-            text = Text.Tr("All gifts collected today")
+            text = Text.Tr(TranslationTexts.Complete)
         end
         for countdownIndex, countdown in ipairs(countdowns) do
             countdown.Text = text
@@ -156,9 +160,9 @@ function GiftDrop.Spawn(options, onOpened)
     light.Range = 16
     light.Parent = anchor
     local prompt = Instance.new("ProximityPrompt")
-    prompt.ActionText = Text.Tr("Pick Up")
+    prompt.ActionText = "Pick Up"
     prompt.ObjectText = ""
-    prompt.AutoLocalize = false
+    prompt.AutoLocalize = true
     prompt.RootLocalizationTable = FXLoader:Shared("Shared/Localization")
     prompt.KeyboardKeyCode = Enum.KeyCode.E
     prompt.MaxActivationDistance = 10
@@ -172,9 +176,6 @@ function GiftDrop.Spawn(options, onOpened)
     local opening = false
     local updateConnection
     local promptConnection
-    local languageConnection = FC.Localization.Changed:Connect(function()
-        prompt.ActionText = Text.Tr("Pick Up")
-    end)
 
     --- 提前取消本地礼盒，释放动画、交互连接与全部生成实例。
     function handle:Destroy()
@@ -184,7 +185,6 @@ function GiftDrop.Spawn(options, onOpened)
         destroyed = true
         updateConnection:Disconnect()
         promptConnection:Disconnect()
-        languageConnection:Disconnect()
         container:Destroy()
     end
 

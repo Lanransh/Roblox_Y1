@@ -1,6 +1,6 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
-local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
+
 local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
 local ContextActionService = game:GetService("ContextActionService")
@@ -17,9 +17,9 @@ local Gold = Color3.fromRGB(255, 194, 46)
 local Cream = Color3.fromRGB(255, 237, 198)
 local VisibleRankCount = 7
 local BoardTypes = {
-    {Name = "Strength", TitleKey = "Leaderboard.StrengthTitle", HeaderKey = "Leaderboard.Strength", TopScore = 35000000, PersonalScore = 6320, TextColor = Gold},
-    {Name = "Rebirth", TitleKey = "Leaderboard.RebirthTitle", HeaderKey = "Leaderboard.Rebirths", TopScore = 1200, PersonalScore = 6, TextColor = Color3.fromRGB(210, 165, 255)},
-    {Name = "Playtime", TitleKey = "Leaderboard.PlaytimeTitle", HeaderKey = "Leaderboard.PlaytimeLabel", TopScore = 6000, PersonalScore = 105, TextColor = Color3.fromRGB(110, 235, 245)},
+    {Name = "Strength", Title = "Strength Leaderboard", Header = "Strength", TopScore = 35000000, PersonalScore = 6320, TextColor = Gold},
+    {Name = "Rebirth", Title = "Rebirth Leaderboard", Header = "Rebirths", TopScore = 1200, PersonalScore = 6, TextColor = Color3.fromRGB(210, 165, 255)},
+    {Name = "Playtime", Title = "Playtime Leaderboard", Header = "Playtime", TopScore = 6000, PersonalScore = 105, TextColor = Color3.fromRGB(110, 235, 245)},
 }
 
 --- 力量沿用统一缩写，重生次数显示整数；在线不足一小时显示分钟，其余显示整小时或天和剩余小时。
@@ -57,7 +57,7 @@ local function Create(className, parent, properties)
     return node
 end
 
---- 统一榜单字体；文字由项目翻译入口赋值，关闭二次自动翻译。
+--- 统一榜单字体；固定标签沿用原生自动本地化，不额外登记翻译定义。
 --- @param parent Instance 父节点。
 --- @param text string 英文兜底或数字。
 --- @param position UDim2 列位置。
@@ -67,7 +67,7 @@ local function Label(parent, text, position, size)
     return Create("TextLabel", parent, {
         BackgroundTransparency = 1, Position = position, Size = size,
         Text = text, TextColor3 = Cream, TextSize = 42,
-        Font = Enum.Font.FredokaOne, AutoLocalize = false,
+        Font = Enum.Font.FredokaOne, AutoLocalize = true,
         TextStrokeTransparency = 0.65, TextTruncate = Enum.TextTruncate.AtEnd,
     })
 end
@@ -180,7 +180,7 @@ function Component:BindCameraView()
         Name = "View", AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.fromScale(0.92, 0.65),
         Size = UDim2.new(0.28, 0, 0, 36), BackgroundColor3 = Gold, BorderSizePixel = 0,
         TextColor3 = Color3.fromRGB(64, 38, 15), Font = Enum.Font.FredokaOne, TextSize = 16,
-        AutoLocalize = false, Visible = false, Text = "E · View Leaderboard",
+        AutoLocalize = true, Visible = false, Text = "E · View Leaderboard",
     })
     Create("UISizeConstraint", self._viewButton, {MaxSize = Vector2.new(220, 36)})
     Create("UICorner", self._viewButton, {CornerRadius = UDim.new(0, 14)})
@@ -192,7 +192,7 @@ function Component:BindCameraView()
         Name = "Close", AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.fromScale(0.92, 0.65),
         Size = UDim2.new(0.28, 0, 0, 36), BackgroundColor3 = Gold, BorderSizePixel = 0,
         TextColor3 = Color3.fromRGB(64, 38, 15), Font = Enum.Font.FredokaOne, TextSize = 16,
-        AutoLocalize = false, Visible = false, Modal = true, Text = "Close · E",
+        AutoLocalize = true, Visible = false, Modal = true, Text = "Close · E",
     })
     Create("UISizeConstraint", self._closeButton, {MaxSize = Vector2.new(220, 36)})
     Create("UICorner", self._closeButton, {CornerRadius = UDim.new(0, 14)})
@@ -324,6 +324,7 @@ function Component:CreateRow(parent, rank, userId, playerName, strength, persona
     Create("UICorner", avatar, {CornerRadius = UDim.new(1, 0)})
     local name = Label(row, playerName, UDim2.fromScale(0.25, 0), UDim2.fromScale(0.43, 1))
     name.Name = "PlayerName"
+    name.AutoLocalize = personal
     local score = Label(row, GameUtility.NumberToText(strength), UDim2.fromScale(0.70, 0), UDim2.fromScale(0.29, 1))
     score.Name = "Score"
     if personal then
@@ -339,10 +340,10 @@ end
 
 --- 刷新各世界榜单文案和分类字色；个人行使用深色版本，确保金色背景上的可读性。
 function Component:RefreshLocalization()
-    self._rankHeader.Text = Text.Tr("Rank")
-    self._playerHeader.Text = Text.Tr("Player")
-    self._personalName.Text = Text.Tr("You")
-    self._viewButton.Text = Text.Tr("E · View Leaderboard")
+    self._rankHeader.Text = "Rank"
+    self._playerHeader.Text = "Player"
+    self._personalName.Text = "You"
+    self._viewButton.Text = "E · View Leaderboard"
     for index, board in ipairs(self._boards) do
         local panel = board.Gui.Panel
         local config = BoardTypes[board.Kind]
@@ -352,14 +353,14 @@ function Component:RefreshLocalization()
                     and config.TextColor:Lerp(Color3.new(0, 0, 0), 0.75) or config.TextColor
             end
         end
-        panel.Title.Text = Text.Tr(config.TitleKey)
-        panel.StrengthHeader.Text = Text.Tr(config.HeaderKey)
+        panel.Title.Text = config.Title
+        panel.StrengthHeader.Text = config.Header
         for labelIndex, label in ipairs({self._rankHeader, self._playerHeader}) do
             panel[label.Name].Text = label.Text
         end
         panel.Rank101.PlayerName.Text = self._personalName.Text
     end
-    self._closeButton.Text = Text.Tr("Close · E")
+    self._closeButton.Text = "Close · E"
 end
 
 --- 只销毁组件创建的界面，模型和显示面保持原样。

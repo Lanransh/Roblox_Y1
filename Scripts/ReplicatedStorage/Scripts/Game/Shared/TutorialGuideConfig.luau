@@ -3,20 +3,20 @@ return {
     FirstLootGuide = {
         startEvent = "Tutorial.Login",
         steps = {
-            {finishEvent = "Tutorial.Collected", target = {type = "NearestItem", key = "Tutorial.Collect"}},
-            {finishEvent = "Tutorial.Deposited", target = {type = "Base", key = "Tutorial.Deposit"}},
-            {finishEvent = "Tutorial.Sold", target = {type = "Sell", key = "Tutorial.Sell"}},
-            {finishEvent = "Tutorial.Rate", target = {type = "Text", key = "Tutorial.Rate"}},
-            {finishEvent = "Tutorial.Weapon", target = {type = "Weapon", key = "Tutorial.Weapon"}},
-            {finishEvent = "Tutorial.Training", duration = 3, target = {type = "Text", key = "Tutorial.AutomaticTraining"}},
-            {finishEvent = "Tutorial.Done", duration = 3, target = {type = "Text", key = "Tutorial.Done"}},
-            {finishEvent = "Tutorial.Rewards", duration = 3, target = {type = "Rewards", key = "Tutorial.Rewards"}},
+            {finishEvent = "Tutorial.Collected", target = {type = "NearestItem", textId = "Tutorial.Collect"}},
+            {finishEvent = "Tutorial.Deposited", target = {type = "Base", textId = "Tutorial.Deposit"}},
+            {finishEvent = "Tutorial.Sold", target = {type = "Sell", textId = "Tutorial.Sell"}},
+            {finishEvent = "Tutorial.Rate", target = {type = "Text", textId = "Tutorial.Rate"}},
+            {finishEvent = "Tutorial.Weapon", target = {type = "Weapon", textId = "Tutorial.Weapon"}},
+            {finishEvent = "Tutorial.Training", duration = 3, target = {type = "Text", textId = "Tutorial.AutomaticTraining"}},
+            {finishEvent = "Tutorial.Done", duration = 3, target = {type = "Text", textId = "Tutorial.Done"}},
+            {finishEvent = "Tutorial.Rewards", duration = 3, target = {type = "Rewards", textId = "Tutorial.Rewards"}},
         },
     },
     FirstAuraGuide = {
         startEvent = "Tutorial.AuraAffordable",
         steps = {
-            {finishEvent = "Tutorial.AuraEntered", target = {type = "Aura", key = "Tutorial.Aura"}},
+            {finishEvent = "Tutorial.AuraEntered", target = {type = "Aura", textId = "Tutorial.Aura"}},
         },
     },
 }
