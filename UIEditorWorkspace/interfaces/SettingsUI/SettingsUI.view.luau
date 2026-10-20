@@ -24,7 +24,31 @@ State: 必填完整快照，每次 RefreshUI 都提供全部字段。
 
 local FX = _G.FX
 local FXLoader = FX.Loader
+local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local CSettingsView = FX.Class("CSettingsView", "CUIView")
+
+local TranslationTexts = {
+    Volume = {
+        Key = "SettingsUI.Volume",
+        Source = "{value:int}%",
+    },
+    On = {
+        Key = "SettingsUI.On",
+        Source = "ON",
+    },
+    Off = {
+        Key = "SettingsUI.Off",
+        Source = "OFF",
+    },
+}
+
+-- 动态文本由 Text.Tr 求值，真实 Roblox 节点关闭引擎二次翻译。
+-- @param node Instance 需要关闭自动本地化的文本节点
+local function DisableAutoLocalize(node)
+    if typeof(node) == "Instance" then
+        node.AutoLocalize = false
+    end
+end
 
 -- 把鼠标位置换算成百分比，并把音量变化交给接入层。
 -- @param self CSettingsView 实例
@@ -97,6 +121,7 @@ function CSettingsView:OnReady()
     }
 
     for setting, slider in pairs(self.Sliders) do
+        DisableAutoLocalize(slider.value)
         bindSlider(self, setting, slider.track, slider.input)
     end
 
@@ -114,6 +139,7 @@ function CSettingsView:OnReady()
     }
 
     for setting, toggle in pairs(self.Toggles) do
+        DisableAutoLocalize(toggle.text)
         local settingName = setting
         local button = toggle.button
         -- 点击只传设置键和新值，具体保存由接入层负责。
@@ -144,7 +170,9 @@ function CSettingsView:Render(state)
     for setting, slider in pairs(self.Sliders) do
         local value = state[setting]
         local ratio = math.clamp(value / 100, 0, 1)
-        slider.value.Text = tostring(math.floor(value + 0.5)) .. "%"
+        slider.value.Text = Text.Tr(TranslationTexts.Volume, {
+            value = math.floor(value + 0.5),
+        })
         slider.fill.Size = UDim2.new(ratio, 0, 1, 0)
         slider.knob.Position = UDim2.new(ratio, 0, 0.5, 0)
     end
@@ -157,7 +185,11 @@ function CSettingsView:Render(state)
         toggle.edge.BackgroundColor3 = Color3.fromHex(
             enabled and "#1D542A" or "#263E36"
         )
-        toggle.text.Text = enabled and "ON" or "OFF"
+        if enabled then
+            toggle.text.Text = Text.Tr(TranslationTexts.On)
+        else
+            toggle.text.Text = Text.Tr(TranslationTexts.Off)
+        end
     end
 end
 

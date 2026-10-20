@@ -24,7 +24,35 @@ Preview 仅演示立即购买成功，不发起真实扣款或发奖。普通窗
 ]]
 local FX = _G.FX
 local FXLoader = FX.Loader
+local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local CShopPurchaseView = FX.Class("CShopPurchaseView", "CUIView")
+
+local TranslationTexts = {
+    Buy = {
+        Key = "ShopPurchaseUI.Buy",
+        Source = "{price} · Buy",
+    },
+    Buying = {
+        Key = "ShopPurchaseUI.Buying",
+        Source = "Buying...",
+    },
+    Purchased = {
+        Key = "ShopPurchaseUI.Purchased",
+        Source = "Purchased",
+    },
+    Retry = {
+        Key = "ShopPurchaseUI.Retry",
+        Source = "Retry",
+    },
+}
+
+-- 动态文本由 Text.Tr 求值，真实 Roblox 节点关闭引擎二次翻译。
+-- @param node Instance 需要关闭自动本地化的文本节点
+local function DisableAutoLocalize(node)
+    if typeof(node) == "Instance" then
+        node.AutoLocalize = false
+    end
+end
 
 -- 绑定设计节点；事件只连接一次，点击时读取当前稳定商品 ID。
 function CShopPurchaseView:OnReady()
@@ -36,6 +64,7 @@ function CShopPurchaseView:OnReady()
     self.ItemIconImg = FXLoader:Here(root, "PopupPanelImg.ItemSurfaceImg.ItemIconImg")
     self.BuyBtn = FXLoader:Here(root, "PopupPanelImg.BuyBtn")
     self.ButtonTxt = FXLoader:Here(root, "PopupPanelImg.BuyBtn.ButtonTxt")
+    DisableAutoLocalize(self.ButtonTxt)
     local closeBtn = FXLoader:Here(root, "TitleBox.CloseSurfaceImg.CloseBtn")
     -- 购买动作只发送 ID，价格与资格由游戏接入层校验。
     self:TrackConnection(self.BuyBtn.Activated:Connect(function()
@@ -71,14 +100,16 @@ function CShopPurchaseView:Render(state)
     self.ItemIconImg.Visible = true
     self.DescriptionTxt.Visible = true
     self.BuyBtn.Visible = true
-    self.ButtonTxt.Text = tostring(config.price) .. " · Buy"
+    self.ButtonTxt.Text = Text.Tr(TranslationTexts.Buy, {
+        price = config.price,
+    })
     if state.pending then
-        self.ButtonTxt.Text = "Buying..."
+        self.ButtonTxt.Text = Text.Tr(TranslationTexts.Buying)
     elseif state.status == "Purchased" then
-        self.ButtonTxt.Text = "Purchased"
+        self.ButtonTxt.Text = Text.Tr(TranslationTexts.Purchased)
     elseif state.status == "Ready" then
         if state.error then
-            self.ButtonTxt.Text = "Retry"
+            self.ButtonTxt.Text = Text.Tr(TranslationTexts.Retry)
         end
     else
         error("Unknown purchase status: " .. tostring(state.status))

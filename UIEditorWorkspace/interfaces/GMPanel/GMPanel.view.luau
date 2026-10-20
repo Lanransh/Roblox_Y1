@@ -25,7 +25,20 @@ TextBox 为原生 Roblox 输入框；App 自动化不支持键盘、文本输入
 ]]
 local FX = _G.FX
 local FXLoader = FX.Loader
+local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local CGMPanelView = FX.Class("CGMPanelView", "CUIView")
+
+-- GM 面板固定显示中文，Source 保留当前预览原文，由 Text.Tr 统一取值。
+local TranslationTexts = {
+    ResetData = {
+        Key = "GMPanel.ResetData",
+        Source = "重置数据",
+    },
+    ConfirmReset = {
+        Key = "GMPanel.ConfirmReset",
+        Source = "再次确认",
+    },
+}
 
 -- 一次绑定静态节点和按钮，输入值在点击时读取。
 function CGMPanelView:OnReady()
@@ -73,7 +86,7 @@ end
 -- 清除本地二次确认，不改业务状态。
 function CGMPanelView:CancelReset()
     self.ResetArmed = false
-    self.ResetTxt.Text = "重置数据"
+    self.ResetTxt.Text = Text.Tr(TranslationTexts.ResetData)
 end
 
 -- 校验输入后发送命令；重置需要连续两次点击。
@@ -85,7 +98,7 @@ function CGMPanelView:ExecuteCommand(action)
     if action == "ResetData" then
         if not self.ResetArmed then
             self.ResetArmed = true
-            self.ResetTxt.Text = "再次确认"
+            self.ResetTxt.Text = Text.Tr(TranslationTexts.ConfirmReset)
             return
         end
         self:CancelReset()

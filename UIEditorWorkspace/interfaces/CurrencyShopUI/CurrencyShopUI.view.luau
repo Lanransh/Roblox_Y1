@@ -32,7 +32,27 @@ Templates 隐藏原型供两列动态列表克隆，按稳定 ID 更新、排序
 ]]
 local FX = _G.FX
 local FXLoader = FX.Loader
+local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local CCurrencyShopView = FX.Class("CCurrencyShopView", "CUIView")
+
+local TranslationTexts = {
+    DiamondShop = {
+        Key = "CurrencyShopUI.DiamondShop",
+        Source = "DIAMOND SHOP",
+    },
+    RobuxShop = {
+        Key = "CurrencyShopUI.RobuxShop",
+        Source = "ROBUX SHOP",
+    },
+}
+
+-- 动态文本由 Text.Tr 求值，真实 Roblox 节点关闭引擎二次翻译。
+-- @param node Instance 需要关闭自动本地化的文本节点
+local function DisableAutoLocalize(node)
+    if typeof(node) == "Instance" then
+        node.AutoLocalize = false
+    end
+end
 
 -- 绑定已有节点与页签事件；每张商品卡只连接一次。
 function CCurrencyShopView:OnReady()
@@ -50,6 +70,7 @@ function CCurrencyShopView:OnReady()
         end
     end
     self.Cards = {}
+    DisableAutoLocalize(self.ContentTitle)
     -- 页签动作仅提交目标货币。
     self:TrackConnection(self.DiamondTab.Activated:Connect(function()
         self:EmitUIAction("SelectTab", { tab = "Diamond" })
@@ -107,7 +128,11 @@ end
 function CCurrencyShopView:Render(state)
     self.Root.Enabled = state.open
     local diamondSelected = state.tab == "Diamond"
-    self.ContentTitle.Text = diamondSelected and "DIAMOND SHOP" or "ROBUX SHOP"
+    if diamondSelected then
+        self.ContentTitle.Text = Text.Tr(TranslationTexts.DiamondShop)
+    else
+        self.ContentTitle.Text = Text.Tr(TranslationTexts.RobuxShop)
+    end
     local diamondColor = Color3.fromHex("638079")
     local robuxColor = Color3.fromHex("638079")
     if diamondSelected then

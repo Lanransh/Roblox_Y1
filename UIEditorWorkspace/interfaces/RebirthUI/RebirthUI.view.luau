@@ -34,7 +34,39 @@ State（Render 的完整输入，不是增量）：
 ]]
 local FX = _G.FX
 local FXLoader = FX.Loader
+local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local UI = FX.Class("CRebirthUICompClass", "CUIView")
+
+local TranslationTexts = {
+    Multiplier = {
+        Key = "RebirthUI.Multiplier",
+        Source = "x{value}",
+    },
+    Progress = {
+        Key = "RebirthUI.Progress",
+        Source = "Level {level}/{required}",
+    },
+    ProgressUnavailable = {
+        Key = "RebirthUI.ProgressUnavailable",
+        Source = "Level {level}/--",
+    },
+    Complete = {
+        Key = "RebirthUI.Complete",
+        Source = "Rebirth complete! Strength reset.",
+    },
+    ResetWarning = {
+        Key = "RebirthUI.ResetWarning",
+        Source = "Rebirth resets your strength!",
+    },
+}
+
+-- 动态文本由 Text.Tr 求值，真实 Roblox 节点关闭引擎二次翻译。
+-- @param node Instance 需要关闭自动本地化的文本节点
+local function DisableAutoLocalize(node)
+    if typeof(node) == "Instance" then
+        node.AutoLocalize = false
+    end
+end
 
 -- 绑定已有设计节点与按钮；刷新时不重复连接事件。
 function UI:OnReady()
@@ -51,6 +83,12 @@ function UI:OnReady()
     self.CurrentMoneyTxt = FXLoader:Here(root, "PopupPanelImg.CurrentMoneyImg.MultiplierTxt")
     self.NextMoneyTxt = FXLoader:Here(root, "PopupPanelImg.NextMoneyImg.MultiplierTxt")
     self.RebirthGradient = FXLoader:Here(root, "PopupPanelImg.RebirthBtn.SurfaceGradient")
+    DisableAutoLocalize(self.ProgressTxt)
+    DisableAutoLocalize(self.WarningTxt)
+    DisableAutoLocalize(self.CurrentStrengthTxt)
+    DisableAutoLocalize(self.NextStrengthTxt)
+    DisableAutoLocalize(self.CurrentMoneyTxt)
+    DisableAutoLocalize(self.NextMoneyTxt)
     local close = FXLoader:Here(root, "TitleBox.CloseSurfaceImg")
     -- 关闭由接入层更新 Open，不销毁设计节点。
     self:TrackConnection(close.Activated:Connect(function()
@@ -76,17 +114,30 @@ end
 function UI:Render(state)
     self.Panel.Visible = state.Open
     self.TitleBox.Visible = state.Open
-    self.CurrentStrengthTxt.Text = string.format("x%.15g", state.CurrentStrengthMultiplier)
-    self.NextStrengthTxt.Text = string.format("x%.15g", state.NextStrengthMultiplier)
-    self.CurrentMoneyTxt.Text = string.format("x%.15g", state.CurrentMoneyMultiplier)
-    self.NextMoneyTxt.Text = string.format("x%.15g", state.NextMoneyMultiplier)
+    self.CurrentStrengthTxt.Text = Text.Tr(TranslationTexts.Multiplier, {
+        value = string.format("%.15g", state.CurrentStrengthMultiplier),
+    })
+    self.NextStrengthTxt.Text = Text.Tr(TranslationTexts.Multiplier, {
+        value = string.format("%.15g", state.NextStrengthMultiplier),
+    })
+    self.CurrentMoneyTxt.Text = Text.Tr(TranslationTexts.Multiplier, {
+        value = string.format("%.15g", state.CurrentMoneyMultiplier),
+    })
+    self.NextMoneyTxt.Text = Text.Tr(TranslationTexts.Multiplier, {
+        value = string.format("%.15g", state.NextMoneyMultiplier),
+    })
     local ready = state.RequiredLevel > 0
     local ratio = 0
     if ready then
-        self.ProgressTxt.Text = "Level " .. state.Level .. "/" .. state.RequiredLevel
+        self.ProgressTxt.Text = Text.Tr(TranslationTexts.Progress, {
+            level = state.Level,
+            required = state.RequiredLevel,
+        })
         ratio = math.clamp(state.Level / state.RequiredLevel, 0, 1)
     else
-        self.ProgressTxt.Text = "Level " .. state.Level .. "/--"
+        self.ProgressTxt.Text = Text.Tr(TranslationTexts.ProgressUnavailable, {
+            level = state.Level,
+        })
     end
     self.ProgressFill.Size = UDim2.fromScale(ratio, 1)
     local available = state.Open and ready and not state.Completed and not state.Pending
@@ -100,9 +151,9 @@ function UI:Render(state)
     end
     self.RebirthGradient.Enabled = not eligible
     if state.Completed then
-        self.WarningTxt.Text = "Rebirth complete! Strength reset."
+        self.WarningTxt.Text = Text.Tr(TranslationTexts.Complete)
     else
-        self.WarningTxt.Text = "Rebirth resets your strength!"
+        self.WarningTxt.Text = Text.Tr(TranslationTexts.ResetWarning)
     end
 end
 

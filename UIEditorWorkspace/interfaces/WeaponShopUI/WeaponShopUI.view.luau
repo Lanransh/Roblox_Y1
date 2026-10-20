@@ -25,7 +25,47 @@ App 动态 ID 预览能力有限，真实资源权限及 Studio 显示需另验�
 ]]
 local FX = _G.FX
 local FXLoader = FX.Loader
+local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local CWeaponShopView = FX.Class("CWeaponShopView", "CUIView")
+
+local TranslationTexts = {
+    Strength = {
+        Key = "WeaponShopUI.Strength",
+        Source = "Strength +{strength}",
+    },
+    Price = {
+        Key = "WeaponShopUI.Price",
+        Source = "+${price}",
+    },
+    Equip = {
+        Key = "WeaponShopUI.Equip",
+        Source = "Equip",
+    },
+    Equipped = {
+        Key = "WeaponShopUI.Equipped",
+        Source = "Equipped",
+    },
+    Waiting = {
+        Key = "WeaponShopUI.Waiting",
+        Source = "Waiting...",
+    },
+    NoWeapons = {
+        Key = "WeaponShopUI.NoWeapons",
+        Source = "No weapons available",
+    },
+    Loading = {
+        Key = "WeaponShopUI.Loading",
+        Source = "Loading...",
+    },
+}
+
+-- 动态文本由 Text.Tr 求值，真实 Roblox 节点关闭引擎二次翻译。
+-- @param node Instance 需要关闭自动本地化的文本节点
+local function DisableAutoLocalize(node)
+    if typeof(node) == "Instance" then
+        node.AutoLocalize = false
+    end
+end
 
 -- 绑定窗口与隐藏原型，只在首次准备时连接关闭按钮。
 function CWeaponShopView:OnReady()
@@ -38,6 +78,7 @@ function CWeaponShopView:OnReady()
     self.EmptyTxt = FXLoader:Here(root, "PopupPanelImg.EmptyTxt")
     self.Template = FXLoader:Here(root, "Templates.WeaponRowImg")
     self.Rows = {}
+    DisableAutoLocalize(self.EmptyTxt)
     local closeBtn = FXLoader:Here(root, "TitleBox.CloseSurfaceImg")
     self:TrackConnection(closeBtn.Activated:Connect(function()
         self:EmitUIAction("Close", {})
@@ -107,33 +148,42 @@ function CWeaponShopView:Render(state)
             end
             FXLoader:Here(row, "NameTxt").Text = weapon.name
             FXLoader:Here(row, "RarityTxt").Text = quality.name
-            FXLoader:Here(row, "StrengthTxt").Text = "Strength +" .. tostring(weapon.strength)
+            local strengthTxt = FXLoader:Here(row, "StrengthTxt")
+            DisableAutoLocalize(strengthTxt)
+            strengthTxt.Text = Text.Tr(TranslationTexts.Strength, {
+                strength = weapon.strength,
+            })
             local icon = FXLoader:Here(row, "WeaponIconImg")
             icon.Image = weapon.icon or "rbxassetid://86795093617566"
             local owned = state.owned[weapon.id] == true
             local equipped = state.equippedId == weapon.id
             local pending = state.pending and state.pending[weapon.id]
-            local caption = "+$" .. tostring(weapon.price)
+            local caption = Text.Tr(TranslationTexts.Price, {
+                price = weapon.price,
+            })
             local color = "#67ED14"
             local edge = "#225A07"
             if owned then
-                caption = "Equip"
+                caption = Text.Tr(TranslationTexts.Equip)
             end
             if equipped then
-                caption = "Equipped"
+                caption = Text.Tr(TranslationTexts.Equipped)
                 color = "#397BA7"
                 edge = "#193E73"
             elseif pending then
-                caption = "Waiting..."
+                caption = Text.Tr(TranslationTexts.Waiting)
                 color = "#638079"
             elseif not owned and state.coins < weapon.price then
-                caption = "+$" .. tostring(weapon.price)
+                caption = Text.Tr(TranslationTexts.Price, {
+                    price = weapon.price,
+                })
                 color = "#638079"
             end
             FXLoader:Here(row, "OwnedTxt").Visible = false
             local showMoney = not owned and not equipped and not pending
             FXLoader:Here(row, "ActionBtn.MoneyIconImg").Visible = showMoney
             local buttonText = FXLoader:Here(row, "ActionBtn.ButtonTxt")
+            DisableAutoLocalize(buttonText)
             buttonText.Text = caption
             buttonText.Position = UDim2.fromOffset(0, 0)
             buttonText.Size = UDim2.fromScale(1, 1)
@@ -156,9 +206,9 @@ function CWeaponShopView:Render(state)
     end
     self.List.CanvasSize = UDim2.fromOffset(0, math.max(524, count * 172))
     self.EmptyTxt.Visible = count == 0
-    self.EmptyTxt.Text = "No weapons available"
+    self.EmptyTxt.Text = Text.Tr(TranslationTexts.NoWeapons)
     if state.loading then
-        self.EmptyTxt.Text = "Loading..."
+        self.EmptyTxt.Text = Text.Tr(TranslationTexts.Loading)
     end
 end
 

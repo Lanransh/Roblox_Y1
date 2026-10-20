@@ -29,7 +29,31 @@ App 动态资源预览、真实资源权限和设备显示需另验。
 ]]
 local FX = _G.FX
 local FXLoader = FX.Loader
+local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local CCollectionView = FX.Class("CCollectionView", "CUIView")
+
+local TranslationTexts = {
+    StrengthRule = {
+        Key = "CollectionUI.StrengthRule",
+        Source = "+{percent}% Strength",
+    },
+    StrengthBoost = {
+        Key = "CollectionUI.StrengthBoost",
+        Source = "+{percent}%",
+    },
+    ActivatedCount = {
+        Key = "CollectionUI.ActivatedCount",
+        Source = "Activated {active:int} / {total:int}",
+    },
+}
+
+-- 动态文本由 Text.Tr 求值，真实 Roblox 节点关闭引擎二次翻译。
+-- @param node Instance 需要关闭自动本地化的文本节点
+local function DisableAutoLocalize(node)
+    if typeof(node) == "Instance" then
+        node.AutoLocalize = false
+    end
+end
 
 -- 绑定窗口、统计与隐藏卡片原型，只连接关闭操作。
 function CCollectionView:OnReady()
@@ -41,6 +65,9 @@ function CCollectionView:OnReady()
     self.Rule = FXLoader:Here(root, "PopupPanelImg.SummaryImg.StatusTxt")
     self.Template = FXLoader:Here(root, "Templates.ItemRowImg")
     self.Rows = {}
+    DisableAutoLocalize(self.Count)
+    DisableAutoLocalize(self.Boost)
+    DisableAutoLocalize(self.Rule)
     local close = FXLoader:Here(root, "TitleBox.CloseSurfaceImg")
     -- 关闭由接入层更新显隐状态。
     self:TrackConnection(close.Activated:Connect(function()
@@ -78,8 +105,12 @@ end
 function CCollectionView:Render(state)
     self.Root.Enabled = state.open
     local config = self:GetUIConfig()
-    self.Rule.Text = "+" .. tostring(config.strengthPerEntryPercent) .. "% Strength"
-    self.Boost.Text = "+" .. tostring(state.totalStrengthPercent) .. "%"
+    self.Rule.Text = Text.Tr(TranslationTexts.StrengthRule, {
+        percent = config.strengthPerEntryPercent,
+    })
+    self.Boost.Text = Text.Tr(TranslationTexts.StrengthBoost, {
+        percent = state.totalStrengthPercent,
+    })
     local kept = {}
     local activeCount = 0
     for index, item in ipairs(config.items) do
@@ -112,7 +143,10 @@ function CCollectionView:Render(state)
         898,
         math.max(326, math.ceil(#config.items / 4) * 164 - 12)
     )
-    self.Count.Text = "Activated " .. tostring(activeCount) .. " / " .. tostring(#config.items)
+    self.Count.Text = Text.Tr(TranslationTexts.ActivatedCount, {
+        active = activeCount,
+        total = #config.items,
+    })
 end
 
 -- 模拟与游戏接入必须处理关闭操作。

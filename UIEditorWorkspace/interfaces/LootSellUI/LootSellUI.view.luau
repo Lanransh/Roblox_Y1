@@ -36,7 +36,27 @@ RefreshUI 调用 Render(GetUIState())，不合并补丁。
 ]]
 local FX = _G.FX
 local FXLoader = FX.Loader
+local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local CLootSellView = FX.Class("CLootSellView", "CUIView")
+
+local TranslationTexts = {
+    Capacity = {
+        Key = "LootSellUI.Capacity",
+        Source = "Items: {count:int} / {capacity:int}",
+    },
+    NoItems = {
+        Key = "LootSellUI.NoItems",
+        Source = "No items to sell",
+    },
+}
+
+-- 动态文本由 Text.Tr 求值，真实 Roblox 节点关闭引擎二次翻译。
+-- @param node Instance 需要关闭自动本地化的文本节点
+local function DisableAutoLocalize(node)
+    if typeof(node) == "Instance" then
+        node.AutoLocalize = false
+    end
+end
 
 -- 将金币金额格式化为参考图的短文案。
 -- @param amount number 金币数量
@@ -61,6 +81,8 @@ function CLootSellView:OnReady()
     self.List.CanvasPosition = Vector2.new(0, 0)
     self.StatusTxt = FXLoader:Here(root, "PopupPanelImg.StatusTxt")
     self.StatusMoneyIcon = FXLoader:Here(root, "PopupPanelImg.StatusMoneyIconImg")
+    DisableAutoLocalize(self.CapacityTxt)
+    DisableAutoLocalize(self.StatusTxt)
     self.SellAllBtn = FXLoader:Here(root, "PopupPanelImg.TotalImg.SellAllBtn")
     self.SellDoubleBtn = FXLoader:Here(root, "PopupPanelImg.TotalImg.SellDoubleBtn")
     local closeBtn = FXLoader:Here(root, "TitleBox.CloseSurfaceImg")
@@ -169,7 +191,10 @@ function CLootSellView:Render(state)
     self.List.CanvasSize = UDim2.fromOffset(822, canvasHeight)
     self.List.CanvasPosition = Vector2.new(0, math.min(self.List.CanvasPosition.Y, canvasHeight - 252))
     self.Total.Text = FormatCoins(total)
-    self.CapacityTxt.Text = "Items: " .. count .. " / " .. self:GetUIConfig().capacity
+    self.CapacityTxt.Text = Text.Tr(TranslationTexts.Capacity, {
+        count = count,
+        capacity = self:GetUIConfig().capacity,
+    })
     self.CapacityTxt.TextColor3 = Color3.fromHex("#FFFFFF")
     if count >= self:GetUIConfig().capacity then
         self.CapacityTxt.TextColor3 = Color3.fromHex("#FFD34F")
@@ -177,7 +202,7 @@ function CLootSellView:Render(state)
     self.StatusTxt.Text = state.message or ""
     self.StatusMoneyIcon.Visible = string.find(self.StatusTxt.Text, "+$", 1, true) ~= nil
     if count == 0 and not state.message then
-        self.StatusTxt.Text = "No items to sell"
+        self.StatusTxt.Text = Text.Tr(TranslationTexts.NoItems)
     end
     self:SetButtonEnabled(self.SellAllBtn, count > 0 and not state.pending)
     self:SetButtonEnabled(self.SellDoubleBtn, count > 0 and not state.pending)

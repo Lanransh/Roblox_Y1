@@ -34,7 +34,35 @@ Close: payload = {}，由接入层 Hide；无其他必需或页面专用可选�
 ]]
 local FX = _G.FX
 local FXLoader = FX.Loader
+local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local CWorldTeleportView = FX.Class("CWorldTeleportView", "CUIView")
+
+local TranslationTexts = {
+    Go = {
+        Key = "WorldTeleportUI.Go",
+        Source = "Go",
+    },
+    Teleporting = {
+        Key = "WorldTeleportUI.Teleporting",
+        Source = "Teleporting",
+    },
+    Here = {
+        Key = "WorldTeleportUI.Here",
+        Source = "Here",
+    },
+    RequiredLevel = {
+        Key = "WorldTeleportUI.RequiredLevel",
+        Source = "Level {level}",
+    },
+}
+
+-- 动态文本由 Text.Tr 求值，真实 Roblox 节点关闭引擎二次翻译。
+-- @param node Instance 需要关闭自动本地化的文本节点
+local function DisableAutoLocalize(node)
+    if typeof(node) == "Instance" then
+        node.AutoLocalize = false
+    end
+end
 
 -- 绑定固定窗口与隐藏条目原型，关闭事件只连接一次。
 function CWorldTeleportView:OnReady()
@@ -65,6 +93,8 @@ function CWorldTeleportView:CreateRow(worldId)
     row.Parent = self.ListBox
     row.Visible = true
     local button = FXLoader:Here(row, "TravelBtn")
+    local buttonTxt = FXLoader:Here(button, "ButtonTxt")
+    DisableAutoLocalize(buttonTxt)
     -- 点击读取最新状态，传送动作只携带稳定世界 ID。
     local connection = self:TrackConnection(button.Activated:Connect(function()
         local state = self:GetUIState()
@@ -86,7 +116,7 @@ function CWorldTeleportView:CreateRow(worldId)
         row = row,
         button = button,
         nameTxt = FXLoader:Here(row, "WorldNameTxt"),
-        buttonTxt = FXLoader:Here(button, "ButtonTxt"),
+        buttonTxt = buttonTxt,
         rowEdge = FXLoader:Here(row, "BottomEdgeImg"),
         buttonEdge = FXLoader:Here(button, "BottomEdgeImg"),
         release = release,
@@ -114,13 +144,15 @@ function CWorldTeleportView:Render(state)
         record.nameTxt.Text = world.name
         local unlocked = state.level >= world.requiredLevel
         local current = state.currentWorldId == world.id
-        local buttonText = "Go"
+        local buttonText = Text.Tr(TranslationTexts.Go)
         if state.pendingWorldId == world.id then
-            buttonText = "Teleporting"
+            buttonText = Text.Tr(TranslationTexts.Teleporting)
         elseif current then
-            buttonText = "Here"
+            buttonText = Text.Tr(TranslationTexts.Here)
         elseif not unlocked then
-            buttonText = "Level " .. tostring(world.requiredLevel)
+            buttonText = Text.Tr(TranslationTexts.RequiredLevel, {
+                level = world.requiredLevel,
+            })
         end
         record.buttonTxt.Text = buttonText
         local buttonColor = "#67ed14"
