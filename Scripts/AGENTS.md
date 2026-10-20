@@ -75,6 +75,9 @@
 
 - 涉及业务动态文本、翻译定义或语言刷新时，先读取并遵循 [Roblox 项目本地化 skill](.agents/skills/roblox-localization/SKILL.md)；声明、Key 稳定性、运行时接口及验证规则统一在该 skill 维护。
 - 不修改 Generated 或生成配置，不为静态节点、配置引用或已正确翻译的动态文本重复补定义；编码任务不手工修改翻译文件、不通过 Roblox MCP 维护翻译表或上传云端。
+- UIEditor 导入的 UI 节点与 `UI/Generated/` 展示脚本已在制作阶段处理动态文本及 AutoLocalize；接入时默认沿用节点配置和克隆继承，不在 OnReady、Render 或刷新逻辑中重复关闭。接入完成后按 [本地化 skill](.agents/skills/roblox-localization/SKILL.md) 通过 Roblox MCP 批量只读检查本次 UI 的文本节点及隐藏原型；属性异常或无法核验时反馈用户，不自动修改生成节点或补运行时开关。
+
+- AutoLocalize 只在需要处理的具体文本节点上关闭，不关闭图片父节点、按钮、容器或整组子树。祖先关闭会阻断后代，子节点 true 不能恢复；MCP 核验须检查祖先和后代，发现翻译层级冲突反馈用户。
 
 ## Luau 验证规则
 - 新增或修改 Luau 后默认只做编译/语法验证，以及通过 Roblox MCP 只读核对同步后的脚本类型、RunContext 和内容，不自行运行 Lua 脚本或启动游戏。用户明确要求运行测试或试玩时，以该授权为准，并在结果中区分语法、同步核对与实际运行验证。

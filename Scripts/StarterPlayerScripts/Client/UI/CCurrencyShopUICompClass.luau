@@ -154,7 +154,6 @@ function Component:CreateCard(product, style)
         FXLoader:Here(card.button, "RobuxIcon").Visible = false
         local icon = card.price:Clone()
         icon.Name = "RobuxGlyph"
-        icon.AutoLocalize = false
         icon.Position = UDim2.fromOffset(8, 0)
         icon.Size = UDim2.new(0, 32, 1, 0)
         icon.TextScaled = false
@@ -176,9 +175,6 @@ function Component:Render(state)
     for index, product in ipairs(self.Config.products) do
         local card = self.Cards[product.id]
         if card then
-            card.title.AutoLocalize = false
-            card.description.AutoLocalize = false
-            card.price.AutoLocalize = false
             local key = product.soldOut and TranslationTexts.SoldOut
                 or (product.unavailable and TranslationTexts.Unavailable)
             card.price.Text = key and Text.Tr(key)

@@ -54,17 +54,11 @@ function UI:OnReady()
     self.SkipBtn = FXLoader:Here(root, "PopupPanelImg.SkipBtn")
     self.ProgressFill = FXLoader:Here(root, "PopupPanelImg.ProgressBarImg.ProgressFillImg")
     self.ProgressTxt = FXLoader:Here(root, "PopupPanelImg.ProgressBarImg.ProgressTxt")
-    self.ProgressTxt.AutoLocalize = false
     self.WarningTxt = FXLoader:Here(root, "PopupPanelImg.ResetWarningTxt")
-    self.WarningTxt.AutoLocalize = false
     self.CurrentStrengthTxt = FXLoader:Here(root, "PopupPanelImg.CurrentStrengthImg.MultiplierTxt")
-    self.CurrentStrengthTxt.AutoLocalize = false
     self.NextStrengthTxt = FXLoader:Here(root, "PopupPanelImg.NextStrengthImg.MultiplierTxt")
-    self.NextStrengthTxt.AutoLocalize = false
     self.CurrentMoneyTxt = FXLoader:Here(root, "PopupPanelImg.CurrentMoneyImg.MultiplierTxt")
-    self.CurrentMoneyTxt.AutoLocalize = false
     self.NextMoneyTxt = FXLoader:Here(root, "PopupPanelImg.NextMoneyImg.MultiplierTxt")
-    self.NextMoneyTxt.AutoLocalize = false
     self.RebirthGradient = FXLoader:Here(root, "PopupPanelImg.RebirthBtn.SurfaceGradient")
     local close = FXLoader:Here(root, "TitleBox.CloseSurfaceImg")
     -- 关闭由接入层更新 Open，不销毁设计节点。

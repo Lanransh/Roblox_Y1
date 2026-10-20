@@ -130,14 +130,9 @@ function Component:Render(state)
     for index, aura in ipairs(self.Config.auras) do
         local entry = self.Rows[aura.id]
         local row = entry.row
-        FXLoader:Here(row, "NameTxt").AutoLocalize = false
         local rate = FXLoader:Here(row, "StrengthTxt")
-        local quality = FXLoader:Here(row, "RarityTxt")
         local caption = FXLoader:Here(row, "ActionBtn/ButtonTxt")
-        rate.AutoLocalize = false
         rate.TextScaled = true
-        quality.AutoLocalize = false
-        caption.AutoLocalize = false
         rate.Text = Text.Tr(TranslationTexts.TrainingRate, {
             rate = GameUtility.NumberToText(aura.strength),
         })

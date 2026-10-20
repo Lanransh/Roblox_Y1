@@ -224,7 +224,6 @@ function Component:RenderButton(button, label, enabled)
         Retry = TranslationTexts.Retry, ["In Progress"] = TranslationTexts.InProgress}
     Component.Super.RenderButton(self, button, keys[label] and Text.Tr(keys[label]) or label, enabled)
     self:SetButtonEnabled(button, enabled or (not self._requestTask and not self._pending))
-    FXLoader:Here(button, "ButtonTxt").AutoLocalize = button.Parent == FXLoader:Here(self.Root, "TabsBox")
 end
 
 --- 复用列表和布局，主界面红点汇总全部可领取奖励，钻石和道具使用实际图片。
@@ -266,15 +265,12 @@ function Component:_RenderRewardRow(kind, row)
     local root = row.Root
     if kind == "task" then
         local taskName = FXLoader:Here(root, "TaskNameTxt")
-        taskName.AutoLocalize = false
         taskName.Text = config.title
         local reward = config.reward
         local label = FXLoader:Here(root, "RewardTxt")
-        label.AutoLocalize = false
         label.Text = reward.type == "Gem"
             and Text.Tr(TranslationTexts.Diamonds, {value = GameUtility.NumberToText(reward.amount)})
             or self:FormatReward(self:GetRewardDisplay(reward).name, reward.amount)
-        FXLoader:Here(root, "ProgressBarImg/ProgressTxt").AutoLocalize = false
         -- 导出新任务原型前，旧模板仍只包含文字；避免同步顺序导致等待缺失节点。
         local iconBoxName = reward.type == "Gem" and "GemIconBox" or "EggIconBox"
         if FXLoader:Find(root, iconBoxName) then
@@ -287,7 +283,6 @@ function Component:_RenderRewardRow(kind, row)
         kind == "online" and {minutes = config.minutes} or {day = config.day})
     local reward = config.reward
     local label = FXLoader:Here(root, "RewardTxt")
-    label.AutoLocalize = false
     label.TextScaled = true
     label.Text = reward.type == "Gem"
         and Text.Tr(TranslationTexts.Diamonds, {value = GameUtility.NumberToText(reward.amount)})

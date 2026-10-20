@@ -73,10 +73,6 @@ function Component:Render(state)
         description = product.description,
         price = self._product.price, icon = self._product.icon}
     Component.Super.Render(self, state)
-    for index, label in ipairs({self.ItemNameTxt, self.ButtonTxt}) do
-        label.AutoLocalize = false
-    end
-    self.DescriptionTxt.AutoLocalize = false
     if state.pending then
         self.ButtonTxt.Text = Text.Tr(TranslationTexts.Buying)
     else

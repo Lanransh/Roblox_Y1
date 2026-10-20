@@ -43,15 +43,6 @@ local TranslationTexts = Text.Define("CollectionUI", {
 -- 绑定窗口、统计与隐藏卡片原型，只连接关闭操作。
 function CCollectionView:OnReady()
     local root = FXLoader:PlayerGui("CollectionUI")
-    -- 仅关闭主动翻译的具体动态文本；原型克隆继承设置，静态节点保持自动本地化。
-    for index, path in ipairs({
-        "PopupPanelImg.SummaryImg.StatusTxt",
-        "PopupPanelImg.SummaryImg.BoostTxt",
-        "TitleBox.CountTxt",
-        "Templates.ItemRowImg.ItemNameTxt",
-    }) do
-        FXLoader:Here(root, path).AutoLocalize = false
-    end
     self.Root = root
     self.List = FXLoader:Here(root, "PopupPanelImg.ItemListBox")
     self.Count = FXLoader:Here(root, "TitleBox.CountTxt")

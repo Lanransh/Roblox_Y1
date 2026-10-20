@@ -117,8 +117,16 @@ local Text = FXLoader:RequireShared("Scripts.Game.Shared.Text")
   `string.format("%02d", ...)` 或 `string.format("%02d:%02d", ...)` 补零，
   不把格式化指令写进占位符。离线时长可用
   `You were away for {hours:int}h {minutes}m`，minutes 传补零后的字符串。
-- 仅在客户端运行时关闭自己负责翻译的具体动态节点的 AutoLocalize，避免二次翻译；
-  不修改 Studio 模板、导入数据或整个父容器的本地化属性。
+- UIEditor 导入的 UI 节点与 `UI/Generated/` 展示脚本已在制作阶段处理动态文本及
+  AutoLocalize：纯数值、图标字符及代码已翻译的具体文本节点提前关闭，隐藏原型同样
+  配置，克隆继承；依赖自动翻译的文案保持开启。接入默认沿用这些配置，不在 OnReady、
+  Render 或每次刷新时重复关闭，也不新增批量关闭或遍历兜底代码。
+  只关闭需要处理的那一个文本节点，不关闭图片父节点、按钮、容器或整组子树；
+  图标字符指文本节点中的字符，ImageLabel/ImageButton 图片节点保持开启。
+  祖先 AutoLocalize=false 会阻断后代，子节点 true 不能恢复；关闭前确认该文本节点
+  没有依赖自动翻译的后代，有冲突则保持开启并反馈用户，由制作端处理层级。
+- 仅对接入代码自行创建、没有生成原型可继承且由自身完成翻译的文本节点，在创建后、
+  写入文本前关闭 AutoLocalize；不修改 Studio 模板、导入数据或整个父容器的本地化属性。
 - 翻译调用是一次求值。通过现有 Changed 事件在翻译器加载或语言变化后重新求值，
   保留原文定义与参数；连接随组件清理，提示刷新不重置显示计时。
 
@@ -127,6 +135,17 @@ local Text = FXLoader:RequireShared("Scripts.Game.Shared.Text")
 - 工具按“编辑态节点 → 脚本 TranslationTexts → 勾选 XLSX 字段”三路收集；
   配置保持普通字符串，配置文案使用 Key=Source，由工具生成和处理。
 - 检查实际 Generated 接口，说明动态缺口和接入补充点；没有缺口就不增加翻译代码。
+- 仅接入现有生成 UI 时，完成接入后通过 Roblox MCP 对本次 UI 批量只读核验即可：
+  先确认目标 Studio 与 DataModel，按实际节点及脚本职责检查全部相关文本节点，包含
+  隐藏 Templates 原型；核对纯数据、图标字符和代码已翻译文本的 AutoLocalize=false，
+  依赖自动翻译的文案为 true，图片节点、父容器和 ScreenGui 保持开启；同时检查文本
+  节点的祖先与后代，不能只看子节点 true 就判断自动翻译有效。使用当前 MCP 支持的
+  批量查询方式，避免逐节点反复调用；不为此新增运行时检查或关闭逻辑。
+  编辑态检查 StarterGui；已有客户端试玩时可同时核对 PlayerGui 中的克隆继承，
+  不为这项属性检查自行启动试玩。发现异常时向用户报告节点完整路径、实际值和期望值，
+  由 UIEditor 源界面修正后重新导出；不自动修改生成节点、Generated 脚本或在接入代码
+  补关开关。MCP 不可用、节点缺失或查询截断时报告未验证范围，不把未查到当成通过。
+  未新增翻译定义或修改文案时，不因单纯 UI 接入额外触发翻译收集、发布或语言试玩。
 - 检查本次相关模板是否含 `:string`，同时核对参数类型、倒计时补零及参数变化后的
   显示。若问题来自 Generated，先排查接入脚本；必须修正生成源模板时，报告来源，
   由 UIEditor 工作区修正并重新导出，不直接修补 Generated，也不新增重复翻译绕过。

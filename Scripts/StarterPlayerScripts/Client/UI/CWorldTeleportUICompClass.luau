@@ -39,7 +39,6 @@ function Component:OnReady()
     self._commonUI = self:GetPlayerObject():RequireComponent("FCCommonUIComp")
     self._commonUI:RegisterTrainingClickModal(root)
     self._localization = self._commonUI.Localization
-    self.ErrorTxt.AutoLocalize = false
     -- 展示契约按等级判断解锁；使用历史最高等级，重生后保留传送资格。
     self.Config = {worlds = {}}
     for index, world in ipairs(GameEnum.WorldTransferConfig) do
@@ -154,8 +153,6 @@ end
 --- @return table 父类创建并管理的条目。
 function Component:CreateRow(worldId)
     local record = Component.Super.CreateRow(self, worldId)
-    record.nameTxt.AutoLocalize = false
-    record.buttonTxt.AutoLocalize = false
     self:TrackConnection(record.button.Activated:Connect(function()
         local world = record.world
         if not self.State.pendingWorldId and self.State.level < world.requiredLevel then

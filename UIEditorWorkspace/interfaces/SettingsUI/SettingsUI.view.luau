@@ -104,7 +104,6 @@ function CSettingsView:OnReady()
     }
 
     for setting, slider in pairs(self.Sliders) do
-        slider.value.AutoLocalize = false
         bindSlider(self, setting, slider.track, slider.input)
     end
 
@@ -122,7 +121,6 @@ function CSettingsView:OnReady()
     }
 
     for setting, toggle in pairs(self.Toggles) do
-        toggle.text.AutoLocalize = false
         local settingName = setting
         local button = toggle.button
         -- 点击只传设置键和新值，具体保存由接入层负责。

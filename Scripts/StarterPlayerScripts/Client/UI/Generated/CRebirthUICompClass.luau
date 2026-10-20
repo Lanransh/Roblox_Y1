@@ -50,17 +50,6 @@ local TranslationTexts = Text.Define("RebirthUI", {
 -- 绑定已有设计节点与按钮；刷新时不重复连接事件。
 function UI:OnReady()
     local root = FXLoader:PlayerGui("RebirthUI")
-    -- 仅关闭主动翻译的具体动态文本；原型克隆继承设置，静态节点保持自动本地化。
-    for index, path in ipairs({
-        "PopupPanelImg.CurrentStrengthImg.MultiplierTxt",
-        "PopupPanelImg.NextStrengthImg.MultiplierTxt",
-        "PopupPanelImg.CurrentMoneyImg.MultiplierTxt",
-        "PopupPanelImg.NextMoneyImg.MultiplierTxt",
-        "PopupPanelImg.ResetWarningTxt",
-        "PopupPanelImg.ProgressBarImg.ProgressTxt",
-    }) do
-        FXLoader:Here(root, path).AutoLocalize = false
-    end
     self.Panel = FXLoader:Here(root, "PopupPanelImg")
     self.TitleBox = FXLoader:Here(root, "TitleBox")
     self.RebirthBtn = FXLoader:Here(root, "PopupPanelImg.RebirthBtn")

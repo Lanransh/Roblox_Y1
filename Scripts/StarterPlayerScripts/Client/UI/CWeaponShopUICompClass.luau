@@ -121,11 +121,9 @@ function Component:Render(state)
         local entry = self.Rows[weapon.id]
         if entry then
             local row = entry.row
-            FXLoader:Here(row, "NameTxt").AutoLocalize = false
             FXLoader:Here(row, "RarityTxt").Visible = false
             local rate = FXLoader:Here(row, "StrengthTxt")
             rate.TextScaled = true
-            rate.AutoLocalize = false
             rate.Text = Text.Tr(TranslationTexts.TrainingRate, {
                 rate = GameUtility.NumberToText(weapon.strength),
             })
@@ -138,7 +136,6 @@ function Component:Render(state)
                 key = TranslationTexts.Equip
             end
             local caption = FXLoader:Here(row, "ActionBtn/ButtonTxt")
-            caption.AutoLocalize = false
             caption.Text = Text.Tr(key, {value = GameUtility.NumberToText(weapon.price)})
             -- 请求期间保持原有显示；余额不足也允许服务端返回提示。
             self:SetButtonEnabled(entry.button, not equipped)

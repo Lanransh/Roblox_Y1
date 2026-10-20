@@ -1,10 +1,5 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
-local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
-local TranslationTexts = Text.Define("Settings", {
-    ToggleOn = "ON",
-    ToggleOff = "OFF",
-})
 local UserInputService = game:GetService("UserInputService")
 local SoundService = game:GetService("SoundService")
 local Fields = _G.PlayerDataConfig
@@ -157,16 +152,6 @@ function Component:ApplySettings()
         end
     end
     self:RefreshUI()
-end
-
---- 在生成类更新状态后翻译开关文案，语言变化沿用同一刷新入口。
---- @param state table 当前玩家的音量与开关设置。
-function Component:Render(state)
-    Component.Super.Render(self, state)
-    for setting, toggle in pairs(self.Toggles) do
-        toggle.text.AutoLocalize = false
-        toggle.text.Text = state[setting] and Text.Tr(TranslationTexts.ToggleOn) or Text.Tr(TranslationTexts.ToggleOff)
-    end
 end
 
 --- 将独立创建的空间音效接入同一音量组，保留资源音量与空间衰减。

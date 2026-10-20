@@ -100,7 +100,7 @@
                 "x": 0,
                 "y": 0
               },
-              "AutoLocalize": true,
+              "AutoLocalize": false,
               "BackgroundColor3": "#ffffff",
               "BackgroundTransparency": 1,
               "ClipsDescendants": false,
@@ -465,7 +465,7 @@
                 "x": 0,
                 "y": 0
               },
-              "AutoLocalize": true,
+              "AutoLocalize": false,
               "BackgroundColor3": "#ffffff",
               "BackgroundTransparency": 1,
               "ClipsDescendants": false,
@@ -944,7 +944,7 @@
                         "x": 0,
                         "y": 0
                       },
-                      "AutoLocalize": true,
+                      "AutoLocalize": false,
                       "BackgroundColor3": "#ffffff",
                       "BackgroundTransparency": 1,
                       "ClipsDescendants": false,
@@ -1114,7 +1114,7 @@
                     "x": 0,
                     "y": 0
                   },
-                  "AutoLocalize": true,
+                  "AutoLocalize": false,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 1,
                   "ClipsDescendants": false,
@@ -1176,7 +1176,7 @@
                     "x": 0,
                     "y": 0
                   },
-                  "AutoLocalize": true,
+                  "AutoLocalize": false,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 1,
                   "ClipsDescendants": false,
@@ -1238,7 +1238,7 @@
                     "x": 0,
                     "y": 0
                   },
-                  "AutoLocalize": true,
+                  "AutoLocalize": false,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 1,
                   "ClipsDescendants": false,

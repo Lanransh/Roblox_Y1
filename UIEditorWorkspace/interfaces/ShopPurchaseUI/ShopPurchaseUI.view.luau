@@ -38,16 +38,12 @@ local TranslationTexts = Text.Define("ShopPurchaseUI", {
 function CShopPurchaseView:OnReady()
     local root = FXLoader:PlayerGui("ShopPurchaseUI")
     self.ItemNameTxt = FXLoader:Here(root, "PopupPanelImg.ItemNameTxt")
-    self.ItemNameTxt.AutoLocalize = false
     self.CategoryTxt = FXLoader:Here(root, "PopupPanelImg.CategoryTxt")
-    self.CategoryTxt.AutoLocalize = false
     self.DescriptionTxt = FXLoader:Here(root, "PopupPanelImg.DescriptionTxt")
-    self.DescriptionTxt.AutoLocalize = false
     self.ItemSurfaceImg = FXLoader:Here(root, "PopupPanelImg.ItemSurfaceImg")
     self.ItemIconImg = FXLoader:Here(root, "PopupPanelImg.ItemSurfaceImg.ItemIconImg")
     self.BuyBtn = FXLoader:Here(root, "PopupPanelImg.BuyBtn")
     self.ButtonTxt = FXLoader:Here(root, "PopupPanelImg.BuyBtn.ButtonTxt")
-    self.ButtonTxt.AutoLocalize = false
     local closeBtn = FXLoader:Here(root, "TitleBox.CloseSurfaceImg.CloseBtn")
     -- 购买动作只发送 ID，价格与资格由游戏接入层校验。
     self:TrackConnection(self.BuyBtn.Activated:Connect(function()

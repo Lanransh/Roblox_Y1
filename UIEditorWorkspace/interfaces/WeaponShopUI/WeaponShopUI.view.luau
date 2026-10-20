@@ -41,23 +41,12 @@ local TranslationTexts = Text.Define("WeaponShopUI", {
 -- 绑定窗口与隐藏原型，只在首次准备时连接关闭按钮。
 function CWeaponShopView:OnReady()
     local root = FXLoader:PlayerGui("WeaponShopUI")
-    -- 原型在克隆前关闭主动翻译文本的自动本地化。
-    for index, path in ipairs({
-        "Templates.WeaponRowImg.ActionBtn.ButtonTxt",
-        "Templates.WeaponRowImg.NameTxt",
-        "Templates.WeaponRowImg.RarityTxt",
-        "Templates.WeaponRowImg.StrengthTxt",
-    }) do
-        FXLoader:Here(root, path).AutoLocalize = false
-    end
     self.Root = root
     self.Panel = FXLoader:Here(root, "PopupPanelImg")
     self.TitleBox = FXLoader:Here(root, "TitleBox")
     self.TitleTxt = FXLoader:Here(root, "TitleBox.TitleTxt")
-    self.TitleTxt.AutoLocalize = false
     self.List = FXLoader:Here(root, "PopupPanelImg.WeaponListBox")
     self.EmptyTxt = FXLoader:Here(root, "PopupPanelImg.EmptyTxt")
-    self.EmptyTxt.AutoLocalize = false
     self.Template = FXLoader:Here(root, "Templates.WeaponRowImg")
     self.Rows = {}
     local closeBtn = FXLoader:Here(root, "TitleBox.CloseSurfaceImg")

@@ -68,16 +68,6 @@ end
 -- 绑定静态节点，事件只连接一次。
 function CLootSellView:OnReady()
     local root = FXLoader:PlayerGui("LootSellUI")
-    -- 仅关闭主动翻译的具体动态文本；原型克隆继承设置，静态节点保持自动本地化。
-    for index, path in ipairs({
-        "PopupPanelImg.TotalImg.TotalValueTxt",
-        "PopupPanelImg.StatusTxt",
-        "PopupPanelImg.CapacityTxt",
-        "Templates.LootTemplateImg.LootNameTxt",
-        "Templates.LootTemplateImg.LootValueTxt",
-    }) do
-        FXLoader:Here(root, path).AutoLocalize = false
-    end
     self.Panel = FXLoader:Here(root, "PopupPanelImg")
     self.Title = FXLoader:Here(root, "TitleBox")
     self.Total = FXLoader:Here(root, "PopupPanelImg.TotalImg.TotalValueTxt")

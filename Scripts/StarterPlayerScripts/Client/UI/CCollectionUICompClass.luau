@@ -26,9 +26,6 @@ function Component:OnReady()
     self._commonUI = self:GetPlayerObject():RequireComponent("FCCommonUIComp")
     self._commonUI:RegisterTrainingClickModal(self.Root)
     self._localization = self._commonUI.Localization
-    self.Count.AutoLocalize = false
-    self.Rule.AutoLocalize = false
-    self.Boost.AutoLocalize = false
     -- 父类保留按项力量字段；实际门槛和训练文案由本业务 Render 提供。
     self.Config = {items = {}, strengthPerEntryPercent = 0}
     for itemId, item in pairs(GameConfig.ItemData) do
@@ -82,7 +79,6 @@ function Component:Render(state)
     })
     for index, item in ipairs(self.Config.items) do
         local row = self.Rows[item.id]
-        row.name.AutoLocalize = false
         row.icon.Image = item.icon
         row.icon.ImageColor3 = state.entries[item.id].active and Color3.new(1, 1, 1) or Color3.new(0, 0, 0)
         row.icon.ImageTransparency = 0

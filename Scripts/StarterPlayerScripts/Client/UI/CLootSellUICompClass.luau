@@ -51,9 +51,6 @@ function Component:OnReady()
         self.Config.qualityGradientEnds[qualityId] = colors[2]
     end
     self.State = {isOpen = false, items = {}, pending = false}
-    for index, label in ipairs({self.Total, self.CapacityTxt, self.StatusTxt}) do
-        label.AutoLocalize = false
-    end
     self.StatusTxt.Visible = false
     self:Hide()
     self:TrackConnection(self._localization.Changed:Connect(function()
@@ -136,8 +133,6 @@ function Component:Render(state)
     local total = 0
     for index, item in ipairs(state.items) do
         local row = self.Rows[item.id]
-        row.name.AutoLocalize = false
-        row.value.AutoLocalize = false
         row.icon.Image = item.icon
         row.value.Text = Text.Tr(TranslationTexts.CoinValue, {
             value = GameUtility.NumberToText(item.value),

@@ -43,17 +43,6 @@ local TranslationTexts = Text.Define("WeaponShopUI", {
 -- 绑定窗口与隐藏原型，只在首次准备时连接关闭按钮。
 function CWeaponShopView:OnReady()
     local root = FXLoader:PlayerGui("WeaponShopUI")
-    -- 仅关闭主动翻译的具体动态文本；原型克隆继承设置，静态节点保持自动本地化。
-    for index, path in ipairs({
-        "PopupPanelImg.EmptyTxt",
-        "TitleBox.TitleTxt",
-        "Templates.WeaponRowImg.ActionBtn.ButtonTxt",
-        "Templates.WeaponRowImg.NameTxt",
-        "Templates.WeaponRowImg.RarityTxt",
-        "Templates.WeaponRowImg.StrengthTxt",
-    }) do
-        FXLoader:Here(root, path).AutoLocalize = false
-    end
     self.Root = root
     self.Panel = FXLoader:Here(root, "PopupPanelImg")
     self.TitleBox = FXLoader:Here(root, "TitleBox")
@@ -156,9 +145,6 @@ function CWeaponShopView:Render(state)
                 caption = Text.Tr(TranslationTexts.Waiting)
                 color = "#638079"
             elseif not owned and state.coins < weapon.price then
-                caption = Text.Tr(TranslationTexts.Price, {
-                    price = weapon.price,
-                })
                 color = "#638079"
             end
             FXLoader:Here(row, "OwnedTxt").Visible = false

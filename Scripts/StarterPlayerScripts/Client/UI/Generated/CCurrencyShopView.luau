@@ -46,48 +46,6 @@ local TranslationTexts = Text.Define("CurrencyShopUI", {
 -- 绑定已有节点与页签事件；每张商品卡只连接一次。
 function CCurrencyShopView:OnReady()
     local root = FXLoader:PlayerGui("CurrencyShopUI")
-    -- 仅关闭主动翻译的具体动态文本；原型克隆继承设置，静态节点保持自动本地化。
-    for index, path in ipairs({
-        "PopupPanelImg.ProductsContentImg.ProductsTitleTxt",
-        "Templates.DiamondGreenCardImg.ProductTitleTxt",
-        "Templates.DiamondGreenCardImg.ProductDescriptionTxt",
-        "Templates.DiamondGreenCardImg.PurchaseBtn.ButtonTxt",
-        "Templates.RobuxGreenCardImg.ProductTitleTxt",
-        "Templates.RobuxGreenCardImg.ProductDescriptionTxt",
-        "Templates.RobuxGreenCardImg.PurchaseBtn.ButtonTxt",
-        "Templates.RobuxGoldCardImg.ProductTitleTxt",
-        "Templates.RobuxGoldCardImg.ProductDescriptionTxt",
-        "Templates.RobuxGoldCardImg.PurchaseBtn.ButtonTxt",
-        "Templates.RobuxCyanCardImg.ProductTitleTxt",
-        "Templates.RobuxCyanCardImg.ProductDescriptionTxt",
-        "Templates.RobuxCyanCardImg.PurchaseBtn.ButtonTxt",
-        "Templates.RobuxOrangeCardImg.ProductTitleTxt",
-        "Templates.RobuxOrangeCardImg.ProductDescriptionTxt",
-        "Templates.RobuxOrangeCardImg.PurchaseBtn.ButtonTxt",
-        "Templates.RobuxPurpleCardImg.ProductTitleTxt",
-        "Templates.RobuxPurpleCardImg.ProductDescriptionTxt",
-        "Templates.RobuxPurpleCardImg.PurchaseBtn.ButtonTxt",
-        "Templates.RobuxPinkCardImg.ProductTitleTxt",
-        "Templates.RobuxPinkCardImg.ProductDescriptionTxt",
-        "Templates.RobuxPinkCardImg.PurchaseBtn.ButtonTxt",
-        "Templates.DiamondGoldCardImg.ProductTitleTxt",
-        "Templates.DiamondGoldCardImg.ProductDescriptionTxt",
-        "Templates.DiamondGoldCardImg.PurchaseBtn.ButtonTxt",
-        "Templates.DiamondCyanCardImg.ProductTitleTxt",
-        "Templates.DiamondCyanCardImg.ProductDescriptionTxt",
-        "Templates.DiamondCyanCardImg.PurchaseBtn.ButtonTxt",
-        "Templates.DiamondOrangeCardImg.ProductTitleTxt",
-        "Templates.DiamondOrangeCardImg.ProductDescriptionTxt",
-        "Templates.DiamondOrangeCardImg.PurchaseBtn.ButtonTxt",
-        "Templates.DiamondPurpleCardImg.ProductTitleTxt",
-        "Templates.DiamondPurpleCardImg.ProductDescriptionTxt",
-        "Templates.DiamondPurpleCardImg.PurchaseBtn.ButtonTxt",
-        "Templates.DiamondPinkCardImg.ProductTitleTxt",
-        "Templates.DiamondPinkCardImg.ProductDescriptionTxt",
-        "Templates.DiamondPinkCardImg.PurchaseBtn.ButtonTxt",
-    }) do
-        FXLoader:Here(root, path).AutoLocalize = false
-    end
     self.Root = root
     self.List = FXLoader:Here(root, "PopupPanelImg.ProductListBox")
     self.ContentTitle = FXLoader:Here(root, "PopupPanelImg.ProductsContentImg.ProductsTitleTxt")

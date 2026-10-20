@@ -65,7 +65,6 @@ function Component:CreateRebirthNotice(root)
     icon.BackgroundTransparency = 1
     icon.Image = rebirthIcon.Image
     icon.ScaleType = Enum.ScaleType.Fit
-    icon.AutoLocalize = false
     icon.ZIndex = 11
     icon.Parent = group
 
@@ -152,7 +151,6 @@ function Component:OnReady()
     self._commonUI = self:GetPlayerObject():RequireComponent("FCCommonUIComp")
     self._commonUI:RegisterTrainingClickModal(root)
     self._localization = self._commonUI.Localization
-    self.ProgressTxt.AutoLocalize = false
     self.State = {Open = false, Completed = false, Pending = false}
     --- 平台弹窗关闭只恢复交互，重生奖励仍由服务端收据处理。
     --- @param userId number 平台回传的玩家 ID。
@@ -191,7 +189,6 @@ end
 --- 生成类未翻译等级模板；补动态进度及业务上限提示，保留按钮资格，不覆盖默认警告。
 --- @param state table 当前界面状态。
 function Component:Render(state)
-    self.WarningTxt.AutoLocalize = true
     Component.Super.Render(self, state)
     -- 灰色表达未达标，但保留点击以显示门槛；请求中才禁用。
     self:SetButtonEnabled(self.RebirthBtn, state.Open and not state.Pending)
@@ -205,7 +202,6 @@ function Component:Render(state)
     if self:GetNumber(Fields.RebirthCount) >= Rebirth.MaxCount then
         self.RebirthBtn.BackgroundColor3 = Color3.fromHex("#B7B7B7")
         self.RebirthGradient.Enabled = true
-        self.WarningTxt.AutoLocalize = false
         self.WarningTxt.Text = Text.Tr(TranslationTexts.MaxCount)
     end
 end

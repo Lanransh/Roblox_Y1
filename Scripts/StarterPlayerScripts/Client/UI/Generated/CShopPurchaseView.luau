@@ -39,15 +39,6 @@ local TranslationTexts = Text.Define("ShopPurchaseUI", {
 -- 绑定设计节点；事件只连接一次，点击时读取当前稳定商品 ID。
 function CShopPurchaseView:OnReady()
     local root = FXLoader:PlayerGui("ShopPurchaseUI")
-    -- 仅关闭主动翻译的具体动态文本；原型克隆继承设置，静态节点保持自动本地化。
-    for index, path in ipairs({
-        "PopupPanelImg.BuyBtn.ButtonTxt",
-        "PopupPanelImg.CategoryTxt",
-        "PopupPanelImg.ItemNameTxt",
-        "PopupPanelImg.DescriptionTxt",
-    }) do
-        FXLoader:Here(root, path).AutoLocalize = false
-    end
     self.ItemNameTxt = FXLoader:Here(root, "PopupPanelImg.ItemNameTxt")
     self.CategoryTxt = FXLoader:Here(root, "PopupPanelImg.CategoryTxt")
     self.DescriptionTxt = FXLoader:Here(root, "PopupPanelImg.DescriptionTxt")
