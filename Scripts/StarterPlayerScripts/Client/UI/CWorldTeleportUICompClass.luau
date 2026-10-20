@@ -1,14 +1,14 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
-local TranslationTexts = {
-    ["World.RequiredLevel"] = { Key = "CWorldTeleportUICompClass.World.RequiredLevel", Source = "Reach a best level of {level:int} to unlock this world." },
-    ["World.Go"] = { Key = "CWorldTeleportUICompClass.World.Go", Source = "Go" },
-    ["World.Teleporting"] = { Key = "CWorldTeleportUICompClass.World.Teleporting", Source = "Teleporting" },
-    ["World.Here"] = { Key = "CWorldTeleportUICompClass.World.Here", Source = "Here" },
-    ["World.LockedLevel"] = { Key = "CWorldTeleportUICompClass.World.LockedLevel", Source = "Level {level:int}" },
-    ["Common.Unknown"] = { Key = "CWorldTeleportUICompClass.Common.Unknown", Source = "Something went wrong. Please try again." },
-}
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
+local TranslationTexts = Text.Define("WorldTeleport", {
+    RequiredLevel = "Reach a best level of {level:int} to unlock this world.",
+    Go = "Go",
+    Teleporting = "Teleporting",
+    Here = "Here",
+    LockedLevel = "Level {level:int}",
+    Unknown = "Something went wrong. Please try again.",
+})
 local RunService = game:GetService("RunService")
 FXLoader:RequireFromParent(script, "Generated/CWorldTeleportView")
 local GameEnum = _G.GameEnum
@@ -159,7 +159,7 @@ function Component:CreateRow(worldId)
     self:TrackConnection(record.button.Activated:Connect(function()
         local world = record.world
         if not self.State.pendingWorldId and self.State.level < world.requiredLevel then
-            self._commonUI:ShowLocalizedTips(TranslationTexts["World.RequiredLevel"], {level = world.requiredLevel})
+            self._commonUI:ShowLocalizedTips(TranslationTexts.RequiredLevel, {level = world.requiredLevel})
         end
     end))
     return record
@@ -174,13 +174,13 @@ function Component:Render(state)
     state.error = self._failure and Text.Tr(self._failure.key, self._failure.arguments) or nil
     Component.Super.Render(self, state)
     for worldId, record in pairs(self._rows) do
-        local key = TranslationTexts["World.Go"]
+        local key = TranslationTexts.Go
         if state.pendingWorldId == worldId then
-            key = TranslationTexts["World.Teleporting"]
+            key = TranslationTexts.Teleporting
         elseif state.currentWorldId == worldId then
-            key = TranslationTexts["World.Here"]
+            key = TranslationTexts.Here
         elseif state.level < record.world.requiredLevel then
-            key = TranslationTexts["World.LockedLevel"]
+            key = TranslationTexts.LockedLevel
         end
         record.buttonTxt.Text = Text.Tr(key, {level = record.world.requiredLevel})
         self:SetButtonEnabled(record.button, state.currentWorldId ~= worldId and not state.pendingWorldId)
@@ -214,9 +214,9 @@ function Component:OnUIAction(action, payload)
         self.State.pendingWorldId = nil
         local failure
         if not ok or type(result) ~= "table" then
-            failure = {key = TranslationTexts["Common.Unknown"]}
+            failure = {key = TranslationTexts.Unknown}
         elseif not result.success then
-            failure = {key = result.key or TranslationTexts["Common.Unknown"], arguments = result.arguments}
+            failure = {key = result.key or TranslationTexts.Unknown, arguments = result.arguments}
         end
         self._failure = failure
         if failure then

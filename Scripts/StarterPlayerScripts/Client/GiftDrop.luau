@@ -4,10 +4,10 @@ local RunService = game:GetService("RunService")
 local FX, FC = _G.FX, _G.FC
 local FXLoader = FX.Loader
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
-local TranslationTexts = {
-    ["Ready"] = { Key = "GiftDrop.Ready", Source = "Gifts ready to collect!" },
-    ["Complete"] = { Key = "GiftDrop.Complete", Source = "All gifts collected today" },
-}
+local TranslationTexts = Text.Define("GiftDrop", {
+    Ready = "Gifts ready to collect!",
+    Complete = "All gifts collected today",
+})
 local GiftDrop = {}
 
 --- 注册个人礼盒通知；生成表现与领取请求分离，客户端不能自行签发奖励资格。

@@ -1,8 +1,10 @@
 local FX = _G.FX
-local TranslationTexts = {
-    ["Common.Unknown"] = { Key = "SPlayerObjectManagerClass.Common.Unknown", Source = "Something went wrong. Please try again." },
-    ["Welfare.NotReady"] = { Key = "SPlayerObjectManagerClass.Welfare.NotReady", Source = "This reward is not available yet." },
-}
+local FXLoader = FX.Loader
+local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
+local TranslationTexts = Text.Define("PlayerRequests", {
+    Unknown = "Something went wrong. Please try again.",
+    NotReady = "This reward is not available yet.",
+})
 local CurrencyShop = FX.Loader:Require(script.Parent.Parent, "Handlers/CurrencyShop")
 local GMRecovery = FX.Loader:Require(script.Parent.Parent, "Handlers/GMRecovery")
 local Manager = FX.Class("SPlayerObjectManagerClass", "FSPlayerObjectManagerClass")
@@ -58,7 +60,7 @@ function Manager:RegCurrencyShopMsg()
     FX.Network:RegClientMsgCallback("C2S_BuyCurrencyShopGoods", function(userId, goodsId)
         local player = self:GetPlayerObject(userId)
         if not player then
-            return {success = false, key = TranslationTexts["Common.Unknown"]}
+            return {success = false, key = TranslationTexts.Unknown}
         end
         return CurrencyShop.Buy(player, goodsId)
     end)
@@ -76,7 +78,7 @@ function Manager:RegActivityMsg()
         local player = self:GetPlayerObject(userId)
         local activity = player and player:GetComponent("SActivityComp")
         if not activity then
-            return {success = false, key = TranslationTexts["Welfare.NotReady"]}
+            return {success = false, key = TranslationTexts.NotReady}
         end
         return activity:Claim(kind, rewardId, multiplier)
     end)
@@ -111,7 +113,7 @@ function Manager:RegAuraMsg()
         local player = self:GetPlayerObject(userId)
         local aura = player and player:GetComponent("SAuraComp")
         if not aura then
-            return {success = false, key = TranslationTexts["Common.Unknown"]}
+            return {success = false, key = TranslationTexts.Unknown}
         end
         return aura:RequestAura(action, auraId)
     end)
@@ -128,7 +130,7 @@ function Manager:RegWeaponMsg()
         local player = self:GetPlayerObject(userId)
         local weapon = player and player:GetComponent("SWeaponComp")
         if not weapon then
-            return {success = false, key = TranslationTexts["Common.Unknown"]}
+            return {success = false, key = TranslationTexts.Unknown}
         end
         return weapon:RequestWeapon(action, weaponId)
     end)
@@ -145,7 +147,7 @@ function Manager:RegLootSellMsg()
         local player = self:GetPlayerObject(userId)
         local sell = player and player:GetComponent("SLootSellComp")
         if not sell then
-            return {success = false, key = TranslationTexts["Common.Unknown"]}
+            return {success = false, key = TranslationTexts.Unknown}
         end
         return sell:SellLoot(entryIds, multiplier)
     end)
@@ -183,7 +185,7 @@ function Manager:RegMiscMsg()
         local player = self:GetPlayerObject(userId)
         local misc = player and player:GetComponent("SMiscComp")
         if not misc then
-            return {success = false, key = TranslationTexts["Common.Unknown"]}
+            return {success = false, key = TranslationTexts.Unknown}
         end
         return misc:HandleTransferWorld(index)
     end

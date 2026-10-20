@@ -1,11 +1,11 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
-local TranslationTexts = {
-    ["Collection.Rule"] = { Key = "CCollectionUICompClass.Collection.Rule", Source = "Collect {count:int} items for +{percent}% training." },
-    ["Collection.Count"] = { Key = "CCollectionUICompClass.Collection.Count", Source = "{count:int}/{total:int} collected" },
-}
-
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
+local TranslationTexts = Text.Define("Collection", {
+    Rule = "Collect {count:int} items for +{percent}% training.",
+    Count = "{count:int}/{total:int} collected",
+})
+
 FXLoader:RequireFromParent(script, "Generated/CCollectionView")
 local Fields = _G.PlayerDataConfig
 local GameConfig = _G.GameConfig
@@ -74,10 +74,10 @@ end
 function Component:Render(state)
     Component.Super.Render(self, state)
     local rules = GameConfig.CommonConfig.CollectionData
-    self.Rule.Text = Text.Tr(TranslationTexts["Collection.Rule"], {
+    self.Rule.Text = Text.Tr(TranslationTexts.Rule, {
         count = rules.UnlockCount, percent = rules.TrainingRate * 100,
     })
-    self.Count.Text = Text.Tr(TranslationTexts["Collection.Count"], {
+    self.Count.Text = Text.Tr(TranslationTexts.Count, {
         count = Collection.GetCount(self:GetTable(Fields.CollectionEntries)), total = #self.Config.items,
     })
     for index, item in ipairs(self.Config.items) do

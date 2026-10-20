@@ -1,19 +1,34 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
-local TranslationTexts = {
-    ["Tutorial.Collect"] = { Key = "CTutorialGuideCompClass.Tutorial.Collect", Source = "Head into the rocks! Your pickaxe clears the way. Pick up 2 pieces of loot." },
-    ["Tutorial.Deposit"] = { Key = "CTutorialGuideCompClass.Tutorial.Deposit", Source = "Return to your base to store your loot. You can also use HOME." },
-    ["Tutorial.Sell"] = { Key = "CTutorialGuideCompClass.Tutorial.Sell", Source = "Visit the merchant and sell your stored loot for coins!" },
-    ["Tutorial.Rate"] = { Key = "CTutorialGuideCompClass.Tutorial.Rate", Source = "Use your 30 welcome diamonds to buy the training multiplier on the right!" },
-    ["Tutorial.Weapon"] = { Key = "CTutorialGuideCompClass.Tutorial.Weapon", Source = "You earned 100 coins! Visit the weapon shop and equip a better pickaxe." },
-    ["Tutorial.AutomaticTraining"] = { Key = "CTutorialGuideCompClass.Tutorial.AutomaticTraining", Source = "Automatic training is now active!" },
-    ["Tutorial.Done"] = { Key = "CTutorialGuideCompClass.Tutorial.Done", Source = "Keep getting stronger and discover more valuable loot!" },
-    ["Tutorial.Rewards"] = { Key = "CTutorialGuideCompClass.Tutorial.Rewards", Source = "Claim your rewards from the Rewards button!" },
-    ["Tutorial.Aura"] = { Key = "CTutorialGuideCompClass.Tutorial.Aura", Source = "You can afford your first aura! Visit the blue shop to boost your training." },
-    ["Upgrade.Weapon"] = { Key = "CTutorialGuideCompClass.Upgrade.Weapon", Source = "Buy a stronger pickaxe!" },
-    ["Upgrade.Aura"] = { Key = "CTutorialGuideCompClass.Upgrade.Aura", Source = "Buy a stronger aura!" },
-}
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
+local TranslationTexts = Text.Define("Tutorial", {
+    Collect = "Head into the rocks! Your pickaxe clears the way. Pick up 2 pieces of loot.",
+    Deposit = "Return to your base to store your loot. You can also use HOME.",
+    Sell = "Visit the merchant and sell your stored loot for coins!",
+    Rate = "Use your 30 welcome diamonds to buy the training multiplier on the right!",
+    Weapon = "You earned 100 coins! Visit the weapon shop and equip a better pickaxe.",
+    AutomaticTraining = "Automatic training is now active!",
+    Done = "Keep getting stronger and discover more valuable loot!",
+    Rewards = "Claim your rewards from the Rewards button!",
+    Aura = "You can afford your first aura! Visit the blue shop to boost your training.",
+    UpgradeWeapon = "Buy a stronger pickaxe!",
+    UpgradeAura = "Buy a stronger aura!",
+})
+
+-- 保留引导业务 textId，通过显式映射引用本文件的翻译定义。
+local GuideTexts = {
+    ["Tutorial.Collect"] = TranslationTexts.Collect,
+    ["Tutorial.Deposit"] = TranslationTexts.Deposit,
+    ["Tutorial.Sell"] = TranslationTexts.Sell,
+    ["Tutorial.Rate"] = TranslationTexts.Rate,
+    ["Tutorial.Weapon"] = TranslationTexts.Weapon,
+    ["Tutorial.AutomaticTraining"] = TranslationTexts.AutomaticTraining,
+    ["Tutorial.Done"] = TranslationTexts.Done,
+    ["Tutorial.Rewards"] = TranslationTexts.Rewards,
+    ["Tutorial.Aura"] = TranslationTexts.Aura,
+    ["Upgrade.Weapon"] = TranslationTexts.UpgradeWeapon,
+    ["Upgrade.Aura"] = TranslationTexts.UpgradeAura,
+}
 local UIGuideArrow = FXLoader:Require(script.Parent.Parent, "UI/UIGuideArrow")
 local RunService = game:GetService("RunService")
 local Fields = _G.PlayerDataConfig
@@ -120,7 +135,7 @@ end
 function Guide:RefreshText()
     local target = self._activeTarget
     self._label.AutoLocalize = false
-    self._label.Text = target and Text.Tr(TranslationTexts[target.textId]) or ""
+    self._label.Text = target and Text.Tr(GuideTexts[target.textId]) or ""
 end
 
 --- 主流程完成后只补充尚未拥有首件升级装备的购买提示。

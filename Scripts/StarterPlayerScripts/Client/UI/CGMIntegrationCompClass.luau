@@ -1,10 +1,11 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
-local TranslationTexts = {
-    ["GM.InvalidItemInput"] = { Key = "CGMIntegrationCompClass.GM.InvalidItemInput", Source = "Enter a valid item ID and a positive whole-number quantity." },
-    ["GM.InvalidValue"] = { Key = "CGMIntegrationCompClass.GM.InvalidValue", Source = "Enter a valid whole number within the allowed range." },
-    ["Common.Unknown"] = { Key = "CGMIntegrationCompClass.Common.Unknown", Source = "Something went wrong. Please try again." },
-}
+local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
+local TranslationTexts = Text.Define("GMUI", {
+    InvalidItemInput = "Enter a valid item ID and a positive whole-number quantity.",
+    InvalidValue = "Enter a valid whole number within the allowed range.",
+    Unknown = "Something went wrong. Please try again.",
+})
 FXLoader:RequireFromParent(script, "Generated/CGMPanelView")
 local Component = FX.Class("CGMIntegrationCompClass", "CGMPanelView")
 
@@ -62,14 +63,14 @@ function Component:ExecuteCommand(action)
         local count = tonumber(self.Inputs[2].Text)
         if not itemId or itemId ~= itemId or itemId < 1 or itemId > 9007199254740991 or itemId % 1 ~= 0
             or not count or count ~= count or count < 1 or count > 9007199254740991 or count % 1 ~= 0 then
-            self._commonUI:ShowLocalizedTips(TranslationTexts["GM.InvalidItemInput"])
+            self._commonUI:ShowLocalizedTips(TranslationTexts.InvalidItemInput)
             return
         end
     elseif action ~= "ResetData" and action ~= "SaveNow" and action ~= "ReachRebirthLevel" then
         local value = tonumber(self.Inputs[1].Text)
         if not value or value ~= value or value < 0 or value > 9007199254740991
             or value % 1 ~= 0 or (action == "SetLevel" and value < 1) then
-            self._commonUI:ShowLocalizedTips(TranslationTexts["GM.InvalidValue"])
+            self._commonUI:ShowLocalizedTips(TranslationTexts.InvalidValue)
             return
         end
     end
@@ -101,7 +102,7 @@ function Component:OnUIAction(action, payload)
         self.State.pending = false
         self:RefreshUI()
         self._commonUI:ShowLocalizedTips(
-            ok and type(result) == "table" and result.key or TranslationTexts["Common.Unknown"],
+            ok and type(result) == "table" and result.key or TranslationTexts.Unknown,
             ok and type(result) == "table" and result.arguments or nil)
     end)
 end

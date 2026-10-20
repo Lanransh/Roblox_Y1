@@ -1,10 +1,10 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
-local TranslationTexts = {
-    ["Level.Luck"] = { Key = "CRockLevelCompClass.Level.Luck", Source = "x{rate} Luck" },
-    ["Rarity.Quality"] = { Key = "CRockLevelCompClass.Rarity.Quality", Source = "Quality {level:int}" },
-}
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
+local TranslationTexts = Text.Define("LootDisplay", {
+    Luck = "x{rate} Luck",
+    Quality = "Quality {level:int}",
+})
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
@@ -210,7 +210,7 @@ end
 --- 云端翻译加载或语言变化后刷新幸运牌，幸运倍率使用一位小数格式。
 function Component:RefreshLevelLuckSigns()
     for index, entry in ipairs(self._luckLabels) do
-        entry.Label.Text = Text.Tr(TranslationTexts["Level.Luck"], {
+        entry.Label.Text = Text.Tr(TranslationTexts.Luck, {
             rate = FormatLuck(entry.Rate),
         })
     end
@@ -332,7 +332,7 @@ function Component:UpdateDropText(drop, now)
     if drop.IsLucky == true then
         rarityArguments.rate = GameUtility.NumberToText(drop.LuckRate or 1)
     end
-    drop.Hud.Frame.Rarity.Text = Text.Tr(TranslationTexts["Rarity.Quality"], rarityArguments)
+    drop.Hud.Frame.Rarity.Text = Text.Tr(TranslationTexts.Quality, rarityArguments)
     drop.Hud.Frame.Price.Text = "$" .. GameUtility.NumberToText(drop.Price)
     drop.Hud.Frame.Timer.Text = string.format("%ds", math.max(0, math.ceil(drop.ExpiresAt - now)))
 end

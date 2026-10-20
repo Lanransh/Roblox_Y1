@@ -1,9 +1,11 @@
 local FX, FS = _G.FX, _G.FS
-local TranslationTexts = {
-    ["CurrencyShop.DiamondsReceived"] = { Key = "SPurchaseReceiptService.CurrencyShop.DiamondsReceived", Source = "Purchase received! +{value} Diamonds." },
-    ["Rebirth.Success"] = { Key = "SPurchaseReceiptService.Rebirth.Success", Source = "Rebirth complete!" },
-    ["CurrencyShop.ItemReceived"] = { Key = "SPurchaseReceiptService.CurrencyShop.ItemReceived", Source = "Purchase received! {item} x{count:int} added to your inventory." },
-}
+local FXLoader = FX.Loader
+local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
+local TranslationTexts = Text.Define("PurchaseReceipt", {
+    DiamondsReceived = "Purchase received! +{value} Diamonds.",
+    RebirthSuccess = "Rebirth complete!",
+    ItemReceived = "Purchase received! {item} x{count:int} added to your inventory.",
+})
 local GameUtility = FX.Loader:RequireShared("Scripts/Game/Shared/GameUtility")
 local MarketplaceService = game:GetService("MarketplaceService")
 local Service = {}
@@ -56,11 +58,11 @@ function Service.Init()
                 return
             end
             if goods.BuyHandler == "AddGem" then
-                player:ShowLocalizedTips(TranslationTexts["CurrencyShop.DiamondsReceived"], {value = GameUtility.NumberToText(goods.NumberArray[1])})
+                player:ShowLocalizedTips(TranslationTexts.DiamondsReceived, {value = GameUtility.NumberToText(goods.NumberArray[1])})
             elseif goods.BuyHandler == "SkipRebirth" then
-                player:ShowLocalizedTips(TranslationTexts["Rebirth.Success"])
+                player:ShowLocalizedTips(TranslationTexts.RebirthSuccess)
             elseif goods.BuyHandler == "AddItem" then
-                player:ShowLocalizedTips(TranslationTexts["CurrencyShop.ItemReceived"], {
+                player:ShowLocalizedTips(TranslationTexts.ItemReceived, {
                     itemSource = _G.ItemConfig.Display[goods.KVTable.ItemId].Name, count = goods.KVTable.Count,
                 })
             end

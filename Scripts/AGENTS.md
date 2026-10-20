@@ -73,11 +73,8 @@
 
 ## 游戏内动态文本翻译
 
-- 只处理游戏业务运行时产生或发送的动态文本，例如奖励、交互结果和业务提示；使用 [Roblox 项目本地化 skill](.agents/skills/roblox-localization/SKILL.md)。
-- 不修改 Generated 下的 Lua/Luau。先读取其展示与翻译逻辑；只有确认 Generated 未正确处理的动态文本才在手写接入脚本最小补充，已处理好的不重复翻译。无 Generated 对应的业务动态消息由所属脚本处理。静态节点由工具收集，不补翻译表或覆盖；配置引用由工具处理，不补 Key/Source 定义或翻译兼容层，不修改生成配置。
-- 动态文案在使用它的 Luau 顶层声明 `local TranslationTexts = { Name = { Key = "Module.Use", Source = "English {value}" } }`；每文件最多一张同名只读表，Key 在收集范围内不能重复（同文也不例外），Key/Source 为非空字符串字面量。不同文件分别定义并使用各自模块前缀 Key，不创建全局/集中共享文案表，不导入导出文案表。Text.Tr 只接收定义对象；按原文查询已有译文使用独立的 Text.TrSource(source)，不需要 Key、不登记原文，不将 Text.Tr 重载为字符串入口；不使用 Text.Mark。
-- Text.Tr 按 Key 翻译，缺译按 Source 格式化英文；Text.TrSource 使用原生 Translate(game, source)，查询失败返回原文，不做模板参数格式化。两个入口均只在客户端使用；服务端只发送定义和参数。仅在客户端运行时关闭业务代码负责翻译的具体动态节点的 AutoLocalize，不修改 Studio 模板、导入数据或整个界面属性。
-- 文案收集、译文生成及发布交给工具流程，不在编码任务中手工修改翻译文件、通过 Roblox MCP 维护翻译表或上传云端。
+- 涉及业务动态文本、翻译定义或语言刷新时，先读取并遵循 [Roblox 项目本地化 skill](.agents/skills/roblox-localization/SKILL.md)；声明、Key 稳定性、运行时接口及验证规则统一在该 skill 维护。
+- 不修改 Generated 或生成配置，不为静态节点、配置引用或已正确翻译的动态文本重复补定义；编码任务不手工修改翻译文件、不通过 Roblox MCP 维护翻译表或上传云端。
 
 ## Luau 验证规则
 - 新增或修改 Luau 后默认只做编译/语法验证，以及通过 Roblox MCP 只读核对同步后的脚本类型、RunContext 和内容，不自行运行 Lua 脚本或启动游戏。用户明确要求运行测试或试玩时，以该授权为准，并在结果中区分语法、同步核对与实际运行验证。

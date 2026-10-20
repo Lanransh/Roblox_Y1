@@ -1,12 +1,13 @@
 local FX = _G.FX
-local TranslationTexts = {
-    ["Common.Unknown"] = { Key = "SLootSellCompClass.Common.Unknown", Source = "Something went wrong. Please try again." },
-    ["LootSell.Changed"] = { Key = "SLootSellCompClass.LootSell.Changed", Source = "Your items have changed. Please try again." },
-    ["LootSell.Empty"] = { Key = "SLootSellCompClass.LootSell.Empty", Source = "You have no items to sell." },
-    ["LootSell.NeedDoubleCard"] = { Key = "SLootSellCompClass.LootSell.NeedDoubleCard", Source = "You need a Double Sell Value Card to sell for double value." },
-    ["LootSell.Success"] = { Key = "SLootSellCompClass.LootSell.Success", Source = "Items sold!" },
-}
 local FXLoader = FX.Loader
+local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
+local TranslationTexts = Text.Define("LootSell", {
+    Unknown = "Something went wrong. Please try again.",
+    Changed = "Your items have changed. Please try again.",
+    Empty = "You have no items to sell.",
+    NeedDoubleCard = "You need a Double Sell Value Card to sell for double value.",
+    Success = "Items sold!",
+})
 local HttpService = game:GetService("HttpService")
 local Fields = _G.PlayerDataConfig
 local GameConfig = _G.GameConfig
@@ -61,7 +62,7 @@ end
 --- @return table 出售是否成功、文案 Key、实际收益与最新展示快照。
 function Component:SellLoot(entryIds, multiplier)
     if type(entryIds) ~= "table" or (multiplier ~= 1 and multiplier ~= 2) then
-        return {success = false, key = TranslationTexts["Common.Unknown"]}
+        return {success = false, key = TranslationTexts.Unknown}
     end
     local data = self:GetTable(Fields.StoredLoot)
     local capacity = #data
@@ -71,16 +72,16 @@ function Component:SellLoot(entryIds, multiplier)
         count += 1
         if count > capacity or type(index) ~= "number" or index % 1 ~= 0
             or index < 1 or index > capacity or type(id) ~= "string" or requested[id] then
-            return {success = false, key = TranslationTexts["LootSell.Changed"]}
+            return {success = false, key = TranslationTexts.Changed}
         end
         requested[id] = true
     end
     if count == 0 then
-        return {success = false, key = TranslationTexts["LootSell.Empty"]}
+        return {success = false, key = TranslationTexts.Empty}
     end
     for index = 1, count do
         if entryIds[index] == nil then
-            return {success = false, key = TranslationTexts["LootSell.Changed"]}
+            return {success = false, key = TranslationTexts.Changed}
         end
     end
     local remaining = {}
@@ -89,7 +90,7 @@ function Component:SellLoot(entryIds, multiplier)
         if type(extra) == "table" and requested[extra.SellId] then
             if not GameConfig.ItemData[extra.ItemId]
                 or type(extra.Price) ~= "number" or not (extra.Price >= 0 and extra.Price < math.huge) then
-                return {success = false, key = TranslationTexts["LootSell.Changed"]}
+                return {success = false, key = TranslationTexts.Changed}
             end
             requested[extra.SellId] = nil
             amount += extra.Price
@@ -98,27 +99,27 @@ function Component:SellLoot(entryIds, multiplier)
         end
     end
     if next(requested) then
-        return {success = false, key = TranslationTexts["LootSell.Changed"]}
+        return {success = false, key = TranslationTexts.Changed}
     end
     -- Price 已包含幸运倍率，不重复乘 LuckRate；图鉴激活记录始终保留。
     amount *= Rebirth.GetMoneyRate(self:GetNumber(Fields.RebirthCount)) * multiplier
     if not (amount >= 0 and amount < math.huge)
         or self:GetNumber(Fields.Money) + amount >= math.huge then
-        return {success = false, key = TranslationTexts["Common.Unknown"]}
+        return {success = false, key = TranslationTexts.Unknown}
     end
     local rewardComp = self:RequireComponent("FSRewardComp")
     local cost = multiplier == 2 and {{Type = "Item", ItemId = 103, Count = 1}} or {}
     if multiplier == 2 and not rewardComp:CanConsumeRewards(cost) then
-        return {success = false, key = TranslationTexts["LootSell.NeedDoubleCard"]}
+        return {success = false, key = TranslationTexts.NeedDoubleCard}
     end
     local rewards = amount > 0 and {{Type = "Money", Currency = "Money", Count = amount}} or {}
     if not rewardComp:ExchangeRewards(cost, rewards) then
-        return {success = false, key = TranslationTexts["Common.Unknown"]}
+        return {success = false, key = TranslationTexts.Unknown}
     end
     self:SetTable(Fields.StoredLoot, remaining)
     self:RequireComponent("TutorialGuide"):RecordSale()
     return {
-        success = true, key = TranslationTexts["LootSell.Success"], count = count, amount = amount,
+        success = true, key = TranslationTexts.Success, count = count, amount = amount,
         entries = self:RefreshEntries(),
     }
 end

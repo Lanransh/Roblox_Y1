@@ -1,11 +1,12 @@
 local FX = _G.FX
-local TranslationTexts = {
-    ["Common.Unknown"] = { Key = "SAuraCompClass.Common.Unknown", Source = "Something went wrong. Please try again." },
-    ["Aura.AlreadyOwned"] = { Key = "SAuraCompClass.Aura.AlreadyOwned", Source = "You already own this aura." },
-    ["Aura.NotEnoughCoins"] = { Key = "SAuraCompClass.Aura.NotEnoughCoins", Source = "Not enough Coins." },
-    ["Aura.NotOwned"] = { Key = "SAuraCompClass.Aura.NotOwned", Source = "You do not own this aura." },
-}
 local FXLoader = FX.Loader
+local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
+local TranslationTexts = Text.Define("Aura", {
+    Unknown = "Something went wrong. Please try again.",
+    AlreadyOwned = "You already own this aura.",
+    NotEnoughCoins = "Not enough Coins.",
+    NotOwned = "You do not own this aura.",
+})
 local Fields = _G.PlayerDataConfig
 local Aura = FXLoader:RequireShared("Scripts/Game/Shared/Aura")
 local InstancePath = FXLoader:RequireShared("Scripts/Game/Shared/InstancePath")
@@ -142,19 +143,19 @@ end
 function Component:RequestAura(action, auraId)
     local config = Aura.GetConfig(auraId)
     if not self._ready or not config or (action ~= "Buy" and action ~= "Equip") then
-        return {success = false, key = TranslationTexts["Common.Unknown"]}
+        return {success = false, key = TranslationTexts.Unknown}
     end
     local data = self:GetTable(Fields.AuraData)
     local id = tostring(config.AuraId)
     if action == "Buy" then
         if data.owned[id] == true then
-            return {success = false, key = TranslationTexts["Aura.AlreadyOwned"]}
+            return {success = false, key = TranslationTexts.AlreadyOwned}
         end
         local costs = config.Price > 0 and {{Type = "Money", Currency = "Money", Count = config.Price}} or {}
         if not self:RequireComponent("FSRewardComp"):ExchangeRewards(costs, {
             {Type = "Unlock", Kind = "Aura", Id = auraId, Count = 1},
         }) then
-            return {success = false, key = TranslationTexts["Aura.NotEnoughCoins"]}
+            return {success = false, key = TranslationTexts.NotEnoughCoins}
         end
         local autoEquip = data.equippedId == 0 or config.TrainingRate > Aura.GetTrainingRate(data)
         data = self:GetTable(Fields.AuraData)
@@ -163,7 +164,7 @@ function Component:RequestAura(action, auraId)
         end
     else
         if data.owned[id] ~= true then
-            return {success = false, key = TranslationTexts["Aura.NotOwned"]}
+            return {success = false, key = TranslationTexts.NotOwned}
         end
         data.equippedId = data.equippedId == auraId and 0 or auraId
     end

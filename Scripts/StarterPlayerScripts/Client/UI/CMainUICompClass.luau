@@ -1,18 +1,18 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
-local TranslationTexts = {
-    ["Main.StrengthRate"] = { Key = "CMainUICompClass.Main.StrengthRate", Source = "x{rate} Strength" },
-    ["CurrencyShop.SoldOut"] = { Key = "CMainUICompClass.CurrencyShop.SoldOut", Source = "Sold Out" },
-    ["CurrencyShop.RateMaxed"] = { Key = "CMainUICompClass.CurrencyShop.RateMaxed", Source = "You have reached the maximum training multiplier." },
-    ["Main.TrainingFull"] = { Key = "CMainUICompClass.Main.TrainingFull", Source = "Training XP is full. Rebirth before buying a training pack." },
-    ["Main.TrainingPack"] = { Key = "CMainUICompClass.Main.TrainingPack", Source = "Training Pack" },
-    ["Main.TrainingPackDesc"] = { Key = "CMainUICompClass.Main.TrainingPackDesc", Source = "Gain {value} training XP, up to your current rebirth limit." },
-    ["Training.Active"] = { Key = "CMainUICompClass.Training.Active", Source = "Training active · ×{rate}" },
-    ["Common.InDevelopment"] = { Key = "CMainUICompClass.Common.InDevelopment", Source = "Coming soon." },
-    ["Main.Strength"] = { Key = "CMainUICompClass.Main.Strength", Source = "Strength: {value}" },
-    ["Main.MaxLevel"] = { Key = "CMainUICompClass.Main.MaxLevel", Source = "MAX LEVEL" },
-}
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
+local TranslationTexts = Text.Define("Main", {
+    StrengthRate = "x{rate} Strength",
+    SoldOut = "Sold Out",
+    RateMaxed = "You have reached the maximum training multiplier.",
+    TrainingFull = "Training XP is full. Rebirth before buying a training pack.",
+    TrainingPack = "Training Pack",
+    TrainingPackDesc = "Gain {value} training XP, up to your current rebirth limit.",
+    TrainingActive = "Training active · ×{rate}",
+    InDevelopment = "Coming soon.",
+    Strength = "Strength: {value}",
+    MaxLevel = "MAX LEVEL",
+})
 local Rebirth = FXLoader:RequireShared("Scripts/Game/Shared/Rebirth")
 local Fields = _G.PlayerDataConfig
 local UserInputService = game:GetService("UserInputService")
@@ -354,12 +354,12 @@ function Component:RefreshStrengthOffers()
     rateButton.PriceDiamond.Visible = nextItem ~= nil
     if nextItem then
         rateButton.Price.Text = GameUtility.NumberToText(_G.GoodsConfig.GemGoodsData[nextItem.GemGoodsId].Price)
-        rateButton.Background.Label.Text = Text.Tr(TranslationTexts["Main.StrengthRate"], {
+        rateButton.Background.Label.Text = Text.Tr(TranslationTexts.StrengthRate, {
             rate = GameUtility.NumberToText(_G.GameConfig.TrainingRateConfig[data.trainingLevel + 1].Rate),
         })
     else
-        rateButton.Price.Text = Text.Tr(TranslationTexts["CurrencyShop.SoldOut"])
-        rateButton.Background.Label.Text = Text.Tr(TranslationTexts["Main.StrengthRate"], {
+        rateButton.Price.Text = Text.Tr(TranslationTexts.SoldOut)
+        rateButton.Background.Label.Text = Text.Tr(TranslationTexts.StrengthRate, {
             rate = GameUtility.NumberToText(CurrencyShop.GetTrainingRate(data)),
         })
     end
@@ -390,21 +390,21 @@ function Component:OpenStrengthOffer(name)
             end
         end
         if not product then
-            self._commonUI:ShowLocalizedTips(TranslationTexts["CurrencyShop.RateMaxed"])
+            self._commonUI:ShowLocalizedTips(TranslationTexts.RateMaxed)
             return
         end
     else
         local goodsId = StrengthPacks[name]
         local gain = CurrencyShop.GetTrainingPackGain(self:GetPlayerObject(), goodsId)
         if gain <= 0 then
-            self._commonUI:ShowLocalizedTips(TranslationTexts["Main.TrainingFull"])
+            self._commonUI:ShowLocalizedTips(TranslationTexts.TrainingFull)
             return
         end
         local button = self._rootNode.RightCenter[name]
         product = {goodsId = goodsId, currency = "Diamond", icon = button.Icon.Image,
             price = _G.GoodsConfig.GemGoodsData[goodsId].Price,
-            title = Text.Tr(TranslationTexts["Main.TrainingPack"]),
-            description = Text.Tr(TranslationTexts["Main.TrainingPackDesc"], {
+            title = Text.Tr(TranslationTexts.TrainingPack),
+            description = Text.Tr(TranslationTexts.TrainingPackDesc, {
                 value = GameUtility.NumberToText(gain),
             })}
     end
@@ -457,7 +457,7 @@ function Component:RefreshTrainingStatus(index)
     local config = _G.GameConfig.TrainingFieldData[index]
     self._trainingStatus.Visible = config ~= nil
     if config then
-        self._trainingStatus.Text = Text.Tr(TranslationTexts["Training.Active"], {
+        self._trainingStatus.Text = Text.Tr(TranslationTexts.TrainingActive, {
             rate = GameUtility.NumberToText(config.TrainingRate),
         })
     end
@@ -465,7 +465,7 @@ end
 
 --- 未实现的入口统一走现有通用提示，不伪造购买或奖励成功。
 function Component:ShowDeveloping()
-    self._commonUI:ShowLocalizedTips(TranslationTexts["Common.InDevelopment"])
+    self._commonUI:ShowLocalizedTips(TranslationTexts.InDevelopment)
 end
 
 --- 金币余额随服务端同步刷新，保留货币前缀并统一使用数量格式。
@@ -814,10 +814,10 @@ function Component:RefreshProgress(value, oldValue)
     self._bar.LevelLabel.Text = string.format("Lv.%d", level)
     self._bar.ProgressLabel.Text = string.format("%s/%s",
         GameUtility.NumberToText(math.min(progressValue, required)), GameUtility.NumberToText(required))
-    self._strength.Text = Text.Tr(TranslationTexts["Main.Strength"], {value = GameUtility.NumberToText(strength)})
+    self._strength.Text = Text.Tr(TranslationTexts.Strength, {value = GameUtility.NumberToText(strength)})
     if level >= RockLevel.MaxLevel then
         progress = 1
-        self._bar.ProgressLabel.Text = Text.Tr(TranslationTexts["Main.MaxLevel"])
+        self._bar.ProgressLabel.Text = Text.Tr(TranslationTexts.MaxLevel)
     end
     local size = UDim2.new(progress, 0, 1, 0)
     if self._progressTween then

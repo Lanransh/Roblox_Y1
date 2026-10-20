@@ -1,14 +1,15 @@
 local FX = _G.FX
-local TranslationTexts = {
-    ["Loot.InventoryFull"] = { Key = "SRockLevelCompClass.Loot.InventoryFull", Source = "Storage limit reached: {capacity:int} items." },
-    ["Loot.BagFull"] = { Key = "SRockLevelCompClass.Loot.BagFull", Source = "Your backpack is full. Return to your base to store your loot." },
-    ["Loot.LuckyPickedUp"] = { Key = "SRockLevelCompClass.Loot.LuckyPickedUp", Source = "Picked up lucky {item} (×{rate})!" },
-    ["Loot.PickedUp"] = { Key = "SRockLevelCompClass.Loot.PickedUp", Source = "Picked up {item}!" },
-    ["Loot.Deposited"] = { Key = "SRockLevelCompClass.Loot.Deposited", Source = "Loot stored: {count:int}" },
-    ["Loot.DepositFull"] = { Key = "SRockLevelCompClass.Loot.DepositFull", Source = "Your storage is full." },
-}
-
 local FXLoader = FX.Loader
+local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
+local TranslationTexts = Text.Define("Loot", {
+    InventoryFull = "Storage limit reached: {capacity:int} items.",
+    BagFull = "Your backpack is full. Return to your base to store your loot.",
+    LuckyPickedUp = "Picked up lucky {item} (×{rate})!",
+    PickedUp = "Picked up {item}!",
+    Deposited = "Loot stored: {count:int}",
+    DepositFull = "Your storage is full.",
+})
+
 local Fields = _G.PlayerDataConfig
 local HttpService = game:GetService("HttpService")
 local RockLevel = require(game:GetService("ReplicatedStorage").Scripts.Game.Shared.RockLevel)
@@ -481,12 +482,12 @@ function Component:PickupDrop(dropId)
     local capacity = RockLevel.StoredLootCapacity
     if #stored + #loot >= capacity then
         drop.Picking = false
-        self:GetPlayerObject():ShowLocalizedTips(TranslationTexts["Loot.InventoryFull"], {capacity = capacity})
+        self:GetPlayerObject():ShowLocalizedTips(TranslationTexts.InventoryFull, {capacity = capacity})
         return false
     end
     if #loot >= self:GetLootCapacity() then
         drop.Picking = false
-        self:GetPlayerObject():ShowLocalizedTips(TranslationTexts["Loot.BagFull"])
+        self:GetPlayerObject():ShowLocalizedTips(TranslationTexts.BagFull)
         return false
     end
     local entry = {
@@ -507,10 +508,10 @@ function Component:PickupDrop(dropId)
     self:RequireComponent("SActivityComp"):RecordPickup()
     self:RequireComponent("TutorialGuide"):RecordPickup()
     if drop.IsLucky then
-        self:GetPlayerObject():ShowLocalizedTips(TranslationTexts["Loot.LuckyPickedUp"],
+        self:GetPlayerObject():ShowLocalizedTips(TranslationTexts.LuckyPickedUp,
             {itemSource = nameSource, rate = GameUtility.NumberToText(drop.LuckRate)})
     else
-        self:GetPlayerObject():ShowLocalizedTips(TranslationTexts["Loot.PickedUp"], {itemSource = nameSource})
+        self:GetPlayerObject():ShowLocalizedTips(TranslationTexts.PickedUp, {itemSource = nameSource})
     end
     return true
 end
@@ -540,11 +541,11 @@ function Component:DepositLoot()
         if collectionChanged then
             self:SetTable(Fields.CollectionEntries, entries)
         end
-        self:GetPlayerObject():ShowLocalizedTips(TranslationTexts["Loot.Deposited"], {count = deposited})
+        self:GetPlayerObject():ShowLocalizedTips(TranslationTexts.Deposited, {count = deposited})
         self:PublishEvent("Tutorial.Deposited")
     end
     if #loot > 0 and not self._depositFull then
-        self:GetPlayerObject():ShowLocalizedTips(TranslationTexts["Loot.DepositFull"])
+        self:GetPlayerObject():ShowLocalizedTips(TranslationTexts.DepositFull)
     end
     self._depositFull = #loot > 0
 end
