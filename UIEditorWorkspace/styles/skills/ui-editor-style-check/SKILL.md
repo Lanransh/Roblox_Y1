@@ -13,7 +13,7 @@ description: 在当前项目通过 ui-editor MCP 制作或修改多彩棋格风�
 1. 根据需求选窗口档位；从项目根 template-references 只读读取相关 JSON。
    区分文件名、document.name、ScreenGui 名和具体子节点。
 2. 记录所需子树的名称、类型、父子关系、Position/Size、AnchorPoint、
-   ZIndex、裁切、字体、颜色、描边、圆角、纹理及嵌入预览。
+   ZIndex、裁切、字体、颜色、描边、圆角、纹理及 Roblox 图片 ID。
 3. 用当前 `uie.editor.get_capabilities` 核对支持属性；
    用 `uie.code.execute`、`ui.nodes.create` 创建新节点和新 ID。
    制作 VM 不能读文件；模板只读发生在 VM 外，不直接改工程 JSON。
@@ -35,7 +35,7 @@ description: 在当前项目通过 ui-editor MCP 制作或修改多彩棋格风�
   同步压边色；关闭绿色、主动作亮绿、付费紫色、取消灰绿、卸载橙红。
   标题、按钮和进度保留白字与文字描边、黑色外轮廓和 Stud 平铺。
   项目实际模板修改后不强套旧参数，明确差异。
-- 图片：预览保存在节点中，Image 是独立 Roblox ID；不依赖本机路径，
+- 图片：预览从图片库查找，节点不支持 previewImage，Image 是 Roblox ID；不依赖本机路径，
   不遗漏资源，不逐个创建 Stud 凸点，普通文本不转图片。
 - 层级：组件底板/纹理/高光压边/文本依次呈现，文字不被遮挡；
   几何与 ZIndex 以模板为准，不新增外投影、发光或模糊。

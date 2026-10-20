@@ -66,11 +66,8 @@ end
 -- 绑定静态节点，事件只连接一次。
 function CLootSellView:OnReady()
     local root = FXLoader:PlayerGui("LootSellUI")
-    -- 仅关闭主动翻译的具体动态文本；原型克隆继承设置，静态节点保持自动本地化。
+    -- 原型在克隆前关闭主动翻译文本的自动本地化。
     for index, path in ipairs({
-        "PopupPanelImg.TotalImg.TotalValueTxt",
-        "PopupPanelImg.StatusTxt",
-        "PopupPanelImg.CapacityTxt",
         "Templates.LootTemplateImg.LootNameTxt",
         "Templates.LootTemplateImg.LootValueTxt",
     }) do
@@ -79,12 +76,15 @@ function CLootSellView:OnReady()
     self.Panel = FXLoader:Here(root, "PopupPanelImg")
     self.Title = FXLoader:Here(root, "TitleBox")
     self.Total = FXLoader:Here(root, "PopupPanelImg.TotalImg.TotalValueTxt")
+    self.Total.AutoLocalize = false
     self.List = FXLoader:Here(root, "PopupPanelImg.LootListBox")
     self.Template = FXLoader:Here(root, "Templates.LootTemplateImg")
     self.CapacityTxt = FXLoader:Here(root, "PopupPanelImg.CapacityTxt")
+    self.CapacityTxt.AutoLocalize = false
     self.Rows = {}
     self.List.CanvasPosition = Vector2.new(0, 0)
     self.StatusTxt = FXLoader:Here(root, "PopupPanelImg.StatusTxt")
+    self.StatusTxt.AutoLocalize = false
     self.StatusMoneyIcon = FXLoader:Here(root, "PopupPanelImg.StatusMoneyIconImg")
     self.SellAllBtn = FXLoader:Here(root, "PopupPanelImg.TotalImg.SellAllBtn")
     self.SellDoubleBtn = FXLoader:Here(root, "PopupPanelImg.TotalImg.SellDoubleBtn")

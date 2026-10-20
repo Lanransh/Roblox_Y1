@@ -41,10 +41,8 @@ local TranslationTexts = Text.Define("AuraShopUI", {
 -- 绑定窗口与隐藏原型，只在首次准备时连接关闭按钮。
 function CAuraShopView:OnReady()
     local root = FXLoader:PlayerGui("AuraShopUI")
-    -- 仅关闭主动翻译的具体动态文本；原型克隆继承设置，静态节点保持自动本地化。
+    -- 原型在克隆前关闭主动翻译文本的自动本地化。
     for index, path in ipairs({
-        "PopupPanelImg.EmptyTxt",
-        "TitleBox.TitleTxt",
         "Templates.AuraRowImg.ActionBtn.ButtonTxt",
         "Templates.AuraRowImg.NameTxt",
         "Templates.AuraRowImg.RarityTxt",
@@ -56,8 +54,10 @@ function CAuraShopView:OnReady()
     self.Panel = FXLoader:Here(root, "PopupPanelImg")
     self.TitleBox = FXLoader:Here(root, "TitleBox")
     self.TitleTxt = FXLoader:Here(root, "TitleBox.TitleTxt")
+    self.TitleTxt.AutoLocalize = false
     self.List = FXLoader:Here(root, "PopupPanelImg.AuraListBox")
     self.EmptyTxt = FXLoader:Here(root, "PopupPanelImg.EmptyTxt")
+    self.EmptyTxt.AutoLocalize = false
     self.Template = FXLoader:Here(root, "Templates.AuraRowImg")
     self.Rows = {}
     local closeBtn = FXLoader:Here(root, "TitleBox.CloseSurfaceImg")
@@ -154,9 +154,6 @@ function CAuraShopView:Render(state)
                 caption = Text.Tr(TranslationTexts.Waiting)
                 color = "#638079"
             elseif not owned and state.coins < aura.price then
-                caption = Text.Tr(TranslationTexts.Price, {
-                    price = aura.price,
-                })
                 color = "#638079"
             end
             FXLoader:Here(row, "OwnedTxt").Visible = false

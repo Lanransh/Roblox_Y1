@@ -48,28 +48,23 @@ local TranslationTexts = Text.Define("RebirthUI", {
 -- 绑定已有设计节点与按钮；刷新时不重复连接事件。
 function UI:OnReady()
     local root = FXLoader:PlayerGui("RebirthUI")
-    -- 仅关闭主动翻译的具体动态文本；原型克隆继承设置，静态节点保持自动本地化。
-    for index, path in ipairs({
-        "PopupPanelImg.CurrentStrengthImg.MultiplierTxt",
-        "PopupPanelImg.NextStrengthImg.MultiplierTxt",
-        "PopupPanelImg.CurrentMoneyImg.MultiplierTxt",
-        "PopupPanelImg.NextMoneyImg.MultiplierTxt",
-        "PopupPanelImg.ResetWarningTxt",
-        "PopupPanelImg.ProgressBarImg.ProgressTxt",
-    }) do
-        FXLoader:Here(root, path).AutoLocalize = false
-    end
     self.Panel = FXLoader:Here(root, "PopupPanelImg")
     self.TitleBox = FXLoader:Here(root, "TitleBox")
     self.RebirthBtn = FXLoader:Here(root, "PopupPanelImg.RebirthBtn")
     self.SkipBtn = FXLoader:Here(root, "PopupPanelImg.SkipBtn")
     self.ProgressFill = FXLoader:Here(root, "PopupPanelImg.ProgressBarImg.ProgressFillImg")
     self.ProgressTxt = FXLoader:Here(root, "PopupPanelImg.ProgressBarImg.ProgressTxt")
+    self.ProgressTxt.AutoLocalize = false
     self.WarningTxt = FXLoader:Here(root, "PopupPanelImg.ResetWarningTxt")
+    self.WarningTxt.AutoLocalize = false
     self.CurrentStrengthTxt = FXLoader:Here(root, "PopupPanelImg.CurrentStrengthImg.MultiplierTxt")
+    self.CurrentStrengthTxt.AutoLocalize = false
     self.NextStrengthTxt = FXLoader:Here(root, "PopupPanelImg.NextStrengthImg.MultiplierTxt")
+    self.NextStrengthTxt.AutoLocalize = false
     self.CurrentMoneyTxt = FXLoader:Here(root, "PopupPanelImg.CurrentMoneyImg.MultiplierTxt")
+    self.CurrentMoneyTxt.AutoLocalize = false
     self.NextMoneyTxt = FXLoader:Here(root, "PopupPanelImg.NextMoneyImg.MultiplierTxt")
+    self.NextMoneyTxt.AutoLocalize = false
     self.RebirthGradient = FXLoader:Here(root, "PopupPanelImg.RebirthBtn.SurfaceGradient")
     local close = FXLoader:Here(root, "TitleBox.CloseSurfaceImg")
     -- 关闭由接入层更新 Open，不销毁设计节点。

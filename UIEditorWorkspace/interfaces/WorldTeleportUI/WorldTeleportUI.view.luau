@@ -47,9 +47,8 @@ local TranslationTexts = Text.Define("WorldTeleportUI", {
 -- 绑定固定窗口与隐藏条目原型，关闭事件只连接一次。
 function CWorldTeleportView:OnReady()
     local root = FXLoader:PlayerGui("WorldTeleportUI")
-    -- 仅关闭主动翻译的具体动态文本；原型克隆继承设置，静态节点保持自动本地化。
+    -- 原型在克隆前关闭主动翻译文本的自动本地化。
     for index, path in ipairs({
-        "WindowBox.ErrorTxt",
         "Templates.WorldRowTemplate.WorldNameTxt",
         "Templates.WorldRowTemplate.TravelBtn.ButtonTxt",
     }) do
@@ -58,6 +57,7 @@ function CWorldTeleportView:OnReady()
     self.ListBox = FXLoader:Here(root, "WindowBox.PopupPanelImg.WorldListBox")
     self.EmptyTxt = FXLoader:Here(root, "WindowBox.PopupPanelImg.EmptyTxt")
     self.ErrorTxt = FXLoader:Here(root, "WindowBox.ErrorTxt")
+    self.ErrorTxt.AutoLocalize = false
     self.RowTemplate = FXLoader:Here(root, "Templates.WorldRowTemplate")
     self._rows = {}
     local closeBtn = FXLoader:Here(root, "WindowBox.TitleBox.CloseSurfaceImg")

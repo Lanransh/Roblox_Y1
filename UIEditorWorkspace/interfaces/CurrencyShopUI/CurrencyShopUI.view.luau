@@ -44,9 +44,8 @@ local TranslationTexts = Text.Define("CurrencyShopUI", {
 -- 绑定已有节点与页签事件；每张商品卡只连接一次。
 function CCurrencyShopView:OnReady()
     local root = FXLoader:PlayerGui("CurrencyShopUI")
-    -- 仅关闭主动翻译的具体动态文本；原型克隆继承设置，静态节点保持自动本地化。
+    -- 原型在克隆前关闭主动翻译文本的自动本地化。
     for index, path in ipairs({
-        "PopupPanelImg.ProductsContentImg.ProductsTitleTxt",
         "Templates.DiamondGreenCardImg.ProductTitleTxt",
         "Templates.DiamondGreenCardImg.ProductDescriptionTxt",
         "Templates.DiamondGreenCardImg.PurchaseBtn.ButtonTxt",
@@ -89,6 +88,7 @@ function CCurrencyShopView:OnReady()
     self.Root = root
     self.List = FXLoader:Here(root, "PopupPanelImg.ProductListBox")
     self.ContentTitle = FXLoader:Here(root, "PopupPanelImg.ProductsContentImg.ProductsTitleTxt")
+    self.ContentTitle.AutoLocalize = false
     self.DiamondTab = FXLoader:Here(root, "PopupPanelImg.DiamondTabBtn")
     self.RobuxTab = FXLoader:Here(root, "PopupPanelImg.RobuxTabBtn")
     self.Templates = {}

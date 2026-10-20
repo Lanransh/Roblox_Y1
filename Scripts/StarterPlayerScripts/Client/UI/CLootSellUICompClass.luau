@@ -3,7 +3,7 @@ local FXLoader = FX.Loader
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local TranslationTexts = Text.Define("LootSellUI", {
     LuckyName = "Lucky {item} (×{rate})",
-    Coins = "{value} Coins",
+    CoinValue = "{value} Coins",
     Count = "{count:int}/{capacity:int}",
     Empty = "You have no items to sell.",
     Gained = "You earned {value} Coins!",
@@ -139,12 +139,12 @@ function Component:Render(state)
         row.name.AutoLocalize = false
         row.value.AutoLocalize = false
         row.icon.Image = item.icon
-        row.value.Text = Text.Tr(TranslationTexts.Coins, {
+        row.value.Text = Text.Tr(TranslationTexts.CoinValue, {
             value = GameUtility.NumberToText(item.value),
         })
         total += item.value
     end
-    self.Total.Text = Text.Tr(TranslationTexts.Coins, {
+    self.Total.Text = Text.Tr(TranslationTexts.CoinValue, {
         value = GameUtility.NumberToText(total),
     })
     self.CapacityTxt.Text = Text.Tr(TranslationTexts.Count, {

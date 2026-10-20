@@ -85,15 +85,6 @@ end
 -- 绑定音量与开关节点；事件只连接一次。
 function CSettingsView:OnReady()
     local root = FXLoader:PlayerGui("SettingsUI")
-    -- 仅关闭主动翻译的具体动态文本；原型克隆继承设置，静态节点保持自动本地化。
-    for index, path in ipairs({
-        "SettingsPanel.ContentBox.MusicRowImg.ValueTxt",
-        "SettingsPanel.ContentBox.SoundEffectsRowImg.ValueTxt",
-        "SettingsPanel.ContentBox.ShowAuraRowImg.ShowAuraBtn.ButtonTxt",
-        "SettingsPanel.ContentBox.GiantPickaxeRowImg.GiantPickaxeBtn.ButtonTxt",
-    }) do
-        FXLoader:Here(root, path).AutoLocalize = false
-    end
 
     self.Sliders = {
         musicVolume = {
@@ -113,6 +104,7 @@ function CSettingsView:OnReady()
     }
 
     for setting, slider in pairs(self.Sliders) do
+        slider.value.AutoLocalize = false
         bindSlider(self, setting, slider.track, slider.input)
     end
 
@@ -130,6 +122,7 @@ function CSettingsView:OnReady()
     }
 
     for setting, toggle in pairs(self.Toggles) do
+        toggle.text.AutoLocalize = false
         local settingName = setting
         local button = toggle.button
         -- 点击只传设置键和新值，具体保存由接入层负责。
