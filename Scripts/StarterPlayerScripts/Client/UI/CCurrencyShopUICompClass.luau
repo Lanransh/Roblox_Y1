@@ -1,17 +1,17 @@
 -- 货币商店业务子类：配置驱动展示，钻石由服务端结算，Robux 交给平台收据。
 local FX = _G.FX
 local FXLoader = FX.Loader
-local TranslationTexts = {
-    ["CurrencyShop.Processing"] = { Key = "CCurrencyShopUICompClass.CurrencyShop.Processing", Source = "Payment completed. Waiting for your reward." },
-    ["CurrencyShop.Training"] = { Key = "CCurrencyShopUICompClass.CurrencyShop.Training", Source = "Training x{rate}" },
-    ["CurrencyShop.Capacity"] = { Key = "CCurrencyShopUICompClass.CurrencyShop.Capacity", Source = "+{count:int} Carry Slot" },
-    ["CurrencyShop.CapacityDesc"] = { Key = "CCurrencyShopUICompClass.CurrencyShop.CapacityDesc", Source = "Permanently carry {count:int} collectibles." },
-    ["CurrencyShop.Diamonds"] = { Key = "CCurrencyShopUICompClass.CurrencyShop.Diamonds", Source = "{value} Diamonds" },
-    ["CurrencyShop.SoldOut"] = { Key = "CCurrencyShopUICompClass.CurrencyShop.SoldOut", Source = "Sold Out" },
-    ["CurrencyShop.Unavailable"] = { Key = "CCurrencyShopUICompClass.CurrencyShop.Unavailable", Source = "Unavailable" },
-    ["CurrencyShop.RateMaxed"] = { Key = "CCurrencyShopUICompClass.CurrencyShop.RateMaxed", Source = "You have reached the maximum training multiplier." },
-}
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
+local TranslationTexts = Text.Define("CurrencyShopUI", {
+    Processing = "Payment completed. Waiting for your reward.",
+    Training = "Training x{rate}",
+    Capacity = "+{count:int} Carry Slot",
+    CapacityDesc = "Permanently carry {count:int} collectibles.",
+    Diamonds = "{value} Diamonds",
+    SoldOut = "Sold Out",
+    Unavailable = "Unavailable",
+    RateMaxed = "You have reached the maximum training multiplier.",
+})
 FXLoader:RequireFromParent(script, "Generated/CCurrencyShopView")
 local Shop = FXLoader:RequireShared("Scripts/Game/Shared/CurrencyShop")
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
@@ -57,7 +57,7 @@ function Component:OnReady()
         if userId == self:GetPlayerNode().UserId and productId == self._promptProductId then
             self._promptProductId = nil
             self._busy = false
-            self._messageKey = purchased and TranslationTexts["CurrencyShop.Processing"] or nil
+            self._messageKey = purchased and TranslationTexts.Processing or nil
             self:RefreshUI()
         end
     end))
@@ -103,13 +103,13 @@ function Component:BuildProducts()
             local title, description
             if goods.BuyHandler == "TrainingRateLevel" then
                 local level = nextItem and self._data.trainingLevel + 1 or self._data.trainingLevel
-                title = Text.Tr(TranslationTexts["CurrencyShop.Training"], {
+                title = Text.Tr(TranslationTexts.Training, {
                     rate = GameUtility.NumberToText(_G.GameConfig.TrainingRateConfig[level].Rate),
                 })
                 description = Text.TrSource(goods.Desc)
             else
-                title = Text.Tr(TranslationTexts["CurrencyShop.Capacity"], {count = goods.NumberArray[1]})
-                description = Text.Tr(TranslationTexts["CurrencyShop.CapacityDesc"], {
+                title = Text.Tr(TranslationTexts.Capacity, {count = goods.NumberArray[1]})
+                description = Text.Tr(TranslationTexts.CapacityDesc, {
                     count = RockLevel.LootCapacity + self._data.capacity + (nextItem and goods.NumberArray[1] or 0),
                 })
             end
@@ -123,7 +123,7 @@ function Component:BuildProducts()
         local goods = _G.GoodsConfig.GoodsData[item.DevGoodsId]
         local title, description
         if goods.BuyHandler == "AddGem" then
-            title = Text.Tr(TranslationTexts["CurrencyShop.Diamonds"], {
+            title = Text.Tr(TranslationTexts.Diamonds, {
                 value = GameUtility.NumberToText(goods.NumberArray[1]),
             })
             description = Text.TrSource(goods.Desc)
@@ -179,8 +179,8 @@ function Component:Render(state)
             card.title.AutoLocalize = false
             card.description.AutoLocalize = false
             card.price.AutoLocalize = false
-            local key = product.soldOut and TranslationTexts["CurrencyShop.SoldOut"]
-                or (product.unavailable and TranslationTexts["CurrencyShop.Unavailable"])
+            local key = product.soldOut and TranslationTexts.SoldOut
+                or (product.unavailable and TranslationTexts.Unavailable)
             card.price.Text = key and Text.Tr(key)
                 or GameUtility.NumberToText(product.price)
             if product.currency == "Robux" then
@@ -216,7 +216,7 @@ function Component:OnUIAction(action, payload)
     elseif action == "Purchase" and not self._busy then
         for index, product in ipairs(self.Config.products) do
             if product.id == payload.productId and product.id == "group_1" and product.soldOut then
-                self._commonUI:ShowLocalizedTips(TranslationTexts["CurrencyShop.RateMaxed"])
+                self._commonUI:ShowLocalizedTips(TranslationTexts.RateMaxed)
                 return
             end
             if product.id == payload.productId and not product.soldOut and not product.unavailable then
@@ -249,7 +249,7 @@ function Component:Purchase(product)
         if not ok or not result then
             self._busy = false
             self._promptProductId = nil
-            self._messageKey = TranslationTexts["CurrencyShop.Unavailable"]
+            self._messageKey = TranslationTexts.Unavailable
         end
         self:RefreshUI()
     end)

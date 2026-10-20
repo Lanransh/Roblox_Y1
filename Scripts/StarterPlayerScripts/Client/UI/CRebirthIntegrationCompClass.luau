@@ -1,15 +1,15 @@
 local FX = _G.FX
 local FC = _G.FC
 local FXLoader = FX.Loader
-local TranslationTexts = {
-    ["Rebirth.CompleteNotice"] = { Key = "Rebirth.CompleteNotice", Source = "Rebirth complete!  {previous:int} → {current:int}" },
-    ["Rebirth.Progress"] = { Key = "CRebirthIntegrationCompClass.Rebirth.Progress", Source = "Level {level:int}/{required:int}" },
-    ["Rebirth.MaxCount"] = { Key = "CRebirthIntegrationCompClass.Rebirth.MaxCount", Source = "You have reached the rebirth limit." },
-    ["Common.InDevelopment"] = { Key = "CRebirthIntegrationCompClass.Common.InDevelopment", Source = "Coming soon." },
-    ["Common.Unknown"] = { Key = "CRebirthIntegrationCompClass.Common.Unknown", Source = "Something went wrong. Please try again." },
-    ["Rebirth.RequiredLevel"] = { Key = "CRebirthIntegrationCompClass.Rebirth.RequiredLevel", Source = "Reach level {level:int} to rebirth." },
-}
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
+local TranslationTexts = Text.Define("Rebirth", {
+    CompleteNotice = "Rebirth complete!  {previous:int} → {current:int}",
+    Progress = "Level {level:int}/{required:int}",
+    MaxCount = "You have reached the rebirth limit.",
+    InDevelopment = "Coming soon.",
+    Unknown = "Something went wrong. Please try again.",
+    RequiredLevel = "Reach level {level:int} to rebirth.",
+})
 FXLoader:RequireFromParent(script, "Generated/CRebirthUICompClass")
 local Fields = _G.PlayerDataConfig
 local MarketplaceService = game:GetService("MarketplaceService")
@@ -103,7 +103,7 @@ function Component:RefreshRebirthNotice()
     if self._rebirthNoticePrevious == nil then
         return
     end
-    self._rebirthNoticeText.Text = Text.Tr(TranslationTexts["Rebirth.CompleteNotice"], {
+    self._rebirthNoticeText.Text = Text.Tr(TranslationTexts.CompleteNotice, {
         previous = self._rebirthNoticePrevious, current = self._rebirthNoticeCurrent,
     })
 end
@@ -199,14 +199,14 @@ function Component:Render(state)
     local productId = goods and goods.RobloxProductId
     self:SetButtonEnabled(self.SkipBtn, state.Open and not state.Pending
         and type(productId) == "number" and productId > 0 and productId % 1 == 0)
-    self.ProgressTxt.Text = Text.Tr(TranslationTexts["Rebirth.Progress"], {
+    self.ProgressTxt.Text = Text.Tr(TranslationTexts.Progress, {
         level = state.Level, required = state.RequiredLevel,
     })
     if self:GetNumber(Fields.RebirthCount) >= Rebirth.MaxCount then
         self.RebirthBtn.BackgroundColor3 = Color3.fromHex("#B7B7B7")
         self.RebirthGradient.Enabled = true
         self.WarningTxt.AutoLocalize = false
-        self.WarningTxt.Text = Text.Tr(TranslationTexts["Rebirth.MaxCount"])
+        self.WarningTxt.Text = Text.Tr(TranslationTexts.MaxCount)
     end
 end
 
@@ -215,7 +215,7 @@ function Component:RequestSkip()
     local goods = Rebirth.GetSkipGoods(self:GetNumber(Fields.RebirthCount))
     local productId = goods and goods.RobloxProductId
     if type(productId) ~= "number" or productId <= 0 or productId % 1 ~= 0 then
-        self._commonUI:ShowLocalizedTips(TranslationTexts["Common.InDevelopment"])
+        self._commonUI:ShowLocalizedTips(TranslationTexts.InDevelopment)
         return
     end
     self.State.Pending = true
@@ -229,7 +229,7 @@ function Component:RequestSkip()
         if not ok or not result then
             self._promptProductId = nil
             self.State.Pending = false
-            self._commonUI:ShowLocalizedTips(TranslationTexts["Common.Unknown"])
+            self._commonUI:ShowLocalizedTips(TranslationTexts.Unknown)
         end
         self:RefreshRebirth()
     end)
@@ -256,7 +256,7 @@ function Component:OnUIAction(action, payload)
         return
     end
     if self:GetNumber(Fields.RebirthCount) >= Rebirth.MaxCount then
-        self._commonUI:ShowLocalizedTips(TranslationTexts["Rebirth.MaxCount"])
+        self._commonUI:ShowLocalizedTips(TranslationTexts.MaxCount)
         return
     end
     if action == "RequestSkip" then
@@ -266,7 +266,7 @@ function Component:OnUIAction(action, payload)
     assert(action == "RequestRebirth", "Unsupported rebirth action: " .. tostring(action))
     local required = Rebirth.GetRequiredLevel(self:GetNumber(Fields.RebirthCount))
     if self:GetNumber(Fields.RockTrainingLevel) < required then
-        self._commonUI:ShowLocalizedTips(TranslationTexts["Rebirth.RequiredLevel"], {level = required})
+        self._commonUI:ShowLocalizedTips(TranslationTexts.RequiredLevel, {level = required})
         return
     end
     local previousRebirthCount = self:GetNumber(Fields.RebirthCount)
@@ -279,7 +279,7 @@ function Component:OnUIAction(action, payload)
         self._rebirthTask = nil
         self.State.Pending = false
         if not ok or type(result) ~= "table" then
-            self._commonUI:ShowLocalizedTips(TranslationTexts["Common.Unknown"])
+            self._commonUI:ShowLocalizedTips(TranslationTexts.Unknown)
         elseif result.success == true then
             self:ShowRebirthNotice(previousRebirthCount, previousRebirthCount + 1)
         end

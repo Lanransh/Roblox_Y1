@@ -1,11 +1,13 @@
 local FX = _G.FX
-local TranslationTexts = {
-    ["Welfare.PassActivated"] = { Key = "SActivityCompClass.Welfare.PassActivated", Source = "Gained {value} Diamonds and activated a {days:int}-day weekly pass!" },
-    ["Welfare.NotReady"] = { Key = "SActivityCompClass.Welfare.NotReady", Source = "This reward is not available yet." },
-    ["Welfare.AlreadyClaimed"] = { Key = "SActivityCompClass.Welfare.AlreadyClaimed", Source = "You have already claimed this reward." },
-    ["Welfare.InventoryFull"] = { Key = "SActivityCompClass.Welfare.InventoryFull", Source = "Not enough inventory space. Your reward is still available." },
-    ["Welfare.Success"] = { Key = "SActivityCompClass.Welfare.Success", Source = "Reward claimed!" },
-}
+local FXLoader = FX.Loader
+local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
+local TranslationTexts = Text.Define("Activity", {
+    PassActivated = "Gained {value} Diamonds and activated a {days:int}-day weekly pass!",
+    NotReady = "This reward is not available yet.",
+    AlreadyClaimed = "You have already claimed this reward.",
+    InventoryFull = "Not enough inventory space. Your reward is still available.",
+    Success = "Reward claimed!",
+})
 local GameUtility = FX.Loader:RequireShared("Scripts/Game/Shared/GameUtility")
 local Fields = _G.PlayerDataConfig
 local Welfare = FX.Loader:RequireShared("Scripts/Game/Shared/Welfare")
@@ -269,7 +271,7 @@ function Component:ActivateWeekCard(itemId)
     self:PublishState()
     local player = self:GetPlayerObject()
     local notified, message = pcall(player.ShowLocalizedTips, player,
-        TranslationTexts["Welfare.PassActivated"], {value = GameUtility.NumberToText(config.InstantGemCount), days = config.DayTime})
+        TranslationTexts.PassActivated, {value = GameUtility.NumberToText(config.InstantGemCount), days = config.DayTime})
     if not notified then
         warn("[WeekCard] activation notification failed", message)
     end
@@ -305,17 +307,17 @@ end
 --- @return table 成功标记、提示 Key 和最新权威快照。
 function Component:Claim(kind, rewardId, multiplier)
     if not self._lastTime or type(kind) ~= "string" or type(rewardId) ~= "string" or #rewardId > 32 then
-        return {success = false, key = TranslationTexts["Welfare.NotReady"]}
+        return {success = false, key = TranslationTexts.NotReady}
     end
     self:UpdateTime(os.time())
     local data = self:GetTable(Fields.WelfareData)
-    local key = TranslationTexts["Welfare.NotReady"]
+    local key = TranslationTexts.NotReady
     local success = false
     if kind == "retention" and rewardId == "once" then
         local retention = self:GetTable(Fields.MenuRetentionData)
         local config = _G.ActivityConfig.MenuRetentionConfig
         if retention.claimed then
-            key = TranslationTexts["Welfare.AlreadyClaimed"]
+            key = TranslationTexts.AlreadyClaimed
         elseif workspace:GetServerTimeNow() - self._retentionStartedAt < config.TriggerMinutes * 60 then
             if self:GrantRewards({config.Reward}) then
                 -- 发奖与永久标记均不 yield，重复请求不能再次进入发奖分支。
@@ -323,12 +325,12 @@ function Component:Claim(kind, rewardId, multiplier)
                 self:SetTable(Fields.MenuRetentionData, retention)
                 success = true
             else
-                key = TranslationTexts["Welfare.InventoryFull"]
+                key = TranslationTexts.InventoryFull
             end
         end
     elseif kind == "offline" then
         if data.offlineClaimDay == data.day then
-            key = TranslationTexts["Welfare.AlreadyClaimed"]
+            key = TranslationTexts.AlreadyClaimed
         elseif rewardId == data.offline.id and data.offline.training > 0 and (multiplier == 1 or multiplier == 2) then
             local config = _G.GameConfig.CommonConfig.OfflineReward
             local rate = multiplier == 2 and config.VIPRate or config.Rate
@@ -360,7 +362,7 @@ function Component:Claim(kind, rewardId, multiplier)
             end
             success = true
         elseif amount <= 0 then
-            key = TranslationTexts["Welfare.AlreadyClaimed"]
+            key = TranslationTexts.AlreadyClaimed
         end
     else
         local config = Welfare.GetReward(kind, rewardId)
@@ -371,7 +373,7 @@ function Component:Claim(kind, rewardId, multiplier)
                 or kind == "signin" and data.loginDays >= config.LoginDays
                 or kind == "task" and self:GetTaskProgress(config) >= config.Target
             if claimed[rewardId] then
-                key = TranslationTexts["Welfare.AlreadyClaimed"]
+                key = TranslationTexts.AlreadyClaimed
             elseif eligible then
                 if kind == "task" then
                     success = self:GrantRewards(config.Rewards)
@@ -381,14 +383,14 @@ function Component:Claim(kind, rewardId, multiplier)
                 if success then
                     claimed[rewardId] = true
                 else
-                    key = TranslationTexts["Welfare.InventoryFull"]
+                    key = TranslationTexts.InventoryFull
                 end
             end
         end
     end
     self:SetTable(Fields.WelfareData, data)
     self:PublishState()
-    return {success = success, key = success and TranslationTexts["Welfare.Success"] or key, state = self:GetTable(Fields.WelfareState)}
+    return {success = success, key = success and TranslationTexts.Success or key, state = self:GetTable(Fields.WelfareState)}
 end
 
 return Component

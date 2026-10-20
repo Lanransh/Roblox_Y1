@@ -5,8 +5,9 @@ description: 为 Roblox_Y1 游戏动态文本接入翻译。先检查 Generated 
 
 # 游戏动态文本本地化
 
-先确定文案归属，再补必要的动态翻译。收集合同以 StudioGameToolkit 当前翻译文本
-收集工具为准；运行时接口见[项目本地化](../../../Docs/本地化接入.md)。
+先确定文案归属，再补必要的动态翻译。声明合同如下，StudioGameToolkit 收集工具
+须配套支持；工具未适配时报告未完成收集验证，不回退到静默漏收。
+运行时接口见[项目本地化](../../../Docs/本地化接入.md)。
 
 ## 五条处理规则
 
@@ -19,7 +20,7 @@ description: 为 Roblox_Y1 游戏动态文本接入翻译。先检查 Generated 
    只登记当前文件需要的动态文案，不创建全局或集中共享表，不导入、导出文案表。
    接收服务端传来的完整定义不需要再复制登记一份。
 3. Key 在工具的收集范围内必须唯一。同文件、跨文件及与配置的 Key 碰撞都要解决，
-   即使英文完全相同也不能重复声明同一个 Key。各文件使用可区分的模块前缀；
+   即使英文完全相同也不能重复声明同一个 Key。各文件使用简短、可区分的业务前缀；
    同一文件重复使用同一句文案时引用已有表项，不再声明第二项。
 4. 配置引用的翻译由工具生成和处理。不要为了读取名称、描述等配置字段，另外补
    Key/Source 定义、复制配置文案或增加翻译兼容层；不修改生成配置。
@@ -29,20 +30,29 @@ description: 为 Roblox_Y1 游戏动态文本接入翻译。先检查 Generated 
 ## 定义合同
 
 工具只静态解析声明，不通过 Text.Tr、Text.TrSource 或 Text.Mark 调用推断文案。
-每文件最多一个顶层同名表，每项只允许非空字符串字面量 Key、Source：
+每文件最多一个顶层同名声明，先加载 Text，再使用固定形式：
 
 ```lua
-local TranslationTexts = {
-    ReceivedCoins = {
-        Key = "RewardMessage.ReceivedCoins",
-        Source = "You received {amount:int} Coins",
-    },
-}
+local TranslationTexts = Text.Define("Activity", {
+    PassActivated = "Gained {value} Diamonds and activated a {days:int}-day weekly pass!",
+    InventoryFull = "Your inventory is full",
+})
 ```
 
-- Source 使用完整英文或完整模板；字段名只是本文件的引用入口，不代替云端 Key。
-- 允许注释、转义、长字符串和尾逗号；不使用拼接、插值、变量、函数或 require
-  结果生成定义。不在函数、分支中声明，不重新赋值或动态补字段。
+- 前缀是简短、稳定的 PascalCase 业务名，如 Activity，不带 S/C、CompClass 等
+  实现细节，不按文件名或路径推导。条目直接用 PascalCase 标识符，不含句点、
+  不用字符串索引声明，不重复命名空间；写 PassActivated，不写 Welfare.PassActivated。
+  前缀与条目名仅含英文字母和数字且大写字母开头。原文使用完整英文或模板，
+  前缀与原文必须为非空字符串字面量。完整 Key 固定为 `prefix .. "." .. name`，
+  上例分别为 `Activity.PassActivated`、`Activity.InventoryFull`。
+- 允许注释、转义、长字符串和尾逗号；不使用拼接、插值、变量、其他函数或 require
+  结果生成定义，不使用调用别名。不在函数、分支中声明，不重新赋值或动态补字段。
+- 收集器只解析固定声明的字面量，不执行 Luau、不求值函数、不做宏展开。
+  必须检查原始表内重复条目名及收集范围内重复完整 Key；遇到非法声明或冲突，
+  报告文件和行号并使收集失败，不静默跳过。运行时表已覆盖的重复项无法补检。
+- 改前缀或条目名就是改 Key，默认不改已有翻译身份；经用户授权统一改名时，逐项
+  保持 Source 与参数不变，交付旧 Key → 新 Key 映射，由工具迁移译文。
+  所有文案使用 Text.Define，不再保留显式 Key/Source 声明或增加运行时旧 Key 别名。
 - 只定义动态业务原文，不把配置字段、玩家输入、业务 ID、节点路径或静态节点
   文本抄进表。全部表项都会被收集，未调用的项也会入表，不为“完整”预填无关文案。
 - 保持原文、参数名、类型和必要标签一致。改 Key 或改 Source 可能影响已有译文，
@@ -58,13 +68,17 @@ local FXLoader = FX.Loader
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 ```
 
+- `Text.Define(prefix, sources)`：两端均可调用，仅展开为按原条目名索引的
+  Key/Source 定义；返回表与定义只读，不翻译、不维护全局 Key 注册表。
+  必须在顶层声明前加载 Text，使用处为 `TranslationTexts.Name`。
+  既有业务 ID 与条目命名不同，可在所属脚本显式映射到定义，不更改业务 ID 或存档约定。
 - `Text.Tr(definition, arguments)`：只接受 Key/Source 定义，内部使用原生
   `Translator:FormatByKey`；查询失败按该定义 Source 做英文参数格式化，不按原文
   查其他语义 Key。不要向 Text.Tr 传字符串，也不恢复 Text.Mark 或全局 Key 映射。
 - `Text.TrSource(source)`：独立的原文查询入口，不需要 Key，内部使用原生
   `Translator:Translate(game, source)`。未加载、缺译、报错或空译文时返回原文。
   它不登记原文、不补翻译定义、不格式化参数；参数模板或同文不同义使用 Text.Tr。
-- 两个接口均只在客户端调用，复用入口创建的 `FC.Localization`。不另建翻译对象，
+- 两个翻译接口均只在客户端调用，复用入口创建的 `FC.Localization`。不另建翻译对象，
   不在共享模块顶层提前翻译并缓存玩家语言文本。
 
 ## 参数、服务端与语言刷新
@@ -83,8 +97,8 @@ local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 ## 验证与交付
 
 - 检查实际 Generated 接口，说明动态缺口和接入补充点；没有缺口就不增加翻译代码。
-- 用翻译工具检查声明合法性、来源范围及 Key 唯一性；原文查询成功不代表原文已收集。
-  可运行 `python -X utf8 Tools/check_translation_contract.py` 检查项目入口规则。
+- 用已适配 Text.Define 的翻译工具检查声明合法性、来源范围及 Key 唯一性；
+  原文查询成功不代表原文已收集。迁移需按显式映射比对完整 Key，确认 Source 与参数不变。
 - 验证仅覆盖本次动态文本，包括英文回退、参数、语言刷新和重复翻译问题。
   遵循 AGENTS.md，区分语法、Script Sync 和实际运行结果，不因本技能自动启动试玩。
 - 收集、译文生成和发布由工具流程处理，不手工改翻译文件、不通过 Roblox MCP

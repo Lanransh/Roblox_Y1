@@ -1,10 +1,12 @@
 local FX = _G.FX
-local TranslationTexts = {
-    ["Common.Unknown"] = { Key = "SWeaponCompClass.Common.Unknown", Source = "Something went wrong. Please try again." },
-    ["Weapon.AlreadyOwned"] = { Key = "SWeaponCompClass.Weapon.AlreadyOwned", Source = "You already own this weapon." },
-    ["Weapon.NotEnoughCoins"] = { Key = "SWeaponCompClass.Weapon.NotEnoughCoins", Source = "Not enough Coins." },
-    ["Weapon.NotOwned"] = { Key = "SWeaponCompClass.Weapon.NotOwned", Source = "You do not own this weapon." },
-}
+local FXLoader = FX.Loader
+local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
+local TranslationTexts = Text.Define("Weapon", {
+    Unknown = "Something went wrong. Please try again.",
+    AlreadyOwned = "You already own this weapon.",
+    NotEnoughCoins = "Not enough Coins.",
+    NotOwned = "You do not own this weapon.",
+})
 local Fields = _G.PlayerDataConfig
 local Weapon = FX.Loader:RequireShared("Scripts/Game/Shared/Weapon")
 local Component = FX.Class("SWeaponCompClass", "FSPlayerCompClass")
@@ -40,19 +42,19 @@ end
 function Component:RequestWeapon(action, weaponId)
     local config = Weapon.GetConfig(weaponId)
     if not self._ready or not config or (action ~= "Buy" and action ~= "Equip") then
-        return {success = false, key = TranslationTexts["Common.Unknown"]}
+        return {success = false, key = TranslationTexts.Unknown}
     end
     local data = self:GetTable(Fields.WeaponData)
     local id = tostring(config.ToolId)
     if action == "Buy" then
         if data.owned[id] == true then
-            return {success = false, key = TranslationTexts["Weapon.AlreadyOwned"]}
+            return {success = false, key = TranslationTexts.AlreadyOwned}
         end
         local costs = config.Price > 0 and {{Type = "Money", Currency = "Money", Count = config.Price}} or {}
         if not self:RequireComponent("FSRewardComp"):ExchangeRewards(costs, {
             {Type = "Unlock", Kind = "Weapon", Id = weaponId, Count = 1},
         }) then
-            return {success = false, key = TranslationTexts["Weapon.NotEnoughCoins"]}
+            return {success = false, key = TranslationTexts.NotEnoughCoins}
         end
         local previousRate = Weapon.GetEquippedConfig(data).TrainingRate
         data = self:GetTable(Fields.WeaponData)
@@ -61,7 +63,7 @@ function Component:RequestWeapon(action, weaponId)
         end
     else
         if data.owned[id] ~= true then
-            return {success = false, key = TranslationTexts["Weapon.NotOwned"]}
+            return {success = false, key = TranslationTexts.NotOwned}
         end
         data.equippedId = weaponId
     end

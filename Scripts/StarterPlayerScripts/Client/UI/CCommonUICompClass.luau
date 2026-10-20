@@ -1,12 +1,12 @@
 local FX, FC = _G.FX, _G.FC
 local FXLoader = FX.Loader
-local TranslationTexts = {
-    ["Loot.LuckyTooltip"] = { Key = "CCommonUICompClass.Loot.LuckyTooltip", Source = "{item} · Lucky ×{rate} · {price} Coins" },
-    ["Loot.Tooltip"] = { Key = "CCommonUICompClass.Loot.Tooltip", Source = "{item} · {price} Coins" },
-}
+local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
+local TranslationTexts = Text.Define("Tooltips", {
+    LuckyTooltip = "{item} · Lucky ×{rate} · {price} Coins",
+    Tooltip = "{item} · {price} Coins",
+})
 local ButtonHover = FXLoader:RequireFromParent(script, "ButtonHover")
 local ToolDescription = FXLoader:RequireFromParent(script, "ToolDescription")
-local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local ItemConfig = FXLoader:RequireShared("Scripts/Game/Configs/ItemConfig")
 local UI = FX.Class("CCommonUICompClass", "FCCommonUICompClass")
@@ -231,9 +231,9 @@ function UI:LocalizeTool(tool)
         local arguments = {item = tool.Name, price = GameUtility.NumberToText(price)}
         if tool:GetAttribute("IsLucky") == true then
             arguments.rate = GameUtility.NumberToText(tool:GetAttribute("LuckRate") or 1)
-            tool.ToolTip = Text.Tr(TranslationTexts["Loot.LuckyTooltip"], arguments)
+            tool.ToolTip = Text.Tr(TranslationTexts.LuckyTooltip, arguments)
         else
-            tool.ToolTip = Text.Tr(TranslationTexts["Loot.Tooltip"], arguments)
+            tool.ToolTip = Text.Tr(TranslationTexts.Tooltip, arguments)
         end
     else
         tool.ToolTip = tool.Name

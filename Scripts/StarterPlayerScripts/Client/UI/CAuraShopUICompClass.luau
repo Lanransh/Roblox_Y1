@@ -1,15 +1,15 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
-local TranslationTexts = {
-    ["Rarity.Quality"] = { Key = "CAuraShopUICompClass.Rarity.Quality", Source = "Quality {level:int}" },
-    ["Aura.TrainingRate"] = { Key = "CAuraShopUICompClass.Aura.TrainingRate", Source = "Training ×{rate}" },
-    ["Aura.Price"] = { Key = "CAuraShopUICompClass.Aura.Price", Source = "Buy: {value} Coins" },
-    ["Aura.Unequip"] = { Key = "CAuraShopUICompClass.Aura.Unequip", Source = "Unequip" },
-    ["Aura.Equip"] = { Key = "CAuraShopUICompClass.Aura.Equip", Source = "Equip" },
-    ["Aura.NeedCoins"] = { Key = "CAuraShopUICompClass.Aura.NeedCoins", Source = "Need {value} Coins" },
-    ["Common.Unknown"] = { Key = "CAuraShopUICompClass.Common.Unknown", Source = "Something went wrong. Please try again." },
-}
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
+local TranslationTexts = Text.Define("AuraShop", {
+    Quality = "Quality {level:int}",
+    TrainingRate = "Training ×{rate}",
+    Price = "Buy: {value} Coins",
+    Unequip = "Unequip",
+    Equip = "Equip",
+    NeedCoins = "Need {value} Coins",
+    Unknown = "Something went wrong. Please try again.",
+})
 local RunService = game:GetService("RunService")
 FXLoader:RequireFromParent(script, "Generated/CAuraShopView")
 local Fields = _G.PlayerDataConfig
@@ -124,7 +124,7 @@ function Component:Render(state)
         aura.name = Text.TrSource(_G.GameConfig.AuraConfig[index].Name)
     end
     for qualityId, quality in pairs(self.Config.qualities) do
-        quality.name = Text.Tr(TranslationTexts["Rarity.Quality"], {level = tonumber(qualityId)})
+        quality.name = Text.Tr(TranslationTexts.Quality, {level = tonumber(qualityId)})
     end
     Component.Super.Render(self, state)
     for index, aura in ipairs(self.Config.auras) do
@@ -138,18 +138,18 @@ function Component:Render(state)
         rate.TextScaled = true
         quality.AutoLocalize = false
         caption.AutoLocalize = false
-        rate.Text = Text.Tr(TranslationTexts["Aura.TrainingRate"], {
+        rate.Text = Text.Tr(TranslationTexts.TrainingRate, {
             rate = GameUtility.NumberToText(aura.strength),
         })
         local owned = state.owned[aura.id] == true
         local equipped = state.equippedId == aura.id
-        local key = TranslationTexts["Aura.Price"]
+        local key = TranslationTexts.Price
         if equipped then
-            key = TranslationTexts["Aura.Unequip"]
+            key = TranslationTexts.Unequip
         elseif owned then
-            key = TranslationTexts["Aura.Equip"]
+            key = TranslationTexts.Equip
         elseif state.coins < aura.price then
-            key = TranslationTexts["Aura.NeedCoins"]
+            key = TranslationTexts.NeedCoins
         end
         caption.Text = Text.Tr(key, {value = GameUtility.NumberToText(aura.price)})
         -- 请求期间保持原有显示；余额不足由服务端提示，已装备允许卸下。
@@ -192,7 +192,7 @@ function Component:OnUIAction(action, payload)
             self.State.coins = result.coins
             self._shopAreas:Refresh(self.Config.auras, self.State)
         else
-            self._commonUI:ShowLocalizedTips(ok and result.key or TranslationTexts["Common.Unknown"])
+            self._commonUI:ShowLocalizedTips(ok and result.key or TranslationTexts.Unknown)
         end
         self:RefreshUI()
     end)

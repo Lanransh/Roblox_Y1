@@ -1,10 +1,10 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
-local TranslationTexts = {
-    ["Settings.ToggleOn"] = { Key = "Settings.ToggleOn", Source = "ON" },
-    ["Settings.ToggleOff"] = { Key = "Settings.ToggleOff", Source = "OFF" },
-}
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
+local TranslationTexts = Text.Define("Settings", {
+    ToggleOn = "ON",
+    ToggleOff = "OFF",
+})
 local UserInputService = game:GetService("UserInputService")
 local SoundService = game:GetService("SoundService")
 local Fields = _G.PlayerDataConfig
@@ -165,7 +165,7 @@ function Component:Render(state)
     Component.Super.Render(self, state)
     for setting, toggle in pairs(self.Toggles) do
         toggle.text.AutoLocalize = false
-        toggle.text.Text = state[setting] and Text.Tr(TranslationTexts["Settings.ToggleOn"]) or Text.Tr(TranslationTexts["Settings.ToggleOff"])
+        toggle.text.Text = state[setting] and Text.Tr(TranslationTexts.ToggleOn) or Text.Tr(TranslationTexts.ToggleOff)
     end
 end
 

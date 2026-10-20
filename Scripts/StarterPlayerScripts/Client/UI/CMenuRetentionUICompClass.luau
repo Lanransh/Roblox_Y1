@@ -1,18 +1,19 @@
 -- Roblox 系统菜单背后的一次性挽留礼包，由服务端永久记录领取状态。
 local FX = _G.FX
 local FXLoader = FX.Loader
-local TranslationTexts = {
-    ["MenuRetention.OnlineCountdown"] = { Key = "MenuRetention.OnlineCountdown", Source = "Your next online reward is available in {time}!" },
-    ["MenuRetention.Available"] = { Key = "MenuRetention.Available", Source = "Reward ready! Claim now!" },
-    ["Common.Unknown"] = { Key = "CMenuRetentionUICompClass.Common.Unknown", Source = "Something went wrong. Please try again." },
-    ["Welfare.Diamonds"] = { Key = "CMenuRetentionUICompClass.Welfare.Diamonds", Source = "{value} Diamonds" },
-    ["Welfare.ItemReward"] = { Key = "CMenuRetentionUICompClass.Welfare.ItemReward", Source = "{item} ×{value}" },
-    ["Welfare.Pending"] = { Key = "CMenuRetentionUICompClass.Welfare.Pending", Source = "Claiming..." },
-    ["Welfare.Claim"] = { Key = "CMenuRetentionUICompClass.Welfare.Claim", Source = "Claim" },
-    ["MenuRetention.Offline"] = { Key = "CMenuRetentionUICompClass.MenuRetention.Offline", Source = "You can earn up to {amount} Strength while offline!" },
-    ["MenuRetention.Complete"] = { Key = "CMenuRetentionUICompClass.MenuRetention.Complete", Source = "You have claimed all of today's online rewards!" },
-    ["MenuRetention.Ready"] = { Key = "CMenuRetentionUICompClass.MenuRetention.Ready", Source = "Your online reward is ready to claim!" },
-}
+local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
+local TranslationTexts = Text.Define("MenuRetention", {
+    OnlineCountdown = "Your next online reward is available in {time}!",
+    Available = "Reward ready! Claim now!",
+    Unknown = "Something went wrong. Please try again.",
+    Diamonds = "{value} Diamonds",
+    ItemReward = "{item} ×{value}",
+    Pending = "Claiming...",
+    Claim = "Claim",
+    Offline = "You can earn up to {amount} Strength while offline!",
+    Complete = "You have claimed all of today's online rewards!",
+    Ready = "Your online reward is ready to claim!",
+})
 local GuiService = game:GetService("GuiService")
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local Rebirth = FXLoader:RequireShared("Scripts/Game/Shared/Rebirth")
@@ -21,7 +22,6 @@ local Aura = FXLoader:RequireShared("Scripts/Game/Shared/Aura")
 local Weapon = FXLoader:RequireShared("Scripts/Game/Shared/Weapon")
 local CurrencyShop = FXLoader:RequireShared("Scripts/Game/Shared/CurrencyShop")
 local Welfare = FXLoader:RequireShared("Scripts/Game/Shared/Welfare")
-local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local Fields = _G.PlayerDataConfig
 local Component = FX.Class("CMenuRetentionUICompClass", "FCUICompClass")
 
@@ -198,7 +198,7 @@ function Component:ClaimGift()
             self:GetPlayerObject():RequireComponent("CSoundComp"):PlayRewardSound()
             self._commonUI:ShowLocalizedTips(result.key)
         else
-            local key = ok and type(result) == "table" and result.key or TranslationTexts["Common.Unknown"]
+            local key = ok and type(result) == "table" and result.key or TranslationTexts.Unknown
             self._commonUI:ShowLocalizedTips(key)
         end
         self:RefreshGift()
@@ -212,7 +212,7 @@ function Component:RefreshGift()
     if not available then
         self._offerOpen = false
     end
-    local sideText = self:FormatText(TranslationTexts["MenuRetention.Available"])
+    local sideText = self:FormatText(TranslationTexts.Available)
     for index, text in ipairs(self._sideTexts) do
         text.Visible = available and GuiService.MenuIsOpen
         text.Text = sideText
@@ -228,14 +228,14 @@ function Component:RefreshGift()
         and Text.TrSource(Aura.GetConfig(self._retention.Reward.Id).Name)
         or Text.TrSource(_G.ItemConfig.Display[reward.id].Name)
     self._giftReward.Text = reward.type == "Gem"
-        and Text.Tr(TranslationTexts["Welfare.Diamonds"], {value = GameUtility.NumberToText(reward.amount)})
-        or Text.Tr(TranslationTexts["Welfare.ItemReward"], {
+        and Text.Tr(TranslationTexts.Diamonds, {value = GameUtility.NumberToText(reward.amount)})
+        or Text.Tr(TranslationTexts.ItemReward, {
             item = rewardName,
             value = GameUtility.NumberToText(reward.amount),
         })
     local pending = self._requestTask ~= nil
     self._giftClaim.Interactable = available and not pending and not GuiService.MenuIsOpen
-    self._giftClaimText.Text = Text.Tr(pending and TranslationTexts["Welfare.Pending"] or TranslationTexts["Welfare.Claim"])
+    self._giftClaimText.Text = Text.Tr(pending and TranslationTexts.Pending or TranslationTexts.Claim)
 end
 
 --- 返回菜单提示组件的协作名称。
@@ -371,7 +371,7 @@ function Component:RefreshText()
     self:RefreshGift()
     self._topText.Parent.Visible = GuiService.MenuIsOpen
     self._bottomText.Parent.Visible = GuiService.MenuIsOpen
-    self._topText.Text = self:FormatText(TranslationTexts["MenuRetention.Offline"], {
+    self._topText.Text = self:FormatText(TranslationTexts.Offline, {
         amount = GameUtility.NumberToText(self:GetOfflineMaximum()),
     })
     local state = self:GetTable(Fields.WelfareState)
@@ -386,8 +386,8 @@ function Component:RefreshText()
             remaining = remaining and math.min(remaining, seconds) or seconds
         end
     end
-    local key = remaining == nil and TranslationTexts["MenuRetention.Complete"]
-        or remaining == 0 and TranslationTexts["MenuRetention.Ready"] or TranslationTexts["MenuRetention.OnlineCountdown"]
+    local key = remaining == nil and TranslationTexts.Complete
+        or remaining == 0 and TranslationTexts.Ready or TranslationTexts.OnlineCountdown
     local elapsed = math.floor(os.clock() - self._snapshotReceivedAt)
     local seconds = math.max(0, math.ceil((remaining or 0) - elapsed))
     self._bottomText.Text = self:FormatText(key, {

@@ -13,6 +13,25 @@ function Text.ValidateDefinition(definition)
     return definition
 end
 
+--- 将固定模块前缀和原文表展开为只读定义；两端均可声明，不执行翻译。
+--- @param prefix string 简短稳定的 PascalCase 业务前缀，与条目名用句点连接成完整 Key。
+--- @param sources table PascalCase 条目名到英文原文或完整参数模板的映射。
+--- @return table 按原条目名索引的只读 Key/Source 定义表。
+function Text.Define(prefix, sources)
+    assert(type(prefix) == "string" and string.match(prefix, "^[A-Z][A-Za-z0-9]*$"),
+        "Text: prefix must be a PascalCase business name")
+    local definitions = {}
+    for name, source in pairs(sources) do
+        assert(type(name) == "string" and string.match(name, "^[A-Z][A-Za-z0-9]*$"),
+            "Text: entry name must be a PascalCase identifier")
+        definitions[name] = table.freeze(Text.ValidateDefinition({
+            Key = prefix .. "." .. name,
+            Source = source,
+        }))
+    end
+    return table.freeze(definitions)
+end
+
 --- 仅客户端可翻译；服务端只传定义和参数，不接受旧原文或字符串 Key。
 --- @param definition table 静态脚本文案或显式配置文案定义。
 --- @param arguments table? 原生模板参数；itemDefinition 或配置原文 itemSource 在客户端求值为 item。
