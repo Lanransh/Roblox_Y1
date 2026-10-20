@@ -105,6 +105,18 @@ local Text = FXLoader:RequireShared("Scripts.Game.Shared.Text")
   用 Text.TrSource 查询并解析为 item，不为配置合成 Key/Source 定义。
 - 数量缩写复用 GameUtility.NumberToText，使用 `{value}`；需要整数时使用
   `{count:int}`。显示字符串不参与计算、存档或发奖，不翻译玩家输入及内部查找标识。
+- 字符串或已格式化的值使用 `{name}`，禁止使用 Roblox 不支持的 `{name:string}`；
+  翻译占位符的格式说明符与 Luau 类型标注不同。未指定格式的占位符可与数字
+  说明符组合，例如 `{name}: {count:int}`。
+- 合法格式说明符为 `int / fixed / num / hex / HEX / datetime / iso8601 /
+  shorttime / shortdatetime / shortdate / translate`。数字说明符传有限 number，
+  不传数字字符串；日期传 Unix 秒，不传毫秒或已格式化日期。`:translate` 传 string，
+  用于按参数原文查询译文，不代替普通字符串占位符；同条文案不混用 `:translate`
+  与数字类说明符。
+- 倒计时使用 `{minutes}:{seconds}` 或 `Next reward in {time}`，在参数侧用
+  `string.format("%02d", ...)` 或 `string.format("%02d:%02d", ...)` 补零，
+  不把格式化指令写进占位符。离线时长可用
+  `You were away for {hours:int}h {minutes}m`，minutes 传补零后的字符串。
 - 仅在客户端运行时关闭自己负责翻译的具体动态节点的 AutoLocalize，避免二次翻译；
   不修改 Studio 模板、导入数据或整个父容器的本地化属性。
 - 翻译调用是一次求值。通过现有 Changed 事件在翻译器加载或语言变化后重新求值，
@@ -115,6 +127,11 @@ local Text = FXLoader:RequireShared("Scripts.Game.Shared.Text")
 - 工具按“编辑态节点 → 脚本 TranslationTexts → 勾选 XLSX 字段”三路收集；
   配置保持普通字符串，配置文案使用 Key=Source，由工具生成和处理。
 - 检查实际 Generated 接口，说明动态缺口和接入补充点；没有缺口就不增加翻译代码。
+- 检查本次相关模板是否含 `:string`，同时核对参数类型、倒计时补零及参数变化后的
+  显示。若问题来自 Generated，先排查接入脚本；必须修正生成源模板时，报告来源，
+  由 UIEditor 工作区修正并重新导出，不直接修补 Generated，也不新增重复翻译绕过。
+  修正 Source 保留原 Key，并通过工具流程复核已有译文中的同类格式；仅改英文回退
+  不代表已有译文已修复。无法在当前工作区完成时明确报告待修复与待导出范围。
 - 用已适配 Text.Define 的翻译工具检查声明合法性、来源范围及 Key 唯一性；
   原文查询成功不代表原文已收集。迁移需按显式映射比对完整 Key，确认 Source 与参数不变。
 - 分别报告定义修改、工具收集、译文生成、云端发布及语言验收状态；工具产物生成
@@ -123,6 +140,8 @@ local Text = FXLoader:RequireShared("Scripts.Game.Shared.Text")
 - 验证仅覆盖本次动态文本，核对参数生产与消费链路，包括英文回退、同英文不同 Key、
   参数、语言刷新、长译文布局和重复翻译问题。
   遵循 AGENTS.md，区分语法、Script Sync 和实际运行结果，不因本技能自动启动试玩。
+- UIEditor 的英文 UTC 预览不代替 Roblox 玩家语言下的数字、日期、时间格式及语言
+  刷新验收；App 验证通过不代表游戏同步、真实翻译或发布验证通过。
 - 收集、译文生成和发布由工具流程处理，不手工改翻译文件、不通过 Roblox MCP
   维护翻译表、不自动上传云端。不修改静态节点、生成内容或配置来扩大本次范围。
 
