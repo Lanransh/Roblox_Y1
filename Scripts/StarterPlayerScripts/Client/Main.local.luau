@@ -1,5 +1,8 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
+-- 进入游戏时使用横屏，并允许根据设备朝向左右翻转。
+Players.LocalPlayer:WaitForChild("PlayerGui").ScreenOrientation = Enum.ScreenOrientation.LandscapeSensor
+
 require(ReplicatedStorage:WaitForChild("Scripts"):WaitForChild("GameInit"))
 local FC = _G.FC
 local FX = _G.FX

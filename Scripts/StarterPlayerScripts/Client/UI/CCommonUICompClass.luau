@@ -95,15 +95,24 @@ function UI:IsTrainingClickBlocked()
     return false
 end
 
---- 保留原有字符串提示入口，替换提示时清除旧 Key，避免语言变化恢复旧提示。
+--- 显示前按屏幕缩小提示，并清除旧 Key，避免语言变化恢复旧提示。
 --- @param message string 已准备好的提示内容。
 --- @param duration number? 显示时长，单位为秒。
 function UI:ShowTips(message, duration)
     self._tipKey, self._tipArguments = nil, nil
+    local viewport = self.Root.AbsoluteSize
+    local scale = math.clamp(math.min(viewport.X / 1280, viewport.Y / 720), 0.65, 1)
+    self.Tips.Size = UDim2.new(0.86, 0, 0, 64 * scale)
+    self.Tips.TextSize = math.round(28 * scale)
+    self.Tips.TextSizeLimit.MaxTextSize = math.round(28 * scale)
+    self.Tips.TextStroke.Thickness = 2 * scale
+    self.Tips.Line1.Size = UDim2.new(1, 0, 0, 2 * scale)
+    self.Tips.Line2.Size = UDim2.new(1, 0, 0, 2 * scale)
+    self.Tips.Line2.Position = UDim2.new(0, 0, 1, -2 * scale)
     UI.Super.ShowTips(self, message, duration)
 end
 
---- 服务端和客户端共用提示入口；英文原文直接翻译，旧 Key 的数量缩写保持兼容。
+--- 服务端和客户端共用提示入口；保留旧数量缩写，并让重生成功提示穿透训练点击。
 --- @param key string Text.Mark 标记的英文原文或本地文案表中的旧提示 Key。
 --- @param arguments table? 提示模板参数。
 --- @param duration number? 显示时长，单位为秒。
@@ -123,6 +132,9 @@ function UI:ShowLocalizedTips(key, arguments, duration)
         arguments[field] = GameUtility.NumberToText(arguments[field])
     end
     self:ShowTips(Text.Tr(key, arguments), duration)
+    if key == "Rebirth.Success" or key == LegacyTextSources["Rebirth.Success"] then
+        self._tipLabel:SetAttribute("BlocksTrainingClick", false)
+    end
     self._tipKey, self._tipArguments = key, arguments
 end
 

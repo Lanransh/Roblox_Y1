@@ -12,7 +12,7 @@ function Component:GetCompName()
     return "CRebirthUIComp"
 end
 
---- 创建本组件持有的重生提示横幅，沿用界面中的重生图标。
+--- 创建紧凑且不拦截输入的重生提示横幅，沿用界面中的重生图标。
 --- @param root ScreenGui 重生界面的根节点。
 --- @return ScreenGui 提示横幅所在的界面。
 function Component:CreateRebirthNotice(root)
@@ -27,7 +27,10 @@ function Component:CreateRebirthNotice(root)
     group.Name = "RebirthNotice"
     group.AnchorPoint = Vector2.new(0.5, 0)
     group.Position = UDim2.fromScale(0.5, 0.08)
-    group.Size = UDim2.new(0.9, 0, 0, 72)
+    group.Size = UDim2.new(0.9, 0, 0, 42)
+    group.Active = false
+    group.Interactable = false
+    group.Selectable = false
     group.BackgroundColor3 = Color3.fromRGB(8, 10, 14)
     group.BackgroundTransparency = 0.35
     group.Visible = false
@@ -36,7 +39,7 @@ function Component:CreateRebirthNotice(root)
     self._rebirthNoticeGroup = group
 
     local maxSize = Instance.new("UISizeConstraint")
-    maxSize.MaxSize = Vector2.new(600, 80)
+    maxSize.MaxSize = Vector2.new(360, 42)
     maxSize.Parent = group
 
     local corner = Instance.new("UICorner")
@@ -46,8 +49,11 @@ function Component:CreateRebirthNotice(root)
     local rebirthIcon = FXLoader:Here(root, "TitleBox.RebirthIconImg")
     local icon = Instance.new("ImageLabel")
     icon.Name = "Icon"
-    icon.Position = UDim2.fromOffset(6, 4)
-    icon.Size = UDim2.fromOffset(64, 64)
+    icon.Position = UDim2.fromOffset(6, 5)
+    icon.Size = UDim2.fromOffset(32, 32)
+    icon.Active = false
+    icon.Interactable = false
+    icon.Selectable = false
     icon.BackgroundTransparency = 1
     icon.Image = rebirthIcon.Image
     icon.ScaleType = Enum.ScaleType.Fit
@@ -57,14 +63,17 @@ function Component:CreateRebirthNotice(root)
 
     local text = Instance.new("TextLabel")
     text.Name = "Message"
-    text.Position = UDim2.fromOffset(78, 0)
-    text.Size = UDim2.new(1, -88, 1, 0)
+    text.Position = UDim2.fromOffset(46, 0)
+    text.Size = UDim2.new(1, -56, 1, 0)
+    text.Active = false
+    text.Interactable = false
+    text.Selectable = false
     text.BackgroundTransparency = 1
     text.Font = Enum.Font.GothamBlack
     text.TextColor3 = Color3.fromHex("#FFD744")
     text.TextStrokeColor3 = Color3.new(0, 0, 0)
     text.TextStrokeTransparency = 0
-    text.TextSize = 28
+    text.TextSize = 18
     text.TextScaled = true
     text.TextWrapped = false
     text.TextXAlignment = Enum.TextXAlignment.Left
@@ -75,7 +84,7 @@ function Component:CreateRebirthNotice(root)
 
     local textSizeLimit = Instance.new("UITextSizeConstraint")
     textSizeLimit.MinTextSize = 12
-    textSizeLimit.MaxTextSize = 28
+    textSizeLimit.MaxTextSize = 18
     textSizeLimit.Parent = text
 
     return noticeGui
@@ -91,10 +100,23 @@ function Component:RefreshRebirthNotice()
     })
 end
 
---- 显示服务端确认成功后的重生次数变化，并在短暂展示后淡出。
+--- 按屏幕缩小成功横幅，显示服务端确认的重生次数变化后淡出。
 --- @param previousCount number 请求前的重生次数。
 --- @param currentCount number 服务端确认的新重生次数。
 function Component:ShowRebirthNotice(previousCount, currentCount)
+    local viewport = self._rebirthNoticeGui.AbsoluteSize
+    local scale = math.clamp(math.min(viewport.X / 1280, viewport.Y / 720), 0.65, 1)
+    local group = self._rebirthNoticeGroup
+    local text = self._rebirthNoticeText
+    group.Size = UDim2.new(0.9, 0, 0, 42 * scale)
+    group:FindFirstChildOfClass("UISizeConstraint").MaxSize = Vector2.new(360 * scale, 42 * scale)
+    group:FindFirstChildOfClass("UICorner").CornerRadius = UDim.new(0, 6 * scale)
+    group.Icon.Position = UDim2.fromOffset(6 * scale, 5 * scale)
+    group.Icon.Size = UDim2.fromOffset(32 * scale, 32 * scale)
+    text.Position = UDim2.fromOffset(46 * scale, 0)
+    text.Size = UDim2.new(1, -56 * scale, 1, 0)
+    text.TextSize = math.round(18 * scale)
+    text:FindFirstChildOfClass("UITextSizeConstraint").MaxTextSize = math.round(18 * scale)
     self._rebirthNoticePrevious = previousCount
     self._rebirthNoticeCurrent = currentCount
     self:RefreshRebirthNotice()

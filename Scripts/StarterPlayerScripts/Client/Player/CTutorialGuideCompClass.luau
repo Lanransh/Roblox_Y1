@@ -59,15 +59,26 @@ function Guide:OnReady()
     self._label.Parent = self._screen
     local scale = Instance.new("UIScale")
     scale.Parent = self._label
-    --- 与其他界面使用相同设计分辨率，字体和描边随屏幕一起缩放。
+    local topCenter = FXLoader:PlayerGui("MainUI/TopCenter")
+    local strength = FXLoader:Here(topCenter, "Strength")
+    local levelBar = FXLoader:Here(topCenter, "LevelProgressBar")
+    --- 与其他界面使用相同设计分辨率，并让提示始终贴在当前顶部 HUD 下方。
     local function updateScale()
         local size = self._screen.AbsoluteSize
         if size.X <= 0 or size.Y <= 0 then
             return
         end
         scale.Scale = math.min(size.X / 1280, size.Y / 720)
+        local header = strength.Visible and strength or levelBar
+        local headerBottom = header.AbsolutePosition.Y + header.AbsoluteSize.Y
+        self._label.Position = UDim2.fromScale(0.5, (headerBottom + 8 * scale.Scale) / size.Y)
     end
     self:TrackConnection(self._screen:GetPropertyChangedSignal("AbsoluteSize"):Connect(updateScale))
+    for index, node in ipairs({strength, levelBar}) do
+        self:TrackConnection(node:GetPropertyChangedSignal("AbsolutePosition"):Connect(updateScale))
+        self:TrackConnection(node:GetPropertyChangedSignal("AbsoluteSize"):Connect(updateScale))
+    end
+    self:TrackConnection(strength:GetPropertyChangedSignal("Visible"):Connect(updateScale))
     self._screen.Parent = self:GetPlayerNode():WaitForChild("PlayerGui")
     updateScale()
     self._uiArrow = UIGuideArrow.New(self._screen.Parent)
