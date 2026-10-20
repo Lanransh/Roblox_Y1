@@ -81,7 +81,7 @@ local TranslationTexts = Text.Define("Activity", {
 ```lua
 local FX = _G.FX
 local FXLoader = FX.Loader
-local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
+local Text = FXLoader:RequireShared("Scripts.Game.Shared.Text")
 ```
 
 - `Text.Define(prefix, sources)`：两端均可调用，仅展开为按原条目名索引的
