@@ -60,7 +60,8 @@ function CLootSellPreview:OnUIAction(action, payload)
             total = total + item.value
         end
         self.State.items = {}
-        self.State.message = string.format("+$%.1fM Sold!", total * payload.multiplier / 1000000)
+        self.State.message = nil
+        self.State.soldAmount = total * payload.multiplier
     else
         error("Unknown action: " .. tostring(action))
     end

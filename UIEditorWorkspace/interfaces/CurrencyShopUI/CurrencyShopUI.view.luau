@@ -35,28 +35,57 @@ local FXLoader = FX.Loader
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local CCurrencyShopView = FX.Class("CCurrencyShopView", "CUIView")
 
-local TranslationTexts = {
-    DiamondShop = {
-        Key = "CurrencyShopUI.DiamondShop",
-        Source = "DIAMOND SHOP",
-    },
-    RobuxShop = {
-        Key = "CurrencyShopUI.RobuxShop",
-        Source = "ROBUX SHOP",
-    },
-}
-
--- 动态文本由 Text.Tr 求值，真实 Roblox 节点关闭引擎二次翻译。
--- @param node Instance 需要关闭自动本地化的文本节点
-local function DisableAutoLocalize(node)
-    if typeof(node) == "Instance" then
-        node.AutoLocalize = false
-    end
-end
+local TranslationTexts = Text.Define("CurrencyShopUI", {
+    DiamondShop = "DIAMOND SHOP",
+    RobuxShop = "ROBUX SHOP",
+    Price = "{price}",
+})
 
 -- 绑定已有节点与页签事件；每张商品卡只连接一次。
 function CCurrencyShopView:OnReady()
     local root = FXLoader:PlayerGui("CurrencyShopUI")
+    -- 仅关闭主动翻译的具体动态文本；原型克隆继承设置，静态节点保持自动本地化。
+    for index, path in ipairs({
+        "PopupPanelImg.ProductsContentImg.ProductsTitleTxt",
+        "Templates.DiamondGreenCardImg.ProductTitleTxt",
+        "Templates.DiamondGreenCardImg.ProductDescriptionTxt",
+        "Templates.DiamondGreenCardImg.PurchaseBtn.ButtonTxt",
+        "Templates.RobuxGreenCardImg.ProductTitleTxt",
+        "Templates.RobuxGreenCardImg.ProductDescriptionTxt",
+        "Templates.RobuxGreenCardImg.PurchaseBtn.ButtonTxt",
+        "Templates.RobuxGoldCardImg.ProductTitleTxt",
+        "Templates.RobuxGoldCardImg.ProductDescriptionTxt",
+        "Templates.RobuxGoldCardImg.PurchaseBtn.ButtonTxt",
+        "Templates.RobuxCyanCardImg.ProductTitleTxt",
+        "Templates.RobuxCyanCardImg.ProductDescriptionTxt",
+        "Templates.RobuxCyanCardImg.PurchaseBtn.ButtonTxt",
+        "Templates.RobuxOrangeCardImg.ProductTitleTxt",
+        "Templates.RobuxOrangeCardImg.ProductDescriptionTxt",
+        "Templates.RobuxOrangeCardImg.PurchaseBtn.ButtonTxt",
+        "Templates.RobuxPurpleCardImg.ProductTitleTxt",
+        "Templates.RobuxPurpleCardImg.ProductDescriptionTxt",
+        "Templates.RobuxPurpleCardImg.PurchaseBtn.ButtonTxt",
+        "Templates.RobuxPinkCardImg.ProductTitleTxt",
+        "Templates.RobuxPinkCardImg.ProductDescriptionTxt",
+        "Templates.RobuxPinkCardImg.PurchaseBtn.ButtonTxt",
+        "Templates.DiamondGoldCardImg.ProductTitleTxt",
+        "Templates.DiamondGoldCardImg.ProductDescriptionTxt",
+        "Templates.DiamondGoldCardImg.PurchaseBtn.ButtonTxt",
+        "Templates.DiamondCyanCardImg.ProductTitleTxt",
+        "Templates.DiamondCyanCardImg.ProductDescriptionTxt",
+        "Templates.DiamondCyanCardImg.PurchaseBtn.ButtonTxt",
+        "Templates.DiamondOrangeCardImg.ProductTitleTxt",
+        "Templates.DiamondOrangeCardImg.ProductDescriptionTxt",
+        "Templates.DiamondOrangeCardImg.PurchaseBtn.ButtonTxt",
+        "Templates.DiamondPurpleCardImg.ProductTitleTxt",
+        "Templates.DiamondPurpleCardImg.ProductDescriptionTxt",
+        "Templates.DiamondPurpleCardImg.PurchaseBtn.ButtonTxt",
+        "Templates.DiamondPinkCardImg.ProductTitleTxt",
+        "Templates.DiamondPinkCardImg.ProductDescriptionTxt",
+        "Templates.DiamondPinkCardImg.PurchaseBtn.ButtonTxt",
+    }) do
+        FXLoader:Here(root, path).AutoLocalize = false
+    end
     self.Root = root
     self.List = FXLoader:Here(root, "PopupPanelImg.ProductListBox")
     self.ContentTitle = FXLoader:Here(root, "PopupPanelImg.ProductsContentImg.ProductsTitleTxt")
@@ -70,7 +99,6 @@ function CCurrencyShopView:OnReady()
         end
     end
     self.Cards = {}
-    DisableAutoLocalize(self.ContentTitle)
     -- 页签动作仅提交目标货币。
     self:TrackConnection(self.DiamondTab.Activated:Connect(function()
         self:EmitUIAction("SelectTab", { tab = "Diamond" })
@@ -163,10 +191,12 @@ function CCurrencyShopView:Render(state)
             end
             kept[product.id] = true
             card.node.Position = UDim2.fromOffset(((count - 1) % 2) * 374, math.floor((count - 1) / 2) * 192)
-            card.title.Text = product.title
-            card.description.Text = product.description
+            card.title.Text = Text.TrSource(product.title)
+            card.description.Text = Text.TrSource(product.description)
             card.icon.Image = product.icon or ""
-            card.price.Text = tostring(product.price)
+            card.price.Text = Text.Tr(TranslationTexts.Price, {
+                price = product.price,
+            })
             self:SetButtonEnabled(card.button, not (state.pending and state.pending[product.id]))
         end
     end

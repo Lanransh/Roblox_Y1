@@ -27,36 +27,25 @@ local FXLoader = FX.Loader
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local CShopPurchaseView = FX.Class("CShopPurchaseView", "CUIView")
 
-local TranslationTexts = {
-    Buy = {
-        Key = "ShopPurchaseUI.Buy",
-        Source = "{price} · Buy",
-    },
-    Buying = {
-        Key = "ShopPurchaseUI.Buying",
-        Source = "Buying...",
-    },
-    Purchased = {
-        Key = "ShopPurchaseUI.Purchased",
-        Source = "Purchased",
-    },
-    Retry = {
-        Key = "ShopPurchaseUI.Retry",
-        Source = "Retry",
-    },
-}
-
--- 动态文本由 Text.Tr 求值，真实 Roblox 节点关闭引擎二次翻译。
--- @param node Instance 需要关闭自动本地化的文本节点
-local function DisableAutoLocalize(node)
-    if typeof(node) == "Instance" then
-        node.AutoLocalize = false
-    end
-end
+local TranslationTexts = Text.Define("ShopPurchaseUI", {
+    Buy = "{price} · Buy",
+    Buying = "Buying...",
+    Purchased = "Purchased",
+    Retry = "Retry",
+})
 
 -- 绑定设计节点；事件只连接一次，点击时读取当前稳定商品 ID。
 function CShopPurchaseView:OnReady()
     local root = FXLoader:PlayerGui("ShopPurchaseUI")
+    -- 仅关闭主动翻译的具体动态文本；原型克隆继承设置，静态节点保持自动本地化。
+    for index, path in ipairs({
+        "PopupPanelImg.BuyBtn.ButtonTxt",
+        "PopupPanelImg.CategoryTxt",
+        "PopupPanelImg.ItemNameTxt",
+        "PopupPanelImg.DescriptionTxt",
+    }) do
+        FXLoader:Here(root, path).AutoLocalize = false
+    end
     self.ItemNameTxt = FXLoader:Here(root, "PopupPanelImg.ItemNameTxt")
     self.CategoryTxt = FXLoader:Here(root, "PopupPanelImg.CategoryTxt")
     self.DescriptionTxt = FXLoader:Here(root, "PopupPanelImg.DescriptionTxt")
@@ -64,7 +53,6 @@ function CShopPurchaseView:OnReady()
     self.ItemIconImg = FXLoader:Here(root, "PopupPanelImg.ItemSurfaceImg.ItemIconImg")
     self.BuyBtn = FXLoader:Here(root, "PopupPanelImg.BuyBtn")
     self.ButtonTxt = FXLoader:Here(root, "PopupPanelImg.BuyBtn.ButtonTxt")
-    DisableAutoLocalize(self.ButtonTxt)
     local closeBtn = FXLoader:Here(root, "TitleBox.CloseSurfaceImg.CloseBtn")
     -- 购买动作只发送 ID，价格与资格由游戏接入层校验。
     self:TrackConnection(self.BuyBtn.Activated:Connect(function()
@@ -88,9 +76,9 @@ end
 -- @param state table 完整 State，字段与枚举见文件头契约
 function CShopPurchaseView:Render(state)
     local config = self:GetUIConfig()
-    self.ItemNameTxt.Text = config.name
-    self.CategoryTxt.Text = config.category
-    self.DescriptionTxt.Text = config.description
+    self.ItemNameTxt.Text = Text.TrSource(config.name)
+    self.CategoryTxt.Text = Text.TrSource(config.category)
+    self.DescriptionTxt.Text = Text.TrSource(config.description)
     if config.icon == "" then
         self.ItemIconImg.Image = "rbxassetid://86795093617566"
     else

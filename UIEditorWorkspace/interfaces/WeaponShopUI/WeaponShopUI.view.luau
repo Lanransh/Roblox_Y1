@@ -28,48 +28,30 @@ local FXLoader = FX.Loader
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local CWeaponShopView = FX.Class("CWeaponShopView", "CUIView")
 
-local TranslationTexts = {
-    Strength = {
-        Key = "WeaponShopUI.Strength",
-        Source = "Strength +{strength}",
-    },
-    Price = {
-        Key = "WeaponShopUI.Price",
-        Source = "+${price}",
-    },
-    Equip = {
-        Key = "WeaponShopUI.Equip",
-        Source = "Equip",
-    },
-    Equipped = {
-        Key = "WeaponShopUI.Equipped",
-        Source = "Equipped",
-    },
-    Waiting = {
-        Key = "WeaponShopUI.Waiting",
-        Source = "Waiting...",
-    },
-    NoWeapons = {
-        Key = "WeaponShopUI.NoWeapons",
-        Source = "No weapons available",
-    },
-    Loading = {
-        Key = "WeaponShopUI.Loading",
-        Source = "Loading...",
-    },
-}
-
--- 动态文本由 Text.Tr 求值，真实 Roblox 节点关闭引擎二次翻译。
--- @param node Instance 需要关闭自动本地化的文本节点
-local function DisableAutoLocalize(node)
-    if typeof(node) == "Instance" then
-        node.AutoLocalize = false
-    end
-end
+local TranslationTexts = Text.Define("WeaponShopUI", {
+    Strength = "Strength +{strength}",
+    Price = "+${price}",
+    Equip = "Equip",
+    Equipped = "Equipped",
+    Waiting = "Waiting...",
+    NoWeapons = "No weapons available",
+    Loading = "Loading...",
+})
 
 -- 绑定窗口与隐藏原型，只在首次准备时连接关闭按钮。
 function CWeaponShopView:OnReady()
     local root = FXLoader:PlayerGui("WeaponShopUI")
+    -- 仅关闭主动翻译的具体动态文本；原型克隆继承设置，静态节点保持自动本地化。
+    for index, path in ipairs({
+        "PopupPanelImg.EmptyTxt",
+        "TitleBox.TitleTxt",
+        "Templates.WeaponRowImg.ActionBtn.ButtonTxt",
+        "Templates.WeaponRowImg.NameTxt",
+        "Templates.WeaponRowImg.RarityTxt",
+        "Templates.WeaponRowImg.StrengthTxt",
+    }) do
+        FXLoader:Here(root, path).AutoLocalize = false
+    end
     self.Root = root
     self.Panel = FXLoader:Here(root, "PopupPanelImg")
     self.TitleBox = FXLoader:Here(root, "TitleBox")
@@ -78,7 +60,6 @@ function CWeaponShopView:OnReady()
     self.EmptyTxt = FXLoader:Here(root, "PopupPanelImg.EmptyTxt")
     self.Template = FXLoader:Here(root, "Templates.WeaponRowImg")
     self.Rows = {}
-    DisableAutoLocalize(self.EmptyTxt)
     local closeBtn = FXLoader:Here(root, "TitleBox.CloseSurfaceImg")
     self:TrackConnection(closeBtn.Activated:Connect(function()
         self:EmitUIAction("Close", {})
@@ -96,7 +77,7 @@ function CWeaponShopView:Render(state)
     local config = self:GetUIConfig()
     self.Panel.Visible = state.open
     self.TitleBox.Visible = state.open
-    self.TitleTxt.Text = config.title
+    self.TitleTxt.Text = Text.TrSource(config.title)
     local active = {}
     local count = 0
     if not state.loading then
@@ -146,10 +127,9 @@ function CWeaponShopView:Render(state)
                 studGradient.ColorStart = startColor
                 studGradient.ColorEnd = endColor
             end
-            FXLoader:Here(row, "NameTxt").Text = weapon.name
-            FXLoader:Here(row, "RarityTxt").Text = quality.name
+            FXLoader:Here(row, "NameTxt").Text = Text.TrSource(weapon.name)
+            FXLoader:Here(row, "RarityTxt").Text = Text.TrSource(quality.name)
             local strengthTxt = FXLoader:Here(row, "StrengthTxt")
-            DisableAutoLocalize(strengthTxt)
             strengthTxt.Text = Text.Tr(TranslationTexts.Strength, {
                 strength = weapon.strength,
             })
@@ -183,7 +163,6 @@ function CWeaponShopView:Render(state)
             local showMoney = not owned and not equipped and not pending
             FXLoader:Here(row, "ActionBtn.MoneyIconImg").Visible = showMoney
             local buttonText = FXLoader:Here(row, "ActionBtn.ButtonTxt")
-            DisableAutoLocalize(buttonText)
             buttonText.Text = caption
             buttonText.Position = UDim2.fromOffset(0, 0)
             buttonText.Size = UDim2.fromScale(1, 1)

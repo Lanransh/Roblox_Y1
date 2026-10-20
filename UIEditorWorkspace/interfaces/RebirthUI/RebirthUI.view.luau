@@ -37,40 +37,28 @@ local FXLoader = FX.Loader
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local UI = FX.Class("CRebirthUICompClass", "CUIView")
 
-local TranslationTexts = {
-    Multiplier = {
-        Key = "RebirthUI.Multiplier",
-        Source = "x{value}",
-    },
-    Progress = {
-        Key = "RebirthUI.Progress",
-        Source = "Level {level}/{required}",
-    },
-    ProgressUnavailable = {
-        Key = "RebirthUI.ProgressUnavailable",
-        Source = "Level {level}/--",
-    },
-    Complete = {
-        Key = "RebirthUI.Complete",
-        Source = "Rebirth complete! Strength reset.",
-    },
-    ResetWarning = {
-        Key = "RebirthUI.ResetWarning",
-        Source = "Rebirth resets your strength!",
-    },
-}
-
--- 动态文本由 Text.Tr 求值，真实 Roblox 节点关闭引擎二次翻译。
--- @param node Instance 需要关闭自动本地化的文本节点
-local function DisableAutoLocalize(node)
-    if typeof(node) == "Instance" then
-        node.AutoLocalize = false
-    end
-end
+local TranslationTexts = Text.Define("RebirthUI", {
+    Multiplier = "x{value}",
+    Progress = "Level {level}/{required}",
+    ProgressUnavailable = "Level {level}/--",
+    Complete = "Rebirth complete! Strength reset.",
+    ResetWarning = "Rebirth resets your strength!",
+})
 
 -- 绑定已有设计节点与按钮；刷新时不重复连接事件。
 function UI:OnReady()
     local root = FXLoader:PlayerGui("RebirthUI")
+    -- 仅关闭主动翻译的具体动态文本；原型克隆继承设置，静态节点保持自动本地化。
+    for index, path in ipairs({
+        "PopupPanelImg.CurrentStrengthImg.MultiplierTxt",
+        "PopupPanelImg.NextStrengthImg.MultiplierTxt",
+        "PopupPanelImg.CurrentMoneyImg.MultiplierTxt",
+        "PopupPanelImg.NextMoneyImg.MultiplierTxt",
+        "PopupPanelImg.ResetWarningTxt",
+        "PopupPanelImg.ProgressBarImg.ProgressTxt",
+    }) do
+        FXLoader:Here(root, path).AutoLocalize = false
+    end
     self.Panel = FXLoader:Here(root, "PopupPanelImg")
     self.TitleBox = FXLoader:Here(root, "TitleBox")
     self.RebirthBtn = FXLoader:Here(root, "PopupPanelImg.RebirthBtn")
@@ -83,12 +71,6 @@ function UI:OnReady()
     self.CurrentMoneyTxt = FXLoader:Here(root, "PopupPanelImg.CurrentMoneyImg.MultiplierTxt")
     self.NextMoneyTxt = FXLoader:Here(root, "PopupPanelImg.NextMoneyImg.MultiplierTxt")
     self.RebirthGradient = FXLoader:Here(root, "PopupPanelImg.RebirthBtn.SurfaceGradient")
-    DisableAutoLocalize(self.ProgressTxt)
-    DisableAutoLocalize(self.WarningTxt)
-    DisableAutoLocalize(self.CurrentStrengthTxt)
-    DisableAutoLocalize(self.NextStrengthTxt)
-    DisableAutoLocalize(self.CurrentMoneyTxt)
-    DisableAutoLocalize(self.NextMoneyTxt)
     local close = FXLoader:Here(root, "TitleBox.CloseSurfaceImg")
     -- 关闭由接入层更新 Open，不销毁设计节点。
     self:TrackConnection(close.Activated:Connect(function()

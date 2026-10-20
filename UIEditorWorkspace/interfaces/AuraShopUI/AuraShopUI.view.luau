@@ -28,48 +28,30 @@ local FXLoader = FX.Loader
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local CAuraShopView = FX.Class("CAuraShopView", "CUIView")
 
-local TranslationTexts = {
-    Strength = {
-        Key = "AuraShopUI.Strength",
-        Source = "Strength +{strength}",
-    },
-    Price = {
-        Key = "AuraShopUI.Price",
-        Source = "+${price}",
-    },
-    Equip = {
-        Key = "AuraShopUI.Equip",
-        Source = "Equip",
-    },
-    Equipped = {
-        Key = "AuraShopUI.Equipped",
-        Source = "Equipped",
-    },
-    Waiting = {
-        Key = "AuraShopUI.Waiting",
-        Source = "Waiting...",
-    },
-    NoAuras = {
-        Key = "AuraShopUI.NoAuras",
-        Source = "No auras available",
-    },
-    Loading = {
-        Key = "AuraShopUI.Loading",
-        Source = "Loading...",
-    },
-}
-
--- 动态文本由 Text.Tr 求值，真实 Roblox 节点关闭引擎二次翻译。
--- @param node Instance 需要关闭自动本地化的文本节点
-local function DisableAutoLocalize(node)
-    if typeof(node) == "Instance" then
-        node.AutoLocalize = false
-    end
-end
+local TranslationTexts = Text.Define("AuraShopUI", {
+    Strength = "Strength +{strength}",
+    Price = "+${price}",
+    Equip = "Equip",
+    Equipped = "Equipped",
+    Waiting = "Waiting...",
+    NoAuras = "No auras available",
+    Loading = "Loading...",
+})
 
 -- 绑定窗口与隐藏原型，只在首次准备时连接关闭按钮。
 function CAuraShopView:OnReady()
     local root = FXLoader:PlayerGui("AuraShopUI")
+    -- 仅关闭主动翻译的具体动态文本；原型克隆继承设置，静态节点保持自动本地化。
+    for index, path in ipairs({
+        "PopupPanelImg.EmptyTxt",
+        "TitleBox.TitleTxt",
+        "Templates.AuraRowImg.ActionBtn.ButtonTxt",
+        "Templates.AuraRowImg.NameTxt",
+        "Templates.AuraRowImg.RarityTxt",
+        "Templates.AuraRowImg.StrengthTxt",
+    }) do
+        FXLoader:Here(root, path).AutoLocalize = false
+    end
     self.Root = root
     self.Panel = FXLoader:Here(root, "PopupPanelImg")
     self.TitleBox = FXLoader:Here(root, "TitleBox")
@@ -78,7 +60,6 @@ function CAuraShopView:OnReady()
     self.EmptyTxt = FXLoader:Here(root, "PopupPanelImg.EmptyTxt")
     self.Template = FXLoader:Here(root, "Templates.AuraRowImg")
     self.Rows = {}
-    DisableAutoLocalize(self.EmptyTxt)
     local closeBtn = FXLoader:Here(root, "TitleBox.CloseSurfaceImg")
     self:TrackConnection(closeBtn.Activated:Connect(function()
         self:EmitUIAction("Close", {})
@@ -96,7 +77,7 @@ function CAuraShopView:Render(state)
     local config = self:GetUIConfig()
     self.Panel.Visible = state.open
     self.TitleBox.Visible = state.open
-    self.TitleTxt.Text = config.title
+    self.TitleTxt.Text = Text.TrSource(config.title)
     local active = {}
     local count = 0
     if not state.loading then
@@ -146,10 +127,9 @@ function CAuraShopView:Render(state)
                 studGradient.ColorStart = startColor
                 studGradient.ColorEnd = endColor
             end
-            FXLoader:Here(row, "NameTxt").Text = aura.name
-            FXLoader:Here(row, "RarityTxt").Text = quality.name
+            FXLoader:Here(row, "NameTxt").Text = Text.TrSource(aura.name)
+            FXLoader:Here(row, "RarityTxt").Text = Text.TrSource(quality.name)
             local strengthTxt = FXLoader:Here(row, "StrengthTxt")
-            DisableAutoLocalize(strengthTxt)
             strengthTxt.Text = Text.Tr(TranslationTexts.Strength, {
                 strength = aura.strength,
             })
@@ -183,7 +163,6 @@ function CAuraShopView:Render(state)
             local showMoney = not owned and not equipped and not pending
             FXLoader:Here(row, "ActionBtn.MoneyIconImg").Visible = showMoney
             local buttonText = FXLoader:Here(row, "ActionBtn.ButtonTxt")
-            DisableAutoLocalize(buttonText)
             buttonText.Text = caption
             buttonText.Position = UDim2.fromOffset(0, 0)
             buttonText.Size = UDim2.fromScale(1, 1)

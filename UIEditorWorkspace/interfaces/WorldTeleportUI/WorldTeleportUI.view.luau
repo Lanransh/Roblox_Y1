@@ -37,36 +37,24 @@ local FXLoader = FX.Loader
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local CWorldTeleportView = FX.Class("CWorldTeleportView", "CUIView")
 
-local TranslationTexts = {
-    Go = {
-        Key = "WorldTeleportUI.Go",
-        Source = "Go",
-    },
-    Teleporting = {
-        Key = "WorldTeleportUI.Teleporting",
-        Source = "Teleporting",
-    },
-    Here = {
-        Key = "WorldTeleportUI.Here",
-        Source = "Here",
-    },
-    RequiredLevel = {
-        Key = "WorldTeleportUI.RequiredLevel",
-        Source = "Level {level}",
-    },
-}
-
--- 动态文本由 Text.Tr 求值，真实 Roblox 节点关闭引擎二次翻译。
--- @param node Instance 需要关闭自动本地化的文本节点
-local function DisableAutoLocalize(node)
-    if typeof(node) == "Instance" then
-        node.AutoLocalize = false
-    end
-end
+local TranslationTexts = Text.Define("WorldTeleportUI", {
+    Go = "Go",
+    Teleporting = "Teleporting",
+    Here = "Here",
+    RequiredLevel = "Level {level}",
+})
 
 -- 绑定固定窗口与隐藏条目原型，关闭事件只连接一次。
 function CWorldTeleportView:OnReady()
     local root = FXLoader:PlayerGui("WorldTeleportUI")
+    -- 仅关闭主动翻译的具体动态文本；原型克隆继承设置，静态节点保持自动本地化。
+    for index, path in ipairs({
+        "WindowBox.ErrorTxt",
+        "Templates.WorldRowTemplate.WorldNameTxt",
+        "Templates.WorldRowTemplate.TravelBtn.ButtonTxt",
+    }) do
+        FXLoader:Here(root, path).AutoLocalize = false
+    end
     self.ListBox = FXLoader:Here(root, "WindowBox.PopupPanelImg.WorldListBox")
     self.EmptyTxt = FXLoader:Here(root, "WindowBox.PopupPanelImg.EmptyTxt")
     self.ErrorTxt = FXLoader:Here(root, "WindowBox.ErrorTxt")
@@ -94,7 +82,6 @@ function CWorldTeleportView:CreateRow(worldId)
     row.Visible = true
     local button = FXLoader:Here(row, "TravelBtn")
     local buttonTxt = FXLoader:Here(button, "ButtonTxt")
-    DisableAutoLocalize(buttonTxt)
     -- 点击读取最新状态，传送动作只携带稳定世界 ID。
     local connection = self:TrackConnection(button.Activated:Connect(function()
         local state = self:GetUIState()
@@ -141,7 +128,7 @@ function CWorldTeleportView:Render(state)
         record.row.LayoutOrder = index
         record.row.BackgroundColor3 = Color3.fromHex(world.color or "#8a4dc2")
         record.rowEdge.BackgroundColor3 = Color3.fromHex(world.edgeColor or "#48246b")
-        record.nameTxt.Text = world.name
+        record.nameTxt.Text = Text.TrSource(world.name)
         local unlocked = state.level >= world.requiredLevel
         local current = state.currentWorldId == world.id
         local buttonText = Text.Tr(TranslationTexts.Go)
@@ -173,7 +160,7 @@ function CWorldTeleportView:Render(state)
     end
     self.ListBox.CanvasSize = UDim2.fromOffset(0, math.max(0, #worlds * 106 - 10))
     self.EmptyTxt.Visible = #worlds == 0
-    self.ErrorTxt.Text = state.error or ""
+    self.ErrorTxt.Text = Text.TrSource(state.error or "")
     self.ErrorTxt.Visible = state.error ~= nil and state.error ~= ""
 end
 

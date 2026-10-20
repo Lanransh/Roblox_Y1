@@ -27,28 +27,11 @@ local FXLoader = FX.Loader
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local CSettingsView = FX.Class("CSettingsView", "CUIView")
 
-local TranslationTexts = {
-    Volume = {
-        Key = "SettingsUI.Volume",
-        Source = "{value:int}%",
-    },
-    On = {
-        Key = "SettingsUI.On",
-        Source = "ON",
-    },
-    Off = {
-        Key = "SettingsUI.Off",
-        Source = "OFF",
-    },
-}
-
--- 动态文本由 Text.Tr 求值，真实 Roblox 节点关闭引擎二次翻译。
--- @param node Instance 需要关闭自动本地化的文本节点
-local function DisableAutoLocalize(node)
-    if typeof(node) == "Instance" then
-        node.AutoLocalize = false
-    end
-end
+local TranslationTexts = Text.Define("SettingsUI", {
+    Volume = "{value:int}%",
+    On = "ON",
+    Off = "OFF",
+})
 
 -- 把鼠标位置换算成百分比，并把音量变化交给接入层。
 -- @param self CSettingsView 实例
@@ -102,6 +85,15 @@ end
 -- 绑定音量与开关节点；事件只连接一次。
 function CSettingsView:OnReady()
     local root = FXLoader:PlayerGui("SettingsUI")
+    -- 仅关闭主动翻译的具体动态文本；原型克隆继承设置，静态节点保持自动本地化。
+    for index, path in ipairs({
+        "SettingsPanel.ContentBox.MusicRowImg.ValueTxt",
+        "SettingsPanel.ContentBox.SoundEffectsRowImg.ValueTxt",
+        "SettingsPanel.ContentBox.ShowAuraRowImg.ShowAuraBtn.ButtonTxt",
+        "SettingsPanel.ContentBox.GiantPickaxeRowImg.GiantPickaxeBtn.ButtonTxt",
+    }) do
+        FXLoader:Here(root, path).AutoLocalize = false
+    end
 
     self.Sliders = {
         musicVolume = {
@@ -121,7 +113,6 @@ function CSettingsView:OnReady()
     }
 
     for setting, slider in pairs(self.Sliders) do
-        DisableAutoLocalize(slider.value)
         bindSlider(self, setting, slider.track, slider.input)
     end
 
@@ -139,7 +130,6 @@ function CSettingsView:OnReady()
     }
 
     for setting, toggle in pairs(self.Toggles) do
-        DisableAutoLocalize(toggle.text)
         local settingName = setting
         local button = toggle.button
         -- 点击只传设置键和新值，具体保存由接入层负责。

@@ -24,7 +24,6 @@ self.State.diamonds = { amount = 250, status = "Claimable" }
 OnReady 先调父方法，再 BindUIData、Show；数据更新后 RefreshUI。
 固定说明卡直接更新已有节点，不克隆；不新增图片占位。
 ]]
-
 --[[
 福利界面接入契约（完整状态刷新，非增量）
 Config.groups: 必填有序数组，含 online/signin/task 三组；items 数量可变，允许空数组。
@@ -118,144 +117,43 @@ local Loader = FX.Loader
 local Text = Loader:RequireShared("Scripts/Game/Shared/Text")
 local CWelfareView = FX.Class("CWelfareView", "CUIView")
 
-local TranslationTexts = {
-    Minutes = {
-        Key = "WelfareHub.Minutes",
-        Source = "{minutes} min",
-    },
-    Day = {
-        Key = "WelfareHub.Day",
-        Source = "Day {day}",
-    },
-    TaskProgress = {
-        Key = "WelfareHub.TaskProgress",
-        Source = "{current} / {target}",
-    },
-    Locked = {
-        Key = "WelfareHub.Locked",
-        Source = "Locked",
-    },
-    Claiming = {
-        Key = "WelfareHub.Claiming",
-        Source = "Claiming...",
-    },
-    CheckedIn = {
-        Key = "WelfareHub.CheckedIn",
-        Source = "Checked In",
-    },
-    Claimed = {
-        Key = "WelfareHub.Claimed",
-        Source = "Claimed",
-    },
-    Retry = {
-        Key = "WelfareHub.Retry",
-        Source = "Retry",
-    },
-    CheckIn = {
-        Key = "WelfareHub.CheckIn",
-        Source = "Check In",
-    },
-    Claim = {
-        Key = "WelfareHub.Claim",
-        Source = "Claim",
-    },
-    InProgress = {
-        Key = "WelfareHub.InProgress",
-        Source = "In Progress",
-    },
-    Tomorrow = {
-        Key = "WelfareHub.Tomorrow",
-        Source = "Tomorrow",
-    },
-    DaysUntil = {
-        Key = "WelfareHub.DaysUntil",
-        Source = "In {days} days",
-    },
-    Countdown = {
-        Key = "WelfareHub.Countdown",
-        Source = "{minutes:string}:{seconds:string}",
-    },
-    DiamondAmount = {
-        Key = "WelfareHub.DiamondAmount",
-        Source = "×{amount} Diamonds",
-    },
-    DiamondBonus = {
-        Key = "WelfareHub.DiamondBonus",
-        Source = "+{amount} Diamonds",
-    },
-    DiamondPerFriend = {
-        Key = "WelfareHub.DiamondPerFriend",
-        Source = "+{amount} per friend",
-    },
-    DiamondCap = {
-        Key = "WelfareHub.DiamondCap",
-        Source = "Up to +{amount} Diamonds",
-    },
-    NoDiamonds = {
-        Key = "WelfareHub.NoDiamonds",
-        Source = "No diamonds available today",
-    },
-    ConfirmingReward = {
-        Key = "WelfareHub.ConfirmingReward",
-        Source = "Confirming your reward...",
-    },
-    DiamondsClaimed = {
-        Key = "WelfareHub.DiamondsClaimed",
-        Source = "Today's diamonds claimed · Come back tomorrow",
-    },
-    ReadyToClaim = {
-        Key = "WelfareHub.ReadyToClaim",
-        Source = "Ready to claim",
-    },
-    DailyLogin = {
-        Key = "WelfareHub.DailyLogin",
-        Source = "Daily Login · Day {day}",
-    },
-    NoRewards = {
-        Key = "WelfareHub.NoRewards",
-        Source = "No rewards",
-    },
-    AllMilestones = {
-        Key = "WelfareHub.AllMilestones",
-        Source = "All milestones reached!",
-    },
-    OnlineProgress = {
-        Key = "WelfareHub.OnlineProgress",
-        Source = "{current} / {target} min",
-    },
-    NoOnlineRewards = {
-        Key = "WelfareHub.NoOnlineRewards",
-        Source = "No online rewards available",
-    },
-    NextReward = {
-        Key = "WelfareHub.NextReward",
-        Source = "Next reward in {time:string}",
-    },
-    AwayDuration = {
-        Key = "WelfareHub.AwayDuration",
-        Source = "You were away for {hours:int}h {minutes:string}m",
-    },
-    ClaimRewards = {
-        Key = "WelfareHub.ClaimRewards",
-        Source = "Claim Rewards!",
-    },
-    DoubleRewards = {
-        Key = "WelfareHub.DoubleRewards",
-        Source = "2× Rewards!",
-    },
-    NoOfflineRewards = {
-        Key = "WelfareHub.NoOfflineRewards",
-        Source = "No offline rewards",
-    },
-}
-
--- 动态文本由 Text.Tr 求值，真实 Roblox 节点关闭引擎二次翻译。
--- @param node Instance 需要关闭自动本地化的文本节点
-local function DisableAutoLocalize(node)
-    if typeof(node) == "Instance" then
-        node.AutoLocalize = false
-    end
-end
+local TranslationTexts = Text.Define("WelfareHub", {
+    Minutes = "{minutes} min",
+    Day = "Day {day}",
+    TaskProgress = "{current} / {target}",
+    Locked = "Locked",
+    Claiming = "Claiming...",
+    CheckedIn = "Checked In",
+    Claimed = "Claimed",
+    Retry = "Retry",
+    CheckIn = "Check In",
+    Claim = "Claim",
+    InProgress = "In Progress",
+    Tomorrow = "Tomorrow",
+    DaysUntil = "In {days} days",
+    Countdown = "{minutes:string}:{seconds:string}",
+    DiamondAmount = "×{amount} Diamonds",
+    DiamondBonus = "+{amount} Diamonds",
+    DiamondPerFriend = "+{amount} per friend",
+    DiamondCap = "Up to +{amount} Diamonds",
+    NoDiamonds = "No diamonds available today",
+    ConfirmingReward = "Confirming your reward...",
+    DiamondsClaimed = "Today's diamonds claimed · Come back tomorrow",
+    ReadyToClaim = "Ready to claim",
+    DailyLogin = "Daily Login · Day {day}",
+    NoRewards = "No rewards",
+    AllMilestones = "All milestones reached!",
+    OnlineProgress = "{current} / {target} min",
+    NoOnlineRewards = "No online rewards available",
+    NextReward = "Next reward in {time:string}",
+    AwayDuration = "You were away for {hours:int}h {minutes:string}m",
+    ClaimRewards = "Claim Rewards!",
+    DoubleRewards = "2× Rewards!",
+    NoOfflineRewards = "No offline rewards",
+    RewardAmount = "{name} ×{amount}",
+    MoneyAmount = "+${amount}",
+    TrainingAmount = "+{amount}",
+})
 
 -- 局部条目只管理自身克隆与连接，不执行整屏适配。
 local RewardRow = {}
@@ -286,14 +184,16 @@ function RewardRow:Update(config, state)
     local isMoney = display.icon == "Coin"
     local moneyBox = Loader:Here(root, "MoneyRewardBox")
     moneyBox.Visible = isMoney
-    Loader:Here(moneyBox, "AmountTxt").Text = "+$" .. tostring(config.reward.amount)
+    Loader:Here(moneyBox, "AmountTxt").Text = Text.Tr(TranslationTexts.MoneyAmount, {
+        amount = config.reward.amount,
+    })
     local rewardLabel = Loader:Here(root, "RewardTxt")
     rewardLabel.Visible = not isMoney
     rewardLabel.Text = rewardText
     if self.Kind == "task" then
         Loader:Here(root, "GemIconBox").Visible = display.icon == "Gem"
         Loader:Here(root, "EggIconBox").Visible = display.icon == "Egg"
-        Loader:Here(root, "TaskNameTxt").Text = config.title
+        Loader:Here(root, "TaskNameTxt").Text = Text.TrSource(config.title)
         local bar = Loader:Here(root, "ProgressBarImg")
         local target = config.target
         local ratio = 0
@@ -302,7 +202,6 @@ function RewardRow:Update(config, state)
         end
         Loader:Here(bar, "ProgressFillImg").Size = UDim2.fromScale(ratio, 1)
         local progressTxt = Loader:Here(bar, "ProgressTxt")
-        DisableAutoLocalize(progressTxt)
         if target > 0 then
             progressTxt.Text = Text.Tr(TranslationTexts.TaskProgress, {
                 current = state.current,
@@ -323,7 +222,6 @@ function RewardRow:Update(config, state)
             })
         end
         local timeTxt = Loader:Here(root, self.Kind == "online" and "TimeTxt" or "DayTxt")
-        DisableAutoLocalize(timeTxt)
         timeTxt.Text = text
         assert(display.icon == "Coin" or display.icon == "Gem" or display.icon == "Egg", "Unsupported reward icon: " .. tostring(display.icon))
         for _, icon in ipairs({ "Coin", "Gem", "Egg" }) do
@@ -349,7 +247,7 @@ function RewardRow:Update(config, state)
         end
     elseif state.status == "Locked" then
         if state.label then
-            label = state.label
+            label = Text.TrSource(state.label)
         elseif self.Kind == "task" then
             label = Text.Tr(TranslationTexts.InProgress)
         end
@@ -411,6 +309,64 @@ end
 -- 绑定设计节点；页签和关闭由展示层维护，不发送业务请求。
 function CWelfareView:OnReady()
     self.Root = Loader:PlayerGui("WelfareUI")
+    -- 仅关闭主动翻译的具体动态文本；原型克隆继承设置，静态节点保持自动本地化。
+    for index, path in ipairs({
+        "PopupPanelImg.OnlineBox.SubtitleTxt",
+        "PopupPanelImg.OnlineBox.ProgressBarImg.ProgressTxt",
+        "PopupPanelImg.SignInBox.HeadingTxt",
+        "PopupPanelImg.DiamondsBox.AmountTxt",
+        "PopupPanelImg.DiamondsBox.ClaimBtn.ButtonTxt",
+        "PopupPanelImg.DiamondsBox.StatusTxt",
+        "PopupPanelImg.DiamondsBox.LoginBonusImg.AmountTxt",
+        "PopupPanelImg.DiamondsBox.PremiumBonusImg.AmountTxt",
+        "PopupPanelImg.DiamondsBox.FriendsBonusImg.AmountTxt",
+        "PopupPanelImg.DiamondsBox.FriendsBonusImg.HintTxt",
+        "PopupPanelImg.OfflineBox.TimeTxt",
+        "PopupPanelImg.OfflineBox.AmountTxt",
+        "PopupPanelImg.OfflineBox.StatusTxt",
+        "PopupPanelImg.OfflineBox.SingleClaimBtn.ButtonTxt",
+        "PopupPanelImg.OfflineBox.DoubleClaimBtn.ButtonTxt",
+        "Templates.OnlineBoxTemplateImg.TimeTxt",
+        "Templates.OnlineBoxTemplateImg.RewardTxt",
+        "Templates.OnlineBoxTemplateImg.ClaimBtn.ButtonTxt",
+        "Templates.OnlineBoxTemplateImg.MoneyRewardBox.AmountTxt",
+        "Templates.SignInBoxTemplateImg.DayTxt",
+        "Templates.SignInBoxTemplateImg.RewardTxt",
+        "Templates.SignInBoxTemplateImg.ClaimBtn.ButtonTxt",
+        "Templates.SignInBoxTemplateImg.MoneyRewardBox.AmountTxt",
+        "Templates.TasksBoxTemplateImg.TaskNameTxt",
+        "Templates.TasksBoxTemplateImg.RewardTxt",
+        "Templates.TasksBoxTemplateImg.ProgressBarImg.ProgressTxt",
+        "Templates.TasksBoxTemplateImg.ClaimBtn.ButtonTxt",
+        "Templates.TasksBoxTemplateImg.MoneyRewardBox.AmountTxt",
+        "Templates.OnlineBlueTemplateImg.TimeTxt",
+        "Templates.OnlineBlueTemplateImg.RewardTxt",
+        "Templates.OnlineBlueTemplateImg.ClaimBtn.ButtonTxt",
+        "Templates.OnlineBlueTemplateImg.MoneyRewardBox.AmountTxt",
+        "Templates.OnlinePurpleTemplateImg.TimeTxt",
+        "Templates.OnlinePurpleTemplateImg.RewardTxt",
+        "Templates.OnlinePurpleTemplateImg.ClaimBtn.ButtonTxt",
+        "Templates.OnlinePurpleTemplateImg.MoneyRewardBox.AmountTxt",
+        "Templates.OnlineGrandTemplateImg.TimeTxt",
+        "Templates.OnlineGrandTemplateImg.RewardTxt",
+        "Templates.OnlineGrandTemplateImg.ClaimBtn.ButtonTxt",
+        "Templates.OnlineGrandTemplateImg.MoneyRewardBox.AmountTxt",
+        "Templates.SignInBlueTemplateImg.DayTxt",
+        "Templates.SignInBlueTemplateImg.RewardTxt",
+        "Templates.SignInBlueTemplateImg.ClaimBtn.ButtonTxt",
+        "Templates.SignInBlueTemplateImg.MoneyRewardBox.AmountTxt",
+        "Templates.SignInPurpleTemplateImg.DayTxt",
+        "Templates.SignInPurpleTemplateImg.RewardTxt",
+        "Templates.SignInPurpleTemplateImg.ClaimBtn.ButtonTxt",
+        "Templates.SignInPurpleTemplateImg.MoneyRewardBox.AmountTxt",
+        "Templates.SignInGrandTemplateImg.DayTxt",
+        "Templates.SignInGrandTemplateImg.RewardTxt",
+        "Templates.SignInGrandTemplateImg.ClaimBtn.ButtonTxt",
+        "Templates.SignInGrandTemplateImg.WeeklyTxt",
+        "Templates.SignInGrandTemplateImg.MoneyRewardBox.AmountTxt",
+    }) do
+        Loader:Here(self.Root, path).AutoLocalize = false
+    end
     self.Rows = {}
     self.ActiveTab = "offline"
     local tabs = { { "offline", "OfflineTabBtn" }, { "diamonds", "DiamondsTabBtn" }, { "signin", "SignInTabBtn" }, { "online", "OnlineTabBtn" }, { "task", "TasksTabBtn" } }
@@ -472,12 +428,15 @@ function CWelfareView:GetRewardDisplay(reward)
     error("Welfare integration must implement GetRewardDisplay")
 end
 
--- 可选覆写的数量显示格式，不修改原始奖励数据。
+-- 可选覆写的数量显示格式，不修改原始奖励数据；name 为配置原文，返回已翻译文本。
 -- @param name string 奖励名称
 -- @param amount number 原始数量
 -- @return string 显示文本
 function CWelfareView:FormatReward(name, amount)
-    return name .. " ×" .. tostring(amount)
+    return Text.Tr(TranslationTexts.RewardAmount, {
+        name = Text.TrSource(name),
+        amount = amount,
+    })
 end
 
 -- 领取动作必须由游戏或模拟接入实现。
@@ -575,19 +534,21 @@ end
 function CWelfareView:StyleFeatured(row, config)
     row.BackgroundColor3 = Color3.fromRGB(config.color[1], config.color[2], config.color[3])
     local label = Loader:Here(row, "WeeklyTxt")
-    label.Visible, label.Text = true, config.badge
+    label.Visible, label.Text = true, Text.TrSource(config.badge)
 end
 
 -- 保留风格按钮表面，只更新状态。
 -- @param button Instance 点击节点
--- @param label string 显示文字
+-- @param label string? 已翻译的动态文字；nil 保留静态节点文案
 -- @param enabled boolean 是否允许操作
 function CWelfareView:RenderButton(button, label, enabled)
     self:SetButtonEnabled(button, enabled)
     button.BackgroundColor3 = enabled and Color3.fromRGB(103, 237, 20) or Color3.fromRGB(99, 128, 121)
     local buttonTxt = Loader:Here(button, "ButtonTxt")
-    DisableAutoLocalize(buttonTxt)
-    buttonTxt.Text = label
+
+    if label then
+        buttonTxt.Text = label
+    end
     Loader:Here(button, "BottomEdgeImg").BackgroundColor3 = enabled and Color3.fromRGB(34, 90, 7) or Color3.fromRGB(38, 62, 54)
 end
 
@@ -603,12 +564,6 @@ function CWelfareView:RenderDiamonds(state)
     local friendAmountTxt = Loader:Here(page, "FriendsBonusImg.AmountTxt")
     local friendHintTxt = Loader:Here(page, "FriendsBonusImg.HintTxt")
     local statusTxt = Loader:Here(page, "StatusTxt")
-    DisableAutoLocalize(amountTxt)
-    DisableAutoLocalize(loginAmountTxt)
-    DisableAutoLocalize(premiumAmountTxt)
-    DisableAutoLocalize(friendAmountTxt)
-    DisableAutoLocalize(friendHintTxt)
-    DisableAutoLocalize(statusTxt)
     amountTxt.Text = Text.Tr(TranslationTexts.DiamondAmount, {
         amount = state.amount,
     })
@@ -637,7 +592,7 @@ function CWelfareView:RenderDiamonds(state)
         hint = Text.Tr(TranslationTexts.ReadyToClaim)
         if state.error then
             label = Text.Tr(TranslationTexts.Retry)
-            hint = state.error
+            hint = Text.TrSource(state.error)
         end
     elseif state.status ~= "Locked" then
         error("Unknown diamond status: " .. tostring(state.status))
@@ -646,7 +601,7 @@ function CWelfareView:RenderDiamonds(state)
     self:RenderButton(Loader:Here(page, "ClaimBtn"), label, state.status == "Claimable" and not state.pending)
     local tab = Loader:Here(self.Root, "TabsBox.DiamondsTabBtn")
     Loader:Here(tab, "RedDotImg").Visible = state.status == "Claimable" and not state.pending
-    self:RenderButton(tab, "Diamonds", true)
+    self:RenderButton(tab, nil, true)
     if self.ActiveTab ~= "diamonds" then
         tab.BackgroundColor3 = Color3.fromRGB(99, 128, 121)
         Loader:Here(tab, "BottomEdgeImg").BackgroundColor3 = Color3.fromRGB(38, 62, 54)
@@ -659,7 +614,6 @@ function CWelfareView:Render(state)
     self:RenderOffline(state.offline)
     self:RenderDiamonds(state.diamonds)
     local tabs = { online = "OnlineTabBtn", signin = "SignInTabBtn", task = "TasksTabBtn" }
-    local labels = { online = "Online\nRewards", signin = "Daily Login", task = "Tasks" }
     for _, group in ipairs(self:GetUIConfig().groups) do
         Loader:Here(self.Root, "PopupPanelImg." .. group.page).Visible = self.ActiveTab == group.kind
         local button = Loader:Here(self.Root, "TabsBox." .. tabs[group.kind])
@@ -673,7 +627,7 @@ function CWelfareView:Render(state)
             end
         end
         Loader:Here(button, "RedDotImg").Visible = hasClaimable
-        self:RenderButton(button, labels[group.kind], true)
+        self:RenderButton(button, nil, true)
         if self.ActiveTab ~= group.kind then
             button.BackgroundColor3 = Color3.fromRGB(99, 128, 121)
             Loader:Here(button, "BottomEdgeImg").BackgroundColor3 = Color3.fromRGB(38, 62, 54)
@@ -688,7 +642,6 @@ function CWelfareView:Render(state)
         end
     end
     local signInHeadingTxt = Loader:Here(self.Root, "PopupPanelImg.SignInBox.HeadingTxt")
-    DisableAutoLocalize(signInHeadingTxt)
     signInHeadingTxt.Text = Text.Tr(TranslationTexts.DailyLogin, {
         day = state.signInDay,
     })
@@ -732,8 +685,6 @@ function CWelfareView:RenderOnlineProgress(group, state)
     end
     local progressTxt = Loader:Here(bar, "ProgressTxt")
     local subtitleTxt = Loader:Here(page, "SubtitleTxt")
-    DisableAutoLocalize(progressTxt)
-    DisableAutoLocalize(subtitleTxt)
     progressTxt.Text = progress
     subtitleTxt.Text = hint
 end
@@ -752,12 +703,13 @@ function CWelfareView:RenderOffline(state)
     local hours = math.floor(seconds / 3600)
     local minutes = math.floor(seconds % 3600 / 60)
     local timeTxt = Loader:Here(page, "TimeTxt")
-    DisableAutoLocalize(timeTxt)
     timeTxt.Text = Text.Tr(TranslationTexts.AwayDuration, {
         hours = hours,
         minutes = string.format("%02d", minutes),
     })
-    Loader:Here(page, "AmountTxt").Text = "+" .. tostring(training)
+    Loader:Here(page, "AmountTxt").Text = Text.Tr(TranslationTexts.TrainingAmount, {
+        amount = training,
+    })
     local claimable = state.status == "Claimable" and training > 0
     local single = Loader:Here(page, "SingleClaimBtn")
     local double = Loader:Here(page, "DoubleClaimBtn")
@@ -771,15 +723,14 @@ function CWelfareView:RenderOffline(state)
         Loader:Here(double, "BottomEdgeImg").BackgroundColor3 = Color3.fromRGB(176, 101, 0)
     end
     local status = Loader:Here(page, "StatusTxt")
-    DisableAutoLocalize(status)
     status.Visible = not claimable or state.error ~= nil
-    status.Text = state.error or Text.Tr(TranslationTexts.NoOfflineRewards)
+    status.Text = state.error and Text.TrSource(state.error) or Text.Tr(TranslationTexts.NoOfflineRewards)
     if state.status == "Claimed" then
         status.Text = Text.Tr(TranslationTexts.Claimed)
     end
     local tab = Loader:Here(self.Root, "TabsBox.OfflineTabBtn")
     Loader:Here(tab, "RedDotImg").Visible = claimable and not state.pending
-    self:RenderButton(tab, "Offline\nRewards", true)
+    self:RenderButton(tab, nil, true)
     if self.ActiveTab ~= "offline" then
         tab.BackgroundColor3 = Color3.fromRGB(99, 128, 121)
         Loader:Here(tab, "BottomEdgeImg").BackgroundColor3 = Color3.fromRGB(38, 62, 54)

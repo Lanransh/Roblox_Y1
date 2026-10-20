@@ -22,8 +22,8 @@ ReachRebirthLevel：payload = {}，无需输入参数；游戏接入按当前管
 游戏接入负责服务端权限、数值校验、实际写入、重置和持久化；
 请求前 pending=true 并刷新，返回后 pending=false 并刷新；结果与错误由接入层处理，本面板不显示状态文本。
 无其他必需或可选覆写；Preview 只改模拟数据，不持久化。
-中文固定显示：真实 Roblox 初始化时将 GMPanelUI.AutoLocalize 设为 false，覆盖全部后代与未来新增控件。
-App 模拟节点没有此属性，按实例类型跳过；不影响编辑器中文预览。
+静态标签与输入提示由设计节点自动本地化；重置确认由 Text.Tr 翻译。
+输入参数保留玩家原文，不作翻译；语言刷新沿用游戏已有机制。
 TextBox 为原生 Roblox 输入框；App 自动化不支持键盘、文本输入和焦点事件。
 ]]
 local FX = _G.FX
@@ -31,24 +31,20 @@ local FXLoader = FX.Loader
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local CGMPanelView = FX.Class("CGMPanelView", "CUIView")
 
--- GM 面板固定显示中文，Source 保留当前预览原文，由 Text.Tr 统一取值。
-local TranslationTexts = {
-    ResetData = {
-        Key = "GMPanel.ResetData",
-        Source = "重置数据",
-    },
-    ConfirmReset = {
-        Key = "GMPanel.ConfirmReset",
-        Source = "再次确认",
-    },
-}
+-- 保留已有 Key；动态确认文案使用英文回退，静态文案由节点收集。
+local TranslationTexts = Text.Define("GMPanel", {
+    ResetData = "Reset Data",
+    ConfirmReset = "Confirm Reset",
+})
 
 -- 一次绑定静态节点和按钮，输入值在点击时读取。
 function CGMPanelView:OnReady()
     local root = FXLoader:PlayerGui("GMPanelUI")
-    -- 真实 Roblox 根界面关闭自动翻译，全部后代保留中文；App 模拟节点跳过。
-    if typeof(root) == "Instance" then
-        root.AutoLocalize = false
+    -- 仅关闭主动翻译的具体动态文本；原型克隆继承设置，静态节点保持自动本地化。
+    for index, path in ipairs({
+        "PopupPanelImg.ResetDataBtn.ButtonTxt",
+    }) do
+        FXLoader:Here(root, path).AutoLocalize = false
     end
     self.Panel = FXLoader:Here(root, "PopupPanelImg")
     self.Title = FXLoader:Here(root, "TitleBox")

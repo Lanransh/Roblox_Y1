@@ -12,7 +12,9 @@ State 为完整输入，不是增量，所有必填字段无默认值：
   items[i].qualityId:string 品质 ID，与 Config.qualities 的键对应，必填；
   items[i].value:number 此条目的出售��价，非负，单位金币；展示为钞票图标与 +$金额，百万金额保留一位小数 M；
   pending:boolean 可选，省略 false，出售按钮禁用；
-  message:string 可选，省略空文本；空列表时缺省显示 No items to sell。
+  message:string 可选，完整提示原文，由 Text.TrSource 查询，不传拼接后的动态句子；省略空文本。
+  soldAmount:number 可选，最近出售获得的金币；存在时优先显示本地化出售结果，0 也有效。
+  无 message/soldAmount 且空列表时显示 No items to sell；新请求前清空两字段。
 条目原型位于隐藏的 Templates.LootTemplateImg，显示容器 LootListBox 仅挂载运行时克隆。
 按 items[i].id 复用与清理实例，items 顺序决定位置；空列表清理所有克隆，原型保留。
 每条占一个容量，不合并同名物品。数量由 #items 计算；达到容量显示黄色。
@@ -31,7 +33,8 @@ RefreshUI 调用 Render(GetUIState())，不合并补丁。
 默认读取 Config.qualities[item.qualityId]，缺失时明确报错，不沿用上一条颜色。
 用于条目渐变起色、图标底色、边框和左侧色条；真实图标仍待资源接入。
 游戏层校验实际库存、双倍资格及出售结果，
-请求时 pending=true，结果返回后更新 items/message 并将 pending=false，再刷新。
+请求时 pending=true 并清空 message/soldAmount；成功更新 items/soldAmount，失败更新 message，
+将 pending=false 后刷新；金额模板由 View 翻译，接入层不拼接结果文案。
 失败时保留最新库存并填写英文 message。模拟接入只清空模拟列表，不发放金币。
 ]]
 local FX = _G.FX
@@ -39,38 +42,40 @@ local FXLoader = FX.Loader
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local CLootSellView = FX.Class("CLootSellView", "CUIView")
 
-local TranslationTexts = {
-    Capacity = {
-        Key = "LootSellUI.Capacity",
-        Source = "Items: {count:int} / {capacity:int}",
-    },
-    NoItems = {
-        Key = "LootSellUI.NoItems",
-        Source = "No items to sell",
-    },
-}
-
--- 动态文本由 Text.Tr 求值，真实 Roblox 节点关闭引擎二次翻译。
--- @param node Instance 需要关闭自动本地化的文本节点
-local function DisableAutoLocalize(node)
-    if typeof(node) == "Instance" then
-        node.AutoLocalize = false
-    end
-end
+local TranslationTexts = Text.Define("LootSellUI", {
+    Capacity = "Items: {count:int} / {capacity:int}",
+    NoItems = "No items to sell",
+    Coins = "+${amount}",
+    Sold = "{amount} Sold!",
+})
 
 -- 将金币金额格式化为参考图的短文案。
 -- @param amount number 金币数量
 -- @return string 金币展示文本
 local function FormatCoins(amount)
     if amount >= 1000000 then
-        return string.format("+$%.1fM", amount / 1000000)
+        return Text.Tr(TranslationTexts.Coins, {
+            amount = string.format("%.1fM", amount / 1000000),
+        })
     end
-    return "+$" .. tostring(amount)
+    return Text.Tr(TranslationTexts.Coins, {
+        amount = tostring(amount),
+    })
 end
 
 -- 绑定静态节点，事件只连接一次。
 function CLootSellView:OnReady()
     local root = FXLoader:PlayerGui("LootSellUI")
+    -- 仅关闭主动翻译的具体动态文本；原型克隆继承设置，静态节点保持自动本地化。
+    for index, path in ipairs({
+        "PopupPanelImg.TotalImg.TotalValueTxt",
+        "PopupPanelImg.StatusTxt",
+        "PopupPanelImg.CapacityTxt",
+        "Templates.LootTemplateImg.LootNameTxt",
+        "Templates.LootTemplateImg.LootValueTxt",
+    }) do
+        FXLoader:Here(root, path).AutoLocalize = false
+    end
     self.Panel = FXLoader:Here(root, "PopupPanelImg")
     self.Title = FXLoader:Here(root, "TitleBox")
     self.Total = FXLoader:Here(root, "PopupPanelImg.TotalImg.TotalValueTxt")
@@ -81,8 +86,6 @@ function CLootSellView:OnReady()
     self.List.CanvasPosition = Vector2.new(0, 0)
     self.StatusTxt = FXLoader:Here(root, "PopupPanelImg.StatusTxt")
     self.StatusMoneyIcon = FXLoader:Here(root, "PopupPanelImg.StatusMoneyIconImg")
-    DisableAutoLocalize(self.CapacityTxt)
-    DisableAutoLocalize(self.StatusTxt)
     self.SellAllBtn = FXLoader:Here(root, "PopupPanelImg.TotalImg.SellAllBtn")
     self.SellDoubleBtn = FXLoader:Here(root, "PopupPanelImg.TotalImg.SellDoubleBtn")
     local closeBtn = FXLoader:Here(root, "TitleBox.CloseSurfaceImg")
@@ -156,7 +159,7 @@ function CLootSellView:Render(state)
             self.Rows[item.id] = record
         end
         record.node.Position = UDim2.fromOffset(2, 2 + (index - 1) * 112)
-        record.name.Text = item.name
+        record.name.Text = Text.TrSource(item.name)
         record.value.Text = FormatCoins(item.value)
         local qualityColor = self:GetItemQualityColor(item)
         local gradientEnds = self:GetUIConfig().qualityGradientEnds
@@ -199,9 +202,13 @@ function CLootSellView:Render(state)
     if count >= self:GetUIConfig().capacity then
         self.CapacityTxt.TextColor3 = Color3.fromHex("#FFD34F")
     end
-    self.StatusTxt.Text = state.message or ""
-    self.StatusMoneyIcon.Visible = string.find(self.StatusTxt.Text, "+$", 1, true) ~= nil
-    if count == 0 and not state.message then
+    self.StatusTxt.Text = Text.TrSource(state.message or "")
+    self.StatusMoneyIcon.Visible = state.soldAmount ~= nil or string.find(state.message or "", "+$", 1, true) ~= nil
+    if state.soldAmount ~= nil then
+        self.StatusTxt.Text = Text.Tr(TranslationTexts.Sold, {
+            amount = FormatCoins(state.soldAmount),
+        })
+    elseif count == 0 and not state.message then
         self.StatusTxt.Text = Text.Tr(TranslationTexts.NoItems)
     end
     self:SetButtonEnabled(self.SellAllBtn, count > 0 and not state.pending)

@@ -32,32 +32,24 @@ local FXLoader = FX.Loader
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local CCollectionView = FX.Class("CCollectionView", "CUIView")
 
-local TranslationTexts = {
-    StrengthRule = {
-        Key = "CollectionUI.StrengthRule",
-        Source = "+{percent}% Strength",
-    },
-    StrengthBoost = {
-        Key = "CollectionUI.StrengthBoost",
-        Source = "+{percent}%",
-    },
-    ActivatedCount = {
-        Key = "CollectionUI.ActivatedCount",
-        Source = "Activated {active:int} / {total:int}",
-    },
-}
-
--- 动态文本由 Text.Tr 求值，真实 Roblox 节点关闭引擎二次翻译。
--- @param node Instance 需要关闭自动本地化的文本节点
-local function DisableAutoLocalize(node)
-    if typeof(node) == "Instance" then
-        node.AutoLocalize = false
-    end
-end
+local TranslationTexts = Text.Define("CollectionUI", {
+    StrengthRule = "+{percent}% Strength",
+    StrengthBoost = "+{percent}%",
+    ActivatedCount = "Activated {active:int} / {total:int}",
+})
 
 -- 绑定窗口、统计与隐藏卡片原型，只连接关闭操作。
 function CCollectionView:OnReady()
     local root = FXLoader:PlayerGui("CollectionUI")
+    -- 仅关闭主动翻译的具体动态文本；原型克隆继承设置，静态节点保持自动本地化。
+    for index, path in ipairs({
+        "PopupPanelImg.SummaryImg.StatusTxt",
+        "PopupPanelImg.SummaryImg.BoostTxt",
+        "TitleBox.CountTxt",
+        "Templates.ItemRowImg.ItemNameTxt",
+    }) do
+        FXLoader:Here(root, path).AutoLocalize = false
+    end
     self.Root = root
     self.List = FXLoader:Here(root, "PopupPanelImg.ItemListBox")
     self.Count = FXLoader:Here(root, "TitleBox.CountTxt")
@@ -65,9 +57,6 @@ function CCollectionView:OnReady()
     self.Rule = FXLoader:Here(root, "PopupPanelImg.SummaryImg.StatusTxt")
     self.Template = FXLoader:Here(root, "Templates.ItemRowImg")
     self.Rows = {}
-    DisableAutoLocalize(self.Count)
-    DisableAutoLocalize(self.Boost)
-    DisableAutoLocalize(self.Rule)
     local close = FXLoader:Here(root, "TitleBox.CloseSurfaceImg")
     -- 关闭由接入层更新显隐状态。
     self:TrackConnection(close.Activated:Connect(function()
@@ -128,7 +117,7 @@ function CCollectionView:Render(state)
         if entry.active then
             activeCount = activeCount + 1
         end
-        row.name.Text = entry.active and item.name or "???"
+        row.name.Text = entry.active and Text.TrSource(item.name) or "???"
         row.icon.Image = entry.active and (item.icon or "") or ""
         row.unknown.Visible = not entry.active or not item.icon or item.icon == ""
         row.icon.ImageTransparency = row.unknown.Visible and 1 or 0
