@@ -42,9 +42,9 @@ return {
         },
         [4] = {
             Index = 4,
-            Type = [[GetDog]],
-            Name = [[Pick up a dog]],
-            Desc = [[Pick up 10 dogs]],
+            Type = [[GetNoob]],
+            Name = [[Collect a noob]],
+            Desc = [[Collect 10 noobs]],
             Target = 10,
             Rewards = {
                 [1] = {
@@ -238,9 +238,9 @@ return {
     MenuRetentionConfig = {
         TriggerMinutes = 5,
         Reward = {
-            Type = [[Item]],
-            Id = 107,
-            Count = 2
+            Type = [[Aura]],
+            Id = 102,
+            Count = 1
         }
     }
 }

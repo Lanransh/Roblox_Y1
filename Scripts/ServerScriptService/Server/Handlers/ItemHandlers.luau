@@ -4,25 +4,25 @@ local ItemHandlers = {}
 local TrainingCardHandler = {}
 local BackpackBoostCardHandler = {}
 local WeekCardHandler = {}
-local DogCardHandler = {}
+local NoobCardHandler = {}
 
---- 每次只消耗一张小狗卡，活动组件未就绪时不扣卡。
+--- 每次只消耗一张菜鸟卡，活动组件未就绪时不扣卡。
 ---@param context FXItemContextClass 服务端道具使用上下文。
----@return boolean 是否可以使用小狗卡。
-function DogCardHandler:CanUse(context)
+---@return boolean 是否可以使用菜鸟卡。
+function NoobCardHandler:CanUse(context)
     context.consumeCount = 1
     return context.playerObject:GetComponent("SActivityComp") ~= nil
 end
 
---- 复用小狗任务计数入口，每次使用只增加一次 GetDog 进度。
+--- 复用菜鸟任务计数入口，每次使用只增加一次 GetNoob 进度。
 ---@param context FXItemContextClass 已通过背包归属校验的上下文。
 ---@return boolean 是否完成任务进度结算。
-function DogCardHandler:Use(context)
-    context.playerObject:RequireComponent("SActivityComp"):RecordDogPickup()
+function NoobCardHandler:Use(context)
+    context.playerObject:RequireComponent("SActivityComp"):RecordNoobPickup()
     return true
 end
 
-ItemHandlers.DogCard = DogCardHandler
+ItemHandlers.NoobCard = NoobCardHandler
 
 --- 先确认活动组件与即时奖励可用，框架随后才消耗一张周卡。
 ---@param context FXItemContextClass 服务端道具使用上下文。

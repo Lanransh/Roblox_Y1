@@ -450,7 +450,7 @@ function Player:ShowLocalizedTips(key, arguments, duration)
     FX.Network:SendMsgToClient(self:GetPlayerId(), "S2C_ShowLocalizedTips", key, arguments, duration)
 end
 
---- 补齐历史等级、离线福利、武器偏好，并从当前配置重建引导业务目标。
+--- 补齐历史数据、重建引导业务目标，并将小狗任务进度迁移为菜鸟任务。
 --- @param version number 框架传入的旧存档版本。
 function Player:MigrateData(version)
     if version < 1 then
@@ -487,6 +487,15 @@ function Player:MigrateData(version)
         guide.target = step and table.clone(step.target) or {type = "None"}
         self:SetTable(PlayerDataConfig.Guide, guide)
         self:SetNumber(PlayerDataConfig.DataVersion, 4)
+    end
+    if version < 5 then
+        local welfare = self:GetTable(PlayerDataConfig.WelfareData)
+        if welfare.taskProgress and welfare.taskProgress.GetDog ~= nil then
+            welfare.taskProgress.GetNoob = (welfare.taskProgress.GetNoob or 0) + welfare.taskProgress.GetDog
+            welfare.taskProgress.GetDog = nil
+            self:SetTable(PlayerDataConfig.WelfareData, welfare)
+        end
+        self:SetNumber(PlayerDataConfig.DataVersion, 5)
     end
 end
 

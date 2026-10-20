@@ -53,12 +53,13 @@ return {
     ServerMsgID = {
         -- 无参数，UTC 跨日清理上一日的客户端礼盒。
         "S2C_ClearGiftDrops",
-        -- dropId: string、options: {Position: Vector3, Height: number, Duration: number}，个人客户端生成礼盒表现。
+        -- dropId: string、options: {Position: Vector3, Height: number, Duration: number, LandsAt: number}。
+        -- LandsAt 为服务端时间，Duration=0 恢复已到期礼盒；仅本人客户端生成表现。
         "S2C_SpawnGiftDrop",
         -- amount: number、currency: string，实际到账奖励；客户端复用拾取奖励 UI。
         "S2C_GiftDropOpened",
-        -- 无参数；服务端确认公共小狗拾取成功后，仅通知拾取者播放现有拾取音效。
-        "S2C_DogPickedUp",
+        -- 无参数；服务端确认公共菜鸟拾取成功后，仅通知拾取者播放现有拾取音效。
+        "S2C_NoobPickedUp",
         -- definition: {Key: string, Source: string}、arguments: table?、duration: number?。
         -- 服务端仅发送完整定义，由客户端翻译，单向消息。
         "S2C_ShowLocalizedTips",

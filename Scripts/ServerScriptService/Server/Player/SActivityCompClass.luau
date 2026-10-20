@@ -148,11 +148,11 @@ function Component:RecordPickup()
     self:PublishState()
 end
 
---- 小狗拾取单独累计 GetDog，不计入普通道具 GetItem；跨日重置后再记录。
-function Component:RecordDogPickup()
+--- 菜鸟拾取单独累计 GetNoob，不计入普通道具 GetItem；跨日重置后再记录。
+function Component:RecordNoobPickup()
     self:UpdateTime(os.time())
     local data = self:GetTable(Fields.WelfareData)
-    data.taskProgress.GetDog = (data.taskProgress.GetDog or 0) + 1
+    data.taskProgress.GetNoob = (data.taskProgress.GetNoob or 0) + 1
     self:SetTable(Fields.WelfareData, data)
     self:PublishState()
 end

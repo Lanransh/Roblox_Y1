@@ -7,9 +7,9 @@ return {
         Height = 26, -- 相对区域中心的悬空高度，单位 studs。
         Worlds = {"World1", "World2", "World3"},
     },
-    -- 小狗 NPC 配置：只在已存在的刷新标记中生成；增加世界时追加对应路径组。
-    DogNpcConfig = {
-        TemplatePath = "Assets/Decorations/dog",
+    -- 菜鸟 NPC 配置：在区域内循环巡逻；增加世界时追加对应路径组。
+    NoobNpcConfig = {
+        TemplatePath = "Assets/Decorations/Noob",
         WorldAreaPaths = {
             {
                 "GameLevelList/World1/Level_1",
@@ -23,11 +23,13 @@ return {
         RefreshInterval = 180, -- 秒；到期清理旧 NPC，拾取后不提前补刷。
         AreaScale = 0.8, -- 使用刷新区域中心 80% 的水平范围。
         ModelHeight = 6, -- 克隆后的模型高度，单位 studs；不改变原模板。
-        HoverHeight = 1, -- 模型底部离地高度，单位 studs。
+        HoverHeight = 0, -- 模型双脚贴地。
         PickupDistance = 10,
         HoldDuration = 0.5,
-        RotationSpeed = 15, -- 每秒原地旋转角度；24 秒转一圈，设为 0 可停止旋转。
-        UpdateInterval = 0.1,
+        PatrolPointCount = 4, -- 与 Studio_Y3 一致，循环经过四个随机巡逻点。
+        WalkSpeed = 6, -- 水平巡逻速度，单位 studs/秒。
+        ArriveDistance = 1,
+        UpdateInterval = 0.05,
         OutlineColor = Color3.fromRGB(255, 215, 0),
         OutlineTransparency = 0,
         FillTransparency = 1,

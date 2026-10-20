@@ -6,7 +6,7 @@ local CardColors = {
     DoubleSaleCard = Color3.fromRGB(255, 165, 10),
     ExpandableBackpackCard = Color3.fromRGB(10, 210, 100),
     TrainingCard = Color3.fromRGB(255, 70, 20),
-    DogCard = Color3.fromRGB(185, 75, 255),
+    NoobCard = Color3.fromRGB(185, 75, 255),
 }
 
 --- 创建仅供本地显示的无碰撞特效片，所有节点由同一容器统一回收。

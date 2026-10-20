@@ -9,9 +9,9 @@ local startupTasks = {}
 local lastTimes = {}
 local Fields = _G.PlayerDataConfig
 local Config = _G.GameConfig.CommonConfig.GiftData
--- 个人礼盒到期时落到玩家当前世界的固定降落台。
+-- 最后六秒预先降落，到期落地；已经到期的未领取礼盒直接恢复到台面。
 local STARTUP_HEIGHT = 60
-local STARTUP_DURATION = 5
+local STARTUP_DURATION = 6
 
 --- 累计在线时间并清理跨日礼盒，未领取档位在重进时重新生成。
 --- @param playerObject table 当前登录会话的玩家对象。
@@ -44,7 +44,7 @@ function Service.Init()
         dropOrigins[worldIndex] = FXLoader:Workspace(
             "Decorations/World" .. worldIndex .. "Decorations/MysteryGiftLanding/DropOrigin")
     end
-    --- 玩家握手就绪后累计在线时间，在固定台面恢复或生成到期档位并同步倒计时。
+    --- 玩家握手就绪后累计在线时间，提前降落即将到期的档位并恢复已到期礼盒。
     --- @param userId number 框架已完成登录的玩家 ID。
     FS.Events.OnPlayerReady.Event:Connect(function(userId)
         local player = Players:GetPlayerByUserId(userId)
@@ -64,13 +64,14 @@ function Service.Init()
                             active[drop.Index] = true
                         end
                     end
-                    local due = math.min(Config.Count, math.floor(data.onlineSeconds / Config.Time))
-                    for index = 1, due do
+                    local approaching = math.min(Config.Count,
+                        math.floor((data.onlineSeconds + STARTUP_DURATION) / Config.Time))
+                    for index = 1, approaching do
                         if not data.claimed[tostring(index)] and not active[index] then
                             local dropId = Service.Spawn(player, {
                                 Position = dropOrigins[playerObject:GetNumber(Fields.WorldIndex)].Position,
                                 Height = STARTUP_HEIGHT,
-                                Duration = STARTUP_DURATION,
+                                Duration = math.max(0, index * Config.Time - data.onlineSeconds),
                             })
                             drops[userId][dropId].Index = index
                             drops[userId][dropId].Day = data.day
@@ -106,11 +107,12 @@ function Service.Init()
             or (root.Position - drop.Position).Magnitude > 12 then
             return false
         end
-        owned[dropId] = nil
         local data = Service.UpdateTime(playerObject, os.time())
-        if drop.Day ~= data.day or not drop.Index or data.claimed[tostring(drop.Index)] then
+        if drop.Day ~= data.day or not drop.Index or data.claimed[tostring(drop.Index)]
+            or data.onlineSeconds < drop.Index * Config.Time then
             return false
         end
+        owned[dropId] = nil
         if not playerObject:RequireComponent("FSRewardComp"):AddRewards({
             {Type = "Money", Currency = "Diamonds", Count = Config.Gem},
         }) then
@@ -137,7 +139,7 @@ end
 
 --- 由其他服务端功能签发个人礼盒；不提供客户端申请生成奖励的接口。
 --- @param player Player 接收礼盒的在线玩家。
---- @param options table Position 地面位置、Height 降落高度、Duration 降落秒数。
+--- @param options table Position 地面位置、Height 降落高度、Duration 降落秒数（0 为恢复到台面）；补入 LandsAt 服务端落地时间。
 --- @return string 礼盒唯一 ID。
 function Service.Spawn(player, options)
     assert(player.Parent == Players and _G.SPlayerObjectManager:GetPlayerObject(player.UserId),
@@ -145,12 +147,13 @@ function Service.Spawn(player, options)
     assert(typeof(options.Position) == "Vector3", "Position must be a Vector3")
     assert(type(options.Height) == "number" and options.Height > 0 and options.Height < math.huge,
         "Height must be finite and positive")
-    assert(type(options.Duration) == "number" and options.Duration > 0 and options.Duration < math.huge,
-        "Duration must be finite and positive")
+    assert(type(options.Duration) == "number" and options.Duration >= 0 and options.Duration < math.huge,
+        "Duration must be finite and non-negative")
     local dropId = HttpService:GenerateGUID(false)
     local owned = drops[player.UserId] or {}
     drops[player.UserId] = owned
-    owned[dropId] = {Position = options.Position, LandsAt = workspace:GetServerTimeNow() + options.Duration}
+    options.LandsAt = workspace:GetServerTimeNow() + options.Duration
+    owned[dropId] = {Position = options.Position, LandsAt = options.LandsAt}
     FX.Network:SendMsgToClient(player.UserId, "S2C_SpawnGiftDrop", dropId, options)
     return dropId
 end

@@ -71,9 +71,9 @@ return {
         },
         [107] = {
             Id = 107,
-            Type = [[DogCard]],
+            Type = [[NoobCard]],
             MaxStack = 99,
-            UseHandler = [[DogCard]],
+            UseHandler = [[NoobCard]],
             HeldHandler = [[Image]],
             NumberArray = nil,
             KVTable = nil
@@ -130,8 +130,8 @@ return {
         },
         [107] = {
             Id = 107,
-            Name = [[Dog Card]],
-            Desc = [[Adds one progress to today's Dog task.]],
+            Name = [[Noob Card]],
+            Desc = [[Adds one progress to today's Noob task.]],
             Quality = 12,
             IconId = [[rbxassetid://117314008364013]],
             DisplayModelId = nil

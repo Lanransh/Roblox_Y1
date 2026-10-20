@@ -478,7 +478,7 @@ function Component:ResetRound(round, brokenCells)
     self:ResetVisuals()
 end
 
---- 已预测击碎的石头不恢复，回包只决定是否请求掉落；非致命预测仍按服务端结果校正。
+--- 保留即时碎裂预测；拒绝或未击破时恢复血量和石头，掉落由服务端确认击破时直接结算。
 --- @param key string 本次命中的格号。
 --- @param round number 本次命中所属轮次。
 --- @param accepted boolean 是否通过服务端位置、装备及频率校验。
@@ -492,20 +492,11 @@ function Component:OnHitResult(key, round, accepted, health)
     if pending.Character ~= self:GetPlayerCharacter() then
         return
     end
-    if pending.Value == 0 then
-        if accepted and health == 0 then
-            FX.Network:SendMsgToServer("C2S_RequestRockDrop", key, round)
-        end
-        return
-    end
     if not accepted then
         self._health[key] = pending.Health
-        if pending.Value > 0 then
-            self:ResetVisuals()
-        end
     else
         self._health[key] = health
-        if health == 0 then
+        if pending.Value > 0 and health == 0 then
             for index, chunk in ipairs(self._chunks) do
                 local rock = chunk.Rocks and chunk.Rocks[key]
                 if rock then
@@ -513,10 +504,39 @@ function Component:OnHitResult(key, round, accepted, health)
                     break
                 end
             end
-            FX.Network:SendMsgToServer("C2S_RequestRockDrop", key, round)
         end
     end
+    if pending.Value == 0 and self._health[key] > 0 then
+        self:RestorePredictedRock(key)
+    end
     self._refreshRocks = true
+end
+
+--- 只补回已加载分块内被误判击碎的一格，避免一次拒绝让周围石头全部重建。
+--- @param key string 本轮已经收到命中回包的格号。
+function Component:RestorePredictedRock(key)
+    local areaIndex, cellIndex = string.match(key, "^(%d+):(%d+)$")
+    local area = self._areas[tonumber(areaIndex)]
+    local cell = tonumber(cellIndex) - 1
+    local row, column = math.floor(cell / area.Columns), cell % area.Columns
+    for index, chunk in ipairs(self._chunks) do
+        if chunk.Area == area and row >= chunk.Row and row < chunk.Row + 6
+            and column >= chunk.Column and column < chunk.Column + 6 then
+            if chunk.Rocks and not chunk.Rocks[key] then
+                local chunkCell = (row - chunk.Row) * math.min(6, area.Columns - chunk.Column)
+                    + column - chunk.Column
+                -- 尚未加载的格子交给原分帧加载流程，避免重复创建。
+                if self._loadingChunk ~= chunk or chunkCell < chunk.NextCell then
+                    local rock = self:CreateRock(area, column, row)
+                    chunk.Rocks[key] = rock
+                    self:UpdateRockAppearance(rock, area, self._health[key])
+                    self:SetRockState(rock, RockLevel.GetDamage(self:GetNumber(Fields.RockTrainingLevel), area.Index)
+                        < RockLevel.HP[area.Index])
+                end
+            end
+            return
+        end
+    end
 end
 
 --- 命中即时预测血量与碎裂，致命命中不等待服务器回包，掉落仍由服务端确认。
@@ -1302,21 +1322,23 @@ function Component:UpdateClimbing(character, position)
     end
 end
 
---- 公共小狗仅在本客户端按距离隐藏，保留服务端模型与其他玩家的拾取资格。
+--- 公共菜鸟仅在本客户端按距离隐藏，保留服务端模型与其他玩家的拾取资格。
 --- @param position Vector3? 当前角色位置；为空时在组件销毁前恢复显示。
-function Component:UpdateDogVisibility(position)
+function Component:UpdateNoobVisibility(position)
     local decorations = workspace:FindFirstChild("Decorations")
-    local dogs = decorations and decorations:FindFirstChild("DogNpcs")
-    if not dogs then
+    local noobs = decorations and decorations:FindFirstChild("NoobNpcs")
+    if not noobs then
         return
     end
-    for dogIndex, dog in ipairs(dogs:GetChildren()) do
-        if dog:IsA("Model") then
-            local visible = not position or (dog:GetPivot().Position - position).Magnitude <= RockLevel.HideDistance
-            for nodeIndex, node in ipairs(dog:GetDescendants()) do
+    for noobIndex, noob in ipairs(noobs:GetChildren()) do
+        if noob:IsA("Model") then
+            local visible = not position or (noob:GetPivot().Position - position).Magnitude <= RockLevel.HideDistance
+            for nodeIndex, node in ipairs(noob:GetDescendants()) do
                 if node:IsA("BasePart") then
                     node.LocalTransparencyModifier = visible and 0 or 1
                 elseif node:IsA("Highlight") then
+                    node.Enabled = visible
+                elseif node:IsA("BillboardGui") or node:IsA("ProximityPrompt") then
                     node.Enabled = visible
                 elseif node:IsA("ParticleEmitter") then
                     if node.Enabled ~= visible then
@@ -1331,7 +1353,7 @@ function Component:UpdateDogVisibility(position)
     end
 end
 
---- 每帧更新碎屑及训练缩放，每 0.1 秒检查分块、攀爬和小狗显隐，每帧最多生成 6 块石头。
+--- 每帧更新碎屑及训练缩放，每 0.1 秒检查分块、攀爬和菜鸟显隐，每帧最多生成 6 块石头。
 function Component:UpdateVisuals()
     self:UpdateFragments()
     self:UpdateTrainingHitReactions()
@@ -1346,7 +1368,7 @@ function Component:UpdateVisuals()
     if now >= self._nextChunkCheck then
         self._nextChunkCheck = now + 0.1
         self:UpdateClimbing(character, position)
-        self:UpdateDogVisibility(position)
+        self:UpdateNoobVisibility(position)
         self._refreshRocks = true
         local candidate, nearest = nil, math.huge
         for index = 1, #self._chunks do
@@ -1441,10 +1463,10 @@ function Component:ResetVisuals()
     end
 end
 
---- 释放特效、场景及对象池，恢复训练巨石、攀爬和小狗显示，基类负责断开监听。
+--- 释放特效、场景及对象池，恢复训练巨石、攀爬和菜鸟显示，基类负责断开监听。
 function Component:Dtor()
     self:UpdateTrainingHitReactions(true)
-    self:UpdateDogVisibility(nil)
+    self:UpdateNoobVisibility(nil)
     self:ClearDrops()
     FX.Network:UnRegServerMsgCallback("S2C_RockReset")
     FX.Network:UnRegServerMsgCallback("S2C_RockHitResult")

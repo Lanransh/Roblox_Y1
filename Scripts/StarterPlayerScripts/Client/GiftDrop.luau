@@ -57,7 +57,7 @@ function GiftDrop.Init()
     end)
     --- 接收服务端签发的礼盒，开盒时只提交该礼盒 ID。
     --- @param dropId string 本人礼盒的服务端唯一 ID。
-    --- @param options table 服务端确定的落点、高度与降落时长。
+    --- @param options table 服务端确定的落点、高度、降落时长与落地时间。
     FX.Network:RegServerMsgCallback("S2C_SpawnGiftDrop", function(dropId, options)
         --- 将本地交互结果提交给服务端，不在客户端改写余额。
         --- @param player Player 本地开盒玩家，身份由网络层认证。
@@ -73,7 +73,7 @@ function GiftDrop.Init()
 end
 
 --- 在指定地面位置生成本地礼盒；模型底部对齐落点，落地后才允许打开。
---- @param options table Position 为地面 Vector3，Height 为降落高度，Duration 为降落秒数。
+--- @param options table Position 为地面 Vector3，Height 为降落高度，Duration 为降落秒数（0 为恢复），LandsAt 为服务端落地时间。
 --- @param onOpened function 本地交互回调，参数为 Player；返回 false 保留礼盒，其余返回值视为成功。
 --- @return table 礼盒句柄，可调用 Destroy 提前取消并清理。
 function GiftDrop.Spawn(options, onOpened)
@@ -81,8 +81,10 @@ function GiftDrop.Spawn(options, onOpened)
     assert(typeof(options.Position) == "Vector3", "Position must be a Vector3")
     assert(type(options.Height) == "number" and options.Height > 0 and options.Height < math.huge,
         "Height must be finite and positive")
-    assert(type(options.Duration) == "number" and options.Duration > 0 and options.Duration < math.huge,
-        "Duration must be finite and positive")
+    assert(type(options.Duration) == "number" and options.Duration >= 0 and options.Duration < math.huge,
+        "Duration must be finite and non-negative")
+    assert(type(options.LandsAt) == "number" and math.abs(options.LandsAt) < math.huge,
+        "LandsAt must be finite")
     assert(type(onOpened) == "function", "onOpened must be a function")
 
     local template = FXLoader:Shared("Giftbox")
@@ -106,7 +108,9 @@ function GiftDrop.Spawn(options, onOpened)
     local box, size = gift:GetBoundingBox()
     local landing = CFrame.new(options.Position + Vector3.new(0,
         pivot.Position.Y - (box.Position.Y - size.Y / 2), 0)) * pivot.Rotation
-    gift:PivotTo(landing + Vector3.new(0, options.Height, 0))
+    local timeLeft = math.max(0, options.LandsAt - workspace:GetServerTimeNow())
+    local height = options.Duration > 0 and options.Height * math.min(timeLeft / options.Duration, 1) or 0
+    gift:PivotTo(landing + Vector3.new(0, height, 0))
     gift.Parent = container
 
     local anchor = Instance.new("Part")
@@ -130,7 +134,8 @@ function GiftDrop.Spawn(options, onOpened)
             * CFrame.Angles(0, angle, 0) * CFrame.new(3.4, 0, 0)
         marker.Color = Color3.fromRGB(255, 224, 145)
         marker.Material = Enum.Material.Neon
-        marker.Transparency = 0.35
+        marker.CastShadow = false
+        marker.Transparency = 0.82
         marker.Anchored = true
         marker.CanCollide = false
         marker.CanTouch = false
@@ -141,24 +146,44 @@ function GiftDrop.Spawn(options, onOpened)
     local bottom = Instance.new("Attachment")
     bottom.Parent = anchor
     local top = Instance.new("Attachment")
-    top.Position = Vector3.new(0, options.Height + size.Y, 0)
+    top.Position = Vector3.new(0, height + size.Y, 0)
     top.Parent = anchor
     local beam = Instance.new("Beam")
     beam.Attachment0 = top
     beam.Attachment1 = bottom
     beam.FaceCamera = true
-    beam.Width0 = math.max(size.X, size.Z) * 0.8
-    beam.Width1 = beam.Width0 * 1.4
-    beam.Color = ColorSequence.new(Color3.fromRGB(255, 248, 205))
-    beam.Transparency = NumberSequence.new(0.45)
-    beam.LightEmission = 1
-    beam.LightInfluence = 0
+    beam.Width0 = math.max(size.X, size.Z) * 0.3
+    beam.Width1 = beam.Width0 * 1.15
+    beam.Color = ColorSequence.new(Color3.fromRGB(255, 218, 156))
+    beam.Transparency = NumberSequence.new(0.92)
+    beam.LightEmission = 0.2
+    beam.LightInfluence = 0.6
     beam.Parent = anchor
     local light = Instance.new("PointLight")
     light.Color = Color3.fromRGB(255, 235, 160)
-    light.Brightness = 2
-    light.Range = 16
+    light.Brightness = 0.25
+    light.Range = 7
     light.Parent = anchor
+    local sparkleOrigin = Instance.new("Attachment")
+    sparkleOrigin.Position = Vector3.new(0, size.Y * 0.5, 0)
+    sparkleOrigin.Parent = anchor
+    local sparkles = Instance.new("ParticleEmitter")
+    sparkles.Name = "SoftGiftSparkles"
+    sparkles.Texture = "rbxasset://textures/particles/sparkles_main.dds"
+    sparkles.Color = ColorSequence.new(Color3.fromRGB(255, 218, 156))
+    sparkles.Rate = 0.8
+    sparkles.Lifetime = NumberRange.new(1.5, 2.5)
+    sparkles.Speed = NumberRange.new(0.3, 0.6)
+    sparkles.SpreadAngle = Vector2.new(35, 35)
+    sparkles.Size = NumberSequence.new({
+        NumberSequenceKeypoint.new(0, 0),
+        NumberSequenceKeypoint.new(0.25, 0.12),
+        NumberSequenceKeypoint.new(1, 0),
+    })
+    sparkles.Transparency = NumberSequence.new(0.45)
+    sparkles.LightEmission = 0.2
+    sparkles.Enabled = false
+    sparkles.Parent = sparkleOrigin
     local prompt = Instance.new("ProximityPrompt")
     prompt.ActionText = "Pick Up"
     prompt.ObjectText = ""
@@ -171,7 +196,6 @@ function GiftDrop.Spawn(options, onOpened)
     prompt.Enabled = false
     prompt.Parent = parts[1]
     local handle = {}
-    local elapsed = 0
     local destroyed = false
     local opening = false
     local updateConnection
@@ -194,7 +218,7 @@ function GiftDrop.Spawn(options, onOpened)
         local character = player.Character
         local root = character and character:FindFirstChild("HumanoidRootPart")
         local humanoid = character and character:FindFirstChildOfClass("Humanoid")
-        if destroyed or opening or elapsed < options.Duration or player ~= Players.LocalPlayer
+        if destroyed or opening or workspace:GetServerTimeNow() < options.LandsAt or player ~= Players.LocalPlayer
             or not root or not humanoid or humanoid.Health <= 0
             or (root.Position - parts[1].Position).Magnitude > prompt.MaxActivationDistance then
             return
@@ -216,19 +240,36 @@ function GiftDrop.Spawn(options, onOpened)
         end
     end)
 
-    --- 按帧平滑降落，抵达地面后开放交互。
-    --- @param deltaTime number 本帧经过的秒数。
-    updateConnection = RunService.RenderStepped:Connect(function(deltaTime)
+    --- 按服务端时间平滑降落，落地后开放交互并在 0.8 秒内淡出光束与光圈。
+    updateConnection = RunService.RenderStepped:Connect(function()
         if not container.Parent then
             handle:Destroy()
             return
         end
-        elapsed += deltaTime
-        local progress = math.min(elapsed / options.Duration, 1)
-        gift:PivotTo(landing + Vector3.new(0, options.Height * (1 - progress), 0))
-        prompt.Enabled = progress >= 1
-        if progress >= 1 then
+        local remaining = options.LandsAt - workspace:GetServerTimeNow()
+        local progress = options.Duration > 0 and math.clamp(1 - remaining / options.Duration, 0, 1) or 1
+        local currentHeight = options.Height * (1 - progress)
+        gift:PivotTo(landing + Vector3.new(0, currentHeight, 0))
+        top.Position = Vector3.new(0, currentHeight + size.Y, 0)
+        prompt.Enabled = remaining <= 0 and not opening
+        sparkles.Enabled = remaining <= 0
+        local fade = math.clamp(-remaining / 0.8, 0, 1)
+        beam.Transparency = NumberSequence.new(0.92 + 0.08 * fade)
+        light.Brightness = 0.25 * (1 - fade)
+        if remaining <= 0 then
+            for segment, marker in ipairs(landingRing:GetChildren()) do
+                local angle = (segment - 1) * math.pi * 2 / 24
+                local radius = 3.4 + fade * 0.7
+                marker.Size = Vector3.new(0.16, 0.06, radius * 2 * math.sin(math.pi / 24))
+                marker.CFrame = CFrame.new(options.Position + Vector3.new(0, 0.07, 0))
+                    * CFrame.Angles(0, angle, 0) * CFrame.new(radius, 0, 0)
+                marker.Transparency = 0.82 + 0.18 * fade
+            end
+        end
+        if fade >= 1 then
             landingRing:Destroy()
+            beam:Destroy()
+            light:Destroy()
             updateConnection:Disconnect()
         end
     end)

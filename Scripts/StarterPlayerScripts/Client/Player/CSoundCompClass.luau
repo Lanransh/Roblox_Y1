@@ -25,7 +25,7 @@ function CSoundCompClass:Ctor(owner)
     self:WatchDataChanged(Fields.RockTrainingLevel, self.OnTrainingLevelChanged, self)
     self:WatchDataChanged(Fields.Money, self.OnCoinsChanged, self)
     self:WatchDataChanged(Fields.RockLoot, self.OnRockLootChanged, self)
-    FX.Network:RegServerMsgCallback("S2C_DogPickedUp", self.PlayPickupItemSound, self)
+    FX.Network:RegServerMsgCallback("S2C_NoobPickedUp", self.PlayPickupItemSound, self)
     FX.Network:RegServerMsgCallback("S2C_CardActivated", self.OnCardActivated, self)
 end
 
@@ -34,7 +34,7 @@ function CSoundCompClass:Dtor()
     if self._cardEffectCleanup then
         self._cardEffectCleanup()
     end
-    FX.Network:UnRegServerMsgCallback("S2C_DogPickedUp")
+    FX.Network:UnRegServerMsgCallback("S2C_NoobPickedUp")
     FX.Network:UnRegServerMsgCallback("S2C_CardActivated")
     CSoundCompClass.Super.Dtor(self)
 end
