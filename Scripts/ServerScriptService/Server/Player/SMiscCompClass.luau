@@ -2,7 +2,6 @@ local FX, FS = _G.FX, _G.FS
 local TranslationTexts = {
     ["Common.InDevelopment"] = { Key = "SMiscCompClass.Common.InDevelopment", Source = "Coming soon." },
     ["Rebirth.RequiredLevel"] = { Key = "SMiscCompClass.Rebirth.RequiredLevel", Source = "Reach level {level:int} to rebirth." },
-    ["Rebirth.Success"] = { Key = "SMiscCompClass.Rebirth.Success", Source = "Rebirth complete!" },
     ["Common.Unknown"] = { Key = "SMiscCompClass.Common.Unknown", Source = "Something went wrong. Please try again." },
     ["World.RequiredLevel"] = { Key = "SMiscCompClass.World.RequiredLevel", Source = "Reach a best level of {level:int} to unlock this world." },
     ["Welfare.TrainingCardGained"] = { Key = "SMiscCompClass.Welfare.TrainingCardGained", Source = "Gained {value} Strength." },
@@ -76,7 +75,6 @@ function Component:HandleRebirth()
         return {success = false}
     end
     self:ApplyRebirth()
-    player:ShowLocalizedTips(TranslationTexts["Rebirth.Success"])
     return {success = true}
 end
 

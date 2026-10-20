@@ -86,7 +86,7 @@ end
 function Manager:RegGMMsg()
     --- 已登录请求转发组件，加载失败时仅允许开发者恢复本人存档。
     --- @param userId number 引擎认证的请求者身份。
-    --- @param action string 七种 GM 操作之一。
+    --- @param action string 八种 GM 操作之一。
     --- @param value any 数值操作的目标值或道具配置 ID。
     --- @param count any 添加道具数量，其他动作不使用。
     --- @return table GM 组件的权威操作结果。

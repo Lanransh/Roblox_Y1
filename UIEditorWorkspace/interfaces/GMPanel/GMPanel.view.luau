@@ -15,6 +15,9 @@ param2、param3 为另外两个输入框原文（空框为 ""），当前四项�
 AddItem：payload = { itemId:number, count:number }；参数1为道具配置 ID，参数2为添加数量，
 两者均为正安全整数，参数3不消费；游戏接入校验道具配置存在并向当前管理员背包添加。
 ResetData / SaveNow / Close：payload = {}。ResetData 经再次点击确认才发送。
+ReachRebirthLevel：payload = {}，无需输入参数；游戏接入按当前管理员最新重生次数和
+重生配置计算所需等级，将等级提升至 math.max(当前等级, 所需等级)，不执行重生。
+已达重生上限时保持数据不变；服务端重新计算目标，不信任客户端等级。
 设置作用于当前管理员本人，目标身份由游戏接入层决定，不把备用框当作玩家ID。
 游戏接入负责服务端权限、数值校验、实际写入、重置和持久化；
 请求前 pending=true 并刷新，返回后 pending=false 并刷新；结果与错误由接入层处理，本面板不显示状态文本。
@@ -55,7 +58,7 @@ function CGMPanelView:OnReady()
     for index = 1, 3 do
         self.Inputs[index] = FXLoader:Here(root, "PopupPanelImg.Param" .. index .. "Input")
     end
-    local actions = { "SetLevel", "SetRebirth", "SetMoney", "SetDiamonds", "ResetData", "SaveNow", "AddItem" }
+    local actions = { "SetLevel", "SetRebirth", "SetMoney", "SetDiamonds", "ResetData", "SaveNow", "AddItem", "ReachRebirthLevel" }
     for index, action in ipairs(actions) do
         local button = FXLoader:Here(root, "PopupPanelImg." .. action .. "Btn")
         self.Buttons[action] = button
@@ -106,7 +109,7 @@ function CGMPanelView:ExecuteCommand(action)
         return
     end
     self:CancelReset()
-    if action == "SaveNow" then
+    if action == "SaveNow" or action == "ReachRebirthLevel" then
         self:EmitUIAction(action, {})
         return
     end

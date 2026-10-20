@@ -9,9 +9,10 @@ return {
         -- kind: "online"|"signin"|"diamonds"，rewardId: string 稳定配置 ID；身份来自引擎。
         -- RPC 返回 {success: boolean, key: string, state: table?}；服务端决定日期、资格及奖励。
         "C2S_ClaimWelfareReward",
-        -- action: "SetLevel"|"SetRebirth"|"SetMoney"|"SetDiamonds"|"ResetData"|"SaveNow"|"AddItem"。
+        -- action: "SetLevel"|"SetRebirth"|"SetMoney"|"SetDiamonds"|"ResetData"|"SaveNow"|"AddItem"|"ReachRebirthLevel"。
         -- value: number?，非负安全整数；等级为 1 到当前阶段上限，重生为 0 到配置上限。
         -- AddItem 使用 value 为道具配置 ID、count 为添加数量，两者均为正安全整数；其他动作不使用 count。
+        -- ReachRebirthLevel 无输入参数，服务端按本人最新重生次数算出的阶段门槛提升等级，不执行重生。
         -- 仅引擎认证 UserId 对应开发者可操作本人；RPC 返回 {success: boolean, key: string, arguments: table?}。
         "C2S_GMCommand",
         -- 无参数，服务端校验请求者当前等级与重生次数；RPC 返回 {success: boolean}。

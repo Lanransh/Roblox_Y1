@@ -115,8 +115,22 @@ function Component:SetValue(action, value)
     return {success = true, key = TranslationTexts["GM.Success"]}
 end
 
+--- 按本人最新重生次数计算本阶段等级门槛，把训练等级提升到该门槛；不执行重生，已达标时保持不变。
+--- @return table 权威校验与操作结果。
+function Component:ReachRebirthLevel()
+    local player = self:GetPlayerObject()
+    local targetValue = RockLevel.GetTrainingValueByLevel(
+        Rebirth.GetRequiredLevel(player:GetNumber(Fields.RebirthCount)))
+    if player:GetNumber(Fields.RockTrainingValue) >= targetValue then
+        return {success = true, key = TranslationTexts["GM.Success"]}
+    end
+    player:SetNumber(Fields.RockTrainingValue, targetValue)
+    player:RequireComponent("SMiscComp"):ResetTrainingProgress()
+    return {success = true, key = TranslationTexts["GM.Success"]}
+end
+
 --- 权限按协议转发得到的所属玩家检查，客户端不能指定目标玩家或任意字段。
---- @param action string 七种允许的面板动作。
+--- @param action string 八种允许的面板动作。
 --- @param value any 数值动作的目标值或添加道具的配置 ID，重置和保存不使用。
 --- @param count any 添加道具数量，其他动作不使用。
 --- @return table 操作结果及客户端提示标识。
@@ -140,6 +154,9 @@ function Component:Request(action, value, count)
     self._nextRequest = now + 0.2
     if action == "AddItem" then
         return self:AddItem(value, count)
+    end
+    if action == "ReachRebirthLevel" then
+        return self:ReachRebirthLevel()
     end
     if action ~= "ResetData" and action ~= "SaveNow" then
         return self:SetValue(action, value)

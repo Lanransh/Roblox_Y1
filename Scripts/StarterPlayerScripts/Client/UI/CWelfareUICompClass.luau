@@ -192,7 +192,7 @@ function Component:GetRewardDisplay(reward)
     if reward.type == "Gem" then
         return {name = Text.TrSource("Diamonds"), icon = "Gem"}
     end
-    return {name = Text.TrSource(_G.ItemConfig.Display[reward.id].Name), icon = "Egg"}
+    return {name = Text.TrSource(_G.ItemConfig.Display[tonumber(reward.id)].Name), icon = "Egg"}
 end
 
 --- 仅格式化数量文案，原始数值仍用于服务端结算。

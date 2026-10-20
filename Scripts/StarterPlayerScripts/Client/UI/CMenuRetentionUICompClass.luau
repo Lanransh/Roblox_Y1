@@ -224,15 +224,17 @@ function Component:RefreshGift()
     self._giftHint.Text = "Close the Roblox menu to claim your gift."
     self._giftHint.Visible = GuiService.MenuIsOpen
     local reward = Welfare.ToDisplayReward(self._retention.Reward)
-    local rewardName = reward.type == "Aura"
-        and Text.TrSource(Aura.GetConfig(self._retention.Reward.Id).Name)
-        or Text.TrSource(_G.ItemConfig.Display[reward.id].Name)
-    self._giftReward.Text = reward.type == "Gem"
-        and Text.Tr(TranslationTexts["Welfare.Diamonds"], {value = GameUtility.NumberToText(reward.amount)})
-        or Text.Tr(TranslationTexts["Welfare.ItemReward"], {
+    if reward.type == "Gem" then
+        self._giftReward.Text = Text.Tr(TranslationTexts["Welfare.Diamonds"], {value = GameUtility.NumberToText(reward.amount)})
+    else
+        local rewardName = reward.type == "Aura"
+            and Text.TrSource(Aura.GetConfig(self._retention.Reward.Id).Name)
+            or Text.TrSource(_G.ItemConfig.Display[self._retention.Reward.Id].Name)
+        self._giftReward.Text = Text.Tr(TranslationTexts["Welfare.ItemReward"], {
             item = rewardName,
             value = GameUtility.NumberToText(reward.amount),
         })
+    end
     local pending = self._requestTask ~= nil
     self._giftClaim.Interactable = available and not pending and not GuiService.MenuIsOpen
     self._giftClaimText.Text = Text.Tr(pending and TranslationTexts["Welfare.Pending"] or TranslationTexts["Welfare.Claim"])
