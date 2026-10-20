@@ -1,6 +1,6 @@
 local FX, FS = _G.FX, _G.FS
 local FXLoader = FX.Loader
-local LegacyTextSources = FXLoader:RequireShared("Scripts/Game/Shared/LegacyTextSources")
+local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local Rebirth = FXLoader:RequireShared("Scripts/Game/Shared/Rebirth")
 local RockLevel = FXLoader:RequireShared("Scripts/Game/Shared/RockLevel")
 local ItemToolVisual = FXLoader:RequireFromParent(script, "ItemToolVisual")
@@ -176,7 +176,7 @@ function Inventory:SyncTools()
 
                 tool:SetAttribute("FrameworkGridIndex", gridIndex)
                 tool:SetAttribute("FrameworkItemId", item.itemId)
-                tool:SetAttribute("DisplayNameKey", "Welfare.Item." .. item.itemId)
+                tool:SetAttribute("DisplayNameSource", display.Name)
 
                 self._tools[gridIndex] = tool
                 tool.Parent = backpack
@@ -440,15 +440,17 @@ function Player:Ctor(id)
     self:AddComponent("SGMCompClass")
 end
 
---- 服务端仅发送英文原文或旧 Key 和业务参数，由客户端翻译，不提前拼接提示。
---- @param key string Text.Mark 标记的英文原文或本地文案表中的旧提示 Key。
+--- 服务端仅发送静态文案定义及参数，由客户端翻译，不提前拼接。
+--- @param key table 静态 Key/Source 文案定义。
 --- @param arguments table? 提示模板参数。
 --- @param duration number? 显示时长，单位为秒。
 function Player:ShowLocalizedTips(key, arguments, duration)
-    FX.Network:SendMsgToClient(self:GetPlayerId(), "S2C_ShowLocalizedTips", LegacyTextSources[key] or key, arguments, duration)
+    Text.ValidateDefinition(key)
+    key = {Key = key.Key, Source = key.Source}
+    FX.Network:SendMsgToClient(self:GetPlayerId(), "S2C_ShowLocalizedTips", key, arguments, duration)
 end
 
---- 为旧存档补入历史等级、离线福利与默认开启的武器巨大化偏好。
+--- 补齐历史等级、离线福利、武器偏好，并从当前配置重建引导业务目标。
 --- @param version number 框架传入的旧存档版本。
 function Player:MigrateData(version)
     if version < 1 then
@@ -475,6 +477,16 @@ function Player:MigrateData(version)
             self:SetTable(PlayerDataConfig.Settings, settings)
         end
         self:SetNumber(PlayerDataConfig.DataVersion, 3)
+    end
+    if version < 4 then
+        -- 引导目标是当前步骤的派生数据；从配置重建，移除历史存档中的字符串文案 Key。
+        local guide = self:GetTable(PlayerDataConfig.Guide)
+        local group = TutorialGuideConfig[guide.activeGuideId]
+        local state = guide.guideMap and guide.guideMap[guide.activeGuideId]
+        local step = group and state and group.steps[state.stepIndex]
+        guide.target = step and table.clone(step.target) or {type = "None"}
+        self:SetTable(PlayerDataConfig.Guide, guide)
+        self:SetNumber(PlayerDataConfig.DataVersion, 4)
     end
 end
 

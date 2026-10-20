@@ -1,5 +1,18 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
+local TranslationTexts = {
+    ["Tutorial.Collect"] = { Key = "CTutorialGuideCompClass.Tutorial.Collect", Source = "Head into the rocks! Your pickaxe clears the way. Pick up 2 pieces of loot." },
+    ["Tutorial.Deposit"] = { Key = "CTutorialGuideCompClass.Tutorial.Deposit", Source = "Return to your base to store your loot. You can also use HOME." },
+    ["Tutorial.Sell"] = { Key = "CTutorialGuideCompClass.Tutorial.Sell", Source = "Visit the merchant and sell your stored loot for coins!" },
+    ["Tutorial.Rate"] = { Key = "CTutorialGuideCompClass.Tutorial.Rate", Source = "Use your 30 welcome diamonds to buy the training multiplier on the right!" },
+    ["Tutorial.Weapon"] = { Key = "CTutorialGuideCompClass.Tutorial.Weapon", Source = "You earned 100 coins! Visit the weapon shop and equip a better pickaxe." },
+    ["Tutorial.AutomaticTraining"] = { Key = "CTutorialGuideCompClass.Tutorial.AutomaticTraining", Source = "Automatic training is now active!" },
+    ["Tutorial.Done"] = { Key = "CTutorialGuideCompClass.Tutorial.Done", Source = "Keep getting stronger and discover more valuable loot!" },
+    ["Tutorial.Rewards"] = { Key = "CTutorialGuideCompClass.Tutorial.Rewards", Source = "Claim your rewards from the Rewards button!" },
+    ["Tutorial.Aura"] = { Key = "CTutorialGuideCompClass.Tutorial.Aura", Source = "You can afford your first aura! Visit the blue shop to boost your training." },
+    ["Upgrade.Weapon"] = { Key = "CTutorialGuideCompClass.Upgrade.Weapon", Source = "Buy a stronger pickaxe!" },
+    ["Upgrade.Aura"] = { Key = "CTutorialGuideCompClass.Upgrade.Aura", Source = "Buy a stronger aura!" },
+}
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local UIGuideArrow = FXLoader:Require(script.Parent.Parent, "UI/UIGuideArrow")
 local RunService = game:GetService("RunService")
@@ -107,7 +120,7 @@ end
 function Guide:RefreshText()
     local target = self._activeTarget
     self._label.AutoLocalize = false
-    self._label.Text = target and Text.Tr(target.key) or ""
+    self._label.Text = target and Text.Tr(TranslationTexts[target.textId]) or ""
 end
 
 --- 主流程完成后只补充尚未拥有首件升级装备的购买提示。
@@ -160,7 +173,7 @@ function Guide:RefreshUpgradeHint()
     end
     self:OnExitGuide(self._activeTarget)
     if shopType then
-        self:OnEnterGuide({type = shopType, key = "Upgrade." .. shopType, upgrade = true})
+        self:OnEnterGuide({type = shopType, textId = "Upgrade." .. shopType, upgrade = true})
     end
 end
 
@@ -223,7 +236,7 @@ end
 --- @param target table 当前引导目标。
 --- @return GuiButton? 当前可见界面中需要操作的按钮。
 function Guide:GetUIGuideButton(target)
-    if target.key == "Tutorial.Rate" then
+    if target.textId == "Tutorial.Rate" then
         if self._purchaseScreen.Enabled then
             local purchase = self:RequireComponent("CShopPurchaseUIComp")
             local product = purchase._product

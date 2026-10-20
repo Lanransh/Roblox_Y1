@@ -1,5 +1,12 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
+local TranslationTexts = {
+    ["Weapon.TrainingRate"] = { Key = "CWeaponShopUICompClass.Weapon.TrainingRate", Source = "Training ×{rate}" },
+    ["Weapon.Price"] = { Key = "CWeaponShopUICompClass.Weapon.Price", Source = "Buy: {value} Coins" },
+    ["Weapon.Equipped"] = { Key = "CWeaponShopUICompClass.Weapon.Equipped", Source = "Equipped" },
+    ["Weapon.Equip"] = { Key = "CWeaponShopUICompClass.Weapon.Equip", Source = "Equip" },
+    ["Common.Unknown"] = { Key = "CWeaponShopUICompClass.Common.Unknown", Source = "Something went wrong. Please try again." },
+}
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local RunService = game:GetService("RunService")
 FXLoader:RequireFromParent(script, "Generated/CWeaponShopView")
@@ -103,17 +110,13 @@ function Component:UpdateShopArea()
     end
 end
 
---- 保留生成列表，仅接入翻译与数量格式；配置无品质字段时不虚构品质。
+--- 生成类未处理倍率和价格模板翻译；仅补动态文案与数量格式，配置名称按原文查询。
 --- @param state table 服务端数据派生的完整 UI 状态。
 function Component:Render(state)
-    self.Config.title = Text.Tr("WEAPONS")
     for index, weapon in ipairs(self.Config.weapons) do
-        weapon.name = Text.Tr(_G.GameConfig.ToolConfig[index].Name)
+        weapon.name = Text.TrSource(_G.GameConfig.ToolConfig[index].Name)
     end
     Component.Super.Render(self, state)
-    self.TitleTxt.AutoLocalize = false
-    self.EmptyTxt.AutoLocalize = false
-    self.EmptyTxt.Text = Text.Tr(state.loading and "Weapon.Loading" or "Weapon.Empty")
     for index, weapon in ipairs(self.Config.weapons) do
         local entry = self.Rows[weapon.id]
         if entry then
@@ -123,16 +126,16 @@ function Component:Render(state)
             local rate = FXLoader:Here(row, "StrengthTxt")
             rate.TextScaled = true
             rate.AutoLocalize = false
-            rate.Text = Text.Tr("Training ×{rate}", {
+            rate.Text = Text.Tr(TranslationTexts["Weapon.TrainingRate"], {
                 rate = GameUtility.NumberToText(weapon.strength),
             })
             local owned = state.owned[weapon.id] == true
             local equipped = state.equippedId == weapon.id
-            local key = "Weapon.Price"
+            local key = TranslationTexts["Weapon.Price"]
             if equipped then
-                key = "Weapon.Equipped"
+                key = TranslationTexts["Weapon.Equipped"]
             elseif owned then
-                key = "Weapon.Equip"
+                key = TranslationTexts["Weapon.Equip"]
             end
             local caption = FXLoader:Here(row, "ActionBtn/ButtonTxt")
             caption.AutoLocalize = false
@@ -178,7 +181,7 @@ function Component:OnUIAction(action, payload)
             self.State.coins = result.coins
             self._shopAreas:Refresh(self.Config.weapons, self.State)
         else
-            self._commonUI:ShowLocalizedTips(ok and result.key or "Common.Unknown")
+            self._commonUI:ShowLocalizedTips(ok and result.key or TranslationTexts["Common.Unknown"])
         end
         self:RefreshUI()
     end)

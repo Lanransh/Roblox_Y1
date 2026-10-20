@@ -2,24 +2,15 @@ local FX = _G.FX
 local FXLoader = FX.Loader
 local LocalizationService = game:GetService("LocalizationService")
 local RunService = game:GetService("RunService")
-local SourceTable = FXLoader:Shared("Shared/Localization")
-local LegacyTextSources = FXLoader:RequireShared("Scripts/Game/Shared/LegacyTextSources")
+local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local Localization = {}
 Localization.__index = Localization
-local warnedCloudLocales = {}
 
 --- 本地英文不依赖云端；云端加载在后台进行，不阻塞玩家组件初始化。
 --- @param player Player 当前本地玩家。
 --- @return table 当前玩家的翻译对象，Changed 为文案刷新信号。
 function Localization.New(player)
     local self = setmetatable({}, Localization)
-    self._english = SourceTable:GetTranslator("en-us")
-    self._keys = {}
-    self._legacyKeys = {}
-    for index, entry in ipairs(SourceTable:GetEntries()) do
-        self._keys[entry.Key] = true
-        self._legacyKeys[entry.Source] = entry.Key
-    end
     self._changed = Instance.new("BindableEvent")
     self.Changed = self._changed.Event
     --- 后台获取云端译文，失败不影响离线文案。
@@ -58,83 +49,11 @@ function Localization.New(player)
     return self
 end
 
---- 云端译文失败时每种语言仅警告一次并回退英文，避免界面刷新刷屏；本地 Key 或参数错误仍直接抛出。
---- @param key string 本地文案表中的稳定 Key。
---- @param arguments table? 模板参数；itemKey 在客户端按当前语言解析为 item，数量仍由调用方格式化。
---- @return string 当前玩家语言的文案。
-function Localization:FormatByKey(key, arguments)
-    if arguments and arguments.itemKey then
-        arguments = table.clone(arguments)
-        arguments.item = self:FormatByKey(arguments.itemKey)
-        arguments.itemKey = nil
-    end
-    if not self._keys[key] then
-        error("Localization: unknown key " .. tostring(key), 2)
-    end
-    if self._cloud and string.match(string.lower(self._cloud.LocaleId), "^[^-]+") ~= "en" then
-        --- 云端缺少 Key 或译文格式错误时允许回退英文。
-        --- @return string 格式化后的云端译文。
-        local success, text = pcall(function()
-            return self._cloud:FormatByKey(key, arguments)
-        end)
-        if success and text ~= "" then
-            return text
-        end
-        local localeId = string.lower(self._cloud.LocaleId)
-        if not warnedCloudLocales[localeId] then
-            warnedCloudLocales[localeId] = true
-            warn("Localization: cloud translation failed for " .. key .. " (" .. self._cloud.LocaleId
-                .. "); using local English: " .. (success and "empty translation" or tostring(text)))
-        end
-    end
-    return self._english:FormatByKey(key, arguments)
-end
-
---- 英文原文直接作为 Key；尚未收集的模板仅在独立的运行时英文表中格式化，不修改发布文案表。
+--- 使用定义自带英文格式化，避免从同文旧 Key 查到其他场景译文。
 --- @param source string 英文原文或原生参数模板。
---- @param arguments table? 原生模板参数；旧协议的 itemKey 只在客户端解析。
---- @return string 当前玩家语言的文案，缺少译文时使用格式化后的英文。
-function Localization:Tr(source, arguments)
-    if arguments and arguments.itemKey then
-        arguments = table.clone(arguments)
-        arguments.item = self:Tr(arguments.itemKey)
-        arguments.itemKey = nil
-    end
-    local toolId = string.match(source, "^Weapon%.Name%.(%d+)$")
-    local itemId = string.match(source, "^Welfare%.Item%.(%d+)$")
-    local descriptionId = string.match(source, "^Item%.Description%.(%d+)$")
-    if toolId then
-        for index, config in ipairs(_G.GameConfig.ToolConfig) do
-            if config.ToolId == tonumber(toolId) then
-                source = config.Name
-                break
-            end
-        end
-    elseif itemId then
-        source = _G.ItemConfig.Display[tonumber(itemId)].Name
-    elseif descriptionId then
-        source = _G.ItemConfig.Display[tonumber(descriptionId)].Desc
-    else
-        source = LegacyTextSources[source] or source
-    end
-    if self._keys[source] then
-        return self:FormatByKey(source, arguments)
-    end
-    if self._cloud and string.match(string.lower(self._cloud.LocaleId), "^[^-]+") ~= "en" then
-        --- 云端条目可能早于本地收集更新，直接以英文原文查找。
-        --- @return string 格式化后的云端译文。
-        local success, text = pcall(function()
-            return self._cloud:FormatByKey(source, arguments)
-        end)
-        if success and text ~= "" then
-            return text
-        end
-    end
-    -- 原文 Key 尚未上传时继续复用现有旧 Key 译文，不要求重建翻译表。
-    local legacyKey = self._legacyKeys[source]
-    if legacyKey then
-        return self:FormatByKey(legacyKey, arguments)
-    end
+--- @param arguments table? 原生模板参数。
+--- @return string 格式化后的英文。
+function Localization:FormatSource(source, arguments)
     if not arguments then
         return source
     end
@@ -144,6 +63,53 @@ function Localization:Tr(source, arguments)
     end
     self._sourceFallback:SetEntryValue(source, source, "", "en-us", source)
     return self._sourceFallback:GetTranslator("en-us"):FormatByKey(source, arguments)
+end
+
+--- 只按定义 Key 查云端；失败使用该定义的英文，不接受字符串或旧 Key 映射。
+--- @param definition table 含 Key、Source 的完整文案定义。
+--- @param arguments table? 原生模板参数，itemDefinition 或 itemSource 在客户端翻译成 item。
+--- @return string 当前玩家语言的文案，缺译时使用格式化后的英文。
+function Localization:Tr(definition, arguments)
+    Text.ValidateDefinition(definition)
+    if arguments and (arguments.itemDefinition or arguments.itemSource) then
+        arguments = table.clone(arguments)
+        if arguments.itemDefinition then
+            arguments.item = self:Tr(arguments.itemDefinition)
+            arguments.itemDefinition = nil
+        else
+            arguments.item = self:TrSource(arguments.itemSource)
+            arguments.itemSource = nil
+        end
+    end
+    if self._cloud and string.match(string.lower(self._cloud.LocaleId), "^[^-]+") ~= "en" then
+        --- 不要求语义 Key 已进入本地旧表，也不按英文匹配其他条目。
+        --- @return string 按语义 Key 格式化的云端文案。
+        local success, text = pcall(function()
+            return self._cloud:FormatByKey(definition.Key, arguments)
+        end)
+        if success and text ~= "" then
+            return text
+        end
+    end
+    return self:FormatSource(definition.Source, arguments)
+end
+
+--- 原文查找使用 Roblox 原生 Translate，不将原文当 Key，也不遍历语义定义表。
+--- @param source string 完整原文；不传模板参数，带参数的语义文案使用 Tr。
+--- @return string 当前语言译文；缺译、未加载、查询报错或空译文时返回原文。
+function Localization:TrSource(source)
+    assert(type(source) == "string", "Localization.TrSource expects a source string")
+    if self._cloud and source ~= "" then
+        --- game 作为默认语境；同文不同义的场景使用按 Key 翻译入口区分。
+        --- @return string 由当前翻译器按原文匹配的译文。
+        local success, text = pcall(function()
+            return self._cloud:Translate(game, source)
+        end)
+        if success and text ~= "" then
+            return text
+        end
+    end
+    return source
 end
 
 --- 释放本对象的后台请求任务、临时英文表和语言监听，避免销毁后更新界面。

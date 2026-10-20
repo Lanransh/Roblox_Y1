@@ -1,4 +1,4 @@
 interface:
   display_name: "Roblox 项目本地化"
-  short_description: "Studio 保持 AutoLocalize 开启，客户端脚本运行时关闭动态节点并翻译"
-  default_prompt: "使用 $roblox-localization，保留 Studio 模板 AutoLocalize 开启，仅在客户端脚本运行时关闭动态目标节点并调用 Text.Tr；以 Text.Mark 标记原文，不操作翻译表或启动试玩。"
+  short_description: "仅补动态翻译缺口，各文件独立定义，跳过静态与配置"
+  default_prompt: "使用 $roblox-localization。先读取 Generated 的展示与翻译逻辑，不修改生成脚本；只有 Generated 未正确处理的动态文本才在手写接入脚本补翻译，已处理的不重复补。无 Generated 对应的业务动态消息由所属脚本处理。各文件用自己的顶层 local TranslationTexts 定义所需动态文案，Key 不得重复，不创建全局共享表。配置引用不补定义，静态节点由工具收集不补表。Text.Tr 接收定义和参数；Text.TrSource 独立按原文查询。保留客户端翻译、服务端传参和语言刷新约定，不自动修改翻译文件、上传或启动试玩。"

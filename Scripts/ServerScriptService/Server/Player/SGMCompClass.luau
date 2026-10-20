@@ -1,4 +1,17 @@
 local FX, FS = _G.FX, _G.FS
+local TranslationTexts = {
+    ["GM.InvalidItemInput"] = { Key = "SGMCompClass.GM.InvalidItemInput", Source = "Enter a valid item ID and a positive whole-number quantity." },
+    ["GM.InvalidItem"] = { Key = "SGMCompClass.GM.InvalidItem", Source = "Unknown item ID." },
+    ["GM.ItemFull"] = { Key = "SGMCompClass.GM.ItemFull", Source = "Not enough inventory space." },
+    ["GM.ItemAdded"] = { Key = "SGMCompClass.GM.ItemAdded", Source = "Item added." },
+    ["GM.InvalidValue"] = { Key = "SGMCompClass.GM.InvalidValue", Source = "Enter a valid whole number within the allowed range." },
+    ["GM.LevelLimit"] = { Key = "SGMCompClass.GM.LevelLimit", Source = "The current level limit is {level:int}." },
+    ["GM.Success"] = { Key = "SGMCompClass.GM.Success", Source = "Operation completed." },
+    ["GM.Forbidden"] = { Key = "SGMCompClass.GM.Forbidden", Source = "Only developers can use these controls." },
+    ["Common.Unknown"] = { Key = "SGMCompClass.Common.Unknown", Source = "Something went wrong. Please try again." },
+    ["GM.Busy"] = { Key = "SGMCompClass.GM.Busy", Source = "An operation is in progress. Please try again shortly." },
+    ["GM.SaveFailed"] = { Key = "SGMCompClass.GM.SaveFailed", Source = "Save failed. Please try again." },
+}
 local FXLoader = FX.Loader
 local Fields = _G.PlayerDataConfig
 local RockLevel = FXLoader:RequireShared("Scripts/Game/Shared/RockLevel")
@@ -34,16 +47,16 @@ end
 --- @return table 权威校验与发放结果。
 function Component:AddItem(itemId, count)
     if not IsValidNumber(itemId) or itemId < 1 or not IsValidNumber(count) or count < 1 then
-        return {success = false, key = "GM.InvalidItemInput"}
+        return {success = false, key = TranslationTexts["GM.InvalidItemInput"]}
     end
     if not _G.ItemConfig.Data[itemId] then
-        return {success = false, key = "GM.InvalidItem"}
+        return {success = false, key = TranslationTexts["GM.InvalidItem"]}
     end
     local reward = self:GetPlayerObject():RequireComponent("FSRewardComp")
     if not reward:AddRewards({{Type = "Item", ItemId = itemId, Count = count}}) then
-        return {success = false, key = "GM.ItemFull"}
+        return {success = false, key = TranslationTexts["GM.ItemFull"]}
     end
-    return {success = true, key = "GM.ItemAdded"}
+    return {success = true, key = TranslationTexts["GM.ItemAdded"]}
 end
 
 --- 恢复配置默认值和默认武器拥有权，撤销旧掉落及命中凭据，完成后重新开启新手引导。
@@ -74,21 +87,21 @@ end
 function Component:SetValue(action, value)
     local player = self:GetPlayerObject()
     if not IsValidNumber(value) then
-        return {success = false, key = "GM.InvalidValue"}
+        return {success = false, key = TranslationTexts["GM.InvalidValue"]}
     end
     if action == "SetLevel" then
         local maxLevel = math.min(RockLevel.MaxLevel, Rebirth.GetRequiredLevel(player:GetNumber(Fields.RebirthCount)))
         if value % 1 ~= 0 or value < 1 or value > RockLevel.MaxLevel then
-            return {success = false, key = "GM.InvalidValue"}
+            return {success = false, key = TranslationTexts["GM.InvalidValue"]}
         end
         if value > maxLevel then
-            return {success = false, key = "GM.LevelLimit", arguments = {level = maxLevel}}
+            return {success = false, key = TranslationTexts["GM.LevelLimit"], arguments = {level = maxLevel}}
         end
         player:SetNumber(Fields.RockTrainingValue, RockLevel.GetTrainingValueByLevel(value))
         player:RequireComponent("SMiscComp"):ResetTrainingProgress()
     elseif action == "SetRebirth" then
         if value % 1 ~= 0 or value > Rebirth.MaxCount then
-            return {success = false, key = "GM.InvalidValue"}
+            return {success = false, key = TranslationTexts["GM.InvalidValue"]}
         end
         player:SetNumber(Fields.RebirthCount, value)
         player:RequireComponent("SMiscComp"):ResetTrainingProgress()
@@ -97,9 +110,9 @@ function Component:SetValue(action, value)
     elseif action == "SetDiamonds" then
         player:SetNumber(Fields.Diamonds, value)
     else
-        return {success = false, key = "GM.InvalidValue"}
+        return {success = false, key = TranslationTexts["GM.InvalidValue"]}
     end
-    return {success = true, key = "GM.Success"}
+    return {success = true, key = TranslationTexts["GM.Success"]}
 end
 
 --- 权限按协议转发得到的所属玩家检查，客户端不能指定目标玩家或任意字段。
@@ -110,7 +123,7 @@ end
 function Component:Request(action, value, count)
     local userId = self:GetPlayerId()
     if not FX.IsDeveloper(userId) then
-        return {success = false, key = "GM.Forbidden"}
+        return {success = false, key = TranslationTexts["GM.Forbidden"]}
     end
     local player = self:GetPlayerObject()
     local db = FS.PlayerKVDataManager._playerDBMap[userId]
@@ -118,11 +131,11 @@ function Component:Request(action, value, count)
     local aura = player and player:GetComponent("SAuraComp")
     if not player or not db or not db:IsLoadFinished() or db._leaving
         or not misc or not misc._levelStat or not aura or not aura._ready then
-        return {success = false, key = "Common.Unknown"}
+        return {success = false, key = TranslationTexts["Common.Unknown"]}
     end
     local now = os.clock()
     if self._busy or db._saving or now < self._nextRequest then
-        return {success = false, key = "GM.Busy"}
+        return {success = false, key = TranslationTexts["GM.Busy"]}
     end
     self._nextRequest = now + 0.2
     if action == "AddItem" then
@@ -132,7 +145,7 @@ function Component:Request(action, value, count)
         return self:SetValue(action, value)
     end
     if now < self._nextSave then
-        return {success = false, key = "GM.Busy"}
+        return {success = false, key = TranslationTexts["GM.Busy"]}
     end
     self._busy = true
     self._nextSave = now + 5
@@ -150,9 +163,9 @@ function Component:Request(action, value, count)
         warn("[GM] Save/reset failed", userId, saved)
     end
     if not ok or not saved then
-        return {success = false, key = "GM.SaveFailed"}
+        return {success = false, key = TranslationTexts["GM.SaveFailed"]}
     end
-    return {success = true, key = "GM.Success"}
+    return {success = true, key = TranslationTexts["GM.Success"]}
 end
 
 return Component

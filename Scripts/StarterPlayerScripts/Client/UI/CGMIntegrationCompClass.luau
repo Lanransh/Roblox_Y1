@@ -1,15 +1,12 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
+local TranslationTexts = {
+    ["GM.InvalidItemInput"] = { Key = "CGMIntegrationCompClass.GM.InvalidItemInput", Source = "Enter a valid item ID and a positive whole-number quantity." },
+    ["GM.InvalidValue"] = { Key = "CGMIntegrationCompClass.GM.InvalidValue", Source = "Enter a valid whole number within the allowed range." },
+    ["Common.Unknown"] = { Key = "CGMIntegrationCompClass.Common.Unknown", Source = "Something went wrong. Please try again." },
+}
 FXLoader:RequireFromParent(script, "Generated/CGMPanelView")
 local Component = FX.Class("CGMIntegrationCompClass", "CGMPanelView")
-local ResultTexts = {
-    ["GM.Success"] = "GM 操作完成。",
-    ["GM.SaveFailed"] = "保存失败，请稍后再次点击立即保存。",
-    ["GM.InvalidValue"] = "请输入非负整数，等级至少为 1，等级与重生次数不能超过上限。",
-    ["GM.Forbidden"] = "只有开发者可以使用 GM 功能。",
-    ["GM.Busy"] = "操作处理中或间隔过短，请稍后重试。",
-    ["Common.Unknown"] = "操作失败，请稍后重试。",
-}
 
 --- 提供主界面打开 GM 面板的业务入口。
 --- @return string GM 组件协作名。
@@ -65,14 +62,14 @@ function Component:ExecuteCommand(action)
         local count = tonumber(self.Inputs[2].Text)
         if not itemId or itemId ~= itemId or itemId < 1 or itemId > 9007199254740991 or itemId % 1 ~= 0
             or not count or count ~= count or count < 1 or count > 9007199254740991 or count % 1 ~= 0 then
-            self._commonUI:ShowLocalizedTips("GM.InvalidItemInput")
+            self._commonUI:ShowLocalizedTips(TranslationTexts["GM.InvalidItemInput"])
             return
         end
     elseif action ~= "ResetData" and action ~= "SaveNow" then
         local value = tonumber(self.Inputs[1].Text)
         if not value or value ~= value or value < 0 or value > 9007199254740991
             or value % 1 ~= 0 or (action == "SetLevel" and value < 1) then
-            self._commonUI:ShowTips(ResultTexts["GM.InvalidValue"])
+            self._commonUI:ShowLocalizedTips(TranslationTexts["GM.InvalidValue"])
             return
         end
     end
@@ -103,19 +100,9 @@ function Component:OnUIAction(action, payload)
         self._requestTask = nil
         self.State.pending = false
         self:RefreshUI()
-        if action == "AddItem" then
-            self._commonUI:ShowLocalizedTips(ok and type(result) == "table" and result.key or "Common.Unknown")
-            return
-        end
-        local text = ResultTexts["Common.Unknown"]
-        if ok and type(result) == "table" then
-            if result.key == "GM.LevelLimit" then
-                text = string.format("当前重生阶段等级上限为 %d 级。", result.arguments.level)
-            else
-                text = ResultTexts[result.key] or text
-            end
-        end
-        self._commonUI:ShowTips(text)
+        self._commonUI:ShowLocalizedTips(
+            ok and type(result) == "table" and result.key or TranslationTexts["Common.Unknown"],
+            ok and type(result) == "table" and result.arguments or nil)
     end)
 end
 

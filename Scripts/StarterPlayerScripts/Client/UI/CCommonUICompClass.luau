@@ -1,9 +1,12 @@
 local FX, FC = _G.FX, _G.FC
 local FXLoader = FX.Loader
+local TranslationTexts = {
+    ["Loot.LuckyTooltip"] = { Key = "CCommonUICompClass.Loot.LuckyTooltip", Source = "{item} · Lucky ×{rate} · {price} Coins" },
+    ["Loot.Tooltip"] = { Key = "CCommonUICompClass.Loot.Tooltip", Source = "{item} · {price} Coins" },
+}
 local ButtonHover = FXLoader:RequireFromParent(script, "ButtonHover")
 local ToolDescription = FXLoader:RequireFromParent(script, "ToolDescription")
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
-local LegacyTextSources = FXLoader:RequireShared("Scripts/Game/Shared/LegacyTextSources")
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local ItemConfig = FXLoader:RequireShared("Scripts/Game/Configs/ItemConfig")
 local UI = FX.Class("CCommonUICompClass", "FCCommonUICompClass")
@@ -15,8 +18,7 @@ function UI:Ctor(owner)
     self.Localization = FC.Localization
     self._toolDescription = ToolDescription.New(FXLoader:PlayerGui("MainUI/TopCenter/Strength"))
     self._selectedToolConnections = {}
-    self._confirmKey, self._cancelKey = "Common.Confirm", "Common.Cancel"
-    for index, node in ipairs({self.Tips, self.Description, self.Confirm, self.Cancel}) do
+    for index, node in ipairs({self.Tips, self.Description}) do
         node.AutoLocalize = false
     end
     --- 语言变化后刷新已显示的翻译文案。
@@ -112,42 +114,31 @@ function UI:ShowTips(message, duration)
     UI.Super.ShowTips(self, message, duration)
 end
 
---- 服务端和客户端共用提示入口；保留旧数量缩写，并让重生成功提示穿透训练点击。
---- @param key string Text.Mark 标记的英文原文或本地文案表中的旧提示 Key。
+--- 共用提示入口保留定义与参数供语言刷新，并让重生成功提示穿透训练点击。
+--- @param key table Key/Source 文案定义。
 --- @param arguments table? 提示模板参数。
 --- @param duration number? 显示时长，单位为秒。
 function UI:ShowLocalizedTips(key, arguments, duration)
-    for index, legacyKey in ipairs({"CurrencyShop.TrainingReceived", "CurrencyShop.DiamondsReceived",
-        "CurrencyShop.RateUpgraded", "Welfare.PassActivated", "Welfare.TrainingCardGained"}) do
-        if key == LegacyTextSources[legacyKey] then
-            key = legacyKey
-            break
-        end
-    end
-    if key == "CurrencyShop.TrainingReceived" or key == "CurrencyShop.DiamondsReceived"
-        or key == "CurrencyShop.RateUpgraded" or key == "Welfare.PassActivated"
-        or key == "Welfare.TrainingCardGained" then
-        arguments = table.clone(arguments)
-        local field = key == "CurrencyShop.RateUpgraded" and "rate" or "value"
-        arguments[field] = GameUtility.NumberToText(arguments[field])
-    end
+    Text.ValidateDefinition(key)
     self:ShowTips(Text.Tr(key, arguments), duration)
-    if key == "Rebirth.Success" or key == LegacyTextSources["Rebirth.Success"] then
+    if key.Key == "SMiscCompClass.Rebirth.Success" or key.Key == "SPurchaseReceiptService.Rebirth.Success" then
         self._tipLabel:SetAttribute("BlocksTrainingClick", false)
     end
     self._tipKey, self._tipArguments = key, arguments
 end
 
---- 弹窗支持文案 Key，同时兼容框架现有的文本和按钮回调参数。
---- @param params table 可选 DescKey/Arguments/ConfirmKey/CancelKey；其余沿用框架参数。
+--- 弹窗保存文案定义以便刷新；其余沿用框架文本和回调参数。
+--- @param params table DescKey/ConfirmKey/CancelKey 为文案定义；Arguments 为模板参数。
 function UI:ShowTooltips(params)
     self._descriptionKey, self._descriptionArguments = params.DescKey, params.Arguments
-    self._confirmKey = params.ConfirmKey or (not params.ConfirmBtnTxt and "Common.Confirm")
-    self._cancelKey = params.CancelKey or (not params.CancelBtnTxt and "Common.Cancel")
+    self._confirmKey = params.ConfirmKey
+    self._cancelKey = params.CancelKey
     local options = table.clone(params)
     if self._descriptionKey then
         options.Desc = Text.Tr(self._descriptionKey, self._descriptionArguments)
     end
+    self.Confirm.AutoLocalize = self._confirmKey == nil
+    self.Cancel.AutoLocalize = self._cancelKey == nil
     if self._confirmKey then
         options.ConfirmBtnTxt = Text.Tr(self._confirmKey)
     end
@@ -202,7 +193,7 @@ function UI:RefreshSelectedTool()
         self._toolDescription:SetTool(nil)
         return
     end
-    local description = Text.Tr(ItemConfig.Display[itemId].Desc)
+    local description = Text.TrSource(ItemConfig.Display[itemId].Desc)
     self._toolDescription:SetTool(tool, description)
 end
 
@@ -228,21 +219,21 @@ function UI:SetSelectedTool(tool)
 end
 
 --- 原生背包不依赖自动文本采集，显示名与查找属性、存档模板名分离。
---- @param tool Tool 服务器已设置稳定文案 Key 的背包或装备道具。
+--- @param tool Tool 服务器通过 DisplayNameSource 提供配置原文的背包或装备道具。
 function UI:LocalizeTool(tool)
-    local key = tool:GetAttribute("DisplayNameKey")
-    if not key then
+    local source = tool:GetAttribute("DisplayNameSource")
+    if not source then
         return
     end
-    tool.Name = Text.Tr(key)
+    tool.Name = Text.TrSource(source)
     local price = tool:GetAttribute("Price")
     if price then
-        local arguments = {itemKey = key, price = GameUtility.NumberToText(price)}
+        local arguments = {item = tool.Name, price = GameUtility.NumberToText(price)}
         if tool:GetAttribute("IsLucky") == true then
             arguments.rate = GameUtility.NumberToText(tool:GetAttribute("LuckRate") or 1)
-            tool.ToolTip = Text.Tr("{item} · Lucky ×{rate} · {price} Coins", arguments)
+            tool.ToolTip = Text.Tr(TranslationTexts["Loot.LuckyTooltip"], arguments)
         else
-            tool.ToolTip = Text.Tr("{item} · {price} Coins", arguments)
+            tool.ToolTip = Text.Tr(TranslationTexts["Loot.Tooltip"], arguments)
         end
     else
         tool.ToolTip = tool.Name

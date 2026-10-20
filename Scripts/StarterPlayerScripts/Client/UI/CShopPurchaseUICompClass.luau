@@ -1,6 +1,12 @@
 -- 钻石单件购买业务：复用生成页面，余额与升级资格始终由服务端结算。
 local FX = _G.FX
 local FXLoader = FX.Loader
+local TranslationTexts = {
+    ["CurrencyShop.NeedDiamonds"] = { Key = "CShopPurchaseUICompClass.CurrencyShop.NeedDiamonds", Source = "Not enough diamonds." },
+    ["ShopPurchase.Buying"] = { Key = "CShopPurchaseUICompClass.ShopPurchase.Buying", Source = "Buying..." },
+    ["ShopPurchase.Price"] = { Key = "CShopPurchaseUICompClass.ShopPurchase.Price", Source = "{value} · Buy" },
+    ["Common.Unknown"] = { Key = "CShopPurchaseUICompClass.Common.Unknown", Source = "Something went wrong. Please try again." },
+}
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 FXLoader:RequireFromParent(script, "Generated/CShopPurchaseView")
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
@@ -41,7 +47,7 @@ function Component:OpenProduct(product)
         shop.State.tab = "Robux"
         shop:Show()
         shop:RefreshUI()
-        self._commonUI:ShowLocalizedTips("CurrencyShop.NeedDiamonds")
+        self._commonUI:ShowLocalizedTips(TranslationTexts["CurrencyShop.NeedDiamonds"])
         return
     end
     self._product = product
@@ -63,17 +69,18 @@ function Component:Render(state)
         end
     end
     self.Config = {itemId = tostring(self._product.goodsId), name = product.title,
-        category = Text.Tr("DIAMOND UPGRADE"),
+        category = "DIAMOND UPGRADE",
         description = product.description,
         price = self._product.price, icon = self._product.icon}
     Component.Super.Render(self, state)
-    for index, label in ipairs({self.ItemNameTxt, self.CategoryTxt, self.DescriptionTxt, self.ButtonTxt}) do
+    for index, label in ipairs({self.ItemNameTxt, self.ButtonTxt}) do
         label.AutoLocalize = false
     end
+    self.DescriptionTxt.AutoLocalize = false
     if state.pending then
-        self.ButtonTxt.Text = Text.Tr("Buying...")
+        self.ButtonTxt.Text = Text.Tr(TranslationTexts["ShopPurchase.Buying"])
     else
-        self.ButtonTxt.Text = Text.Tr("{value} · Buy", {
+        self.ButtonTxt.Text = Text.Tr(TranslationTexts["ShopPurchase.Price"], {
             value = GameUtility.NumberToText(self.Config.price),
         })
     end
@@ -109,7 +116,7 @@ function Component:OnUIAction(action, payload)
                 self._commonUI:ShowLocalizedTips(result.key, result.arguments)
             else
                 self.State = {status = "Ready", pending = false}
-                self._commonUI:ShowLocalizedTips("Common.Unknown")
+                self._commonUI:ShowLocalizedTips(TranslationTexts["Common.Unknown"])
             end
             self:RefreshUI()
         end)

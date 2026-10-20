@@ -1,5 +1,34 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
+local TranslationTexts = {
+    ["Welfare.ItemReward"] = { Key = "CWelfareUICompClass.Welfare.ItemReward", Source = "{item} ×{value}" },
+    ["Welfare.Claim"] = { Key = "CWelfareUICompClass.Welfare.Claim", Source = "Claim" },
+    ["Welfare.Claimed"] = { Key = "CWelfareUICompClass.Welfare.Claimed", Source = "Claimed" },
+    ["Welfare.Locked"] = { Key = "CWelfareUICompClass.Welfare.Locked", Source = "Locked" },
+    ["Welfare.Pending"] = { Key = "CWelfareUICompClass.Welfare.Pending", Source = "Claiming..." },
+    ["Welfare.Retry"] = { Key = "CWelfareUICompClass.Welfare.Retry", Source = "Retry" },
+    ["Welfare.InProgress"] = { Key = "CWelfareUICompClass.Welfare.InProgress", Source = "In Progress" },
+    ["Welfare.LoginDay"] = { Key = "CWelfareUICompClass.Welfare.LoginDay", Source = "Total login days: {day:int}" },
+    ["Welfare.Diamonds"] = { Key = "CWelfareUICompClass.Welfare.Diamonds", Source = "{value} Diamonds" },
+    ["Welfare.Minute"] = { Key = "CWelfareUICompClass.Welfare.Minute", Source = "{minutes:int} min" },
+    ["Welfare.Day"] = { Key = "CWelfareUICompClass.Welfare.Day", Source = "Day {day:int}" },
+    ["Welfare.OfflineTime"] = { Key = "CWelfareUICompClass.Welfare.OfflineTime", Source = "Offline Time: {hours:int}h {minutes:int}m {seconds:int}s" },
+    ["Welfare.OfflineTraining"] = { Key = "CWelfareUICompClass.Welfare.OfflineTraining", Source = "Training: {value}" },
+    ["Welfare.OfflineEmpty"] = { Key = "CWelfareUICompClass.Welfare.OfflineEmpty", Source = "No offline rewards available." },
+    ["Welfare.OfflineClaim"] = { Key = "CWelfareUICompClass.Welfare.OfflineClaim", Source = "Claim ×{multiplier:int}" },
+    ["Welfare.DailyAmount"] = { Key = "CWelfareUICompClass.Welfare.DailyAmount", Source = "+{value} Diamonds per day" },
+    ["Welfare.PassTomorrow"] = { Key = "CWelfareUICompClass.Welfare.PassTomorrow", Source = "Next claim tomorrow" },
+    ["Welfare.Ready"] = { Key = "CWelfareUICompClass.Welfare.Ready", Source = "Ready to claim" },
+    ["Welfare.PassRemaining"] = { Key = "CWelfareUICompClass.Welfare.PassRemaining", Source = "{days:int} claims left · {status}" },
+    ["Welfare.PassInactive"] = { Key = "CWelfareUICompClass.Welfare.PassInactive", Source = "Use this pass from your backpack to activate it." },
+    ["Welfare.Tomorrow"] = { Key = "CWelfareUICompClass.Welfare.Tomorrow", Source = "Today's rewards claimed · Come back tomorrow" },
+    ["Welfare.NotReady"] = { Key = "CWelfareUICompClass.Welfare.NotReady", Source = "This reward is not available yet." },
+    ["Welfare.AlreadyClaimed"] = { Key = "CWelfareUICompClass.Welfare.AlreadyClaimed", Source = "You have already claimed this reward." },
+    ["Welfare.OnlineRequired"] = { Key = "CWelfareUICompClass.Welfare.OnlineRequired", Source = "Stay online for {minutes:int} more minute(s) to claim this reward." },
+    ["Welfare.LoginRequired"] = { Key = "CWelfareUICompClass.Welfare.LoginRequired", Source = "Log in on {days:int} days to claim this reward." },
+    ["Welfare.TaskIncomplete"] = { Key = "CWelfareUICompClass.Welfare.TaskIncomplete", Source = "Complete this task before claiming ({current:int}/{target:int})." },
+    ["Common.Unknown"] = { Key = "CWelfareUICompClass.Common.Unknown", Source = "Something went wrong. Please try again." },
+}
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 FXLoader:RequireFromParent(script, "Generated/CWelfareView")
 local Welfare = FXLoader:RequireShared("Scripts/Game/Shared/Welfare")
@@ -56,14 +85,14 @@ function Component:OnReady()
             id = tostring(config.Index), day = config.LoginDays,
             reward = Welfare.ToDisplayReward(config.Reward),
             featured = config.LoginDays == 7,
-            badge = Text.Tr("Weekly Reward"),
+            badge = "Weekly Reward",
             color = {102, 80, 25},
         })
     end
     for index, config in ipairs(_G.ActivityConfig.DailyTaskConfig) do
         table.insert(self.Config.groups[3].items, {
             id = tostring(config.Index), target = config.Target, taskType = config.Type,
-            title = Text.Tr("Welfare.Task." .. config.Type, {target = config.Target}),
+            title = Text.TrSource(config.Desc),
             reward = Welfare.ToDisplayReward(config.Rewards[1]),
         })
     end
@@ -161,9 +190,9 @@ end
 --- @return table 本地化名称和展示槽。
 function Component:GetRewardDisplay(reward)
     if reward.type == "Gem" then
-        return {name = Text.Tr("Diamonds"), icon = "Gem"}
+        return {name = Text.TrSource("Diamonds"), icon = "Gem"}
     end
-    return {name = Text.Tr(_G.ItemConfig.Display[reward.id].Name), icon = "Egg"}
+    return {name = Text.TrSource(_G.ItemConfig.Display[reward.id].Name), icon = "Egg"}
 end
 
 --- 仅格式化数量文案，原始数值仍用于服务端结算。
@@ -171,13 +200,13 @@ end
 --- @param amount number 原始奖励数量。
 --- @return string 奖励说明。
 function Component:FormatReward(name, amount)
-    return Text.Tr("{item} ×{value}", {item = name, value = GameUtility.NumberToText(amount)})
+    return Text.Tr(TranslationTexts["Welfare.ItemReward"], {item = name, value = GameUtility.NumberToText(amount)})
 end
 
 --- 动态文本关闭自动本地化，使用项目现有翻译入口。
 --- @param root Instance 已核对的界面节点。
 --- @param path string 相对文本节点路径。
---- @param key string 稳定文案 Key。
+--- @param key table Key/Source 文案定义。
 --- @param arguments table? 原始或统一格式化后的参数。
 function Component:SetText(root, path, key, arguments)
     local node = FXLoader:Here(root, path)
@@ -190,20 +219,19 @@ end
 --- @param label string 父类状态文案或已本地化文本。
 --- @param enabled boolean 当前是否允许点击。
 function Component:RenderButton(button, label, enabled)
-    local keys = {Claim = "Welfare.Claim", ["Check In"] = "Welfare.Claim", Claimed = "Welfare.Claimed",
-        ["Checked In"] = "Welfare.Claimed", Locked = "Welfare.Locked", ["Claiming..."] = "Welfare.Pending",
-        Retry = "Welfare.Retry", ["Online\nRewards"] = "Welfare.Online", ["Daily Login"] = "Welfare.SignIn",
-        Diamonds = "Welfare.Daily", Tasks = "Welfare.Tasks", ["In Progress"] = "Welfare.InProgress"}
+    local keys = {Claim = TranslationTexts["Welfare.Claim"], ["Check In"] = TranslationTexts["Welfare.Claim"], Claimed = TranslationTexts["Welfare.Claimed"],
+        ["Checked In"] = TranslationTexts["Welfare.Claimed"], Locked = TranslationTexts["Welfare.Locked"], ["Claiming..."] = TranslationTexts["Welfare.Pending"],
+        Retry = TranslationTexts["Welfare.Retry"], ["In Progress"] = TranslationTexts["Welfare.InProgress"]}
     Component.Super.RenderButton(self, button, keys[label] and Text.Tr(keys[label]) or label, enabled)
     self:SetButtonEnabled(button, enabled or (not self._requestTask and not self._pending))
-    FXLoader:Here(button, "ButtonTxt").AutoLocalize = false
+    FXLoader:Here(button, "ButtonTxt").AutoLocalize = button.Parent == FXLoader:Here(self.Root, "TabsBox")
 end
 
 --- 复用列表和布局，主界面红点汇总全部可领取奖励，钻石和道具使用实际图片。
 --- @param state table 当前完整福利展示状态。
 function Component:Render(state)
     for index, config in ipairs(self.Config.groups[3].items) do
-        config.title = Text.Tr("Welfare.Task." .. config.taskType, {target = config.target})
+        config.title = Text.TrSource(_G.ActivityConfig.DailyTaskConfig[tonumber(config.id)].Desc)
     end
     Component.Super.Render(self, state)
     local hasClaimable = state.offline.status == "Claimable" and not state.offline.pending
@@ -222,15 +250,7 @@ function Component:Render(state)
     end
     self._mainRewardDot.Visible = hasClaimable
     FXLoader:Here(self.Root, "TabsBox/TasksTabBtn").Visible = true
-    self:SetText(self.Root, "PopupPanelImg/TasksBox/HeadingTxt", "Welfare.Tasks")
-    self:SetText(self.Root, "PopupPanelImg/TasksBox/SubtitleTxt", "Welfare.TaskRule")
-    self:SetText(self.Root, "PopupPanelImg/TasksBox/FooterTxt", "Welfare.TaskRule")
-    self:SetText(self.Root, "TitleBox/TitleTxt", "Welfare.Title")
-    self:SetText(self.Root, "PopupPanelImg/OnlineBox/HeadingTxt", "Welfare.Online")
-    self:SetText(self.Root, "PopupPanelImg/OnlineBox/FooterTxt", "Welfare.OnlineRule")
-    self:SetText(self.Root, "PopupPanelImg/SignInBox/HeadingTxt", "Welfare.LoginDay", {day = state.signInDay})
-    self:SetText(self.Root, "PopupPanelImg/SignInBox/SubtitleTxt", "Welfare.SignIn")
-    self:SetText(self.Root, "PopupPanelImg/SignInBox/FooterTxt", "Welfare.SignInRule")
+    self:SetText(self.Root, "PopupPanelImg/SignInBox/HeadingTxt", TranslationTexts["Welfare.LoginDay"], {day = state.signInDay})
     for kind, rows in pairs(self.Rows) do
         for id, row in pairs(rows) do
             self:_RenderRewardRow(kind, row)
@@ -245,12 +265,14 @@ function Component:_RenderRewardRow(kind, row)
     local config = row.Config
     local root = row.Root
     if kind == "task" then
-        self:SetText(root, "TaskNameTxt", "Welfare.Task." .. config.taskType, {target = config.target})
+        local taskName = FXLoader:Here(root, "TaskNameTxt")
+        taskName.AutoLocalize = false
+        taskName.Text = config.title
         local reward = config.reward
         local label = FXLoader:Here(root, "RewardTxt")
         label.AutoLocalize = false
         label.Text = reward.type == "Gem"
-            and Text.Tr("{value} Diamonds", {value = GameUtility.NumberToText(reward.amount)})
+            and Text.Tr(TranslationTexts["Welfare.Diamonds"], {value = GameUtility.NumberToText(reward.amount)})
             or self:FormatReward(self:GetRewardDisplay(reward).name, reward.amount)
         FXLoader:Here(root, "ProgressBarImg/ProgressTxt").AutoLocalize = false
         -- 导出新任务原型前，旧模板仍只包含文字；避免同步顺序导致等待缺失节点。
@@ -261,18 +283,15 @@ function Component:_RenderRewardRow(kind, row)
         return
     end
     self:SetText(root, kind == "online" and "TimeTxt" or "DayTxt",
-        kind == "online" and "Welfare.Minute" or "Welfare.Day",
+        kind == "online" and TranslationTexts["Welfare.Minute"] or TranslationTexts["Welfare.Day"],
         kind == "online" and {minutes = config.minutes} or {day = config.day})
     local reward = config.reward
     local label = FXLoader:Here(root, "RewardTxt")
     label.AutoLocalize = false
     label.TextScaled = true
     label.Text = reward.type == "Gem"
-        and Text.Tr("{value} Diamonds", {value = GameUtility.NumberToText(reward.amount)})
+        and Text.Tr(TranslationTexts["Welfare.Diamonds"], {value = GameUtility.NumberToText(reward.amount)})
         or self:FormatReward(self:GetRewardDisplay(reward).name, reward.amount)
-    if config.featured then
-        self:SetText(root, "WeeklyTxt", "Welfare.WeeklyReward")
-    end
     local size = kind == "signin" and (config.featured and FeaturedRewardIconSize or NormalRewardIconSize) or nil
     self:_RenderRewardIcon(root, reward, size)
 end
@@ -312,20 +331,20 @@ function Component:RenderOffline(state)
     local page = FXLoader:Here(self.Root, "PopupPanelImg/OfflineBox")
     local seconds = state.status == "Claimed" and 0 or state.seconds
     local training = state.status == "Claimed" and 0 or state.training
-    self:SetText(page, "TimeTxt", "Welfare.OfflineTime", {
+    self:SetText(page, "TimeTxt", TranslationTexts["Welfare.OfflineTime"], {
         hours = math.floor(seconds / 3600), minutes = math.floor(seconds % 3600 / 60),
         seconds = math.floor(seconds % 60),
     })
-    self:SetText(page, "AmountTxt", "Welfare.OfflineTraining", {value = GameUtility.NumberToText(training)})
-    local statusKey = state.status == "Claimed" and "Welfare.Claimed" or "Welfare.OfflineEmpty"
+    self:SetText(page, "AmountTxt", TranslationTexts["Welfare.OfflineTraining"], {value = GameUtility.NumberToText(training)})
+    local statusKey = state.status == "Claimed" and TranslationTexts["Welfare.Claimed"] or TranslationTexts["Welfare.OfflineEmpty"]
     self:SetText(page, "StatusTxt", self._failure and self._failure.kind == "offline" and self._failure.key or statusKey)
     for multiplier, name in ipairs({"SingleClaimBtn", "DoubleClaimBtn"}) do
-        local label = state.pending and Text.Tr("Claiming...")
-            or Text.Tr("Claim ×{multiplier:int}", {multiplier = multiplier})
+        local label = state.pending and Text.Tr(TranslationTexts["Welfare.Pending"])
+            or Text.Tr(TranslationTexts["Welfare.OfflineClaim"], {multiplier = multiplier})
         self:RenderButton(FXLoader:Here(page, name), label, state.status == "Claimable" and not state.pending)
     end
     local tab = FXLoader:Here(self.Root, "TabsBox/OfflineTabBtn")
-    self:RenderButton(tab, Text.Tr("Offline Rewards"), true)
+    self:RenderButton(tab, "Offline Rewards", true)
     if self.ActiveTab ~= "offline" then
         tab.BackgroundColor3 = Color3.fromRGB(99, 128, 121)
         FXLoader:Here(tab, "BottomEdgeImg").BackgroundColor3 = Color3.fromRGB(38, 62, 54)
@@ -337,32 +356,28 @@ end
 function Component:RenderDiamonds(state)
     local page = FXLoader:Here(self.Root, "PopupPanelImg/DiamondsBox")
     page.Visible = self.ActiveTab == "diamonds"
-    self:SetText(page, "HeadingTxt", "Welfare.Daily")
-    self:SetText(page, "SubtitleTxt", "Welfare.DailySubtitle")
-    self:SetText(page, "AvailableTxt", "Welfare.Available")
-    self:SetText(page, "AmountTxt", "Welfare.Diamonds", {value = GameUtility.NumberToText(state.amount)})
-    self:SetText(page, "FooterTxt", "Welfare.DailyRule")
-    self:SetText(page, "LoginBonusImg/TitleTxt", "Welfare.LoginBonus")
-    self:SetText(page, "LoginBonusImg/AmountTxt", "Welfare.DailyAmount", {value = GameUtility.NumberToText(_G.GameConfig.CommonConfig.LoginData.GemCount)})
-    self:SetText(page, "LoginBonusImg/HintTxt", "Welfare.Daily")
+    self:SetText(page, "AmountTxt", TranslationTexts["Welfare.Diamonds"], {value = GameUtility.NumberToText(state.amount)})
+    self:SetText(page, "LoginBonusImg/AmountTxt", TranslationTexts["Welfare.DailyAmount"], {value = GameUtility.NumberToText(_G.GameConfig.CommonConfig.LoginData.GemCount)})
     for index, info in ipairs({{id = 101, path = "PremiumBonusImg"}, {id = 102, path = "FriendsBonusImg"}}) do
         local box = FXLoader:Here(page, info.path)
         local config = _G.ItemConfig.Data[info.id].KVTable
         local card = self._snapshot.cards[tostring(info.id)]
-        self:SetText(box, "TitleTxt", "Welfare.Item." .. info.id)
-        self:SetText(box, "AmountTxt", "Welfare.DailyAmount", {value = GameUtility.NumberToText(config.DurationDays)})
+        local title = FXLoader:Here(box, "TitleTxt")
+        title.AutoLocalize = false
+        title.Text = Text.TrSource(_G.ItemConfig.Display[info.id].Name)
+        self:SetText(box, "AmountTxt", TranslationTexts["Welfare.DailyAmount"], {value = GameUtility.NumberToText(config.DurationDays)})
         if card and card.remaining > 0 then
-            local status = Text.Tr(card.lastClaimDay == self._snapshot.day and "Welfare.PassTomorrow" or "Welfare.Ready")
-            self:SetText(box, "HintTxt", "Welfare.PassRemaining", {days = card.remaining, status = status})
+            local status = Text.Tr(card.lastClaimDay == self._snapshot.day and TranslationTexts["Welfare.PassTomorrow"] or TranslationTexts["Welfare.Ready"])
+            self:SetText(box, "HintTxt", TranslationTexts["Welfare.PassRemaining"], {days = card.remaining, status = status})
         else
-            self:SetText(box, "HintTxt", "Welfare.PassInactive")
+            self:SetText(box, "HintTxt", TranslationTexts["Welfare.PassInactive"])
         end
     end
     local label = state.pending and "Claiming..." or state.status == "Claimed" and "Claimed"
         or state.status == "Claimable" and (state.error and "Retry" or "Claim") or "Locked"
     self:RenderButton(FXLoader:Here(page, "ClaimBtn"), label, state.status == "Claimable" and not state.pending)
-    local statusKey = state.pending and "Welfare.Pending" or state.status == "Claimed" and "Welfare.Tomorrow"
-        or state.status == "Claimable" and "Welfare.Ready" or "Welfare.NotReady"
+    local statusKey = state.pending and TranslationTexts["Welfare.Pending"] or state.status == "Claimed" and TranslationTexts["Welfare.Tomorrow"]
+        or state.status == "Claimable" and TranslationTexts["Welfare.Ready"] or TranslationTexts["Welfare.NotReady"]
     self:SetText(page, "StatusTxt", self._failure and self._failure.kind == "diamonds" and self._failure.key or statusKey)
     local tab = FXLoader:Here(self.Root, "TabsBox/DiamondsTabBtn")
     self:RenderButton(tab, "Diamonds", true)
@@ -381,7 +396,7 @@ function Component:OnUIAction(action, payload)
         return
     end
     if not self._snapshot.ready then
-        self._commonUI:ShowLocalizedTips("Welfare.NotReady")
+        self._commonUI:ShowLocalizedTips(TranslationTexts["Welfare.NotReady"])
         return
     end
     local kind = action == "ClaimOffline" and "offline"
@@ -389,19 +404,19 @@ function Component:OnUIAction(action, payload)
     local entry = kind == "offline" and self.State.offline
         or kind == "diamonds" and self.State.diamonds or self.State.entries[kind][payload.rewardId]
     if entry.status ~= "Claimable" then
-        local key, arguments = "Welfare.AlreadyClaimed", nil
+        local key, arguments = TranslationTexts["Welfare.AlreadyClaimed"], nil
         if kind == "offline" and entry.status ~= "Claimed" then
-            key = "Welfare.OfflineEmpty"
+            key = TranslationTexts["Welfare.OfflineEmpty"]
         elseif entry.status == "Locked" then
             local config = self.Rows[kind][payload.rewardId].Config
             if kind == "online" then
-                key, arguments = "Welfare.OnlineRequired", {
+                key, arguments = TranslationTexts["Welfare.OnlineRequired"], {
                     minutes = math.ceil((config.minutes * 60 - self._snapshot.onlineSeconds) / 60),
                 }
             elseif kind == "signin" then
-                key, arguments = "Welfare.LoginRequired", {days = config.day}
+                key, arguments = TranslationTexts["Welfare.LoginRequired"], {days = config.day}
             else
-                key, arguments = "Welfare.TaskIncomplete", {current = entry.current, target = config.target}
+                key, arguments = TranslationTexts["Welfare.TaskIncomplete"], {current = entry.current, target = config.target}
             end
         end
         self._commonUI:ShowLocalizedTips(key, arguments)
@@ -423,7 +438,7 @@ function Component:OnUIAction(action, payload)
             self:GetPlayerObject():RequireComponent("CSoundComp"):PlayRewardSound()
             self._commonUI:ShowLocalizedTips(result.key)
         else
-            local key = ok and type(result) == "table" and result.key or "Common.Unknown"
+            local key = ok and type(result) == "table" and result.key or TranslationTexts["Common.Unknown"]
             self._failure = {kind = kind, id = payload.rewardId, key = key}
             self._commonUI:ShowLocalizedTips(key)
         end
