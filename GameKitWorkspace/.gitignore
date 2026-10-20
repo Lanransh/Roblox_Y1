@@ -20,3 +20,7 @@ Build/FigmaRoblox/
 !/.studiogametoolkit/
 !/.studiogametoolkit/figma-roblox-assets.json
 .runtime/roblox-localization/
+!/翻译文本/
+!/翻译文本/translation-upload.csv
+/翻译文本/translation-report.json
+/翻译文本/translation-review.csv
