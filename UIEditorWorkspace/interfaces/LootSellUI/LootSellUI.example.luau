@@ -7,6 +7,7 @@ function CLootSellPreview:Ctor(owner)
     CLootSellPreview.Super.Ctor(self, owner)
     self.Config = {
         capacity = 12,
+        doubleSaleGemCost = 40,
         qualities = {
             common = "#E5E9EF",
             uncommon = "#D8F2CF",
@@ -23,7 +24,7 @@ function CLootSellPreview:Ctor(owner)
         },
     }
     local qualities = {"common", "uncommon", "rare", "epic", "legendary"}
-    self.State = {isOpen = true, items = {}, pending = false}
+    self.State = {isOpen = true, items = {}, pending = false, doubleSaleCards = 1, gems = 120, isVip = true}
     for index = 1, 12 do
         local item = {id = "sample_" .. index, name = "Sample Item " .. index, value = 1000000}
         if index == 1 then
@@ -52,7 +53,25 @@ function CLootSellPreview:OnUIAction(action, payload)
         if self.State.pending or #self.State.items == 0 then
             return
         end
-        assert(payload.multiplier == 1 or payload.multiplier == 2, "Invalid multiplier")
+        local multiplier = 1
+        if payload.method == "Card" then
+            assert(self.State.doubleSaleCards > 0, "No double-sale cards")
+            self.State.doubleSaleCards = self.State.doubleSaleCards - 1
+            multiplier = 2
+        elseif payload.method == "Gems" then
+            assert(self.State.gems >= self.Config.doubleSaleGemCost, "Not enough gems")
+            self.State.gems = self.State.gems - self.Config.doubleSaleGemCost
+            multiplier = 2
+        elseif payload.method == "Vip" then
+            assert(self.State.isVip, "VIP required")
+            multiplier = 2
+        else
+            assert(payload.method == nil, "Unknown sale method")
+        end
+        if self.State.isVip and (payload.method == "Card" or payload.method == "Gems") then
+            multiplier = 4
+        end
+        assert(payload.multiplier == multiplier, "Invalid multiplier")
         assert(#payload.entryIds == #self.State.items, "Inventory changed")
         local total = 0
         for index, item in ipairs(self.State.items) do

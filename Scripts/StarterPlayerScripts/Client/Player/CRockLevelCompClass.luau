@@ -530,7 +530,8 @@ function Component:RestorePredictedRock(key)
                     local rock = self:CreateRock(area, column, row)
                     chunk.Rocks[key] = rock
                     self:UpdateRockAppearance(rock, area, self._health[key])
-                    self:SetRockState(rock, RockLevel.GetDamage(self:GetNumber(Fields.RockTrainingLevel), area.Index)
+                    self:SetRockState(rock, RockLevel.GetDamage(self:GetNumber(Fields.RockTrainingLevel), area.Index,
+                        self:GetNumber(Fields.RockTrainingValue))
                         < RockLevel.HP[area.Index])
                 end
             end
@@ -547,7 +548,8 @@ function Component:ApplyHit(key, area)
         return
     end
     local oldValue = self._health[key] or RockLevel.HP[area.Index]
-    local damage = RockLevel.GetDamage(self:GetNumber(Fields.RockTrainingLevel), area.Index)
+    local damage = RockLevel.GetDamage(self:GetNumber(Fields.RockTrainingLevel), area.Index,
+        self:GetNumber(Fields.RockTrainingValue))
     if oldValue <= 0 or damage <= 0 then
         return
     end
@@ -657,7 +659,8 @@ function Component:ResolvePickaxeHit(character, key, area)
     end
     local cells = RockLevel.GetFrontCells(area, root.Position, root.CFrame.LookVector)
     local health = self._health[key] or RockLevel.HP[area.Index]
-    local damage = RockLevel.GetDamage(self:GetNumber(Fields.RockTrainingLevel), area.Index)
+    local damage = RockLevel.GetDamage(self:GetNumber(Fields.RockTrainingLevel), area.Index,
+        self:GetNumber(Fields.RockTrainingValue))
     if damage >= RockLevel.HP[area.Index] then
         local column = math.floor((root.Position.X - area.MinX) / RockLevel.CellSize)
         local row = math.floor((root.Position.Z - area.MinZ) / RockLevel.CellSize)
@@ -865,12 +868,13 @@ function Component:UpdateAttacks()
     local targetFound = false
     local powerRoot
     local level = self:GetNumber(Fields.RockTrainingLevel)
+    local strength = self:GetNumber(Fields.RockTrainingValue)
     -- 气场不使用攻击范围的外扩边界，避免相邻低级关卡使高级关卡内仍显示秒杀特效。
     for index, area in ipairs(self._areas) do
         if math.abs(position.Y - area.FloorY) < 12
             and position.X >= area.MinX and position.X < area.MinX + area.Columns * RockLevel.CellSize
             and position.Z >= area.MinZ and position.Z < area.MinZ + area.Rows * RockLevel.CellSize then
-            if RockLevel.GetDamage(level, index) >= RockLevel.HP[index] then
+            if RockLevel.GetDamage(level, index, strength) >= RockLevel.HP[index] then
                 powerRoot = root
             end
             break
@@ -881,7 +885,7 @@ function Component:UpdateAttacks()
         if math.abs(position.Y - area.FloorY) < 12
             and position.X >= area.MinX - 8 and position.X < area.MinX + area.Node.Size.X + 8
             and position.Z >= area.MinZ - 8 and position.Z < area.MinZ + area.Node.Size.Z + 8 then
-            local damage = RockLevel.GetDamage(level, index)
+            local damage = RockLevel.GetDamage(level, index, strength)
             local cells = RockLevel.GetFrontCells(area, position, root.CFrame.LookVector)
             local instantBreak = damage >= RockLevel.HP[index]
             if instantBreak then
@@ -1395,11 +1399,12 @@ function Component:UpdateVisuals()
         end
     end
     local level = self:GetNumber(Fields.RockTrainingLevel)
+    local strength = self:GetNumber(Fields.RockTrainingValue)
     local loading = self._loadingChunk
     if loading then
         local columns = math.min(6, loading.Area.Columns - loading.Column)
         local count = columns * math.min(6, loading.Area.Rows - loading.Row)
-        local canCollide = RockLevel.GetDamage(level, loading.Area.Index) < RockLevel.HP[loading.Area.Index]
+        local canCollide = RockLevel.GetDamage(level, loading.Area.Index, strength) < RockLevel.HP[loading.Area.Index]
         for cell = loading.NextCell, math.min(loading.NextCell + 5, count - 1) do
             local row = loading.Row + math.floor(cell / columns)
             local column = loading.Column + cell % columns
@@ -1417,10 +1422,11 @@ function Component:UpdateVisuals()
             self._loadingChunk = nil
         end
     end
-    if self._refreshRocks or self._visualLevel ~= level then
+    if self._refreshRocks or self._visualLevel ~= level or self._visualStrength ~= strength then
         self._refreshRocks = false
         self._visualLevel = level
-        self:RefreshVisibleRocks(level)
+        self._visualStrength = strength
+        self:RefreshVisibleRocks(level, strength)
     end
     for rock, reaction in pairs(self._hitReactions) do
         self:UpdateRockAppearance(rock, reaction.Area, reaction.Health)
@@ -1429,11 +1435,12 @@ end
 
 --- 在状态变化或低频检查时同步已显示石头，避免静止石头每帧重复计算与写属性。
 --- @param level number 当前训练等级，按关卡满血判断是否允许直接穿行。
-function Component:RefreshVisibleRocks(level)
+--- @param strength number 当前阶段累计训练值，同等级内增长也刷新秒杀碰撞。
+function Component:RefreshVisibleRocks(level, strength)
     for index = 1, #self._chunks do
         local chunk = self._chunks[index]
         if chunk.Rocks then
-            local canCollide = RockLevel.GetDamage(level, chunk.Area.Index) < RockLevel.HP[chunk.Area.Index]
+            local canCollide = RockLevel.GetDamage(level, chunk.Area.Index, strength) < RockLevel.HP[chunk.Area.Index]
             for key, rock in pairs(chunk.Rocks) do
                 local health = self._health[key] or RockLevel.HP[chunk.Area.Index]
                 if health <= 0 then

@@ -273,7 +273,7 @@ function Component:SendRockRound()
     end
 end
 
---- 命中记录只保存服务端认可的等级与次数；确认击破时直接结算掉落，再回传剩余血量。
+--- 命中记录只累计服务端认可的实际伤害；确认击破时直接结算掉落，再回传剩余血量。
 --- @param key string 客户端命中的石头格号。
 --- @param round number 客户端当前关卡轮次。
 --- @return boolean 是否认可本次命中，可用于回滚客户端预测。
@@ -301,7 +301,7 @@ function Component:RecordHit(key, round)
         return false
     end
     local level = self:GetNumber(Fields.RockTrainingLevel)
-    local damage = RockLevel.GetDamage(level, area.Index)
+    local damage = RockLevel.GetDamage(level, area.Index, self:GetNumber(Fields.RockTrainingValue))
     if damage <= 0 then
         return false
     end
@@ -330,37 +330,30 @@ function Component:RecordHit(key, round)
         return false
     end
     -- 等级复制延迟时直接校正为击破，已具备开奖资格的格子不再产生训练收益。
-    if self:GetRecordedDamage(key, area) >= RockLevel.HP[area.Index] then
+    if self:GetRecordedDamage(key) >= RockLevel.HP[area.Index] then
         self:RequestDrop(key, round)
         return true, 0
     end
     local record = self._attackRecords[key]
     if not record then
-        record = {Hits = {}, Character = character}
+        record = {Damage = 0, Character = character}
         self._attackRecords[key] = record
     end
-    record.Hits[level] = (record.Hits[level] or 0) + 1
+    record.Damage += damage
     self:PublishEvent("RockTrainingHit")
-    local health = math.max(0, RockLevel.HP[area.Index] - self:GetRecordedDamage(key, area))
+    local health = math.max(0, RockLevel.HP[area.Index] - self:GetRecordedDamage(key))
     if health == 0 then
         self:RequestDrop(key, round)
     end
     return true, health
 end
 
---- 根据命中时的服务端等级回算有效伤害，不接受客户端上报的血量或伤害。
+--- 累计每次命中时的服务端伤害，不用后续增长的力量回算历史命中。
 --- @param key string 已校验的石头格号。
---- @param area table 石头所属关卡。
 --- @return number 有效命中记录能够证明的累计伤害。
-function Component:GetRecordedDamage(key, area)
+function Component:GetRecordedDamage(key)
     local record = self._attackRecords[key]
-    local totalDamage = 0
-    if record then
-        for level, count in pairs(record.Hits) do
-            totalDamage += RockLevel.GetDamage(level, area.Index) * count
-        end
-    end
-    return totalDamage
+    return record and record.Damage or 0
 end
 
 --- 使用区域预生成记录揭露格子；空格也只结算一次，创建失败保留原记录供重试。
@@ -380,7 +373,7 @@ function Component:RequestDrop(key, round)
     local character = self:GetPlayerCharacter()
     local humanoid = character and character:FindFirstChildOfClass("Humanoid")
     if not record or record.Character ~= character or not humanoid or humanoid.Health <= 0
-        or self:GetRecordedDamage(key, area) < RockLevel.HP[area.Index] then
+        or self:GetRecordedDamage(key) < RockLevel.HP[area.Index] then
         return
     end
     if not self:InitializeArea(area) then

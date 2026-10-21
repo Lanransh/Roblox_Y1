@@ -3,6 +3,13 @@
 Config.qualities:table<string, string>，必填，品质 ID 到 #RRGGBB 十六进制颜色的字典。
 所有 items[i].qualityId 必须在此字典中存在；品质 ID 由游戏配置定义，不硬编码枚举。
 Config.qualityGradientEnds:table<string, string>，可选，品质 ID 到 #RRGGBB 渐变终色；缺省使用 qualities 中的颜色。条目从上到下渐变。
+Config.doubleSaleGemCost:number，必填，单次双倍出售的钻石费用，无默认值。
+State.doubleSaleCards:number 可选，缺省 0，拥有的双倍卡数量。
+State.gems:number 可选，缺省 0，钻石余额。State.isVip:boolean 可选，缺省 false。
+双倍菜单叠在列表上，列表保持可见但禁用底层按钮；关闭后恢复，打开不会发送出售动作。
+Sell 的双倍动作新增 method:string，Card / Gems / Vip；普通出售省略。
+Card/Gems 的 multiplier 为 2，VIP 时为 4；Vip 方式固定 2。
+真实业务必须验证费用、库存和资格，成功后同步卡券/钻石/背包。
 Config.capacity:number，必填，正整数，背包条目容量，当前为 12，无默认值。
 State 为完整输入，不是增量，所有必填字段无默认值：
   isOpen:boolean 窗口显示；
@@ -20,14 +27,14 @@ State 为完整输入，不是增量，所有必填字段无默认值：
 每条占一个容量，不合并同名物品。数量由 #items 计算；达到容量显示黄色。
 所有条目图标目前统一使用设计模板的问号占位资源，尚未配置真实 Roblox 图标 ID。
 最小示例：
-  self.Config = {capacity = 12, qualities = {common = "#A5ADB8"}}
+  self.Config = {capacity = 12, doubleSaleGemCost = 40, qualities = {common = "#A5ADB8"}}
   self.State = {isOpen = true, items = {{id = "scroll_001", name = "Ancient Scroll", qualityId = "common", value = 18200000}}}
 GetUIConfig/GetUIState 默认读取 self.Config/self.State；首次刷新前准备完整数据。
 RefreshUI 调用 Render(GetUIState())，不合并补丁。
 接入 OnReady 先调父方法，再 BindUIData()、Show()；更新 State 后 RefreshUI()。
 加载时使用 items={}, pending=true, message="Loading items..."；准备完再刷新。
 必须覆写 OnUIAction(action,payload)，无返回值：
-  Sell：{entryIds:array<string> 当前所有背包实例 ID, multiplier:number 仅 1 或 2}；
+  Sell：{entryIds:array<string> 当前所有背包实例 ID, multiplier:number 1 / 2 / 4, method:string? Card / Gems / Vip}；
   Close：{}。
 可选覆写 GetItemQualityColor(item)，输入为当前完整道具条目，返回 Color3；
 默认读取 Config.qualities[item.qualityId]，缺失时明确报错，不沿用上一条颜色。
@@ -78,17 +85,62 @@ function CLootSellView:OnReady()
     self.StatusMoneyIcon = FXLoader:Here(root, "PopupPanelImg.StatusMoneyIconImg")
     self.SellAllBtn = FXLoader:Here(root, "PopupPanelImg.TotalImg.SellAllBtn")
     self.SellDoubleBtn = FXLoader:Here(root, "PopupPanelImg.TotalImg.SellDoubleBtn")
-    local closeBtn = FXLoader:Here(root, "TitleBox.CloseSurfaceImg")
+    self.DoubleSaleBox = FXLoader:Here(root, "DoubleSaleBox")
+    self.CardBtn = FXLoader:Here(root, "DoubleSaleBox.PopupPanelImg.CardBtn")
+    self.GemsBtn = FXLoader:Here(root, "DoubleSaleBox.PopupPanelImg.GemsBtn")
+    self.VipBtn = FXLoader:Here(root, "DoubleSaleBox.PopupPanelImg.VipBtn")
+    self.GemsPriceTxt = FXLoader:Here(root, "DoubleSaleBox.PopupPanelImg.GemsBtn.ButtonTxt")
+    self.DoubleSaleOpen = false
+    local backBtn = FXLoader:Here(root, "DoubleSaleBox.TitleBox.CloseSurfaceImg.CloseBtn")
+    -- 二级菜单关闭只返回列表，不提交出售。
+    self:TrackConnection(backBtn.Activated:Connect(function()
+        self.DoubleSaleOpen = false
+        self:RefreshUI()
+    end))
+    self:TrackConnection(self.CardBtn.Activated:Connect(function()
+        self:ConfirmDoubleSale("Card")
+    end))
+    self:TrackConnection(self.GemsBtn.Activated:Connect(function()
+        self:ConfirmDoubleSale("Gems")
+    end))
+    self:TrackConnection(self.VipBtn.Activated:Connect(function()
+        self:ConfirmDoubleSale("Vip")
+    end))
+    self.CloseBtn = FXLoader:Here(root, "TitleBox.CloseSurfaceImg")
     -- 点击时发送当前配置中的稳定 ID。
     self:TrackConnection(self.SellAllBtn.Activated:Connect(function()
         self:EmitUIAction("Sell", {entryIds = self:GetEntryIds(), multiplier = 1})
     end))
     self:TrackConnection(self.SellDoubleBtn.Activated:Connect(function()
-        self:EmitUIAction("Sell", {entryIds = self:GetEntryIds(), multiplier = 2})
+        self.DoubleSaleOpen = true
+        self:RefreshUI()
     end))
-    self:TrackConnection(closeBtn.Activated:Connect(function()
+    self:TrackConnection(self.CloseBtn.Activated:Connect(function()
         self:EmitUIAction("Close", {})
     end))
+end
+
+-- 选定出售方式后提交稳定条目 ID；扣费和资格校验由接入层负责。
+-- @param method string Card / Gems / Vip
+function CLootSellView:ConfirmDoubleSale(method)
+    local state = self:GetUIState()
+    if not self.DoubleSaleOpen or state.pending or #state.items == 0 then
+        return
+    end
+    if method == "Card" and (state.doubleSaleCards or 0) < 1 then
+        return
+    elseif method == "Gems" and (state.gems or 0) < self:GetUIConfig().doubleSaleGemCost then
+        return
+    elseif method == "Vip" and not state.isVip then
+        return
+    end
+    local multiplier = 2
+    if state.isVip and method ~= "Vip" then
+        multiplier = 4
+    end
+    self.DoubleSaleOpen = false
+    self:EmitUIAction("Sell", {entryIds = self:GetEntryIds(), multiplier = multiplier, method = method})
+    self:RefreshUI()
 end
 
 -- 打开时刷新最新数据。
@@ -118,8 +170,17 @@ end
 -- 按稳定 ID 更新条目，只创建新增条目并清理已移除条目。
 -- @param state table 完整列表状态，见文件头
 function CLootSellView:Render(state)
+    if not state.isOpen or #state.items == 0 then
+        self.DoubleSaleOpen = false
+    end
     self.Panel.Visible = state.isOpen
     self.Title.Visible = state.isOpen
+    self.DoubleSaleBox.Visible = state.isOpen and self.DoubleSaleOpen
+    self.GemsPriceTxt.Text = tostring(self:GetUIConfig().doubleSaleGemCost)
+    local canSell = #state.items > 0 and not state.pending
+    self:SetButtonEnabled(self.CardBtn, canSell and (state.doubleSaleCards or 0) > 0)
+    self:SetButtonEnabled(self.GemsBtn, canSell and (state.gems or 0) >= self:GetUIConfig().doubleSaleGemCost)
+    self:SetButtonEnabled(self.VipBtn, canSell and state.isVip == true)
     local present = {}
     local total = 0
     for index, item in ipairs(state.items) do
@@ -201,8 +262,9 @@ function CLootSellView:Render(state)
     elseif count == 0 and not state.message then
         self.StatusTxt.Text = Text.Tr(TranslationTexts.NoItems)
     end
-    self:SetButtonEnabled(self.SellAllBtn, count > 0 and not state.pending)
-    self:SetButtonEnabled(self.SellDoubleBtn, count > 0 and not state.pending)
+    self:SetButtonEnabled(self.SellAllBtn, count > 0 and not state.pending and not self.DoubleSaleOpen)
+    self:SetButtonEnabled(self.SellDoubleBtn, count > 0 and not state.pending and not self.DoubleSaleOpen)
+    self:SetButtonEnabled(self.CloseBtn, not self.DoubleSaleOpen)
 end
 
 -- 业务接入必须处理出售和关闭。

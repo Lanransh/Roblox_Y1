@@ -130,10 +130,10 @@ return {
         },
         [107] = {
             Id = 107,
-            Name = [[Noob Card]],
+            Name = [[NoobCard]],
             Desc = [[Adds one progress to today's Noob task.]],
             Quality = 12,
-            IconId = [[rbxassetid://117314008364013]],
+            IconId = [[rbxassetid://110509395107513]],
             DisplayModelId = nil
         }
     },
