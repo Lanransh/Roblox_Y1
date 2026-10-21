@@ -6,6 +6,10 @@ return {
         "C2S_OpenGiftDrop",
         -- goodsId: number，服务端校验钻石余额与下一档；返回 success、key、data。
         "C2S_BuyCurrencyShopGoods",
+        -- action: Open|Close|Select|PromptRequested|Cancel，productId: number? 平台产品 ID。
+        -- attemptId: string? 本次点击标识；Select/PromptRequested/Cancel 必填，仅匹配动作，不用于收据归属。
+        -- 单向行为统计；余额及漏斗会话由服务端确定，成功步骤只来自已保存收据。
+        "C2S_RobuxPurchaseAnalytics",
         -- kind: "online"|"signin"|"diamonds"，rewardId: string 稳定配置 ID；身份来自引擎。
         -- RPC 返回 {success: boolean, key: string, state: table?}；服务端决定日期、资格及奖励。
         "C2S_ClaimWelfareReward",

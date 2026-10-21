@@ -53,6 +53,18 @@ end
 
 --- 商店协议只注册一次；玩家身份始终取网络层认证结果。
 function Manager:RegCurrencyShopMsg()
+    --- 客户端仅报告界面动作；统计错误不影响购买或其他协议。
+    --- @param userId number 引擎认证玩家 ID。
+    --- @param action any 固定商店动作。
+    --- @param productId any 平台商品 ID，不接受客户端余额。
+    --- @param attemptId any 本次点击标识，由分析组件校验并匹配。
+    FX.Network:RegClientMsgCallback("C2S_RobuxPurchaseAnalytics", function(userId, action, productId, attemptId)
+        local player = self:GetPlayerObject(userId)
+        local analytics = player and player:GetComponent("SAnalyticsComp")
+        if analytics then
+            pcall(analytics.RecordShopAction, analytics, action, productId, attemptId)
+        end
+    end)
     --- 未建立有效会话时拒绝扣款。
     --- @param userId number 引擎认证玩家 ID。
     --- @param goodsId any 客户端商品 ID。

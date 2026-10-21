@@ -9,9 +9,9 @@ _G.PlayerKVEnum = {
 local PlayerKVEnum = _G.PlayerKVEnum
 
 return {
-    -- 首局标记私有持久化；首付权威状态保留在 PurchaseReceipts 的分析快照内。
-    AnalyticsData = {
-        Type = "table", Key = "AnalyticsData", DefVal = {started = false},
+    -- 新版新手漏斗只从引导开始记录，重登不补报历史步骤。
+    FirstLootV2Step = {
+        Type = "number", Key = "FirstLootV2Step", DefVal = 0,
         KVTable = PlayerKVEnum.eStaticData, Sync = false,
     },
     -- 当前同服好友人数为临时同步状态，不写入存档或每日任务记录。

@@ -55,6 +55,10 @@ function Component:OnReady()
     --- @param purchased boolean 平台是否完成支付，奖励仍等待收据与数据同步。
     self:TrackConnection(MarketplaceService.PromptProductPurchaseFinished:Connect(function(userId, productId, purchased)
         if userId == self:GetPlayerNode().UserId and productId == self._promptProductId then
+            if not purchased then
+                self:ReportPurchaseAnalytics("Cancel", productId, self._purchaseAttemptId)
+            end
+            self._purchaseAttemptId = nil
             self._promptProductId = nil
             self._busy = false
             self._messageKey = purchased and TranslationTexts.Processing or nil
@@ -192,12 +196,26 @@ end
 --- 打开时刷新数据与商品页，不重复绑定事件。
 function Component:OnShow()
     self.State.open = true
+    if self.State.tab == "Robux" then
+        self:ReportPurchaseAnalytics("Open")
+    end
     self:RefreshUI()
 end
 
 --- 数据同步后仍保留关闭状态。
 function Component:OnHide()
     self.State.open = false
+    self:ReportPurchaseAnalytics("Close")
+end
+
+--- 统计单向发送并隔离失败，不参与界面、购买资格或发奖。
+--- @param action string Open、Close、Select、PromptRequested 或 Cancel。
+--- @param productId number? 平台产品 ID。
+--- @param attemptId string? 本次点击标识，防止同商品重试覆盖旧流程。
+function Component:ReportPurchaseAnalytics(action, productId, attemptId)
+    pcall(function()
+        FX.Network:SendMsgToServer("C2S_RobuxPurchaseAnalytics", action, productId, attemptId)
+    end)
 end
 
 --- 满级训练倍率只提示原因；可购买商品沿用钻石确认页或平台窗口。
@@ -207,6 +225,9 @@ function Component:OnUIAction(action, payload)
     if action == "Close" then
         self:Hide()
     elseif action == "SelectTab" then
+        if payload.tab ~= self.State.tab then
+            self:ReportPurchaseAnalytics(payload.tab == "Robux" and "Open" or "Close")
+        end
         self.State.tab = payload.tab
         self:RefreshUI()
     elseif action == "Purchase" and not self._busy then
@@ -237,15 +258,22 @@ function Component:Purchase(product)
     self._messageKey = nil
     self:RefreshUI()
     self._requestTask = task.defer(function()
+        local attemptId = FX.GenObjectID()
+        self._purchaseAttemptId = attemptId
+        self:ReportPurchaseAnalytics("Select", product.productId, attemptId)
         local ok, result = pcall(function()
             self._promptProductId = product.productId
             return self._commonUI:ShowDeveloperBuyUI(product.productId)
         end)
         self._requestTask = nil
         if not ok or not result then
+            self:ReportPurchaseAnalytics("Cancel", product.productId, attemptId)
+            self._purchaseAttemptId = nil
             self._busy = false
             self._promptProductId = nil
             self._messageKey = TranslationTexts.Unavailable
+        else
+            self:ReportPurchaseAnalytics("PromptRequested", product.productId, attemptId)
         end
         self:RefreshUI()
     end)
