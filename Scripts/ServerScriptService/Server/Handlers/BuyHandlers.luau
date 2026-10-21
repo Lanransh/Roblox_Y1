@@ -3,7 +3,7 @@
 local FX = _G.FX
 local Rebirth = FX.Loader:RequireShared("Scripts/Game/Shared/Rebirth")
 local Fields = _G.PlayerDataConfig
-local Handlers = {AddGem = {}, AddItem = {}, SkipRebirth = {}}
+local Handlers = {AddGem = {}, AddItem = {}, SkipRebirth = {}, UnlockVip = {}}
 
 --- 预检与收据结算共同校验永久限购，记录按业务 ID 保存。
 --- @param context table 框架提供的已认证购买上下文。
@@ -84,6 +84,24 @@ function Handlers.SkipRebirth:Buy(context)
     end
     context.playerObject:RequireComponent("SMiscComp"):ApplyRebirth()
     RecordPurchase(context)
+    return true
+end
+
+--- 已支付的不同收据均需可结算，永久资格重复写入仍保持幂等。
+--- @param context table 已认证的平台购买上下文。
+--- @return boolean 是否允许发起购买。
+function Handlers.UnlockVip:CanBuy(context)
+    return context.num == 1
+end
+
+--- 仅由平台收据解锁永久 VIP，随框架收据一起保存并去重。
+--- @param context table 平台收据购买上下文。
+--- @return boolean 永久资格是否已写入。
+function Handlers.UnlockVip:Buy(context)
+    if context.num ~= 1 then
+        return false
+    end
+    context.playerObject:SetFlag(Fields.Vip, true)
     return true
 end
 

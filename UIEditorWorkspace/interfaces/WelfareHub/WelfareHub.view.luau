@@ -151,6 +151,7 @@ local TranslationTexts = Text.Define("WelfareHub", {
     DoubleRewards = "2× Rewards!",
     NoOfflineRewards = "No offline rewards",
     RewardAmount = "{name} ×{amount}",
+    TaskQuantity = "x{amount:int}",
     MoneyAmount = "+${amount}",
     TrainingAmount = "+{amount}",
 })
@@ -191,6 +192,9 @@ function RewardRow:Update(config, state)
     rewardLabel.Visible = not isMoney
     rewardLabel.Text = rewardText
     if self.Kind == "task" then
+        Loader:Here(root, "QuantityTxt").Text = Text.Tr(TranslationTexts.TaskQuantity, {
+            amount = config.reward.amount,
+        })
         Loader:Here(root, "GemIconBox").Visible = display.icon == "Gem"
         Loader:Here(root, "EggIconBox").Visible = display.icon == "Egg"
         Loader:Here(root, "TaskNameTxt").Text = Text.TrSource(config.title)

@@ -6,6 +6,8 @@ local TranslationTexts = Text.Define("LootSell", {
     Changed = "Your items have changed. Please try again.",
     Empty = "You have no items to sell.",
     NeedDoubleCard = "You need a Double Sell Value Card to sell for double value.",
+    NeedDiamonds = "Not enough diamonds.",
+    NeedVip = "Unlock VIP to use free double selling.",
     Success = "Items sold!",
 })
 local HttpService = game:GetService("HttpService")
@@ -23,7 +25,14 @@ end
 --- 服务端订阅只监听后续变化，登录时需先生成一次出售快照。
 function Component:OnPlayerLogin()
     self:WatchDataChanged(Fields.StoredLoot, self.RefreshEntries, self)
+    self:WatchDataChanged(Fields.Inventory, self.RefreshCards, self)
+    self:RefreshCards()
     self:RefreshEntries()
+end
+
+--- 背包变化时只同步出售卡数量，不向客户端公开库存存档。
+function Component:RefreshCards()
+    self:SetNumber(Fields.DoubleSaleCards, self:RequireComponent("FSInventoryComp"):GetItemCountById(103))
 end
 
 --- 给 KV 收藏品补唯一持久 ID，同名同价也不会混淆出售目标。
@@ -58,10 +67,31 @@ end
 
 --- 全部目标校验通过才扣 KV 记录；无让出执行的结算防止重复请求重复到账。
 --- @param entryIds table 客户端展示的稳定实例 ID 数组，不接受格号或金额。
---- @param multiplier number 仅允许 1 或 2；2 倍出售需要消耗一张 103 号卡。
+--- @param multiplier number 客户端预览倍率，实际倍率由服务端资格决定。
+--- @param method string? Card / Gems / Vip；普通出售省略。
 --- @return table 出售是否成功、文案 Key、实际收益与最新展示快照。
-function Component:SellLoot(entryIds, multiplier)
-    if type(entryIds) ~= "table" or (multiplier ~= 1 and multiplier ~= 2) then
+function Component:SellLoot(entryIds, multiplier, method)
+    local isVip = self:GetFlag(Fields.Vip)
+    local saleMultiplier = 1
+    local cost = {}
+    local costFailure = TranslationTexts.Unknown
+    if method == "Card" then
+        saleMultiplier = isVip and 4 or 2
+        cost = {{Type = "Item", ItemId = 103, Count = 1}}
+        costFailure = TranslationTexts.NeedDoubleCard
+    elseif method == "Gems" then
+        saleMultiplier = isVip and 4 or 2
+        cost = {{Type = "Money", Currency = "Diamonds", Count = _G.GoodsConfig.GemGoodsData[311].Price}}
+        costFailure = TranslationTexts.NeedDiamonds
+    elseif method == "Vip" then
+        if not isVip then
+            return {success = false, key = TranslationTexts.NeedVip}
+        end
+        saleMultiplier = 2
+    elseif method ~= nil then
+        return {success = false, key = TranslationTexts.Unknown}
+    end
+    if type(entryIds) ~= "table" or multiplier ~= saleMultiplier then
         return {success = false, key = TranslationTexts.Unknown}
     end
     local data = self:GetTable(Fields.StoredLoot)
@@ -102,15 +132,14 @@ function Component:SellLoot(entryIds, multiplier)
         return {success = false, key = TranslationTexts.Changed}
     end
     -- Price 已包含幸运倍率，不重复乘 LuckRate；图鉴激活记录始终保留。
-    amount *= Rebirth.GetMoneyRate(self:GetNumber(Fields.RebirthCount)) * multiplier
+    amount *= Rebirth.GetMoneyRate(self:GetNumber(Fields.RebirthCount)) * saleMultiplier
     if not (amount >= 0 and amount < math.huge)
         or self:GetNumber(Fields.Money) + amount >= math.huge then
         return {success = false, key = TranslationTexts.Unknown}
     end
     local rewardComp = self:RequireComponent("FSRewardComp")
-    local cost = multiplier == 2 and {{Type = "Item", ItemId = 103, Count = 1}} or {}
-    if multiplier == 2 and not rewardComp:CanConsumeRewards(cost) then
-        return {success = false, key = TranslationTexts.NeedDoubleCard}
+    if not rewardComp:CanConsumeRewards(cost) then
+        return {success = false, key = costFailure}
     end
     local rewards = amount > 0 and {{Type = "Money", Currency = "Money", Count = amount}} or {}
     if not rewardComp:ExchangeRewards(cost, rewards) then

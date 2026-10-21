@@ -35,7 +35,8 @@ function Component:OnReady()
     self._commonUI = self:GetPlayerObject():RequireComponent("FCCommonUIComp")
     self._commonUI:RegisterTrainingClickModal(root)
     self._localization = self._commonUI.Localization
-    self.Config = {capacity = RockLevel.StoredLootCapacity, qualities = {}, qualityGradientEnds = {}}
+    self.Config = {capacity = RockLevel.StoredLootCapacity, qualities = {}, qualityGradientEnds = {},
+        doubleSaleGemCost = _G.GoodsConfig.GemGoodsData[311].Price}
     -- 沿用示例浅色方案，每五档循环配色，键仍使用真实配置品质 ID。
     local qualityColors = {
         {"#E5E9EF", "#C8D1DD"},
@@ -97,6 +98,11 @@ end
 
 --- 快照与重生倍率都由服务端同步；库存保持私有，不从 Tool 名称推断道具。
 function Component:BindUIData()
+    for index, field in ipairs({Fields.DoubleSaleCards, Fields.Diamonds, Fields.Vip}) do
+        self:WatchDataChanged(field, function()
+            self:RefreshLoot()
+        end)
+    end
     self:WatchDataChanged(Fields.LootSellEntries, self.RefreshLoot, self)
     self:WatchDataChanged(Fields.RebirthCount, function()
         self:RefreshLoot()
@@ -107,6 +113,9 @@ end
 --- @param entries table? 服务端快照；省略时读取最新同步值。
 function Component:RefreshLoot(entries)
     entries = entries or self:GetTable(Fields.LootSellEntries)
+    self.State.doubleSaleCards = self:GetNumber(Fields.DoubleSaleCards)
+    self.State.gems = self:GetNumber(Fields.Diamonds)
+    self.State.isVip = self:GetFlag(Fields.Vip)
     local items = {}
     local rate = Rebirth.GetMoneyRate(self:GetNumber(Fields.RebirthCount))
     for index, entry in ipairs(entries) do
@@ -126,9 +135,13 @@ function Component:RefreshLoot(entries)
     self:RefreshUI()
 end
 
---- 复用父类列表更新，只覆写实际图标与项目统一数值、本地化文案。
+--- 复用父类列表更新，并在父类清除空包双倍出售状态前给出本地化提示。
 --- @param state table 正式库存派生的完整展示状态。
 function Component:Render(state)
+    if state.isOpen and self.DoubleSaleOpen and #state.items == 0 then
+        self.DoubleSaleOpen = false
+        self._commonUI:ShowLocalizedTips(TranslationTexts.Empty)
+    end
     Component.Super.Render(self, state)
     local total = 0
     for index, item in ipairs(state.items) do
@@ -146,8 +159,25 @@ function Component:Render(state)
         count = #state.items, capacity = self.Config.capacity,
     })
     -- 空包点击仍需反馈，仅请求处理中禁用按钮，覆盖展示类的空包禁用规则。
-    self:SetButtonEnabled(self.SellAllBtn, not state.pending)
-    self:SetButtonEnabled(self.SellDoubleBtn, not state.pending)
+    self:SetButtonEnabled(self.SellAllBtn, not state.pending and not self.DoubleSaleOpen)
+    self:SetButtonEnabled(self.SellDoubleBtn, not state.pending and not self.DoubleSaleOpen)
+    self:SetButtonEnabled(self.VipBtn, not state.pending and #state.items > 0)
+    self.GemsPriceTxt.Text = GameUtility.NumberToText(self.Config.doubleSaleGemCost)
+end
+
+--- 未解锁 VIP 时复用现有平台购买入口；资格只在服务端收据到账后改变。
+--- @param method string Card / Gems / Vip。
+function Component:ConfirmDoubleSale(method)
+    if method == "Vip" and not self.State.isVip then
+        if not self.DoubleSaleOpen or self.State.pending or #self.State.items == 0 then
+            return
+        end
+        self:GetPlayerObject():RequireComponent("CCurrencyShopUIComp"):Purchase({
+            productId = _G.GoodsConfig.GoodsData[1].RobloxProductId,
+        })
+        return
+    end
+    Component.Super.ConfirmDoubleSale(self, method)
 end
 
 --- 每次打开读取当前正式库存，不重新绑定按钮。
@@ -159,6 +189,7 @@ end
 --- 关闭后库存同步只刷新数据，成功出售的金币雨等窗口实际退场后播放。
 function Component:OnHide()
     self.State.isOpen = false
+    self.DoubleSaleOpen = false
     if self._pendingMoneyRain then
         self._pendingMoneyRain = nil
         self:GetPlayerObject():RequireComponent("CMainUIComp"):ShowMoneyRain()
@@ -167,7 +198,7 @@ end
 
 --- 出售仅提交稳定 ID 与固定倍率；等待结果期间禁止重复点击。
 --- @param action string 展示类发送的 Sell 或 Close。
---- @param payload table Sell 携带 entryIds 与 multiplier，Close 不使用参数。
+--- @param payload table Sell 携带 entryIds、multiplier 与可选 method，Close 不使用参数。
 function Component:OnUIAction(action, payload)
     if action == "Close" then
         self:Hide()
@@ -188,7 +219,7 @@ function Component:OnUIAction(action, payload)
         --- 按框架白名单请求本人正式库存出售，服务端自行计算金额。
         --- @return table 权威出售结果。
         local ok, result = pcall(function()
-            return FX.Network:InvokeServer("C2S_SellLoot", payload.entryIds, payload.multiplier)
+            return FX.Network:InvokeServer("C2S_SellLoot", payload.entryIds, payload.multiplier, payload.method)
         end)
         self._sellTask = nil
         self.State.pending = false

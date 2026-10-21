@@ -22,7 +22,7 @@ State 为完整输入，不是增量，所有必填字段无默认值：
   message:string 可选，完整提示原文，由 Text.TrSource 查询，不传拼接后的动态句子；省略空文本。
   soldAmount:number 可选，最近出售获得的金币；存在时优先显示本地化出售结果，0 也有效。
   无 message/soldAmount 且空列表时显示 No items to sell；新请求前清空两字段。
-条目原型位于隐藏的 Templates.LootTemplateImg，显示容器 LootListBox 仅挂载运行时克隆。
+条目原型位于隐藏的 Templates.LootTemplateImg，显示容器 LootListBox 仅挂载运��时克隆。
 按 items[i].id 复用与清理实例，items 顺序决定位置；空列表清理所有克隆，原型保留。
 每条占一个容量，不合并同名物品。数量由 #items 计算；达到容量显示黄色。
 所有条目图标目前统一使用设计模板的问号占位资源，尚未配置真实 Roblox 图标 ID。

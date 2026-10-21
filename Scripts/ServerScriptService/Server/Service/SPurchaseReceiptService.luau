@@ -4,6 +4,7 @@ local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local TranslationTexts = Text.Define("PurchaseReceipt", {
     DiamondsReceived = "Purchase received! +{value} Diamonds.",
     RebirthSuccess = "Rebirth complete!",
+    VipUnlocked = "VIP unlocked! Free double selling is now available.",
     ItemReceived = "Purchase received! {item} x{count:int} added to your inventory.",
 })
 local GameUtility = FX.Loader:RequireShared("Scripts/Game/Shared/GameUtility")
@@ -61,6 +62,8 @@ function Service.Init()
                 player:ShowLocalizedTips(TranslationTexts.DiamondsReceived, {value = GameUtility.NumberToText(goods.NumberArray[1])})
             elseif goods.BuyHandler == "SkipRebirth" then
                 player:ShowLocalizedTips(TranslationTexts.RebirthSuccess)
+            elseif goods.BuyHandler == "UnlockVip" then
+                player:ShowLocalizedTips(TranslationTexts.VipUnlocked)
             elseif goods.BuyHandler == "AddItem" then
                 player:ShowLocalizedTips(TranslationTexts.ItemReceived, {
                     itemSource = _G.ItemConfig.Display[goods.KVTable.ItemId].Name, count = goods.KVTable.Count,

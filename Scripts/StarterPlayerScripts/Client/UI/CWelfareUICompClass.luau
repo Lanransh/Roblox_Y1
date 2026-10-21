@@ -319,7 +319,7 @@ function Component:_RenderRewardIcon(root, reward, size)
         or _G.ItemConfig.Display[tonumber(reward.id)].IconId
 end
 
---- 离线训练使用服务端批次，页签本地化刷新后按当前选中状态恢复配色。
+--- 离线训练使用服务端批次；领取文案单独刷新，保留父类按钮状态和渐变配色。
 --- @param state table 离线秒数、训练值、领取状态与请求标记。
 function Component:RenderOffline(state)
     Component.Super.RenderOffline(self, state)
@@ -336,7 +336,7 @@ function Component:RenderOffline(state)
     for multiplier, name in ipairs({"SingleClaimBtn", "DoubleClaimBtn"}) do
         local label = state.pending and Text.Tr(TranslationTexts.Pending)
             or Text.Tr(TranslationTexts.OfflineClaim, {multiplier = multiplier})
-        self:RenderButton(FXLoader:Here(page, name), label, state.status == "Claimable" and not state.pending)
+        FXLoader:Here(page, name .. "/ButtonTxt").Text = label
     end
     local tab = FXLoader:Here(self.Root, "TabsBox/OfflineTabBtn")
     self:RenderButton(tab, "Offline Rewards", true)

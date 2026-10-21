@@ -9989,6 +9989,68 @@
                   "Visible": true,
                   "ZIndex": 3
                 }
+              },
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "06d6b748-ccc0-417e-ae54-8f4b81bf3f53",
+                    "name": "TextStroke",
+                    "properties": {
+                      "Color": "#20231c",
+                      "Enabled": true,
+                      "Thickness": 1,
+                      "Transparency": 0
+                    }
+                  }
+                ],
+                "className": "TextLabel",
+                "id": "65db26ce-f18f-4b70-90ec-bf0018b89d3f",
+                "name": "QuantityTxt",
+                "properties": {
+                  "AnchorPoint": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "AutoLocalize": false,
+                  "BackgroundColor3": "#ffffff",
+                  "BackgroundTransparency": 1,
+                  "ClipsDescendants": false,
+                  "Font": "GothamBold",
+                  "LayoutOrder": 0,
+                  "Position": {
+                    "x": {
+                      "offset": 438,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 70,
+                      "scale": 0
+                    }
+                  },
+                  "Rotation": 0,
+                  "Size": {
+                    "x": {
+                      "offset": 80,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 24,
+                      "scale": 0
+                    }
+                  },
+                  "Text": "",
+                  "TextColor3": "#ffffff",
+                  "TextScaled": false,
+                  "TextSize": 18,
+                  "TextTransparency": 0,
+                  "TextWrapped": false,
+                  "TextXAlignment": "Right",
+                  "TextYAlignment": "Center",
+                  "Visible": true,
+                  "ZIndex": 8
+                }
               }
             ],
             "className": "Frame",

@@ -9,6 +9,13 @@ _G.PlayerKVEnum = {
 local PlayerKVEnum = _G.PlayerKVEnum
 
 return {
+    -- VIP 由平台收据永久解锁；客户端只读取服务端同步资格。
+    Vip = {
+        Type = "boolean", Key = "Vip", DefVal = false,
+        KVTable = PlayerKVEnum.eStaticData, Sync = true,
+    },
+    -- 仅同步出售卡数量，正式背包内容仍保持私有。
+    DoubleSaleCards = {Type = "number", Key = "DoubleSaleCards", DefVal = 0, Sync = true},
     -- 新版新手漏斗只从引导开始记录，重登不补报历史步骤。
     FirstLootV2Step = {
         Type = "number", Key = "FirstLootV2Step", DefVal = 0,
