@@ -1,4 +1,4 @@
 interface:
   display_name: "Roblox 项目本地化"
-  short_description: "仅补动态翻译缺口，各文件独立定义，跳过静态与配置"
-  default_prompt: "使用 $roblox-localization。先读取 Generated 的展示与翻译逻辑，不修改生成脚本；只有 Generated 未正确处理的动态文本才在手写接入脚本补翻译，已处理的不重复补。无 Generated 对应的业务动态消息由所属脚本处理。各文件用自己的顶层 local TranslationTexts 定义所需动态文案，Key 不得重复，不创建全局共享表。配置引用不补定义，静态节点由工具收集不补表。Text.Tr 接收定义和参数；Text.TrSource 独立按原文查询。保留客户端翻译、服务端传参和语言刷新约定，不自动修改翻译文件、上传或启动试玩。"
+  short_description: "翻译动态文案与脚本创建节点的固定文字，仅检查文件内 Key 和 Source 唯一"
+  default_prompt: "使用 $roblox-localization 补充动态文案及脚本创建节点的固定文字翻译；同文件 Key、Source 均不重复，跨文件允许重复，不修改 Generated 或生成配置。"
