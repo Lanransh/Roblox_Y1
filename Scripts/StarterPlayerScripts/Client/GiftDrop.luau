@@ -5,6 +5,7 @@ local FX, FC = _G.FX, _G.FC
 local FXLoader = FX.Loader
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local TranslationTexts = Text.Define("GiftDrop", {
+    PickUp = "Pick Up",
     Ready = "Gifts ready to collect!",
     Complete = "All gifts collected today",
 })
@@ -185,10 +186,9 @@ function GiftDrop.Spawn(options, onOpened)
     sparkles.Enabled = false
     sparkles.Parent = sparkleOrigin
     local prompt = Instance.new("ProximityPrompt")
-    prompt.ActionText = "Pick Up"
+    prompt.AutoLocalize = false
+    prompt.ActionText = Text.Tr(TranslationTexts.PickUp)
     prompt.ObjectText = ""
-    prompt.AutoLocalize = true
-    prompt.RootLocalizationTable = FXLoader:Shared("Shared/Localization")
     prompt.KeyboardKeyCode = Enum.KeyCode.E
     prompt.MaxActivationDistance = 10
     prompt.HoldDuration = 0.5
@@ -200,6 +200,10 @@ function GiftDrop.Spawn(options, onOpened)
     local opening = false
     local updateConnection
     local promptConnection
+    --- 翻译器就绪或语言改变时刷新当前礼盒提示。
+    local localizationConnection = FC.Localization.Changed:Connect(function()
+        prompt.ActionText = Text.Tr(TranslationTexts.PickUp)
+    end)
 
     --- 提前取消本地礼盒，释放动画、交互连接与全部生成实例。
     function handle:Destroy()
@@ -209,6 +213,7 @@ function GiftDrop.Spawn(options, onOpened)
         destroyed = true
         updateConnection:Disconnect()
         promptConnection:Disconnect()
+        localizationConnection:Disconnect()
         container:Destroy()
     end
 

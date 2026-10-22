@@ -402,6 +402,7 @@ function Component:SendDrop(dropId, drop)
     FX.Network:SendMsgToClient(self:GetPlayerId(), "S2C_SpawnRockDrop", {
         DropId = dropId,
         DisplayModelId = drop.DisplayModelId,
+        PreviewModelIds = drop.PreviewModelIds,
         NameSource = GameConfig.ItemData[drop.ItemId].Name,
         Quality = drop.Quality,
         Price = drop.Price,
@@ -428,13 +429,18 @@ function Component:CreateDrop(key, area, cell, result, round)
     local now = workspace:GetServerTimeNow()
     local position = Vector3.new(area.MinX + ((cell - 1) % area.Columns + 0.5) * RockLevel.CellSize,
         area.FloorY, area.MinZ + (math.floor((cell - 1) / area.Columns) + 0.5) * RockLevel.CellSize)
-    local expiresAt = now + Collectible.DropLifetime
+    local previewModelIds = {}
+    for index, reward in ipairs(self._areaDefinitions[area.Index].Pool) do
+        previewModelIds[index] = reward.DisplayModelId
+    end
+    local expiresAt = now + Collectible.DropRevealDuration + Collectible.DropLifetime
     self._claimed[key] = true
     self._dropNodes[dropId] = {
         CellKey = key,
         Round = round,
         ExpiresAt = expiresAt,
-        ReadyAt = now + 0.6,
+        ReadyAt = now + Collectible.DropRevealDuration + 0.6,
+        PreviewModelIds = previewModelIds,
         Position = position,
         Quality = result.Quality,
         Price = result.Price,

@@ -3159,7 +3159,7 @@
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
-                      "offset": 326,
+                      "offset": 257,
                       "scale": 0
                     },
                     "y": {
@@ -3170,7 +3170,7 @@
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 270,
+                      "offset": 380,
                       "scale": 0
                     },
                     "y": {
@@ -3730,7 +3730,7 @@
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
-                      "offset": 220,
+                      "offset": 151,
                       "scale": 0
                     },
                     "y": {

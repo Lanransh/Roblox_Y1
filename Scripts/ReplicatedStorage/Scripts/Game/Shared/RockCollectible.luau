@@ -17,6 +17,7 @@ local QualityColors = {
 
 Collectible.PickupDistance = 10
 Collectible.DropLifetime = 10
+Collectible.DropRevealDuration = 1 -- 黑色候选轮转时长，客户端表现与服务端拾取等待共用。
 
 --- 按 GameConfig 的稳定展示路径读取道具模型，不通过道具 ID 猜模型下标。
 --- @param displayModelId string GameConfig.ItemData 中的完整实例路径。

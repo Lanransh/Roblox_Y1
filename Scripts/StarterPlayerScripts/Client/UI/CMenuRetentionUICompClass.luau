@@ -3,6 +3,8 @@ local FX = _G.FX
 local FXLoader = FX.Loader
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local TranslationTexts = Text.Define("MenuRetention", {
+    GiftTitle = "Don't leave yet! A gift is ready for you!",
+    GiftHint = "Close the Roblox menu to claim your gift.",
     OnlineCountdown = "Your next online reward is available in {time}!",
     Available = "Reward ready! Claim now!",
     Unknown = "Something went wrong. Please try again.",
@@ -218,10 +220,8 @@ function Component:RefreshGift()
         text.Text = sideText
     end
     self._giftPanel.Visible = available and self._offerOpen == true
-    self._giftTitle.AutoLocalize = true
-    self._giftTitle.Text = "Don't leave yet! A gift is ready for you!"
-    self._giftHint.AutoLocalize = true
-    self._giftHint.Text = "Close the Roblox menu to claim your gift."
+    self._giftTitle.Text = Text.Tr(TranslationTexts.GiftTitle)
+    self._giftHint.Text = Text.Tr(TranslationTexts.GiftHint)
     self._giftHint.Visible = GuiService.MenuIsOpen
     local reward = Welfare.ToDisplayReward(self._retention.Reward)
     if reward.type == "Gem" then

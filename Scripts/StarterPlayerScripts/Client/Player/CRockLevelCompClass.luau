@@ -2,6 +2,7 @@ local FX = _G.FX
 local FXLoader = FX.Loader
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local TranslationTexts = Text.Define("LootDisplay", {
+    PickUp = "Pick Up",
     Luck = "x{rate} Luck",
     Quality = "Quality {level:int}",
 })
@@ -216,12 +217,13 @@ function Component:RefreshLevelLuckSigns()
     end
 end
 
---- 只使用服务端签发给本人的掉落数据创建本地模型，其他玩家不会收到该实例。
+--- 只使用服务端签发给本人的掉落数据，先轮播黑色候选，再揭晓可拾取的真实模型。
 --- @param data table S2C_SpawnRockDrop 携带的掉落数据。
 function Component:SpawnDrop(data)
     if type(data) ~= "table" or type(data.DropId) ~= "string" or self._drops[data.DropId]
         or typeof(data.GroundPosition) ~= "Vector3" or type(data.ExpiresAt) ~= "number"
-        or type(data.Quality) ~= "number" or type(data.Price) ~= "number" then
+        or type(data.Quality) ~= "number" or type(data.Price) ~= "number"
+        or type(data.PreviewModelIds) ~= "table" then
         return
     end
     if not self._folder or not self._itemHUD then
@@ -250,13 +252,13 @@ function Component:SpawnDrop(data)
     hud.Frame.Timer.AutoLocalize = false
     hud.Frame.Timer.Visible = true
     hud.Parent = root
+    hud.Enabled = false
 
     local prompt = Instance.new("ProximityPrompt")
     -- 原生提示与掉落 HUD 共用客户端翻译及语言刷新入口。
-    prompt.ActionText = "Pick Up"
+    prompt.AutoLocalize = false
+    prompt.ActionText = Text.Tr(TranslationTexts.PickUp)
     prompt.ObjectText = ""
-    prompt.AutoLocalize = true
-    prompt.RootLocalizationTable = FXLoader:Shared("Shared/Localization")
     prompt.KeyboardKeyCode = Enum.KeyCode.E
     prompt.HoldDuration = 0.5
     prompt.MaxActivationDistance = Collectible.PickupDistance
@@ -291,11 +293,39 @@ function Component:SpawnDrop(data)
             prompt.Enabled = true
         end
     end)
-    model.Parent = self._folder
     self:UpdateDropText(drop, workspace:GetServerTimeNow())
 
-    --- 本地播放弹起与落地，完成后启用拾取并开始待拾取动画。
+    --- 随机切换同关卡候选且逐渐减速，真实模型在揭晓前不进入场景。
     drop.Task = task.spawn(function()
+        local startedAt = os.clock()
+        local previousIndex = nil
+        while os.clock() - startedAt < Collectible.DropRevealDuration do
+            local count = #data.PreviewModelIds
+            if count == 0 then
+                break
+            end
+            local index = math.random(1, previousIndex and count > 1 and count - 1 or count)
+            if previousIndex and count > 1 and index >= previousIndex then
+                index += 1
+            end
+            previousIndex = index
+            local previewTemplate = Collectible.ResolveModel(data.PreviewModelIds[index])
+            if previewTemplate then
+                self:ShowDropPreview(drop, previewTemplate, data.GroundPosition)
+            end
+            local elapsed = os.clock() - startedAt
+            task.wait(math.min(0.06 + 0.12 * (elapsed / Collectible.DropRevealDuration) ^ 2,
+                math.max(0, Collectible.DropRevealDuration - elapsed)))
+            if self._drops[drop.DropId] ~= drop then
+                return
+            end
+        end
+        if drop.Preview then
+            drop.Preview:Destroy()
+            drop.Preview = nil
+        end
+        model.Parent = self._folder
+        hud.Enabled = true
         local tween = TweenService:Create(root, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
             {CFrame = landing + Vector3.new(0, 4, 0)})
         drop.Tween = tween
@@ -321,10 +351,48 @@ function Component:SpawnDrop(data)
     end)
 end
 
+--- 每次只保留一个无贴图黑色剪影，统一大小，避免候选轮换时因模型原尺寸跳变。
+--- @param drop table 本客户端正在揭晓的掉落。
+--- @param template Model 当前随机候选模板，只克隆不修改。
+--- @param groundPosition Vector3 服务端确认的石头落点。
+function Component:ShowDropPreview(drop, template, groundPosition)
+    if drop.Preview then
+        drop.Preview:Destroy()
+    end
+    local preview = Collectible.CreateModel(template)
+    local size = preview:GetExtentsSize()
+    preview:ScaleTo(preview:GetScale() * 3.2 / math.max(size.X, size.Y, size.Z))
+    for index, node in ipairs(preview:GetDescendants()) do
+        if node:IsA("BasePart") then
+            node.Color = Color3.new(0, 0, 0)
+            node.Material = Enum.Material.SmoothPlastic
+            node.MaterialVariant = ""
+            node.Reflectance = 0
+            if node:IsA("MeshPart") then
+                node.TextureID = ""
+            end
+        elseif node:IsA("SurfaceAppearance") or node:IsA("Decal") then
+            node:Destroy()
+        elseif node:IsA("SpecialMesh") then
+            node.TextureId = ""
+            node.VertexColor = Vector3.zero
+        elseif node:IsA("ParticleEmitter") or node:IsA("Trail") or node:IsA("Beam") or node:IsA("Light") then
+            node.Enabled = false
+        end
+    end
+    local box = preview:GetBoundingBox()
+    drop.PreviewOffset = preview:GetPivot():ToObjectSpace(box):Inverse()
+    drop.PreviewCenter = groundPosition + Vector3.new(0, 3, 0)
+    preview:PivotTo(CFrame.new(drop.PreviewCenter) * drop.PreviewOffset)
+    drop.Preview = preview
+    preview.Parent = self._folder
+end
+
 --- 刷新掉落 HUD 的名称、品质、价格和倒计时，云端翻译就绪后也会同步更新。
 --- @param drop table 当前客户端持有的掉落。
 --- @param now number 当前服务器同步时间。
 function Component:UpdateDropText(drop, now)
+    drop.Prompt.ActionText = Text.Tr(TranslationTexts.PickUp)
     if drop.NameSource then
         drop.Hud.Frame.ItemName.Text = Text.TrSource(drop.NameSource)
     end
@@ -351,7 +419,7 @@ function Component:RegisterDropVisual(drop)
     local glow = Instance.new("BillboardGui")
     glow.Name = "DropGlow"
     glow.Adornee = anchor
-    local diameter = math.max(size.X, size.Y, size.Z) * 1.65
+    local diameter = math.max(size.X, size.Y, size.Z) * 2.2
     glow.Size = UDim2.fromScale(diameter, diameter)
     glow.AlwaysOnTop = false
     glow.LightInfluence = 0
@@ -369,15 +437,15 @@ function Component:RegisterDropVisual(drop)
         ray.Name = "Ray" .. index
         ray.AnchorPoint = Vector2.new(0.5, 0.5)
         ray.Position = UDim2.fromScale(0.5 + math.cos(angle) * 0.34, 0.5 + math.sin(angle) * 0.34)
-        ray.Size = UDim2.fromScale(0.32, 0.055)
+        ray.Size = UDim2.fromScale(0.36, 0.09)
         ray.Rotation = math.deg(angle)
-        ray.BackgroundColor3 = Color3.fromRGB(255, 243, 196)
+        ray.BackgroundColor3 = Color3.fromRGB(255, 222, 110)
         ray.BorderSizePixel = 0
         local gradient = Instance.new("UIGradient")
         gradient.Transparency = NumberSequence.new({
-            NumberSequenceKeypoint.new(0, 0.85),
-            NumberSequenceKeypoint.new(0.25, 0.55),
-            NumberSequenceKeypoint.new(0.6, 0.7),
+            NumberSequenceKeypoint.new(0, 0.6),
+            NumberSequenceKeypoint.new(0.25, 0.15),
+            NumberSequenceKeypoint.new(0.6, 0.35),
             NumberSequenceKeypoint.new(1, 1),
         })
         gradient.Parent = ray
@@ -391,7 +459,7 @@ function Component:RegisterDropVisual(drop)
     drop.PivotOffset = centerOffset:Inverse()
 end
 
---- 按到期时间更新文案并驱动本地漂浮、自转和光环，过期后直接释放。
+--- 按到期时间更新文案，驱动揭晓剪影旋转、落地后漂浮和光环，过期后直接释放。
 function Component:UpdateDrops()
     local now = workspace:GetServerTimeNow()
     local refreshText = now >= self._nextDropUpdate
@@ -404,6 +472,10 @@ function Component:UpdateDrops()
         else
             if refreshText then
                 self:UpdateDropText(drop, now)
+            end
+            if drop.Preview then
+                drop.Preview:PivotTo(CFrame.new(drop.PreviewCenter)
+                    * CFrame.Angles(0, now * math.rad(360), 0) * drop.PreviewOffset)
             end
             if drop.LandedAt then
                 local elapsed = math.max(0, now - drop.LandedAt)
@@ -434,6 +506,9 @@ function Component:RemoveDrop(dropId)
     end
     if drop.Tween then
         drop.Tween:Cancel()
+    end
+    if drop.Preview then
+        drop.Preview:Destroy()
     end
     if drop.Glow then
         drop.Glow:Destroy()
@@ -530,7 +605,7 @@ function Component:RestorePredictedRock(key)
                     local rock = self:CreateRock(area, column, row)
                     chunk.Rocks[key] = rock
                     self:UpdateRockAppearance(rock, area, self._health[key])
-                    self:SetRockState(rock, RockLevel.GetDamage(self:GetNumber(Fields.RockTrainingLevel), area.Index,
+                    self:SetRockState(rock, not self:HasEquippedPickaxe() or RockLevel.GetDamage(self:GetNumber(Fields.RockTrainingLevel), area.Index,
                         self:GetNumber(Fields.RockTrainingValue))
                         < RockLevel.HP[area.Index])
                 end
@@ -565,6 +640,12 @@ function Component:ApplyHit(key, area)
     end
     self._refreshRocks = true
     FX.Network:SendMsgToServer("C2S_RockHit", key, self._round)
+end
+
+--- 只有服务器发放的镐子仍装备在当前角色上时，才允许秒杀穿行。
+--- @return boolean 当前是否手持已绑定的镐子。
+function Component:HasEquippedPickaxe()
+    return self._pickaxe ~= nil and self._pickaxe.Parent == self:GetPlayerCharacter()
 end
 
 --- 从服务器发放的镐子绑定本地轨道和拖尾，不创建或发放新的 Tool。
@@ -1342,7 +1423,11 @@ function Component:UpdateNoobVisibility(position)
                     node.LocalTransparencyModifier = visible and 0 or 1
                 elseif node:IsA("Highlight") then
                     node.Enabled = visible
-                elseif node:IsA("BillboardGui") or node:IsA("ProximityPrompt") then
+                elseif node:IsA("ProximityPrompt") then
+                    node.AutoLocalize = false
+                    node.ActionText = Text.Tr(TranslationTexts.PickUp)
+                    node.Enabled = visible
+                elseif node:IsA("BillboardGui") then
                     node.Enabled = visible
                 elseif node:IsA("ParticleEmitter") then
                     if node.Enabled ~= visible then
@@ -1401,10 +1486,12 @@ function Component:UpdateVisuals()
     local level = self:GetNumber(Fields.RockTrainingLevel)
     local strength = self:GetNumber(Fields.RockTrainingValue)
     local loading = self._loadingChunk
+    local hasPickaxe = self:HasEquippedPickaxe()
     if loading then
         local columns = math.min(6, loading.Area.Columns - loading.Column)
         local count = columns * math.min(6, loading.Area.Rows - loading.Row)
-        local canCollide = RockLevel.GetDamage(level, loading.Area.Index, strength) < RockLevel.HP[loading.Area.Index]
+        local canCollide = not hasPickaxe
+            or RockLevel.GetDamage(level, loading.Area.Index, strength) < RockLevel.HP[loading.Area.Index]
         for cell = loading.NextCell, math.min(loading.NextCell + 5, count - 1) do
             local row = loading.Row + math.floor(cell / columns)
             local column = loading.Column + cell % columns
@@ -1422,10 +1509,12 @@ function Component:UpdateVisuals()
             self._loadingChunk = nil
         end
     end
-    if self._refreshRocks or self._visualLevel ~= level or self._visualStrength ~= strength then
+    if self._refreshRocks or self._visualLevel ~= level or self._visualStrength ~= strength
+        or self._visualPickaxe ~= hasPickaxe then
         self._refreshRocks = false
         self._visualLevel = level
         self._visualStrength = strength
+        self._visualPickaxe = hasPickaxe
         self:RefreshVisibleRocks(level, strength)
     end
     for rock, reaction in pairs(self._hitReactions) do
@@ -1433,14 +1522,16 @@ function Component:UpdateVisuals()
     end
 end
 
---- 在状态变化或低频检查时同步已显示石头，避免静止石头每帧重复计算与写属性。
+--- 在装备、数值变化或低频检查时同步石头；只有手持镐子且能秒杀时允许穿行。
 --- @param level number 当前训练等级，按关卡满血判断是否允许直接穿行。
 --- @param strength number 当前阶段累计训练值，同等级内增长也刷新秒杀碰撞。
 function Component:RefreshVisibleRocks(level, strength)
+    local hasPickaxe = self:HasEquippedPickaxe()
     for index = 1, #self._chunks do
         local chunk = self._chunks[index]
         if chunk.Rocks then
-            local canCollide = RockLevel.GetDamage(level, chunk.Area.Index, strength) < RockLevel.HP[chunk.Area.Index]
+            local canCollide = not hasPickaxe
+                or RockLevel.GetDamage(level, chunk.Area.Index, strength) < RockLevel.HP[chunk.Area.Index]
             for key, rock in pairs(chunk.Rocks) do
                 local health = self._health[key] or RockLevel.HP[chunk.Area.Index]
                 if health <= 0 then

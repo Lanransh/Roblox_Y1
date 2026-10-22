@@ -130,8 +130,29 @@ function Component:ReachRebirthLevel()
     return {success = true, key = TranslationTexts.Success}
 end
 
+--- 为当前开发者登记全部图鉴 ID；不写入背包或发放任何道具。
+--- @return boolean 图鉴配置完整且已提交图鉴字段时为 true。
+function Component:UnlockAllCollections()
+    local itemData = _G.GameConfig.ItemData
+    local entries = self:GetTable(Fields.CollectionEntries)
+    local itemCount = 0
+    for itemId, item in pairs(itemData) do
+        if type(itemId) ~= "number" or type(item) ~= "table"
+            or not IsValidNumber(item.Id) or item.Id < 1 or itemData[item.Id] ~= item then
+            return false
+        end
+        entries[tostring(item.Id)] = true
+        itemCount += 1
+    end
+    if itemCount == 0 then
+        return false
+    end
+    self:SetTable(Fields.CollectionEntries, entries)
+    return true
+end
+
 --- 权限按协议转发得到的所属玩家检查，客户端不能指定目标玩家或任意字段。
---- @param action string 八种允许的面板动作。
+--- @param action string 允许的面板动作。
 --- @param value any 数值动作的目标值或添加道具的配置 ID，重置和保存不使用。
 --- @param count any 添加道具数量，其他动作不使用。
 --- @return table 操作结果及客户端提示标识。
@@ -159,7 +180,7 @@ function Component:Request(action, value, count)
     if action == "ReachRebirthLevel" then
         return self:ReachRebirthLevel()
     end
-    if action ~= "ResetData" and action ~= "SaveNow" then
+    if action ~= "ResetData" and action ~= "SaveNow" and action ~= "UnlockAllCollections" then
         return self:SetValue(action, value)
     end
     if now < self._nextSave then
@@ -168,17 +189,24 @@ function Component:Request(action, value, count)
     self._busy = true
     self._nextSave = now + 5
     -- 保存是实际异步边界；异常也释放 GM 锁，避免后续请求永久卡住。
-    --- 重置在不让出执行的阶段完成，再保存整份权威 KV 快照。
+    --- 重置或图鉴解锁在不让出执行的阶段完成，再保存整份权威 KV 快照。
+    local previousEntries
     --- @return boolean 数据库是否成功保存此次快照。
     local ok, saved = pcall(function()
         if action == "ResetData" then
             self:ResetData()
+        elseif action == "UnlockAllCollections" then
+            previousEntries = player:GetTable(Fields.CollectionEntries)
+            assert(self:UnlockAllCollections(), "Incomplete item config")
         end
         return db:Save(false)
     end)
     self._busy = false
     if not ok then
-        warn("[GM] Save/reset failed", userId, saved)
+        warn("[GM] Save/reset/unlock failed", userId, saved)
+    end
+    if (not ok or not saved) and previousEntries then
+        player:SetTable(Fields.CollectionEntries, previousEntries)
     end
     if not ok or not saved then
         return {success = false, key = TranslationTexts.SaveFailed}

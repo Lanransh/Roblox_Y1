@@ -53,7 +53,7 @@ function Component:Show()
 end
 
 --- 复用展示类的参数提取与二次确认，非法输入通过现有提示展示。
---- @param action string 八项 GM 操作之一。
+--- @param action string 允许的 GM 操作之一。
 function Component:ExecuteCommand(action)
     if self.State.pending then
         return
@@ -66,7 +66,8 @@ function Component:ExecuteCommand(action)
             self._commonUI:ShowLocalizedTips(TranslationTexts.InvalidItemInput)
             return
         end
-    elseif action ~= "ResetData" and action ~= "SaveNow" and action ~= "ReachRebirthLevel" then
+    elseif action ~= "ResetData" and action ~= "SaveNow" and action ~= "ReachRebirthLevel"
+        and action ~= "UnlockAllCollections" then
         local value = tonumber(self.Inputs[1].Text)
         if not value or value ~= value or value < 0 or value > 9007199254740991
             or value % 1 ~= 0 or (action == "SetLevel" and value < 1) then

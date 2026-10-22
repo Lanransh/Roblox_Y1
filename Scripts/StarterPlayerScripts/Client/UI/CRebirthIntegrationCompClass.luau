@@ -196,9 +196,11 @@ function Component:Render(state)
     local productId = goods and goods.RobloxProductId
     self:SetButtonEnabled(self.SkipBtn, state.Open and not state.Pending
         and type(productId) == "number" and productId > 0 and productId % 1 == 0)
-    self.ProgressTxt.Text = Text.Tr(TranslationTexts.Progress, {
+    local progressText = Text.Tr(TranslationTexts.Progress, {
         level = state.Level, required = state.RequiredLevel,
     })
+    -- 云端译文可能带尾随换行，避免居中文本被额外的空白行顶偏。
+    self.ProgressTxt.Text = string.gsub(progressText, "%s+$", "")
     if self:GetNumber(Fields.RebirthCount) >= Rebirth.MaxCount then
         self.RebirthBtn.BackgroundColor3 = Color3.fromHex("#B7B7B7")
         self.RebirthGradient.Enabled = true

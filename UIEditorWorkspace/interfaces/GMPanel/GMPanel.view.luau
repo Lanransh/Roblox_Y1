@@ -18,6 +18,8 @@ ResetData / SaveNow / Close：payload = {}。ResetData 经再次点击确认才�
 ReachRebirthLevel：payload = {}，无需输入参数；游戏接入按当前管理员最新重生次数和
 重生配置计算所需等级，将等级提升至 math.max(当前等级, 所需等级)，不执行重生。
 已达重生上限时保持数据不变；服务端重新计算目标，不信任客户端等级。
+UnlockAllCollections：payload = {}，无需输入参数；游戏接入校验管理员权限和完整图鉴配置，
+为当前管理员解锁全部图鉴条目并持久化，不发放任何道具或写入背包。
 设置作用于当前管理员本人，目标身份由游戏接入层决定，不把备用框当作玩家ID。
 游戏接入负责服务端权限、数值校验、实际写入、重置和持久化；
 请求前 pending=true 并刷新，返回后 pending=false 并刷新；结果与错误由接入层处理，本面板不显示状态文本。
@@ -41,7 +43,7 @@ function CGMPanelView:OnReady()
     for index = 1, 3 do
         self.Inputs[index] = FXLoader:Here(root, "PopupPanelImg.Param" .. index .. "Input")
     end
-    local actions = { "SetLevel", "SetRebirth", "SetMoney", "SetDiamonds", "ResetData", "SaveNow", "AddItem", "ReachRebirthLevel" }
+    local actions = { "SetLevel", "SetRebirth", "SetMoney", "SetDiamonds", "ResetData", "SaveNow", "AddItem", "ReachRebirthLevel", "UnlockAllCollections" }
     for index, action in ipairs(actions) do
         local button = FXLoader:Here(root, "PopupPanelImg." .. action .. "Btn")
         self.Buttons[action] = button
@@ -92,7 +94,7 @@ function CGMPanelView:ExecuteCommand(action)
         return
     end
     self:CancelReset()
-    if action == "SaveNow" or action == "ReachRebirthLevel" then
+    if action == "SaveNow" or action == "ReachRebirthLevel" or action == "UnlockAllCollections" then
         self:EmitUIAction(action, {})
         return
     end

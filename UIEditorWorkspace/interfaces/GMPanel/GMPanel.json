@@ -70,7 +70,7 @@
                     "x": 0,
                     "y": 0
                   },
-                  "AutoLocalize": false,
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 0.58,
                   "ClipsDescendants": false,
@@ -110,7 +110,7 @@
                     "x": 0,
                     "y": 0
                   },
-                  "AutoLocalize": false,
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#225a07",
                   "BackgroundTransparency": 0.2,
                   "ClipsDescendants": false,
@@ -211,7 +211,7 @@
                 "x": 0,
                 "y": 0
               },
-              "AutoLocalize": false,
+              "AutoLocalize": true,
               "BackgroundColor3": "#67ed14",
               "BackgroundTransparency": 0,
               "ClipsDescendants": false,
@@ -291,7 +291,7 @@
                     "x": 0,
                     "y": 0
                   },
-                  "AutoLocalize": false,
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 0.58,
                   "ClipsDescendants": false,
@@ -331,7 +331,7 @@
                     "x": 0,
                     "y": 0
                   },
-                  "AutoLocalize": false,
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#225a07",
                   "BackgroundTransparency": 0.2,
                   "ClipsDescendants": false,
@@ -432,7 +432,7 @@
                 "x": 0,
                 "y": 0
               },
-              "AutoLocalize": false,
+              "AutoLocalize": true,
               "BackgroundColor3": "#67ed14",
               "BackgroundTransparency": 0,
               "ClipsDescendants": false,
@@ -512,7 +512,7 @@
                     "x": 0,
                     "y": 0
                   },
-                  "AutoLocalize": false,
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 0.58,
                   "ClipsDescendants": false,
@@ -552,7 +552,7 @@
                     "x": 0,
                     "y": 0
                   },
-                  "AutoLocalize": false,
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#225a07",
                   "BackgroundTransparency": 0.2,
                   "ClipsDescendants": false,
@@ -653,7 +653,7 @@
                 "x": 0,
                 "y": 0
               },
-              "AutoLocalize": false,
+              "AutoLocalize": true,
               "BackgroundColor3": "#67ed14",
               "BackgroundTransparency": 0,
               "ClipsDescendants": false,
@@ -733,7 +733,7 @@
                     "x": 0,
                     "y": 0
                   },
-                  "AutoLocalize": false,
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 0.58,
                   "ClipsDescendants": false,
@@ -773,7 +773,7 @@
                     "x": 0,
                     "y": 0
                   },
-                  "AutoLocalize": false,
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#225a07",
                   "BackgroundTransparency": 0.2,
                   "ClipsDescendants": false,
@@ -874,7 +874,7 @@
                 "x": 0,
                 "y": 0
               },
-              "AutoLocalize": false,
+              "AutoLocalize": true,
               "BackgroundColor3": "#67ed14",
               "BackgroundTransparency": 0,
               "ClipsDescendants": false,
@@ -954,7 +954,7 @@
                     "x": 0,
                     "y": 0
                   },
-                  "AutoLocalize": false,
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 0.58,
                   "ClipsDescendants": false,
@@ -994,7 +994,7 @@
                     "x": 0,
                     "y": 0
                   },
-                  "AutoLocalize": false,
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#7d2519",
                   "BackgroundTransparency": 0.2,
                   "ClipsDescendants": false,
@@ -1074,7 +1074,7 @@
                       "scale": 1
                     }
                   },
-                  "Text": "",
+                  "Text": "重置数据",
                   "TextColor3": "#ffffff",
                   "TextScaled": false,
                   "TextSize": 16,
@@ -1095,7 +1095,7 @@
                 "x": 0,
                 "y": 0
               },
-              "AutoLocalize": false,
+              "AutoLocalize": true,
               "BackgroundColor3": "#f2654d",
               "BackgroundTransparency": 0,
               "ClipsDescendants": false,
@@ -1175,7 +1175,7 @@
                     "x": 0,
                     "y": 0
                   },
-                  "AutoLocalize": false,
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 0.58,
                   "ClipsDescendants": false,
@@ -1215,7 +1215,7 @@
                     "x": 0,
                     "y": 0
                   },
-                  "AutoLocalize": false,
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#225a07",
                   "BackgroundTransparency": 0.2,
                   "ClipsDescendants": false,
@@ -1316,7 +1316,7 @@
                 "x": 0,
                 "y": 0
               },
-              "AutoLocalize": false,
+              "AutoLocalize": true,
               "BackgroundColor3": "#67ed14",
               "BackgroundTransparency": 0,
               "ClipsDescendants": false,
@@ -1807,7 +1807,7 @@
                     "x": 0,
                     "y": 0
                   },
-                  "AutoLocalize": false,
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 0.58,
                   "ClipsDescendants": false,
@@ -1847,7 +1847,7 @@
                     "x": 0,
                     "y": 0
                   },
-                  "AutoLocalize": false,
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#225a07",
                   "BackgroundTransparency": 0.2,
                   "ClipsDescendants": false,
@@ -1948,7 +1948,7 @@
                 "x": 0,
                 "y": 0
               },
-              "AutoLocalize": false,
+              "AutoLocalize": true,
               "BackgroundColor3": "#67ed14",
               "BackgroundTransparency": 0,
               "ClipsDescendants": false,
@@ -2028,7 +2028,7 @@
                     "x": 0,
                     "y": 0
                   },
-                  "AutoLocalize": false,
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 0.58,
                   "ClipsDescendants": false,
@@ -2068,7 +2068,7 @@
                     "x": 0,
                     "y": 0
                   },
-                  "AutoLocalize": false,
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#225a07",
                   "BackgroundTransparency": 0.2,
                   "ClipsDescendants": false,
@@ -2169,7 +2169,7 @@
                 "x": 0,
                 "y": 0
               },
-              "AutoLocalize": false,
+              "AutoLocalize": true,
               "BackgroundColor3": "#67ed14",
               "BackgroundTransparency": 0,
               "ClipsDescendants": false,
@@ -2212,6 +2212,227 @@
               "Visible": true,
               "ZIndex": 3
             }
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "className": "UICorner",
+                "id": "4ab0d304-a6e2-4b11-81fa-b843430f1472",
+                "name": "UICorner",
+                "properties": {
+                  "CornerRadius": {
+                    "offset": 6,
+                    "scale": 0
+                  }
+                }
+              },
+              {
+                "children": [],
+                "className": "UIStroke",
+                "id": "38b14d12-fa39-46b3-91e0-b00a30e02a5a",
+                "name": "UIStroke",
+                "properties": {
+                  "Color": "#000000",
+                  "Enabled": true,
+                  "Thickness": 3,
+                  "Transparency": 0
+                }
+              },
+              {
+                "children": [],
+                "className": "Frame",
+                "id": "ab676704-1df5-4f16-b374-66f021798704",
+                "name": "TopHighlightImg",
+                "properties": {
+                  "AnchorPoint": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "AutoLocalize": true,
+                  "BackgroundColor3": "#ffffff",
+                  "BackgroundTransparency": 0.58,
+                  "ClipsDescendants": false,
+                  "LayoutOrder": 0,
+                  "Position": {
+                    "x": {
+                      "offset": 0,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 0,
+                      "scale": 0
+                    }
+                  },
+                  "Rotation": 0,
+                  "Size": {
+                    "x": {
+                      "offset": 292,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 2,
+                      "scale": 0
+                    }
+                  },
+                  "Visible": true,
+                  "ZIndex": 4
+                }
+              },
+              {
+                "children": [],
+                "className": "Frame",
+                "id": "97df5c1f-06d7-49b9-b326-3e6ebaf2c116",
+                "name": "BottomEdgeImg",
+                "properties": {
+                  "AnchorPoint": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "AutoLocalize": true,
+                  "BackgroundColor3": "#225a07",
+                  "BackgroundTransparency": 0.2,
+                  "ClipsDescendants": false,
+                  "LayoutOrder": 0,
+                  "Position": {
+                    "x": {
+                      "offset": 0,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 30,
+                      "scale": 0
+                    }
+                  },
+                  "Rotation": 0,
+                  "Size": {
+                    "x": {
+                      "offset": 292,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 4,
+                      "scale": 0
+                    }
+                  },
+                  "Visible": true,
+                  "ZIndex": 4
+                }
+              },
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "e7c864e6-1038-4c59-a151-d5acc76cf790",
+                    "name": "TextStroke",
+                    "properties": {
+                      "Color": "#20231c",
+                      "Enabled": true,
+                      "Thickness": 2,
+                      "Transparency": 0
+                    }
+                  }
+                ],
+                "className": "TextLabel",
+                "id": "fa0c294d-e33f-461f-b855-408c5f7b0c72",
+                "name": "ButtonTxt",
+                "properties": {
+                  "AnchorPoint": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "AutoLocalize": false,
+                  "BackgroundColor3": "#ffffff",
+                  "BackgroundTransparency": 1,
+                  "ClipsDescendants": false,
+                  "Font": "GothamBold",
+                  "LayoutOrder": 0,
+                  "Position": {
+                    "x": {
+                      "offset": 0,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": -2,
+                      "scale": 0
+                    }
+                  },
+                  "Rotation": 0,
+                  "Size": {
+                    "x": {
+                      "offset": 0,
+                      "scale": 1
+                    },
+                    "y": {
+                      "offset": 0,
+                      "scale": 1
+                    }
+                  },
+                  "Text": "一键解锁全部图鉴",
+                  "TextColor3": "#ffffff",
+                  "TextScaled": false,
+                  "TextSize": 16,
+                  "TextTransparency": 0,
+                  "TextWrapped": true,
+                  "TextXAlignment": "Center",
+                  "TextYAlignment": "Center",
+                  "Visible": true,
+                  "ZIndex": 5
+                }
+              }
+            ],
+            "className": "ImageButton",
+            "id": "b7037c04-ed24-41d7-8a91-18147ca6a81c",
+            "name": "UnlockAllCollectionsBtn",
+            "properties": {
+              "AnchorPoint": {
+                "x": 0,
+                "y": 0
+              },
+              "AutoLocalize": true,
+              "BackgroundColor3": "#67ed14",
+              "BackgroundTransparency": 0,
+              "ClipsDescendants": false,
+              "Image": "rbxassetid://82793028306773",
+              "ImageColor3": "#ffffff",
+              "ImageTransparency": 0,
+              "LayoutOrder": 0,
+              "Position": {
+                "x": {
+                  "offset": 324,
+                  "scale": 0
+                },
+                "y": {
+                  "offset": 112,
+                  "scale": 0
+                }
+              },
+              "Rotation": 0,
+              "ScaleType": "Tile",
+              "Size": {
+                "x": {
+                  "offset": 292,
+                  "scale": 0
+                },
+                "y": {
+                  "offset": 34,
+                  "scale": 0
+                }
+              },
+              "TileSize": {
+                "x": {
+                  "offset": 28,
+                  "scale": 0
+                },
+                "y": {
+                  "offset": 28,
+                  "scale": 0
+                }
+              },
+              "Visible": true,
+              "ZIndex": 3
+            }
           }
         ],
         "className": "Frame",
@@ -2222,7 +2443,7 @@
             "x": 0,
             "y": 0
           },
-          "AutoLocalize": false,
+          "AutoLocalize": true,
           "BackgroundColor3": "#000000",
           "BackgroundTransparency": 0.3,
           "ClipsDescendants": false,
@@ -2290,7 +2511,7 @@
                     "x": 0,
                     "y": 0
                   },
-                  "AutoLocalize": false,
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 1,
                   "ClipsDescendants": false,
@@ -2344,7 +2565,7 @@
                     "x": 0,
                     "y": 0
                   },
-                  "AutoLocalize": false,
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 0.58,
                   "ClipsDescendants": false,
@@ -2384,7 +2605,7 @@
                     "x": 0,
                     "y": 0
                   },
-                  "AutoLocalize": false,
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 0.75,
                   "ClipsDescendants": false,
@@ -2424,7 +2645,7 @@
                     "x": 0,
                     "y": 0
                   },
-                  "AutoLocalize": false,
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#193E73",
                   "BackgroundTransparency": 0.2,
                   "ClipsDescendants": false,
@@ -2463,7 +2684,7 @@
                 "x": 0,
                 "y": 0
               },
-              "AutoLocalize": false,
+              "AutoLocalize": true,
               "BackgroundColor3": "#397BC7",
               "BackgroundTransparency": 0,
               "ClipsDescendants": true,
@@ -2566,7 +2787,7 @@
                 "x": 0,
                 "y": 0
               },
-              "AutoLocalize": false,
+              "AutoLocalize": true,
               "BackgroundColor3": "#ffffff",
               "BackgroundTransparency": 1,
               "ClipsDescendants": false,
@@ -2619,7 +2840,7 @@
             "x": 0,
             "y": 0
           },
-          "AutoLocalize": false,
+          "AutoLocalize": true,
           "BackgroundColor3": "#ffffff",
           "BackgroundTransparency": 1,
           "ClipsDescendants": false,
@@ -2654,7 +2875,7 @@
     "id": "330a0e6f-45fc-47f7-b3c2-0b3153be8a7b",
     "name": "GMPanelUI",
     "properties": {
-      "AutoLocalize": false,
+      "AutoLocalize": true,
       "DisplayOrder": 0,
       "Enabled": true
     }
