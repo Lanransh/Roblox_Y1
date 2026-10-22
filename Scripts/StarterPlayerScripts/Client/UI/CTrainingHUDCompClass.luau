@@ -13,19 +13,22 @@ function Component:GetCompName()
     return "CTrainingHUDComp"
 end
 
---- 克隆共享模板，按训练配置挂载；编辑态预览仅在本客户端隐藏。
+--- 克隆共享模板到 PlayerGui，避免随地图模型覆盖；独立预览仅在本客户端隐藏。
 function Component:OnReady()
     self._localization = self:GetPlayerObject():RequireComponent("FCCommonUIComp").Localization
     self._huds = {}
     self._previews = {}
     local template = FXLoader:Shared("Nodes/TrainingHUD")
+    local playerGui = self:GetPlayerNode():WaitForChild("PlayerGui")
+    local previews = FXLoader:Workspace("Decorations/TrainingHUDs")
     for index, config in ipairs(_G.GameConfig.TrainingFieldData) do
         local worldName, fieldName = GameUtility.ParseTrainingFieldNode(config.Node)
         assert(worldName and fieldName, "Invalid training field Node: " .. config.Node)
         local field = FXLoader:Workspace("BlockMeshs/" .. worldName .. "/TrainingCenter/" .. fieldName)
         local platform = field:FindFirstChild("彩色训练台", true)
         assert(platform and platform:IsA("BasePart"), "Missing training platform: " .. field:GetFullName())
-        local preview = field:FindFirstChild("TrainingHUD")
+        local previewAnchor = previews:FindFirstChild(worldName .. "_" .. fieldName)
+        local preview = previewAnchor and previewAnchor:FindFirstChild("TrainingHUD")
         if preview and preview:GetAttribute("TrainingHUDPreview") then
             self._previews[preview] = preview.Enabled
             preview.Enabled = false
@@ -33,11 +36,12 @@ function Component:OnReady()
         local bounds, size = field:GetBoundingBox()
         local hud = template:Clone()
         hud.Name = "TrainingHUDClient"
+        hud.ResetOnSpawn = false
         hud.Adornee = platform
         hud.StudsOffsetWorldSpace = Vector3.new(0,
             bounds.Position.Y + size.Y / 2 - platform.Position.Y + 5, 0)
         hud.Frame.Requirement.Count.Text = tostring(config.NeedRebirhLevel)
-        hud.Parent = field
+        hud.Parent = playerGui
         self._huds[index] = {Node = hud, Config = config}
     end
     self:RefreshLocalization()

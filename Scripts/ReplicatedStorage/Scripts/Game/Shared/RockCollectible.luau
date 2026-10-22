@@ -19,6 +19,13 @@ Collectible.PickupDistance = 10
 Collectible.DropLifetime = 10
 Collectible.DropRevealDuration = 1 -- 黑色候选轮转时长，客户端表现与服务端拾取等待共用。
 
+--- 按配置中的品质编号返回统一品质颜色，未知品质回退到默认灰色。
+--- @param quality number 配置中的道具品质编号。
+--- @return Color3 该品质对应的颜色。
+function Collectible.GetQualityColor(quality)
+    return Color3.fromHex(QualityColors[quality] or "C5CAD8")
+end
+
 --- 按 GameConfig 的稳定展示路径读取道具模型，不通过道具 ID 猜模型下标。
 --- @param displayModelId string GameConfig.ItemData 中的完整实例路径。
 --- @return Model|nil 具有 PrimaryPart 的展示模型模板。
@@ -80,7 +87,7 @@ function Collectible.StyleHUD(hud, model, quality)
     frame.ItemName.TextColor3 = Color3.new(1, 1, 1)
     frame.Rarity.Position = UDim2.new(0.5, 0, 0.51, 0)
     frame.Rarity.Size = UDim2.fromScale(0.84, 0.21)
-    local qualityColor = Color3.fromHex(QualityColors[quality] or "C5CAD8")
+    local qualityColor = Collectible.GetQualityColor(quality)
     -- UIGradient 与文字底色相乘，白色底色才能保留各品质的完整渐变色。
     frame.Rarity.TextColor3 = Color3.new(1, 1, 1)
     local gradient = frame.Rarity:FindFirstChildOfClass("UIGradient") or Instance.new("UIGradient")

@@ -12,6 +12,7 @@ local TranslationTexts = Text.Define("Main", {
     InDevelopment = "Coming soon.",
     Strength = "Strength: {value}",
     MaxLevel = "MAX LEVEL",
+    CoinReward = "{value} Coins",
 })
 local Rebirth = FXLoader:RequireShared("Scripts/Game/Shared/Rebirth")
 local Fields = _G.PlayerDataConfig
@@ -691,9 +692,9 @@ function Component:ShowPickupEffect(entry)
         moneyText.Font = Enum.Font.GothamBold
         moneyText.TextScaled = true
         moneyText.TextColor3 = Color3.new(1, 1, 1)
-        moneyText.Text = entry.Currency == "Diamonds" and GameUtility.NumberToText(entry.MoneyAmount)
-            or GameUtility.NumberToText(entry.MoneyAmount) .. "元"
         moneyText.AutoLocalize = false
+        moneyText.Text = entry.Currency == "Diamonds" and GameUtility.NumberToText(entry.MoneyAmount)
+            or Text.Tr(TranslationTexts.CoinReward, {value = GameUtility.NumberToText(entry.MoneyAmount)})
         moneyText.ZIndex = 3
         moneyText.Parent = effect
         local gradient = Instance.new("UIGradient")

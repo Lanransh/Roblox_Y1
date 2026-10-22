@@ -405,13 +405,14 @@ function Component:UpdateDropText(drop, now)
     drop.Hud.Frame.Timer.Text = string.format("%ds", math.max(0, math.ceil(drop.ExpiresAt - now)))
 end
 
---- 落地后注册放射光环和漂浮动画所需的固定落点数据。
+--- 落地后注册按品质着色的放射光环和漂浮动画所需的固定落点数据。
 --- @param drop table 已完成落地的本地掉落。
 function Component:RegisterDropVisual(drop)
     local model = drop.Model
     local root = model.PrimaryPart
     local box, size = model:GetBoundingBox()
     local centerOffset = model:GetPivot():ToObjectSpace(box)
+    local qualityColor = Collectible.GetQualityColor(drop.Quality)
     local anchor = Instance.new("Attachment")
     anchor.Name = "DropGlowAnchor"
     anchor.Position = root.CFrame:PointToObjectSpace(box.Position)
@@ -439,7 +440,7 @@ function Component:RegisterDropVisual(drop)
         ray.Position = UDim2.fromScale(0.5 + math.cos(angle) * 0.34, 0.5 + math.sin(angle) * 0.34)
         ray.Size = UDim2.fromScale(0.36, 0.09)
         ray.Rotation = math.deg(angle)
-        ray.BackgroundColor3 = Color3.fromRGB(255, 222, 110)
+        ray.BackgroundColor3 = qualityColor
         ray.BorderSizePixel = 0
         local gradient = Instance.new("UIGradient")
         gradient.Transparency = NumberSequence.new({
