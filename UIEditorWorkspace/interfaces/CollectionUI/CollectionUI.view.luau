@@ -1,31 +1,61 @@
 --[[
 图鉴接入契约
-Config.items: 必填数组，数组顺序为展示顺序，可为空。
-每项 { id: string 全列表唯一且不含点的稳定道具 ID, name: string 名称,
-icon: string 可选，真实 Roblox Image ID，省略或为空时清除旧图并显示问号 }。
-Config.strengthPerEntryPercent: number 必填，每激活一个图鉴增加的力量百分比，
-例如 2 表示 +2%，不是倍率 0.02。此字段只负责规则展示。
-State 是完整输入，不合并增量：
-open: boolean 必填，窗口显隐；
-totalStrengthPercent: number 必填，游戏端提供的已生效累计力量百分比，
-例如 6 显示 +6%；展示层不修改玩家力量；
-entries: 字典[id] 必填，每个 Config.items ID 对应
-{ active: boolean 必填，true 为已激活，false 为未激活 }。
-未激活项隐藏真实名称与图标并显示 ???；激活由游戏发现道具时同步。
-不包含领取、奖励、pending、error 或逐项增益字段，也不发送激活动作。
-空列表或加载期间提供 items={}、entries={}、totalStrengthPercent=0。
-最小完整数据示例：
-self.Config = { strengthPerEntryPercent = 2,
-items = { { id = "sword", name = "Wood Sword" } } }
-self.State = { open = true, totalStrengthPercent = 2,
-entries = { sword = { active = true } } }
-GetUIConfig/GetUIState 默认读取 self.Config/self.State；首次刷新前准备完整数据。
-接入 OnReady 先调用父方法，再 BindUIData、Show；更新完整 State 后 RefreshUI。
-必须覆写 OnUIAction(action, payload)，唯一动作 Close {}，无返回值。
-无其他页面专用必需或可选覆写。游戏端负责激活记录和力量计算，
-每次业务数据变化后更新 entries、totalStrengthPercent 并刷新。
-Templates.ItemRowImg.ItemIconImg 为动态图占位，配置 items[].icon 替换；
-App 动态资源预览、真实资源权限和设备显示需另验。
+
+【Config：完整配置】
+  strengthPerEntryPercent: number，必填，无默认值；每激活一项的力量加成
+    百分数，2 表示 +2%，不是倍率 0.02；仅用于规则说明。
+  items: {Item}，必填连续数组；顺序即展示顺序，可为空 {}。
+    Item.id: string，必填，无默认值；全列表唯一、稳定且不含点的道具配置 ID。
+    Item.name: string，必填，无默认值；已激活时显示的名称原文。
+    Item.icon: string，可选；Roblox Image 资源地址；省略或 "" 清除图像，
+      显示原型问号，不保留上次图标。
+
+【State：Render 的完整输入】
+  open: boolean，必填，无默认值；当前实现直接赋给 ScreenGui.Enabled。
+  totalStrengthPercent: number，必填，无默认值；已生效累计力量加成百分数，
+    6 显示 +6%；由业务计算，不由 View 按激活数推导。
+  entries: {[itemId: string]: Entry}，必填字典；键对应 Config.items[].id。
+    每个配置 ID 必须有状态，不自动补齐；空配置对应 {}。
+    Entry.active: boolean，必填，无默认值；true 已激活，false 未激活。
+  未激活项名称为 ???、隐藏真实图标；已激活但缺图也显示问号。
+  统计数由 active 项数与配置总数计算。没有领取、pending、error 或激活动作。
+  没有独立加载态；加载期间可提供 items={}、entries={}、
+  totalStrengthPercent=0，界面显示空列表与 0 项统计。
+
+【最小完整数据（接入 Ctor 调用父构造之后）】
+  self.Config = {
+      strengthPerEntryPercent = 2,
+      items = { { id = "sword", name = "Wood Sword" } },
+  }
+  self.State = {
+      open = true, totalStrengthPercent = 2,
+      entries = { sword = { active = true } },
+  }
+
+【初始化与刷新】
+  游戏接入类继承 CCollectionView。
+  接入 Ctor(owner) 先调用自身类的 Super.Ctor(self, owner)，再准备下例数据。
+  接入 OnReady() 先调用自身类的 Super.OnReady(self)，再依次
+  self:BindUIData()、self:Show()；父 OnReady 负责绑定节点，OnShow 会刷新。
+  GetUIConfig() 默认返回 self.Config；GetUIState() 默认返回 self.State。
+  RefreshUI() 调用 Render(GetUIState())，输入是完整快照，不合并增量，
+  不自动补齐业务字段。可修改已有表或替换整表，但每次刷新须满足完整契约。
+  后续先更新 Config/State，再 self:RefreshUI()；异步未就绪按本页规则处理。
+  无需覆写 Render 或手动重复调用 OnReady；业务类覆写生命周期时须保留父调用。
+
+【动作与覆写】
+  必需覆写 OnUIAction(action: string, payload: table)，无返回值；默认报错。
+  唯一动作 Close -> {}；接入层更新 open=false 并刷新。
+  无其他页面专用必需或可选覆写；发现道具后由业务同步 entries 与
+  totalStrengthPercent，再 RefreshUI。View 不写入激活记录或玩家力量。
+
+【列表、显隐与资源边界】
+  Templates.ItemRowImg 按 Item.id 克隆为四列卡片；空配置清理所有副本，
+  原型保留；数组顺序改变时重排，不按名称或数组下标识别道具。
+  当前 Render 直接改根 Enabled，与通用 Show/Hide 动画约定有差异；
+  再次 Show 前须恢复 open=true，本次仅说明现有行为。
+  Templates.ItemRowImg.ItemIconImg 为动态图槽，由配置 icon 替换。
+  真实激活、存档、资源权限及设备显示另验。
 ]]
 local FX = _G.FX
 local FXLoader = FX.Loader
@@ -129,7 +159,7 @@ function CCollectionView:Render(state)
     })
 end
 
--- 模拟与游戏接入必须处理关闭操作。
+-- 游戏接入必须处理关闭操作。
 -- @param action string Close
 -- @param payload table 空表
 function CCollectionView:OnUIAction(action, payload)

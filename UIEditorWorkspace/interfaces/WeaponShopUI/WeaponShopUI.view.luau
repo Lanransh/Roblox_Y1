@@ -1,27 +1,76 @@
 --[[
-武器列表接入契约（完整状态，非增量）
-Config.title: string，必填标题。
-Config.qualities: 字典，键为品质 ID；值 {name: string, color: string} 均必填，color 为 #RRGGBB 卡片底色。
-每项可选 colorEnd:string，#RRGGBB 渐变终色，缺省与 color 相同；卡片从上到下由 color 渐变至 colorEnd。
-Config.weapons: 数组，显示顺序；每项 {id: string, name: string, qualityId: string,
- strength: number, price: number, icon: string?}。前五项必填；price 单位金币，显示为钞票图标与 +$金额；strength 为加成点数；
- id 唯一稳定，qualityId 对应 qualities 键；icon 可选 Roblox 图片 ID，缺省或空字符串显示问号占位。
-State.owned: 字典，weaponId -> boolean，缺省键表示未拥有。
-State.equippedId: string，必填，空字符串表示未装备。
-State.coins: number，必填，可用金币；State.open: boolean，必填。
-State.pending: 字典，可选，weaponId -> boolean，缺省为未请求；State.loading: boolean? 缺省 false。
-最小示例：
- self.Config = {title="WEAPONS", qualities={common={name="Common",color="#FAFCF9"}},
- weapons={{id="sickle",name="Sickle",qualityId="common",strength=1,price=0}}}
- self.State = {owned={sickle=true},equippedId="sickle",coins=700,open=true}
-GetUIConfig/GetUIState 默认读取 self.Config/self.State。首次 Show 前准备全部必填数据；
-接入 OnReady 先父 OnReady，再 BindUIData、Show；后续更新数据后 RefreshUI。
-RefreshUI 调用 Render(GetUIState())；列表空时显示空提示，loading=true 时显示加载提示并清空条目。
-动作：Buy / Equip，payload={weaponId:string}；Close，payload={}。无返回值。
-必需覆写 OnUIAction，负责服务端校验、扣款及装备，请求时设置 pending[id]，完成后更新完整状态并刷新。
-无其他页面专用覆写。UI 禁用不代表服务器校验。模拟 integration 不导入游戏。
-WeaponIconImg 是动态图占位，正式图由 Config.weapons[].icon 替换；
-App 动态 ID 预览能力有限，真实资源权限及 Studio 显示需另验。
+武器商店接入契约
+
+【Config：完整配置】
+  title: string，必填，无默认值；标题原文，经 Text.TrSource 查询。
+  qualities: {[qualityId: string]: Quality}，必填；品质 ID 由项目定义。
+    Quality.name: string，必填，无默认值；品质名称原文。
+    Quality.color: string，必填，无默认值；#RRGGBB 渐变起色。
+    Quality.colorEnd: string，可选；省略使用 color，作为竖向渐变终色。
+  weapons: {Item}，必填连续数组；数组顺序即显示顺序，空列表传 {}。
+    Item.id: string，必填，无默认值；全列表唯一且稳定的武器配置 ID。
+    Item.name: string，必填，无默认值；名称原文，经 Text.TrSource 查询。
+    Item.qualityId: string，必填，无默认值；必须对应 qualities 中存在的键。
+    Item.strength: number，必填，无默认值；力量加成点数，不是倍率。
+    Item.price: number，必填，无默认值；非负金币数量，展示为 +$金额。
+    Item.icon: string，可选；Roblox Image 资源地址。
+      省略时使用问号 rbxassetid://86795093617566；
+      当前代码对 "" 直接赋空图，不回退问号。需要占位时省略此字段。
+
+【State：Render 的完整输入】
+  open: boolean，必填，无默认值；当前实现控制内容底板及标题 Visible。
+  owned: {[weaponId: string]: boolean}，必填字典；键对应 Item.id，
+    缺失键或 false 表示未拥有，true 表示已拥有；无已拥有项传 {}。
+  equippedId: string，必填，无默认值；已装备的 Item.id；未装备传 ""。
+    非空 ID 应属于 owned 中为 true 的配置项，View 不校验此业务一致性。
+  coins: number，必填，无默认值；可用金币余额，非负。
+  pending: {[weaponId: string]: boolean}，可选；表省略或键缺失均视为无请求；
+    true 禁用对应条目的购买/装备按钮，不锁住其他条目。
+  loading: boolean，可选，省略 false；true 清理显示条目并显示 Loading...。
+    加载时仍提供所有必填字段，可使用空配置数组和空 owned。
+  不消费 error 字段；失败提示由接入层处理。
+
+【最小完整数据（接入 Ctor 调用父构造之后）】
+  self.Config = {
+      title = "WEAPONS",
+      qualities = { common = { name = "Common", color = "#A5ADB8" } },
+      weapons = {
+          { id = "sickle", name = "Sickle", qualityId = "common",
+            strength = 1, price = 0 },
+      },
+  }
+  self.State = { open = true, owned = { sickle = true },
+      equippedId = "sickle", coins = 700 }
+
+【初始化与刷新】
+  游戏接入类继承 CWeaponShopView。
+  接入 Ctor(owner) 先调用自身类的 Super.Ctor(self, owner)，再准备下例数据。
+  接入 OnReady() 先调用自身类的 Super.OnReady(self)，再依次
+  self:BindUIData()、self:Show()；父 OnReady 负责绑定节点，OnShow 会刷新。
+  GetUIConfig() 默认返回 self.Config；GetUIState() 默认返回 self.State。
+  RefreshUI() 调用 Render(GetUIState())，输入是完整快照，不合并增量，
+  不自动补齐业务字段。可修改已有表或替换整表，但每次刷新须满足完整契约。
+  后续先更新 Config/State，再 self:RefreshUI()；异步未就绪按本页规则处理。
+  无需覆写 Render 或手动重复调用 OnReady；业务类覆写生命周期时须保留父调用。
+
+【动作与覆写】
+  必需覆写 OnUIAction(action: string, payload: table)，无返回值；
+  默认实现报错。无其他页面专用必需或可选覆写。
+  Buy   -> { weaponId: string }，未拥有时发出，值为当前 Item.id。
+  Equip -> { weaponId: string }，已拥有但未装备时发出，值为当前 Item.id。
+  Close -> {}，由接入层处理关闭。
+  已装备、对应 pending 或未拥有且余额不足时禁用操作；点击不自动购买/装备。
+  请求前设置 pending[id] = true 并刷新；成功后用真实结果更新
+  owned/equippedId/coins，失败保留真实状态；两者均清除 pending[id] 并刷新。
+  服务端重新校验 ID、所有权、价格与余额；客户端按钮禁用不构成业务校验。
+
+【列表、显隐与资源边界】
+  隐藏 Templates 原型按 Item.id 克隆、复用和清理；空数组显示空列表提示。
+  loading=false 后按最新配置重建缺失条目；运行副本不写回设计节点。
+  当前 Render 直接设置底板/标题 Visible，并非仅由 Show/Hide 管理；
+  关闭后重新 Show 前须将 open=true。此为现有实现限制，不保证整页关闭动画。
+  动态图槽为 WeaponIconImg，真实贴图由配置 icon 提供；
+  本地预览不证明 Roblox 资源权限或设备显示通过。
 ]]
 local FX = _G.FX
 local FXLoader = FX.Loader
@@ -177,7 +226,7 @@ function CWeaponShopView:Render(state)
     end
 end
 
--- 必须由游戏接入或模拟类处理业务动作。
+-- 必须由游戏接入处理业务动作。
 -- @param action string Buy、Equip 或 Close。
 -- @param payload table weaponId 或空表。
 function CWeaponShopView:OnUIAction(action, payload)

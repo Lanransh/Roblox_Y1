@@ -1,32 +1,57 @@
 --[[
-GM 面板游戏接入契约
-Config = {}，无必填配置。
-State 为完整状态：pending:boolean 可选，默认 false，请求期间禁用按钮；
-最小数据：self.Config = {}; self.State = { pending = false }。
-Ctor 先调用父构造再准备数据；OnReady 先调用父方法，再 BindUIData()、Show()。
-GetUIConfig/GetUIState 默认读取 self.Config/self.State；
-RefreshUI 调用 Render(GetUIState())，不合并增量；后续更新 State 后 RefreshUI。
-无列表、无异步加载态；首次 Show 前准备完整数据。
-必需覆写 OnUIAction(action, payload)，无返回值：
-SetLevel / SetRebirth / SetMoney / SetDiamonds：
-payload = { value:number, param2:string, param3:string }；
-value 为参数1的非负安全整数，等级至少1，单位分别为级/次数/金币/钻石。
-param2、param3 为另外两个输入框原文（空框为 ""），当前四项功能不消费。
-AddItem：payload = { itemId:number, count:number }；参数1为道具配置 ID，参数2为添加数量，
-两者均为正安全整数，参数3不消费；游戏接入校验道具配置存在并向当前管理员背包添加。
-ResetData / SaveNow / Close：payload = {}。ResetData 经再次点击确认才发送。
-ReachRebirthLevel：payload = {}，无需输入参数；游戏接入按当前管理员最新重生次数和
-重生配置计算所需等级，将等级提升至 math.max(当前等级, 所需等级)，不执行重生。
-已达重生上限时保持数据不变；服务端重新计算目标，不信任客户端等级。
-UnlockAllCollections：payload = {}，无需输入参数；游戏接入校验管理员权限和完整图鉴配置，
-为当前管理员解锁全部图鉴条目并持久化，不发放任何道具或写入背包。
-设置作用于当前管理员本人，目标身份由游戏接入层决定，不把备用框当作玩家ID。
-游戏接入负责服务端权限、数值校验、实际写入、重置和持久化；
-请求前 pending=true 并刷新，返回后 pending=false 并刷新；结果与错误由接入层处理，本面板不显示状态文本。
-无其他必需或可选覆写；Preview 只改模拟数据，不持久化。
-GM 面板仅供管理员自用，静态标签、输入提示和重置确认均保留中文，不参与翻译。
-输入参数保留玩家原文，不作翻译。
-TextBox 为原生 Roblox 输入框；App 自动化不支持键盘、文本输入和焦点事件。
+GM 面板接入契约（仅管理员自用）
+
+【Config / State】
+  Config：不读取配置字段，可设置 self.Config = {}。
+  State：必填完整表；pending: boolean 可选，省略 false。
+    true 禁用全部命令按钮并取消本地重置确认；关闭按钮仍可操作。
+  无列表或独立加载态；首次刷新前准备 State，等待请求时用 pending=true。
+  面板不读取管理员身份、存档或结果消息，不改写正在输入的 TextBox 文本。
+
+【最小完整数据（接入 Ctor 调用父构造之后）】
+  self.Config = {}
+  self.State = { pending = false }
+
+【初始化与刷新】
+  游戏接入类继承 CGMPanelView。
+  接入 Ctor(owner) 先调用自身类的 Super.Ctor(self, owner)，再准备下例数据。
+  接入 OnReady() 先调用自身类的 Super.OnReady(self)，再依次
+  self:BindUIData()、self:Show()；父 OnReady 负责绑定节点，OnShow 会刷新。
+  GetUIConfig() 默认返回 self.Config；GetUIState() 默认返回 self.State。
+  RefreshUI() 调用 Render(GetUIState())，输入是完整快照，不合并增量，
+  不自动补齐业务字段。可修改已有表或替换整表，但每次刷新须满足完整契约。
+  后续先更新 Config/State，再 self:RefreshUI()；异步未就绪按本页规则处理。
+  无需覆写 Render 或手动重复调用 OnReady；业务类覆写生命周期时须保留父调用。
+
+【动作与覆写】
+  必需覆写 OnUIAction(action: string, payload: table)，无返回值；默认报错。
+  无其他页面专用必需或可选覆写。每个命令参数如下：
+  SetLevel / SetRebirth / SetMoney / SetDiamonds
+    -> { value: number, param2: string, param3: string }。
+    value 来自参数1，是 0..9007199254740991 的安全整数；SetLevel 至少 1。
+    单位依次为级、重生次数、金币、钻石。param2/param3 是参数2/3原文，
+    空框为 ""；当前这四项业务不消费它们，不将备用框当作玩家 ID。
+  AddItem -> { itemId: number, count: number }。
+    参数1为道具配置 ID、参数2为数量，均为 1..9007199254740991 的安全整数；
+    参数3不发送。服务端验证配置存在后向当前管理员添加道具。
+  ResetData -> {}；连续两次点击重置才发送一次。点击其他命令、关闭、
+    重新打开或 pending=true 均取消本地确认；不要求接入层再发送确认动作。
+  SaveNow -> {}；请求立即持久化当前管理员数据。
+  ReachRebirthLevel -> {}；无需输入，由服务端按最新重生次数/配置算门槛，
+    将等级升至 max(当前等级, 所需等级)，不执行重生；已达上限则不变。
+  UnlockAllCollections -> {}；无需输入，校验权限和图鉴配置后解锁全部图鉴
+    并持久化；不发道具，不写背包。
+  Close -> {}；View 已取消确认并隐藏底板/标题，接入可处理关闭通知。
+  输入无效只 warn，不发动作；客户端校验不能替代服务端权限和数值校验。
+  命令作用于当前管理员本人，目标身份由可信业务层决定，不信任客户端权限。
+  请求前 pending=true 并刷新；成功/失败后 pending=false 并刷新；
+  实际写入、重置、存档及结果/错误提示均由接入负责，本面板无状态提示文本。
+
+【显隐与输入边界】
+  View 当前关闭时直接隐藏底板/标题，OnShow 再恢复，非完整 Show/Hide 动画流程。
+  State 无 open 字段，Render 只控制命令按钮及重置确认，不回填输入框。
+  静态标签、输入提示和重置确认保留中文；输入原文不翻译。
+  ScreenGui 实际名称为 GMPanelUI，不是文档目录名 GMPanel。
 ]]
 local FX = _G.FX
 local FXLoader = FX.Loader
@@ -139,7 +164,7 @@ function CGMPanelView:Render(state)
     end
 end
 
--- 真实游戏和模拟接入分别覆写本方法。
+-- 由游戏接入覆写本方法。
 -- @param action string 稳定命令名
 -- @param payload table 对应命令参数，见文件头
 function CGMPanelView:OnUIAction(action, payload)

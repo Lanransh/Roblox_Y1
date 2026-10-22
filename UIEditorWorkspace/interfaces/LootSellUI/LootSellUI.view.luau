@@ -1,48 +1,88 @@
 --[[
-道具列表接入契约（全部界面文案使用英文）：
-Config.qualities:table<string, string>，必填，品质 ID 到 #RRGGBB 十六进制颜色的字典。
-所有 items[i].qualityId 必须在此字典中存在；品质 ID 由游戏配置定义，不硬编码枚举。
-Config.qualityGradientEnds:table<string, string>，可选，品质 ID 到 #RRGGBB 渐变终色；缺省使用 qualities 中的颜色。条目从上到下渐变。
-Config.doubleSaleGemCost:number，必填，单次双倍出售的钻石费用，无默认值。
-State.doubleSaleCards:number 可选，缺省 0，拥有的双倍卡数量。
-State.gems:number 可选，缺省 0，钻石余额。State.isVip:boolean 可选，缺省 false。
-双倍菜单叠在列表上，列表保持可见但禁用底层按钮；关闭后恢复，打开不会发送出售动作。
-Sell 的双倍动作新增 method:string，Card / Gems / Vip；普通出售省略。
-Card/Gems 的 multiplier 为 2，VIP 时为 4；Vip 方式固定 2。
-真实业务必须验证费用、库存和资格，成功后同步卡券/钻石/背包。
-Config.capacity:number，必填，正整数，背包条目容量，当前为 12，无默认值。
-State 为完整输入，不是增量，所有必填字段无默认值：
-  isOpen:boolean 窗口显示；
-  items:array 按显示顺序排列的已拥有道具；空背包为 {}；
-  items[i].id:string 唯一、稳定的背包实例 ID，不是名称或数组下标；
-  items[i].name:string 英文显示名；
-  items[i].qualityId:string 品质 ID，与 Config.qualities 的键对应，必填；
-  items[i].value:number 此条目的出售��价，非负，单位金币；展示为钞票图标与 +$金额，百万金额保留一位小数 M；
-  pending:boolean 可选，省略 false，出售按钮禁用；
-  message:string 可选，完整提示原文，由 Text.TrSource 查询，不传拼接后的动态句子；省略空文本。
-  soldAmount:number 可选，最近出售获得的金币；存在时优先显示本地化出售结果，0 也有效。
-  无 message/soldAmount 且空列表时显示 No items to sell；新请求前清空两字段。
-条目原型位于隐藏的 Templates.LootTemplateImg，显示容器 LootListBox 仅挂载运��时克隆。
-按 items[i].id 复用与清理实例，items 顺序决定位置；空列表清理所有克隆，原型保留。
-每条占一个容量，不合并同名物品。数量由 #items 计算；达到容量显示黄色。
-所有条目图标目前统一使用设计模板的问号占位资源，尚未配置真实 Roblox 图标 ID。
-最小示例：
-  self.Config = {capacity = 12, doubleSaleGemCost = 40, qualities = {common = "#A5ADB8"}}
-  self.State = {isOpen = true, items = {{id = "scroll_001", name = "Ancient Scroll", qualityId = "common", value = 18200000}}}
-GetUIConfig/GetUIState 默认读取 self.Config/self.State；首次刷新前准备完整数据。
-RefreshUI 调用 Render(GetUIState())，不合并补丁。
-接入 OnReady 先调父方法，再 BindUIData()、Show()；更新 State 后 RefreshUI()。
-加载时使用 items={}, pending=true, message="Loading items..."；准备完再刷新。
-必须覆写 OnUIAction(action,payload)，无返回值：
-  Sell：{entryIds:array<string> 当前所有背包实例 ID, multiplier:number 1 / 2 / 4, method:string? Card / Gems / Vip}；
-  Close：{}。
-可选覆写 GetItemQualityColor(item)，输入为当前完整道具条目，返回 Color3；
-默认读取 Config.qualities[item.qualityId]，缺失时明确报错，不沿用上一条颜色。
-用于条目渐变起色、图标底色、边框和左侧色条；真实图标仍待资源接入。
-游戏层校验实际库存、双倍资格及出售结果，
-请求时 pending=true 并清空 message/soldAmount；成功更新 items/soldAmount，失败更新 message，
-将 pending=false 后刷新；金额模板由 View 翻译，接入层不拼接结果文案。
-失败时保留最新库存并填写英文 message。模拟接入只清空模拟列表，不发放金币。
+背包整体出售接入契约
+
+【Config：完整配置】
+  capacity: number，必填，无默认值；正整数背包条目容量，不固定为示例的 12。
+  doubleSaleGemCost: number，必填，无默认值；非负，单次钻石双倍出售的钻石费用。
+  qualities: {[qualityId: string]: string}，必填；品质 ID 到 #RRGGBB 颜色，
+    每个 State.items[].qualityId 都须有键，不硬编码品质枚举。
+  qualityGradientEnds: {[qualityId: string]: string}，可选；#RRGGBB 渐变终色，
+    表或键省略时使用 GetItemQualityColor(item) 的起色，不沿用旧条目颜色。
+
+【State：Render 的完整输入】
+  isOpen: boolean，必填，无默认值；当前实现控制底板/标题及二级菜单显隐。
+  items: {Item}，必填连续数组；当前拥有的实例，数组顺序即显示/提交顺序。
+    Item.id: string，必填，无默认值；全列表唯一稳定的背包实例 ID，
+      不是道具配置 ID、名称或数组下标；同名道具可有不同实例 ID。
+    Item.name: string，必填，无默认值；显示名称原文，经 Text.TrSource 查询。
+    Item.qualityId: string，必填，无默认值；对应 Config.qualities 的键。
+    Item.value: number，必填，无默认值；非负，此实例的基础出售金币金额。
+  pending: boolean，可选，省略 false；禁用出售，不禁用普通列表的关闭。
+  doubleSaleCards: number，可选，省略 0；非负整数，双倍卡数量。
+  gems: number，可选，省略 0；非负钻石余额。
+  isVip: boolean，可选，省略 false；是否具备 VIP 双倍资格。
+  message: string，可选，省略 nil；提示原文，经 Text.TrSource 查询。
+  soldAmount: number，可选，省略 nil；最近实际出售所得金币，0 也是有效结果，
+    存在时优先于 message 显示出售结果；新请求须清空两者。
+  空背包 items={}；无结果和 message 时显示 No items to sell。
+  message="" 会留下空提示而非空背包提示；需要默认提示时用 nil。
+  无独立 loading 字段；加载时可提供 items={}、pending=true、
+  message="Loading items..."，其他必填数据仍须齐全。
+
+【最小完整数据（接入 Ctor 调用父构造之后）】
+  self.Config = {
+      capacity = 12, doubleSaleGemCost = 40,
+      qualities = { common = "#A5ADB8" },
+  }
+  self.State = {
+      isOpen = true,
+      items = {
+          { id = "scroll_001", name = "Ancient Scroll",
+            qualityId = "common", value = 18200000 },
+      },
+  }
+
+【初始化与刷新】
+  游戏接入类继承 CLootSellView。
+  接入 Ctor(owner) 先调用自身类的 Super.Ctor(self, owner)，再准备下例数据。
+  接入 OnReady() 先调用自身类的 Super.OnReady(self)，再依次
+  self:BindUIData()、self:Show()；父 OnReady 负责绑定节点，OnShow 会刷新。
+  GetUIConfig() 默认返回 self.Config；GetUIState() 默认返回 self.State。
+  RefreshUI() 调用 Render(GetUIState())，输入是完整快照，不合并增量，
+  不自动补齐业务字段。可修改已有表或替换整表，但每次刷新须满足完整契约。
+  后续先更新 Config/State，再 self:RefreshUI()；异步未就绪按本页规则处理。
+  无需覆写 Render 或手动重复调用 OnReady；业务类覆写生命周期时须保留父调用。
+
+【动作与覆写】
+  必需覆写 OnUIAction(action: string, payload: table)，无返回值；默认报错。
+  Sell -> { entryIds: {string}, multiplier: number, method: string? }。
+    entryIds 是当前全部 items[].id 的连续数组，不支持仅出售选择项；
+    普通出售 multiplier=1，省略 method，即使 VIP 也不自动翻倍。
+    method="Card"：消耗双倍卡；非 VIP multiplier=2，VIP multiplier=4。
+    method="Gems"：支付 Config.doubleSaleGemCost；非 VIP 为 2，VIP 为 4。
+    method="Vip"：要求 isVip=true，multiplier 固定为 2。
+    只允许上述组合，method 为 nil 时不是双倍出售。
+  Close -> {}；由接入层设置 isOpen=false 并刷新。
+  可选覆写 GetItemQualityColor(item: Item) -> Color3；
+    默认从 qualities[item.qualityId] 转 Color3，缺失明确报错。
+    返回色用于条目渐变起色、图标底色、描边及色条，不修改物品数据。
+  无其他页面专用必需或可选覆写。
+  请求前 pending=true、message=nil、soldAmount=nil 并刷新；服务端重查
+  entryIds 的归属/库存、价格、卡券、钻石和 VIP 资格，重新计算实际所得。
+  成功同步 items、卡券/余额及 soldAmount；失败保留最新库存并填写 message；
+  两者均 pending=false 并刷新。不信任客户端 multiplier，不由 View 发金币。
+
+【局部菜单、列表与资源边界】
+  双倍按钮仅打开本地 DoubleSaleBox，不发动作；选择方式后才发送 Sell；
+  返回按钮只关闭菜单。菜单打开时禁用底层出售和主窗口关闭。
+  isOpen=false 或 items 为空会关闭菜单；菜单状态不是 State 字段。
+  Templates.LootTemplateImg 按实例 ID 复用/排序/清理；每条占一容量，
+  不合并同名物品；满容量仅改变统计颜色，不负责拦截背包写入。
+  总价为所有 value 之和，展示 +$；>=1000000 缩为一位小数 M，
+  不截断实际提交值或业务金额。
+  所有条目图标沿用模板问号，没有消费 Item.icon 的动态图片接口。
+  当前 Render 直接设置底板/标题 Visible，并非完整 Show/Hide 动画流程；
+  再次 Show 前须恢复 isOpen=true。本次仅说明现有行为。
 ]]
 local FX = _G.FX
 local FXLoader = FX.Loader
@@ -158,7 +198,7 @@ function CLootSellView:GetEntryIds()
     return ids
 end
 
--- 从游戏提供的��质映射获取每个道具的颜色，可由接入层覆写。
+-- 从游戏提供的品质映射获取每个道具的颜色，可由接入层覆写。
 -- @param item table 当前道具，含 qualityId
 -- @return Color3 此道具的品质颜色
 function CLootSellView:GetItemQualityColor(item)

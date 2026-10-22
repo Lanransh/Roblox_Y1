@@ -1,27 +1,53 @@
 --[[
-Settings 接入契约
+设置界面接入契约
 
-Config: 空表；本界面不读取配置字段。
-State: 必填完整快照，每次 RefreshUI 都提供全部字段。
-  musicVolume: number，必填，音乐音量，0 到 100 的百分比整数。
-  soundEffectsVolume: number，必填，音效音量，0 到 100 的百分比整数。
-  showAura: boolean，必填，是否显示光环。
-  giantPickaxe: boolean，必填，是否启用镐子尺寸巨大化。
-最小数据示例：Config = {}；State = { musicVolume = 70, soundEffectsVolume = 85,
-  showAura = true, giantPickaxe = false }。
-首次刷新前由接入层准备完整 State；OnReady 绑定节点后调用 BindUIData、Show。
-业务状态更新后替换完整 State 并调用 RefreshUI。
+【Config / State】
+  Config：不读取配置字段，可设置 self.Config = {}。
+  State：必填完整快照，以下字段全部必填、无默认值。
+    musicVolume: number；音乐音量，0..100 百分比整数，不是 0..1 音频倍率。
+    soundEffectsVolume: number；音效音量，0..100 百分比整数。
+    showAura: boolean；是否显示光环。
+    giantPickaxe: boolean；是否启用镐子尺寸巨大化。
+  View 按状态显示，不替业务层保存设置或改变声音/模型。
+  无 open、pending、error、列表或独立加载态；异步读取完成前不显示。
+  音量图形宽度截断到 0..1、文字取整，但不替业务修正超范围的原始状态。
 
-必需覆写 OnUIAction(action, payload)，无返回值：
-  ChangeSetting: payload = { setting: string, value: number | boolean }。
-    setting 为 musicVolume / soundEffectsVolume 时，value 是 0 到 100 的音量百分比。
-    setting 为 showAura / giantPickaxe 时，value 是 boolean。
-    giantPickaxe 的实际镐子缩放与关闭后恢复原尺寸由游戏接入层处理。
-  Close: payload = {}，由接入层 Hide。
-游戏接入负责保存设置并将完整 State 刷新回界面；拖动滑杆会持续发出 ChangeSetting。
-编辑器 Preview 只修改本地模拟状态，不写入游戏设置。
+【最小完整数据（接入 Ctor 调用父构造之后）】
+  self.Config = {}
+  self.State = {
+      musicVolume = 70, soundEffectsVolume = 85,
+      showAura = true, giantPickaxe = false,
+  }
+
+【初始化与刷新】
+  游戏接入类继承 CSettingsView。
+  接入 Ctor(owner) 先调用自身类的 Super.Ctor(self, owner)，再准备下例数据。
+  接入 OnReady() 先调用自身类的 Super.OnReady(self)，再依次
+  self:BindUIData()、self:Show()；父 OnReady 负责绑定节点，OnShow 会刷新。
+  GetUIConfig() 默认返回 self.Config；GetUIState() 默认返回 self.State。
+  RefreshUI() 调用 Render(GetUIState())，输入是完整快照，不合并增量，
+  不自动补齐业务字段。可修改已有表或替换整表，但每次刷新须满足完整契约。
+  后续先更新 Config/State，再 self:RefreshUI()；异步未就绪按本页规则处理。
+  无需覆写 Render 或手动重复调用 OnReady；业务类覆写生命周期时须保留父调用。
+
+【动作与覆写】
+  必需覆写 OnUIAction(action: string, payload: table)，无返回值；默认报错。
+  ChangeSetting -> { setting: string, value: number | boolean }。
+    setting="musicVolume" / "soundEffectsVolume"：value 为 0..100 整数百分比。
+    setting="showAura" / "giantPickaxe"：value 为 boolean，取当前 State 的反值。
+    不支持其他设置键；setting 为稳定字段名，不是翻译后的标签。
+  Close -> {}；由接入层调用 self:Hide()，没有 State.open。
+  无其他页面专用必需或可选覆写。
+  拖动滑杆会连续发送 ChangeSetting，不只在释放时发送；接入层收到后
+  更新对应 State 字段并 RefreshUI，否则滑杆/开关不会得到状态确认。
+  实际音频映射、光环显隐、镐子放大及关闭设置后恢复原尺寸由游戏处理。
+  若异步保存，接入层自行处理合并请求、过期响应和失败回滚；
+  View 没有等待锁或错误提示，不能将每次滑动事件等同于一次存档成功。
+
+【显隐边界】
+  窗口由 Show/Hide 管理，Render 不控制根 Enabled 或整个窗口 Visible。
+  当前滑杆只绑定鼠标输入，不据此承诺触屏/手柄行为。
 ]]
-
 local FX = _G.FX
 local FXLoader = FX.Loader
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
@@ -174,7 +200,7 @@ function CSettingsView:Render(state)
     end
 end
 
--- 真实游戏接入或 Preview 必须处理本界面的动作。
+-- 游戏接入必须处理本界面的动作。
 -- @param action string ChangeSetting 或 Close
 -- @param payload table 设置键与新值，或 Close 的空表
 function CSettingsView:OnUIAction(action, payload)

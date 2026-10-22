@@ -1,34 +1,68 @@
 --[[
-商店接入契约
-Config.products: 必填数组；顺序为展示顺序，可为空。
-每项 { id: string 稳定商品 ID（全列表唯一）, currency: "Diamond"|"Robux",
-title: string, description: string, price: number 非负对应货币数量,
-icon: string 可选真实 Roblox Image ID，省略或空字符串显示问号占位,
-cardStyle: string 可选 Green|Gold|Cyan|Orange|Purple|Pink，选择可编辑渐变原型；
-省略时 Diamond 使用 Green，Robux 使用 Gold。
-cardColor: string 旧配置兼容字段，本版不再读取 }。
-卡片使用设计原型的鲜艳竖向渐变，游戏可逐商品选择 cardStyle。
-商品配置不覆盖卡片底色，购买按钮、文字和描边仍由设计节点定义。
-State: 完整输入，非增量：
-tab: "Diamond"|"Robux" 必填；open: boolean 必填；
-pending: 字典[id]=boolean 可选，省略视为无请求；
-数据须在首次 Show 前准备，GetUIConfig/GetUIState 默认读取 self.Config/self.State；
-接入 OnReady 先调用父方法，再 BindUIData、Show。更新完整 State 后 RefreshUI。
-最小示例：
-self.Config = { products = { { id = "speed", currency = "Diamond",
-title = "Speed Potion", description = "Boost your movement speed", price = 100,
-cardStyle = "Green" } } }
-self.State = { tab = "Diamond", open = true }
-动作：SelectTab { tab: "Diamond"|"Robux" }；
-Purchase { productId: string, currency: "Diamond"|"Robux" }；Close {}。
-必需覆写 OnUIAction(action, payload)，无返回值；无其他页面专用覆写。
-购买接入按 productId 查询真实商品并验证价格、余额和支付结果；
-请求期间 pending[id]=true，完成后更新状态再刷新；商店内不显示结果提示。
-Render 不扣款或发奖。图标取 Config.products[].icon；
-钻石价格按钮的 DiamondIcon 使用静态资源 rbxassetid://123110249883616，可在设计节点中替换。
-空图清除上一商品图并显示问号占位，正式图标需由业务配置提供。
-Templates 隐藏原型供两列动态列表克隆，按稳定 ID 更新、排序、删除和清理连接。
-空分组清理条目并保持列表空白；异步未就绪时提供 products={}。
+双货币商店接入契约
+
+【Config：完整配置】
+  products: {Product}，必填连续数组；可为空 {}，过滤后仍保留配置顺序。
+    Product.id: string，必填，无默认值；全列表唯一、稳定的商品配置 ID。
+    Product.currency: "Diamond" | "Robux"，必填，无默认值；商品所属页签。
+    Product.title: string，必填，无默认值；商品标题原文。
+    Product.description: string，必填，无默认值；商品描述原文。
+    Product.price: number，必填，无默认值；非负，对应 currency 的货币数量。
+    Product.icon: string，可选；Roblox Image 资源地址；省略或 "" 赋空图。
+      当前 View 没有显式设置问号回退，是否有占位取决于设计原型。
+    Product.cardStyle: "Green" | "Gold" | "Cyan" | "Orange" | "Purple" | "Pink"，
+      可选；省略时 Diamond 使用 Green、Robux 使用 Gold。
+      其他值不支持，查找原型会失败；卡片渐变、文字、按钮取设计原型。
+  旧 cardColor 字段不再消费，不用它覆盖底色。
+
+【State：Render 的完整输入】
+  tab: "Diamond" | "Robux"，必填，无默认值；当前显示商品分组。
+  open: boolean，必填，无默认值；当前实现直接赋给 ScreenGui.Enabled。
+  pending: {[productId: string]: boolean}，可选；键对应 Product.id。
+    表省略或键缺失视为无请求，true 仅禁用该商品购买，不禁用页签或关闭。
+  不读取余额、购买结果或 error；无售罄状态，不按余额禁用购买。
+  没有独立加载态；异步可先提供 products={}，空分组仅显示空列表。
+
+【最小完整数据（接入 Ctor 调用父构造之后）】
+  self.Config = {
+      products = {
+          { id = "speed", currency = "Diamond", title = "Speed Potion",
+            description = "Boost your movement speed", price = 100 },
+      },
+  }
+  self.State = { tab = "Diamond", open = true }
+
+【初始化与刷新】
+  游戏接入类继承 CCurrencyShopView。
+  接入 Ctor(owner) 先调用自身类的 Super.Ctor(self, owner)，再准备下例数据。
+  接入 OnReady() 先调用自身类的 Super.OnReady(self)，再依次
+  self:BindUIData()、self:Show()；父 OnReady 负责绑定节点，OnShow 会刷新。
+  GetUIConfig() 默认返回 self.Config；GetUIState() 默认返回 self.State。
+  RefreshUI() 调用 Render(GetUIState())，输入是完整快照，不合并增量，
+  不自动补齐业务字段。可修改已有表或替换整表，但每次刷新须满足完整契约。
+  后续先更新 Config/State，再 self:RefreshUI()；异步未就绪按本页规则处理。
+  无需覆写 Render 或手动重复调用 OnReady；业务类覆写生命周期时须保留父调用。
+
+【动作与覆写】
+  必需覆写 OnUIAction(action: string, payload: table)，无返回值；默认报错。
+  SelectTab -> { tab: "Diamond" | "Robux" }；接入层更新 State.tab 并刷新；
+    View 不自行切换业务状态。若需切页回顶部，接入层可重置 List.CanvasPosition。
+  Purchase -> { productId: string, currency: "Diamond" | "Robux" }；
+    productId 对应 Product.id，currency 为该配置货币，不含价格或平台商品 ID。
+  Close -> {}；接入层更新 open=false 并刷新。
+  无其他页面专用必需或可选覆写。
+  业务通过 productId 查询真实价格与平台购买标识，校验余额/支付/发放。
+  请求前 pending[id]=true 并刷新；成功或失败均清除该键再刷新，
+  提示由接入层另行展示。本页不自动扣款，也不把平台购买弹窗视为发放成功。
+
+【列表、显隐与资源边界】
+  Templates 中货币/样式原型按稳定 ID 克隆为两列；切换页签清理非当前页，
+  同 ID 改 currency/cardStyle 会换原型；空分组清理副本，保留隐藏原型。
+  当前 Render 直接改根 Enabled，与通用 Show/Hide 动画约定有差异；
+  再次 Show 前须恢复 open=true，本次不改变执行逻辑。
+  ProductIconImg 由配置 icon 提供；钻石按钮 DiamondIcon 是设计中的静态图，
+  需替换时修改设计资源，不向 State 增加字段。
+  真实支付、资源权限及设备显示另验。
 ]]
 local FX = _G.FX
 local FXLoader = FX.Loader
@@ -167,7 +201,7 @@ function CCurrencyShopView:Render(state)
     self.List.CanvasSize = UDim2.fromOffset(732, math.max(386, math.ceil(count / 2) * 192 - 12))
 end
 
--- 游戏与模拟接入必须处理声明的动作。
+-- 游戏接入必须处理声明的动作。
 -- @param action string SelectTab、Purchase 或 Close
 -- @param payload table 文件头定义的动作参数
 function CCurrencyShopView:OnUIAction(action, payload)
