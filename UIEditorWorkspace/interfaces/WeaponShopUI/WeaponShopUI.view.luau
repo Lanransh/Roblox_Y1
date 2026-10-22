@@ -4,7 +4,6 @@
 【Config：完整配置】
   title: string，必填，无默认值；标题原文，经 Text.TrSource 查询。
   qualities: {[qualityId: string]: Quality}，必填；品质 ID 由项目定义。
-    Quality.name: string，必填，无默认值；品质名称原文。
     Quality.color: string，必填，无默认值；#RRGGBB 渐变起色。
     Quality.colorEnd: string，可选；省略使用 color，作为竖向渐变终色。
   weapons: {Item}，必填连续数组；数组顺序即显示顺序，空列表传 {}。
@@ -12,7 +11,7 @@
     Item.name: string，必填，无默认值；名称原文，经 Text.TrSource 查询。
     Item.qualityId: string，必填，无默认值；必须对应 qualities 中存在的键。
     Item.strength: number，必填，无默认值；力量加成点数，不是倍率。
-    Item.price: number，必填，无默认值；非负金币数量，展示为 +$金额。
+    Item.price: number，必填，无默认值；非负金币数量，展示为 $金额。
     Item.icon: string，可选；Roblox Image 资源地址。
       省略时使用问号 rbxassetid://86795093617566；
       当前代码对 "" 直接赋空图，不回退问号。需要占位时省略此字段。
@@ -33,7 +32,7 @@
 【最小完整数据（接入 Ctor 调用父构造之后）】
   self.Config = {
       title = "WEAPONS",
-      qualities = { common = { name = "Common", color = "#A5ADB8" } },
+      qualities = { common = { color = "#A5ADB8" } },
       weapons = {
           { id = "sickle", name = "Sickle", qualityId = "common",
             strength = 1, price = 0 },
@@ -60,7 +59,6 @@
   Equip -> { weaponId: string }，已拥有但未装备时发出，值为当前 Item.id。
   Close -> {}，由接入层处理关闭。
   Config.strengthIsMultiplier: boolean?，true 展示训练倍率，否则力量点数。
-  Config.hideQuality: boolean?，true 隐藏品质；Quality.level: number? 展示品质序号。
   Config.allowUnaffordableAction: boolean?，true 时余额不足保持灰色但允许点击提示。
   State.busy: boolean?，全局请求锁；pending[id] 的等待文案优先于已装备状态。
   FormatNumber(value:number)->string 可选覆写，默认 tostring；接入统一数量工具。
@@ -84,14 +82,13 @@ local CWeaponShopView = FX.Class("CWeaponShopView", "CUIView")
 
 local TranslationTexts = Text.Define("WeaponShopUI", {
     Strength = "Strength +{strength}",
-    Price = "+${price}",
+    Price = "${price}",
     Equip = "Equip",
     Equipped = "Equipped",
     Waiting = "Waiting...",
     NoWeapons = "No weapons available",
     Loading = "Loading...",
     TrainingRate = "Training ×{rate}",
-    Quality = "Quality {level:int}",
 })
 
 -- 暴露只读文案定义，供接入子类通过 self.BaseViewTranslationTexts 复用。
@@ -183,9 +180,6 @@ function CWeaponShopView:Render(state)
                 studGradient.ColorEnd = endColor
             end
             FXLoader:Here(row, "NameTxt").Text = Text.TrSource(weapon.name)
-            local rarity = FXLoader:Here(row, "RarityTxt")
-            rarity.Visible = not config.hideQuality
-            rarity.Text = quality.level and Text.Tr(TranslationTexts.Quality, {level = quality.level}) or Text.TrSource(quality.name)
             local strengthTxt = FXLoader:Here(row, "StrengthTxt")
             strengthTxt.Text = Text.Tr(TranslationTexts.Strength, {
                 strength = self:FormatNumber(weapon.strength),
@@ -221,6 +215,8 @@ function CWeaponShopView:Render(state)
             FXLoader:Here(row, "ActionBtn.MoneyIconImg").Visible = showMoney
             local buttonText = FXLoader:Here(row, "ActionBtn.ButtonTxt")
             buttonText.Text = caption
+            buttonText.TextSize = 28
+            buttonText.TextWrapped = false
             buttonText.Position = UDim2.fromOffset(0, 0)
             buttonText.Size = UDim2.fromScale(1, 1)
             buttonText.TextXAlignment = Enum.TextXAlignment.Center

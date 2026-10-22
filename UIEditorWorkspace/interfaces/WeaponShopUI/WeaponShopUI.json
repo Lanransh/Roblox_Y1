@@ -976,7 +976,7 @@
                       "TextScaled": false,
                       "TextSize": 28,
                       "TextTransparency": 0,
-                      "TextWrapped": true,
+                      "TextWrapped": false,
                       "TextXAlignment": "Left",
                       "TextYAlignment": "Center",
                       "Visible": true,
@@ -1150,68 +1150,6 @@
                   "TextXAlignment": "Left",
                   "TextYAlignment": "Center",
                   "Visible": true,
-                  "ZIndex": 6
-                }
-              },
-              {
-                "children": [
-                  {
-                    "children": [],
-                    "className": "UIStroke",
-                    "id": "dd1b5050-5cba-46f4-92d3-fd53d9bf5473",
-                    "name": "TextStroke",
-                    "properties": {
-                      "Color": "#243021",
-                      "Enabled": true,
-                      "Thickness": 1,
-                      "Transparency": 0
-                    }
-                  }
-                ],
-                "className": "TextLabel",
-                "id": "b1856b2b-f5e3-4b29-83a2-3d0e3b4426c4",
-                "name": "RarityTxt",
-                "properties": {
-                  "AnchorPoint": {
-                    "x": 0,
-                    "y": 0
-                  },
-                  "AutoLocalize": false,
-                  "BackgroundColor3": "#ffffff",
-                  "BackgroundTransparency": 1,
-                  "ClipsDescendants": false,
-                  "Font": "GothamBold",
-                  "LayoutOrder": 0,
-                  "Position": {
-                    "x": {
-                      "offset": 120,
-                      "scale": 0
-                    },
-                    "y": {
-                      "offset": 53,
-                      "scale": 0
-                    }
-                  },
-                  "Rotation": 0,
-                  "Size": {
-                    "x": {
-                      "offset": 110,
-                      "scale": 0
-                    },
-                    "y": {
-                      "offset": 24,
-                      "scale": 0
-                    }
-                  },
-                  "Text": "",
-                  "TextColor3": "#FFFFFF",
-                  "TextScaled": false,
-                  "TextSize": 16,
-                  "TextTransparency": 0,
-                  "TextWrapped": false,
-                  "TextXAlignment": "Left",
-                  "TextYAlignment": "Center",
-                  "Visible": false,
                   "ZIndex": 6
                 }
               },
