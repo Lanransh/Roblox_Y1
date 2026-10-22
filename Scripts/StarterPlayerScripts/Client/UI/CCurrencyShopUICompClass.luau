@@ -8,7 +8,6 @@ local TranslationTexts = Text.Define("CurrencyShopUI", {
     Capacity = "+{count:int} Carry Slot",
     CapacityDesc = "Permanently carry {count:int} collectibles.",
     Diamonds = "{value} Diamonds",
-    Unavailable = "Unavailable",
     RateMaxed = "You have reached the maximum training multiplier.",
 })
 FXLoader:RequireFromParent(script, "Generated/CCurrencyShopView")
@@ -268,7 +267,7 @@ function Component:Purchase(product)
             self._busy = false
             self.State.pending = nil
             self._promptProductId = nil
-            self._commonUI:ShowLocalizedTips(TranslationTexts.Unavailable)
+            self._commonUI:ShowLocalizedTips(self.BaseViewTranslationTexts.Unavailable)
         else
             self:ReportPurchaseAnalytics("PromptRequested", product.productId, attemptId)
         end
