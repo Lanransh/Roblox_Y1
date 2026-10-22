@@ -70,6 +70,9 @@ local TranslationTexts = Text.Define("RebirthUI", {
     ResetWarning = "Rebirth resets your strength!",
 })
 
+-- 暴露只读文案定义，供接入子类通过 self.BaseViewTranslationTexts 复用。
+UI.BaseViewTranslationTexts = TranslationTexts
+
 -- 绑定已有设计节点与按钮；刷新时不重复连接事件。
 function UI:OnReady()
     local root = FXLoader:PlayerGui("RebirthUI")

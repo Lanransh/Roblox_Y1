@@ -68,6 +68,9 @@ local TranslationTexts = Text.Define("CollectionUI", {
     ActivatedCount = "Activated {active:int} / {total:int}",
 })
 
+-- 暴露只读文案定义，供接入子类通过 self.BaseViewTranslationTexts 复用。
+CCollectionView.BaseViewTranslationTexts = TranslationTexts
+
 -- 绑定窗口、统计与隐藏卡片原型，只连接关闭操作。
 function CCollectionView:OnReady()
     local root = FXLoader:PlayerGui("CollectionUI")

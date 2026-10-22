@@ -75,6 +75,9 @@ local TranslationTexts = Text.Define("CurrencyShopUI", {
     Price = "{price}",
 })
 
+-- 暴露只读文案定义，供接入子类通过 self.BaseViewTranslationTexts 复用。
+CCurrencyShopView.BaseViewTranslationTexts = TranslationTexts
+
 -- 绑定已有节点与页签事件；每张商品卡只连接一次。
 function CCurrencyShopView:OnReady()
     local root = FXLoader:PlayerGui("CurrencyShopUI")

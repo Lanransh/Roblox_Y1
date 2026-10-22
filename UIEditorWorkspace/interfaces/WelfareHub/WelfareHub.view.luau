@@ -198,6 +198,9 @@ local TranslationTexts = Text.Define("WelfareHub", {
     TrainingAmount = "+{amount}",
 })
 
+-- 暴露只读文案定义，供接入子类通过 self.BaseViewTranslationTexts 复用。
+CWelfareView.BaseViewTranslationTexts = TranslationTexts
+
 -- 局部条目只管理自身克隆与连接，不执行整屏适配。
 local RewardRow = {}
 RewardRow.__index = RewardRow

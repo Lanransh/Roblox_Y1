@@ -87,6 +87,9 @@ local TranslationTexts = Text.Define("AuraShopUI", {
     Loading = "Loading...",
 })
 
+-- 暴露只读文案定义，供接入子类通过 self.BaseViewTranslationTexts 复用。
+CAuraShopView.BaseViewTranslationTexts = TranslationTexts
+
 -- 绑定窗口与隐藏原型，只在首次准备时连接关闭按钮。
 function CAuraShopView:OnReady()
     local root = FXLoader:PlayerGui("AuraShopUI")

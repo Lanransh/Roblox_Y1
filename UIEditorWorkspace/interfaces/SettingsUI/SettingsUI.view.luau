@@ -59,6 +59,9 @@ local TranslationTexts = Text.Define("SettingsUI", {
     Off = "OFF",
 })
 
+-- 暴露只读文案定义，供接入子类通过 self.BaseViewTranslationTexts 复用。
+CSettingsView.BaseViewTranslationTexts = TranslationTexts
+
 -- 把鼠标位置换算成百分比，并把音量变化交给接入层。
 -- @param self CSettingsView 实例
 -- @param setting string 稳定的音量设置字段
