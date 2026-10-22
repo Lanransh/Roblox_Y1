@@ -13,9 +13,9 @@ local ToyRoller = {}
 --- @return number 本关普通道具期望价格。
 --- @return number 相对全局第一关的向上取整幸运倍率，仅供展示，不重复乘价格。
 function ToyRoller.CreatePool(world, level)
-    local firstStage = (world - 1) * NumericalConfig.worldStageCount + 1
-    local stage = firstStage + level - 1
-    local itemCount = NumericalConfig.worldStageCount * CommonConfig.ToyItemsPerStage
+    local stages = RockLevel.Worlds[world].Stages
+    local stage = stages[level]
+    local itemCount = #stages * CommonConfig.ToyItemsPerStage
     local count = math.min(CommonConfig.ToyCandidateCount, itemCount)
     local priceRateMin, priceRateMax = CommonConfig.ToyPriceRateRange[1], CommonConfig.ToyPriceRateRange[2]
     assert(priceRateMin > 0 and priceRateMin <= priceRateMax
@@ -23,10 +23,11 @@ function ToyRoller.CreatePool(world, level)
         "Toy price rate bounds must be positive, ordered, and average to 1")
     local priceRateStep = (priceRateMax - priceRateMin) / count
     local progress = 0
-    if NumericalConfig.worldStageCount > 1 then
-        progress = (level - 1) / (NumericalConfig.worldStageCount - 1)
+    if #stages > 1 then
+        progress = (level - 1) / (#stages - 1)
     end
-    local firstId = (world - 1) * itemCount + 1 + math.floor(progress * (itemCount - count) + 0.5)
+    local firstId = (stages[1] - 1) * CommonConfig.ToyItemsPerStage + 1
+        + math.floor(progress * (itemCount - count) + 0.5)
     local averagePrice = FX.CurveSampler:SampleCurveGroupColumnFormula(
         NumericalConfig.stageCurves, "expectedItemPrice", stage)
     assert(averagePrice > 0 and averagePrice < math.huge, "Expected item price must be finite and positive")

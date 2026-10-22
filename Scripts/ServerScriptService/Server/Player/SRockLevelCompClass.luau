@@ -81,9 +81,13 @@ function Component:OnPlayerLogin()
     end
     self._areas = RockLevel.GetAreas()
     self:PrepareAreaDefinitions()
-    local grounds = FXLoader:Workspace("BlockMeshs/World1Root/GuanQia")
+    local grounds = {}
+    for worldIndex, world in ipairs(RockLevel.Worlds) do
+        local root = FXLoader:Workspace("BlockMeshs/" .. world.Name .. "Root")
+        grounds[worldIndex] = root:FindFirstChild("GuanQia", true)
+    end
     for index, area in ipairs(self._areas) do
-        local ground = grounds:WaitForChild("Ground" .. index)
+        local ground = grounds[area.World]:WaitForChild("Ground" .. area.LocalIndex)
         area.Node.Color = ground.Color
     end
     self._timer = FX.Task:Interval(0.1, function()
@@ -115,7 +119,7 @@ function Component:PrepareAreaDefinitions()
         if duplicateConfigs[areaId] then
             definition.Error = "duplicate AreaConfig rows"
         elseif not config or config.AreaId ~= areaId then
-            definition.Error = "missing AreaConfig for world 1 area"
+            definition.Error = "missing AreaConfig for area"
         else
             local count = math.floor(area.Columns * area.Rows * GameConfig.CommonConfig.ToyRefreshRatio)
             definition.LuckCount = math.min(GameConfig.CommonConfig.ToyLuckyCount, count)
@@ -131,7 +135,7 @@ function Component:PrepareAreaDefinitions()
                 end
             end
             if not definition.Error and definition.NormalCount + definition.LuckCount > 0 then
-                local pool, averagePrice, areaLuck = ToyRoller.CreatePool(1, areaId)
+                local pool, averagePrice, areaLuck = ToyRoller.CreatePool(area.World, area.LocalIndex)
                 definition.AveragePrice = averagePrice
                 definition.AreaLuck = areaLuck
                 for _, reward in ipairs(pool) do
@@ -665,11 +669,17 @@ function Component:Tick()
         or self._giantPickaxe ~= self:GetTable(Fields.Settings).giantPickaxe then
         self:EquipPickaxe(humanoid)
     end
-    local firstArea = self._areas[1]
-    local inSafeArea = position.Z < firstArea.MinZ - 8
-        and position.Z >= firstArea.MinZ - 100
-        and math.abs(position.X) <= 72
-        and math.abs(position.Y - firstArea.FloorY) < 16
+    local inSafeArea = false
+    for worldIndex, world in ipairs(RockLevel.Worlds) do
+        local firstArea = self._areas[world.Stages[1]]
+        if position.Z < firstArea.MinZ - 8
+            and position.Z >= firstArea.MinZ - 100
+            and math.abs(position.X - firstArea.Node.Position.X) <= 72
+            and math.abs(position.Y - firstArea.FloorY) < 16 then
+            inSafeArea = true
+            break
+        end
+    end
     if self._inSafeArea == nil then
         self._inSafeArea = inSafeArea
     end
@@ -688,7 +698,7 @@ function Component:Tick()
                 and math.abs(position.Y - area.FloorY) < 12 then
                 self:InitializeArea(area)
                 local nextArea = self._areas[area.Index + 1]
-                if nextArea then
+                if nextArea and nextArea.World == area.World then
                     self:InitializeArea(nextArea)
                 end
                 break
@@ -697,17 +707,21 @@ function Component:Tick()
     end
 end
 
---- 仅允许关卡内存活角色回到基地，入库与轮次重置仍由原有基地位置检查处理。
+--- 仅允许关卡内存活角色回到该关卡所属世界的基地，并同步当前世界；入库与轮次重置由基地位置检查处理。
 function Component:ReturnHome()
     local character = self:GetPlayerCharacter()
     local root = character and character:FindFirstChild("HumanoidRootPart")
     local humanoid = character and character:FindFirstChildOfClass("Humanoid")
-    if not self._areas or not root or not humanoid or humanoid.Health <= 0
-        or not RockLevel.IsInArea(self._areas, root.Position) then
+    if not self._areas or not root or not humanoid or humanoid.Health <= 0 then
         return
     end
-    local spawn = FXLoader:Workspace("Decorations/World1Decorations/SpawnLocation")
+    local inArea, area = RockLevel.IsInArea(self._areas, root.Position)
+    if not inArea then
+        return
+    end
+    local spawn = FXLoader:Workspace(_G.GameEnum.WorldTransferConfig[area.World].SpawnPath)
     character:PivotTo(spawn.CFrame * CFrame.new(0, spawn.Size.Y / 2 + humanoid.HipHeight + root.Size.Y / 2, 0))
+    self:SetNumber(Fields.WorldIndex, area.World)
     root.AssemblyLinearVelocity = Vector3.zero
     root.AssemblyAngularVelocity = Vector3.zero
 end

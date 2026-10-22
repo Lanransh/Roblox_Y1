@@ -165,42 +165,39 @@ end
 --- 在所有世界的关卡中心上方创建幸运牌，随场景遮挡和距离隐藏，避免远处牌子叠在一起。
 function Component:CreateLevelLuckSigns()
     local config = GameEnum.LevelLuckDisplay
-    for worldIndex, worldName in ipairs(config.Worlds) do
-        local world = FXLoader:Workspace("GameLevelList/" .. worldName)
-        for index = 1, RockLevel.WorldLevelCount do
-            local area = FXLoader:Here(world, "Level_" .. index)
-            local billboard = Instance.new("BillboardGui")
-            billboard.Name = worldName .. "_Level_" .. index .. "_Luck"
-            billboard.Adornee = area
-            billboard.StudsOffsetWorldSpace = Vector3.new(0, config.Height, 0)
-            billboard.Size = UDim2.fromScale(30, 7)
-            billboard.AlwaysOnTop = false
-            billboard.LightInfluence = 0
-            billboard.MaxDistance = 150
-            local icon = Instance.new("ImageLabel")
-            icon.Name = "LuckIcon"
-            icon.BackgroundTransparency = 1
-            icon.Size = UDim2.fromScale(0.23, 1)
-            icon.Image = config.Icon
-            icon.ScaleType = Enum.ScaleType.Fit
-            icon.Parent = billboard
-            local label = Instance.new("TextLabel")
-            label.Name = "LuckText"
-            label.BackgroundTransparency = 1
-            label.Position = UDim2.fromScale(0.25, 0)
-            label.Size = UDim2.fromScale(0.75, 1)
-            label.Font = Enum.Font.GothamBlack
-            label.TextScaled = true
-            label.TextColor3 = Color3.new(1, 1, 1)
-            label.AutoLocalize = false
-            local stroke = Instance.new("UIStroke")
-            stroke.Color = Color3.fromRGB(15, 20, 30)
-            stroke.Thickness = 3
-            stroke.Parent = label
-            label.Parent = billboard
-            billboard.Parent = self._folder
-            table.insert(self._luckLabels, {Label = label, Rate = RockLevel.GetLuck(worldIndex, index)})
-        end
+    for index, area in ipairs(self._areas) do
+        local worldName = RockLevel.Worlds[area.World].Name
+        local billboard = Instance.new("BillboardGui")
+        billboard.Name = worldName .. "_Level_" .. area.LocalIndex .. "_Luck"
+        billboard.Adornee = area.Node
+        billboard.StudsOffsetWorldSpace = Vector3.new(0, config.Height, 0)
+        billboard.Size = UDim2.fromScale(30, 7)
+        billboard.AlwaysOnTop = false
+        billboard.LightInfluence = 0
+        billboard.MaxDistance = 150
+        local icon = Instance.new("ImageLabel")
+        icon.Name = "LuckIcon"
+        icon.BackgroundTransparency = 1
+        icon.Size = UDim2.fromScale(0.23, 1)
+        icon.Image = config.Icon
+        icon.ScaleType = Enum.ScaleType.Fit
+        icon.Parent = billboard
+        local label = Instance.new("TextLabel")
+        label.Name = "LuckText"
+        label.BackgroundTransparency = 1
+        label.Position = UDim2.fromScale(0.25, 0)
+        label.Size = UDim2.fromScale(0.75, 1)
+        label.Font = Enum.Font.GothamBlack
+        label.TextScaled = true
+        label.TextColor3 = Color3.new(1, 1, 1)
+        label.AutoLocalize = false
+        local stroke = Instance.new("UIStroke")
+        stroke.Color = Color3.fromRGB(15, 20, 30)
+        stroke.Thickness = 3
+        stroke.Parent = label
+        label.Parent = billboard
+        billboard.Parent = self._folder
+        table.insert(self._luckLabels, {Label = label, Rate = RockLevel.GetLuck(area.World, area.LocalIndex)})
     end
     self:RefreshLevelLuckSigns()
     self:TrackConnection(self._localization.Changed:Connect(function()

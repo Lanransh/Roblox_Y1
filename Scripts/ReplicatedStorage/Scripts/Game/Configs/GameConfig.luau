@@ -303,8 +303,8 @@ return {
             Index = 21,
             ToolId = 121,
             Name = [[Deep Sea Anchor Hammer]],
-            Price = 8.45e+16,
-            TrainingRate = 8.01e+13,
+            Price = 9.3e+16,
+            TrainingRate = 1.04e+14,
             DevGoodId = nil,
             Img = [[96227746339558]],
             ModelId = [=[game.ReplicatedStorage.Assets.BlockMeshs.Tools["21DeepSeaAnchorHammer"]]=]
@@ -313,8 +313,8 @@ return {
             Index = 22,
             ToolId = 122,
             Name = [[Deep Sea Hook Pickaxe]],
-            Price = 4.23e+17,
-            TrainingRate = 2.4e+14,
+            Price = 5.08e+17,
+            TrainingRate = 4.03e+14,
             DevGoodId = nil,
             Img = [[134869410236813]],
             ModelId = [=[game.ReplicatedStorage.Assets.BlockMeshs.Tools["22DeepSeaHookPickaxe"]]=]
@@ -323,8 +323,8 @@ return {
             Index = 23,
             ToolId = 123,
             Name = [[Desert Colossus Bone Hammer]],
-            Price = 2.12e+18,
-            TrainingRate = 7.2e+14,
+            Price = 2.77e+18,
+            TrainingRate = 1.57e+15,
             DevGoodId = nil,
             Img = [[121268665996978]],
             ModelId = [=[game.ReplicatedStorage.Assets.BlockMeshs.Tools["23DesertColossusBoneHammer"]]=]
@@ -333,8 +333,8 @@ return {
             Index = 24,
             ToolId = 124,
             Name = [[Sand King Fang Pickaxe]],
-            Price = 1.06e+19,
-            TrainingRate = 2.16e+15,
+            Price = 1.45e+19,
+            TrainingRate = 6.16e+15,
             DevGoodId = nil,
             Img = [[89972874141623]],
             ModelId = [=[game.ReplicatedStorage.Assets.BlockMeshs.Tools["24SandKingFangPickaxe"]]=]
@@ -343,8 +343,8 @@ return {
             Index = 25,
             ToolId = 125,
             Name = [[Amethyst Star Ring Hammer]],
-            Price = 5.3e+19,
-            TrainingRate = 6.48e+15,
+            Price = 7.84e+19,
+            TrainingRate = 2.42e+16,
             DevGoodId = nil,
             Img = [[88597169256101]],
             ModelId = [=[game.ReplicatedStorage.Assets.BlockMeshs.Tools["25AmethystStarRingHammer"]]=]
@@ -353,8 +353,8 @@ return {
             Index = 26,
             ToolId = 126,
             Name = [[Amethyst Star Ring Pickaxe]],
-            Price = 2.65e+20,
-            TrainingRate = 1.94e+16,
+            Price = 4.23e+20,
+            TrainingRate = 9.54e+16,
             DevGoodId = nil,
             Img = [[85002040484327]],
             ModelId = [=[game.ReplicatedStorage.Assets.BlockMeshs.Tools["26AmethystStarRingPickaxe"]]=]
@@ -363,8 +363,8 @@ return {
             Index = 27,
             ToolId = 127,
             Name = [[Holy Crown Pickaxe]],
-            Price = 1,
-            TrainingRate = 1,
+            Price = 2.28e+21,
+            TrainingRate = 1.5e+17,
             DevGoodId = nil,
             Img = [[122188029381990]],
             ModelId = [=[game.ReplicatedStorage.Assets.AITools["01-holy-crown-pickaxe"]]=]
@@ -373,8 +373,8 @@ return {
             Index = 28,
             ToolId = 128,
             Name = [[Holy Crown Hammer]],
-            Price = 2,
-            TrainingRate = 2,
+            Price = 1.22e+22,
+            TrainingRate = 3e+17,
             DevGoodId = nil,
             Img = [[111918297845046]],
             ModelId = [=[game.ReplicatedStorage.Assets.AITools["02-holy-crown-hammer"]]=]
@@ -383,8 +383,8 @@ return {
             Index = 29,
             ToolId = 129,
             Name = [[Dragon Flame Pickaxe]],
-            Price = 3,
-            TrainingRate = 3,
+            Price = 6.3499999999999996854272e+22,
+            TrainingRate = 5.94e+17,
             DevGoodId = nil,
             Img = [[131796875082030]],
             ModelId = [=[game.ReplicatedStorage.Assets.AITools["03-dragon-flame-pickaxe"]]=]
@@ -393,8 +393,8 @@ return {
             Index = 30,
             ToolId = 130,
             Name = [[Dragon Flame Hammer]],
-            Price = 4,
-            TrainingRate = 4,
+            Price = 3.29000000000000006291456e+23,
+            TrainingRate = 1.17e+18,
             DevGoodId = nil,
             Img = [[135291300946209]],
             ModelId = [=[game.ReplicatedStorage.Assets.AITools["04-dragon-flame-hammer"]]=]
@@ -403,8 +403,8 @@ return {
             Index = 31,
             ToolId = 131,
             Name = [[Thunder Pickaxe]],
-            Price = 5,
-            TrainingRate = 5,
+            Price = 1.700000000000000025165824e+24,
+            TrainingRate = 2.27e+18,
             DevGoodId = nil,
             Img = [[135059340240171]],
             ModelId = [=[game.ReplicatedStorage.Assets.AITools["05-thunder-pickaxe"]]=]
@@ -413,8 +413,8 @@ return {
             Index = 32,
             ToolId = 132,
             Name = [[Thunder Hammer]],
-            Price = 6,
-            TrainingRate = 6,
+            Price = 8.810000000000000297795584e+24,
+            TrainingRate = 4.37e+18,
             DevGoodId = nil,
             Img = [[138711849822666]],
             ModelId = [=[game.ReplicatedStorage.Assets.AITools["06-thunder-hammer"]]=]
@@ -423,8 +423,8 @@ return {
             Index = 33,
             ToolId = 133,
             Name = [[Eastern Clouds Pickaxe]],
-            Price = 7,
-            TrainingRate = 7,
+            Price = 4.5499999999999999505072128e+25,
+            TrainingRate = 8.38e+18,
             DevGoodId = nil,
             Img = [[103077185243615]],
             ModelId = [=[game.ReplicatedStorage.Assets.AITools["07-eastern-clouds-pickaxe"]]=]
@@ -433,8 +433,8 @@ return {
             Index = 34,
             ToolId = 134,
             Name = [[Eastern Clouds Hammer]],
-            Price = 8,
-            TrainingRate = 8,
+            Price = 2.3499999999999998800429056e+26,
+            TrainingRate = 1.59e+19,
             DevGoodId = nil,
             Img = [[119720961929827]],
             ModelId = [=[game.ReplicatedStorage.Assets.AITools["08-eastern-clouds-hammer"]]=]
@@ -443,8 +443,8 @@ return {
             Index = 35,
             ToolId = 135,
             Name = [[Forest Guardian Pickaxe]],
-            Price = 9,
-            TrainingRate = 9,
+            Price = 1.20999999999999995285602304e+27,
+            TrainingRate = 3.01e+19,
             DevGoodId = nil,
             Img = [[104288707111612]],
             ModelId = [=[game.ReplicatedStorage.Assets.AITools["09-forest-guardian-pickaxe"]]=]
@@ -453,8 +453,8 @@ return {
             Index = 36,
             ToolId = 136,
             Name = [[Forest Guardian Hammer]],
-            Price = 10,
-            TrainingRate = 10,
+            Price = 6.230000000000000085530247168e+27,
+            TrainingRate = 5.66e+19,
             DevGoodId = nil,
             Img = [[93955605202823]],
             ModelId = [=[game.ReplicatedStorage.Assets.AITools["10-forest-guardian-hammer"]]=]
@@ -463,8 +463,8 @@ return {
             Index = 37,
             ToolId = 137,
             Name = [[Ice Crystal Pickaxe]],
-            Price = 11,
-            TrainingRate = 11,
+            Price = 3.2000000000000000425201762304e+28,
+            TrainingRate = 1.06e+20,
             DevGoodId = nil,
             Img = [[94920898798936]],
             ModelId = [=[game.ReplicatedStorage.Assets.AITools["11-ice-crystal-pickaxe"]]=]
@@ -473,8 +473,8 @@ return {
             Index = 38,
             ToolId = 138,
             Name = [[Ice Crystal Hammer]],
-            Price = 12,
-            TrainingRate = 12,
+            Price = 1.64999999999999992021964029952e+29,
+            TrainingRate = 1.97e+20,
             DevGoodId = nil,
             Img = [[98900726428144]],
             ModelId = [=[game.ReplicatedStorage.Assets.AITools["12-ice-crystal-hammer"]]=]
@@ -483,8 +483,8 @@ return {
             Index = 39,
             ToolId = 139,
             Name = [[Shadow Demon Pickaxe]],
-            Price = 13,
-            TrainingRate = 13,
+            Price = 8.19000000000000067232478527488e+29,
+            TrainingRate = 3.64e+20,
             DevGoodId = nil,
             Img = [[97673689505764]],
             ModelId = [=[game.ReplicatedStorage.Assets.AITools["13-shadow-demon-pickaxe"]]=]
@@ -562,7 +562,7 @@ return {
             Index = 1,
             AuraId = 101,
             Name = [[Common]],
-            Price = 1,
+            Price = 3750,
             TrainingRate = 1.5,
             Quality = 1,
             DevGoodId = nil,
@@ -573,7 +573,7 @@ return {
             Index = 2,
             AuraId = 102,
             Name = [[Uncommon]],
-            Price = 2,
+            Price = 1.38e+6,
             TrainingRate = 2.5,
             Quality = 2,
             DevGoodId = nil,
@@ -584,7 +584,7 @@ return {
             Index = 3,
             AuraId = 103,
             Name = [[Toxic]],
-            Price = 3,
+            Price = 3.32e+8,
             TrainingRate = 3.5,
             Quality = 3,
             DevGoodId = nil,
@@ -595,7 +595,7 @@ return {
             Index = 4,
             AuraId = 104,
             Name = [[Rare]],
-            Price = 4,
+            Price = 7.3e+10,
             TrainingRate = 4.5,
             Quality = 4,
             DevGoodId = nil,
@@ -606,7 +606,7 @@ return {
             Index = 5,
             AuraId = 105,
             Name = [[Bronze]],
-            Price = 5,
+            Price = 1.42e+13,
             TrainingRate = 5.5,
             Quality = 5,
             DevGoodId = nil,
@@ -617,7 +617,7 @@ return {
             Index = 6,
             AuraId = 106,
             Name = [[Abyss]],
-            Price = 6,
+            Price = 2.67e+15,
             TrainingRate = 6.5,
             Quality = 6,
             DevGoodId = nil,
@@ -628,7 +628,7 @@ return {
             Index = 7,
             AuraId = 107,
             Name = [[Void]],
-            Price = 7,
+            Price = 4.69e+17,
             TrainingRate = 7.5,
             Quality = 7,
             DevGoodId = nil,
@@ -639,7 +639,7 @@ return {
             Index = 8,
             AuraId = 108,
             Name = [[Crimson]],
-            Price = 8,
+            Price = 7.56e+19,
             TrainingRate = 8.5,
             Quality = 8,
             DevGoodId = nil,
@@ -650,7 +650,7 @@ return {
             Index = 9,
             AuraId = 109,
             Name = [[Silver]],
-            Price = 9,
+            Price = 1.18e+22,
             TrainingRate = 9.5,
             Quality = 9,
             DevGoodId = nil,
@@ -661,8 +661,8 @@ return {
             Index = 10,
             AuraId = 110,
             Name = [[Epic]],
-            Price = 10,
-            TrainingRate = 10.5,
+            Price = 1.649999999999999945474048e+24,
+            TrainingRate = 12.5,
             Quality = 10,
             DevGoodId = nil,
             Img = [[126721700266409]],
@@ -672,8 +672,8 @@ return {
             Index = 11,
             AuraId = 111,
             Name = [[Ocean]],
-            Price = 11,
-            TrainingRate = 11.5,
+            Price = 2.27000000000000009613344768e+26,
+            TrainingRate = 15.9,
             Quality = 11,
             DevGoodId = nil,
             Img = [[92711027530571]],
@@ -683,8 +683,8 @@ return {
             Index = 12,
             AuraId = 112,
             Name = [[Lunar]],
-            Price = 12,
-            TrainingRate = 12.5,
+            Price = 3.0000000000000000948382466048e+28,
+            TrainingRate = 19.7,
             Quality = 12,
             DevGoodId = nil,
             Img = [[140129159429440]],
@@ -694,8 +694,8 @@ return {
             Index = 13,
             AuraId = 113,
             Name = [[Legendary]],
-            Price = 13,
-            TrainingRate = 13.5,
+            Price = 2.2299999999999999233084734046208e+31,
+            TrainingRate = 21.3,
             Quality = 13,
             DevGoodId = nil,
             Img = [[125903398380406]],
@@ -705,8 +705,8 @@ return {
             Index = 14,
             AuraId = 114,
             Name = [[Emerald]],
-            Price = 14,
-            TrainingRate = 14.5,
+            Price = 3.28999999999999980364868737826816e+33,
+            TrainingRate = 22.9,
             Quality = 14,
             DevGoodId = nil,
             Img = [[110859814667398]],
@@ -716,8 +716,8 @@ return {
             Index = 15,
             AuraId = 115,
             Name = [[Sapphire]],
-            Price = 15,
-            TrainingRate = 15.5,
+            Price = 4.78000000000000000502155017763946496e+35,
+            TrainingRate = 24.5,
             Quality = 15,
             DevGoodId = nil,
             Img = [[71778195177377]],
@@ -727,8 +727,8 @@ return {
             Index = 16,
             AuraId = 116,
             Name = [[Ruby]],
-            Price = 16,
-            TrainingRate = 16.5,
+            Price = 6.7200000000000001433956886673113481216e+37,
+            TrainingRate = 26.1,
             Quality = 16,
             DevGoodId = nil,
             Img = [[82261970902739]],
@@ -738,8 +738,8 @@ return {
             Index = 17,
             AuraId = 117,
             Name = [[Sakura]],
-            Price = 17,
-            TrainingRate = 17.5,
+            Price = 9.610000000000000053779986854268576464896e+39,
+            TrainingRate = 27.7,
             Quality = 17,
             DevGoodId = nil,
             Img = [[84969691879555]],
@@ -2693,263 +2693,159 @@ return {
     LevelConfig = {
         ["World1.Level_1"] = {
             LevelKey = [[World1.Level_1]],
-            GrassClumpsHP = 29,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground1.png]]
+            StoneHP = 29
         },
         ["World1.Level_2"] = {
             LevelKey = [[World1.Level_2]],
-            GrassClumpsHP = 122,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground2.png]]
+            StoneHP = 122
         },
         ["World1.Level_3"] = {
             LevelKey = [[World1.Level_3]],
-            GrassClumpsHP = 520,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground3.png]]
+            StoneHP = 520
         },
         ["World1.Level_4"] = {
             LevelKey = [[World1.Level_4]],
-            GrassClumpsHP = 2176,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground4.png]]
+            StoneHP = 2176
         },
         ["World1.Level_5"] = {
             LevelKey = [[World1.Level_5]],
-            GrassClumpsHP = 9101,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground5.png]]
+            StoneHP = 9101
         },
         ["World1.Level_6"] = {
             LevelKey = [[World1.Level_6]],
-            GrassClumpsHP = 38000,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground6.png]]
+            StoneHP = 38000
         },
         ["World1.Level_7"] = {
             LevelKey = [[World1.Level_7]],
-            GrassClumpsHP = 159000,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground7.png]]
+            StoneHP = 159000
         },
         ["World1.Level_8"] = {
             LevelKey = [[World1.Level_8]],
-            GrassClumpsHP = 664000,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground8.png]]
+            StoneHP = 664000
         },
         ["World1.Level_9"] = {
             LevelKey = [[World1.Level_9]],
-            GrassClumpsHP = 2.77e+6,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground9.png]]
+            StoneHP = 2.77e+6
         },
         ["World1.Level_10"] = {
             LevelKey = [[World1.Level_10]],
-            GrassClumpsHP = 1.16e+7,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground10.png]]
+            StoneHP = 1.16e+7
         },
         ["World1.Level_11"] = {
             LevelKey = [[World1.Level_11]],
-            GrassClumpsHP = 4.84e+7,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground11.png]]
+            StoneHP = 4.84e+7
         },
         ["World1.Level_12"] = {
             LevelKey = [[World1.Level_12]],
-            GrassClumpsHP = 2.02e+8,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground12.png]]
+            StoneHP = 2.02e+8
         },
         ["World1.Level_13"] = {
             LevelKey = [[World1.Level_13]],
-            GrassClumpsHP = 8.44e+8,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground13.png]]
+            StoneHP = 8.44e+8
         },
         ["World2.Level_14"] = {
             LevelKey = [[World2.Level_14]],
-            GrassClumpsHP = 3.53e+9,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground14.png]]
+            StoneHP = 3.53e+9
         },
         ["World2.Level_15"] = {
             LevelKey = [[World2.Level_15]],
-            GrassClumpsHP = 1.47e+10,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground15.png]]
+            StoneHP = 1.47e+10
         },
         ["World2.Level_16"] = {
             LevelKey = [[World2.Level_16]],
-            GrassClumpsHP = 6.15e+10,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground16.png]]
+            StoneHP = 6.15e+10
         },
         ["World2.Level_17"] = {
             LevelKey = [[World2.Level_17]],
-            GrassClumpsHP = 2.57e+11,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground17.png]]
+            StoneHP = 2.57e+11
         },
         ["World2.Level_18"] = {
             LevelKey = [[World2.Level_18]],
-            GrassClumpsHP = 1.07e+12,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground18.png]]
+            StoneHP = 1.07e+12
         },
         ["World2.Level_19"] = {
             LevelKey = [[World2.Level_19]],
-            GrassClumpsHP = 4.48e+12,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground19.png]]
+            StoneHP = 4.48e+12
         },
         ["World2.Level_20"] = {
             LevelKey = [[World2.Level_20]],
-            GrassClumpsHP = 1.87e+13,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground20.png]]
+            StoneHP = 1.87e+13
         },
         ["World2.Level_21"] = {
             LevelKey = [[World2.Level_21]],
-            GrassClumpsHP = 7.82e+13,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground21.png]]
+            StoneHP = 7.82e+13
         },
         ["World2.Level_22"] = {
             LevelKey = [[World2.Level_22]],
-            GrassClumpsHP = 3.27e+14,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground22.png]]
+            StoneHP = 3.27e+14
         },
         ["World2.Level_23"] = {
             LevelKey = [[World2.Level_23]],
-            GrassClumpsHP = 1.37e+15,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground23.png]]
+            StoneHP = 1.37e+15
         },
         ["World2.Level_24"] = {
             LevelKey = [[World2.Level_24]],
-            GrassClumpsHP = 5.7e+15,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground24.png]]
+            StoneHP = 5.7e+15
         },
         ["World2.Level_25"] = {
             LevelKey = [[World2.Level_25]],
-            GrassClumpsHP = 2.38e+16,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground25.png]]
+            StoneHP = 2.38e+16
         },
         ["World2.Level_26"] = {
             LevelKey = [[World2.Level_26]],
-            GrassClumpsHP = 9.95e+16,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground26.png]]
+            StoneHP = 9.95e+16
         },
         ["World3.Level_27"] = {
             LevelKey = [[World3.Level_27]],
-            GrassClumpsHP = 4.16e+17,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground27.png]]
+            StoneHP = 4.16e+17
         },
         ["World3.Level_28"] = {
             LevelKey = [[World3.Level_28]],
-            GrassClumpsHP = 1.74e+18,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground28.png]]
+            StoneHP = 1.74e+18
         },
         ["World3.Level_29"] = {
             LevelKey = [[World3.Level_29]],
-            GrassClumpsHP = 7.25e+18,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground29.png]]
+            StoneHP = 7.25e+18
         },
         ["World3.Level_30"] = {
             LevelKey = [[World3.Level_30]],
-            GrassClumpsHP = 3.03e+19,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground30.png]]
+            StoneHP = 3.03e+19
         },
         ["World3.Level_31"] = {
             LevelKey = [[World3.Level_31]],
-            GrassClumpsHP = 1.27e+20,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground31.png]]
+            StoneHP = 1.27e+20
         },
         ["World3.Level_32"] = {
             LevelKey = [[World3.Level_32]],
-            GrassClumpsHP = 5.29e+20,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground32.png]]
+            StoneHP = 5.29e+20
         },
         ["World3.Level_33"] = {
             LevelKey = [[World3.Level_33]],
-            GrassClumpsHP = 2.21e+21,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground33.png]]
+            StoneHP = 2.21e+21
         },
         ["World3.Level_34"] = {
             LevelKey = [[World3.Level_34]],
-            GrassClumpsHP = 9.230000000000000524288e+21,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground34.png]]
+            StoneHP = 9.230000000000000524288e+21
         },
         ["World3.Level_35"] = {
             LevelKey = [[World3.Level_35]],
-            GrassClumpsHP = 3.8499999999999998951424e+22,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground35.png]]
+            StoneHP = 3.8499999999999998951424e+22
         },
         ["World3.Level_36"] = {
             LevelKey = [[World3.Level_36]],
-            GrassClumpsHP = 1.6099999999999998951424e+23,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground36.png]]
+            StoneHP = 1.6099999999999998951424e+23
         },
         ["World3.Level_37"] = {
             LevelKey = [[World3.Level_37]],
-            GrassClumpsHP = 6.72999999999999955959808e+23,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground37.png]]
+            StoneHP = 6.72999999999999955959808e+23
         },
         ["World3.Level_38"] = {
             LevelKey = [[World3.Level_38]],
-            GrassClumpsHP = 2.809999999999999861587968e+24,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground38.png]]
+            StoneHP = 2.809999999999999861587968e+24
         },
         ["World3.Level_39"] = {
             LevelKey = [[World3.Level_39]],
-            GrassClumpsHP = 1.1699999999999999320522752e+25,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground39.png]]
-        },
-        ["World4.Level_40"] = {
-            LevelKey = [[World4.Level_40]],
-            GrassClumpsHP = 4.9000000000000000788529152e+25,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground40.png]]
-        },
-        ["World4.Level_41"] = {
-            LevelKey = [[World4.Level_41]],
-            GrassClumpsHP = 2.04999999999999991728832512e+26,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground41.png]]
-        },
-        ["World4.Level_42"] = {
-            LevelKey = [[World4.Level_42]],
-            GrassClumpsHP = 8.54999999999999979749900288e+26,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground42.png]]
-        },
-        ["World4.Level_43"] = {
-            LevelKey = [[World4.Level_43]],
-            GrassClumpsHP = 3.570000000000000209614536704e+27,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground43.png]]
-        },
-        ["World4.Level_44"] = {
-            LevelKey = [[World4.Level_44]],
-            GrassClumpsHP = 1.489999999999999918093631488e+28,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground44.png]]
-        },
-        ["World4.Level_45"] = {
-            LevelKey = [[World4.Level_45]],
-            GrassClumpsHP = 6.239999999999999775051087872e+28,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground45.png]]
-        },
-        ["World4.Level_46"] = {
-            LevelKey = [[World4.Level_46]],
-            GrassClumpsHP = 2.60000000000000002355252690944e+29,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground46.png]]
-        },
-        ["World4.Level_47"] = {
-            LevelKey = [[World4.Level_47]],
-            GrassClumpsHP = 1.089999999999999996341493170176e+30,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground47.png]]
-        },
-        ["World4.Level_48"] = {
-            LevelKey = [[World4.Level_48]],
-            GrassClumpsHP = 4.539999999999999938279709343744e+30,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground48.png]]
-        },
-        ["World4.Level_49"] = {
-            LevelKey = [[World4.Level_49]],
-            GrassClumpsHP = 1.900000000000000065928284864512e+31,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground49.png]]
-        },
-        ["World4.Level_50"] = {
-            LevelKey = [[World4.Level_50]],
-            GrassClumpsHP = 7.9299999999999996707333652611072e+31,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground50.png]]
-        },
-        ["World4.Level_51"] = {
-            LevelKey = [[World4.Level_51]],
-            GrassClumpsHP = 3.3099999999999998659708747513856e+32,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground51.png]]
-        },
-        ["World4.Level_52"] = {
-            LevelKey = [[World4.Level_52]],
-            GrassClumpsHP = 1.380000000000000120890474545283072e+33,
-            Texture = [[sandboxId://Model/Block/SegmenteGrassClump/Ground52.png]]
+            StoneHP = 1.1699999999999999320522752e+25
         }
     }
 }

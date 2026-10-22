@@ -1,4 +1,4 @@
--- 从 Studio_Y3 的世界 1 关卡和 NumericalConfig.levelCurves 迁入；100 原单位 = 4 studs。
+-- 关卡与血量读取 LevelConfig，成长曲线读取 NumericalConfig；100 原单位 = 4 studs。
 local NumericalConfig = _G.NumericalConfig
 local FX = _G.FX
 local FXLoader = FX.Loader
@@ -12,13 +12,30 @@ local RockLevel = {
         Color3.fromRGB(255, 205, 35), -- 金。
     },
     MaxLevel = NumericalConfig.levelCurves.input.max,
-    WorldLevelCount = NumericalConfig.worldStageCount,
+    Worlds = {},
+    Stages = {},
     WalkTraining = NumericalConfig.trainingSettlementsPerSecond,
     ClickInterval = 0.2,
     LootCapacity = 3, -- 尚未回基地存放的战利品基础携带上限。
     StoredLootCapacity = 12, -- 已存收藏品与随身战利品共用的 KV 存储容量。
-    HP = {29, 122, 520, 2176, 9101, 38000, 159000, 664000, 2770000, 11600000, 48400000, 202000000, 844000000},
+    HP = {},
 }
+-- 配置使用全局关卡编号；场景中的 Level_N 则按各世界从 1 开始编号。
+for key, config in pairs(_G.GameConfig.LevelConfig) do
+    local world, index = string.match(key, "^World(%d+)%.Level_(%d+)$")
+    world, index = tonumber(world), tonumber(index)
+    RockLevel.HP[index] = config.StoneHP
+    RockLevel.Stages[index] = {World = world}
+end
+for index, stage in ipairs(RockLevel.Stages) do
+    local world = RockLevel.Worlds[stage.World]
+    if not world then
+        world = {Name = "World" .. stage.World, Stages = {}}
+        RockLevel.Worlds[stage.World] = world
+    end
+    table.insert(world.Stages, index)
+    stage.LocalIndex = #world.Stages
+end
 local thresholds = {0}
 
 --- 缓存达到指定等级的累计经验，供重生封顶与追赶结算共用。
@@ -63,7 +80,7 @@ end
 
 --- 沿用 Studio_Y3 等级差减伤：低于推荐等级每级减伤 7%，差 15 级起伤害为零；升级后重算，无计时惩罚。
 --- @param level number 玩家训练等级。
---- @param index number 世界 1 的关卡序号。
+--- @param index number 配置中的全局关卡序号。
 --- @param strength number 当前阶段累计训练值，与显示力量一致。
 --- @return number 单次击打伤害。
 function RockLevel.GetDamage(level, index, strength)
@@ -76,7 +93,7 @@ end
 --- @param index number 本世界从 1 开始的关卡序号。
 --- @return number 相对第一关的幸运倍率。
 function RockLevel.GetLuck(world, index)
-    local stage = (world - 1) * NumericalConfig.worldStageCount + index
+    local stage = RockLevel.Worlds[world].Stages[index]
     local price = CurveSampler:SampleCurveGroupColumnFormula(
         NumericalConfig.stageCurves, "expectedItemPrice", stage)
     local firstPrice = CurveSampler:SampleCurveGroupColumnFormula(
@@ -87,13 +104,15 @@ end
 --- 关卡标记位于 Persistent 模型内，不受距离流出影响；等待初始复制完成后读取边界。
 --- @return table 按关卡顺序排列的区域。
 function RockLevel.GetAreas()
-    local world = FXLoader:Workspace("GameLevelList/World1")
     local areas = {}
-    for index = 1, #RockLevel.HP do
-        local node = world:WaitForChild("Level_" .. index)
+    for index, stage in ipairs(RockLevel.Stages) do
+        local worldName = RockLevel.Worlds[stage.World].Name
+        local node = FXLoader:Workspace("GameLevelList/" .. worldName .. "/Level_" .. stage.LocalIndex)
         areas[index] = {
             Node = node,
             Index = index,
+            World = stage.World,
+            LocalIndex = stage.LocalIndex,
             Columns = math.floor(node.Size.X / RockLevel.CellSize),
             Rows = math.floor(node.Size.Z / RockLevel.CellSize),
             MinX = node.Position.X - node.Size.X / 2,
@@ -109,6 +128,7 @@ end
 --- @param position Vector3 当前角色根节点位置。
 --- @param padding number? 向区域外扩展的判定容差，默认 0。
 --- @return boolean 是否位于任一关卡区域。
+--- @return table? 所在关卡区域，关卡外为空。
 function RockLevel.IsInArea(areas, position, padding)
     padding = padding or 0
     for index, area in ipairs(areas) do
@@ -117,7 +137,7 @@ function RockLevel.IsInArea(areas, position, padding)
             and position.Z >= area.MinZ - padding
             and position.Z < area.MinZ + area.Rows * RockLevel.CellSize + padding
             and math.abs(position.Y - area.FloorY) < 12 + padding then
-            return true
+            return true, area
         end
     end
     return false
