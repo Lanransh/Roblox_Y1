@@ -1,26 +1,59 @@
 --[[
-商店单件购买接入契约：
-Config 以下字段必填、无默认值：
-itemId:string 稳定商品 ID；name:string 英文名称；
-category:string 分类；description:string 描述；price:number 单件货币数量；
-price 使用钻石单位，按钮左侧使用项目 Gem 静态图；icon:string Roblox 图片 ID，缺图传空字符串显示问号。
-State 为完整状态：status:string Ready / Purchased；pending:boolean 可选，默认 false；
-error:string 可选，默认 nil，失败时保留 Ready，按钮显示“Retry”、允许重试。
-最小示例：Config = {itemId="training_x2", name="2× Training Boost", category="TRAINING BOOST",
-description="Double your training gains.", price=28,
-icon=""}；State = {status="Ready", pending=false}。
-接入 Ctor 先调用父构造，再准备 Config/State。OnReady 先调父方法，随后 BindUIData、Show。
-GetUIConfig/GetUIState 默认读取 self.Config/self.State；更新完整 State 后调用 RefreshUI。
-编辑态商品文案留空，图标、描述和购买按钮默认隐藏；没有加载状态。
-首次显示前准备完整 Config/State，再 BindUIData、Show，Render 直接填充并显示内容。
-切换商品时先替换完整 Config/State，再 RefreshUI，不保留旧商品数据。
-图标默认问号；icon 传空字符串时保持占位，真实贴图准备好后再填入资源 ID 并刷新。
-真实贴图的异步加载由游戏接入负责，App 不验证图片下载完成，避免过期请求覆盖当前商品。
-不能以图标或名称作为商品身份。模拟直接提供 Ready 商品数据，不创建加载流程。
-必需覆写 OnUIAction，无返回值；Buy 的 payload={itemId:string}，真实业务校验价格、
-余额和发放，请求前 pending=true，成功后 Purchased，失败后 Ready/error，均刷新。
-Close 的 payload={}，接入层调用 Hide。无其他页面专用覆写；公共数据读取可按需覆写。
-Preview 仅演示立即购买成功，不发起真实扣款或发奖。普通窗口使用基类默认动画和适配。
+单件商品购买接入契约
+
+【Config：完整配置，以下均必填、无默认值】
+  itemId: string；稳定商品配置 ID，不用名称或图标作身份。
+  name: string；商品名称原文。
+  category: string；分类原文。
+  description: string；描述原文，可含换行；以上文案经 Text.TrSource 查询。
+  price: number；非负单件价格，单位钻石，按钮使用设计中的 Gem 静态图。
+  icon: string；Roblox Image 资源地址；缺图必须传 ""，此时显示问号
+    rbxassetid://86795093617566；不要省略 icon 或传本地文件路径。
+
+【State：Render 的完整输入】
+  status: "Ready" | "Purchased"，必填，无默认值；待购买 / 已购买。
+  pending: boolean，可选，省略 false；true 显示 Buying... 并禁用购买。
+  error: string，可选，省略 nil；Ready 且非 pending 时，只作为失败标记
+    将按钮改为 Retry，错误原文不会显示。"" 在 Luau 中也会触发 Retry，
+    清除失败请用 nil，不用空字符串。
+  按钮文字优先级：pending > Purchased > Ready 下的 error > 价格 · Buy。
+  只有 Ready 且非 pending 可购买；没有独立加载态、数量字段或商品列表。
+
+【最小完整数据（接入 Ctor 调用父构造之后）】
+  self.Config = {
+      itemId = "training_x2", name = "2× Training Boost", category = "TRAINING BOOST",
+      description = "Double your training gains.", price = 28, icon = "",
+  }
+  self.State = { status = "Ready" }
+
+【初始化与刷新】
+  游戏接入类继承 CShopPurchaseView。
+  接入 Ctor(owner) 先调用自身类的 Super.Ctor(self, owner)，再准备下例数据。
+  接入 OnReady() 先调用自身类的 Super.OnReady(self)，再依次
+  self:BindUIData()、self:Show()；父 OnReady 负责绑定节点，OnShow 会刷新。
+  GetUIConfig() 默认返回 self.Config；GetUIState() 默认返回 self.State。
+  RefreshUI() 调用 Render(GetUIState())，输入是完整快照，不合并增量，
+  不自动补齐业务字段。可修改已有表或替换整表，但每次刷新须满足完整契约。
+  后续先更新 Config/State，再 self:RefreshUI()；异步未就绪按本页规则处理。
+  无需覆写 Render 或手动重复调用 OnReady；业务类覆写生命周期时须保留父调用。
+
+【动作与覆写】
+  必需覆写 OnUIAction(action: string, payload: table)，无返回值；默认报错。
+  Buy -> { itemId: string }，对应当前 Config.itemId；不发送客户端价格。
+  Close -> {}；由接入层 self:Hide()。
+  无其他页面专用必需或可选覆写。
+  请求前 pending=true、error=nil 并刷新；服务端验证商品、余额、价格并发放。
+  成功后 status="Purchased"、pending=false、error=nil；
+  失败后 status="Ready"、pending=false、error=失败标记；均需 RefreshUI。
+  Close 不自动取消未完成请求；跨商品的过期响应由接入层按 itemId 隔离。
+
+【显示与资源边界】
+  设计态部分商品内容隐藏；首次 Render 填充完整商品并显示图标/描述/按钮。
+  没有内置加载流程，数据不全时延后 BindUIData/Show。
+  切换商品须同步替换完整 Config/State 再 RefreshUI，避免沿用 Purchased/error。
+  图标槽 ItemSurfaceImg.ItemIconImg 由 Config.icon 替换；
+  贴图异步加载和过期响应由游戏负责，App 不验证下载完成或资源权限。
+  窗口使用 Show/Hide 和基类默认动画/适配，Render 不提前隐藏整窗。
 ]]
 local FX = _G.FX
 local FXLoader = FX.Loader
@@ -96,7 +129,7 @@ function CShopPurchaseView:Render(state)
     self:SetButtonEnabled(self.BuyBtn, state.status == "Ready" and not state.pending)
 end
 
--- 游戏与模拟接入必须实现购买和关闭动作。
+-- 游戏接入必须实现购买和关闭动作。
 -- @param action string Buy 或 Close
 -- @param payload table Buy 为 {itemId:string}，Close 为空表
 function CShopPurchaseView:OnUIAction(action, payload)

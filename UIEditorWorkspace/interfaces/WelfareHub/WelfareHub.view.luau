@@ -1,116 +1,158 @@
--- 左侧页签单选；每次 Show 默认 offline，当天已领取则选 diamonds。红点读取完整状态。
--- 仅配置内存在 status="Claimable" 且 pending 不为 true 的奖励时显示；
--- 已领取、锁定、空组与请求中不显示。浏览页签不清除红点，状态变化后 RefreshUI 更新。
 --[[
-每日钻石子页补充契约：
-Config.diamonds 必填（无默认值）：
-  rewardId: string，稳定每日奖励业务 ID；
-  loginAmount / premiumAmount / friendAmount / friendCap: number，单位钻石，
-  分别为登录奖励、会员加成、每位好友加成及好友加成上限，仅用于说明。
-State.diamonds 必填完整状态（无默认值）：
-  amount: number，服务端确认的本日可领取钻石数量，View 不计算资格或叠加加成；
-  status: "Locked" | "Claimable" | "Claimed"；
-  pending: boolean 可选，缺省 false；error: string 可选，缺省 nil。
-  pending 禁用按钮；失败时显示 error 并在 Claimable 下允许重试。
-最小数据示例（与原有 groups / entries 同时提供）：
-self.Config.diamonds = {
-    rewardId = "daily_diamonds", loginAmount = 100, premiumAmount = 50,
-    friendAmount = 10, friendCap = 100,
-}
-self.State.diamonds = { amount = 250, status = "Claimable" }
-动作 ClaimDiamonds，payload = { rewardId: string }，对应 Config.diamonds.rewardId。
-原 OnUIAction 必需覆写现在也须处理该动作，返回值无；
-真实业务负责每日重置、资格校验、发奖及 pending/成功/失败刷新。
-OnReady 先调父方法，再 BindUIData、Show；数据更新后 RefreshUI。
-固定说明卡直接更新已有节点，不克隆；不新增图片占位。
-]]
---[[
-福利界面接入契约（完整状态刷新，非增量）
-Config.groups: 必填有序数组，含 online/signin/task 三组；items 数量可变，允许空数组。
-每组必填 kind: "online" | "signin" | "task"，分别对应 page:
-"OnlineBox" / "SignInBox" / "TasksBox"；columns: 正整数列数（task 为 1）；
-gapX/gapY: number，条目间距，单位像素；items: 有序配置数组。
-items 每项必填 id: string，组内唯一稳定奖励/任务 ID；
-reward: { type: string, id: string, amount: number }，游戏奖励类型、物品 ID 和数量。
-online 项必填 minutes: number（分钟）；signin 项必填 day: number（天序号）；
-task 项必填 title: string、target: number（目标，<=0 显示空进度）。
-signin 项可选 featured: boolean，默认 false；true 时必填 badge: string、
-color: {number, number, number}（RGB 0–255），显示双行大奖。
-签到普通卡按 day <3 / <6 / >=6 使用青绿、蓝、紫色原型；featured 使用独立双行大奖原型。
-签到 Locked 且没有 label 时显示与 signInDay 的天数差；明天显示 Tomorrow。
-签到的 Gem 使用项目钻石素材，Egg 使用可编辑占位图，正式图可在签到原型中替换。
-previewValue: number 仅模拟层读取，缺省 0，不属于游戏必需配置。
+福利中心统一接入契约（离线 / 每日钻石 / 签到 / 在线 / 任务）
 
-State 必填 onlineMinutes: number（分钟）、signInDay: number（当前签到天）、
-entries: 按 kind 再按 Config.items.id 索引的字典；
-entries[kind][id] 必填 status: "Locked" | "Claimable" | "Claimed"；
-task 项必填 current: number，单位与 target 相同。
-可选 pending: boolean（缺省 false）、error: string（缺省 nil，可领取时显示 Retry）、
-label: string（缺省 nil，Locked 时自定义按钮文字）。
-空组使用 items={}、entries[kind]={}；缺失配置对应状态会报错，不自动补齐。
-登录奖励页签仅在打开时判断：非空 signin 配置的全部条目状态均为 Claimed
-才隐藏（7 日配置对应全部 7 天已领取），不能只用 signInDay 或第 7 天判断。
-本次打开期间完成最后一次签到仍保留页签，下次 Show 才隐藏；空组不算已签完。
-接入层提供并保存每个配置 ID 的领取状态，列表自动补位，不新增完成标记字段。
-Templates 永远隐藏；首次访问页签才克隆该页，按 ID 更新、移除及排序；
-任务数量不固定，CanvasSize 随实际内容计算，超出视口垂直滚动。
+【一、公共约定与完整数据结构】
+  Config、State 均为完整表，以下标为必填的字段无默认值。
+  Status = "Locked" | "Claimable" | "Claimed"，分别为未满足 / 可领取 / 已领取。
+  View 只展示业务提供的 status，不从进度或奖励数量推导真实资格。
+  所有金额/时长均为原始数值，不传拼接后的数量文案；名称/提示为原文，
+  View 内按 Text.TrSource 或 Text.Tr 查询。ID 不翻译。
 
-初始化：接入 Ctor 先调父构造，再准备 Config/State；OnReady 先调父 OnReady，
-再 BindUIData()、Show()。GetUIConfig/GetUIState 默认读取 self.Config/self.State；
-数据变化后 self:RefreshUI()，Render 只读数据。异步加载完成前不 Show。
-最小完整示例：
-self.Config = { groups = {
-    { kind="online", page="OnlineBox", columns=3, gapX=20, gapY=16, items={} },
-    { kind="signin", page="SignInBox", columns=3, gapX=12, gapY=16, items={} },
-    { kind="task", page="TasksBox", columns=1, gapX=0, gapY=12, items={
-        { id="collect", title="Collect Cash", target=100,
-          reward={ type="Currency", id="Gold", amount=20 } }
-    } }
-} }
-self.State = { onlineMinutes=0, signInDay=1, entries={
-    online={}, signin={}, task={ collect={ status="Claimable", current=100 } }
-} }
+【二、Config：完整配置】
+  offline: table，必填。
+    rewardId: string，必填；稳定离线奖励批次 ID，不是奖励物品 ID。
+  diamonds: table，必填。
+    rewardId: string，必填；稳定每日钻石奖励业务 ID。
+    loginAmount: number，必填；登录奖励钻石数量。
+    premiumAmount: number，必填；会员加成钻石数量。
+    friendAmount: number，必填；每位好友加成钻石数量。
+    friendCap: number，必填；好友加成上限，单位钻石，不是好友人数。
+    上述数值仅用于说明卡，View 不据此计算可领数量或资格。
+  groups: {Group}，必填有序连续数组；online/signin/task 各一组，kind 不重复。
+    Group.kind: "online" | "signin" | "task"，必填；分组稳定标识。
+    Group.page: string，必填；与 kind 固定对应
+      online="OnlineBox"、signin="SignInBox"、task="TasksBox"。
+    Group.columns: number，必填；正整数列数，task 使用 1。
+    Group.gapX / Group.gapY: number，均必填；横/纵间距，单位逻辑像素。
+    Group.items: {Item}，必填有序连续数组，可为空 {}。
+      Item.id: string，必填；组内唯一稳定奖励/任务条目 ID。
+      Item.reward: Reward，必填；不是条目自身的身份。
+        Reward.type: string，必填；游戏奖励类型，由接入查询方法解释。
+        Reward.id: string，必填；该 type 下的物品/货币配置 ID。
+        Reward.amount: number，必填；原始奖励数量，单位由 type/id 决定；
+          任务数量按整数显示，业务须提供与奖励规则一致的数量。
+      online 项另必填 minutes: number，正数，在线门槛，单位分钟。
+      signin 项另必填 day: number，正整数，第几天。
+      task 项另必填 title: string，任务名称原文；
+        target: number，目标值；单位由任务定义，<=0 显示空条与 —。
+      featured: boolean，可选，省略 false；仅签到使用的双行大奖。
+        true 时还必填 badge: string（标记原文）、color: {number, number, number}
+        （RGB 三个分量，各 0..255）；当前布局只有一个大奖槽，至多一项。
 
-必需覆写 GetRewardDisplay(reward)，返回 {name: string, icon: "Coin"|"Gem"|"Egg"}；
-Coin 类奖励使用项目钞票图片与 +$金额；在线、签到和任务页 Gem 使用项目钻石素材。
-任务页 EggIconBox.RewardIconImg 是道具图片槽，App 用问号占位；
-游戏接入在每次刷新中按 reward.id 查询真实道具图片，覆盖此槽并清除旧图。
-任务图标显示规则与 GetRewardDisplay 一致，任务文字保留独立 RewardTxt；不按显示名称识别奖励。
-其他页保留原有图标；占位图不作为物品身份，正式蛋图可替换在线原型的 EggIconBox。
-在线页按 minutes <15 / <45 / <60 / >=60 选择青绿、蓝、紫、金色原型，不改变奖励价值。
-Locked 且未提供 label 时，按 onlineMinutes 与 minutes 差值显示 mm:ss；
-倒计时没有本地计时器，接入层须更新 onlineMinutes（允许小数分钟）并 RefreshUI。
-下一档取大于 onlineMinutes 的最小分钟数；全部达成后显示最终档进度，空列表显示 No rewards。
-必需覆写 OnUIAction(action, payload)，无返回值：
-action="Claim"，payload={kind: string, rewardId: string}，rewardId 对应 items.id。
-资格校验及发奖由游戏接入负责；请求期间 pending=true，成功改 Claimed，
-失败保留 Claimable 并设置 error；每次更新后 RefreshUI。
-可选覆写 FormatReward(name, amount)，默认返回名称与原始数量。
-模拟接入仅更新模拟状态，不实际发奖。
-]]
---[[
-离线奖励补充契约（与现有 Config/State 同时提供）：
-Config.offline.rewardId: string，必填，稳定离线奖励批次业务 ID，无默认值。
-State.offline: 必填完整状态；seconds: number，离线秒数；training: number，
-可领基础训练值；status: "Locked" | "Claimable" | "Claimed"，均必填。
-pending: boolean 可选，缺省 false；error: string 可选，缺省 nil。
-Claimed 时显示离线时间 0s、训练值 0，隐藏两种领取按钮；
-status 表示当天状态：仅在每次 Show 时根据 Claimed 隐藏整个离线页签，
-后续页签由列表自动补位；本次打开期间领取成功不隐藏页签、不切换页面。
-接入层须持久保存当天领取结果，重新创建界面或重新登录时先读取当天状态，
-不可在每次打开时重置为 Claimable；跨天由游戏业务更新为新一天的完整状态。
-当天已领取时再次 Show 默认选钻石；当前离线页领取成功仍保留零值展示。
-Locked 或无训练值时也隐藏按钮，pending 时禁用，失败显示 error 并允许重试。
-示例：self.Config.offline = { rewardId = "offline_session_1" }
-self.State.offline = { seconds = 9000, training = 1500, status = "Claimable" }
-首次 Show 前准备数据；接入层更新完整 State 后 RefreshUI，不由 View 计算奖励。
-必需 OnUIAction 新增 ClaimOffline，无返回值；payload = {
-  rewardId: string，与 Config.offline.rewardId 对应；multiplier: number，只能为 1 或 2。
-}
-游戏接入负责校验批次、倍数资格及发奖；请求前 pending=true，成功后
-seconds=0、training=0、status="Claimed"、pending=false，再 RefreshUI。
-失败保留数值及 Claimable，pending=false、error=提示后刷新。
-模拟立即成功，双倍仅模拟两倍训练值；没有添加支付或广告流程。
+【三、State：Render 的完整输入】
+  offline: table，必填；以下 seconds/training/status 必填，无默认值。
+    seconds: number，非负离线秒数；显示小时及两位分钟，秒向下取整到分钟。
+    training: number，非负，可领基础训练值，不含双倍加成。
+    status: Status；Claimed 时显示时长/训练值为零并隐藏领取按钮。
+    pending: boolean，可选，省略 false；禁用单倍和双倍领取。
+    error: string，可选，省略 nil；提示原文；Claimed 的已领提示优先于错误。
+    仅 status=Claimable 且 training>0 才显示两种领取按钮；
+    请求中仍显示但禁用；无 error 且不可领时显示无奖励/已领提示。
+  diamonds: table，必填。
+    amount: number，必填；服务端确认的本日可领钻石数，单位钻石。
+    status: Status，必填；不由 amount 推导，0 不自动禁用 Claimable。
+    pending: boolean，可选，省略 false；禁用领取。
+    error: string，可选，省略 nil；仅 Claimable 且非 pending 时显示，
+      按钮为 Retry；Locked/Claimed 使用各自提示。
+  onlineMinutes: number，必填；在线分钟数，允许小数分钟。
+  signInDay: number，必填；当前签到天序号，单位天。
+  entries: {[kind: string]: {[entryId: string]: Entry}}，必填两层字典。
+    kind 对应 groups[].kind，entryId 对应同组 items[].id，
+    不是 reward.id；所有配置分组及其条目必须有状态，不自动当作 Locked。
+    Entry.status: Status，必填。
+    Entry.current: number，task 必填；当前进度，与 Item.target 同单位。
+    Entry.pending: boolean，可选，省略 false；禁用本条领取。
+    Entry.error: string，可选，省略 nil；Claimable 且非 pending 时按钮为 Retry，
+      但列表条目不显示错误原文。
+    Entry.label: string，可选，省略 nil；仅 Locked 时作为自定义按钮原文。
+      不传时 task 显示 In Progress、online 显示剩余 mm:ss、
+      signin 按 day-signInDay 显示 Tomorrow / In N days / Locked。
+  error/label 的空字符串在 Luau 中仍有效；要恢复默认行为应设 nil。
+  空组须同时提供 items={} 与 entries[kind]={}；即使页面未打开也须有完整数据。
+  没有全局 open/loading 字段；异步未就绪时延后 BindUIData/Show。
+
+【四、最小完整数据（接入 Ctor 调用父构造之后）】
+  self.Config = {
+      offline = { rewardId = "offline_session_1" },
+      diamonds = { rewardId = "daily_diamonds", loginAmount = 100,
+          premiumAmount = 50, friendAmount = 10, friendCap = 100 },
+      groups = {
+          { kind = "online", page = "OnlineBox", columns = 3,
+            gapX = 20, gapY = 16, items = {} },
+          { kind = "signin", page = "SignInBox", columns = 3,
+            gapX = 12, gapY = 16, items = {} },
+          { kind = "task", page = "TasksBox", columns = 1, gapX = 0, gapY = 12,
+            items = { { id = "collect", title = "Collect Cash", target = 100,
+                reward = { type = "Currency", id = "Gold", amount = 20 } } } },
+      },
+  }
+  self.State = {
+      offline = { seconds = 9000, training = 1500, status = "Claimable" },
+      diamonds = { amount = 100, status = "Claimable" },
+      onlineMinutes = 0, signInDay = 1,
+      entries = { online = {}, signin = {},
+          task = { collect = { status = "Claimable", current = 100 } } },
+  }
+
+【初始化与刷新】
+  游戏接入类继承 CWelfareView。
+  接入 Ctor(owner) 先调用自身类的 Super.Ctor(self, owner)，再准备下例数据。
+  接入 OnReady() 先调用自身类的 Super.OnReady(self)，再依次
+  self:BindUIData()、self:Show()；父 OnReady 负责绑定节点，OnShow 会刷新。
+  GetUIConfig() 默认返回 self.Config；GetUIState() 默认返回 self.State。
+  RefreshUI() 调用 Render(GetUIState())，输入是完整快照，不合并增量，
+  不自动补齐业务字段。可修改已有表或替换整表，但每次刷新须满足完整契约。
+  后续先更新 Config/State，再 self:RefreshUI()；异步未就绪按本页规则处理。
+  无需覆写 Render 或手动重复调用 OnReady；业务类覆写生命周期时须保留父调用。
+
+【五、必需/可选覆写与动作】
+  必需 GetRewardDisplay(reward: Reward) -> { name: string, icon: string }。
+    name 为奖励名称原文；icon 只能 "Coin" | "Gem" | "Egg"，表示设计图标类别，
+    不是 Roblox 资源地址。例如 Currency/Gold -> { name="Cash", icon="Coin" }。
+    游戏按 type/id 查询真实配置；查询缺失应明确报错，不返回上一奖励结果。
+  可选 FormatReward(name: string, amount: number) -> string。
+    默认返回已翻译的 名称 ×数量，保留原始数量；覆写也须返回最终展示文本。
+    Coin 使用独立 +$金额节点，任务另有数量节点，不全部由此方法控制。
+  必需 OnUIAction(action: string, payload: table)，无返回值；默认报错。
+    Claim -> { kind: "online" | "signin" | "task", rewardId: string }；
+      rewardId 对应该组 Item.id，不是 Item.reward.id。
+    ClaimDiamonds -> { rewardId: string }；对应 Config.diamonds.rewardId。
+    ClaimOffline -> { rewardId: string, multiplier: number }；
+      rewardId 对应 Config.offline.rewardId，multiplier 仅为 1 或 2。
+    没有 Close 或 SelectTab 动作；关闭直接 Hide，页签切换由 View 本地处理。
+  无其他页面专用必需覆写；父类默认 GetUIConfig/GetUIState 已可读取上述数据。
+  请求前将对应 Entry / diamonds / offline 的 pending=true、error=nil 并刷新；
+  成功后 pending=false、status="Claimed"；离线还同步 seconds=0、training=0。
+  失败 pending=false、保留最新真实数值及可重试状态，设置 error，再刷新。
+  真实业务重新校验日期、批次、资格、倍数及领取幂等，并执行发放/持久化。
+  钻石与离线状态跨打开/重建须保持当天真实结果，不能每次 Show 重置可领取；
+  跨天由业务更新新一天完整状态。双倍离线未内置支付或广告流程。
+
+【六、页签、列表与计时】
+  每次 Show 默认 offline；当天 offline.status=Claimed 时隐藏离线页签，
+  默认 diamonds；本次打开领取后保留当前页，下次 Show 才重新决定页签显隐。
+  签到仅在 Show 时检查：非空组的全部配置项均 Claimed 才隐藏该页签；
+  空组不算完成，不能只检查 signInDay 或最后一天状态。
+  页签红点只读完整状态：存在配置项 Claimable 且非 pending 才显示；
+  离线另要求 training>0；浏览不清红点，状态变化后 RefreshUI 更新。
+  Templates 始终隐藏；分组首次访问时克隆，以 kind/Item.id 复用和清理。
+  非当前分组不执行 SyncItems，配置增删在下次访问该分组时同步。
+  运行期保持 groups 的 kind/page 及已存在条目的原型分档稳定：
+  minutes/day 跨颜色档改变但 ID 不变时不会自动重建原型；featured 改变会重建。
+  在线卡按 minutes <15 / <45 / <60 / >=60 分档；
+  普通签到按 day <3 / <6 / >=6 分档，大签到使用独立双行原型。
+  在线总进度取大于 onlineMinutes 的最小门槛，全部达成则用最大门槛；
+  空组显示 No rewards；进度宽度截断，原始数据不变。
+  无本地倒计时器，游戏须更新 onlineMinutes 并刷新，不能只初始化一次。
+
+【七、资源边界】
+  Coin 使用项目钞票图，Gem 使用设计钻石图，Egg 使用设计占位；
+  GetRewardDisplay 返回 icon 类别不会加载真实道具图，返回额外图片字段也不消费。
+  任务 EggIconBox.RewardIconImg、在线/签到 EggIconBox 的正式贴图
+  尚无本 View 数据字段绑定；当前仍用原型占位，不承诺按 reward.id 自动替换。
+  若需不同道具各自的图片，应另行实现明确图片绑定接口，不能仅填一个未读取字段。
+  ScreenGui 实际名为 WelfareUI，现有类名 CWelfareView 不随文档目录改名。
+  真实业务、资源权限及设备显示需在 Roblox 中另行验证。
 ]]
 local FX = _G.FX
 local Loader = FX.Loader
@@ -368,7 +410,7 @@ function CWelfareView:OnShow()
     self:RefreshUI()
 end
 
--- 游戏与模拟接入都必须提供奖励展示查询。
+-- 游戏接入必须提供奖励展示查询。
 -- @param reward table 原始奖励类型、ID 与数量
 -- @return table name 和当前模板支持的 icon（Coin/Gem/Egg）
 function CWelfareView:GetRewardDisplay(reward)
@@ -386,9 +428,9 @@ function CWelfareView:FormatReward(name, amount)
     })
 end
 
--- 领取动作必须由游戏或模拟接入实现。
--- @param action string 动作名称
--- @param payload table kind 和 rewardId
+-- 领取动作必须由游戏接入实现。
+-- @param action string Claim、ClaimDiamonds 或 ClaimOffline
+-- @param payload table Claim 为 kind/rewardId；钻石为 rewardId；离线为 rewardId/multiplier，见文件头
 function CWelfareView:OnUIAction(action, payload)
     error("Welfare integration must implement OnUIAction")
 end
@@ -556,7 +598,7 @@ function CWelfareView:RenderDiamonds(state)
 end
 
 -- 接入提供状态，View 只组织页面和条目展示，不改根节点的显隐。
--- @param state table entries、onlineMinutes 与 signInDay
+-- @param state table 完整 State：offline、diamonds、entries、onlineMinutes、signInDay，见文件头
 function CWelfareView:Render(state)
     self:RenderOffline(state.offline)
     self:RenderDiamonds(state.diamonds)
@@ -636,8 +678,8 @@ function CWelfareView:RenderOnlineProgress(group, state)
     subtitleTxt.Text = hint
 end
 
--- 离线奖励只展示业务状态；领���后清零并隐藏按钮，不重置在线时长。
--- @param state table seconds、training、status 及可选 pending/error，见离线契约
+-- 离线奖励只展示业务状态；领取后显示零值并隐藏按钮，不修改业务数据或在线时长。
+-- @param state table State.offline：seconds、training、status 及可选 pending/error，见文件头
 function CWelfareView:RenderOffline(state)
     local page = Loader:Here(self.Root, "PopupPanelImg.OfflineBox")
     page.Visible = self.ActiveTab == "offline"
