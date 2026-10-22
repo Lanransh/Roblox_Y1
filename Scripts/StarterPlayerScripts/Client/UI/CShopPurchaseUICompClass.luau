@@ -4,8 +4,6 @@ local FXLoader = FX.Loader
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local TranslationTexts = Text.Define("ShopPurchase", {
     NeedDiamonds = "Not enough diamonds.",
-    Buying = "Buying...",
-    Price = "{value} · Buy",
     Unknown = "Something went wrong. Please try again.",
 })
 FXLoader:RequireFromParent(script, "Generated/CShopPurchaseView")
@@ -56,30 +54,24 @@ function Component:OpenProduct(product)
     self:Show()
 end
 
---- 根据当前语言重建商品文案，沿用主商店的配置和权威进度。
---- @param state table 当前购买状态。
-function Component:Render(state)
+--- 从公开查询读取当前商品文案，不在刷新购买页时重建整个商店。
+--- @return table 购买页的完整配置。
+function Component:GetUIConfig()
     local shop = self:GetPlayerObject():RequireComponent("CCurrencyShopUIComp")
-    shop:BuildProducts()
-    local product = self._product
-    for index, candidate in ipairs(shop.Config.products) do
-        if candidate.goodsId == product.goodsId and candidate.currency == "Diamond" then
-            product = candidate
-            break
-        end
-    end
+    local product = shop:GetProduct(self._product.goodsId) or self._product
     self.Config = {itemId = tostring(self._product.goodsId), name = product.title,
+        nameText = product.titleText, descriptionText = product.descriptionText,
         category = "DIAMOND UPGRADE",
         description = product.description,
         price = self._product.price, icon = self._product.icon}
-    Component.Super.Render(self, state)
-    if state.pending then
-        self.ButtonTxt.Text = Text.Tr(TranslationTexts.Buying)
-    else
-        self.ButtonTxt.Text = Text.Tr(TranslationTexts.Price, {
-            value = GameUtility.NumberToText(self.Config.price),
-        })
-    end
+    return self.Config
+end
+
+--- 购买按钮金额统一使用项目数量格式。
+--- @param value number 原始商品价格。
+--- @return string 展示金额。
+function Component:FormatNumber(value)
+    return GameUtility.NumberToText(value)
 end
 
 --- 购买只提交固定商品 ID；成败均提示，收益只使用服务端实际结算结果。
@@ -101,8 +93,7 @@ function Component:OnUIAction(action, payload)
             if ok and type(result) == "table" then
                 if result.success then
                     local shop = self:GetPlayerObject():RequireComponent("CCurrencyShopUIComp")
-                    shop._data = result.data
-                    shop:RefreshUI()
+                    shop:ApplyShopData(result.data)
                     self.State = {status = "Ready", pending = false}
                     self._commonUI:ShowLocalizedTips(result.key, result.arguments)
                     self:Hide()

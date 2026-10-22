@@ -2,10 +2,6 @@ local FX = _G.FX
 local FXLoader = FX.Loader
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local TranslationTexts = Text.Define("WeaponShop", {
-    TrainingRate = "Training ×{rate}",
-    Price = "Buy: {value} Coins",
-    Equipped = "Equipped",
-    Equip = "Equip",
     Unknown = "Something went wrong. Please try again.",
 })
 local RunService = game:GetService("RunService")
@@ -32,6 +28,7 @@ function Component:OnReady()
     self._localization = self._commonUI.Localization
     self.Config = {
         title = "WEAPONS", weapons = {}, qualities = {},
+        strengthIsMultiplier = true, hideQuality = true, allowUnaffordableAction = true,
     }
     -- 工具没有品质字段，展示配色按顺序循环，不增加虚构的品质文案。
     local rowColors = {
@@ -50,7 +47,7 @@ function Component:OnReady()
             strength = config.TrainingRate, price = config.Price, icon = "rbxassetid://" .. config.Img,
         })
     end
-    self.State = {owned = {}, equippedId = "", coins = 0, open = false}
+    self.State = {owned = {}, equippedId = "", coins = 0, open = false, pending = {}}
     self:Hide()
     self:TrackConnection(self._localization.Changed:Connect(function()
         self:RefreshUI()
@@ -110,37 +107,11 @@ function Component:UpdateShopArea()
     end
 end
 
---- 生成类未处理倍率和价格模板翻译；仅补动态文案与数量格式，配置名称按原文查询。
---- @param state table 服务端数据派生的完整 UI 状态。
-function Component:Render(state)
-    for index, weapon in ipairs(self.Config.weapons) do
-        weapon.name = Text.TrSource(_G.GameConfig.ToolConfig[index].Name)
-    end
-    Component.Super.Render(self, state)
-    for index, weapon in ipairs(self.Config.weapons) do
-        local entry = self.Rows[weapon.id]
-        if entry then
-            local row = entry.row
-            FXLoader:Here(row, "RarityTxt").Visible = false
-            local rate = FXLoader:Here(row, "StrengthTxt")
-            rate.TextScaled = true
-            rate.Text = Text.Tr(TranslationTexts.TrainingRate, {
-                rate = GameUtility.NumberToText(weapon.strength),
-            })
-            local owned = state.owned[weapon.id] == true
-            local equipped = state.equippedId == weapon.id
-            local key = TranslationTexts.Price
-            if equipped then
-                key = TranslationTexts.Equipped
-            elseif owned then
-                key = TranslationTexts.Equip
-            end
-            local caption = FXLoader:Here(row, "ActionBtn/ButtonTxt")
-            caption.Text = Text.Tr(key, {value = GameUtility.NumberToText(weapon.price)})
-            -- 请求期间保持原有显示；余额不足也允许服务端返回提示。
-            self:SetButtonEnabled(entry.button, not equipped)
-        end
-    end
+--- 展示类统一处理文案，数量沿用项目的大数格式。
+--- @param value number 未格式化的数量。
+--- @return string 用于显示的数量。
+function Component:FormatNumber(value)
+    return GameUtility.NumberToText(value)
 end
 
 --- 打开时读取最新状态，不重复绑定条目按钮。
@@ -165,6 +136,9 @@ function Component:OnUIAction(action, payload)
     if self._requestTask then
         return
     end
+    self.State.pending[payload.weaponId] = true
+    self.State.busy = true
+    self:RefreshUI()
     self._requestTask = task.defer(function()
         --- 网络限速或失败恢复按钮，不以本地状态伪造购买成功。
         --- @return table 服务端权威结果。
@@ -172,6 +146,8 @@ function Component:OnUIAction(action, payload)
             return FX.Network:InvokeServer("C2S_WeaponAction", action, tonumber(payload.weaponId))
         end)
         self._requestTask = nil
+        self.State.pending[payload.weaponId] = nil
+        self.State.busy = false
         if ok and result.success then
             self.State.owned = result.data.owned
             self.State.equippedId = tostring(result.data.equippedId)

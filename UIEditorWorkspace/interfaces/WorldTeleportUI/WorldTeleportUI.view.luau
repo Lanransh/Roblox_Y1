@@ -42,7 +42,9 @@
   必需覆写 OnUIAction(action: string, payload: table)，无返回值；默认报错。
   Teleport -> { worldId: string }，对应目标 World.id，不含客户端等级或权限。
   Close -> {}；接入层调用 self:Hide()，没有 State.open。
-  无其他页面专用必需或可选覆写。
+  Config.allowLockedAction:boolean?，true 锁定按钮灰色但允许发 Teleport 提示原因。
+  State.errorText:string? 最终译文，优先于 error 原文；无错误时两者均清除。
+  继承 Render / CreateRow / EmitUIAction，不重复绑定或写入按钮。
   等级不足、已在该世界或任何传送请求未完成时，按钮禁用；
   点击处理也检查上述条件，但不替代服务器校验。
   请求前 pendingWorldId=目标ID、error=nil 并刷新；
@@ -109,7 +111,7 @@ function CWorldTeleportView:CreateRow(worldId)
         if state.pendingWorldId or state.currentWorldId == worldId then
             return
         end
-        if state.level < world.requiredLevel then
+        if state.level < world.requiredLevel and not self:GetUIConfig().allowLockedAction then
             return
         end
         self:EmitUIAction("Teleport", { worldId = worldId })
@@ -170,7 +172,8 @@ function CWorldTeleportView:Render(state)
         end
         record.button.BackgroundColor3 = Color3.fromHex(buttonColor)
         record.buttonEdge.BackgroundColor3 = Color3.fromHex(edgeColor)
-        self:SetButtonEnabled(record.button, unlocked and not current and not state.pendingWorldId)
+        self:SetButtonEnabled(record.button, (unlocked or self:GetUIConfig().allowLockedAction == true)
+            and not current and not state.pendingWorldId)
     end
     for worldId, record in pairs(self._rows) do
         if not seen[worldId] then
@@ -180,8 +183,8 @@ function CWorldTeleportView:Render(state)
     end
     self.ListBox.CanvasSize = UDim2.fromOffset(0, math.max(0, #worlds * 106 - 10))
     self.EmptyTxt.Visible = #worlds == 0
-    self.ErrorTxt.Text = Text.TrSource(state.error or "")
-    self.ErrorTxt.Visible = state.error ~= nil and state.error ~= ""
+    self.ErrorTxt.Text = state.errorText or Text.TrSource(state.error or "")
+    self.ErrorTxt.Visible = self.ErrorTxt.Text ~= ""
 end
 
 -- 由游戏接入实现动作，无静默空处理。

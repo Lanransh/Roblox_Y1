@@ -2400,7 +2400,7 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 55,
+                          "offset": 44,
                           "scale": 0
                         },
                         "y": {
@@ -2411,12 +2411,12 @@
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 103,
-                          "scale": 0
+                          "offset": -52,
+                          "scale": 1
                         },
                         "y": {
-                          "offset": 52,
-                          "scale": 0
+                          "offset": 0,
+                          "scale": 1
                         }
                       },
                       "Text": "",
@@ -2462,29 +2462,29 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 10,
+                          "offset": 8,
                           "scale": 0
                         },
                         "y": {
-                          "offset": -4,
+                          "offset": 0,
                           "scale": 0
                         }
                       },
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 46,
+                          "offset": 32,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 56,
-                          "scale": 0
+                          "offset": 0,
+                          "scale": 1
                         }
                       },
                       "Text": "",
                       "TextColor3": "#ffffff",
                       "TextScaled": false,
-                      "TextSize": 42,
+                      "TextSize": 32,
                       "TextTransparency": 0,
                       "TextWrapped": false,
                       "TextXAlignment": "Center",
@@ -3002,7 +3002,7 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 55,
+                          "offset": 44,
                           "scale": 0
                         },
                         "y": {
@@ -3013,12 +3013,12 @@
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 103,
-                          "scale": 0
+                          "offset": -52,
+                          "scale": 1
                         },
                         "y": {
-                          "offset": 52,
-                          "scale": 0
+                          "offset": 0,
+                          "scale": 1
                         }
                       },
                       "Text": "",
@@ -3064,29 +3064,29 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 10,
+                          "offset": 8,
                           "scale": 0
                         },
                         "y": {
-                          "offset": -4,
+                          "offset": 0,
                           "scale": 0
                         }
                       },
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 46,
+                          "offset": 32,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 56,
-                          "scale": 0
+                          "offset": 0,
+                          "scale": 1
                         }
                       },
                       "Text": "",
                       "TextColor3": "#ffffff",
                       "TextScaled": false,
-                      "TextSize": 42,
+                      "TextSize": 32,
                       "TextTransparency": 0,
                       "TextWrapped": false,
                       "TextXAlignment": "Center",
@@ -3604,7 +3604,7 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 55,
+                          "offset": 44,
                           "scale": 0
                         },
                         "y": {
@@ -3615,12 +3615,12 @@
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 103,
-                          "scale": 0
+                          "offset": -52,
+                          "scale": 1
                         },
                         "y": {
-                          "offset": 52,
-                          "scale": 0
+                          "offset": 0,
+                          "scale": 1
                         }
                       },
                       "Text": "",
@@ -3666,29 +3666,29 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 10,
+                          "offset": 8,
                           "scale": 0
                         },
                         "y": {
-                          "offset": -4,
+                          "offset": 0,
                           "scale": 0
                         }
                       },
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 46,
+                          "offset": 32,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 56,
-                          "scale": 0
+                          "offset": 0,
+                          "scale": 1
                         }
                       },
                       "Text": "",
                       "TextColor3": "#ffffff",
                       "TextScaled": false,
-                      "TextSize": 42,
+                      "TextSize": 32,
                       "TextTransparency": 0,
                       "TextWrapped": false,
                       "TextXAlignment": "Center",
@@ -4206,7 +4206,7 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 55,
+                          "offset": 44,
                           "scale": 0
                         },
                         "y": {
@@ -4217,12 +4217,12 @@
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 103,
-                          "scale": 0
+                          "offset": -52,
+                          "scale": 1
                         },
                         "y": {
-                          "offset": 52,
-                          "scale": 0
+                          "offset": 0,
+                          "scale": 1
                         }
                       },
                       "Text": "",
@@ -4268,29 +4268,29 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 10,
+                          "offset": 8,
                           "scale": 0
                         },
                         "y": {
-                          "offset": -4,
+                          "offset": 0,
                           "scale": 0
                         }
                       },
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 46,
+                          "offset": 32,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 56,
-                          "scale": 0
+                          "offset": 0,
+                          "scale": 1
                         }
                       },
                       "Text": "",
                       "TextColor3": "#ffffff",
                       "TextScaled": false,
-                      "TextSize": 42,
+                      "TextSize": 32,
                       "TextTransparency": 0,
                       "TextWrapped": false,
                       "TextXAlignment": "Center",
@@ -4808,7 +4808,7 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 55,
+                          "offset": 44,
                           "scale": 0
                         },
                         "y": {
@@ -4819,12 +4819,12 @@
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 103,
-                          "scale": 0
+                          "offset": -52,
+                          "scale": 1
                         },
                         "y": {
-                          "offset": 52,
-                          "scale": 0
+                          "offset": 0,
+                          "scale": 1
                         }
                       },
                       "Text": "",
@@ -4870,29 +4870,29 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 10,
+                          "offset": 8,
                           "scale": 0
                         },
                         "y": {
-                          "offset": -4,
+                          "offset": 0,
                           "scale": 0
                         }
                       },
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 46,
+                          "offset": 32,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 56,
-                          "scale": 0
+                          "offset": 0,
+                          "scale": 1
                         }
                       },
                       "Text": "",
                       "TextColor3": "#ffffff",
                       "TextScaled": false,
-                      "TextSize": 42,
+                      "TextSize": 32,
                       "TextTransparency": 0,
                       "TextWrapped": false,
                       "TextXAlignment": "Center",
@@ -5410,7 +5410,7 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 55,
+                          "offset": 44,
                           "scale": 0
                         },
                         "y": {
@@ -5421,12 +5421,12 @@
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 103,
-                          "scale": 0
+                          "offset": -52,
+                          "scale": 1
                         },
                         "y": {
-                          "offset": 52,
-                          "scale": 0
+                          "offset": 0,
+                          "scale": 1
                         }
                       },
                       "Text": "",
@@ -5472,29 +5472,29 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 10,
+                          "offset": 8,
                           "scale": 0
                         },
                         "y": {
-                          "offset": -4,
+                          "offset": 0,
                           "scale": 0
                         }
                       },
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 46,
+                          "offset": 32,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 56,
-                          "scale": 0
+                          "offset": 0,
+                          "scale": 1
                         }
                       },
                       "Text": "",
                       "TextColor3": "#ffffff",
                       "TextScaled": false,
-                      "TextSize": 42,
+                      "TextSize": 32,
                       "TextTransparency": 0,
                       "TextWrapped": false,
                       "TextXAlignment": "Center",

@@ -4,7 +4,6 @@ local FXLoader = FX.Loader
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local TranslationTexts = Text.Define("Rebirth", {
     CompleteNotice = "Rebirth complete!  {previous:int} → {current:int}",
-    Progress = "Level {level:int}/{required:int}",
     MaxCount = "You have reached the rebirth limit.",
     InDevelopment = "Coming soon.",
     Unknown = "Something went wrong. Please try again.",
@@ -14,6 +13,7 @@ FXLoader:RequireFromParent(script, "Generated/CRebirthUICompClass")
 local Fields = _G.PlayerDataConfig
 local MarketplaceService = game:GetService("MarketplaceService")
 local Rebirth = FXLoader:RequireShared("Scripts/Game/Shared/Rebirth")
+local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local Component = FX.Class("CRebirthIntegrationCompClass", "CRebirthUICompClass")
 
 function Component:GetCompName()
@@ -151,6 +151,7 @@ function Component:OnReady()
     self._commonUI = self:GetPlayerObject():RequireComponent("FCCommonUIComp")
     self._commonUI:RegisterTrainingClickModal(root)
     self._localization = self._commonUI.Localization
+    self.Config = {allowIneligibleAction = true}
     self.State = {Open = false, Completed = false, Pending = false}
     --- 平台弹窗关闭只恢复交互，重生奖励仍由服务端收据处理。
     --- @param userId number 平台回传的玩家 ID。
@@ -183,29 +184,18 @@ function Component:RefreshRebirth()
     self.State.NextStrengthMultiplier = Rebirth.GetTrainingRate(nextCount)
     self.State.CurrentMoneyMultiplier = Rebirth.GetMoneyRate(count)
     self.State.NextMoneyMultiplier = Rebirth.GetMoneyRate(nextCount)
+    self.State.AtMax = count >= Rebirth.MaxCount
+    local goods = Rebirth.GetSkipGoods(count)
+    local productId = goods and goods.RobloxProductId
+    self.State.SkipAvailable = type(productId) == "number" and productId > 0 and productId % 1 == 0
     self:RefreshUI()
 end
 
---- 生成类未翻译等级模板；补动态进度及业务上限提示，保留按钮资格，不覆盖默认警告。
---- @param state table 当前界面状态。
-function Component:Render(state)
-    Component.Super.Render(self, state)
-    -- 灰色表达未达标，但保留点击以显示门槛；请求中才禁用。
-    self:SetButtonEnabled(self.RebirthBtn, state.Open and not state.Pending)
-    local goods = Rebirth.GetSkipGoods(self:GetNumber(Fields.RebirthCount))
-    local productId = goods and goods.RobloxProductId
-    self:SetButtonEnabled(self.SkipBtn, state.Open and not state.Pending
-        and type(productId) == "number" and productId > 0 and productId % 1 == 0)
-    local progressText = Text.Tr(TranslationTexts.Progress, {
-        level = state.Level, required = state.RequiredLevel,
-    })
-    -- 云端译文可能带尾随换行，避免居中文本被额外的空白行顶偏。
-    self.ProgressTxt.Text = string.gsub(progressText, "%s+$", "")
-    if self:GetNumber(Fields.RebirthCount) >= Rebirth.MaxCount then
-        self.RebirthBtn.BackgroundColor3 = Color3.fromHex("#B7B7B7")
-        self.RebirthGradient.Enabled = true
-        self.WarningTxt.Text = Text.Tr(TranslationTexts.MaxCount)
-    end
+--- 重生倍率展示沿用项目格式，等级与次数由展示类按整数处理。
+--- @param value number 原始倍率。
+--- @return string 展示倍率。
+function Component:FormatNumber(value)
+    return GameUtility.NumberToText(value)
 end
 
 --- 按当前次数选择真实平台商品，复用服务端预检和平台购买窗口。

@@ -43,7 +43,11 @@
   CloseRebirth -> {}；接入层设置 Open=false 并刷新。
   RequestSkip -> {}；请求跳过等级条件，View 不执行支付。
   RequestRebirth -> {}；请求重生，不传等级、倍率或客户端计算的资格。
-  无其他页面专用必需或可选覆写。
+  Config.allowIneligibleAction:boolean?，true 时未满足门槛或到达上限仍允许点击提示。
+  State.AtMax:boolean?，true 显示重生上限提示并保持灰色。
+  State.SkipAvailable:boolean?，省略 true；false 禁用 Skip（例如未配置平台商品）。
+  FormatNumber(value:number)->string 可选覆写，默认 tostring，用于倍率。
+  继承 Render 与输入绑定，不覆盖按钮资格或进度文案。
   重生可用条件：Open、RequiredLevel>0、未 Completed、未 Pending、
   Level>=RequiredLevel；Skip 不要求等级不足，前四项满足即可。
   真实接入须重新校验资格与支付；请求前 Pending=true 并刷新；
@@ -68,10 +72,18 @@ local TranslationTexts = Text.Define("RebirthUI", {
     ProgressUnavailable = "Level {level}/--",
     Complete = "Rebirth complete! Strength reset.",
     ResetWarning = "Rebirth resets your strength!",
+    MaxCount = "You have reached the rebirth limit.",
 })
 
 -- 暴露只读文案定义，供接入子类通过 self.BaseViewTranslationTexts 复用。
 UI.BaseViewTranslationTexts = TranslationTexts
+
+-- 倍率显示接入统一数量工具，等级继续保留等级语义。
+-- @param value number 原始倍率。
+-- @return string 展示倍率。
+function UI:FormatNumber(value)
+    return tostring(value)
+end
 
 -- 绑定已有设计节点与按钮；刷新时不重复连接事件。
 function UI:OnReady()
@@ -114,16 +126,16 @@ function UI:Render(state)
     self.Panel.Visible = state.Open
     self.TitleBox.Visible = state.Open
     self.CurrentStrengthTxt.Text = Text.Tr(TranslationTexts.Multiplier, {
-        value = string.format("%.15g", state.CurrentStrengthMultiplier),
+        value = self:FormatNumber(state.CurrentStrengthMultiplier),
     })
     self.NextStrengthTxt.Text = Text.Tr(TranslationTexts.Multiplier, {
-        value = string.format("%.15g", state.NextStrengthMultiplier),
+        value = self:FormatNumber(state.NextStrengthMultiplier),
     })
     self.CurrentMoneyTxt.Text = Text.Tr(TranslationTexts.Multiplier, {
-        value = string.format("%.15g", state.CurrentMoneyMultiplier),
+        value = self:FormatNumber(state.CurrentMoneyMultiplier),
     })
     self.NextMoneyTxt.Text = Text.Tr(TranslationTexts.Multiplier, {
-        value = string.format("%.15g", state.NextMoneyMultiplier),
+        value = self:FormatNumber(state.NextMoneyMultiplier),
     })
     local ready = state.RequiredLevel > 0
     local ratio = 0
@@ -139,17 +151,21 @@ function UI:Render(state)
         })
     end
     self.ProgressFill.Size = UDim2.fromScale(ratio, 1)
+    self.ProgressTxt.Text = string.gsub(self.ProgressTxt.Text, "%s+$", "")
     local available = state.Open and ready and not state.Completed and not state.Pending
-    local eligible = available and state.Level >= state.RequiredLevel
-    self:SetButtonEnabled(self.RebirthBtn, eligible)
-    self:SetButtonEnabled(self.SkipBtn, available)
+    local eligible = available and not state.AtMax and state.Level >= state.RequiredLevel
+    self:SetButtonEnabled(self.RebirthBtn, eligible or (self:GetUIConfig() and self:GetUIConfig().allowIneligibleAction
+        and state.Open and not state.Pending))
+    self:SetButtonEnabled(self.SkipBtn, available and state.SkipAvailable ~= false)
     if eligible then
         self.RebirthBtn.BackgroundColor3 = Color3.fromHex("#67ED14")
     else
         self.RebirthBtn.BackgroundColor3 = Color3.fromHex("#B7B7B7")
     end
     self.RebirthGradient.Enabled = not eligible
-    if state.Completed then
+    if state.AtMax then
+        self.WarningTxt.Text = Text.Tr(TranslationTexts.MaxCount)
+    elseif state.Completed then
         self.WarningTxt.Text = Text.Tr(TranslationTexts.Complete)
     else
         self.WarningTxt.Text = Text.Tr(TranslationTexts.ResetWarning)

@@ -46,7 +46,10 @@
 【动作与覆写】
   必需覆写 OnUIAction(action: string, payload: table)，无返回值；默认报错。
   唯一动作 Close -> {}；接入层更新 open=false 并刷新。
-  无其他页面专用必需或可选覆写；发现道具后由业务同步 entries 与
+  Config.unlockCount:number?，提供时使用按收集门槛的训练加成规则。
+  Config.lockedSilhouette:boolean?，true 未解锁项显示真实图标黑色剪影。
+  FormatNumber(value:number)->string 可选覆写，默认 tostring，用于百分比。
+  Render / CreateRow 继承，不在接入层写节点；发现道具后由业务同步 entries 与
   totalStrengthPercent，再 RefreshUI。View 不写入激活记录或玩家力量。
 
 【列表、显隐与资源边界】
@@ -66,10 +69,19 @@ local TranslationTexts = Text.Define("CollectionUI", {
     StrengthRule = "+{percent}% Strength",
     StrengthBoost = "+{percent}%",
     ActivatedCount = "Activated {active:int} / {total:int}",
+    TrainingRule = "Collect {count:int} items for +{percent}% training.",
+    CollectedCount = "{count:int}/{total:int} collected",
 })
 
 -- 暴露只读文案定义，供接入子类通过 self.BaseViewTranslationTexts 复用。
 CCollectionView.BaseViewTranslationTexts = TranslationTexts
+
+-- 百分比接入项目数量格式，不改变业务计算。
+-- @param value number 百分比数值。
+-- @return string 展示数值。
+function CCollectionView:FormatNumber(value)
+    return tostring(value)
+end
 
 -- 绑定窗口、统计与隐藏卡片原型，只连接关闭操作。
 function CCollectionView:OnReady()
@@ -119,10 +131,15 @@ function CCollectionView:Render(state)
     self.Root.Enabled = state.open
     local config = self:GetUIConfig()
     self.Rule.Text = Text.Tr(TranslationTexts.StrengthRule, {
-        percent = config.strengthPerEntryPercent,
+        percent = self:FormatNumber(config.strengthPerEntryPercent),
     })
+    if config.unlockCount then
+        self.Rule.Text = Text.Tr(TranslationTexts.TrainingRule, {
+            count = config.unlockCount, percent = self:FormatNumber(config.strengthPerEntryPercent),
+        })
+    end
     self.Boost.Text = Text.Tr(TranslationTexts.StrengthBoost, {
-        percent = state.totalStrengthPercent,
+        percent = self:FormatNumber(state.totalStrengthPercent),
     })
     local kept = {}
     local activeCount = 0
@@ -145,6 +162,14 @@ function CCollectionView:Render(state)
         row.icon.Image = entry.active and (item.icon or "") or ""
         row.unknown.Visible = not entry.active or not item.icon or item.icon == ""
         row.icon.ImageTransparency = row.unknown.Visible and 1 or 0
+        row.icon.ImageColor3 = Color3.new(1, 1, 1)
+        if config.lockedSilhouette then
+            row.icon.Image = item.icon or ""
+            row.icon.ImageColor3 = entry.active and Color3.new(1, 1, 1) or Color3.new(0, 0, 0)
+            row.icon.ImageTransparency = 0
+            row.icon.BackgroundTransparency = 1
+            row.unknown.Visible = not item.icon or item.icon == ""
+        end
     end
     for id, row in pairs(self.Rows) do
         if not kept[id] then
@@ -160,6 +185,9 @@ function CCollectionView:Render(state)
         active = activeCount,
         total = #config.items,
     })
+    if config.unlockCount then
+        self.Count.Text = Text.Tr(TranslationTexts.CollectedCount, {count = activeCount, total = #config.items})
+    end
 end
 
 -- 游戏接入必须处理关闭操作。

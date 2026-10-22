@@ -8,7 +8,6 @@ local TranslationTexts = Text.Define("CurrencyShopUI", {
     Capacity = "+{count:int} Carry Slot",
     CapacityDesc = "Permanently carry {count:int} collectibles.",
     Diamonds = "{value} Diamonds",
-    SoldOut = "Sold Out",
     Unavailable = "Unavailable",
     RateMaxed = "You have reached the maximum training multiplier.",
 })
@@ -47,6 +46,7 @@ function Component:OnReady()
     self:Hide()
     self:BindUIData()
     self:TrackConnection(self._localization.Changed:Connect(function()
+        self:BuildProducts()
         self:RefreshUI()
     end))
     --- 平台弹窗关闭只恢复交互，不作为到账证据。
@@ -61,7 +61,10 @@ function Component:OnReady()
             self._purchaseAttemptId = nil
             self._promptProductId = nil
             self._busy = false
-            self._messageKey = purchased and TranslationTexts.Processing or nil
+            self.State.pending = nil
+            if purchased then
+                self._commonUI:ShowLocalizedTips(TranslationTexts.Processing)
+            end
             self:RefreshUI()
         end
     end))
@@ -80,6 +83,7 @@ function Component:OnReady()
             end
         end
         self._priceTask = nil
+        self:BuildProducts()
         self:RefreshUI()
     end)
 end
@@ -89,10 +93,28 @@ function Component:BindUIData()
     --- 闭包已捕获组件，不传 owner，保证首个参数为同步数据。
     --- @param data table 服务端同步的 CurrencyShopData。
     self:WatchDataChanged(Fields.CurrencyShopData, function(data)
-        self._data = data
-        self._messageKey = nil
-        self:RefreshUI()
+        self:ApplyShopData(data)
     end)
+end
+
+--- 数据订阅和购买回包共用同一更新入口，避免其他组件直接写私有快照。
+--- @param data table 服务端权威商店进度。
+function Component:ApplyShopData(data)
+    self._data = data
+    self:BuildProducts()
+    self:RefreshUI()
+end
+
+--- 读取已准备的钻石商品，供确认页复用当前语言和进度。
+--- @param goodsId number 钻石商品配置 ID。
+--- @return table? 当前展示商品；未展示的独立商品返回 nil。
+function Component:GetProduct(goodsId)
+    for index, product in ipairs(self.Config.products) do
+        if product.currency == "Diamond" and product.goodsId == goodsId then
+            return product
+        end
+    end
+    return nil
 end
 
 --- 将配置与权威进度转换为渐变卡片，每组只显示下一档或完成态。
@@ -110,7 +132,7 @@ function Component:BuildProducts()
                 title = Text.Tr(TranslationTexts.Training, {
                     rate = GameUtility.NumberToText(_G.GameConfig.TrainingRateConfig[level].Rate),
                 })
-                description = Text.TrSource(goods.Desc)
+                description = goods.Desc
             else
                 title = Text.Tr(TranslationTexts.Capacity, {count = goods.NumberArray[1]})
                 description = Text.Tr(TranslationTexts.CapacityDesc, {
@@ -118,8 +140,12 @@ function Component:BuildProducts()
                 })
             end
             table.insert(products, {id = "group_" .. item.Group, currency = "Diamond",
-                goodsId = display.GemGoodsId, title = title, description = description,
+                goodsId = display.GemGoodsId, title = "",
+                description = goods.BuyHandler == "TrainingRateLevel" and description or "",
+                titleText = title,
+                descriptionText = goods.BuyHandler ~= "TrainingRateLevel" and description or nil,
                 price = goods.Price, icon = display.IconId, soldOut = nextItem == nil,
+                allowSoldOutAction = item.Group == 1,
                 cardStyle = goods.BuyHandler == "TrainingRateLevel" and "Orange" or "Cyan"})
         end
     end
@@ -130,16 +156,17 @@ function Component:BuildProducts()
             title = Text.Tr(TranslationTexts.Diamonds, {
                 value = GameUtility.NumberToText(goods.NumberArray[1]),
             })
-            description = Text.TrSource(goods.Desc)
+            description = goods.Desc
         else
             local itemId = goods.KVTable.ItemId
-            title = Text.TrSource(_G.ItemConfig.Display[itemId].Name)
-            description = Text.TrSource(_G.ItemConfig.Display[itemId].Desc)
+            title = _G.ItemConfig.Display[itemId].Name
+            description = _G.ItemConfig.Display[itemId].Desc
         end
         local count = self._data.robuxBought[tostring(item.DevGoodsId)] or 0
         table.insert(products, {id = "robux_" .. item.DevGoodsId, currency = "Robux",
             goodsId = item.DevGoodsId, productId = goods.RobloxProductId,
-            title = title, description = description, icon = item.IconId,
+            title = goods.BuyHandler == "AddGem" and "" or title, description = description, icon = item.IconId,
+            titleText = goods.BuyHandler == "AddGem" and title or nil,
             cardStyle = RobuxCardStyles[item.DevGoodsId],
             price = self._prices[item.DevGoodsId] or goods.Price,
             unavailable = self._prices[item.DevGoodsId] == nil,
@@ -148,49 +175,18 @@ function Component:BuildProducts()
     self.Config.products = products
 end
 
---- 创建卡片时拆出 Robux 字符图标，独立放大并随卡片统一销毁。
---- @param product table 当前商品配置。
---- @param style string 当前卡片渐变样式。
---- @return table 生成类创建的卡片与清理句柄。
-function Component:CreateCard(product, style)
-    local card = Component.Super.CreateCard(self, product, style)
-    if product.currency == "Robux" then
-        FXLoader:Here(card.button, "RobuxIcon").Visible = false
-        local icon = card.price:Clone()
-        icon.Name = "RobuxGlyph"
-        icon.Position = UDim2.fromOffset(8, 0)
-        icon.Size = UDim2.new(0, 32, 1, 0)
-        icon.TextScaled = false
-        icon.TextSize = 32
-        icon.Text = utf8.char(0xE002)
-        icon.Parent = card.button
-        card.price.Position = UDim2.fromOffset(44, 0)
-        card.price.Size = UDim2.new(1, -52, 1, 0)
-    end
-    return card
+--- 向展示类提供全局购买锁，不维护无法显示的消息字段。
+--- @return table 完整商店展示状态。
+function Component:GetUIState()
+    self.State.busy = self._busy == true
+    return self.State
 end
 
---- 保留生成类多色列表布局，补充本地化、数量缩写及业务禁用状态。
---- @param state table 完整界面状态。
-function Component:Render(state)
-    self:BuildProducts()
-    state.message = self._messageKey and Text.Tr(self._messageKey) or ""
-    Component.Super.Render(self, state)
-    for index, product in ipairs(self.Config.products) do
-        local card = self.Cards[product.id]
-        if card then
-            local key = product.soldOut and TranslationTexts.SoldOut
-                or (product.unavailable and TranslationTexts.Unavailable)
-            card.price.Text = key and Text.Tr(key)
-                or GameUtility.NumberToText(product.price)
-            if product.currency == "Robux" then
-                card.price.TextSize = key and 20 or 24
-            end
-            local explainMaxRate = product.id == "group_1" and product.soldOut
-            self:SetButtonEnabled(card.button, not self._busy and not product.unavailable
-                and (not product.soldOut or explainMaxRate))
-        end
-    end
+--- 钻石和 Robux 价格沿用项目统一数值格式。
+--- @param value number 原始价格。
+--- @return string 展示价格。
+function Component:FormatNumber(value)
+    return GameUtility.NumberToText(value)
 end
 
 --- 打开时刷新数据与商品页，不重复绑定事件。
@@ -255,7 +251,7 @@ function Component:Purchase(product)
         return
     end
     self._busy = true
-    self._messageKey = nil
+    self.State.pending = product.id and {[product.id] = true} or nil
     self:RefreshUI()
     self._requestTask = task.defer(function()
         local attemptId = FX.GenObjectID()
@@ -270,8 +266,9 @@ function Component:Purchase(product)
             self:ReportPurchaseAnalytics("Cancel", product.productId, attemptId)
             self._purchaseAttemptId = nil
             self._busy = false
+            self.State.pending = nil
             self._promptProductId = nil
-            self._messageKey = TranslationTexts.Unavailable
+            self._commonUI:ShowLocalizedTips(TranslationTexts.Unavailable)
         else
             self:ReportPurchaseAnalytics("PromptRequested", product.productId, attemptId)
         end

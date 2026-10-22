@@ -42,7 +42,9 @@ GM 面板接入契约（仅管理员自用）
   UnlockAllCollections -> {}；无需输入，校验权限和图鉴配置后解锁全部图鉴
     并持久化；不发道具，不写背包。
   Close -> {}；View 已取消确认并隐藏底板/标题，接入可处理关闭通知。
-  输入无效只 warn，不发动作；客户端校验不能替代服务端权限和数值校验。
+  输入无效调用 OnInvalidInput(action:string)->无返回值，可选覆写以显示业务提示，默认 warn。
+  ExecuteCommand、CancelReset 与 Render 继承，不在接入层重复校验或覆盖。
+  客户端校验不能替代服务端权限和数值校验。
   命令作用于当前管理员本人，目标身份由可信业务层决定，不信任客户端权限。
   请求前 pending=true 并刷新；成功/失败后 pending=false 并刷新；
   实际写入、重置、存档及结果/错误提示均由接入负责，本面板无状态提示文本。
@@ -127,11 +129,11 @@ function CGMPanelView:ExecuteCommand(action)
         local itemId = tonumber(self.Inputs[1].Text)
         local count = tonumber(self.Inputs[2].Text)
         if not itemId or itemId ~= itemId or itemId < 1 or itemId > 9007199254740991 or itemId % 1 ~= 0 then
-            warn("GM 参数 1 请输入正整数道具 ID")
+            self:OnInvalidInput(action)
             return
         end
         if not count or count ~= count or count < 1 or count > 9007199254740991 or count % 1 ~= 0 then
-            warn("GM 参数 2 请输入正整数数量")
+            self:OnInvalidInput(action)
             return
         end
         self:EmitUIAction(action, { itemId = itemId, count = count })
@@ -139,11 +141,11 @@ function CGMPanelView:ExecuteCommand(action)
     end
     local value = tonumber(self.Inputs[1].Text)
     if not value or value ~= value or value < 0 or value > 9007199254740991 or value % 1 ~= 0 then
-        warn("GM 参数 1 请输入非负整数")
+        self:OnInvalidInput(action)
         return
     end
     if action == "SetLevel" and value < 1 then
-        warn("GM 等级至少为 1")
+        self:OnInvalidInput(action)
         return
     end
     self:EmitUIAction(action, {
@@ -151,6 +153,12 @@ function CGMPanelView:ExecuteCommand(action)
         param2 = self.Inputs[2].Text,
         param3 = self.Inputs[3].Text,
     })
+end
+
+-- 非法输入交给接入层提示，不改变确认流程或业务状态。
+-- @param action string 参数不合法的稳定动作名。
+function CGMPanelView:OnInvalidInput(action)
+    warn("GM invalid input: " .. action)
 end
 
 -- 渲染完整业务状态，保留正在输入的参数。

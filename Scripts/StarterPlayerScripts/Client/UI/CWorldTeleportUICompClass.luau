@@ -3,10 +3,6 @@ local FXLoader = FX.Loader
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local TranslationTexts = Text.Define("WorldTeleport", {
     RequiredLevel = "Reach a best level of {level:int} to unlock this world.",
-    Go = "Go",
-    Teleporting = "Teleporting",
-    Here = "Here",
-    LockedLevel = "Level {level:int}",
     Unknown = "Something went wrong. Please try again.",
 })
 local RunService = game:GetService("RunService")
@@ -40,7 +36,7 @@ function Component:OnReady()
     self._commonUI:RegisterTrainingClickModal(root)
     self._localization = self._commonUI.Localization
     -- 展示契约按等级判断解锁；使用历史最高等级，重生后保留传送资格。
-    self.Config = {worlds = {}}
+    self.Config = {worlds = {}, allowLockedAction = true}
     for index, world in ipairs(GameEnum.WorldTransferConfig) do
         local palette = WorldColors[(index - 1) % #WorldColors + 1]
         table.insert(self.Config.worlds, {
@@ -148,40 +144,11 @@ function Component:OnShow()
     Component.Super.OnShow(self)
 end
 
---- 锁定条目保留父类门槛校验，额外点击只解释历史最高等级要求。
---- @param worldId string 世界稳定 ID。
---- @return table 父类创建并管理的条目。
-function Component:CreateRow(worldId)
-    local record = Component.Super.CreateRow(self, worldId)
-    self:TrackConnection(record.button.Activated:Connect(function()
-        local world = record.world
-        if not self.State.pendingWorldId and self.State.level < world.requiredLevel then
-            self._commonUI:ShowLocalizedTips(TranslationTexts.RequiredLevel, {level = world.requiredLevel})
-        end
-    end))
-    return record
-end
-
---- 按当前语言刷新世界名、等级门槛与错误提示，保留父类配色和交互状态。
---- @param state table 权威等级、当前世界与请求状态。
-function Component:Render(state)
-    for index, world in ipairs(self.Config.worlds) do
-        world.name = Text.TrSource(GameEnum.WorldTransferConfig[index].Name)
-    end
-    state.error = self._failure and Text.Tr(self._failure.key, self._failure.arguments) or nil
-    Component.Super.Render(self, state)
-    for worldId, record in pairs(self._rows) do
-        local key = TranslationTexts.Go
-        if state.pendingWorldId == worldId then
-            key = TranslationTexts.Teleporting
-        elseif state.currentWorldId == worldId then
-            key = TranslationTexts.Here
-        elseif state.level < record.world.requiredLevel then
-            key = TranslationTexts.LockedLevel
-        end
-        record.buttonTxt.Text = Text.Tr(key, {level = record.world.requiredLevel})
-        self:SetButtonEnabled(record.button, state.currentWorldId ~= worldId and not state.pendingWorldId)
-    end
+--- 刷新时转换业务错误定义，世界名称原文交给展示类翻译。
+--- @return table 包含最终错误译文的完整状态。
+function Component:GetUIState()
+    self.State.errorText = self._failure and Text.Tr(self._failure.key, self._failure.arguments) or nil
+    return self.State
 end
 
 --- 关闭界面，或请求服务端传送；客户端只提交稳定世界 ID 对应的配置序号。
@@ -198,6 +165,11 @@ function Component:OnUIAction(action, payload)
     end
     local index = self:_FindWorldIndex(payload.worldId)
     assert(index ~= nil, "Unknown world id: " .. tostring(payload.worldId))
+    local world = GameEnum.WorldTransferConfig[index]
+    if self.State.level < world.NeedTrainingLevel then
+        self._commonUI:ShowLocalizedTips(TranslationTexts.RequiredLevel, {level = world.NeedTrainingLevel})
+        return
+    end
     self.State.pendingWorldId = payload.worldId
     self._failure = nil
     self.State.error = nil

@@ -28,6 +28,9 @@ function CSettingsPreview:OnUIAction(action, payload)
     if action == "Close" then
         self:Hide()
         return
+    elseif action == "SliderDragEnded" then
+        print("模拟：保存音量偏好")
+        return
     end
 
     assert(action == "ChangeSetting", "Unsupported settings action: " .. tostring(action))

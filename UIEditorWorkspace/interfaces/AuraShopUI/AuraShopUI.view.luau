@@ -59,7 +59,13 @@
   Buy   -> { auraId: string }，未拥有时发出，值为当前 Item.id。
   Equip -> { auraId: string }，已拥有但未装备时发出，值为当前 Item.id。
   Close -> {}，由接入层处理关闭。
-  已装备、对应 pending 或未拥有且余额不足时禁用操作；点击不自动购买/装备。
+  Config.strengthIsMultiplier: boolean?，true 展示训练倍率，否则力量点数。
+  Config.hideQuality: boolean?，true 隐藏品质；Quality.level: number? 展示品质序号。
+  Config.allowUnaffordableAction: boolean?，true 时余额不足保持灰色但允许点击提示。
+  Config.allowUnequip: boolean?，true 时已装备显示卸下且发送 Equip（原 auraId）。
+  State.busy: boolean?，全局请求锁；pending[id] 的等待文案优先于已装备状态。
+  FormatNumber(value:number)->string 可选覆写，默认 tostring；接入统一数量工具。
+  仅覆盖 OnUIAction 与上述格式化接口；禁止覆写 Render 或重绑条目事件。
   请求前设置 pending[id] = true 并刷新；成功后用真实结果更新
   owned/equippedId/coins，失败保留真实状态；两者均清除 pending[id] 并刷新。
   服务端重新校验 ID、所有权、价格与余额；客户端按钮禁用不构成业务校验。
@@ -85,10 +91,21 @@ local TranslationTexts = Text.Define("AuraShopUI", {
     Waiting = "Waiting...",
     NoAuras = "No auras available",
     Loading = "Loading...",
+    TrainingRate = "Training ×{rate}",
+    Quality = "Quality {level:int}",
+    Unequip = "Unequip",
+    NeedCoins = "Need {value} Coins",
 })
 
 -- 暴露只读文案定义，供接入子类通过 self.BaseViewTranslationTexts 复用。
 CAuraShopView.BaseViewTranslationTexts = TranslationTexts
+
+-- 接入项目统一数量格式，保留计算用的原始数值。
+-- @param value number 原始数量。
+-- @return string 展示数量。
+function CAuraShopView:FormatNumber(value)
+    return tostring(value)
+end
 
 -- 绑定窗口与隐藏原型，只在首次准备时连接关闭按钮。
 function CAuraShopView:OnReady()
@@ -169,33 +186,44 @@ function CAuraShopView:Render(state)
                 studGradient.ColorEnd = endColor
             end
             FXLoader:Here(row, "NameTxt").Text = Text.TrSource(aura.name)
-            FXLoader:Here(row, "RarityTxt").Text = Text.TrSource(quality.name)
+            local rarity = FXLoader:Here(row, "RarityTxt")
+            rarity.Visible = not config.hideQuality
+            rarity.Text = quality.level and Text.Tr(TranslationTexts.Quality, {level = quality.level}) or Text.TrSource(quality.name)
             local strengthTxt = FXLoader:Here(row, "StrengthTxt")
             strengthTxt.Text = Text.Tr(TranslationTexts.Strength, {
-                strength = aura.strength,
+                strength = self:FormatNumber(aura.strength),
             })
+            if config.strengthIsMultiplier then
+                strengthTxt.Text = Text.Tr(TranslationTexts.TrainingRate, {rate = self:FormatNumber(aura.strength)})
+            end
             local icon = FXLoader:Here(row, "AuraIconImg")
             icon.Image = aura.icon or "rbxassetid://86795093617566"
             local owned = state.owned[aura.id] == true
             local equipped = state.equippedId == aura.id
             local pending = state.pending and state.pending[aura.id]
             local caption = Text.Tr(TranslationTexts.Price, {
-                price = aura.price,
+                price = self:FormatNumber(aura.price),
             })
             local color = "#67ED14"
             local edge = "#225A07"
             if owned then
                 caption = Text.Tr(TranslationTexts.Equip)
             end
-            if equipped then
+            if pending then
+                caption = Text.Tr(TranslationTexts.Waiting)
+                color = "#638079"
+            elseif equipped then
                 caption = Text.Tr(TranslationTexts.Equipped)
                 color = "#397BA7"
                 edge = "#193E73"
-            elseif pending then
-                caption = Text.Tr(TranslationTexts.Waiting)
-                color = "#638079"
+                if config.allowUnequip then
+                    caption = Text.Tr(TranslationTexts.Unequip)
+                    color = "#F2654D"
+                    edge = "#7D2519"
+                end
             elseif not owned and state.coins < aura.price then
                 color = "#638079"
+                caption = Text.Tr(TranslationTexts.NeedCoins, {value = self:FormatNumber(aura.price)})
             end
             FXLoader:Here(row, "OwnedTxt").Visible = false
             local showMoney = not owned and not equipped and not pending
@@ -212,7 +240,9 @@ function CAuraShopView:Render(state)
             end
             FXLoader:Here(row, "ActionBtn.BottomEdgeImg").BackgroundColor3 = Color3.fromHex(edge)
             entry.button.BackgroundColor3 = Color3.fromHex(color)
-            self:SetButtonEnabled(entry.button, not equipped and not pending and (owned or state.coins >= aura.price))
+            self:SetButtonEnabled(entry.button, not state.busy and not pending
+                and (not equipped or config.allowUnequip == true)
+                and (owned or state.coins >= aura.price or config.allowUnaffordableAction == true))
         end
     end
     for auraId, entry in pairs(self.Rows) do

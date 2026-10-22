@@ -404,8 +404,9 @@ function Component:OpenStrengthOffer(name)
         local button = self._rootNode.RightCenter[name]
         product = {goodsId = goodsId, currency = "Diamond", icon = button.Icon.Image,
             price = _G.GoodsConfig.GemGoodsData[goodsId].Price,
-            title = Text.Tr(TranslationTexts.TrainingPack),
-            description = Text.Tr(TranslationTexts.TrainingPackDesc, {
+            title = "", description = "",
+            titleText = Text.Tr(TranslationTexts.TrainingPack),
+            descriptionText = Text.Tr(TranslationTexts.TrainingPackDesc, {
                 value = GameUtility.NumberToText(gain),
             })}
     end

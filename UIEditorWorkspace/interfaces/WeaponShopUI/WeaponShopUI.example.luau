@@ -8,6 +8,9 @@ function CWeaponShopPreview:Ctor(owner)
     CWeaponShopPreview.Super.Ctor(self, owner)
     self.Config = {
         title = "WEAPONS",
+        strengthIsMultiplier = true,
+        hideQuality = true,
+        allowUnaffordableAction = true,
         qualities = {
             common = {name = "Common", color = "#A5ADB8", colorEnd = "#68778E"},
             rare = {name = "Rare", color = "#73BBEF", colorEnd = "#397BC7"},

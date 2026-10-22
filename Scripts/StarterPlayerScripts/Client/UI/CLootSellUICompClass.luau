@@ -3,8 +3,6 @@ local FXLoader = FX.Loader
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local TranslationTexts = Text.Define("LootSellUI", {
     LuckyName = "Lucky {item} (×{rate})",
-    CoinValue = "{value} Coins",
-    Count = "{count:int}/{capacity:int}",
     Empty = "You have no items to sell.",
     Gained = "You earned {value} Coins!",
     Unknown = "Something went wrong. Please try again.",
@@ -36,7 +34,8 @@ function Component:OnReady()
     self._commonUI:RegisterTrainingClickModal(root)
     self._localization = self._commonUI.Localization
     self.Config = {capacity = RockLevel.StoredLootCapacity, qualities = {}, qualityGradientEnds = {},
-        doubleSaleGemCost = _G.GoodsConfig.GemGoodsData[311].Price}
+        doubleSaleGemCost = _G.GoodsConfig.GemGoodsData[311].Price,
+        allowEmptyAction = true, allowVipPurchase = true}
     -- 沿用示例浅色方案，每五档循环配色，键仍使用真实配置品质 ID。
     local qualityColors = {
         {"#E5E9EF", "#C8D1DD"},
@@ -52,7 +51,6 @@ function Component:OnReady()
         self.Config.qualityGradientEnds[qualityId] = colors[2]
     end
     self.State = {isOpen = false, items = {}, pending = false}
-    self.StatusTxt.Visible = false
     self:Hide()
     self:TrackConnection(self._localization.Changed:Connect(function()
         self:RefreshLoot()
@@ -127,7 +125,7 @@ function Component:RefreshLoot(entries)
             })
         end
         table.insert(items, {
-            id = entry.id, name = name, qualityId = tostring(config.Quality),
+            id = entry.id, name = config.Name, nameText = name, qualityId = tostring(config.Quality),
             value = entry.price * rate, icon = "rbxassetid://" .. config.IconId,
         })
     end
@@ -135,49 +133,11 @@ function Component:RefreshLoot(entries)
     self:RefreshUI()
 end
 
---- 复用父类列表更新，并在父类清除空包双倍出售状态前给出本地化提示。
---- @param state table 正式库存派生的完整展示状态。
-function Component:Render(state)
-    if state.isOpen and self.DoubleSaleOpen and #state.items == 0 then
-        self.DoubleSaleOpen = false
-        self._commonUI:ShowLocalizedTips(TranslationTexts.Empty)
-    end
-    Component.Super.Render(self, state)
-    local total = 0
-    for index, item in ipairs(state.items) do
-        local row = self.Rows[item.id]
-        row.icon.Image = item.icon
-        row.value.Text = Text.Tr(TranslationTexts.CoinValue, {
-            value = GameUtility.NumberToText(item.value),
-        })
-        total += item.value
-    end
-    self.Total.Text = Text.Tr(TranslationTexts.CoinValue, {
-        value = GameUtility.NumberToText(total),
-    })
-    self.CapacityTxt.Text = Text.Tr(TranslationTexts.Count, {
-        count = #state.items, capacity = self.Config.capacity,
-    })
-    -- 空包点击仍需反馈，仅请求处理中禁用按钮，覆盖展示类的空包禁用规则。
-    self:SetButtonEnabled(self.SellAllBtn, not state.pending and not self.DoubleSaleOpen)
-    self:SetButtonEnabled(self.SellDoubleBtn, not state.pending and not self.DoubleSaleOpen)
-    self:SetButtonEnabled(self.VipBtn, not state.pending and #state.items > 0)
-    self.GemsPriceTxt.Text = GameUtility.NumberToText(self.Config.doubleSaleGemCost)
-end
-
---- 未解锁 VIP 时复用现有平台购买入口；资格只在服务端收据到账后改变。
---- @param method string Card / Gems / Vip。
-function Component:ConfirmDoubleSale(method)
-    if method == "Vip" and not self.State.isVip then
-        if not self.DoubleSaleOpen or self.State.pending or #self.State.items == 0 then
-            return
-        end
-        self:GetPlayerObject():RequireComponent("CCurrencyShopUIComp"):Purchase({
-            productId = _G.GoodsConfig.GoodsData[1].RobloxProductId,
-        })
-        return
-    end
-    Component.Super.ConfirmDoubleSale(self, method)
+--- 出售金额由展示类统一组织文案，数值格式沿用项目工具。
+--- @param value number 原始数量。
+--- @return string 展示数量。
+function Component:FormatNumber(value)
+    return GameUtility.NumberToText(value)
 end
 
 --- 每次打开读取当前正式库存，不重新绑定按钮。
@@ -197,11 +157,21 @@ function Component:OnHide()
 end
 
 --- 出售仅提交稳定 ID 与固定倍率；等待结果期间禁止重复点击。
---- @param action string 展示类发送的 Sell 或 Close。
+--- @param action string Sell、Close、Empty 或 PurchaseVip。
 --- @param payload table Sell 携带 entryIds、multiplier 与可选 method，Close 不使用参数。
 function Component:OnUIAction(action, payload)
     if action == "Close" then
         self:Hide()
+        return
+    end
+    if action == "Empty" then
+        self._commonUI:ShowLocalizedTips(TranslationTexts.Empty)
+        return
+    end
+    if action == "PurchaseVip" then
+        self:GetPlayerObject():RequireComponent("CCurrencyShopUIComp"):Purchase({
+            productId = _G.GoodsConfig.GoodsData[1].RobloxProductId,
+        })
         return
     end
     assert(action == "Sell", "Unsupported loot sell action: " .. tostring(action))

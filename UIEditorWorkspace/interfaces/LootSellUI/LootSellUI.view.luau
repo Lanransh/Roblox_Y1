@@ -66,7 +66,11 @@
   可选覆写 GetItemQualityColor(item: Item) -> Color3；
     默认从 qualities[item.qualityId] 转 Color3，缺失明确报错。
     返回色用于条目渐变起色、图标底色、描边及色条，不修改物品数据。
-  无其他页面专用必需或可选覆写。
+  Item.nameText:string? 最终译文，优先 name 原文；Item.icon:string? 动态真实贴图。
+  FormatNumber(value:number)->string 可选覆写，默认 tostring，数量计算不使用译文。
+  Config.allowEmptyAction:boolean?，true 空包按钮发送 Empty->{}，菜单库存清空同样通知。
+  Config.allowVipPurchase:boolean?，true 未具备VIP点击发送 PurchaseVip->{}，不发送Sell。
+  Render / ConfirmDoubleSale 继承，项目不再改写展示或重新绑定按钮。
   请求前 pending=true、message=nil、soldAmount=nil 并刷新；服务端重查
   entryIds 的归属/库存、价格、卡券、钻石和 VIP 资格，重新计算实际所得。
   成功同步 items、卡券/余额及 soldAmount；失败保留最新库存并填写 message；
@@ -90,9 +94,9 @@ local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local CLootSellView = FX.Class("CLootSellView", "CUIView")
 
 local TranslationTexts = Text.Define("LootSellUI", {
-    Capacity = "Items: {count:int} / {capacity:int}",
+    Capacity = "{count:int}/{capacity:int}",
     NoItems = "No items to sell",
-    Coins = "+${amount}",
+    Coins = "{amount} Coins",
     Sold = "{amount} Sold!",
 })
 
@@ -102,15 +106,17 @@ CLootSellView.BaseViewTranslationTexts = TranslationTexts
 -- 将金币金额格式化为参考图的短文案。
 -- @param amount number 金币数量
 -- @return string 金币展示文本
-local function FormatCoins(amount)
-    if amount >= 1000000 then
-        return Text.Tr(TranslationTexts.Coins, {
-            amount = string.format("%.1fM", amount / 1000000),
-        })
-    end
+function CLootSellView:FormatCoins(amount)
     return Text.Tr(TranslationTexts.Coins, {
-        amount = tostring(amount),
+        amount = self:FormatNumber(amount),
     })
+end
+
+-- 统一数值展示扩展点，原始金额仍用于计算与请求。
+-- @param value number 原始数量。
+-- @return string 展示数量。
+function CLootSellView:FormatNumber(value)
+    return tostring(value)
 end
 
 -- 绑定静态节点，事件只连接一次。
@@ -152,9 +158,17 @@ function CLootSellView:OnReady()
     self.CloseBtn = FXLoader:Here(root, "TitleBox.CloseSurfaceImg")
     -- 点击时发送当前配置中的稳定 ID。
     self:TrackConnection(self.SellAllBtn.Activated:Connect(function()
+        if #self:GetUIState().items == 0 and self:GetUIConfig().allowEmptyAction then
+            self:EmitUIAction("Empty", {})
+            return
+        end
         self:EmitUIAction("Sell", {entryIds = self:GetEntryIds(), multiplier = 1})
     end))
     self:TrackConnection(self.SellDoubleBtn.Activated:Connect(function()
+        if #self:GetUIState().items == 0 and self:GetUIConfig().allowEmptyAction then
+            self:EmitUIAction("Empty", {})
+            return
+        end
         self.DoubleSaleOpen = true
         self:RefreshUI()
     end))
@@ -175,6 +189,9 @@ function CLootSellView:ConfirmDoubleSale(method)
     elseif method == "Gems" and (state.gems or 0) < self:GetUIConfig().doubleSaleGemCost then
         return
     elseif method == "Vip" and not state.isVip then
+        if self:GetUIConfig().allowVipPurchase then
+            self:EmitUIAction("PurchaseVip", {})
+        end
         return
     end
     local multiplier = 2
@@ -213,17 +230,21 @@ end
 -- 按稳定 ID 更新条目，只创建新增条目并清理已移除条目。
 -- @param state table 完整列表状态，见文件头
 function CLootSellView:Render(state)
+    if state.isOpen and self.DoubleSaleOpen and #state.items == 0 and self:GetUIConfig().allowEmptyAction then
+        self.DoubleSaleOpen = false
+        self:EmitUIAction("Empty", {})
+    end
     if not state.isOpen or #state.items == 0 then
         self.DoubleSaleOpen = false
     end
     self.Panel.Visible = state.isOpen
     self.Title.Visible = state.isOpen
     self.DoubleSaleBox.Visible = state.isOpen and self.DoubleSaleOpen
-    self.GemsPriceTxt.Text = tostring(self:GetUIConfig().doubleSaleGemCost)
+    self.GemsPriceTxt.Text = self:FormatNumber(self:GetUIConfig().doubleSaleGemCost)
     local canSell = #state.items > 0 and not state.pending
     self:SetButtonEnabled(self.CardBtn, canSell and (state.doubleSaleCards or 0) > 0)
     self:SetButtonEnabled(self.GemsBtn, canSell and (state.gems or 0) >= self:GetUIConfig().doubleSaleGemCost)
-    self:SetButtonEnabled(self.VipBtn, canSell and state.isVip == true)
+    self:SetButtonEnabled(self.VipBtn, canSell and (state.isVip == true or self:GetUIConfig().allowVipPurchase == true))
     local present = {}
     local total = 0
     for index, item in ipairs(state.items) do
@@ -253,8 +274,9 @@ function CLootSellView:Render(state)
             self.Rows[item.id] = record
         end
         record.node.Position = UDim2.fromOffset(2, 2 + (index - 1) * 112)
-        record.name.Text = Text.TrSource(item.name)
-        record.value.Text = FormatCoins(item.value)
+        record.name.Text = item.nameText or Text.TrSource(item.name)
+        record.value.Text = self:FormatCoins(item.value)
+        record.icon.Image = item.icon or "rbxassetid://86795093617566"
         local qualityColor = self:GetItemQualityColor(item)
         local gradientEnds = self:GetUIConfig().qualityGradientEnds
         local endColor = qualityColor
@@ -287,7 +309,7 @@ function CLootSellView:Render(state)
     local canvasHeight = math.max(252, count * 112 - 8)
     self.List.CanvasSize = UDim2.fromOffset(822, canvasHeight)
     self.List.CanvasPosition = Vector2.new(0, math.min(self.List.CanvasPosition.Y, canvasHeight - 252))
-    self.Total.Text = FormatCoins(total)
+    self.Total.Text = self:FormatCoins(total)
     self.CapacityTxt.Text = Text.Tr(TranslationTexts.Capacity, {
         count = count,
         capacity = self:GetUIConfig().capacity,
@@ -300,13 +322,14 @@ function CLootSellView:Render(state)
     self.StatusMoneyIcon.Visible = state.soldAmount ~= nil or string.find(state.message or "", "+$", 1, true) ~= nil
     if state.soldAmount ~= nil then
         self.StatusTxt.Text = Text.Tr(TranslationTexts.Sold, {
-            amount = FormatCoins(state.soldAmount),
+            amount = self:FormatNumber(state.soldAmount),
         })
     elseif count == 0 and not state.message then
         self.StatusTxt.Text = Text.Tr(TranslationTexts.NoItems)
     end
-    self:SetButtonEnabled(self.SellAllBtn, count > 0 and not state.pending and not self.DoubleSaleOpen)
-    self:SetButtonEnabled(self.SellDoubleBtn, count > 0 and not state.pending and not self.DoubleSaleOpen)
+    local allowEmpty = count > 0 or self:GetUIConfig().allowEmptyAction == true
+    self:SetButtonEnabled(self.SellAllBtn, allowEmpty and not state.pending and not self.DoubleSaleOpen)
+    self:SetButtonEnabled(self.SellDoubleBtn, allowEmpty and not state.pending and not self.DoubleSaleOpen)
     self:SetButtonEnabled(self.CloseBtn, not self.DoubleSaleOpen)
 end
 

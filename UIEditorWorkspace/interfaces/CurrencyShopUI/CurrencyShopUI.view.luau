@@ -50,7 +50,12 @@
   Purchase -> { productId: string, currency: "Diamond" | "Robux" }；
     productId 对应 Product.id，currency 为该配置货币，不含价格或平台商品 ID。
   Close -> {}；接入层更新 open=false 并刷新。
-  无其他页面专用必需或可选覆写。
+  FormatNumber(value:number)->string 可选覆写，默认 tostring，仅格式化价格。
+  Product.titleText / descriptionText: string? 已翻译组合文案，优先于对应原文字段。
+  Product.unavailable / soldOut: boolean?，分别显示不可用/售罄并禁用。
+  Product.allowSoldOutAction: boolean?，true 售罄仍允许点击解释原因。
+  State.busy:boolean? 全局禁用购买；pending[id] 显示等待。
+  Render / CreateCard / EmitUIAction 继承，不重复展示或绑定事件。
   业务通过 productId 查询真实价格与平台购买标识，校验余额/支付/发放。
   请求前 pending[id]=true 并刷新；成功或失败均清除该键再刷新，
   提示由接入层另行展示。本页不自动扣款，也不把平台购买弹窗视为发放成功。
@@ -73,10 +78,20 @@ local TranslationTexts = Text.Define("CurrencyShopUI", {
     DiamondShop = "DIAMOND SHOP",
     RobuxShop = "ROBUX SHOP",
     Price = "{price}",
+    Waiting = "Waiting...",
+    Unavailable = "Unavailable",
+    SoldOut = "Sold out",
 })
 
 -- 暴露只读文案定义，供接入子类通过 self.BaseViewTranslationTexts 复用。
 CCurrencyShopView.BaseViewTranslationTexts = TranslationTexts
+
+-- 价格展示接入项目统一数量格式。
+-- @param value number 原始价格。
+-- @return string 展示价格。
+function CCurrencyShopView:FormatNumber(value)
+    return tostring(value)
+end
 
 -- 绑定已有节点与页签事件；每张商品卡只连接一次。
 function CCurrencyShopView:OnReady()
@@ -186,13 +201,23 @@ function CCurrencyShopView:Render(state)
             end
             kept[product.id] = true
             card.node.Position = UDim2.fromOffset(((count - 1) % 2) * 374, math.floor((count - 1) / 2) * 192)
-            card.title.Text = Text.TrSource(product.title)
-            card.description.Text = Text.TrSource(product.description)
+            card.title.Text = product.titleText or Text.TrSource(product.title)
+            card.description.Text = product.descriptionText or Text.TrSource(product.description)
             card.icon.Image = product.icon or ""
             card.price.Text = Text.Tr(TranslationTexts.Price, {
-                price = product.price,
+                price = self:FormatNumber(product.price),
             })
-            self:SetButtonEnabled(card.button, not (state.pending and state.pending[product.id]))
+            local pending = state.pending and state.pending[product.id]
+            if pending then
+                card.price.Text = Text.Tr(TranslationTexts.Waiting)
+            elseif product.unavailable then
+                card.price.Text = Text.Tr(TranslationTexts.Unavailable)
+            elseif product.soldOut then
+                card.price.Text = Text.Tr(TranslationTexts.SoldOut)
+            end
+            card.price.TextSize = (product.unavailable or product.soldOut) and 20 or 24
+            self:SetButtonEnabled(card.button, not state.busy and not pending and not product.unavailable
+                and (not product.soldOut or product.allowSoldOutAction == true))
         end
     end
     for id, card in pairs(self.Cards) do

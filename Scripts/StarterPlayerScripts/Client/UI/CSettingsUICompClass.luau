@@ -1,6 +1,5 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
-local UserInputService = game:GetService("UserInputService")
 local SoundService = game:GetService("SoundService")
 local Fields = _G.PlayerDataConfig
 FXLoader:RequireFromParent(script, "Generated/CSettingsView")
@@ -37,7 +36,6 @@ function Component:OnReady()
     for index, sound in ipairs(self._sound._effectSoundNodeList) do
         sound.SoundGroup = self._effectsGroup
     end
-    self:BindSliders()
     self:TrackConnection(workspace.DescendantAdded:Connect(function(node)
         self:ApplyAura(node)
     end))
@@ -54,7 +52,7 @@ end
 --- 数据同步仅在没有本地待保存操作时恢复，避免旧回包覆盖正在拖动的值。
 function Component:BindUIData()
     self:WatchDataChanged(Fields.Settings, function(settings)
-        if not self._saveTask and not self._drag then
+        if not self._saveTask and not self:IsSliderDragging() then
             self.State = {
                 musicVolume = settings.musicVolume, soundEffectsVolume = settings.soundEffectsVolume,
                 showAura = settings.showAura, giantPickaxe = settings.giantPickaxe,
@@ -64,65 +62,15 @@ function Component:BindUIData()
     end)
 end
 
---- 忽略生成类的鼠标滑杆计算，改由接入层处理实时布局和触摸拖动。
---- @param action string 展示类动作。
---- @param payload table 动作参数。
-function Component:EmitUIAction(action, payload)
-    if action == "ChangeSetting" and self.Sliders[payload.setting] then
-        return
-    end
-    self:OnUIAction(action, payload)
-end
-
---- 使用全局移动与抬起事件，拖出命中区仍可结束；每次读取缩放后的真实轨道。
-function Component:BindSliders()
-    for setting, slider in pairs(self.Sliders) do
-        self:TrackConnection(slider.input.InputBegan:Connect(function(input)
-            if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-                self._drag = {setting = setting, input = input}
-                self:UpdateSlider(input)
-            end
-        end))
-    end
-    self:TrackConnection(UserInputService.InputChanged:Connect(function(input)
-        if self._drag and (input == self._drag.input
-            or (self._drag.input.UserInputType == Enum.UserInputType.MouseButton1
-                and input.UserInputType == Enum.UserInputType.MouseMovement)) then
-            self:UpdateSlider(input)
-        end
-    end))
-    self:TrackConnection(UserInputService.InputEnded:Connect(function(input)
-        if self._drag and input == self._drag.input then
-            self._drag = nil
-            self:SaveSettings()
-        end
-    end))
-    self:TrackConnection(UserInputService.WindowFocusReleased:Connect(function()
-        if self._drag then
-            self._drag = nil
-            self:SaveSettings()
-        end
-    end))
-end
-
---- 根据当前轨道尺寸换算音量百分比。
---- @param input InputObject 鼠标或触摸的屏幕坐标。
-function Component:UpdateSlider(input)
-    local track = self.Sliders[self._drag.setting].track
-    if track.AbsoluteSize.X <= 0 then
-        return
-    end
-    local value = math.floor(math.clamp((input.Position.X - track.AbsolutePosition.X) / track.AbsoluteSize.X, 0, 1) * 100 + 0.5)
-    self:OnUIAction("ChangeSetting", {setting = self._drag.setting, value = value})
-end
-
 --- 关闭时提交最后状态；未接入字段不参与业务或保存。
---- @param action string Close 或 ChangeSetting。
+--- @param action string Close、ChangeSetting 或 SliderDragEnded。
 --- @param payload table 设置键和值。
 function Component:OnUIAction(action, payload)
     if action == "Close" then
         self:SaveSettings()
         self:Hide()
+    elseif action == "SliderDragEnded" then
+        self:SaveSettings()
     elseif action == "ChangeSetting" and (self.Sliders[payload.setting]
         or payload.setting == "showAura" or payload.setting == "giantPickaxe") then
         if self.State[payload.setting] == payload.value then
@@ -184,12 +132,6 @@ function Component:SaveSettings()
         showAura = self.State.showAura,
         giantPickaxe = self.State.giantPickaxe,
     })
-end
-
---- 关闭时停止拖动，防止隐藏界面继续修改音量。
-function Component:OnHide()
-    self._drag = nil
-    self._activeSlider = nil
 end
 
 --- 释放本组件音量分组与延迟任务，恢复接管粒子的原始可见性。

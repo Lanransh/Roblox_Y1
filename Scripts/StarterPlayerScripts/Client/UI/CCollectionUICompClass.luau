@@ -1,15 +1,10 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
-local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
-local TranslationTexts = Text.Define("Collection", {
-    Rule = "Collect {count:int} items for +{percent}% training.",
-    Count = "{count:int}/{total:int} collected",
-})
-
 FXLoader:RequireFromParent(script, "Generated/CCollectionView")
 local Fields = _G.PlayerDataConfig
 local GameConfig = _G.GameConfig
 local Collection = FXLoader:RequireShared("Scripts/Game/Shared/Collection")
+local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local Component = FX.Class("CCollectionUICompClass", "CCollectionView")
 
 --- 返回主界面打开图鉴时使用的组件名称。
@@ -26,8 +21,9 @@ function Component:OnReady()
     self._commonUI = self:GetPlayerObject():RequireComponent("FCCommonUIComp")
     self._commonUI:RegisterTrainingClickModal(self.Root)
     self._localization = self._commonUI.Localization
-    -- 父类保留按项力量字段；实际门槛和训练文案由本业务 Render 提供。
-    self.Config = {items = {}, strengthPerEntryPercent = 0}
+    local rules = GameConfig.CommonConfig.CollectionData
+    self.Config = {items = {}, strengthPerEntryPercent = rules.TrainingRate * 100,
+        unlockCount = rules.UnlockCount, lockedSilhouette = true}
     for itemId, item in pairs(GameConfig.ItemData) do
         table.insert(self.Config.items, {
             id = tostring(item.Id), itemId = item.Id,
@@ -59,33 +55,18 @@ function Component:RefreshCollection()
     local entries = self:GetTable(Fields.CollectionEntries)
     for index, item in ipairs(self.Config.items) do
         local config = GameConfig.ItemData[item.itemId]
-        item.name = Text.TrSource(config.Name)
+        item.name = config.Name
         self.State.entries[item.id] = {active = entries[item.id] == true}
     end
     self.State.totalStrengthPercent = (Collection.GetTrainingRate(entries) - 1) * 100
     self:RefreshUI()
 end
 
---- 生成类仅拼接英文统计；这里只补动态规则与数量翻译，固定摘要由工具处理。
---- @param state table 服务端记录派生的完整展示状态。
-function Component:Render(state)
-    Component.Super.Render(self, state)
-    local rules = GameConfig.CommonConfig.CollectionData
-    self.Rule.Text = Text.Tr(TranslationTexts.Rule, {
-        count = rules.UnlockCount, percent = rules.TrainingRate * 100,
-    })
-    self.Count.Text = Text.Tr(TranslationTexts.Count, {
-        count = Collection.GetCount(self:GetTable(Fields.CollectionEntries)), total = #self.Config.items,
-    })
-    for index, item in ipairs(self.Config.items) do
-        local row = self.Rows[item.id]
-        row.icon.Image = item.icon
-        row.icon.ImageColor3 = state.entries[item.id].active and Color3.new(1, 1, 1) or Color3.new(0, 0, 0)
-        row.icon.ImageTransparency = 0
-        -- 只保留原图轮廓，不显示问号或占位图的实色底块。
-        row.icon.BackgroundTransparency = 1
-        row.unknown.Visible = false
-    end
+--- 图鉴训练百分比沿用项目通用数值格式。
+--- @param value number 原始训练百分比。
+--- @return string 展示数值。
+function Component:FormatNumber(value)
+    return GameUtility.NumberToText(value)
 end
 
 --- 与父类显隐保持一致，打开只刷新状态，不重复连接按钮。

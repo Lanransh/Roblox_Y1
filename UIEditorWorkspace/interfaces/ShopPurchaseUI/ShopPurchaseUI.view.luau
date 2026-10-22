@@ -41,7 +41,9 @@
   必需覆写 OnUIAction(action: string, payload: table)，无返回值；默认报错。
   Buy -> { itemId: string }，对应当前 Config.itemId；不发送客户端价格。
   Close -> {}；由接入层 self:Hide()。
-  无其他页面专用必需或可选覆写。
+  FormatNumber(value:number)->string 可选覆写，默认 tostring，用于价格。
+  Config.nameText / descriptionText:string? 已翻译组合文案，优先于对应原文。
+  Config.unavailable:boolean? 与 State.busy:boolean? 禁用购买；继承 Render / EmitUIAction。
   请求前 pending=true、error=nil 并刷新；服务端验证商品、余额、价格并发放。
   成功后 status="Purchased"、pending=false、error=nil；
   失败后 status="Ready"、pending=false、error=失败标记；均需 RefreshUI。
@@ -70,6 +72,13 @@ local TranslationTexts = Text.Define("ShopPurchaseUI", {
 -- 暴露只读文案定义，供接入子类通过 self.BaseViewTranslationTexts 复用。
 CShopPurchaseView.BaseViewTranslationTexts = TranslationTexts
 
+-- 单件价格使用接入项目的统一数量工具。
+-- @param value number 原始价格。
+-- @return string 展示价格。
+function CShopPurchaseView:FormatNumber(value)
+    return tostring(value)
+end
+
 -- 绑定设计节点；事件只连接一次，点击时读取当前稳定商品 ID。
 function CShopPurchaseView:OnReady()
     local root = FXLoader:PlayerGui("ShopPurchaseUI")
@@ -84,7 +93,7 @@ function CShopPurchaseView:OnReady()
     -- 购买动作只发送 ID，价格与资格由游戏接入层校验。
     self:TrackConnection(self.BuyBtn.Activated:Connect(function()
         local state = self:GetUIState()
-        if state.status == "Ready" and not state.pending then
+        if state.status == "Ready" and not state.pending and not state.busy and not self:GetUIConfig().unavailable then
             self:EmitUIAction("Buy", { itemId = self:GetUIConfig().itemId })
         end
     end))
@@ -103,9 +112,9 @@ end
 -- @param state table 完整 State，字段与枚举见文件头契约
 function CShopPurchaseView:Render(state)
     local config = self:GetUIConfig()
-    self.ItemNameTxt.Text = Text.TrSource(config.name)
+    self.ItemNameTxt.Text = config.nameText or Text.TrSource(config.name)
     self.CategoryTxt.Text = Text.TrSource(config.category)
-    self.DescriptionTxt.Text = Text.TrSource(config.description)
+    self.DescriptionTxt.Text = config.descriptionText or Text.TrSource(config.description)
     if config.icon == "" then
         self.ItemIconImg.Image = "rbxassetid://86795093617566"
     else
@@ -116,7 +125,7 @@ function CShopPurchaseView:Render(state)
     self.DescriptionTxt.Visible = true
     self.BuyBtn.Visible = true
     self.ButtonTxt.Text = Text.Tr(TranslationTexts.Buy, {
-        price = config.price,
+        price = self:FormatNumber(config.price),
     })
     if state.pending then
         self.ButtonTxt.Text = Text.Tr(TranslationTexts.Buying)
@@ -129,7 +138,7 @@ function CShopPurchaseView:Render(state)
     else
         error("Unknown purchase status: " .. tostring(state.status))
     end
-    self:SetButtonEnabled(self.BuyBtn, state.status == "Ready" and not state.pending)
+    self:SetButtonEnabled(self.BuyBtn, state.status == "Ready" and not state.pending and not state.busy and not config.unavailable)
 end
 
 -- 游戏接入必须实现购买和关闭动作。

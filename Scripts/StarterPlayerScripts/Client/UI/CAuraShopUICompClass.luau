@@ -2,12 +2,6 @@ local FX = _G.FX
 local FXLoader = FX.Loader
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local TranslationTexts = Text.Define("AuraShop", {
-    Quality = "Quality {level:int}",
-    TrainingRate = "Training ×{rate}",
-    Price = "Buy: {value} Coins",
-    Unequip = "Unequip",
-    Equip = "Equip",
-    NeedCoins = "Need {value} Coins",
     Unknown = "Something went wrong. Please try again.",
 })
 local RunService = game:GetService("RunService")
@@ -31,7 +25,8 @@ function Component:OnReady()
     self._commonUI = self:GetPlayerObject():RequireComponent("FCCommonUIComp")
     self._commonUI:RegisterTrainingClickModal(self.Root)
     self._localization = self._commonUI.Localization
-    self.Config = {title = "AURAS", auras = {}, qualities = {}}
+    self.Config = {title = "AURAS", auras = {}, qualities = {},
+        strengthIsMultiplier = true, allowUnaffordableAction = true, allowUnequip = true}
     -- 与出售界面的浅色渐变风格保持一致，未配置专色时按品质循环配色。
     local qualityColors = {
         {"#D8F2CF", "#B0DC9E"},
@@ -48,7 +43,7 @@ function Component:OnReady()
             rowColor = "#" .. rowColor
         end
         self.Config.qualities[qualityId] = {
-            name = "", color = rowColor,
+            name = "", level = config.Quality, color = rowColor,
             colorEnd = config.DisplayColor and rowColor or colors[2],
         }
         table.insert(self.Config.auras, {
@@ -57,7 +52,7 @@ function Component:OnReady()
             icon = "rbxassetid://" .. config.Img,
         })
     end
-    self.State = {owned = {}, equippedId = "", coins = 0, open = false}
+    self.State = {owned = {}, equippedId = "", coins = 0, open = false, pending = {}}
     self:Hide()
     self:TrackConnection(self._localization.Changed:Connect(function()
         self:RefreshUI()
@@ -117,39 +112,11 @@ function Component:UpdateShopArea()
     end
 end
 
---- 生成类未处理倍率和价格模板翻译；补动态文案及卸下操作，固定标题与空列表提示沿用父类。
---- @param state table 权威数据派生的完整 UI 状态。
-function Component:Render(state)
-    for index, aura in ipairs(self.Config.auras) do
-        aura.name = Text.TrSource(_G.GameConfig.AuraConfig[index].Name)
-    end
-    for qualityId, quality in pairs(self.Config.qualities) do
-        quality.name = Text.Tr(TranslationTexts.Quality, {level = tonumber(qualityId)})
-    end
-    Component.Super.Render(self, state)
-    for index, aura in ipairs(self.Config.auras) do
-        local entry = self.Rows[aura.id]
-        local row = entry.row
-        local rate = FXLoader:Here(row, "StrengthTxt")
-        local caption = FXLoader:Here(row, "ActionBtn/ButtonTxt")
-        rate.TextScaled = true
-        rate.Text = Text.Tr(TranslationTexts.TrainingRate, {
-            rate = GameUtility.NumberToText(aura.strength),
-        })
-        local owned = state.owned[aura.id] == true
-        local equipped = state.equippedId == aura.id
-        local key = TranslationTexts.Price
-        if equipped then
-            key = TranslationTexts.Unequip
-        elseif owned then
-            key = TranslationTexts.Equip
-        elseif state.coins < aura.price then
-            key = TranslationTexts.NeedCoins
-        end
-        caption.Text = Text.Tr(key, {value = GameUtility.NumberToText(aura.price)})
-        -- 请求期间保持原有显示；余额不足由服务端提示，已装备允许卸下。
-        self:SetButtonEnabled(entry.button, true)
-    end
+--- 展示类统一处理倍率、品质和卸下文案，数量沿用项目格式。
+--- @param value number 未格式化的数量。
+--- @return string 用于显示的数量。
+function Component:FormatNumber(value)
+    return GameUtility.NumberToText(value)
 end
 
 --- 打开时读取最新同步状态，不重复绑定按钮。
@@ -174,6 +141,9 @@ function Component:OnUIAction(action, payload)
     if self._requestTask then
         return
     end
+    self.State.pending[payload.auraId] = true
+    self.State.busy = true
+    self:RefreshUI()
     self._requestTask = task.defer(function()
         --- 网络拒绝或失败恢复按钮，不用本地状态伪造成功。
         --- @return table 服务端权威结果。
@@ -181,6 +151,8 @@ function Component:OnUIAction(action, payload)
             return FX.Network:InvokeServer("C2S_AuraAction", action, tonumber(payload.auraId))
         end)
         self._requestTask = nil
+        self.State.pending[payload.auraId] = nil
+        self.State.busy = false
         if ok and result.success then
             self.State.owned = result.data.owned
             self.State.equippedId = result.data.equippedId == 0 and "" or tostring(result.data.equippedId)

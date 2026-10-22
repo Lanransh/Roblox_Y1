@@ -120,7 +120,15 @@
     ClaimOffline -> { rewardId: string, multiplier: number }；
       rewardId 对应 Config.offline.rewardId，multiplier 仅为 1 或 2。
     没有 Close 或 SelectTab 动作；关闭直接 Hide，页签切换由 View 本地处理。
-  无其他页面专用必需覆写；父类默认 GetUIConfig/GetUIState 已可读取上述数据。
+  FormatNumber(value:number)->string 可选覆写，默认 tostring，全部数量统一经此格式化。
+  GetRewardDisplay 可返回 image:string?，View 替换对应奖励图片节点，省略沿用设计占位。
+  Config.allowUnavailableAction:boolean?，true 灰色未达标或已领取按钮仍允许点击解释原因。
+  State.busy:boolean? 全局请求锁，不能只用私有任务变量防重。
+  offline/diamonds/Entry.errorText:string? 最终译文，优先于error原文。
+  Config.diamonds.passes:{Pass}?，两项分别替代原Premium/Friends说明卡；提供时旧加成字段不再必填。
+    Pass.name:string 原文；amount:number 每日钻石；remaining:number 剩余领取天数；claimedToday:boolean 今日已领。
+  Render / RenderButton / RenderOffline / RenderDiamonds 继承，不能在接入层重复展示。
+  父类默认 GetUIConfig/GetUIState 已可读取上述数据。
   请求前将对应 Entry / diamonds / offline 的 pending=true、error=nil 并刷新；
   成功后 pending=false、status="Claimed"；离线还同步 seconds=0、training=0。
   失败 pending=false、保留最新真实数值及可重试状态，设置 error，再刷新。
@@ -188,14 +196,17 @@ local TranslationTexts = Text.Define("WelfareHub", {
     OnlineProgress = "{current} / {target} min",
     NoOnlineRewards = "No online rewards available",
     NextReward = "Next reward in {time}",
-    AwayDuration = "You were away for {hours:int}h {minutes}m",
-    ClaimRewards = "Claim Rewards!",
-    DoubleRewards = "2× Rewards!",
     NoOfflineRewards = "No offline rewards",
     RewardAmount = "{name} ×{amount}",
-    TaskQuantity = "x{amount:int}",
+    TaskQuantity = "x{amount}",
     MoneyAmount = "+${amount}",
-    TrainingAmount = "+{amount}",
+    DailyAmount = "+{value} Diamonds per day",
+    PassTomorrow = "Next claim tomorrow",
+    PassRemaining = "{days:int} claims left · {status}",
+    PassInactive = "Use this pass from your backpack to activate it.",
+    OfflineTime = "Offline Time: {hours:int}h {minutes:int}m {seconds:int}s",
+    OfflineTraining = "Training: {value}",
+    OfflineClaim = "Claim ×{multiplier:int}",
 })
 
 -- 暴露只读文案定义，供接入子类通过 self.BaseViewTranslationTexts 复用。
@@ -231,14 +242,14 @@ function RewardRow:Update(config, state)
     local moneyBox = Loader:Here(root, "MoneyRewardBox")
     moneyBox.Visible = isMoney
     Loader:Here(moneyBox, "AmountTxt").Text = Text.Tr(TranslationTexts.MoneyAmount, {
-        amount = config.reward.amount,
+        amount = self.View:FormatNumber(config.reward.amount),
     })
     local rewardLabel = Loader:Here(root, "RewardTxt")
     rewardLabel.Visible = not isMoney
     rewardLabel.Text = rewardText
     if self.Kind == "task" then
         Loader:Here(root, "QuantityTxt").Text = Text.Tr(TranslationTexts.TaskQuantity, {
-            amount = config.reward.amount,
+            amount = self.View:FormatNumber(config.reward.amount),
         })
         Loader:Here(root, "GemIconBox").Visible = display.icon == "Gem"
         Loader:Here(root, "EggIconBox").Visible = display.icon == "Egg"
@@ -287,7 +298,7 @@ function RewardRow:Update(config, state)
             label = Text.Tr(TranslationTexts.Claimed)
         end
     elseif state.status == "Claimable" then
-        if state.error then
+        if state.errorText or state.error then
             label = Text.Tr(TranslationTexts.Retry)
         elseif self.Kind == "signin" then
             label = Text.Tr(TranslationTexts.CheckIn)
@@ -319,7 +330,15 @@ function RewardRow:Update(config, state)
     else
         error("Unknown reward status: " .. tostring(state.status))
     end
-    self.View:RenderButton(self.Button, label, state.status == "Claimable" and not state.pending)
+    self.View:RenderButton(self.Button, label, state.status == "Claimable" and not state.pending,
+        self.View:GetUIConfig().allowUnavailableAction == true and not state.pending and not self.View:GetUIState().busy)
+    if display.icon == "Gem" or display.icon == "Egg" then
+        local box = Loader:Here(root, display.icon .. "IconBox")
+        local image = Loader:Here(box, "RewardImage")
+        image.Image = display.image or ""
+        image.Visible = display.image ~= nil and display.image ~= ""
+        Loader:Here(box, "RewardIconImg").Visible = not image.Visible
+    end
     if self.Kind == "online" or self.Kind == "signin" then
         local claimed = state.status == "Claimed"
         local claimable = state.status == "Claimable" and not state.pending
@@ -427,8 +446,15 @@ end
 function CWelfareView:FormatReward(name, amount)
     return Text.Tr(TranslationTexts.RewardAmount, {
         name = Text.TrSource(name),
-        amount = amount,
+        amount = self:FormatNumber(amount),
     })
+end
+
+-- 统一数量格式化扩展点，不影响奖励计算和资格。
+-- @param value number 原始数量。
+-- @return string 展示数量。
+function CWelfareView:FormatNumber(value)
+    return tostring(value)
 end
 
 -- 领取动作必须由游戏接入实现。
@@ -532,9 +558,10 @@ end
 -- 保留风格按钮表面，只更新状态。
 -- @param button Instance 点击节点
 -- @param label string? 已翻译的动态文字；nil 保留静态节点文案
--- @param enabled boolean 是否允许操作
-function CWelfareView:RenderButton(button, label, enabled)
-    self:SetButtonEnabled(button, enabled)
+-- @param enabled boolean 视觉上是否具备资格。
+-- @param allowAction boolean? 允许点击解释原因，不改变灰色视觉。
+function CWelfareView:RenderButton(button, label, enabled, allowAction)
+    self:SetButtonEnabled(button, (enabled or allowAction == true) and not self:GetUIState().busy)
     button.BackgroundColor3 = enabled and Color3.fromRGB(103, 237, 20) or Color3.fromRGB(99, 128, 121)
     local buttonTxt = Loader:Here(button, "ButtonTxt")
 
@@ -557,20 +584,31 @@ function CWelfareView:RenderDiamonds(state)
     local friendHintTxt = Loader:Here(page, "FriendsBonusImg.HintTxt")
     local statusTxt = Loader:Here(page, "StatusTxt")
     amountTxt.Text = Text.Tr(TranslationTexts.DiamondAmount, {
-        amount = state.amount,
+        amount = self:FormatNumber(state.amount),
     })
     loginAmountTxt.Text = Text.Tr(TranslationTexts.DiamondBonus, {
-        amount = config.loginAmount,
+        amount = self:FormatNumber(config.loginAmount),
     })
-    premiumAmountTxt.Text = Text.Tr(TranslationTexts.DiamondBonus, {
-        amount = config.premiumAmount,
-    })
-    friendAmountTxt.Text = Text.Tr(TranslationTexts.DiamondPerFriend, {
-        amount = config.friendAmount,
-    })
-    friendHintTxt.Text = Text.Tr(TranslationTexts.DiamondCap, {
-        amount = config.friendCap,
-    })
+    if config.passes then
+        for index, path in ipairs({"PremiumBonusImg", "FriendsBonusImg"}) do
+            local pass = config.passes[index]
+            local box = Loader:Here(page, path)
+            Loader:Here(box, "TitleTxt").Text = Text.TrSource(pass.name)
+            Loader:Here(box, "AmountTxt").Text = Text.Tr(TranslationTexts.DailyAmount, {value = self:FormatNumber(pass.amount)})
+            local hint = Text.Tr(TranslationTexts.PassInactive)
+            if pass.remaining > 0 then
+                hint = Text.Tr(TranslationTexts.PassRemaining, {
+                    days = pass.remaining,
+                    status = Text.Tr(pass.claimedToday and TranslationTexts.PassTomorrow or TranslationTexts.ReadyToClaim),
+                })
+            end
+            Loader:Here(box, "HintTxt").Text = hint
+        end
+    else
+        premiumAmountTxt.Text = Text.Tr(TranslationTexts.DiamondBonus, {amount = self:FormatNumber(config.premiumAmount)})
+        friendAmountTxt.Text = Text.Tr(TranslationTexts.DiamondPerFriend, {amount = self:FormatNumber(config.friendAmount)})
+        friendHintTxt.Text = Text.Tr(TranslationTexts.DiamondCap, {amount = self:FormatNumber(config.friendCap)})
+    end
     local label = Text.Tr(TranslationTexts.Locked)
     local hint = Text.Tr(TranslationTexts.NoDiamonds)
     if state.pending then
@@ -582,15 +620,16 @@ function CWelfareView:RenderDiamonds(state)
     elseif state.status == "Claimable" then
         label = Text.Tr(TranslationTexts.Claim)
         hint = Text.Tr(TranslationTexts.ReadyToClaim)
-        if state.error then
+        if state.errorText or state.error then
             label = Text.Tr(TranslationTexts.Retry)
-            hint = Text.TrSource(state.error)
+            hint = state.errorText or Text.TrSource(state.error)
         end
     elseif state.status ~= "Locked" then
         error("Unknown diamond status: " .. tostring(state.status))
     end
     statusTxt.Text = hint
-    self:RenderButton(Loader:Here(page, "ClaimBtn"), label, state.status == "Claimable" and not state.pending)
+    self:RenderButton(Loader:Here(page, "ClaimBtn"), label, state.status == "Claimable" and not state.pending,
+        self:GetUIConfig().allowUnavailableAction == true and not state.pending)
     local tab = Loader:Here(self.Root, "TabsBox.DiamondsTabBtn")
     Loader:Here(tab, "RedDotImg").Visible = state.status == "Claimable" and not state.pending
     self:RenderButton(tab, nil, true)
@@ -695,28 +734,31 @@ function CWelfareView:RenderOffline(state)
     local hours = math.floor(seconds / 3600)
     local minutes = math.floor(seconds % 3600 / 60)
     local timeTxt = Loader:Here(page, "TimeTxt")
-    timeTxt.Text = Text.Tr(TranslationTexts.AwayDuration, {
+    timeTxt.Text = Text.Tr(TranslationTexts.OfflineTime, {
         hours = hours,
-        minutes = string.format("%02d", minutes),
+        minutes = minutes,
+        seconds = math.floor(seconds % 60),
     })
-    Loader:Here(page, "AmountTxt").Text = Text.Tr(TranslationTexts.TrainingAmount, {
-        amount = training,
+    Loader:Here(page, "AmountTxt").Text = Text.Tr(TranslationTexts.OfflineTraining, {
+        value = self:FormatNumber(training),
     })
     local claimable = state.status == "Claimable" and training > 0
     local single = Loader:Here(page, "SingleClaimBtn")
     local double = Loader:Here(page, "DoubleClaimBtn")
     single.Visible = claimable
     double.Visible = claimable
-    self:RenderButton(single, Text.Tr(TranslationTexts.ClaimRewards), claimable and not state.pending)
-    self:RenderButton(double, Text.Tr(TranslationTexts.DoubleRewards), claimable and not state.pending)
+    self:RenderButton(single, state.pending and Text.Tr(TranslationTexts.Claiming)
+        or Text.Tr(TranslationTexts.OfflineClaim, {multiplier = 1}), claimable and not state.pending)
+    self:RenderButton(double, state.pending and Text.Tr(TranslationTexts.Claiming)
+        or Text.Tr(TranslationTexts.OfflineClaim, {multiplier = 2}), claimable and not state.pending)
     if claimable and not state.pending then
         single.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
         double.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
         Loader:Here(double, "BottomEdgeImg").BackgroundColor3 = Color3.fromRGB(176, 101, 0)
     end
     local status = Loader:Here(page, "StatusTxt")
-    status.Visible = not claimable or state.error ~= nil
-    status.Text = state.error and Text.TrSource(state.error) or Text.Tr(TranslationTexts.NoOfflineRewards)
+    status.Visible = not claimable or state.error ~= nil or state.errorText ~= nil
+    status.Text = state.errorText or (state.error and Text.TrSource(state.error)) or Text.Tr(TranslationTexts.NoOfflineRewards)
     if state.status == "Claimed" then
         status.Text = Text.Tr(TranslationTexts.Claimed)
     end

@@ -8,6 +8,9 @@ function CAuraShopPreview:Ctor(owner)
     CAuraShopPreview.Super.Ctor(self, owner)
     self.Config = {
         title = "AURAS",
+        allowUnequip = true,
+        allowUnaffordableAction = true,
+        strengthIsMultiplier = true,
         qualities = {
             common = {name = "Common", color = "#A5ADB8", colorEnd = "#68778E"},
             rare = {name = "Rare", color = "#73BBEF", colorEnd = "#397BC7"},
@@ -57,7 +60,7 @@ function CAuraShopPreview:OnUIAction(action, payload)
         end
     elseif action == "Equip" then
         if self.State.owned[payload.auraId] then
-            self.State.equippedId = payload.auraId
+            self.State.equippedId = self.State.equippedId == payload.auraId and "" or payload.auraId
         end
     end
     self:RefreshUI()

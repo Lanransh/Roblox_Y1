@@ -34,12 +34,6 @@ function Component:OnReady()
     root.ResetOnSpawn = false
     root.DisplayOrder = 20
     self._commonUI:RegisterTrainingClickModal(root)
-    root.AutoLocalize = false
-    for index, node in ipairs(root:GetDescendants()) do
-        if node:IsA("GuiObject") then
-            node.AutoLocalize = false
-        end
-    end
     self:BindUIData()
     self:Hide()
     self._initialized = true
@@ -52,30 +46,14 @@ function Component:Show()
     end
 end
 
---- 复用展示类的参数提取与二次确认，非法输入通过现有提示展示。
---- @param action string 允许的 GM 操作之一。
-function Component:ExecuteCommand(action)
-    if self.State.pending then
-        return
-    end
+--- 参数校验和重置确认交给展示类，业务层仅显示非法输入提示。
+--- @param action string 展示类校验失败的 GM 操作。
+function Component:OnInvalidInput(action)
     if action == "AddItem" then
-        local itemId = tonumber(self.Inputs[1].Text)
-        local count = tonumber(self.Inputs[2].Text)
-        if not itemId or itemId ~= itemId or itemId < 1 or itemId > 9007199254740991 or itemId % 1 ~= 0
-            or not count or count ~= count or count < 1 or count > 9007199254740991 or count % 1 ~= 0 then
-            self._commonUI:ShowLocalizedTips(TranslationTexts.InvalidItemInput)
-            return
-        end
-    elseif action ~= "ResetData" and action ~= "SaveNow" and action ~= "ReachRebirthLevel"
-        and action ~= "UnlockAllCollections" then
-        local value = tonumber(self.Inputs[1].Text)
-        if not value or value ~= value or value < 0 or value > 9007199254740991
-            or value % 1 ~= 0 or (action == "SetLevel" and value < 1) then
-            self._commonUI:ShowLocalizedTips(TranslationTexts.InvalidValue)
-            return
-        end
+        self._commonUI:ShowLocalizedTips(TranslationTexts.InvalidItemInput)
+    else
+        self._commonUI:ShowLocalizedTips(TranslationTexts.InvalidValue)
     end
-    Component.Super.ExecuteCommand(self, action)
 end
 
 --- 只提交操作及原始数值，身份和权限由服务端验证；请求中禁用操作。

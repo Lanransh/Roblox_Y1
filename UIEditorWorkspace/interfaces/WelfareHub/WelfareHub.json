@@ -2120,7 +2120,7 @@
                         "x": 0,
                         "y": 0
                       },
-                      "AutoLocalize": true,
+                      "AutoLocalize": false,
                       "BackgroundColor3": "#ffffff",
                       "BackgroundTransparency": 1,
                       "ClipsDescendants": false,
@@ -2147,7 +2147,7 @@
                           "scale": 0
                         }
                       },
-                      "Text": "Premium Bonus",
+                      "Text": "",
                       "TextColor3": "#ffffff",
                       "TextScaled": false,
                       "TextSize": 22,
@@ -2231,7 +2231,7 @@
                         "x": 0,
                         "y": 0
                       },
-                      "AutoLocalize": true,
+                      "AutoLocalize": false,
                       "BackgroundColor3": "#ffffff",
                       "BackgroundTransparency": 1,
                       "ClipsDescendants": false,
@@ -2258,7 +2258,7 @@
                           "scale": 0
                         }
                       },
-                      "Text": "Roblox Premium",
+                      "Text": "",
                       "TextColor3": "#d6ddda",
                       "TextScaled": false,
                       "TextSize": 16,
@@ -2561,7 +2561,7 @@
                         "x": 0,
                         "y": 0
                       },
-                      "AutoLocalize": true,
+                      "AutoLocalize": false,
                       "BackgroundColor3": "#ffffff",
                       "BackgroundTransparency": 1,
                       "ClipsDescendants": false,
@@ -2588,7 +2588,7 @@
                           "scale": 0
                         }
                       },
-                      "Text": "Friends Bonus",
+                      "Text": "",
                       "TextColor3": "#ffffff",
                       "TextScaled": false,
                       "TextSize": 22,
@@ -5942,7 +5942,7 @@
                   },
                   "Text": "",
                   "TextColor3": "#ffffff",
-                  "TextScaled": false,
+                  "TextScaled": true,
                   "TextSize": 22,
                   "TextTransparency": 0,
                   "TextWrapped": true,
@@ -6384,6 +6384,60 @@
                       "Visible": true,
                       "ZIndex": 6
                     }
+                  },
+                  {
+                    "children": [],
+                    "className": "ImageLabel",
+                    "id": "b8920c61-854f-43cb-aa11-703d995d8f42",
+                    "name": "RewardImage",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "AutoLocalize": true,
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 1,
+                      "ClipsDescendants": false,
+                      "Image": "",
+                      "ImageColor3": "#ffffff",
+                      "ImageTransparency": 0,
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 84,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 26,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "ScaleType": "Fit",
+                      "Size": {
+                        "x": {
+                          "offset": 76,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 66,
+                          "scale": 0
+                        }
+                      },
+                      "TileSize": {
+                        "x": {
+                          "offset": 0,
+                          "scale": 1
+                        },
+                        "y": {
+                          "offset": 0,
+                          "scale": 1
+                        }
+                      },
+                      "Visible": false,
+                      "ZIndex": 6
+                    }
                   }
                 ],
                 "className": "Frame",
@@ -6714,6 +6768,60 @@
                         }
                       },
                       "Visible": true,
+                      "ZIndex": 5
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "ImageLabel",
+                    "id": "dff0cb30-9555-488b-be98-dc1a2f103d3c",
+                    "name": "RewardImage",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "AutoLocalize": true,
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 1,
+                      "ClipsDescendants": false,
+                      "Image": "",
+                      "ImageColor3": "#ffffff",
+                      "ImageTransparency": 0,
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 94,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 28,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "ScaleType": "Fit",
+                      "Size": {
+                        "x": {
+                          "offset": 56,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 64,
+                          "scale": 0
+                        }
+                      },
+                      "TileSize": {
+                        "x": {
+                          "offset": 0,
+                          "scale": 1
+                        },
+                        "y": {
+                          "offset": 0,
+                          "scale": 1
+                        }
+                      },
+                      "Visible": false,
                       "ZIndex": 5
                     }
                   }
@@ -7352,7 +7460,7 @@
                   },
                   "Text": "",
                   "TextColor3": "#ffffff",
-                  "TextScaled": false,
+                  "TextScaled": true,
                   "TextSize": 20,
                   "TextTransparency": 0,
                   "TextWrapped": true,
@@ -7985,7 +8093,7 @@
                           "scale": 0
                         },
                         "y": {
-                          "offset": 26,
+                          "offset": 21,
                           "scale": 0
                         }
                       },
@@ -7997,7 +8105,7 @@
                           "scale": 0
                         },
                         "y": {
-                          "offset": 66,
+                          "offset": 76,
                           "scale": 0
                         }
                       },
@@ -8012,6 +8120,60 @@
                         }
                       },
                       "Visible": true,
+                      "ZIndex": 6
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "ImageLabel",
+                    "id": "0696414d-cd95-457c-9711-38d103ee969e",
+                    "name": "RewardImage",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "AutoLocalize": true,
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 1,
+                      "ClipsDescendants": false,
+                      "Image": "",
+                      "ImageColor3": "#ffffff",
+                      "ImageTransparency": 0,
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 56,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 21,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "ScaleType": "Fit",
+                      "Size": {
+                        "x": {
+                          "offset": 76,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 76,
+                          "scale": 0
+                        }
+                      },
+                      "TileSize": {
+                        "x": {
+                          "offset": 0,
+                          "scale": 1
+                        },
+                        "y": {
+                          "offset": 0,
+                          "scale": 1
+                        }
+                      },
+                      "Visible": false,
                       "ZIndex": 6
                     }
                   }
@@ -8324,26 +8486,80 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 66,
+                          "offset": 56,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 26,
+                          "offset": 20,
                           "scale": 0
                         }
                       },
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 56,
+                          "offset": 76,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 64,
+                          "offset": 76,
                           "scale": 0
                         }
                       },
                       "Visible": true,
+                      "ZIndex": 5
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "ImageLabel",
+                    "id": "fd2dfdb8-1e9c-454f-b0bc-f4141c9f02ef",
+                    "name": "RewardImage",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "AutoLocalize": true,
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 1,
+                      "ClipsDescendants": false,
+                      "Image": "",
+                      "ImageColor3": "#ffffff",
+                      "ImageTransparency": 0,
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 56,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 20,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "ScaleType": "Fit",
+                      "Size": {
+                        "x": {
+                          "offset": 76,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 76,
+                          "scale": 0
+                        }
+                      },
+                      "TileSize": {
+                        "x": {
+                          "offset": 0,
+                          "scale": 1
+                        },
+                        "y": {
+                          "offset": 0,
+                          "scale": 1
+                        }
+                      },
+                      "Visible": false,
                       "ZIndex": 5
                     }
                   }
@@ -8762,7 +8978,7 @@
                   },
                   "Text": "",
                   "TextColor3": "#ffffff",
-                  "TextScaled": false,
+                  "TextScaled": true,
                   "TextSize": 18,
                   "TextTransparency": 0,
                   "TextWrapped": true,
@@ -9575,6 +9791,60 @@
                       "Visible": true,
                       "ZIndex": 6
                     }
+                  },
+                  {
+                    "children": [],
+                    "className": "ImageLabel",
+                    "id": "32287ad6-bb6a-49bc-a1d8-48e5d98dfea8",
+                    "name": "RewardImage",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "AutoLocalize": true,
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 1,
+                      "ClipsDescendants": false,
+                      "Image": "",
+                      "ImageColor3": "#ffffff",
+                      "ImageTransparency": 0,
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 438,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 14,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "ScaleType": "Fit",
+                      "Size": {
+                        "x": {
+                          "offset": 76,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 72,
+                          "scale": 0
+                        }
+                      },
+                      "TileSize": {
+                        "x": {
+                          "offset": 0,
+                          "scale": 1
+                        },
+                        "y": {
+                          "offset": 0,
+                          "scale": 1
+                        }
+                      },
+                      "Visible": false,
+                      "ZIndex": 6
+                    }
                   }
                 ],
                 "className": "Frame",
@@ -9669,6 +9939,60 @@
                         }
                       },
                       "Visible": true,
+                      "ZIndex": 6
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "ImageLabel",
+                    "id": "d3fc6cf9-42ad-444c-b864-870f1c1bd0cb",
+                    "name": "RewardImage",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "AutoLocalize": true,
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 1,
+                      "ClipsDescendants": false,
+                      "Image": "",
+                      "ImageColor3": "#ffffff",
+                      "ImageTransparency": 0,
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 438,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 14,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "ScaleType": "Fit",
+                      "Size": {
+                        "x": {
+                          "offset": 76,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 72,
+                          "scale": 0
+                        }
+                      },
+                      "TileSize": {
+                        "x": {
+                          "offset": 0,
+                          "scale": 1
+                        },
+                        "y": {
+                          "offset": 0,
+                          "scale": 1
+                        }
+                      },
+                      "Visible": false,
                       "ZIndex": 6
                     }
                   }
@@ -10218,7 +10542,7 @@
                   },
                   "Text": "",
                   "TextColor3": "#ffffff",
-                  "TextScaled": false,
+                  "TextScaled": true,
                   "TextSize": 22,
                   "TextTransparency": 0,
                   "TextWrapped": true,
@@ -10660,6 +10984,60 @@
                       "Visible": true,
                       "ZIndex": 6
                     }
+                  },
+                  {
+                    "children": [],
+                    "className": "ImageLabel",
+                    "id": "1fe0d155-dbaf-4bd1-b748-c344543c84f1",
+                    "name": "RewardImage",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "AutoLocalize": true,
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 1,
+                      "ClipsDescendants": false,
+                      "Image": "",
+                      "ImageColor3": "#ffffff",
+                      "ImageTransparency": 0,
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 84,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 26,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "ScaleType": "Fit",
+                      "Size": {
+                        "x": {
+                          "offset": 76,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 66,
+                          "scale": 0
+                        }
+                      },
+                      "TileSize": {
+                        "x": {
+                          "offset": 0,
+                          "scale": 1
+                        },
+                        "y": {
+                          "offset": 0,
+                          "scale": 1
+                        }
+                      },
+                      "Visible": false,
+                      "ZIndex": 6
+                    }
                   }
                 ],
                 "className": "Frame",
@@ -10990,6 +11368,60 @@
                         }
                       },
                       "Visible": true,
+                      "ZIndex": 5
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "ImageLabel",
+                    "id": "459e6cc9-8a99-4cc7-9991-c4f39b8f2214",
+                    "name": "RewardImage",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "AutoLocalize": true,
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 1,
+                      "ClipsDescendants": false,
+                      "Image": "",
+                      "ImageColor3": "#ffffff",
+                      "ImageTransparency": 0,
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 94,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 28,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "ScaleType": "Fit",
+                      "Size": {
+                        "x": {
+                          "offset": 56,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 64,
+                          "scale": 0
+                        }
+                      },
+                      "TileSize": {
+                        "x": {
+                          "offset": 0,
+                          "scale": 1
+                        },
+                        "y": {
+                          "offset": 0,
+                          "scale": 1
+                        }
+                      },
+                      "Visible": false,
                       "ZIndex": 5
                     }
                   }
@@ -11628,7 +12060,7 @@
                   },
                   "Text": "",
                   "TextColor3": "#ffffff",
-                  "TextScaled": false,
+                  "TextScaled": true,
                   "TextSize": 22,
                   "TextTransparency": 0,
                   "TextWrapped": true,
@@ -12070,6 +12502,60 @@
                       "Visible": true,
                       "ZIndex": 6
                     }
+                  },
+                  {
+                    "children": [],
+                    "className": "ImageLabel",
+                    "id": "b5e8d3e8-ffa6-4f2a-a1a8-6ba358719228",
+                    "name": "RewardImage",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "AutoLocalize": true,
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 1,
+                      "ClipsDescendants": false,
+                      "Image": "",
+                      "ImageColor3": "#ffffff",
+                      "ImageTransparency": 0,
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 84,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 26,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "ScaleType": "Fit",
+                      "Size": {
+                        "x": {
+                          "offset": 76,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 66,
+                          "scale": 0
+                        }
+                      },
+                      "TileSize": {
+                        "x": {
+                          "offset": 0,
+                          "scale": 1
+                        },
+                        "y": {
+                          "offset": 0,
+                          "scale": 1
+                        }
+                      },
+                      "Visible": false,
+                      "ZIndex": 6
+                    }
                   }
                 ],
                 "className": "Frame",
@@ -12400,6 +12886,60 @@
                         }
                       },
                       "Visible": true,
+                      "ZIndex": 5
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "ImageLabel",
+                    "id": "600dfbb4-788b-4efb-b682-5e9ef3773f7d",
+                    "name": "RewardImage",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "AutoLocalize": true,
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 1,
+                      "ClipsDescendants": false,
+                      "Image": "",
+                      "ImageColor3": "#ffffff",
+                      "ImageTransparency": 0,
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 94,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 28,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "ScaleType": "Fit",
+                      "Size": {
+                        "x": {
+                          "offset": 56,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 64,
+                          "scale": 0
+                        }
+                      },
+                      "TileSize": {
+                        "x": {
+                          "offset": 0,
+                          "scale": 1
+                        },
+                        "y": {
+                          "offset": 0,
+                          "scale": 1
+                        }
+                      },
+                      "Visible": false,
                       "ZIndex": 5
                     }
                   }
@@ -13038,7 +13578,7 @@
                   },
                   "Text": "",
                   "TextColor3": "#ffffff",
-                  "TextScaled": false,
+                  "TextScaled": true,
                   "TextSize": 22,
                   "TextTransparency": 0,
                   "TextWrapped": true,
@@ -13480,6 +14020,60 @@
                       "Visible": true,
                       "ZIndex": 6
                     }
+                  },
+                  {
+                    "children": [],
+                    "className": "ImageLabel",
+                    "id": "66e25cbf-0313-444d-873f-900f90b7fc12",
+                    "name": "RewardImage",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "AutoLocalize": true,
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 1,
+                      "ClipsDescendants": false,
+                      "Image": "",
+                      "ImageColor3": "#ffffff",
+                      "ImageTransparency": 0,
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 84,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 26,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "ScaleType": "Fit",
+                      "Size": {
+                        "x": {
+                          "offset": 76,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 66,
+                          "scale": 0
+                        }
+                      },
+                      "TileSize": {
+                        "x": {
+                          "offset": 0,
+                          "scale": 1
+                        },
+                        "y": {
+                          "offset": 0,
+                          "scale": 1
+                        }
+                      },
+                      "Visible": false,
+                      "ZIndex": 6
+                    }
                   }
                 ],
                 "className": "Frame",
@@ -13810,6 +14404,60 @@
                         }
                       },
                       "Visible": true,
+                      "ZIndex": 5
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "ImageLabel",
+                    "id": "4eb572c4-c13b-4c90-b95f-55386e6ce449",
+                    "name": "RewardImage",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "AutoLocalize": true,
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 1,
+                      "ClipsDescendants": false,
+                      "Image": "",
+                      "ImageColor3": "#ffffff",
+                      "ImageTransparency": 0,
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 94,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 28,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "ScaleType": "Fit",
+                      "Size": {
+                        "x": {
+                          "offset": 56,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 64,
+                          "scale": 0
+                        }
+                      },
+                      "TileSize": {
+                        "x": {
+                          "offset": 0,
+                          "scale": 1
+                        },
+                        "y": {
+                          "offset": 0,
+                          "scale": 1
+                        }
+                      },
+                      "Visible": false,
                       "ZIndex": 5
                     }
                   }
@@ -14448,7 +15096,7 @@
                   },
                   "Text": "",
                   "TextColor3": "#ffffff",
-                  "TextScaled": false,
+                  "TextScaled": true,
                   "TextSize": 20,
                   "TextTransparency": 0,
                   "TextWrapped": true,
@@ -15081,7 +15729,7 @@
                           "scale": 0
                         },
                         "y": {
-                          "offset": 26,
+                          "offset": 21,
                           "scale": 0
                         }
                       },
@@ -15093,7 +15741,7 @@
                           "scale": 0
                         },
                         "y": {
-                          "offset": 66,
+                          "offset": 76,
                           "scale": 0
                         }
                       },
@@ -15108,6 +15756,60 @@
                         }
                       },
                       "Visible": true,
+                      "ZIndex": 6
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "ImageLabel",
+                    "id": "26aebe4a-08cc-412b-8423-f87feec5bc49",
+                    "name": "RewardImage",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "AutoLocalize": true,
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 1,
+                      "ClipsDescendants": false,
+                      "Image": "",
+                      "ImageColor3": "#ffffff",
+                      "ImageTransparency": 0,
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 56,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 21,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "ScaleType": "Fit",
+                      "Size": {
+                        "x": {
+                          "offset": 76,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 76,
+                          "scale": 0
+                        }
+                      },
+                      "TileSize": {
+                        "x": {
+                          "offset": 0,
+                          "scale": 1
+                        },
+                        "y": {
+                          "offset": 0,
+                          "scale": 1
+                        }
+                      },
+                      "Visible": false,
                       "ZIndex": 6
                     }
                   }
@@ -15420,26 +16122,80 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 66,
+                          "offset": 56,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 26,
+                          "offset": 20,
                           "scale": 0
                         }
                       },
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 56,
+                          "offset": 76,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 64,
+                          "offset": 76,
                           "scale": 0
                         }
                       },
                       "Visible": true,
+                      "ZIndex": 5
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "ImageLabel",
+                    "id": "f2586000-7d7f-45dd-b3c9-79498d6c0374",
+                    "name": "RewardImage",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "AutoLocalize": true,
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 1,
+                      "ClipsDescendants": false,
+                      "Image": "",
+                      "ImageColor3": "#ffffff",
+                      "ImageTransparency": 0,
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 56,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 20,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "ScaleType": "Fit",
+                      "Size": {
+                        "x": {
+                          "offset": 76,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 76,
+                          "scale": 0
+                        }
+                      },
+                      "TileSize": {
+                        "x": {
+                          "offset": 0,
+                          "scale": 1
+                        },
+                        "y": {
+                          "offset": 0,
+                          "scale": 1
+                        }
+                      },
+                      "Visible": false,
                       "ZIndex": 5
                     }
                   }
@@ -15858,7 +16614,7 @@
                   },
                   "Text": "",
                   "TextColor3": "#ffffff",
-                  "TextScaled": false,
+                  "TextScaled": true,
                   "TextSize": 20,
                   "TextTransparency": 0,
                   "TextWrapped": true,
@@ -16491,7 +17247,7 @@
                           "scale": 0
                         },
                         "y": {
-                          "offset": 26,
+                          "offset": 21,
                           "scale": 0
                         }
                       },
@@ -16503,7 +17259,7 @@
                           "scale": 0
                         },
                         "y": {
-                          "offset": 66,
+                          "offset": 76,
                           "scale": 0
                         }
                       },
@@ -16518,6 +17274,60 @@
                         }
                       },
                       "Visible": true,
+                      "ZIndex": 6
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "ImageLabel",
+                    "id": "e39cf54e-5a78-4140-9b8f-ddc1305ee016",
+                    "name": "RewardImage",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "AutoLocalize": true,
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 1,
+                      "ClipsDescendants": false,
+                      "Image": "",
+                      "ImageColor3": "#ffffff",
+                      "ImageTransparency": 0,
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 56,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 21,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "ScaleType": "Fit",
+                      "Size": {
+                        "x": {
+                          "offset": 76,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 76,
+                          "scale": 0
+                        }
+                      },
+                      "TileSize": {
+                        "x": {
+                          "offset": 0,
+                          "scale": 1
+                        },
+                        "y": {
+                          "offset": 0,
+                          "scale": 1
+                        }
+                      },
+                      "Visible": false,
                       "ZIndex": 6
                     }
                   }
@@ -16830,26 +17640,80 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 66,
+                          "offset": 56,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 26,
+                          "offset": 20,
                           "scale": 0
                         }
                       },
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 56,
+                          "offset": 76,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 64,
+                          "offset": 76,
                           "scale": 0
                         }
                       },
                       "Visible": true,
+                      "ZIndex": 5
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "ImageLabel",
+                    "id": "afa05b73-6759-48cd-a639-4101aecfc47c",
+                    "name": "RewardImage",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "AutoLocalize": true,
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 1,
+                      "ClipsDescendants": false,
+                      "Image": "",
+                      "ImageColor3": "#ffffff",
+                      "ImageTransparency": 0,
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 56,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 20,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "ScaleType": "Fit",
+                      "Size": {
+                        "x": {
+                          "offset": 76,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 76,
+                          "scale": 0
+                        }
+                      },
+                      "TileSize": {
+                        "x": {
+                          "offset": 0,
+                          "scale": 1
+                        },
+                        "y": {
+                          "offset": 0,
+                          "scale": 1
+                        }
+                      },
+                      "Visible": false,
                       "ZIndex": 5
                     }
                   }
@@ -17268,7 +18132,7 @@
                   },
                   "Text": "",
                   "TextColor3": "#ffffff",
-                  "TextScaled": false,
+                  "TextScaled": true,
                   "TextSize": 22,
                   "TextTransparency": 0,
                   "TextWrapped": true,
@@ -17897,11 +18761,11 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 42,
+                          "offset": 14,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 86,
+                          "offset": 66,
                           "scale": 0
                         }
                       },
@@ -17909,11 +18773,11 @@
                       "ScaleType": "Fit",
                       "Size": {
                         "x": {
-                          "offset": 104,
+                          "offset": 160,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 120,
+                          "offset": 160,
                           "scale": 0
                         }
                       },
@@ -17928,6 +18792,60 @@
                         }
                       },
                       "Visible": true,
+                      "ZIndex": 6
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "ImageLabel",
+                    "id": "ec6c3f73-3a01-471c-85fd-ada655602e4f",
+                    "name": "RewardImage",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "AutoLocalize": true,
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 1,
+                      "ClipsDescendants": false,
+                      "Image": "",
+                      "ImageColor3": "#ffffff",
+                      "ImageTransparency": 0,
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 14,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 66,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "ScaleType": "Fit",
+                      "Size": {
+                        "x": {
+                          "offset": 160,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 160,
+                          "scale": 0
+                        }
+                      },
+                      "TileSize": {
+                        "x": {
+                          "offset": 0,
+                          "scale": 1
+                        },
+                        "y": {
+                          "offset": 0,
+                          "scale": 1
+                        }
+                      },
+                      "Visible": false,
                       "ZIndex": 6
                     }
                   }
@@ -18240,26 +19158,80 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 42,
+                          "offset": 14,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 86,
+                          "offset": 66,
                           "scale": 0
                         }
                       },
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 104,
+                          "offset": 160,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 120,
+                          "offset": 160,
                           "scale": 0
                         }
                       },
                       "Visible": true,
+                      "ZIndex": 5
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "ImageLabel",
+                    "id": "b1836821-64d9-4750-b4e4-118f05932de5",
+                    "name": "RewardImage",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "AutoLocalize": true,
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 1,
+                      "ClipsDescendants": false,
+                      "Image": "",
+                      "ImageColor3": "#ffffff",
+                      "ImageTransparency": 0,
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 14,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 66,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "ScaleType": "Fit",
+                      "Size": {
+                        "x": {
+                          "offset": 160,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 160,
+                          "scale": 0
+                        }
+                      },
+                      "TileSize": {
+                        "x": {
+                          "offset": 0,
+                          "scale": 1
+                        },
+                        "y": {
+                          "offset": 0,
+                          "scale": 1
+                        }
+                      },
+                      "Visible": false,
                       "ZIndex": 5
                     }
                   }

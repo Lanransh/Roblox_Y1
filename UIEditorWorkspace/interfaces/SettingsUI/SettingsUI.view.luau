@@ -37,7 +37,10 @@
     setting="showAura" / "giantPickaxe"：value 为 boolean，取当前 State 的反值。
     不支持其他设置键；setting 为稳定字段名，不是翻译后的标签。
   Close -> {}；由接入层调用 self:Hide()，没有 State.open。
-  无其他页面专用必需或可选覆写。
+  SliderDragEnded -> {}；鼠标/触摸释放或窗口失焦时提交最后设置。
+  IsSliderDragging()->boolean 为只读查询，不覆写；业务同步可据此避免覆盖本地拖动。
+  OnHide 取消拖动；项目覆写 OnHide 时必须先调用父方法。
+  继承 EmitUIAction、Render 与输入绑定，不重复连接滑杆。
   拖动滑杆会连续发送 ChangeSetting，不只在释放时发送；接入层收到后
   更新对应 State 字段并 RefreshUI，否则滑杆/开关不会得到状态确认。
   实际音频映射、光环显隐、镐子放大及关闭设置后恢复原尺寸由游戏处理。
@@ -46,7 +49,8 @@
 
 【显隐边界】
   窗口由 Show/Hide 管理，Render 不控制根 Enabled 或整个窗口 Visible。
-  当前滑杆只绑定鼠标输入，不据此承诺触屏/手柄行为。
+  滑杆支持鼠标和触屏，移动时读取当前真实轨道尺寸，拖出后仍可释放。
+  编辑器模拟仅验证鼠标；触屏与失焦需要 Studio/设备另行验证。
 ]]
 local FX = _G.FX
 local FXLoader = FX.Loader
@@ -68,47 +72,51 @@ CSettingsView.BaseViewTranslationTexts = TranslationTexts
 -- @param track Frame 音量轨道
 -- @param inputButton TextButton 透明拖动命中区
 local function bindSlider(self, setting, track, inputButton)
-    local trackPosition = track.AbsolutePosition
-    local trackSize = track.AbsoluteSize
-    local trackLeft = trackPosition and trackPosition.X or 711
-    local trackWidth = trackSize and trackSize.X or 190
-
-    local function emitVolume(input)
-        local position = input.Position
-        if position == nil or trackWidth <= 0 then
-            return
-        end
-        local ratio = math.clamp(
-            (position.X - trackLeft) / trackWidth,
-            0,
-            1
-        )
-        local value = math.floor(ratio * 100 + 0.5)
-        self:EmitUIAction("ChangeSetting", {
-            setting = setting,
-            value = value,
-        })
-    end
-
+    -- 轨道由 UpdateSlider 每次读取，此参数与节点契约保持一致。
     self:TrackConnection(inputButton.InputBegan:Connect(function(input)
-        if input.UserInputType ~= Enum.UserInputType.MouseButton1 then
+        if input.UserInputType ~= Enum.UserInputType.MouseButton1 and input.UserInputType ~= Enum.UserInputType.Touch then
             return
         end
-        self._activeSlider = setting
-        emitVolume(input)
+        self._activeSlider = {setting = setting, input = input}
+        self:UpdateSlider(input)
     end))
+end
 
-    self:TrackConnection(inputButton.InputChanged:Connect(function(input)
-        if self._activeSlider == setting then
-            emitVolume(input)
-        end
-    end))
+-- 拖动状态仅供业务层判断是否可应用远端偏好。
+-- @return boolean 当前是否正在拖动音量。
+function CSettingsView:IsSliderDragging()
+    return self._activeSlider ~= nil
+end
 
-    self:TrackConnection(inputButton.InputEnded:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            self._activeSlider = nil
-        end
-    end))
+-- 读取缩放后的轨道，保证布局变化时仍按实际坐标换算。
+-- @param input InputObject 当前鼠标或触摸输入。
+function CSettingsView:UpdateSlider(input)
+    local drag = self._activeSlider
+    if not drag then
+        return
+    end
+    local track = self.Sliders[drag.setting].track
+    -- App 不提供 AbsolutePosition/AbsoluteSize，模拟使用固定设计轨道；Roblox 始终读取原生实时布局。
+    local size = track.AbsoluteSize or Vector2.new(190, 0)
+    local position = track.AbsolutePosition or Vector2.new(711, 0)
+    if size.X <= 0 then
+        return
+    end
+    local value = math.floor(math.clamp((input.Position.X - position.X) / size.X, 0, 1) * 100 + 0.5)
+    self:EmitUIAction("ChangeSetting", {setting = drag.setting, value = value})
+end
+
+-- 结束拖动后通知业务保存；重复释放不重复发送。
+function CSettingsView:EndSliderDrag()
+    if self._activeSlider then
+        self._activeSlider = nil
+        self:EmitUIAction("SliderDragEnded", {})
+    end
+end
+
+-- 隐藏窗口立即停止输入，不在隐藏后继续修改音量。
+function CSettingsView:OnHide()
+    self._activeSlider = nil
 end
 
 -- 绑定音量与开关节点；事件只连接一次。
@@ -134,6 +142,37 @@ function CSettingsView:OnReady()
 
     for setting, slider in pairs(self.Sliders) do
         bindSlider(self, setting, slider.track, slider.input)
+    end
+
+    -- Roblox 使用全局输入；编辑器的有限模拟通过命中区事件验证同一计算路径。
+    local inputService = game and game:GetService("UserInputService")
+    if inputService then
+        self:TrackConnection(inputService.InputChanged:Connect(function(input)
+            local drag = self._activeSlider
+            if drag and (input == drag.input or (drag.input.UserInputType == Enum.UserInputType.MouseButton1
+                and input.UserInputType == Enum.UserInputType.MouseMovement)) then
+                self:UpdateSlider(input)
+            end
+        end))
+        self:TrackConnection(inputService.InputEnded:Connect(function(input)
+            if self._activeSlider and input == self._activeSlider.input then
+                self:EndSliderDrag()
+            end
+        end))
+        self:TrackConnection(inputService.WindowFocusReleased:Connect(function()
+            self:EndSliderDrag()
+        end))
+    else
+        for setting, slider in pairs(self.Sliders) do
+            self:TrackConnection(slider.input.InputChanged:Connect(function(input)
+                if self._activeSlider and self._activeSlider.setting == setting then
+                    self:UpdateSlider(input)
+                end
+            end))
+            self:TrackConnection(slider.input.InputEnded:Connect(function(input)
+                self:EndSliderDrag()
+            end))
+        end
     end
 
     self.Toggles = {
