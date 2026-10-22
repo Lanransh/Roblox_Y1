@@ -69,6 +69,9 @@ local TranslationTexts = Text.Define("WorldTeleportUI", {
     RequiredLevel = "Level {level}",
 })
 
+-- 暴露只读文案定义，供接入子类通过 self.BaseViewTranslationTexts 复用。
+CWorldTeleportView.BaseViewTranslationTexts = TranslationTexts
+
 -- 绑定固定窗口与隐藏条目原型，关闭事件只连接一次。
 function CWorldTeleportView:OnReady()
     local root = FXLoader:PlayerGui("WorldTeleportUI")

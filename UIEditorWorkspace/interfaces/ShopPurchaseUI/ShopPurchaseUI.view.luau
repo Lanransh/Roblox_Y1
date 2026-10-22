@@ -67,6 +67,9 @@ local TranslationTexts = Text.Define("ShopPurchaseUI", {
     Retry = "Retry",
 })
 
+-- 暴露只读文案定义，供接入子类通过 self.BaseViewTranslationTexts 复用。
+CShopPurchaseView.BaseViewTranslationTexts = TranslationTexts
+
 -- 绑定设计节点；事件只连接一次，点击时读取当前稳定商品 ID。
 function CShopPurchaseView:OnReady()
     local root = FXLoader:PlayerGui("ShopPurchaseUI")

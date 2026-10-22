@@ -96,6 +96,9 @@ local TranslationTexts = Text.Define("LootSellUI", {
     Sold = "{amount} Sold!",
 })
 
+-- 暴露只读文案定义，供接入子类通过 self.BaseViewTranslationTexts 复用。
+CLootSellView.BaseViewTranslationTexts = TranslationTexts
+
 -- 将金币金额格式化为参考图的短文案。
 -- @param amount number 金币数量
 -- @return string 金币展示文本
