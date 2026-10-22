@@ -2,13 +2,6 @@
   "defaultsInitialized": true,
   "rules": [
     {
-      "workbook": "GoodsConfig.xlsx",
-      "config": "GoodsData",
-      "fields": [
-        "Name"
-      ]
-    },
-    {
       "workbook": "GameConfig.xlsx",
       "config": "AuraConfig",
       "fields": [
@@ -28,6 +21,73 @@
       "fields": [
         "Name",
         "Desc"
+      ]
+    },
+    {
+      "workbook": "ActivityConfig.xlsx",
+      "config": "LoginMilestoneData",
+      "fields": [
+        "Desc"
+      ]
+    },
+    {
+      "workbook": "ActivityConfig.xlsx",
+      "config": "OnlineRewardData",
+      "fields": [
+        "Desc"
+      ]
+    },
+    {
+      "workbook": "ActivityConfig.xlsx",
+      "config": "DailyTaskConfig",
+      "fields": [
+        "Name",
+        "Desc"
+      ]
+    },
+    {
+      "workbook": "GameConfig.xlsx",
+      "config": "ItemData",
+      "fields": [
+        "Name"
+      ]
+    },
+    {
+      "workbook": "GoodsConfig.xlsx",
+      "config": "GoodsData",
+      "fields": [
+        "Name",
+        "Desc"
+      ]
+    },
+    {
+      "workbook": "GoodsConfig.xlsx",
+      "config": "GemGoodsData",
+      "fields": [
+        "Desc"
+      ]
+    },
+    {
+      "workbook": "ShopConfig.xlsx",
+      "config": "TabData",
+      "fields": [
+        "Name"
+      ]
+    },
+    {
+      "workbook": "ShopConfig.xlsx",
+      "config": "MiniCoinData",
+      "fields": [
+        "NameTxt",
+        "DescTxt"
+      ]
+    },
+    {
+      "workbook": "ShopConfig.xlsx",
+      "config": "GemCoinData",
+      "fields": [
+        "NameTxt",
+        "DescTxt"
       ]
     }
   ]

@@ -71,7 +71,7 @@ return {
         [1] = {
             Index = 1,
             LoginDays = 1,
-            Desc = [[背包扩容卡X1]],
+            Desc = [[Backpack Boost Card (1 Hour) × 1]],
             Reward = {
                 Type = [[Item]],
                 Id = 104,
@@ -81,7 +81,7 @@ return {
         [2] = {
             Index = 2,
             LoginDays = 2,
-            Desc = [[15钻石]],
+            Desc = [[15 Diamonds]],
             Reward = {
                 Type = [[Gem]],
                 Count = 15
@@ -90,7 +90,7 @@ return {
         [3] = {
             Index = 3,
             LoginDays = 3,
-            Desc = [[双倍出售卡X3]],
+            Desc = [[Double Sell Value Card × 3]],
             Reward = {
                 Type = [[Item]],
                 Id = 103,
@@ -100,7 +100,7 @@ return {
         [4] = {
             Index = 4,
             LoginDays = 4,
-            Desc = [[30分钟力量卡X2]],
+            Desc = [[Strength Card (30 Minutes) × 2]],
             Reward = {
                 Type = [[Item]],
                 Id = 106,
@@ -110,7 +110,7 @@ return {
         [5] = {
             Index = 5,
             LoginDays = 5,
-            Desc = [[15钻石]],
+            Desc = [[15 Diamonds]],
             Reward = {
                 Type = [[Gem]],
                 Count = 15
@@ -119,7 +119,7 @@ return {
         [6] = {
             Index = 6,
             LoginDays = 6,
-            Desc = [[背包扩容卡X2]],
+            Desc = [[Backpack Boost Card (1 Hour) × 2]],
             Reward = {
                 Type = [[Item]],
                 Id = 104,
@@ -129,7 +129,7 @@ return {
         [7] = {
             Index = 7,
             LoginDays = 7,
-            Desc = [[20钻石]],
+            Desc = [[20 Diamonds]],
             Reward = {
                 Type = [[Gem]],
                 Count = 20
@@ -140,7 +140,7 @@ return {
         [1] = {
             Index = 1,
             TargetMinutes = 5,
-            Desc = [[NPC卡X2]],
+            Desc = [[NoobCard × 2]],
             Reward = {
                 Type = [[Item]],
                 Id = 107,
@@ -150,7 +150,7 @@ return {
         [2] = {
             Index = 2,
             TargetMinutes = 10,
-            Desc = [[15分钟力量卡]],
+            Desc = [[Strength Card (15 Minutes) × 1]],
             Reward = {
                 Type = [[Item]],
                 Id = 105,
@@ -160,7 +160,7 @@ return {
         [3] = {
             Index = 3,
             TargetMinutes = 20,
-            Desc = [[双倍出售卡X1]],
+            Desc = [[Double Sell Value Card × 1]],
             Reward = {
                 Type = [[Item]],
                 Id = 103,
@@ -170,7 +170,7 @@ return {
         [4] = {
             Index = 4,
             TargetMinutes = 25,
-            Desc = [[2钻石]],
+            Desc = [[2 Diamonds]],
             Reward = {
                 Type = [[Gem]],
                 Count = 2
@@ -179,7 +179,7 @@ return {
         [5] = {
             Index = 5,
             TargetMinutes = 35,
-            Desc = [[30分钟力量卡X1]],
+            Desc = [[Strength Card (30 Minutes) × 1]],
             Reward = {
                 Type = [[Item]],
                 Id = 106,
@@ -189,7 +189,7 @@ return {
         [6] = {
             Index = 6,
             TargetMinutes = 45,
-            Desc = [[3钻石]],
+            Desc = [[3 Diamonds]],
             Reward = {
                 Type = [[Gem]],
                 Count = 3
@@ -198,7 +198,7 @@ return {
         [7] = {
             Index = 7,
             TargetMinutes = 55,
-            Desc = [[背包扩容卡(一小时)]],
+            Desc = [[Backpack Boost Card (1 Hour) × 1]],
             Reward = {
                 Type = [[Item]],
                 Id = 104,
@@ -208,7 +208,7 @@ return {
         [8] = {
             Index = 8,
             TargetMinutes = 65,
-            Desc = [[5钻石]],
+            Desc = [[5 Diamonds]],
             Reward = {
                 Type = [[Gem]],
                 Count = 5
@@ -217,7 +217,7 @@ return {
         [9] = {
             Index = 9,
             TargetMinutes = 75,
-            Desc = [[双倍出售卡X1]],
+            Desc = [[Double Sell Value Card × 1]],
             Reward = {
                 Type = [[Item]],
                 Id = 103,
@@ -227,7 +227,7 @@ return {
         [10] = {
             Index = 10,
             TargetMinutes = 90,
-            Desc = [[30分钟力量卡X1]],
+            Desc = [[Strength Card (30 Minutes) × 1]],
             Reward = {
                 Type = [[Item]],
                 Id = 106,

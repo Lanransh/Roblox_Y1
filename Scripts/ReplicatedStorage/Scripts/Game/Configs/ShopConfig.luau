@@ -3,7 +3,7 @@ return {
         [1] = {
             Index = 1,
             PageName = [[MiniCoinPage]],
-            Name = [[商城]],
+            Name = [[Shop]],
             ClassName = [[ShopMiniCoinPageClass]],
             PageItemClassName = [[ShopMiniCoinItemClass]],
             ConfigName = [[MiniCoinData]]
@@ -11,7 +11,7 @@ return {
         [2] = {
             Index = 2,
             PageName = [[GemCoinPage]],
-            Name = [[钻石商店]],
+            Name = [[Diamond Shop]],
             ClassName = [[ShopGemCoinPageClass]],
             PageItemClassName = [[ShopGemCoinItemClass]],
             ConfigName = [[GemCoinData]]
@@ -21,43 +21,43 @@ return {
         [1] = {
             Index = 1,
             DevGoodsId = 100,
-            NameTxt = [[新手优惠5折钻石包]],
-            DescTxt = [[获得48颗钻石(超值!)]],
+            NameTxt = [[Starter Diamond Pack (50% Off)]],
+            DescTxt = [[Get 48 Diamonds. Great value!]],
             IconId = [[rbxassetid://97758765626770]]
         },
         [2] = {
             Index = 2,
             DevGoodsId = 111,
-            NameTxt = [[小周卡X1]],
-            DescTxt = [[立即获得100钻石,每天签到多获得30钻石(6天)]],
+            NameTxt = [[Small Weekly Diamond Pass × 1]],
+            DescTxt = [[Get 108 Diamonds instantly, plus 12 bonus Diamonds each day you check in for the next 6 days.]],
             IconId = [[rbxassetid://131496626025159]]
         },
         [3] = {
             Index = 3,
             DevGoodsId = 112,
-            NameTxt = [[大周卡X1]],
-            DescTxt = [[立即获得400钻石,每天签到多获得120钻石(6天)]],
+            NameTxt = [[Large Weekly Diamond Pass × 1]],
+            DescTxt = [[Get 400 Diamonds instantly, plus 63 bonus Diamonds each day you check in for the next 6 days.]],
             IconId = [[rbxassetid://106263117856612]]
         },
         [4] = {
             Index = 4,
             DevGoodsId = 101,
-            NameTxt = [[小额钻石包]],
-            DescTxt = [[获得152颗钻石]],
+            NameTxt = [[Small Diamond Pack]],
+            DescTxt = [[Get 152 Diamonds.]],
             IconId = [[rbxassetid://118332681865511]]
         },
         [5] = {
             Index = 5,
             DevGoodsId = 102,
-            NameTxt = [[钻石包(9折)]],
-            DescTxt = [[获得618颗钻石]],
+            NameTxt = [[Medium Diamond Pack]],
+            DescTxt = [[Get 618 Diamonds.]],
             IconId = [[rbxassetid://107919640061477]]
         },
         [6] = {
             Index = 6,
             DevGoodsId = 103,
-            NameTxt = [[大钻石包(8折)]],
-            DescTxt = [[获得1698颗钻石]],
+            NameTxt = [[Large Diamond Pack]],
+            DescTxt = [[Get 1,698 Diamonds.]],
             IconId = [[rbxassetid://115268170237382]]
         }
     },
@@ -66,7 +66,7 @@ return {
             Index = 1,
             Group = 1,
             GemGoodsId = 150,
-            NameTxt = [[训练倍率X2]],
+            NameTxt = [[Training Multiplier × 2]],
             DescTxt = nil,
             IconId = [[rbxassetid://106875000830237]]
         },
@@ -74,7 +74,7 @@ return {
             Index = 2,
             Group = 1,
             GemGoodsId = 151,
-            NameTxt = [[训练倍率X4]],
+            NameTxt = [[Training Multiplier × 4]],
             DescTxt = nil,
             IconId = [[rbxassetid://106875000830237]]
         },
@@ -82,7 +82,7 @@ return {
             Index = 3,
             Group = 1,
             GemGoodsId = 152,
-            NameTxt = [[训练倍率X8]],
+            NameTxt = [[Training Multiplier × 8]],
             DescTxt = nil,
             IconId = [[rbxassetid://106875000830237]]
         },
@@ -90,7 +90,7 @@ return {
             Index = 4,
             Group = 1,
             GemGoodsId = 153,
-            NameTxt = [[训练倍率X16]],
+            NameTxt = [[Training Multiplier × 16]],
             DescTxt = nil,
             IconId = [[rbxassetid://106875000830237]]
         },
@@ -98,7 +98,7 @@ return {
             Index = 5,
             Group = 1,
             GemGoodsId = 154,
-            NameTxt = [[训练倍率X32]],
+            NameTxt = [[Training Multiplier × 32]],
             DescTxt = nil,
             IconId = [[rbxassetid://106875000830237]]
         },
@@ -106,7 +106,7 @@ return {
             Index = 6,
             Group = 1,
             GemGoodsId = 155,
-            NameTxt = [[训练倍率X64]],
+            NameTxt = [[Training Multiplier × 64]],
             DescTxt = nil,
             IconId = [[rbxassetid://106875000830237]]
         },
@@ -114,7 +114,7 @@ return {
             Index = 7,
             Group = 1,
             GemGoodsId = 156,
-            NameTxt = [[训练倍率X128]],
+            NameTxt = [[Training Multiplier × 128]],
             DescTxt = nil,
             IconId = [[rbxassetid://106875000830237]]
         },
@@ -122,7 +122,7 @@ return {
             Index = 8,
             Group = 1,
             GemGoodsId = 157,
-            NameTxt = [[训练倍率X256]],
+            NameTxt = [[Training Multiplier × 256]],
             DescTxt = nil,
             IconId = [[rbxassetid://106875000830237]]
         },
@@ -130,7 +130,7 @@ return {
             Index = 9,
             Group = 1,
             GemGoodsId = 158,
-            NameTxt = [[训练倍率X512]],
+            NameTxt = [[Training Multiplier × 512]],
             DescTxt = nil,
             IconId = [[rbxassetid://106875000830237]]
         },
@@ -138,7 +138,7 @@ return {
             Index = 10,
             Group = 1,
             GemGoodsId = 159,
-            NameTxt = [[训练倍率X1024]],
+            NameTxt = [[Training Multiplier × 1024]],
             DescTxt = nil,
             IconId = [[rbxassetid://106875000830237]]
         },
@@ -146,7 +146,7 @@ return {
             Index = 11,
             Group = 1,
             GemGoodsId = 160,
-            NameTxt = [[训练倍率X2048]],
+            NameTxt = [[Training Multiplier × 2048]],
             DescTxt = nil,
             IconId = [[rbxassetid://106875000830237]]
         },
@@ -154,24 +154,24 @@ return {
             Index = 12,
             Group = 2,
             GemGoodsId = 201,
-            NameTxt = [[扩容背包格子+1]],
-            DescTxt = [[扩容背包格子+1]],
+            NameTxt = [[Backpack Capacity +1]],
+            DescTxt = [[Backpack Capacity +1]],
             IconId = [[rbxassetid://93903825087336]]
         },
         [13] = {
             Index = 13,
             Group = 2,
             GemGoodsId = 202,
-            NameTxt = [[扩容背包格子+1]],
-            DescTxt = [[扩容背包格子+2]],
+            NameTxt = [[Backpack Capacity +1]],
+            DescTxt = [[Backpack Capacity +1]],
             IconId = [[rbxassetid://93903825087336]]
         },
         [14] = {
             Index = 14,
             Group = 2,
             GemGoodsId = 203,
-            NameTxt = [[扩容背包格子+1]],
-            DescTxt = [[扩容背包格子+3]],
+            NameTxt = [[Backpack Capacity +1]],
+            DescTxt = [[Backpack Capacity +1]],
             IconId = [[rbxassetid://93903825087336]]
         }
     }
