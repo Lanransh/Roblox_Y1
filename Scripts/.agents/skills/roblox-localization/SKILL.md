@@ -10,7 +10,7 @@ description: Roblox 文案翻译接入：Text.Define 声明、脚本创建节点
 - 业务动态文案、脚本自行创建节点的固定文字，都用 `Text.Define`。
 - 例：奖励提示、代码创建按钮的 `"Close"`。
 - 纯数字、玩家输入、内部 ID 不登记翻译，例如 `"123"` 不需要 `Text.Define`。
-- UI 模块先看 Generated 的基类；已正确翻译的不重复补。编辑态静态文字交给节点收集；配置原文用 `Text.TrSource`，不另建定义。
+- UI 模块先看 Generated 的基类；已正确翻译的不重复补。编辑态静态文字交给节点收集；配置展示文案按第 4 条处理。
 
 ## 2. 怎么定义
 
@@ -43,7 +43,16 @@ button.Text = Text.Tr(TranslationTexts.Close)
 
 ## 4. 怎么使用和检查
 
-- 客户端 `Text.Tr(定义, 参数)`；服务端用 `ShowLocalizedTips` 传完整定义和参数，不先拼文案。语言变化后重新翻译。
+客户端按文案来源选接口：
+
+| 来源 | 接口与例子 |
+| --- | --- |
+| 配置读取的道具名、页签名等展示文案 | `Text.TrSource(config.Name)`；配置文案已由工具处理，不复制到 `Text.Define`，不另造 Key |
+| 脚本声明的固定文字、动态模板 | `Text.Tr(TranslationTexts.Close)` 或 `Text.Tr(TranslationTexts.RewardReceived, { value = value })` |
+
+配置字段名以实际配置为准；UI 显示配置名称同样用 `TrSource`，已翻译的结果不再重复翻译。
+
+- 服务端用 `ShowLocalizedTips` 传完整定义和参数，不先拼文案；客户端语言变化后重新翻译。
 - 天数、道具件数等整数数量直接用 `{days:int}`、`{count:int}`，传整数 number，不使用 `GameUtility.NumberToText`。
 - 收益、货币、均分结果等允许小数，用 `GameUtility.NumberToText` 后传 `{value}`；例如 `2/3` 显示 `0.67`，不擅自取整。格式化只影响显示，不改计算值。
 - 字符串用 `{name}`，禁用 `{name:string}`；数字格式说明符传 number，日期传 Unix 秒，倒计时在参数侧补零；参数名与模板一致。
