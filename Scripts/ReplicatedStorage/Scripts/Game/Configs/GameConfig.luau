@@ -2693,159 +2693,159 @@ return {
     LevelConfig = {
         ["World1.Level_1"] = {
             LevelKey = [[World1.Level_1]],
-            StoneHP = 29
+            StoneHP = 2
         },
         ["World1.Level_2"] = {
             LevelKey = [[World1.Level_2]],
-            StoneHP = 122
+            StoneHP = 44800
         },
         ["World1.Level_3"] = {
             LevelKey = [[World1.Level_3]],
-            StoneHP = 520
+            StoneHP = 4.46e+6
         },
         ["World1.Level_4"] = {
             LevelKey = [[World1.Level_4]],
-            StoneHP = 2176
+            StoneHP = 9.61e+7
         },
         ["World1.Level_5"] = {
             LevelKey = [[World1.Level_5]],
-            StoneHP = 9101
+            StoneHP = 1.58e+9
         },
         ["World1.Level_6"] = {
             LevelKey = [[World1.Level_6]],
-            StoneHP = 38000
+            StoneHP = 1.38e+10
         },
         ["World1.Level_7"] = {
             LevelKey = [[World1.Level_7]],
-            StoneHP = 159000
+            StoneHP = 1.15e+11
         },
         ["World1.Level_8"] = {
             LevelKey = [[World1.Level_8]],
-            StoneHP = 664000
+            StoneHP = 1.95e+12
         },
         ["World1.Level_9"] = {
             LevelKey = [[World1.Level_9]],
-            StoneHP = 2.77e+6
+            StoneHP = 2.19e+13
         },
         ["World1.Level_10"] = {
             LevelKey = [[World1.Level_10]],
-            StoneHP = 1.16e+7
+            StoneHP = 8.54e+13
         },
         ["World1.Level_11"] = {
             LevelKey = [[World1.Level_11]],
-            StoneHP = 4.84e+7
+            StoneHP = 2.06e+14
         },
         ["World1.Level_12"] = {
             LevelKey = [[World1.Level_12]],
-            StoneHP = 2.02e+8
+            StoneHP = 1.09e+15
         },
         ["World1.Level_13"] = {
             LevelKey = [[World1.Level_13]],
-            StoneHP = 8.44e+8
+            StoneHP = 9.24e+15
         },
         ["World2.Level_14"] = {
             LevelKey = [[World2.Level_14]],
-            StoneHP = 3.53e+9
+            StoneHP = 7.59e+16
         },
         ["World2.Level_15"] = {
             LevelKey = [[World2.Level_15]],
-            StoneHP = 1.47e+10
+            StoneHP = 8.97e+17
         },
         ["World2.Level_16"] = {
             LevelKey = [[World2.Level_16]],
-            StoneHP = 6.15e+10
+            StoneHP = 1.26e+19
         },
         ["World2.Level_17"] = {
             LevelKey = [[World2.Level_17]],
-            StoneHP = 2.57e+11
+            StoneHP = 1.83e+20
         },
         ["World2.Level_18"] = {
             LevelKey = [[World2.Level_18]],
-            StoneHP = 1.07e+12
+            StoneHP = 7.25e+20
         },
         ["World2.Level_19"] = {
             LevelKey = [[World2.Level_19]],
-            StoneHP = 4.48e+12
+            StoneHP = 4.830000000000000524288e+21
         },
         ["World2.Level_20"] = {
             LevelKey = [[World2.Level_20]],
-            StoneHP = 1.87e+13
+            StoneHP = 4.5099999999999996854272e+22
         },
         ["World2.Level_21"] = {
             LevelKey = [[World2.Level_21]],
-            StoneHP = 7.82e+13
+            StoneHP = 2.33999999999999995805696e+23
         },
         ["World2.Level_22"] = {
             LevelKey = [[World2.Level_22]],
-            StoneHP = 3.27e+14
+            StoneHP = 1.270000000000000037748736e+24
         },
         ["World2.Level_23"] = {
             LevelKey = [[World2.Level_23]],
-            StoneHP = 1.37e+15
+            StoneHP = 6.75000000000000002097152e+24
         },
         ["World2.Level_24"] = {
             LevelKey = [[World2.Level_24]],
-            StoneHP = 5.7e+15
+            StoneHP = 4.739999999999999823839232e+25
         },
         ["World2.Level_25"] = {
             LevelKey = [[World2.Level_25]],
-            StoneHP = 2.38e+16
+            StoneHP = 3.3499999999999997558915072e+26
         },
         ["World2.Level_26"] = {
             LevelKey = [[World2.Level_26]],
-            StoneHP = 9.95e+16
+            StoneHP = 2.23000000000000003238002688e+27
         },
         ["World3.Level_27"] = {
             LevelKey = [[World3.Level_27]],
-            StoneHP = 4.16e+17
+            StoneHP = 5.529999999999999828838842368e+27
         },
         ["World3.Level_28"] = {
             LevelKey = [[World3.Level_28]],
-            StoneHP = 1.74e+18
+            StoneHP = 1.3699999999999999055040086016e+28
         },
         ["World3.Level_29"] = {
             LevelKey = [[World3.Level_29]],
-            StoneHP = 7.25e+18
+            StoneHP = 4.0199999999999996520942272512e+28
         },
         ["World3.Level_30"] = {
             LevelKey = [[World3.Level_30]],
-            StoneHP = 3.03e+19
+            StoneHP = 8.8099999999999998064513253376e+28
         },
         ["World3.Level_31"] = {
             LevelKey = [[World3.Level_31]],
-            StoneHP = 1.27e+20
+            StoneHP = 2.39000000000000007848650080256e+29
         },
         ["World3.Level_32"] = {
             LevelKey = [[World3.Level_32]],
-            StoneHP = 5.29e+20
+            StoneHP = 7.1899999999999995265402535936e+29
         },
         ["World3.Level_33"] = {
             LevelKey = [[World3.Level_33]],
-            StoneHP = 2.21e+21
+            StoneHP = 2.249999999999999974371661709312e+30
         },
         ["World3.Level_34"] = {
             LevelKey = [[World3.Level_34]],
-            StoneHP = 9.230000000000000524288e+21
+            StoneHP = 6.650000000000000230748997025792e+30
         },
         ["World3.Level_35"] = {
             LevelKey = [[World3.Level_35]],
-            StoneHP = 3.8499999999999998951424e+22
+            StoneHP = 1.6700000000000000697990704529408e+31
         },
         ["World3.Level_36"] = {
             LevelKey = [[World3.Level_36]],
-            StoneHP = 1.6099999999999998951424e+23
+            StoneHP = 3.5900000000000000179055575957504e+31
         },
         ["World3.Level_37"] = {
             LevelKey = [[World3.Level_37]],
-            StoneHP = 6.72999999999999955959808e+23
+            StoneHP = 8.62000000000000055984093396992e+31
         },
         ["World3.Level_38"] = {
             LevelKey = [[World3.Level_38]],
-            StoneHP = 2.809999999999999861587968e+24
+            StoneHP = 2.01000000000000013848433777442816e+32
         },
         ["World3.Level_39"] = {
             LevelKey = [[World3.Level_39]],
-            StoneHP = 1.1699999999999999320522752e+25
+            StoneHP = 4.0500000000000000101639864188928e+32
         }
     }
 }
