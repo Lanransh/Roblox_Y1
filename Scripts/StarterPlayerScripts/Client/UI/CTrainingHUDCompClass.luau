@@ -2,7 +2,7 @@ local FX = _G.FX
 local FXLoader = FX.Loader
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local TranslationTexts = Text.Define("TrainingHUD", {
-    Strength = "Training ×{rate}",
+    Strength = "{rate}x Strength",
 })
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local Component = FX.Class("CTrainingHUDCompClass", "FCPlayerCompClass")

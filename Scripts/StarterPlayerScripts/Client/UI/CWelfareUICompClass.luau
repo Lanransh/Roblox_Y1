@@ -12,6 +12,7 @@ local TranslationTexts = Text.Define("Welfare", {
 })
 FXLoader:RequireFromParent(script, "Generated/CWelfareView")
 local Welfare = FXLoader:RequireShared("Scripts/Game/Shared/Welfare")
+local Rebirth = FXLoader:RequireShared("Scripts/Game/Shared/Rebirth")
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local Fields = _G.PlayerDataConfig
 local Component = FX.Class("CWelfareUICompClass", "CWelfareView")
@@ -32,6 +33,7 @@ function Component:OnReady()
     self._mainRewardDot = FXLoader:Here(self:GetPlayerNode():WaitForChild("PlayerGui"),
         "MainUI/LeftCenter/RewardBtn/RedDotImg")
     self._mainRewardDot.Visible = false
+    local offlineConfig = _G.GameConfig.CommonConfig.OfflineReward
     self.Config = {
         groups = {
             {kind = "online", page = "OnlineBox", columns = 3, gapX = 20, gapY = 16, items = {}},
@@ -40,7 +42,7 @@ function Component:OnReady()
         },
         diamonds = {rewardId = "daily_diamonds", passes = {},
             loginAmount = _G.GameConfig.CommonConfig.LoginData.GemCount},
-        offline = {rewardId = ""},
+        offline = {rewardId = "", boostMultiplier = offlineConfig.VIPRate / offlineConfig.Rate},
         allowUnavailableAction = true,
     }
     for index, config in ipairs(_G.ActivityConfig.OnlineRewardData) do
@@ -66,6 +68,7 @@ function Component:OnReady()
         })
     end
     self._firstSnapshot = true
+    self._claimQueue = {}
     self:Hide()
     --- 云端译文加载或语言切换时刷新现有福利，不再次自动打开。
     self:TrackConnection(self._localization.Changed:Connect(function()
@@ -74,9 +77,14 @@ function Component:OnReady()
     self:BindUIData()
 end
 
---- 监听立即回放当前快照，不额外请求初始数据或重复绑定按钮。
+--- 监听立即回放当前快照；训练值和重生次数变化时同步刷新离线奖励的经验上限。
 function Component:BindUIData()
     self:WatchDataChanged(Fields.WelfareState, self.RefreshWelfare, self)
+    for index, field in ipairs({Fields.RockTrainingValue, Fields.RebirthCount}) do
+        self:WatchDataChanged(field, function()
+            self:RefreshWelfare()
+        end)
+    end
 end
 
 --- 将服务端快照转换为完整条目状态；主引导未完成时跳过首次自动弹窗，手动领取不受影响。
@@ -113,6 +121,13 @@ function Component:RefreshWelfare(data)
             status = data.ready and (data.dailyAmount > 0 and "Claimable" or "Claimed") or "Locked",
         },
     }
+    local remaining = math.max(0, Rebirth.GetMaxTrainingValue(self:GetNumber(Fields.RebirthCount))
+        - self:GetNumber(Fields.RockTrainingValue))
+    self.State.offline.training = math.min(data.offline.training, remaining)
+    self.State.offline.boostedTraining = math.min(data.offline.training * self.Config.offline.boostMultiplier, remaining)
+    self.State.offline.boostAvailable = self.State.offline.boostedTraining > self.State.offline.training
+    self.State.offline.boostPrice = _G.GoodsConfig.GemGoodsData[1].Price
+    self.State.offline.boostCurrency = "Gem"
     for index, group in ipairs(self.Config.groups) do
         for itemIndex, config in ipairs(group.items) do
             local current = group.kind == "task" and (config.taskType == "OnlineTime"
@@ -133,6 +148,9 @@ function Component:RefreshWelfare(data)
             or self._pending.kind == "diamonds" and self.State.diamonds
             or self.State.entries[self._pending.kind][self._pending.id]
         entry.pending = true
+        if self._pending.kind == "offline" then
+            entry.pendingMultiplier = self._pending.multiplier
+        end
     end
     if self._failure then
         local entry = self._failure.kind == "offline" and self.State.offline
@@ -199,11 +217,15 @@ function Component:FormatNumber(value)
     return GameUtility.NumberToText(value)
 end
 
---- 条件不足只提示具体原因；服务端确认领取成功后播放奖励音，并以权威快照刷新。
+--- 条件不足提示原因；同页批量领取顺序排队，服务端逐项确认后刷新权威快照。
 --- @param action string 展示层的 Claim、ClaimDiamonds 或 ClaimOffline。
 --- @param payload table 稳定 rewardId 及可选 kind、multiplier。
 function Component:OnUIAction(action, payload)
     if self._requestTask then
+        if action == "Claim" and (payload.kind == "online" or payload.kind == "signin")
+            and self._pending.kind == payload.kind then
+            table.insert(self._claimQueue, {kind = payload.kind, rewardId = payload.rewardId})
+        end
         return
     end
     if not self._snapshot.ready then
@@ -235,7 +257,7 @@ function Component:OnUIAction(action, payload)
         self._commonUI:ShowLocalizedTips(key, arguments)
         return
     end
-    self._pending = {kind = kind, id = payload.rewardId}
+    self._pending = {kind = kind, id = payload.rewardId, multiplier = payload.multiplier}
     self._failure = nil
     self:RefreshWelfare()
     --- 异步等待只发生在客户端，服务端结算不依赖窗口是否仍然打开。
@@ -257,6 +279,13 @@ function Component:OnUIAction(action, payload)
         end
         -- 回包立即恢复权威按钮；revision 避免稍后到达的旧同步覆盖新状态。
         self:RefreshWelfare(ok and type(result) == "table" and result.state or nil)
+        while #self._claimQueue > 0 do
+            local nextClaim = table.remove(self._claimQueue, 1)
+            if self.State.entries[nextClaim.kind][nextClaim.rewardId].status == "Claimable" then
+                self:OnUIAction("Claim", nextClaim)
+                break
+            end
+        end
     end)
 end
 

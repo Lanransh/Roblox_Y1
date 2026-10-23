@@ -1042,6 +1042,15 @@
                   "Visible": true,
                   "ZIndex": 7
                 }
+              },
+              {
+                "children": [],
+                "className": "UIScale",
+                "id": "c5b5a44e-1d02-4339-9b8f-fc128a0233d7",
+                "name": "CloseButtonScale",
+                "properties": {
+                  "Scale": 1.1
+                }
               }
             ],
             "className": "Frame",
@@ -1059,11 +1068,11 @@
               "LayoutOrder": 0,
               "Position": {
                 "x": {
-                  "offset": 588,
+                  "offset": 585,
                   "scale": 0
                 },
                 "y": {
-                  "offset": 9,
+                  "offset": 6,
                   "scale": 0
                 }
               },

@@ -202,7 +202,7 @@ function CCurrencyShopView:Render(state)
                 self.Cards[product.id] = card
             end
             kept[product.id] = true
-            card.node.Position = UDim2.fromOffset(((count - 1) % 2) * 374, math.floor((count - 1) / 2) * 192)
+            card.node.Position = UDim2.fromOffset(((count - 1) % 2) * 304, math.floor((count - 1) / 2) * 156)
             card.title.Text = product.titleText or Text.TrSource(product.title)
             card.description.Text = product.descriptionText or Text.TrSource(product.description)
             card.icon.Image = product.icon or ""
@@ -217,7 +217,7 @@ function CCurrencyShopView:Render(state)
             elseif product.soldOut then
                 card.price.Text = Text.Tr(TranslationTexts.SoldOut)
             end
-            card.price.TextSize = (product.unavailable or product.soldOut) and 20 or 24
+            card.price.TextSize = (product.unavailable or product.soldOut) and 16.25 or 19.5
             self:SetButtonEnabled(card.button, not state.busy and not pending and not product.unavailable
                 and (not product.soldOut or product.allowSoldOutAction == true))
         end
@@ -228,7 +228,7 @@ function CCurrencyShopView:Render(state)
             self.Cards[id] = nil
         end
     end
-    self.List.CanvasSize = UDim2.fromOffset(732, math.max(386, math.ceil(count / 2) * 192 - 12))
+    self.List.CanvasSize = UDim2.fromOffset(595, math.max(314, math.ceil(count / 2) * 156 - 10))
 end
 
 -- 游戏接入必须处理声明的动作。

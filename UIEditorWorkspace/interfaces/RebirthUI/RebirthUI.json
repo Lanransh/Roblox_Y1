@@ -2165,7 +2165,7 @@
                     "y": 0
                   },
                   "AutoLocalize": true,
-                  "BackgroundColor3": "#a86b09",
+                  "BackgroundColor3": "#691582",
                   "BackgroundTransparency": 0.2,
                   "ClipsDescendants": false,
                   "LayoutOrder": 0,
@@ -2229,31 +2229,31 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": -1,
+                      "offset": 4,
                       "scale": 0
                     }
                   },
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 0,
-                      "scale": 1
+                      "offset": 155,
+                      "scale": 0
                     },
                     "y": {
-                      "offset": 0,
-                      "scale": 1
+                      "offset": 20,
+                      "scale": 0
                     }
                   },
                   "Text": "Skip",
                   "TextColor3": "#ffffff",
                   "TextScaled": false,
-                  "TextSize": 26,
+                  "TextSize": 18,
                   "TextTransparency": 0,
-                  "TextWrapped": true,
+                  "TextWrapped": false,
                   "TextXAlignment": "Center",
                   "TextYAlignment": "Center",
                   "Visible": true,
-                  "ZIndex": 7
+                  "ZIndex": 8
                 }
               },
               {
@@ -2262,12 +2262,170 @@
                 "id": "f47db033-c71d-4ed4-8552-bc49f0752a27",
                 "name": "SurfaceGradient",
                 "properties": {
-                  "ColorEnd": "#ffb22c",
-                  "ColorStart": "#fff331",
+                  "ColorEnd": "#bc20dc",
+                  "ColorStart": "#e63bfa",
                   "Enabled": true,
                   "Rotation": 90,
                   "TransparencyEnd": 0,
                   "TransparencyStart": 0
+                }
+              },
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "className": "ImageLabel",
+                    "id": "d593ea00-9a35-4150-a84c-a4f5a5e13390",
+                    "imageAssetId": "f21e2345b80f46eea8e85f21eee07995",
+                    "name": "SkipCoinIconImg",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0.5,
+                        "y": 0.5
+                      },
+                      "AutoLocalize": true,
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 1,
+                      "ClipsDescendants": false,
+                      "Image": "rbxassetid://87283536652233",
+                      "ImageColor3": "#ffffff",
+                      "ImageTransparency": 0,
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 0,
+                          "scale": 0.345
+                        },
+                        "y": {
+                          "offset": 0,
+                          "scale": 0.5
+                        }
+                      },
+                      "Rotation": 0,
+                      "ScaleType": "Fit",
+                      "Size": {
+                        "x": {
+                          "offset": 16,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 16,
+                          "scale": 0
+                        }
+                      },
+                      "TileSize": {
+                        "x": {
+                          "offset": 0,
+                          "scale": 1
+                        },
+                        "y": {
+                          "offset": 0,
+                          "scale": 1
+                        }
+                      },
+                      "Visible": true,
+                      "ZIndex": 8
+                    }
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [],
+                        "className": "UIStroke",
+                        "id": "efa4f147-552f-4a9c-8524-fab3086eab6f",
+                        "name": "TextStroke",
+                        "properties": {
+                          "Color": "#20231c",
+                          "Enabled": true,
+                          "Thickness": 1.15,
+                          "Transparency": 0
+                        }
+                      }
+                    ],
+                    "className": "TextLabel",
+                    "id": "71f9f8b1-0105-4987-b37c-5a22867988ac",
+                    "name": "SkipCostTxt",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0.5,
+                        "y": 0.5
+                      },
+                      "AutoLocalize": false,
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 1,
+                      "ClipsDescendants": false,
+                      "Font": "GothamBold",
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 0,
+                          "scale": 0.58
+                        },
+                        "y": {
+                          "offset": 0,
+                          "scale": 0.5
+                        }
+                      },
+                      "Rotation": 0,
+                      "Size": {
+                        "x": {
+                          "offset": 70,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 18,
+                          "scale": 0
+                        }
+                      },
+                      "Text": "",
+                      "TextColor3": "#ffffff",
+                      "TextScaled": false,
+                      "TextSize": 16,
+                      "TextTransparency": 0,
+                      "TextWrapped": false,
+                      "TextXAlignment": "Center",
+                      "TextYAlignment": "Center",
+                      "Visible": true,
+                      "ZIndex": 8
+                    }
+                  }
+                ],
+                "className": "Frame",
+                "id": "77e35b1b-95da-47b7-9530-46be5f5a51ca",
+                "name": "SkipPriceBox",
+                "properties": {
+                  "AnchorPoint": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "AutoLocalize": true,
+                  "BackgroundColor3": "#ffffff",
+                  "BackgroundTransparency": 1,
+                  "ClipsDescendants": false,
+                  "LayoutOrder": 0,
+                  "Position": {
+                    "x": {
+                      "offset": 0,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 25,
+                      "scale": 0
+                    }
+                  },
+                  "Rotation": 0,
+                  "Size": {
+                    "x": {
+                      "offset": 155,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 19,
+                      "scale": 0
+                    }
+                  },
+                  "Visible": true,
+                  "ZIndex": 8
                 }
               }
             ],
@@ -2735,7 +2893,17 @@
             }
           },
           {
-            "children": [],
+            "children": [
+              {
+                "children": [],
+                "className": "UIScale",
+                "id": "c8ae8109-c011-4111-8f55-fd69c39ba096",
+                "name": "CloseButtonScale",
+                "properties": {
+                  "Scale": 1.1
+                }
+              }
+            ],
             "className": "ImageButton",
             "id": "463b80ae-5dbe-4cb8-a2fc-ecdc3ec314cc",
             "imageAssetId": "194789043de84989913e2a71d9dbff16",
@@ -2755,11 +2923,11 @@
               "LayoutOrder": 0,
               "Position": {
                 "x": {
-                  "offset": 545,
+                  "offset": 543,
                   "scale": 0
                 },
                 "y": {
-                  "offset": 6,
+                  "offset": 4,
                   "scale": 0
                 }
               },

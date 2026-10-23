@@ -67,17 +67,26 @@ function Component:OnReady()
             self:RefreshUI()
         end
     end))
-    --- 从平台读取当前玩家看到的价格，未能读取的付费商品暂不开放。
+    self:LoadPrices()
+end
+
+--- 只查询尚未取得的报价，重新打开商店时重试失败商品，不重复启动正在进行的查询。
+function Component:LoadPrices()
+    if self._priceTask then
+        return
+    end
     self._priceTask = task.defer(function()
         for index, item in ipairs(_G.ShopConfig.MiniCoinData) do
             local goods = _G.GoodsConfig.GoodsData[item.DevGoodsId]
             local productId = goods and goods.RobloxProductId
-            if type(productId) == "number" and productId > 0 then
+            if type(productId) == "number" and productId > 0 and self._prices[item.DevGoodsId] == nil then
                 local ok, info = pcall(function()
                     return MarketplaceService:GetProductInfoAsync(productId, Enum.InfoType.Product)
                 end)
-                if ok and type(info.PriceInRobux) == "number" then
+                if ok and type(info) == "table" and type(info.PriceInRobux) == "number" then
                     self._prices[item.DevGoodsId] = info.PriceInRobux
+                    self:BuildProducts()
+                    self:RefreshUI()
                 end
             end
         end
@@ -188,13 +197,14 @@ function Component:FormatNumber(value)
     return GameUtility.NumberToText(value)
 end
 
---- 打开时刷新数据与商品页，不重复绑定事件。
+--- 打开时刷新商品页并重试未取得的报价，不重复绑定事件。
 function Component:OnShow()
     self.State.open = true
     if self.State.tab == "Robux" then
         self:ReportPurchaseAnalytics("Open")
     end
     self:RefreshUI()
+    self:LoadPrices()
 end
 
 --- 数据同步后仍保留关闭状态。

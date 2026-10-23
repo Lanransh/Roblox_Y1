@@ -512,7 +512,17 @@
                 }
               },
               {
-                "children": [],
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UIScale",
+                    "id": "62cc5f3c-4211-42e0-969e-99f28c48db1b",
+                    "name": "CloseButtonScale",
+                    "properties": {
+                      "Scale": 1.1
+                    }
+                  }
+                ],
                 "className": "ImageButton",
                 "id": "ccfef3e8-479c-4332-b077-f8a35d7b4036",
                 "imageAssetId": "d22a5479fa52468fb6c159b40959050b",
@@ -532,11 +542,11 @@
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
-                      "offset": 538,
+                      "offset": 535,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 9,
+                      "offset": 6,
                       "scale": 0
                     }
                   },

@@ -7,6 +7,8 @@ local TranslationTexts = Text.Define("Activity", {
     AlreadyClaimed = "You have already claimed this reward.",
     InventoryFull = "Not enough inventory space. Your reward is still available.",
     Success = "Reward claimed!",
+    NeedDiamonds = "Not enough diamonds.",
+    NoBoostGain = "The boosted reward would not add any extra Strength. Claim the normal reward instead.",
 })
 local GameUtility = FX.Loader:RequireShared("Scripts/Game/Shared/GameUtility")
 local Fields = _G.PlayerDataConfig
@@ -303,7 +305,7 @@ end
 --- RPC 只领取本人配置档位；全程不 yield，发奖失败保留领取资格。
 --- @param kind any 客户端类别，仅接受 online、signin、task、diamonds、offline、retention。
 --- @param rewardId any 稳定字符串 ID，不接受客户端金额或玩家身份。
---- @param multiplier any 离线领取方式，仅接受数值 1 或 2；双倍暂时免费。
+--- @param multiplier any 离线领取方式，仅接受 1 或配置 VIPRate/Rate；加成领取消耗配置商品的钻石。
 --- @return table 成功标记、提示 Key 和最新权威快照。
 function Component:Claim(kind, rewardId, multiplier)
     if not self._lastTime or type(kind) ~= "string" or type(rewardId) ~= "string" or #rewardId > 32 then
@@ -329,15 +331,23 @@ function Component:Claim(kind, rewardId, multiplier)
             end
         end
     elseif kind == "offline" then
+        local config = _G.GameConfig.CommonConfig.OfflineReward
+        local boostMultiplier = config.VIPRate / config.Rate
         if data.offlineClaimDay == data.day then
             key = TranslationTexts.AlreadyClaimed
-        elseif rewardId == data.offline.id and data.offline.training > 0 and (multiplier == 1 or multiplier == 2) then
-            local config = _G.GameConfig.CommonConfig.OfflineReward
-            local rate = multiplier == 2 and config.VIPRate or config.Rate
+        elseif rewardId == data.offline.id and data.offline.training > 0
+            and (multiplier == 1 or multiplier == boostMultiplier) then
+            local price = multiplier ~= 1 and _G.GoodsConfig.GemGoodsData[1].Price or 0
+            local costs = price > 0 and {{Type = "Money", Currency = "Diamonds", Count = price}} or {}
             local remaining = Rebirth.GetMaxTrainingValue(self:GetNumber(Fields.RebirthCount))
                 - self:GetNumber(Fields.RockTrainingValue)
-            local gain = math.max(0, math.min(data.offline.training * rate / config.Rate, remaining))
-            if gain > 0 and self:RequireComponent("FSRewardComp"):AddRewards({
+            local gain = math.max(0, math.min(data.offline.training * multiplier, remaining))
+            local normalGain = math.max(0, math.min(data.offline.training, remaining))
+            if multiplier ~= 1 and gain <= normalGain then
+                key = TranslationTexts.NoBoostGain
+            elseif self:GetNumber(Fields.Diamonds) < price then
+                key = TranslationTexts.NeedDiamonds
+            elseif gain > 0 and self:RequireComponent("FSRewardComp"):ExchangeRewards(costs, {
                 {Type = "Money", Currency = "RockTrainingValue", Count = gain},
             }) then
                 -- 发奖和批次消费不 yield，重复请求只能命中已领取状态。
@@ -347,6 +357,10 @@ function Component:Claim(kind, rewardId, multiplier)
                 self:SetTable(Fields.WelfareData, data)
                 self:RequireComponent("SMiscComp"):RefreshProgress()
                 FX.Network:SendMsgToClient(self:GetPlayerId(), "S2C_TrainingEffect", gain, true)
+                if price > 0 then
+                    self:RequireComponent("SAnalyticsComp"):Sink("Diamonds", price,
+                        self:GetNumber(Fields.Diamonds), "GemGoods:1")
+                end
                 success = true
             end
         end

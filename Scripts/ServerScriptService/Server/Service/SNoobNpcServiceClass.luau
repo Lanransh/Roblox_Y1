@@ -145,6 +145,8 @@ function Service:RefreshWorld(world, serverTime)
         })
         particles.Parent = root
         local prompt = Instance.new("ProximityPrompt")
+        prompt.Style = Enum.ProximityPromptStyle.Custom
+        prompt:SetAttribute("CustomPickup", true)
         prompt.ActionText = "Pick Up"
         prompt.ObjectText = ""
         prompt.AutoLocalize = true

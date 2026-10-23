@@ -11,19 +11,12 @@ local TranslationTexts = Text.Define("GiftDrop", {
 })
 local GiftDrop = {}
 
---- 注册个人礼盒通知；生成表现与领取请求分离，客户端不能自行签发奖励资格。
+--- 先注册个人礼盒通知；场景牌子异步复制，不阻塞客户端入口。
 function GiftDrop.Init()
     local handles = {}
-    local countdowns = {}
-    for worldIndex = 1, 3 do
-        local countdown = FXLoader:Workspace("Decorations/World" .. worldIndex
-            .. "Decorations/MysteryGiftLanding/CountdownSign/Display/Countdown")
-        countdown.AutoLocalize = false
-        table.insert(countdowns, countdown)
-    end
     local secondsLeft
     local hasDrops = false
-    --- 根据服务端个人在线进度刷新世界牌子，云端语言变化时复用最新状态。
+    --- 只刷新已加载的世界牌子；流入后的新节点复用最新倒计时与语言。
     local function RefreshCountdown()
         local text
         if secondsLeft == nil then
@@ -35,8 +28,13 @@ function GiftDrop.Init()
         else
             text = Text.Tr(TranslationTexts.Complete)
         end
-        for countdownIndex, countdown in ipairs(countdowns) do
-            countdown.Text = text
+        for worldIndex = 1, 3 do
+            local countdown = FXLoader:Find(workspace, "Decorations/World" .. worldIndex
+                .. "Decorations/MysteryGiftLanding/CountdownSign/Display/Countdown")
+            if countdown then
+                countdown.AutoLocalize = false
+                countdown.Text = text
+            end
         end
     end
     --- 仅展示服务端计算的剩余时间，不在客户端签发到期资格。
@@ -48,6 +46,16 @@ function GiftDrop.Init()
         RefreshCountdown()
     end)
     FC.Localization.Changed:Connect(RefreshCountdown)
+    local elapsed = 0
+    --- 入口模块与客户端同寿命，每秒补绑延迟复制或重新流入的牌子。
+    --- @param deltaTime number 本帧经过的秒数。
+    RunService.Heartbeat:Connect(function(deltaTime)
+        elapsed += deltaTime
+        if elapsed >= 1 then
+            elapsed = 0
+            RefreshCountdown()
+        end
+    end)
     RefreshCountdown()
     --- 跨日释放旧礼盒，移除已经失效的领取资格。
     FX.Network:RegServerMsgCallback("S2C_ClearGiftDrops", function()
@@ -186,6 +194,8 @@ function GiftDrop.Spawn(options, onOpened)
     sparkles.Enabled = false
     sparkles.Parent = sparkleOrigin
     local prompt = Instance.new("ProximityPrompt")
+    prompt.Style = Enum.ProximityPromptStyle.Custom
+    prompt:SetAttribute("CustomPickup", true)
     prompt.AutoLocalize = false
     prompt.ActionText = Text.Tr(TranslationTexts.PickUp)
     prompt.ObjectText = ""

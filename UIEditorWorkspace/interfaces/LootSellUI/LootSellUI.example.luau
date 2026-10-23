@@ -1,7 +1,7 @@
 local FX = _G.FX
 local CLootSellPreview = FX.Class("CLootSellPreview", "CLootSellView")
 
--- 准备十二条模拟数据以验证满容量和滚动列表。
+-- 准备十二条模拟数据以验证满容量��滚动列表。
 -- @param owner table 编辑器宿主
 function CLootSellPreview:Ctor(owner)
     CLootSellPreview.Super.Ctor(self, owner)

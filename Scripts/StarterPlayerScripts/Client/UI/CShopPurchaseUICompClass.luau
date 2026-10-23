@@ -54,13 +54,15 @@ function Component:OpenProduct(product)
     self:Show()
 end
 
---- 从公开查询读取当前商品文案，不在刷新购买页时重建整个商店。
+--- 读取当前商品文案；独立力量包按保留的定义翻译，不缓存旧语言的组合文本。
 --- @return table 购买页的完整配置。
 function Component:GetUIConfig()
     local shop = self:GetPlayerObject():RequireComponent("CCurrencyShopUIComp")
     local product = shop:GetProduct(self._product.goodsId) or self._product
     self.Config = {itemId = tostring(self._product.goodsId), name = product.title,
-        nameText = product.titleText, descriptionText = product.descriptionText,
+        nameText = product.nameDefinition and Text.Tr(product.nameDefinition) or product.titleText,
+        descriptionText = product.descriptionDefinition
+            and Text.Tr(product.descriptionDefinition, product.descriptionArguments) or product.descriptionText,
         category = "DIAMOND UPGRADE",
         description = product.description,
         price = self._product.price, icon = self._product.icon}

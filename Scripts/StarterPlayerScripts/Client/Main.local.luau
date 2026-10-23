@@ -9,6 +9,7 @@ local FX = _G.FX
 local FXLoader = FX.Loader
 local Localization = FXLoader:RequireFromParent(script, "Localization")
 FC.Localization = Localization.New(Players.LocalPlayer)
+FXLoader:RequireFromParent(script, "PickupPrompt").Init()
 
 FC.GiftDrop = require(script.Parent.GiftDrop)
 FC.GiftDrop.Init()

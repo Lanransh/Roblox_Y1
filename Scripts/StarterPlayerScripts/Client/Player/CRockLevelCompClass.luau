@@ -252,6 +252,8 @@ function Component:SpawnDrop(data)
     hud.Enabled = false
 
     local prompt = Instance.new("ProximityPrompt")
+    prompt.Style = Enum.ProximityPromptStyle.Custom
+    prompt:SetAttribute("CustomPickup", true)
     -- 原生提示与掉落 HUD 共用客户端翻译及语言刷新入口。
     prompt.AutoLocalize = false
     prompt.ActionText = Text.Tr(TranslationTexts.PickUp)

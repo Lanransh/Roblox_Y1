@@ -59,22 +59,8 @@ function Component:BindUIData()
     self:WatchDataChanged(Fields.WorldIndex, self.RefreshWorlds, self)
 end
 
---- 按世界配置绑定金色传送门；场景入口缺失时保留其他世界的入口。
+--- 持续检测已加载的传送门，初始化时尚未复制的入口不影响后续识别。
 function Component:BindPortalArea()
-    self._portals = {}
-    for index, world in ipairs(GameEnum.WorldTransferConfig) do
-        local portal = FXLoader:Find(workspace, world.PortalPath)
-        if portal then
-            local center, size = portal:GetBoundingBox()
-            table.insert(self._portals, {Node = portal, Center = center, Size = size})
-        else
-            FX.Log:Warn("CWorldTeleportUICompClass: portal not found: " .. world.PortalPath)
-        end
-    end
-    if #self._portals == 0 then
-        return
-    end
-    -- 门体固定不动，进场检测只缓存一次包围盒，避免每次遍历门体装饰。
     self._inPortalArea = false
     self._portalCharacter = nil
     self._nextPortalCheck = 0
@@ -90,7 +76,7 @@ function Component:BindPortalArea()
     self:UpdatePortalArea()
 end
 
---- 按传送门包围盒检测进出；手动关闭后留在门内不会反复弹出，离开时自动关闭。
+--- 按当前已加载的门体包围盒检测进出，覆盖延迟复制、分批流入和流出后重新加载。
 function Component:UpdatePortalArea()
     local character = self:GetPlayerCharacter()
     if character ~= self._portalCharacter then
@@ -102,10 +88,12 @@ function Component:UpdatePortalArea()
     local humanoid = character and character:FindFirstChildOfClass("Humanoid")
     local inside = false
     if root and humanoid and humanoid.Health > 0 then
-        for index, portal in ipairs(self._portals) do
-            if portal.Node:IsDescendantOf(workspace) then
-                local point = portal.Center:PointToObjectSpace(root.Position)
-                local half = portal.Size * 0.5
+        for index, world in ipairs(GameEnum.WorldTransferConfig) do
+            local portal = FXLoader:Find(workspace, world.PortalPath)
+            if portal then
+                local center, size = portal:GetBoundingBox()
+                local point = center:PointToObjectSpace(root.Position)
+                local half = size * 0.5
                 -- 金环装饰很高，只认贴近地面的高度，避免从门体上方经过时触发。
                 local height = point.Y + half.Y
                 if math.abs(point.X) <= half.X and math.abs(point.Z) <= half.Z

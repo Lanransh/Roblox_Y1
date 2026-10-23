@@ -13,6 +13,7 @@ require(script.Parent.CUIView)
 【二、Config：完整配置】
   offline: table，必填。
     rewardId: string，必填；稳定离线奖励批次 ID，不是奖励物品 ID。
+    boostMultiplier: number，必填；大于 1 的配置倍率，仅表示请求倍率，不用于 View 计算奖励。
   diamonds: table，必填。
     rewardId: string，必填；稳定每日钻石奖励业务 ID。
     loginAmount: number，必填；登录奖励钻石数量。
@@ -42,16 +43,24 @@ require(script.Parent.CUIView)
         （RGB 三个分量，各 0..255）；当前布局只有一个大奖槽，至多一项。
 
 【三、State：Render 的完整输入】
-  offline: table，必填；以下 seconds/training/status 必填，无默认值。
-    seconds: number，非负离线秒数；显示小时及两位分钟，秒向下取整到分钟。
-    training: number，非负，可领基础训练值，不含双倍加成。
-    status: Status；Claimed 时显示时长/训练值为零并隐藏领取按钮。
-    pending: boolean，可选，省略 false；禁用单倍和双倍领取。
-    error: string，可选，省略 nil；提示原文；Claimed 的已领提示优先于错误。
-    仅 status=Claimable 且 training>0 才显示两种领取按钮；
-    请求中仍显示但禁用；无 error 且不可领时显示无奖励/已领提示。
+  offline: table，必填；以下 seconds/training/boostedTraining/status/boostPrice/boostCurrency 必填。
+    seconds: number，非负离线秒数；本页不单独显示时长。
+    training: number，非负基础奖励数量。
+    boostedTraining: number，非负加成奖励数量，由业务层提供，View 不自行计算。
+    boostAvailable: boolean，必填；业务确认加成奖励高于普通奖励时为 true。
+    status: Status；Claimed 时隐藏两个领取按钮，保留权威奖励数值。
+    boostPrice: number，非负显示价格，不代表支付授权。
+    boostCurrency: "Coin" | "Gem" | "Robux"，价格货币，对应设计中的图片库图标。
+    pending: boolean，可选，省略 false；请求中禁用两个领取按钮。
+    pendingMultiplier: number，可选；1 或配置加成倍率，仅被点击按钮显示 Claiming。
+    error: string，可选，错误原文。
+    errorText: string，可选，最终译文，优先于 error。
+    状态提示优先级：pending > Claimed > errorText > error > 无奖励；无提示时隐藏。
+    仅 status=Claimable 且 training>0 时显示两个按钮；普通领取独立可用，
+    加成领取还须 boostAvailable=true，无额外收益时保留数值并禁用加成按钮。
+    失败保留 Claimable 与奖励数值，清 pending 后允许重试；成功任意一种后互斥锁定。
   diamonds: table，必填。
-    amount: number，必填；服务端确认的本日可领钻石数，单位钻石。
+    amount: number，必填；服务端确认的本日��领钻石数，单位钻石。
     status: Status，必填；不由 amount 推导，0 不自动禁用 Claimable。
     pending: boolean，可选，省略 false；禁用领取。
     error: string，可选，省略 nil；仅 Claimable 且非 pending 时显示，
@@ -64,7 +73,7 @@ require(script.Parent.CUIView)
     Entry.status: Status，必填。
     Entry.current: number，task 必填；当前进度，与 Item.target 同单位。
     Entry.pending: boolean，可选，省略 false；禁用本条领取。
-    Entry.error: string，可选，省略 nil；Claimable 且非 pending 时按钮为 Retry，
+    Entry.error: string，可选，省略 nil；Claimable 且非 pending 时按钮�� Retry，
       但列表条目不显示错误原文。
     Entry.label: string，可选，省略 nil；仅 Locked 时作为自定义按钮原文。
       不传时 task 显示 In Progress、online 显示剩余 mm:ss、
@@ -75,21 +84,32 @@ require(script.Parent.CUIView)
 
 【四、最小完整数据（接入 Ctor 调用父构造之后）】
   self.Config = {
-      offline = { rewardId = "offline_session_1" },
+      offline = {
+          rewardId = "offline_session_1",
+          boostMultiplier = 2,
+      },
       diamonds = { rewardId = "daily_diamonds", loginAmount = 100,
           premiumAmount = 50, friendAmount = 10, friendCap = 100 },
       groups = {
           { kind = "online", page = "OnlineBox", columns = 3,
-            gapX = 20, gapY = 16, items = {} },
+            gapX = 16, gapY = 12, items = {} },
           { kind = "signin", page = "SignInBox", columns = 3,
-            gapX = 12, gapY = 16, items = {} },
-          { kind = "task", page = "TasksBox", columns = 1, gapX = 0, gapY = 12,
+            gapX = 9, gapY = 12, items = {} },
+          { kind = "task", page = "TasksBox", columns = 1, gapX = 0, gapY = 9,
             items = { { id = "collect", title = "Collect Cash", target = 100,
                 reward = { type = "Currency", id = "Gold", amount = 20 } } } },
       },
   }
   self.State = {
-      offline = { seconds = 9000, training = 1500, status = "Claimable" },
+      offline = {
+          seconds = 9000,
+          training = 259,
+          boostedTraining = 518,
+          boostAvailable = true,
+          status = "Claimable",
+          boostPrice = 29,
+          boostCurrency = "Robux",
+      },
       diamonds = { amount = 100, status = "Claimable" },
       onlineMinutes = 0, signInDay = 1,
       entries = { online = {}, signin = {},
@@ -120,9 +140,12 @@ require(script.Parent.CUIView)
       rewardId 对应该组 Item.id，不是 Item.reward.id。
     ClaimDiamonds -> { rewardId: string }；对应 Config.diamonds.rewardId。
     ClaimOffline -> { rewardId: string, multiplier: number }；
-      rewardId 对应 Config.offline.rewardId，multiplier 仅为 1 或 2。
+      rewardId 对应 Config.offline.rewardId，multiplier 仅为 1 或配置加成倍率。
+      不传价格，不在 View 扣费；服务端确认资格、余额、扣费与最终发放数量。
     没有 Close 或 SelectTab 动作；关闭直接 Hide，页签切换由 View 本地处理。
-  FormatNumber(value:number)->string 可选覆写，默认 tostring，全部数量统一经此格式化。
+  必需 FormatNumber(value: number) -> string，全部数量统一经此格式化。
+    游戏接入复用统一数量格式器，返回不带加号的显示数量；如 259、1.04K。
+    Render 内调用，无父实现调用要求，不修改业务数值。
   GetRewardDisplay 可返回 image:string?，View 替换对应奖励图片节点，省略沿用设计占位。
   Config.allowUnavailableAction:boolean?，true 灰色未达标或已领取按钮仍允许点击解释原因。
   State.busy:boolean? 全局请求锁，不能只用私有任务变量防重。
@@ -132,11 +155,12 @@ require(script.Parent.CUIView)
   Render / RenderButton / RenderOffline / RenderDiamonds 继承，不能在接入层重复展示。
   父类默认 GetUIConfig/GetUIState 已可读取上述数据。
   请求前将对应 Entry / diamonds / offline 的 pending=true、error=nil 并刷新；
-  成功后 pending=false、status="Claimed"；离线还同步 seconds=0、training=0。
+  离线请求同时设置 pendingMultiplier=1 或配置加成倍率，并清 error/errorText。
+  成功后 pending=false、pendingMultiplier=nil、status="Claimed"；数值采用权威结果。
   失败 pending=false、保留最新真实数值及可重试状态，设置 error，再刷新。
   真实业务重新校验日期、批次、资格、倍数及领取幂等，并执行发放/持久化。
   钻石与离线状态跨打开/重建须保持当天真实结果，不能每次 Show 重置可领取；
-  跨天由业务更新新一天完整状态。双倍离线未内置支付或广告流程。
+  跨天由业务更新新一天完整状态。加成离线领取未内置真实支付流程。
 
 【六、页签、列表与计时】
   每次 Show 默认 offline；当天 offline.status=Claimed 时隐藏离线页签，
@@ -150,6 +174,8 @@ require(script.Parent.CUIView)
   运行期保持 groups 的 kind/page 及已存在条目的原型分档稳定：
   minutes/day 跨颜色档改变但 ID 不变时不会自动重建原型；featured 改变会重建。
   在线卡按 minutes <15 / <45 / <60 / >=60 分档；
+  未解锁在线卡左上角显示剩余分秒，签到卡显示明天或剩余天数；
+  可领取及已领取时恢复分钟门槛或日期，底部只保留领取状态提示。
   普通签到按 day <3 / <6 / >=6 分档，大签到使用独立双行原型。
   在线总进度取大于 onlineMinutes 的最小门槛，全部达成则用最大门槛；
   空组显示 No rewards；进度宽度截断，原始数据不变。
@@ -170,9 +196,9 @@ local Text = Loader:RequireShared("Scripts/Game/Shared/Text")
 local CWelfareView = FX.Class("CWelfareView", "CUIView")
 
 local TranslationTexts = Text.Define("WelfareHub", {
-    Minutes = "{minutes} min",
-    Day = "Day {day}",
-    TaskProgress = "{current} / {target}",
+    Minutes = "{minutes:int} min",
+    Day = "Day {day:int}",
+    TaskProgress = "{current:int} / {target:int}",
     Locked = "Locked",
     Claiming = "Claiming...",
     CheckedIn = "Checked In",
@@ -180,6 +206,7 @@ local TranslationTexts = Text.Define("WelfareHub", {
     Retry = "Retry",
     CheckIn = "Check In",
     Claim = "Claim",
+    ClaimAll = "Claim All ({count:int})",
     InProgress = "In Progress",
     Tomorrow = "Tomorrow",
     DaysUntil = "In {days:int} days",
@@ -192,10 +219,10 @@ local TranslationTexts = Text.Define("WelfareHub", {
     ConfirmingReward = "Confirming your reward...",
     DiamondsClaimed = "Today's diamonds claimed · Come back tomorrow",
     ReadyToClaim = "Ready to claim",
-    DailyLogin = "Daily Login · Day {day}",
+    DailyLogin = "Daily Login · Day {day:int}",
     NoRewards = "No rewards",
     AllMilestones = "All milestones reached!",
-    OnlineProgress = "{current} / {target} min",
+    OnlineProgress = "{current:int} / {target:int} min",
     NoOnlineRewards = "No online rewards available",
     NextReward = "Next reward in {time}",
     NoOfflineRewards = "No offline rewards",
@@ -206,9 +233,7 @@ local TranslationTexts = Text.Define("WelfareHub", {
     PassTomorrow = "Next claim tomorrow",
     PassRemaining = "{days:int} claims left · {status}",
     PassInactive = "Use this pass from your backpack to activate it.",
-    OfflineTime = "Offline Time: {hours:int}h {minutes:int}m {seconds:int}s",
-    OfflineTraining = "Training: {value}",
-    OfflineClaim = "Claim ×{multiplier:int}",
+    ClaimBoost = "Claim {multiplier}X",
 })
 
 -- 暴露只读文案定义，供接入子类通过 self.BaseViewTranslationTexts 复用。
@@ -283,6 +308,26 @@ function RewardRow:Update(config, state)
                 day = config.day,
             })
         end
+        if state.status == "Locked" then
+            if self.Kind == "online" then
+                local seconds = math.max(0, math.ceil((config.minutes - self.View:GetUIState().onlineMinutes) * 60))
+                text = Text.Tr(TranslationTexts.Countdown, {
+                    minutes = string.format("%02d", math.floor(seconds / 60)),
+                    seconds = string.format("%02d", seconds % 60),
+                })
+            elseif state.label then
+                text = Text.TrSource(state.label)
+            else
+                local days = config.day - self.View:GetUIState().signInDay
+                if days == 1 then
+                    text = Text.Tr(TranslationTexts.Tomorrow)
+                elseif days > 1 then
+                    text = Text.Tr(TranslationTexts.DaysUntil, {
+                        days = days,
+                    })
+                end
+            end
+        end
         local timeTxt = Loader:Here(root, self.Kind == "online" and "TimeTxt" or "DayTxt")
         timeTxt.Text = text
         assert(display.icon == "Coin" or display.icon == "Gem" or display.icon == "Egg", "Unsupported reward icon: " .. tostring(display.icon))
@@ -302,38 +347,25 @@ function RewardRow:Update(config, state)
     elseif state.status == "Claimable" then
         if state.errorText or state.error then
             label = Text.Tr(TranslationTexts.Retry)
-        elseif self.Kind == "signin" then
-            label = Text.Tr(TranslationTexts.CheckIn)
         else
-            label = Text.Tr(TranslationTexts.Claim)
+            label = Text.Tr(TranslationTexts.ReadyToClaim)
         end
     elseif state.status == "Locked" then
-        if state.label then
+        if self.Kind == "online" or self.Kind == "signin" then
+            label = ""
+        elseif state.label then
             label = Text.TrSource(state.label)
         elseif self.Kind == "task" then
             label = Text.Tr(TranslationTexts.InProgress)
-        end
-        if self.Kind == "online" and not state.label then
-            local seconds = math.max(0, math.ceil((config.minutes - self.View:GetUIState().onlineMinutes) * 60))
-            label = Text.Tr(TranslationTexts.Countdown, {
-                minutes = string.format("%02d", math.floor(seconds / 60)),
-                seconds = string.format("%02d", seconds % 60),
-            })
-        elseif self.Kind == "signin" and not state.label then
-            local days = config.day - self.View:GetUIState().signInDay
-            if days == 1 then
-                label = Text.Tr(TranslationTexts.Tomorrow)
-            elseif days > 1 then
-                label = Text.Tr(TranslationTexts.DaysUntil, {
-                    days = days,
-                })
-            end
         end
     else
         error("Unknown reward status: " .. tostring(state.status))
     end
     self.View:RenderButton(self.Button, label, state.status == "Claimable" and not state.pending,
         self.View:GetUIConfig().allowUnavailableAction == true and not state.pending and not self.View:GetUIState().busy)
+    if self.Kind == "online" or self.Kind == "signin" then
+        Loader:Here(root, "StatusTxt").Text = label
+    end
     if display.icon == "Gem" or display.icon == "Egg" then
         local box = Loader:Here(root, display.icon .. "IconBox")
         local image = Loader:Here(box, "RewardImage")
@@ -389,10 +421,21 @@ function CWelfareView:OnReady()
             self:RefreshUI()
         end))
     end
-    for multiplier, name in ipairs({ "SingleClaimBtn", "DoubleClaimBtn" }) do
-        local button = Loader:Here(self.Root, "PopupPanelImg.OfflineBox." .. name)
+    for index, claim in ipairs({ { name = "SingleClaimBtn", boosted = false }, { name = "BoostClaimBtn", boosted = true } }) do
+        local button = Loader:Here(self.Root, "PopupPanelImg.OfflineBox." .. claim.name)
         self:TrackConnection(button.Activated:Connect(function()
-            -- 单倍与双倍领取使用同一稳定批次 ID，业务层确认倍数资格。
+            -- 两种领取共享批次 ID；请求中及成功后不再发送另一种领取。
+            local state = self:GetUIState().offline
+            if state.status ~= "Claimable" or state.pending or state.training <= 0 then
+                return
+            end
+            if claim.boosted and not state.boostAvailable then
+                return
+            end
+            local multiplier = 1
+            if claim.boosted then
+                multiplier = self:GetUIConfig().offline.boostMultiplier
+            end
             self:EmitUIAction("ClaimOffline", {
                 rewardId = self:GetUIConfig().offline.rewardId,
                 multiplier = multiplier,
@@ -403,6 +446,11 @@ function CWelfareView:OnReady()
         -- 点击发送稳定奖励 ID，数量与资格由业务层确认。
         self:EmitUIAction("ClaimDiamonds", { rewardId = self:GetUIConfig().diamonds.rewardId })
     end))
+    for _, pageName in ipairs({ "OnlineBox", "SignInBox" }) do
+        self:TrackConnection(Loader:Here(self.Root, "PopupPanelImg." .. pageName .. ".PageClaimBtn").Activated:Connect(function()
+            self:ClaimActiveRewards()
+        end))
+    end
     self:TrackConnection(Loader:Here(self.Root, "TitleBox.CloseSurfaceImg").Activated:Connect(function()
         self:Hide()
     end))
@@ -456,7 +504,7 @@ end
 -- @param value number 原始数量。
 -- @return string 展示数量。
 function CWelfareView:FormatNumber(value)
-    return tostring(value)
+    error("Welfare integration must implement FormatNumber using the game number formatter")
 end
 
 -- 领取动作必须由游戏接入实现。
@@ -543,9 +591,64 @@ function CWelfareView:SyncItems(group, states)
             rows[id] = nil
         end
     end
-    container.CanvasSize = UDim2.fromOffset(container.Size.X.Offset - container.ScrollBarThickness, bottom + 4)
-    local maxScroll = math.max(0, bottom + 4 - container.Size.Y.Offset)
+    container.CanvasSize = UDim2.fromOffset(container.Size.X.Offset - container.ScrollBarThickness, bottom + 3)
+    local maxScroll = math.max(0, bottom + 3 - container.Size.Y.Offset)
     container.CanvasPosition = Vector2.new(0, math.min(container.CanvasPosition.Y, maxScroll))
+end
+
+-- 当前在线/签到页统一领取所有可领条目；每个条目仍发送原有 Claim 契约。
+function CWelfareView:ClaimActiveRewards()
+    if self:GetUIState().busy then
+        return
+    end
+    local state = self:GetUIState()
+    for _, group in ipairs(self:GetUIConfig().groups) do
+        if group.kind == self.ActiveTab then
+            local entries = assert(state.entries[group.kind], "Missing group state: " .. group.kind)
+            for _, config in ipairs(group.items) do
+                local entry = assert(entries[config.id], "Missing reward state: " .. group.kind .. "/" .. config.id)
+                if entry.status == "Claimable" and not entry.pending then
+                    self:EmitUIAction("Claim", { kind = group.kind, rewardId = config.id })
+                end
+            end
+            return
+        end
+    end
+end
+
+-- 底部主按钮只表达当前页的可领状态，具体资格仍来自业务 State。
+function CWelfareView:RenderPageAction(group, states)
+    local page = Loader:Here(self.Root, "PopupPanelImg." .. group.page)
+    local button = Loader:Here(page, "PageClaimBtn")
+    local claimableCount = 0
+    local pending = false
+    local allClaimed = #group.items > 0
+    for _, config in ipairs(group.items) do
+        local entry = assert(states[config.id], "Missing reward state: " .. group.kind .. "/" .. config.id)
+        if entry.pending then
+            pending = true
+        elseif entry.status == "Claimable" then
+            claimableCount = claimableCount + 1
+        end
+        if entry.status ~= "Claimed" then
+            allClaimed = false
+        end
+    end
+    local label = Text.Tr(TranslationTexts.Locked)
+    if pending then
+        label = Text.Tr(TranslationTexts.Claiming)
+    elseif claimableCount > 0 then
+        if group.kind == "signin" then
+            label = Text.Tr(TranslationTexts.CheckIn)
+        else
+            label = Text.Tr(TranslationTexts.ClaimAll, {
+                count = claimableCount,
+            })
+        end
+    elseif allClaimed then
+        label = Text.Tr(group.kind == "signin" and TranslationTexts.CheckedIn or TranslationTexts.Claimed)
+    end
+    self:RenderButton(button, label, claimableCount > 0 and not pending)
 end
 
 -- 大奖布局保存在独立设计原型，只更新配置指定的颜色与标记。
@@ -666,7 +769,11 @@ function CWelfareView:Render(state)
             Loader:Here(button, "BottomEdgeImg").BackgroundColor3 = Color3.fromRGB(38, 62, 54)
         end
         if self.ActiveTab == group.kind then
-            self:SyncItems(group, assert(state.entries[group.kind], "Missing group state: " .. group.kind))
+            local groupStates = assert(state.entries[group.kind], "Missing group state: " .. group.kind)
+            self:SyncItems(group, groupStates)
+            if group.kind == "online" or group.kind == "signin" then
+                self:RenderPageAction(group, groupStates)
+            end
         end
     end
     for _, group in ipairs(self:GetUIConfig().groups) do
@@ -722,48 +829,52 @@ function CWelfareView:RenderOnlineProgress(group, state)
     subtitleTxt.Text = hint
 end
 
--- 离线奖励只展示业务状态；领取后显示零值并隐藏按钮，不修改业务数据或在线时长。
--- @param state table State.offline：seconds、training、status 及可选 pending/error，见文件头
+-- 离线奖励及价格仅作展示；领取数量、余额与支付结果全部由业务层确认。
+-- @param state table 完整 State.offline，包含业务提供的基础与加成奖励，见文件头
 function CWelfareView:RenderOffline(state)
     local page = Loader:Here(self.Root, "PopupPanelImg.OfflineBox")
     page.Visible = self.ActiveTab == "offline"
-    local seconds = state.seconds
-    local training = state.training
-    if state.status == "Claimed" then
-        seconds = 0
-        training = 0
-    end
-    local hours = math.floor(seconds / 3600)
-    local minutes = math.floor(seconds % 3600 / 60)
-    local timeTxt = Loader:Here(page, "TimeTxt")
-    timeTxt.Text = Text.Tr(TranslationTexts.OfflineTime, {
-        hours = hours,
-        minutes = minutes,
-        seconds = math.floor(seconds % 60),
-    })
-    Loader:Here(page, "AmountTxt").Text = Text.Tr(TranslationTexts.OfflineTraining, {
-        value = self:FormatNumber(training),
-    })
-    local claimable = state.status == "Claimable" and training > 0
+    local boostMultiplier = self:GetUIConfig().offline.boostMultiplier
+    assert(boostMultiplier > 1, "Offline boost multiplier must exceed 1")
+    Loader:Here(page, "NormalRewardImg.AmountTxt").Text = "+" .. self:FormatNumber(state.training)
+    Loader:Here(page, "BoostRewardImg.AmountTxt").Text = "+" .. self:FormatNumber(state.boostedTraining)
+    local claimable = state.status == "Claimable" and state.training > 0
     local single = Loader:Here(page, "SingleClaimBtn")
-    local double = Loader:Here(page, "DoubleClaimBtn")
+    local boost = Loader:Here(page, "BoostClaimBtn")
     single.Visible = claimable
-    double.Visible = claimable
-    self:RenderButton(single, state.pending and Text.Tr(TranslationTexts.Claiming)
-        or Text.Tr(TranslationTexts.OfflineClaim, {multiplier = 1}), claimable and not state.pending)
-    self:RenderButton(double, state.pending and Text.Tr(TranslationTexts.Claiming)
-        or Text.Tr(TranslationTexts.OfflineClaim, {multiplier = 2}), claimable and not state.pending)
-    if claimable and not state.pending then
-        single.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        double.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        Loader:Here(double, "BottomEdgeImg").BackgroundColor3 = Color3.fromRGB(176, 101, 0)
+    boost.Visible = claimable
+    self:SetButtonEnabled(single, claimable and not state.pending)
+    self:SetButtonEnabled(boost, claimable and state.boostAvailable and not state.pending)
+    local singleLabel = Text.Tr(TranslationTexts.Claim)
+    local boostLabel = Text.Tr(TranslationTexts.ClaimBoost, { multiplier = self:FormatNumber(boostMultiplier) })
+    if state.pending and state.pendingMultiplier == 1 then
+        singleLabel = Text.Tr(TranslationTexts.Claiming)
+    elseif state.pending and state.pendingMultiplier == boostMultiplier then
+        boostLabel = Text.Tr(TranslationTexts.Claiming)
+    end
+    Loader:Here(single, "ButtonTxt").Text = singleLabel
+    Loader:Here(boost, "ButtonTxt").Text = boostLabel
+    local priceBox = Loader:Here(boost, "PriceBox")
+    Loader:Here(priceBox, "PriceTxt").Text = self:FormatNumber(state.boostPrice)
+    assert(state.boostCurrency == "Coin" or state.boostCurrency == "Gem" or state.boostCurrency == "Robux", "Unsupported offline price currency")
+    for index, currency in ipairs({ "Coin", "Gem", "Robux" }) do
+        Loader:Here(priceBox, currency .. "IconImg").Visible = state.boostCurrency == currency
     end
     local status = Loader:Here(page, "StatusTxt")
-    status.Visible = not claimable or state.error ~= nil or state.errorText ~= nil
-    status.Text = state.errorText or (state.error and Text.TrSource(state.error)) or Text.Tr(TranslationTexts.NoOfflineRewards)
-    if state.status == "Claimed" then
-        status.Text = Text.Tr(TranslationTexts.Claimed)
+    local hint = ""
+    if state.pending then
+        hint = Text.Tr(TranslationTexts.ConfirmingReward)
+    elseif state.status == "Claimed" then
+        hint = Text.Tr(TranslationTexts.Claimed)
+    elseif state.errorText ~= nil then
+        hint = state.errorText
+    elseif state.error ~= nil then
+        hint = Text.TrSource(state.error)
+    elseif not claimable then
+        hint = Text.Tr(TranslationTexts.NoOfflineRewards)
     end
+    status.Text = hint
+    status.Visible = hint ~= ""
     local tab = Loader:Here(self.Root, "TabsBox.OfflineTabBtn")
     Loader:Here(tab, "RedDotImg").Visible = claimable and not state.pending
     self:RenderButton(tab, nil, true)

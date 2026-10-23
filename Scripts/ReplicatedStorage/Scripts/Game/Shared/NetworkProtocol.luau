@@ -10,7 +10,8 @@ return {
         -- attemptId: string? 本次点击标识；Select/PromptRequested/Cancel 必填，仅匹配动作，不用于收据归属。
         -- 单向行为统计；余额及漏斗会话由服务端确定，成功步骤只来自已保存收据。
         "C2S_RobuxPurchaseAnalytics",
-        -- kind: "online"|"signin"|"diamonds"，rewardId: string 稳定配置 ID；身份来自引擎。
+        -- kind: "online"|"signin"|"task"|"diamonds"|"offline"|"retention"，rewardId: string 稳定配置或批次 ID。
+        -- offline 的 multiplier 仅接受 1 或 OfflineReward.VIPRate/Rate；服务端读取价格并校验加成收益。
         -- RPC 返回 {success: boolean, key: string, state: table?}；服务端决定日期、资格及奖励。
         "C2S_ClaimWelfareReward",
         -- action: "SetLevel"|"SetRebirth"|"SetMoney"|"SetDiamonds"|"ResetData"|"SaveNow"|"AddItem"|"ReachRebirthLevel"。

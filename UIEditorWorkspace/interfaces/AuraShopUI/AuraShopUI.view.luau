@@ -58,7 +58,7 @@
   Buy   -> { auraId: string }，未拥有时发出，值为当前 Item.id。
   Equip -> { auraId: string }，已拥有但未装备时发出，值为当前 Item.id。
   Close -> {}，由接入层处理关闭。
-  Config.strengthIsMultiplier: boolean?，true 展示训练倍率，否则力量点数。
+  Config.strengthIsMultiplier: boolean?，true 展示力量倍率，否则力量点数。
   Config.allowUnaffordableAction: boolean?，true 时余额不足保持灰色但允许点击提示。
   Config.allowUnequip: boolean?，true 时已装备显示卸下且发送 Equip（原 auraId）。
   State.busy: boolean?，全局请求锁；pending[id] 的等待文案优先于已装备状态。
@@ -89,7 +89,7 @@ local TranslationTexts = Text.Define("AuraShopUI", {
     Waiting = "Waiting...",
     NoAuras = "No auras available",
     Loading = "Loading...",
-    TrainingRate = "Training ×{rate}",
+    TrainingRate = "Strength ×{rate}",
     Unequip = "Unequip",
 })
 
@@ -223,11 +223,15 @@ function CAuraShopView:Render(state)
             local buttonText = FXLoader:Here(row, "ActionBtn.ButtonTxt")
             buttonText.Text = caption
             buttonText.TextSize = 18.2
+            local buttonTextStroke = FXLoader:Here(buttonText, "TextStroke")
+            buttonTextStroke.Thickness = 1.3
             buttonText.TextWrapped = false
             buttonText.Position = UDim2.fromOffset(0, 0)
             buttonText.Size = UDim2.fromScale(1, 1)
             buttonText.TextXAlignment = Enum.TextXAlignment.Center
             if showMoney then
+                buttonText.TextSize = 22
+                buttonTextStroke.Thickness = 1.6
                 buttonText.Position = UDim2.fromOffset(42, 0)
                 buttonText.Size = UDim2.new(1, -47, 1, 0)
                 buttonText.TextXAlignment = Enum.TextXAlignment.Left

@@ -210,13 +210,13 @@ function Guide:OnExitGuide(target)
     self:RefreshText()
 end
 
---- 商店内优先指向已拥有的更强装备，其次选择买得起的升级；持续购买提醒只推荐未拥有商品。
+--- 商店尚未就绪时等待下一次刷新；就绪后优先装备，再推荐买得起的升级。
 --- @param target table 当前主引导或持续升级提醒目标。
 --- @return GuiButton? 当前可执行操作的按钮。
 function Guide:GetShopGuideButton(target)
     local isWeapon = target.type == "Weapon"
     local shop = self:RequireComponent(isWeapon and "CWeaponShopUIComp" or "CAuraShopUIComp")
-    if not shop.Root.Enabled or not shop.State.open or shop._requestTask then
+    if not shop.Root or not shop.State or not shop.Root.Enabled or not shop.State.open or shop._requestTask then
         return nil
     end
     local items = isWeapon and shop.Config.weapons or shop.Config.auras
@@ -272,7 +272,7 @@ function Guide:GetUIGuideButton(target)
         end
     elseif target.type == "Sell" then
         local sell = self:RequireComponent("CLootSellUIComp")
-        if sell:GetRootNode().Enabled and sell.State.isOpen and not sell.State.pending and #sell.State.items > 0 then
+        if sell.State and sell:GetRootNode().Enabled and sell.State.isOpen and not sell.State.pending and #sell.State.items > 0 then
             return sell.SellAllBtn
         end
     elseif target.type == "Weapon" or target.type == "Aura" then

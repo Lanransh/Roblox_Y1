@@ -156,7 +156,7 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 312,
+                      "offset": 370,
                       "scale": 0
                     }
                   },
@@ -167,7 +167,7 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 14,
+                      "offset": 18,
                       "scale": 0
                     }
                   },
@@ -231,7 +231,7 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 259,
+                      "offset": 256,
                       "scale": 0
                     }
                   },
@@ -608,6 +608,227 @@
                   "Visible": true,
                   "ZIndex": 2
                 }
+              },
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UICorner",
+                    "id": "9642ec96-e736-4421-86ed-a985e52dbf72",
+                    "name": "UICorner",
+                    "properties": {
+                      "CornerRadius": {
+                        "offset": 5,
+                        "scale": 0
+                      }
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "1ef82530-76fa-4d4d-8fd2-8ac312ddf1bb",
+                    "name": "UIStroke",
+                    "properties": {
+                      "Color": "#000000",
+                      "Enabled": true,
+                      "Thickness": 2.34,
+                      "Transparency": 0
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "Frame",
+                    "id": "4b5894d7-a6a2-45c6-8c11-51bace4d4e95",
+                    "name": "TopHighlightImg",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "AutoLocalize": true,
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 0.58,
+                      "ClipsDescendants": false,
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 0,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 0,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "Size": {
+                        "x": {
+                          "offset": 0,
+                          "scale": 1
+                        },
+                        "y": {
+                          "offset": 2,
+                          "scale": 0
+                        }
+                      },
+                      "Visible": true,
+                      "ZIndex": 8
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "Frame",
+                    "id": "dd046260-952e-4f44-a449-3d6b731c171b",
+                    "name": "BottomEdgeImg",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "AutoLocalize": true,
+                      "BackgroundColor3": "#225a07",
+                      "BackgroundTransparency": 0.2,
+                      "ClipsDescendants": false,
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 0,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": -3,
+                          "scale": 1
+                        }
+                      },
+                      "Rotation": 0,
+                      "Size": {
+                        "x": {
+                          "offset": 0,
+                          "scale": 1
+                        },
+                        "y": {
+                          "offset": 3,
+                          "scale": 0
+                        }
+                      },
+                      "Visible": true,
+                      "ZIndex": 8
+                    }
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [],
+                        "className": "UIStroke",
+                        "id": "ff4fe2b6-9774-49ab-a9e0-f3571197dedb",
+                        "name": "TextStroke",
+                        "properties": {
+                          "Color": "#20231c",
+                          "Enabled": true,
+                          "Thickness": 1.56,
+                          "Transparency": 0
+                        }
+                      }
+                    ],
+                    "className": "TextLabel",
+                    "id": "f46f26c9-c5ac-4a37-bb39-d96c53829210",
+                    "name": "ButtonTxt",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "AutoLocalize": false,
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 1,
+                      "ClipsDescendants": false,
+                      "Font": "GothamBold",
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 0,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": -2,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "Size": {
+                        "x": {
+                          "offset": 0,
+                          "scale": 1
+                        },
+                        "y": {
+                          "offset": 0,
+                          "scale": 1
+                        }
+                      },
+                      "Text": "",
+                      "TextColor3": "#ffffff",
+                      "TextScaled": false,
+                      "TextSize": 20.28,
+                      "TextTransparency": 0,
+                      "TextWrapped": true,
+                      "TextXAlignment": "Center",
+                      "TextYAlignment": "Center",
+                      "Visible": true,
+                      "ZIndex": 10
+                    }
+                  }
+                ],
+                "className": "ImageButton",
+                "id": "7a93e7f7-dd39-45d8-aee5-8e56e836afb2",
+                "name": "PageClaimBtn",
+                "properties": {
+                  "AnchorPoint": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "AutoLocalize": true,
+                  "BackgroundColor3": "#67ed14",
+                  "BackgroundTransparency": 0,
+                  "ClipsDescendants": false,
+                  "Image": "rbxassetid://82793028306773",
+                  "ImageColor3": "#ffffff",
+                  "ImageTransparency": 0,
+                  "LayoutOrder": 0,
+                  "Position": {
+                    "x": {
+                      "offset": 142,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 314,
+                      "scale": 0
+                    }
+                  },
+                  "Rotation": 0,
+                  "ScaleType": "Tile",
+                  "Size": {
+                    "x": {
+                      "offset": 331,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 50,
+                      "scale": 0
+                    }
+                  },
+                  "TileSize": {
+                    "x": {
+                      "offset": 22,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 22,
+                      "scale": 0
+                    }
+                  },
+                  "Visible": true,
+                  "ZIndex": 9
+                }
               }
             ],
             "className": "Frame",
@@ -640,7 +861,7 @@
                   "scale": 0
                 },
                 "y": {
-                  "offset": 326,
+                  "offset": 385,
                   "scale": 0
                 }
               },
@@ -770,7 +991,7 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 308,
+                      "offset": 370,
                       "scale": 0
                     }
                   },
@@ -781,7 +1002,7 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 17,
+                      "offset": 18,
                       "scale": 0
                     }
                   },
@@ -832,7 +1053,7 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 36,
+                      "offset": 50,
                       "scale": 0
                     }
                   },
@@ -845,12 +1066,233 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 271,
+                      "offset": 256,
                       "scale": 0
                     }
                   },
                   "Visible": true,
                   "ZIndex": 2
+                }
+              },
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UICorner",
+                    "id": "d9ca4f34-49a1-404a-b214-22689fe38a85",
+                    "name": "UICorner",
+                    "properties": {
+                      "CornerRadius": {
+                        "offset": 5,
+                        "scale": 0
+                      }
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "2d3ba193-f0fa-485a-bdf7-37f53f7659f4",
+                    "name": "UIStroke",
+                    "properties": {
+                      "Color": "#000000",
+                      "Enabled": true,
+                      "Thickness": 2.34,
+                      "Transparency": 0
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "Frame",
+                    "id": "7e52a8df-b021-4e06-b40b-3424de87392a",
+                    "name": "TopHighlightImg",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "AutoLocalize": true,
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 0.58,
+                      "ClipsDescendants": false,
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 0,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 0,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "Size": {
+                        "x": {
+                          "offset": 0,
+                          "scale": 1
+                        },
+                        "y": {
+                          "offset": 2,
+                          "scale": 0
+                        }
+                      },
+                      "Visible": true,
+                      "ZIndex": 8
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "Frame",
+                    "id": "4f0c6971-a867-430f-8327-c84ad5df713d",
+                    "name": "BottomEdgeImg",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "AutoLocalize": true,
+                      "BackgroundColor3": "#225a07",
+                      "BackgroundTransparency": 0.2,
+                      "ClipsDescendants": false,
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 0,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": -3,
+                          "scale": 1
+                        }
+                      },
+                      "Rotation": 0,
+                      "Size": {
+                        "x": {
+                          "offset": 0,
+                          "scale": 1
+                        },
+                        "y": {
+                          "offset": 3,
+                          "scale": 0
+                        }
+                      },
+                      "Visible": true,
+                      "ZIndex": 8
+                    }
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [],
+                        "className": "UIStroke",
+                        "id": "5bf0f163-34d0-4034-b1bd-b20d85752185",
+                        "name": "TextStroke",
+                        "properties": {
+                          "Color": "#20231c",
+                          "Enabled": true,
+                          "Thickness": 1.56,
+                          "Transparency": 0
+                        }
+                      }
+                    ],
+                    "className": "TextLabel",
+                    "id": "502f1963-fe63-4fd4-a389-d322a92a9140",
+                    "name": "ButtonTxt",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "AutoLocalize": false,
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 1,
+                      "ClipsDescendants": false,
+                      "Font": "GothamBold",
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 0,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": -2,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "Size": {
+                        "x": {
+                          "offset": 0,
+                          "scale": 1
+                        },
+                        "y": {
+                          "offset": 0,
+                          "scale": 1
+                        }
+                      },
+                      "Text": "",
+                      "TextColor3": "#ffffff",
+                      "TextScaled": false,
+                      "TextSize": 20.28,
+                      "TextTransparency": 0,
+                      "TextWrapped": true,
+                      "TextXAlignment": "Center",
+                      "TextYAlignment": "Center",
+                      "Visible": true,
+                      "ZIndex": 10
+                    }
+                  }
+                ],
+                "className": "ImageButton",
+                "id": "b1cd36bf-6c41-4d3a-96dd-af9f71e6c97c",
+                "name": "PageClaimBtn",
+                "properties": {
+                  "AnchorPoint": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "AutoLocalize": true,
+                  "BackgroundColor3": "#67ed14",
+                  "BackgroundTransparency": 0,
+                  "ClipsDescendants": false,
+                  "Image": "rbxassetid://82793028306773",
+                  "ImageColor3": "#ffffff",
+                  "ImageTransparency": 0,
+                  "LayoutOrder": 0,
+                  "Position": {
+                    "x": {
+                      "offset": 142,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 314,
+                      "scale": 0
+                    }
+                  },
+                  "Rotation": 0,
+                  "ScaleType": "Tile",
+                  "Size": {
+                    "x": {
+                      "offset": 331,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 50,
+                      "scale": 0
+                    }
+                  },
+                  "TileSize": {
+                    "x": {
+                      "offset": 22,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 22,
+                      "scale": 0
+                    }
+                  },
+                  "Visible": true,
+                  "ZIndex": 9
                 }
               }
             ],
@@ -884,7 +1326,7 @@
                   "scale": 0
                 },
                 "y": {
-                  "offset": 326,
+                  "offset": 385,
                   "scale": 0
                 }
               },
@@ -3053,20 +3495,20 @@
                     "properties": {
                       "Color": "#000000",
                       "Enabled": true,
-                      "Thickness": 1.56,
+                      "Thickness": 2,
                       "Transparency": 0
                     }
                   }
                 ],
                 "className": "TextLabel",
                 "id": "a8cc0c01-0195-4b06-8803-142a0d579a23",
-                "name": "TimeTxt",
+                "name": "HeadingTxt",
                 "properties": {
                   "AnchorPoint": {
                     "x": 0,
                     "y": 0
                   },
-                  "AutoLocalize": false,
+                  "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
                   "BackgroundTransparency": 1,
                   "ClipsDescendants": false,
@@ -3078,7 +3520,7 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 23,
+                      "offset": 0,
                       "scale": 0
                     }
                   },
@@ -3089,93 +3531,17 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 34,
+                      "offset": 38,
                       "scale": 0
                     }
                   },
-                  "Text": "",
+                  "Text": "You gained strength while away!",
                   "TextColor3": "#ffffff",
                   "TextScaled": false,
-                  "TextSize": 23.400000000000002,
+                  "TextSize": 24,
                   "TextTransparency": 0,
-                  "TextWrapped": true,
+                  "TextWrapped": false,
                   "TextXAlignment": "Center",
-                  "TextYAlignment": "Center",
-                  "Visible": true,
-                  "ZIndex": 9
-                }
-              },
-              {
-                "children": [
-                  {
-                    "children": [],
-                    "className": "UIStroke",
-                    "id": "b65cb0f6-7155-42a5-a66c-1c5759d7a03a",
-                    "name": "TextStroke",
-                    "properties": {
-                      "Color": "#000000",
-                      "Enabled": true,
-                      "Thickness": 3.12,
-                      "Transparency": 0
-                    }
-                  },
-                  {
-                    "children": [],
-                    "className": "UIGradient",
-                    "id": "3a7ca2a1-9cfe-4bcf-a2b9-118d9d61ca0f",
-                    "name": "StrengthGradient",
-                    "properties": {
-                      "ColorEnd": "#ff7a1a",
-                      "ColorStart": "#ffe75a",
-                      "Enabled": true,
-                      "Rotation": 90,
-                      "TransparencyEnd": 0,
-                      "TransparencyStart": 0
-                    }
-                  }
-                ],
-                "className": "TextLabel",
-                "id": "a9f06e01-7787-488e-b239-fa889e7ce128",
-                "name": "AmountTxt",
-                "properties": {
-                  "AnchorPoint": {
-                    "x": 0,
-                    "y": 0
-                  },
-                  "AutoLocalize": false,
-                  "BackgroundColor3": "#ffffff",
-                  "BackgroundTransparency": 1,
-                  "ClipsDescendants": false,
-                  "Font": "GothamBold",
-                  "LayoutOrder": 0,
-                  "Position": {
-                    "x": {
-                      "offset": 200,
-                      "scale": 0
-                    },
-                    "y": {
-                      "offset": 69,
-                      "scale": 0
-                    }
-                  },
-                  "Rotation": 0,
-                  "Size": {
-                    "x": {
-                      "offset": 296,
-                      "scale": 0
-                    },
-                    "y": {
-                      "offset": 125,
-                      "scale": 0
-                    }
-                  },
-                  "Text": "",
-                  "TextColor3": "#ffffff",
-                  "TextScaled": false,
-                  "TextSize": 53.04,
-                  "TextTransparency": 0,
-                  "TextWrapped": true,
-                  "TextXAlignment": "Left",
                   "TextYAlignment": "Center",
                   "Visible": true,
                   "ZIndex": 9
@@ -3203,7 +3569,7 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 285,
+                      "offset": 290,
                       "scale": 0
                     }
                   },
@@ -3214,7 +3580,7 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 28,
+                      "offset": 32,
                       "scale": 0
                     }
                   },
@@ -3542,7 +3908,7 @@
                         "y": 0
                       },
                       "AutoLocalize": true,
-                      "BackgroundColor3": "#b06500",
+                      "BackgroundColor3": "#691582",
                       "BackgroundTransparency": 0.2,
                       "ClipsDescendants": false,
                       "LayoutOrder": 0,
@@ -3606,7 +3972,7 @@
                           "scale": 0
                         },
                         "y": {
-                          "offset": -2,
+                          "offset": 3,
                           "scale": 0
                         }
                       },
@@ -3617,14 +3983,14 @@
                           "scale": 1
                         },
                         "y": {
-                          "offset": 0,
-                          "scale": 1
+                          "offset": 33,
+                          "scale": 0
                         }
                       },
                       "Text": "",
                       "TextColor3": "#ffffff",
                       "TextScaled": false,
-                      "TextSize": 23.400000000000002,
+                      "TextSize": 26,
                       "TextTransparency": 0,
                       "TextWrapped": true,
                       "TextXAlignment": "Center",
@@ -3639,18 +4005,286 @@
                     "id": "d15b075d-6dc3-4a1f-bdd6-0e0831b6a3b7",
                     "name": "RewardGradient",
                     "properties": {
-                      "ColorEnd": "#ffa000",
-                      "ColorStart": "#ffe85a",
+                      "ColorEnd": "#aa1bd7",
+                      "ColorStart": "#f348ff",
                       "Enabled": true,
                       "Rotation": 90,
                       "TransparencyEnd": 0,
                       "TransparencyStart": 0
                     }
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [],
+                        "className": "ImageLabel",
+                        "id": "9931f27b-2bed-4e6e-b25b-189d6796a474",
+                        "imageAssetId": "d47898b3c18d4bc5827585a481093f5d",
+                        "name": "CoinIconImg",
+                        "properties": {
+                          "AnchorPoint": {
+                            "x": 0,
+                            "y": 0
+                          },
+                          "AutoLocalize": true,
+                          "BackgroundColor3": "#ffffff",
+                          "BackgroundTransparency": 1,
+                          "ClipsDescendants": false,
+                          "Image": "rbxassetid://86971714148612",
+                          "ImageColor3": "#ffffff",
+                          "ImageTransparency": 0,
+                          "LayoutOrder": 0,
+                          "Position": {
+                            "x": {
+                              "offset": 14,
+                              "scale": 0
+                            },
+                            "y": {
+                              "offset": 1,
+                              "scale": 0
+                            }
+                          },
+                          "Rotation": 0,
+                          "ScaleType": "Fit",
+                          "Size": {
+                            "x": {
+                              "offset": 29,
+                              "scale": 0
+                            },
+                            "y": {
+                              "offset": 29,
+                              "scale": 0
+                            }
+                          },
+                          "TileSize": {
+                            "x": {
+                              "offset": 0,
+                              "scale": 1
+                            },
+                            "y": {
+                              "offset": 0,
+                              "scale": 1
+                            }
+                          },
+                          "Visible": false,
+                          "ZIndex": 9
+                        }
+                      },
+                      {
+                        "children": [],
+                        "className": "ImageLabel",
+                        "id": "48b251d4-2ced-4db2-84ff-ad3d88303274",
+                        "imageAssetId": "c9dc7cb60bf741c49535a5ad318f21c8",
+                        "name": "GemIconImg",
+                        "properties": {
+                          "AnchorPoint": {
+                            "x": 0,
+                            "y": 0
+                          },
+                          "AutoLocalize": true,
+                          "BackgroundColor3": "#ffffff",
+                          "BackgroundTransparency": 1,
+                          "ClipsDescendants": false,
+                          "Image": "rbxassetid://123110249883616",
+                          "ImageColor3": "#ffffff",
+                          "ImageTransparency": 0,
+                          "LayoutOrder": 0,
+                          "Position": {
+                            "x": {
+                              "offset": 14,
+                              "scale": 0
+                            },
+                            "y": {
+                              "offset": 1,
+                              "scale": 0
+                            }
+                          },
+                          "Rotation": 0,
+                          "ScaleType": "Fit",
+                          "Size": {
+                            "x": {
+                              "offset": 29,
+                              "scale": 0
+                            },
+                            "y": {
+                              "offset": 29,
+                              "scale": 0
+                            }
+                          },
+                          "TileSize": {
+                            "x": {
+                              "offset": 0,
+                              "scale": 1
+                            },
+                            "y": {
+                              "offset": 0,
+                              "scale": 1
+                            }
+                          },
+                          "Visible": false,
+                          "ZIndex": 9
+                        }
+                      },
+                      {
+                        "children": [],
+                        "className": "ImageLabel",
+                        "id": "130c57cf-4d51-4f2d-b235-d2962e8882a3",
+                        "imageAssetId": "f21e2345b80f46eea8e85f21eee07995",
+                        "name": "RobuxIconImg",
+                        "properties": {
+                          "AnchorPoint": {
+                            "x": 0,
+                            "y": 0
+                          },
+                          "AutoLocalize": true,
+                          "BackgroundColor3": "#ffffff",
+                          "BackgroundTransparency": 1,
+                          "ClipsDescendants": false,
+                          "Image": "rbxassetid://87283536652233",
+                          "ImageColor3": "#ffffff",
+                          "ImageTransparency": 0,
+                          "LayoutOrder": 0,
+                          "Position": {
+                            "x": {
+                              "offset": 14,
+                              "scale": 0
+                            },
+                            "y": {
+                              "offset": 1,
+                              "scale": 0
+                            }
+                          },
+                          "Rotation": 0,
+                          "ScaleType": "Fit",
+                          "Size": {
+                            "x": {
+                              "offset": 29,
+                              "scale": 0
+                            },
+                            "y": {
+                              "offset": 29,
+                              "scale": 0
+                            }
+                          },
+                          "TileSize": {
+                            "x": {
+                              "offset": 0,
+                              "scale": 1
+                            },
+                            "y": {
+                              "offset": 0,
+                              "scale": 1
+                            }
+                          },
+                          "Visible": true,
+                          "ZIndex": 9
+                        }
+                      },
+                      {
+                        "children": [
+                          {
+                            "children": [],
+                            "className": "UIStroke",
+                            "id": "55ac81fb-098e-42ef-bfad-69e42a3efc45",
+                            "name": "TextStroke",
+                            "properties": {
+                              "Color": "#20231c",
+                              "Enabled": true,
+                              "Thickness": 1.56,
+                              "Transparency": 0
+                            }
+                          }
+                        ],
+                        "className": "TextLabel",
+                        "id": "3bc81708-e7e0-4532-9255-61ff3af48005",
+                        "name": "PriceTxt",
+                        "properties": {
+                          "AnchorPoint": {
+                            "x": 0,
+                            "y": 0
+                          },
+                          "AutoLocalize": false,
+                          "BackgroundColor3": "#ffffff",
+                          "BackgroundTransparency": 1,
+                          "ClipsDescendants": false,
+                          "Font": "GothamBold",
+                          "LayoutOrder": 0,
+                          "Position": {
+                            "x": {
+                              "offset": 47,
+                              "scale": 0
+                            },
+                            "y": {
+                              "offset": 0,
+                              "scale": 0
+                            }
+                          },
+                          "Rotation": 0,
+                          "Size": {
+                            "x": {
+                              "offset": 76,
+                              "scale": 0
+                            },
+                            "y": {
+                              "offset": 31,
+                              "scale": 0
+                            }
+                          },
+                          "Text": "",
+                          "TextColor3": "#ffffff",
+                          "TextScaled": false,
+                          "TextSize": 26,
+                          "TextTransparency": 0,
+                          "TextWrapped": true,
+                          "TextXAlignment": "Left",
+                          "TextYAlignment": "Center",
+                          "Visible": true,
+                          "ZIndex": 9
+                        }
+                      }
+                    ],
+                    "className": "Frame",
+                    "id": "d1547ed9-199f-4d32-a5bb-71e577eca872",
+                    "name": "PriceBox",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "AutoLocalize": true,
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 1,
+                      "ClipsDescendants": false,
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": -63,
+                          "scale": 0.5
+                        },
+                        "y": {
+                          "offset": 37,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "Size": {
+                        "x": {
+                          "offset": 126,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 31,
+                          "scale": 0
+                        }
+                      },
+                      "Visible": true,
+                      "ZIndex": 9
+                    }
                   }
                 ],
                 "className": "ImageButton",
                 "id": "b3af864a-6fae-48e2-a017-d22b9d4c4bd4",
-                "name": "DoubleClaimBtn",
+                "name": "BoostClaimBtn",
                 "properties": {
                   "AnchorPoint": {
                     "x": 0,
@@ -3701,11 +4335,552 @@
                 }
               },
               {
-                "children": [],
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UICorner",
+                    "id": "a023685d-f21d-41b1-a385-49a545ba5575",
+                    "name": "UICorner",
+                    "properties": {
+                      "CornerRadius": {
+                        "offset": 6,
+                        "scale": 0
+                      }
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "781a259d-01ea-4593-a8ec-165218165eda",
+                    "name": "UIStroke",
+                    "properties": {
+                      "Color": "#000000",
+                      "Enabled": true,
+                      "Thickness": 3,
+                      "Transparency": 0
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "Frame",
+                    "id": "41b19fa9-c4e3-479f-894e-74a10444259b",
+                    "name": "TopHighlightImg",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "AutoLocalize": true,
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 0.88,
+                      "ClipsDescendants": false,
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 3,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 3,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "Size": {
+                        "x": {
+                          "offset": -6,
+                          "scale": 1
+                        },
+                        "y": {
+                          "offset": 2,
+                          "scale": 0
+                        }
+                      },
+                      "Visible": true,
+                      "ZIndex": 8
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "Frame",
+                    "id": "7c3782d8-09f1-4aee-a3c6-fe32af1fa241",
+                    "name": "BottomEdgeImg",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "AutoLocalize": true,
+                      "BackgroundColor3": "#000000",
+                      "BackgroundTransparency": 0.35,
+                      "ClipsDescendants": false,
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 3,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": -6,
+                          "scale": 1
+                        }
+                      },
+                      "Rotation": 0,
+                      "Size": {
+                        "x": {
+                          "offset": -6,
+                          "scale": 1
+                        },
+                        "y": {
+                          "offset": 3,
+                          "scale": 0
+                        }
+                      },
+                      "Visible": true,
+                      "ZIndex": 8
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "ImageLabel",
+                    "id": "4fe273b6-2b77-4354-a0bf-2bd63d9efdf1",
+                    "imageAssetId": "302f11ce15e34311ac4220bd79addcd1",
+                    "name": "StrengthIconImg",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "AutoLocalize": true,
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 1,
+                      "ClipsDescendants": false,
+                      "Image": "rbxassetid://106875000830237",
+                      "ImageColor3": "#ffffff",
+                      "ImageTransparency": 0,
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 19,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 38,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "ScaleType": "Fit",
+                      "Size": {
+                        "x": {
+                          "offset": 64,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 64,
+                          "scale": 0
+                        }
+                      },
+                      "TileSize": {
+                        "x": {
+                          "offset": 0,
+                          "scale": 1
+                        },
+                        "y": {
+                          "offset": 0,
+                          "scale": 1
+                        }
+                      },
+                      "Visible": true,
+                      "ZIndex": 9
+                    }
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [],
+                        "className": "UIStroke",
+                        "id": "b65cb0f6-7155-42a5-a66c-1c5759d7a03a",
+                        "name": "TextStroke",
+                        "properties": {
+                          "Color": "#000000",
+                          "Enabled": true,
+                          "Thickness": 3.12,
+                          "Transparency": 0
+                        }
+                      },
+                      {
+                        "children": [],
+                        "className": "UIGradient",
+                        "id": "3a7ca2a1-9cfe-4bcf-a2b9-118d9d61ca0f",
+                        "name": "StrengthGradient",
+                        "properties": {
+                          "ColorEnd": "#ffb723",
+                          "ColorStart": "#ffe45b",
+                          "Enabled": true,
+                          "Rotation": 90,
+                          "TransparencyEnd": 0,
+                          "TransparencyStart": 0
+                        }
+                      }
+                    ],
+                    "className": "TextLabel",
+                    "id": "a9f06e01-7787-488e-b239-fa889e7ce128",
+                    "name": "AmountTxt",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "AutoLocalize": false,
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 1,
+                      "ClipsDescendants": false,
+                      "Font": "GothamBold",
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 92,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 35,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "Size": {
+                        "x": {
+                          "offset": 199,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 70,
+                          "scale": 0
+                        }
+                      },
+                      "Text": "",
+                      "TextColor3": "#ffcf38",
+                      "TextScaled": false,
+                      "TextSize": 40,
+                      "TextTransparency": 0,
+                      "TextWrapped": false,
+                      "TextXAlignment": "Left",
+                      "TextYAlignment": "Center",
+                      "Visible": true,
+                      "ZIndex": 9
+                    }
+                  }
+                ],
                 "className": "ImageLabel",
-                "id": "4fe273b6-2b77-4354-a0bf-2bd63d9efdf1",
-                "imageAssetId": "302f11ce15e34311ac4220bd79addcd1",
-                "name": "StrengthIconImg",
+                "id": "008f033b-8f16-4f27-97d5-f8ab5bdcd16f",
+                "imageAssetId": "builtin:roblox:stud",
+                "name": "NormalRewardImg",
+                "properties": {
+                  "AnchorPoint": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "AutoLocalize": true,
+                  "BackgroundColor3": "#1c1f22",
+                  "BackgroundTransparency": 0,
+                  "ClipsDescendants": false,
+                  "Image": "rbxassetid://82793028306773",
+                  "ImageColor3": "#ffffff",
+                  "ImageTransparency": 0.96,
+                  "LayoutOrder": 0,
+                  "Position": {
+                    "x": {
+                      "offset": 0,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 52,
+                      "scale": 0
+                    }
+                  },
+                  "Rotation": 0,
+                  "ScaleType": "Tile",
+                  "Size": {
+                    "x": {
+                      "offset": 299,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 140,
+                      "scale": 0
+                    }
+                  },
+                  "TileSize": {
+                    "x": {
+                      "offset": 22,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 22,
+                      "scale": 0
+                    }
+                  },
+                  "Visible": true,
+                  "ZIndex": 7
+                }
+              },
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UICorner",
+                    "id": "a1573114-9982-4f57-b309-76e8124f7415",
+                    "name": "UICorner",
+                    "properties": {
+                      "CornerRadius": {
+                        "offset": 6,
+                        "scale": 0
+                      }
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "94ffb389-3238-4d17-a0cd-f8222e81fcfa",
+                    "name": "UIStroke",
+                    "properties": {
+                      "Color": "#000000",
+                      "Enabled": true,
+                      "Thickness": 3,
+                      "Transparency": 0
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "Frame",
+                    "id": "d9144e9c-b297-48dc-ba28-fe68f80fa328",
+                    "name": "TopHighlightImg",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "AutoLocalize": true,
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 0.88,
+                      "ClipsDescendants": false,
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 3,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 3,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "Size": {
+                        "x": {
+                          "offset": -6,
+                          "scale": 1
+                        },
+                        "y": {
+                          "offset": 2,
+                          "scale": 0
+                        }
+                      },
+                      "Visible": true,
+                      "ZIndex": 8
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "Frame",
+                    "id": "3f2454c7-6260-4158-b746-177e9e32399a",
+                    "name": "BottomEdgeImg",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "AutoLocalize": true,
+                      "BackgroundColor3": "#000000",
+                      "BackgroundTransparency": 0.35,
+                      "ClipsDescendants": false,
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 3,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": -6,
+                          "scale": 1
+                        }
+                      },
+                      "Rotation": 0,
+                      "Size": {
+                        "x": {
+                          "offset": -6,
+                          "scale": 1
+                        },
+                        "y": {
+                          "offset": 3,
+                          "scale": 0
+                        }
+                      },
+                      "Visible": true,
+                      "ZIndex": 8
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "ImageLabel",
+                    "id": "a4870d3f-f181-4173-b414-a000b2af0e0a",
+                    "imageAssetId": "302f11ce15e34311ac4220bd79addcd1",
+                    "name": "BoostStrengthImg",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "AutoLocalize": true,
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 1,
+                      "ClipsDescendants": false,
+                      "Image": "rbxassetid://106875000830237",
+                      "ImageColor3": "#ffffff",
+                      "ImageTransparency": 0,
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 19,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 38,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "ScaleType": "Fit",
+                      "Size": {
+                        "x": {
+                          "offset": 64,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 64,
+                          "scale": 0
+                        }
+                      },
+                      "TileSize": {
+                        "x": {
+                          "offset": 0,
+                          "scale": 1
+                        },
+                        "y": {
+                          "offset": 0,
+                          "scale": 1
+                        }
+                      },
+                      "Visible": true,
+                      "ZIndex": 9
+                    }
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [],
+                        "className": "UIStroke",
+                        "id": "73803ce3-9a2c-4a2b-8ac2-3f98dfb20976",
+                        "name": "TextStroke",
+                        "properties": {
+                          "Color": "#000000",
+                          "Enabled": true,
+                          "Thickness": 3.12,
+                          "Transparency": 0
+                        }
+                      },
+                      {
+                        "children": [],
+                        "className": "UIGradient",
+                        "id": "581954c9-3a4a-421e-89a0-5b112fc25172",
+                        "name": "StrengthGradient",
+                        "properties": {
+                          "ColorEnd": "#ffb723",
+                          "ColorStart": "#ffe45b",
+                          "Enabled": true,
+                          "Rotation": 90,
+                          "TransparencyEnd": 0,
+                          "TransparencyStart": 0
+                        }
+                      }
+                    ],
+                    "className": "TextLabel",
+                    "id": "9eab9ead-12d0-4ecd-b294-01e88b19e8cc",
+                    "name": "AmountTxt",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "AutoLocalize": false,
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 1,
+                      "ClipsDescendants": false,
+                      "Font": "GothamBold",
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 92,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 35,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "Size": {
+                        "x": {
+                          "offset": 199,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 70,
+                          "scale": 0
+                        }
+                      },
+                      "Text": "",
+                      "TextColor3": "#ffcf38",
+                      "TextScaled": false,
+                      "TextSize": 40,
+                      "TextTransparency": 0,
+                      "TextWrapped": false,
+                      "TextXAlignment": "Left",
+                      "TextYAlignment": "Center",
+                      "Visible": true,
+                      "ZIndex": 9
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "UIGradient",
+                    "id": "12173586-2cf3-4bd8-b9b7-882bd93e1022",
+                    "name": "CardGradient",
+                    "properties": {
+                      "ColorEnd": "#351e40",
+                      "ColorStart": "#283b60",
+                      "Enabled": true,
+                      "Rotation": 35,
+                      "TransparencyEnd": 0,
+                      "TransparencyStart": 0
+                    }
+                  }
+                ],
+                "className": "ImageLabel",
+                "id": "861ed712-b45c-48e1-8ea9-1e451cbaf29e",
+                "imageAssetId": "builtin:roblox:stud",
+                "name": "BoostRewardImg",
                 "properties": {
                   "AnchorPoint": {
                     "x": 0,
@@ -3713,46 +4888,46 @@
                   },
                   "AutoLocalize": true,
                   "BackgroundColor3": "#ffffff",
-                  "BackgroundTransparency": 1,
+                  "BackgroundTransparency": 0,
                   "ClipsDescendants": false,
-                  "Image": "rbxassetid://106875000830237",
+                  "Image": "rbxassetid://82793028306773",
                   "ImageColor3": "#ffffff",
-                  "ImageTransparency": 0,
+                  "ImageTransparency": 0.96,
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
-                      "offset": 118,
+                      "offset": 316,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 92,
+                      "offset": 52,
                       "scale": 0
                     }
                   },
                   "Rotation": 0,
-                  "ScaleType": "Fit",
+                  "ScaleType": "Tile",
                   "Size": {
                     "x": {
-                      "offset": 78,
+                      "offset": 299,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 78,
+                      "offset": 140,
                       "scale": 0
                     }
                   },
                   "TileSize": {
                     "x": {
-                      "offset": 0,
-                      "scale": 1
+                      "offset": 22,
+                      "scale": 0
                     },
                     "y": {
-                      "offset": 0,
-                      "scale": 1
+                      "offset": 22,
+                      "scale": 0
                     }
                   },
                   "Visible": true,
-                  "ZIndex": 9
+                  "ZIndex": 7
                 }
               }
             ],
@@ -3814,7 +4989,7 @@
               "scale": 0
             },
             "y": {
-              "offset": 212,
+              "offset": 183,
               "scale": 0
             }
           },
@@ -3825,7 +5000,7 @@
               "scale": 0
             },
             "y": {
-              "offset": 351,
+              "offset": 410,
               "scale": 0
             }
           },
@@ -4151,7 +5326,17 @@
             }
           },
           {
-            "children": [],
+            "children": [
+              {
+                "children": [],
+                "className": "UIScale",
+                "id": "6a70194a-8330-45bd-ae66-ddd7d578ae16",
+                "name": "CloseButtonScale",
+                "properties": {
+                  "Scale": 1.1
+                }
+              }
+            ],
             "className": "ImageButton",
             "id": "fd8f5856-af44-4864-bd4e-4c8c399a6dee",
             "imageAssetId": "d22a5479fa52468fb6c159b40959050b",
@@ -4171,11 +5356,11 @@
               "LayoutOrder": 0,
               "Position": {
                 "x": {
-                  "offset": 591,
+                  "offset": 589,
                   "scale": 0
                 },
                 "y": {
-                  "offset": 7,
+                  "offset": 5,
                   "scale": 0
                 }
               },
@@ -4280,7 +5465,7 @@
               "scale": 0
             },
             "y": {
-              "offset": 157,
+              "offset": 128,
               "scale": 0
             }
           },
@@ -5767,7 +6952,7 @@
               "scale": 0
             },
             "y": {
-              "offset": 218,
+              "offset": 189,
               "scale": 0
             }
           },
@@ -5894,29 +7079,29 @@
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
-                      "offset": 5,
+                      "offset": 4,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 73,
+                      "offset": 80,
                       "scale": 0
                     }
                   },
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 181,
+                      "offset": 182,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 19,
+                      "offset": 20,
                       "scale": 0
                     }
                   },
                   "Text": "",
                   "TextColor3": "#ffffff",
                   "TextScaled": true,
-                  "TextSize": 17.16,
+                  "TextSize": 18.72,
                   "TextTransparency": 0,
                   "TextWrapped": true,
                   "TextXAlignment": "Center",
@@ -6142,7 +7327,7 @@
                       "scale": 0
                     }
                   },
-                  "Visible": true,
+                  "Visible": false,
                   "ZIndex": 7
                 }
               },
@@ -6190,22 +7375,22 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 73,
+                          "offset": 68,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 25,
+                          "offset": 19,
                           "scale": 0
                         }
                       },
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 44,
+                          "offset": 55,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 44,
+                          "offset": 55,
                           "scale": 0
                         }
                       },
@@ -6231,22 +7416,22 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 73,
+                          "offset": 68,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 25,
+                          "offset": 19,
                           "scale": 0
                         }
                       },
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 44,
+                          "offset": 55,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 44,
+                          "offset": 55,
                           "scale": 0
                         }
                       },
@@ -6324,11 +7509,11 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 66,
+                          "offset": 53,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 20,
+                          "offset": 7,
                           "scale": 0
                         }
                       },
@@ -6336,11 +7521,11 @@
                       "ScaleType": "Fit",
                       "Size": {
                         "x": {
-                          "offset": 59,
+                          "offset": 84,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 51,
+                          "offset": 74,
                           "scale": 0
                         }
                       },
@@ -6378,11 +7563,11 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 66,
+                          "offset": 53,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 20,
+                          "offset": 7,
                           "scale": 0
                         }
                       },
@@ -6390,11 +7575,11 @@
                       "ScaleType": "Fit",
                       "Size": {
                         "x": {
-                          "offset": 59,
+                          "offset": 84,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 51,
+                          "offset": 74,
                           "scale": 0
                         }
                       },
@@ -6721,22 +7906,22 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 73,
+                          "offset": 63,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 22,
+                          "offset": 7,
                           "scale": 0
                         }
                       },
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 44,
+                          "offset": 63,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 50,
+                          "offset": 74,
                           "scale": 0
                         }
                       },
@@ -6764,11 +7949,11 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 73,
+                          "offset": 63,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 22,
+                          "offset": 7,
                           "scale": 0
                         }
                       },
@@ -6776,11 +7961,11 @@
                       "ScaleType": "Fit",
                       "Size": {
                         "x": {
-                          "offset": 44,
+                          "offset": 63,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 50,
+                          "offset": 74,
                           "scale": 0
                         }
                       },
@@ -6860,11 +8045,11 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 62,
+                          "offset": 48,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 20,
+                          "offset": 7,
                           "scale": 0
                         }
                       },
@@ -6872,11 +8057,11 @@
                       "ScaleType": "Fit",
                       "Size": {
                         "x": {
-                          "offset": 66,
+                          "offset": 94,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 51,
+                          "offset": 71,
                           "scale": 0
                         }
                       },
@@ -6929,7 +8114,7 @@
                           "scale": 0
                         },
                         "y": {
-                          "offset": 73,
+                          "offset": 80,
                           "scale": 0
                         }
                       },
@@ -6940,14 +8125,14 @@
                           "scale": 0
                         },
                         "y": {
-                          "offset": 19,
+                          "offset": 20,
                           "scale": 0
                         }
                       },
                       "Text": "",
                       "TextColor3": "#ffffff",
                       "TextScaled": false,
-                      "TextSize": 20.28,
+                      "TextSize": 18.72,
                       "TextTransparency": 0,
                       "TextWrapped": true,
                       "TextXAlignment": "Center",
@@ -7266,6 +8451,68 @@
                   "Visible": false,
                   "ZIndex": 9
                 }
+              },
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "4e159343-1dc4-414c-9795-d4413023fa48",
+                    "name": "TextStroke",
+                    "properties": {
+                      "Color": "#18242b",
+                      "Enabled": true,
+                      "Thickness": 1.56,
+                      "Transparency": 0
+                    }
+                  }
+                ],
+                "className": "TextLabel",
+                "id": "3f3b4802-f397-442f-83e8-2145e7361091",
+                "name": "StatusTxt",
+                "properties": {
+                  "AnchorPoint": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "AutoLocalize": false,
+                  "BackgroundColor3": "#ffffff",
+                  "BackgroundTransparency": 1,
+                  "ClipsDescendants": false,
+                  "Font": "GothamBold",
+                  "LayoutOrder": 0,
+                  "Position": {
+                    "x": {
+                      "offset": 8,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 101,
+                      "scale": 0
+                    }
+                  },
+                  "Rotation": 0,
+                  "Size": {
+                    "x": {
+                      "offset": 174,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 17,
+                      "scale": 0
+                    }
+                  },
+                  "Text": "",
+                  "TextColor3": "#ffffff",
+                  "TextScaled": true,
+                  "TextSize": 16,
+                  "TextTransparency": 0,
+                  "TextWrapped": false,
+                  "TextXAlignment": "Center",
+                  "TextYAlignment": "Center",
+                  "Visible": true,
+                  "ZIndex": 8
+                }
               }
             ],
             "className": "Frame",
@@ -7298,7 +8545,7 @@
                   "scale": 0
                 },
                 "y": {
-                  "offset": 122,
+                  "offset": 120,
                   "scale": 0
                 }
               },
@@ -7412,29 +8659,29 @@
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
-                      "offset": 3,
+                      "offset": 4,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 73,
+                      "offset": 80,
                       "scale": 0
                     }
                   },
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 140,
+                      "offset": 141,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 19,
+                      "offset": 20,
                       "scale": 0
                     }
                   },
                   "Text": "",
                   "TextColor3": "#ffffff",
                   "TextScaled": true,
-                  "TextSize": 16,
+                  "TextSize": 17.16,
                   "TextTransparency": 0,
                   "TextWrapped": true,
                   "TextXAlignment": "Center",
@@ -7660,7 +8907,7 @@
                       "scale": 0
                     }
                   },
-                  "Visible": true,
+                  "Visible": false,
                   "ZIndex": 7
                 }
               },
@@ -7708,22 +8955,22 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 51,
+                          "offset": 46,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 25,
+                          "offset": 19,
                           "scale": 0
                         }
                       },
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 44,
+                          "offset": 55,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 44,
+                          "offset": 55,
                           "scale": 0
                         }
                       },
@@ -7749,22 +8996,22 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 51,
+                          "offset": 46,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 25,
+                          "offset": 19,
                           "scale": 0
                         }
                       },
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 44,
+                          "offset": 55,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 44,
+                          "offset": 55,
                           "scale": 0
                         }
                       },
@@ -7904,11 +9151,11 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 41,
+                          "offset": 26,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 20,
+                          "offset": 7,
                           "scale": 0
                         }
                       },
@@ -7916,11 +9163,11 @@
                       "ScaleType": "Fit",
                       "Size": {
                         "x": {
-                          "offset": 66,
+                          "offset": 94,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 51,
+                          "offset": 71,
                           "scale": 0
                         }
                       },
@@ -7973,7 +9220,7 @@
                           "scale": 0
                         },
                         "y": {
-                          "offset": 73,
+                          "offset": 80,
                           "scale": 0
                         }
                       },
@@ -7984,14 +9231,14 @@
                           "scale": 0
                         },
                         "y": {
-                          "offset": 19,
+                          "offset": 20,
                           "scale": 0
                         }
                       },
                       "Text": "",
                       "TextColor3": "#ffffff",
                       "TextScaled": false,
-                      "TextSize": 20.28,
+                      "TextSize": 17.16,
                       "TextTransparency": 0,
                       "TextWrapped": true,
                       "TextXAlignment": "Center",
@@ -8062,11 +9309,11 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 44,
+                          "offset": 31,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 16,
+                          "offset": 7,
                           "scale": 0
                         }
                       },
@@ -8074,11 +9321,11 @@
                       "ScaleType": "Fit",
                       "Size": {
                         "x": {
-                          "offset": 59,
+                          "offset": 84,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 59,
+                          "offset": 74,
                           "scale": 0
                         }
                       },
@@ -8116,11 +9363,11 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 44,
+                          "offset": 31,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 16,
+                          "offset": 7,
                           "scale": 0
                         }
                       },
@@ -8128,11 +9375,11 @@
                       "ScaleType": "Fit",
                       "Size": {
                         "x": {
-                          "offset": 59,
+                          "offset": 84,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 59,
+                          "offset": 74,
                           "scale": 0
                         }
                       },
@@ -8459,22 +9706,22 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 44,
+                          "offset": 31,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 16,
+                          "offset": 7,
                           "scale": 0
                         }
                       },
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 59,
+                          "offset": 84,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 59,
+                          "offset": 74,
                           "scale": 0
                         }
                       },
@@ -8502,11 +9749,11 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 44,
+                          "offset": 31,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 16,
+                          "offset": 7,
                           "scale": 0
                         }
                       },
@@ -8514,11 +9761,11 @@
                       "ScaleType": "Fit",
                       "Size": {
                         "x": {
-                          "offset": 59,
+                          "offset": 84,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 59,
+                          "offset": 74,
                           "scale": 0
                         }
                       },
@@ -8784,6 +10031,68 @@
                   "Visible": false,
                   "ZIndex": 9
                 }
+              },
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "e6523c7a-1c04-42d8-83da-6e84e226feed",
+                    "name": "TextStroke",
+                    "properties": {
+                      "Color": "#18242b",
+                      "Enabled": true,
+                      "Thickness": 1.56,
+                      "Transparency": 0
+                    }
+                  }
+                ],
+                "className": "TextLabel",
+                "id": "89c657b7-804f-4537-b338-f014e1c35493",
+                "name": "StatusTxt",
+                "properties": {
+                  "AnchorPoint": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "AutoLocalize": false,
+                  "BackgroundColor3": "#ffffff",
+                  "BackgroundTransparency": 1,
+                  "ClipsDescendants": false,
+                  "Font": "GothamBold",
+                  "LayoutOrder": 0,
+                  "Position": {
+                    "x": {
+                      "offset": 8,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 101,
+                      "scale": 0
+                    }
+                  },
+                  "Rotation": 0,
+                  "Size": {
+                    "x": {
+                      "offset": 131,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 17,
+                      "scale": 0
+                    }
+                  },
+                  "Text": "",
+                  "TextColor3": "#ffffff",
+                  "TextScaled": true,
+                  "TextSize": 16,
+                  "TextTransparency": 0,
+                  "TextWrapped": false,
+                  "TextXAlignment": "Center",
+                  "TextYAlignment": "Center",
+                  "Visible": true,
+                  "ZIndex": 8
+                }
               }
             ],
             "className": "Frame",
@@ -8816,7 +10125,7 @@
                   "scale": 0
                 },
                 "y": {
-                  "offset": 122,
+                  "offset": 120,
                   "scale": 0
                 }
               },
@@ -10494,29 +11803,29 @@
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
-                      "offset": 5,
+                      "offset": 4,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 73,
+                      "offset": 80,
                       "scale": 0
                     }
                   },
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 181,
+                      "offset": 182,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 19,
+                      "offset": 20,
                       "scale": 0
                     }
                   },
                   "Text": "",
                   "TextColor3": "#ffffff",
                   "TextScaled": true,
-                  "TextSize": 17.16,
+                  "TextSize": 18.72,
                   "TextTransparency": 0,
                   "TextWrapped": true,
                   "TextXAlignment": "Center",
@@ -10742,7 +12051,7 @@
                       "scale": 0
                     }
                   },
-                  "Visible": true,
+                  "Visible": false,
                   "ZIndex": 7
                 }
               },
@@ -10790,22 +12099,22 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 73,
+                          "offset": 68,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 25,
+                          "offset": 19,
                           "scale": 0
                         }
                       },
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 44,
+                          "offset": 55,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 44,
+                          "offset": 55,
                           "scale": 0
                         }
                       },
@@ -10831,22 +12140,22 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 73,
+                          "offset": 68,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 25,
+                          "offset": 19,
                           "scale": 0
                         }
                       },
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 44,
+                          "offset": 55,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 44,
+                          "offset": 55,
                           "scale": 0
                         }
                       },
@@ -10924,11 +12233,11 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 66,
+                          "offset": 53,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 20,
+                          "offset": 7,
                           "scale": 0
                         }
                       },
@@ -10936,11 +12245,11 @@
                       "ScaleType": "Fit",
                       "Size": {
                         "x": {
-                          "offset": 59,
+                          "offset": 84,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 51,
+                          "offset": 74,
                           "scale": 0
                         }
                       },
@@ -10978,11 +12287,11 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 66,
+                          "offset": 53,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 20,
+                          "offset": 7,
                           "scale": 0
                         }
                       },
@@ -10990,11 +12299,11 @@
                       "ScaleType": "Fit",
                       "Size": {
                         "x": {
-                          "offset": 59,
+                          "offset": 84,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 51,
+                          "offset": 74,
                           "scale": 0
                         }
                       },
@@ -11321,22 +12630,22 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 73,
+                          "offset": 63,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 22,
+                          "offset": 7,
                           "scale": 0
                         }
                       },
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 44,
+                          "offset": 63,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 50,
+                          "offset": 74,
                           "scale": 0
                         }
                       },
@@ -11364,11 +12673,11 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 73,
+                          "offset": 63,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 22,
+                          "offset": 7,
                           "scale": 0
                         }
                       },
@@ -11376,11 +12685,11 @@
                       "ScaleType": "Fit",
                       "Size": {
                         "x": {
-                          "offset": 44,
+                          "offset": 63,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 50,
+                          "offset": 74,
                           "scale": 0
                         }
                       },
@@ -11460,11 +12769,11 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 62,
+                          "offset": 48,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 20,
+                          "offset": 7,
                           "scale": 0
                         }
                       },
@@ -11472,11 +12781,11 @@
                       "ScaleType": "Fit",
                       "Size": {
                         "x": {
-                          "offset": 66,
+                          "offset": 94,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 51,
+                          "offset": 71,
                           "scale": 0
                         }
                       },
@@ -11529,7 +12838,7 @@
                           "scale": 0
                         },
                         "y": {
-                          "offset": 73,
+                          "offset": 80,
                           "scale": 0
                         }
                       },
@@ -11540,14 +12849,14 @@
                           "scale": 0
                         },
                         "y": {
-                          "offset": 19,
+                          "offset": 20,
                           "scale": 0
                         }
                       },
                       "Text": "",
                       "TextColor3": "#ffffff",
                       "TextScaled": false,
-                      "TextSize": 20.28,
+                      "TextSize": 18.72,
                       "TextTransparency": 0,
                       "TextWrapped": true,
                       "TextXAlignment": "Center",
@@ -11866,6 +13175,68 @@
                   "Visible": false,
                   "ZIndex": 9
                 }
+              },
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "dbbddd67-4e5a-41e4-90f5-3ae199e96677",
+                    "name": "TextStroke",
+                    "properties": {
+                      "Color": "#18242b",
+                      "Enabled": true,
+                      "Thickness": 1.56,
+                      "Transparency": 0
+                    }
+                  }
+                ],
+                "className": "TextLabel",
+                "id": "87d38b6f-fea9-42c3-b95a-66a979724621",
+                "name": "StatusTxt",
+                "properties": {
+                  "AnchorPoint": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "AutoLocalize": false,
+                  "BackgroundColor3": "#ffffff",
+                  "BackgroundTransparency": 1,
+                  "ClipsDescendants": false,
+                  "Font": "GothamBold",
+                  "LayoutOrder": 0,
+                  "Position": {
+                    "x": {
+                      "offset": 8,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 101,
+                      "scale": 0
+                    }
+                  },
+                  "Rotation": 0,
+                  "Size": {
+                    "x": {
+                      "offset": 174,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 17,
+                      "scale": 0
+                    }
+                  },
+                  "Text": "",
+                  "TextColor3": "#ffffff",
+                  "TextScaled": true,
+                  "TextSize": 16,
+                  "TextTransparency": 0,
+                  "TextWrapped": false,
+                  "TextXAlignment": "Center",
+                  "TextYAlignment": "Center",
+                  "Visible": true,
+                  "ZIndex": 8
+                }
               }
             ],
             "className": "Frame",
@@ -11898,7 +13269,7 @@
                   "scale": 0
                 },
                 "y": {
-                  "offset": 122,
+                  "offset": 120,
                   "scale": 0
                 }
               },
@@ -12012,29 +13383,29 @@
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
-                      "offset": 5,
+                      "offset": 4,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 73,
+                      "offset": 80,
                       "scale": 0
                     }
                   },
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 181,
+                      "offset": 182,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 19,
+                      "offset": 20,
                       "scale": 0
                     }
                   },
                   "Text": "",
                   "TextColor3": "#ffffff",
                   "TextScaled": true,
-                  "TextSize": 17.16,
+                  "TextSize": 18.72,
                   "TextTransparency": 0,
                   "TextWrapped": true,
                   "TextXAlignment": "Center",
@@ -12260,7 +13631,7 @@
                       "scale": 0
                     }
                   },
-                  "Visible": true,
+                  "Visible": false,
                   "ZIndex": 7
                 }
               },
@@ -12308,22 +13679,22 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 73,
+                          "offset": 68,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 25,
+                          "offset": 19,
                           "scale": 0
                         }
                       },
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 44,
+                          "offset": 55,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 44,
+                          "offset": 55,
                           "scale": 0
                         }
                       },
@@ -12349,22 +13720,22 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 73,
+                          "offset": 68,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 25,
+                          "offset": 19,
                           "scale": 0
                         }
                       },
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 44,
+                          "offset": 55,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 44,
+                          "offset": 55,
                           "scale": 0
                         }
                       },
@@ -12442,11 +13813,11 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 66,
+                          "offset": 53,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 20,
+                          "offset": 7,
                           "scale": 0
                         }
                       },
@@ -12454,11 +13825,11 @@
                       "ScaleType": "Fit",
                       "Size": {
                         "x": {
-                          "offset": 59,
+                          "offset": 84,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 51,
+                          "offset": 74,
                           "scale": 0
                         }
                       },
@@ -12496,11 +13867,11 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 66,
+                          "offset": 53,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 20,
+                          "offset": 7,
                           "scale": 0
                         }
                       },
@@ -12508,11 +13879,11 @@
                       "ScaleType": "Fit",
                       "Size": {
                         "x": {
-                          "offset": 59,
+                          "offset": 84,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 51,
+                          "offset": 74,
                           "scale": 0
                         }
                       },
@@ -12839,22 +14210,22 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 73,
+                          "offset": 63,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 22,
+                          "offset": 7,
                           "scale": 0
                         }
                       },
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 44,
+                          "offset": 63,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 50,
+                          "offset": 74,
                           "scale": 0
                         }
                       },
@@ -12882,11 +14253,11 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 73,
+                          "offset": 63,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 22,
+                          "offset": 7,
                           "scale": 0
                         }
                       },
@@ -12894,11 +14265,11 @@
                       "ScaleType": "Fit",
                       "Size": {
                         "x": {
-                          "offset": 44,
+                          "offset": 63,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 50,
+                          "offset": 74,
                           "scale": 0
                         }
                       },
@@ -12978,11 +14349,11 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 62,
+                          "offset": 48,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 20,
+                          "offset": 7,
                           "scale": 0
                         }
                       },
@@ -12990,11 +14361,11 @@
                       "ScaleType": "Fit",
                       "Size": {
                         "x": {
-                          "offset": 66,
+                          "offset": 94,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 51,
+                          "offset": 71,
                           "scale": 0
                         }
                       },
@@ -13047,7 +14418,7 @@
                           "scale": 0
                         },
                         "y": {
-                          "offset": 73,
+                          "offset": 80,
                           "scale": 0
                         }
                       },
@@ -13058,14 +14429,14 @@
                           "scale": 0
                         },
                         "y": {
-                          "offset": 19,
+                          "offset": 20,
                           "scale": 0
                         }
                       },
                       "Text": "",
                       "TextColor3": "#ffffff",
                       "TextScaled": false,
-                      "TextSize": 20.28,
+                      "TextSize": 18.72,
                       "TextTransparency": 0,
                       "TextWrapped": true,
                       "TextXAlignment": "Center",
@@ -13384,6 +14755,68 @@
                   "Visible": false,
                   "ZIndex": 9
                 }
+              },
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "97020e12-bd85-47a9-ae42-22f44d5e1a1a",
+                    "name": "TextStroke",
+                    "properties": {
+                      "Color": "#18242b",
+                      "Enabled": true,
+                      "Thickness": 1.56,
+                      "Transparency": 0
+                    }
+                  }
+                ],
+                "className": "TextLabel",
+                "id": "cfb8c6e8-2440-4872-9e5c-7f1acc5395ee",
+                "name": "StatusTxt",
+                "properties": {
+                  "AnchorPoint": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "AutoLocalize": false,
+                  "BackgroundColor3": "#ffffff",
+                  "BackgroundTransparency": 1,
+                  "ClipsDescendants": false,
+                  "Font": "GothamBold",
+                  "LayoutOrder": 0,
+                  "Position": {
+                    "x": {
+                      "offset": 8,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 101,
+                      "scale": 0
+                    }
+                  },
+                  "Rotation": 0,
+                  "Size": {
+                    "x": {
+                      "offset": 174,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 17,
+                      "scale": 0
+                    }
+                  },
+                  "Text": "",
+                  "TextColor3": "#ffffff",
+                  "TextScaled": true,
+                  "TextSize": 16,
+                  "TextTransparency": 0,
+                  "TextWrapped": false,
+                  "TextXAlignment": "Center",
+                  "TextYAlignment": "Center",
+                  "Visible": true,
+                  "ZIndex": 8
+                }
               }
             ],
             "className": "Frame",
@@ -13416,7 +14849,7 @@
                   "scale": 0
                 },
                 "y": {
-                  "offset": 122,
+                  "offset": 120,
                   "scale": 0
                 }
               },
@@ -13530,29 +14963,29 @@
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
-                      "offset": 5,
+                      "offset": 4,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 73,
+                      "offset": 80,
                       "scale": 0
                     }
                   },
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 181,
+                      "offset": 182,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 19,
+                      "offset": 20,
                       "scale": 0
                     }
                   },
                   "Text": "",
                   "TextColor3": "#ffffff",
                   "TextScaled": true,
-                  "TextSize": 17.16,
+                  "TextSize": 18.72,
                   "TextTransparency": 0,
                   "TextWrapped": true,
                   "TextXAlignment": "Center",
@@ -13778,7 +15211,7 @@
                       "scale": 0
                     }
                   },
-                  "Visible": true,
+                  "Visible": false,
                   "ZIndex": 7
                 }
               },
@@ -13826,22 +15259,22 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 73,
+                          "offset": 68,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 25,
+                          "offset": 19,
                           "scale": 0
                         }
                       },
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 44,
+                          "offset": 55,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 44,
+                          "offset": 55,
                           "scale": 0
                         }
                       },
@@ -13867,22 +15300,22 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 73,
+                          "offset": 68,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 25,
+                          "offset": 19,
                           "scale": 0
                         }
                       },
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 44,
+                          "offset": 55,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 44,
+                          "offset": 55,
                           "scale": 0
                         }
                       },
@@ -13960,11 +15393,11 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 66,
+                          "offset": 53,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 20,
+                          "offset": 7,
                           "scale": 0
                         }
                       },
@@ -13972,11 +15405,11 @@
                       "ScaleType": "Fit",
                       "Size": {
                         "x": {
-                          "offset": 59,
+                          "offset": 84,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 51,
+                          "offset": 74,
                           "scale": 0
                         }
                       },
@@ -14014,11 +15447,11 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 66,
+                          "offset": 53,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 20,
+                          "offset": 7,
                           "scale": 0
                         }
                       },
@@ -14026,11 +15459,11 @@
                       "ScaleType": "Fit",
                       "Size": {
                         "x": {
-                          "offset": 59,
+                          "offset": 84,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 51,
+                          "offset": 74,
                           "scale": 0
                         }
                       },
@@ -14357,22 +15790,22 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 73,
+                          "offset": 63,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 22,
+                          "offset": 7,
                           "scale": 0
                         }
                       },
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 44,
+                          "offset": 63,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 50,
+                          "offset": 74,
                           "scale": 0
                         }
                       },
@@ -14400,11 +15833,11 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 73,
+                          "offset": 63,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 22,
+                          "offset": 7,
                           "scale": 0
                         }
                       },
@@ -14412,11 +15845,11 @@
                       "ScaleType": "Fit",
                       "Size": {
                         "x": {
-                          "offset": 44,
+                          "offset": 63,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 50,
+                          "offset": 74,
                           "scale": 0
                         }
                       },
@@ -14496,11 +15929,11 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 62,
+                          "offset": 48,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 20,
+                          "offset": 7,
                           "scale": 0
                         }
                       },
@@ -14508,11 +15941,11 @@
                       "ScaleType": "Fit",
                       "Size": {
                         "x": {
-                          "offset": 66,
+                          "offset": 94,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 51,
+                          "offset": 71,
                           "scale": 0
                         }
                       },
@@ -14565,7 +15998,7 @@
                           "scale": 0
                         },
                         "y": {
-                          "offset": 73,
+                          "offset": 80,
                           "scale": 0
                         }
                       },
@@ -14576,14 +16009,14 @@
                           "scale": 0
                         },
                         "y": {
-                          "offset": 19,
+                          "offset": 20,
                           "scale": 0
                         }
                       },
                       "Text": "",
                       "TextColor3": "#ffffff",
                       "TextScaled": false,
-                      "TextSize": 20.28,
+                      "TextSize": 18.72,
                       "TextTransparency": 0,
                       "TextWrapped": true,
                       "TextXAlignment": "Center",
@@ -14902,6 +16335,68 @@
                   "Visible": true,
                   "ZIndex": 9
                 }
+              },
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "9b76f684-1eb3-4e96-a886-0a591e4285a1",
+                    "name": "TextStroke",
+                    "properties": {
+                      "Color": "#18242b",
+                      "Enabled": true,
+                      "Thickness": 1.56,
+                      "Transparency": 0
+                    }
+                  }
+                ],
+                "className": "TextLabel",
+                "id": "f31c044f-8cd2-4c6f-b3e7-bbd656db9050",
+                "name": "StatusTxt",
+                "properties": {
+                  "AnchorPoint": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "AutoLocalize": false,
+                  "BackgroundColor3": "#ffffff",
+                  "BackgroundTransparency": 1,
+                  "ClipsDescendants": false,
+                  "Font": "GothamBold",
+                  "LayoutOrder": 0,
+                  "Position": {
+                    "x": {
+                      "offset": 8,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 101,
+                      "scale": 0
+                    }
+                  },
+                  "Rotation": 0,
+                  "Size": {
+                    "x": {
+                      "offset": 174,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 17,
+                      "scale": 0
+                    }
+                  },
+                  "Text": "",
+                  "TextColor3": "#ffffff",
+                  "TextScaled": true,
+                  "TextSize": 16,
+                  "TextTransparency": 0,
+                  "TextWrapped": false,
+                  "TextXAlignment": "Center",
+                  "TextYAlignment": "Center",
+                  "Visible": true,
+                  "ZIndex": 8
+                }
               }
             ],
             "className": "Frame",
@@ -14934,7 +16429,7 @@
                   "scale": 0
                 },
                 "y": {
-                  "offset": 122,
+                  "offset": 120,
                   "scale": 0
                 }
               },
@@ -15048,29 +16543,29 @@
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
-                      "offset": 3,
+                      "offset": 4,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 73,
+                      "offset": 80,
                       "scale": 0
                     }
                   },
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 140,
+                      "offset": 141,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 19,
+                      "offset": 20,
                       "scale": 0
                     }
                   },
                   "Text": "",
                   "TextColor3": "#ffffff",
                   "TextScaled": true,
-                  "TextSize": 16,
+                  "TextSize": 17.16,
                   "TextTransparency": 0,
                   "TextWrapped": true,
                   "TextXAlignment": "Center",
@@ -15296,7 +16791,7 @@
                       "scale": 0
                     }
                   },
-                  "Visible": true,
+                  "Visible": false,
                   "ZIndex": 7
                 }
               },
@@ -15344,22 +16839,22 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 51,
+                          "offset": 46,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 25,
+                          "offset": 19,
                           "scale": 0
                         }
                       },
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 44,
+                          "offset": 55,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 44,
+                          "offset": 55,
                           "scale": 0
                         }
                       },
@@ -15385,22 +16880,22 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 51,
+                          "offset": 46,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 25,
+                          "offset": 19,
                           "scale": 0
                         }
                       },
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 44,
+                          "offset": 55,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 44,
+                          "offset": 55,
                           "scale": 0
                         }
                       },
@@ -15540,11 +17035,11 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 41,
+                          "offset": 26,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 20,
+                          "offset": 7,
                           "scale": 0
                         }
                       },
@@ -15552,11 +17047,11 @@
                       "ScaleType": "Fit",
                       "Size": {
                         "x": {
-                          "offset": 66,
+                          "offset": 94,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 51,
+                          "offset": 71,
                           "scale": 0
                         }
                       },
@@ -15609,7 +17104,7 @@
                           "scale": 0
                         },
                         "y": {
-                          "offset": 73,
+                          "offset": 80,
                           "scale": 0
                         }
                       },
@@ -15620,14 +17115,14 @@
                           "scale": 0
                         },
                         "y": {
-                          "offset": 19,
+                          "offset": 20,
                           "scale": 0
                         }
                       },
                       "Text": "",
                       "TextColor3": "#ffffff",
                       "TextScaled": false,
-                      "TextSize": 20.28,
+                      "TextSize": 17.16,
                       "TextTransparency": 0,
                       "TextWrapped": true,
                       "TextXAlignment": "Center",
@@ -15698,11 +17193,11 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 44,
+                          "offset": 31,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 16,
+                          "offset": 7,
                           "scale": 0
                         }
                       },
@@ -15710,11 +17205,11 @@
                       "ScaleType": "Fit",
                       "Size": {
                         "x": {
-                          "offset": 59,
+                          "offset": 84,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 59,
+                          "offset": 74,
                           "scale": 0
                         }
                       },
@@ -15752,11 +17247,11 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 44,
+                          "offset": 31,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 16,
+                          "offset": 7,
                           "scale": 0
                         }
                       },
@@ -15764,11 +17259,11 @@
                       "ScaleType": "Fit",
                       "Size": {
                         "x": {
-                          "offset": 59,
+                          "offset": 84,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 59,
+                          "offset": 74,
                           "scale": 0
                         }
                       },
@@ -16095,22 +17590,22 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 44,
+                          "offset": 31,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 16,
+                          "offset": 7,
                           "scale": 0
                         }
                       },
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 59,
+                          "offset": 84,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 59,
+                          "offset": 74,
                           "scale": 0
                         }
                       },
@@ -16138,11 +17633,11 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 44,
+                          "offset": 31,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 16,
+                          "offset": 7,
                           "scale": 0
                         }
                       },
@@ -16150,11 +17645,11 @@
                       "ScaleType": "Fit",
                       "Size": {
                         "x": {
-                          "offset": 59,
+                          "offset": 84,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 59,
+                          "offset": 74,
                           "scale": 0
                         }
                       },
@@ -16420,6 +17915,68 @@
                   "Visible": false,
                   "ZIndex": 9
                 }
+              },
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "4b2d037a-37f5-4d82-af03-b69e88cb3aab",
+                    "name": "TextStroke",
+                    "properties": {
+                      "Color": "#18242b",
+                      "Enabled": true,
+                      "Thickness": 1.56,
+                      "Transparency": 0
+                    }
+                  }
+                ],
+                "className": "TextLabel",
+                "id": "3986b666-a6f8-44e5-8790-34bf7b3b4d6c",
+                "name": "StatusTxt",
+                "properties": {
+                  "AnchorPoint": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "AutoLocalize": false,
+                  "BackgroundColor3": "#ffffff",
+                  "BackgroundTransparency": 1,
+                  "ClipsDescendants": false,
+                  "Font": "GothamBold",
+                  "LayoutOrder": 0,
+                  "Position": {
+                    "x": {
+                      "offset": 8,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 101,
+                      "scale": 0
+                    }
+                  },
+                  "Rotation": 0,
+                  "Size": {
+                    "x": {
+                      "offset": 131,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 17,
+                      "scale": 0
+                    }
+                  },
+                  "Text": "",
+                  "TextColor3": "#ffffff",
+                  "TextScaled": true,
+                  "TextSize": 16,
+                  "TextTransparency": 0,
+                  "TextWrapped": false,
+                  "TextXAlignment": "Center",
+                  "TextYAlignment": "Center",
+                  "Visible": true,
+                  "ZIndex": 8
+                }
               }
             ],
             "className": "Frame",
@@ -16452,7 +18009,7 @@
                   "scale": 0
                 },
                 "y": {
-                  "offset": 122,
+                  "offset": 120,
                   "scale": 0
                 }
               },
@@ -16566,29 +18123,29 @@
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
-                      "offset": 3,
+                      "offset": 4,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 73,
+                      "offset": 80,
                       "scale": 0
                     }
                   },
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 140,
+                      "offset": 141,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 19,
+                      "offset": 20,
                       "scale": 0
                     }
                   },
                   "Text": "",
                   "TextColor3": "#ffffff",
                   "TextScaled": true,
-                  "TextSize": 16,
+                  "TextSize": 17.16,
                   "TextTransparency": 0,
                   "TextWrapped": true,
                   "TextXAlignment": "Center",
@@ -16814,7 +18371,7 @@
                       "scale": 0
                     }
                   },
-                  "Visible": true,
+                  "Visible": false,
                   "ZIndex": 7
                 }
               },
@@ -16862,22 +18419,22 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 51,
+                          "offset": 46,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 25,
+                          "offset": 19,
                           "scale": 0
                         }
                       },
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 44,
+                          "offset": 55,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 44,
+                          "offset": 55,
                           "scale": 0
                         }
                       },
@@ -16903,22 +18460,22 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 51,
+                          "offset": 46,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 25,
+                          "offset": 19,
                           "scale": 0
                         }
                       },
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 44,
+                          "offset": 55,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 44,
+                          "offset": 55,
                           "scale": 0
                         }
                       },
@@ -17058,11 +18615,11 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 41,
+                          "offset": 26,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 20,
+                          "offset": 7,
                           "scale": 0
                         }
                       },
@@ -17070,11 +18627,11 @@
                       "ScaleType": "Fit",
                       "Size": {
                         "x": {
-                          "offset": 66,
+                          "offset": 94,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 51,
+                          "offset": 71,
                           "scale": 0
                         }
                       },
@@ -17127,7 +18684,7 @@
                           "scale": 0
                         },
                         "y": {
-                          "offset": 73,
+                          "offset": 80,
                           "scale": 0
                         }
                       },
@@ -17138,14 +18695,14 @@
                           "scale": 0
                         },
                         "y": {
-                          "offset": 19,
+                          "offset": 20,
                           "scale": 0
                         }
                       },
                       "Text": "",
                       "TextColor3": "#ffffff",
                       "TextScaled": false,
-                      "TextSize": 20.28,
+                      "TextSize": 17.16,
                       "TextTransparency": 0,
                       "TextWrapped": true,
                       "TextXAlignment": "Center",
@@ -17216,11 +18773,11 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 44,
+                          "offset": 31,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 16,
+                          "offset": 7,
                           "scale": 0
                         }
                       },
@@ -17228,11 +18785,11 @@
                       "ScaleType": "Fit",
                       "Size": {
                         "x": {
-                          "offset": 59,
+                          "offset": 84,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 59,
+                          "offset": 74,
                           "scale": 0
                         }
                       },
@@ -17270,11 +18827,11 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 44,
+                          "offset": 31,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 16,
+                          "offset": 7,
                           "scale": 0
                         }
                       },
@@ -17282,11 +18839,11 @@
                       "ScaleType": "Fit",
                       "Size": {
                         "x": {
-                          "offset": 59,
+                          "offset": 84,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 59,
+                          "offset": 74,
                           "scale": 0
                         }
                       },
@@ -17613,22 +19170,22 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 44,
+                          "offset": 31,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 16,
+                          "offset": 7,
                           "scale": 0
                         }
                       },
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 59,
+                          "offset": 84,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 59,
+                          "offset": 74,
                           "scale": 0
                         }
                       },
@@ -17656,11 +19213,11 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 44,
+                          "offset": 31,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 16,
+                          "offset": 7,
                           "scale": 0
                         }
                       },
@@ -17668,11 +19225,11 @@
                       "ScaleType": "Fit",
                       "Size": {
                         "x": {
-                          "offset": 59,
+                          "offset": 84,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 59,
+                          "offset": 74,
                           "scale": 0
                         }
                       },
@@ -17938,6 +19495,68 @@
                   "Visible": false,
                   "ZIndex": 9
                 }
+              },
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "16914b27-ea9c-4fc9-9d51-82ab8e5f78db",
+                    "name": "TextStroke",
+                    "properties": {
+                      "Color": "#18242b",
+                      "Enabled": true,
+                      "Thickness": 1.56,
+                      "Transparency": 0
+                    }
+                  }
+                ],
+                "className": "TextLabel",
+                "id": "96734392-25ab-41ef-8171-eddd58b2ebf8",
+                "name": "StatusTxt",
+                "properties": {
+                  "AnchorPoint": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "AutoLocalize": false,
+                  "BackgroundColor3": "#ffffff",
+                  "BackgroundTransparency": 1,
+                  "ClipsDescendants": false,
+                  "Font": "GothamBold",
+                  "LayoutOrder": 0,
+                  "Position": {
+                    "x": {
+                      "offset": 8,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 101,
+                      "scale": 0
+                    }
+                  },
+                  "Rotation": 0,
+                  "Size": {
+                    "x": {
+                      "offset": 131,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 17,
+                      "scale": 0
+                    }
+                  },
+                  "Text": "",
+                  "TextColor3": "#ffffff",
+                  "TextScaled": true,
+                  "TextSize": 16,
+                  "TextTransparency": 0,
+                  "TextWrapped": false,
+                  "TextXAlignment": "Center",
+                  "TextYAlignment": "Center",
+                  "Visible": true,
+                  "ZIndex": 8
+                }
               }
             ],
             "className": "Frame",
@@ -17970,7 +19589,7 @@
                   "scale": 0
                 },
                 "y": {
-                  "offset": 122,
+                  "offset": 120,
                   "scale": 0
                 }
               },
@@ -18088,25 +19707,25 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 168,
+                      "offset": 180,
                       "scale": 0
                     }
                   },
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 140,
+                      "offset": 141,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 25,
+                      "offset": 22,
                       "scale": 0
                     }
                   },
                   "Text": "",
                   "TextColor3": "#ffffff",
                   "TextScaled": true,
-                  "TextSize": 17.16,
+                  "TextSize": 18.72,
                   "TextTransparency": 0,
                   "TextWrapped": true,
                   "TextXAlignment": "Center",
@@ -18332,7 +19951,7 @@
                       "scale": 0
                     }
                   },
-                  "Visible": true,
+                  "Visible": false,
                   "ZIndex": 7
                 }
               },
@@ -18380,22 +19999,22 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 33,
+                          "offset": 31,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 67,
+                          "offset": 60,
                           "scale": 0
                         }
                       },
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 81,
+                          "offset": 85,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 94,
+                          "offset": 98,
                           "scale": 0
                         }
                       },
@@ -18421,22 +20040,22 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 51,
+                          "offset": 31,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 25,
+                          "offset": 60,
                           "scale": 0
                         }
                       },
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 44,
+                          "offset": 85,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 44,
+                          "offset": 98,
                           "scale": 0
                         }
                       },
@@ -18576,11 +20195,11 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 30,
+                          "offset": 17,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 69,
+                          "offset": 40,
                           "scale": 0
                         }
                       },
@@ -18588,11 +20207,11 @@
                       "ScaleType": "Fit",
                       "Size": {
                         "x": {
-                          "offset": 87,
+                          "offset": 112,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 90,
+                          "offset": 114,
                           "scale": 0
                         }
                       },
@@ -18645,7 +20264,7 @@
                           "scale": 0
                         },
                         "y": {
-                          "offset": 168,
+                          "offset": 180,
                           "scale": 0
                         }
                       },
@@ -18656,14 +20275,14 @@
                           "scale": 0
                         },
                         "y": {
-                          "offset": 25,
+                          "offset": 22,
                           "scale": 0
                         }
                       },
                       "Text": "",
                       "TextColor3": "#ffffff",
                       "TextScaled": false,
-                      "TextSize": 21.84,
+                      "TextSize": 18.72,
                       "TextTransparency": 0,
                       "TextWrapped": true,
                       "TextXAlignment": "Center",
@@ -18734,11 +20353,11 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 11,
+                          "offset": 4,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 51,
+                          "offset": 40,
                           "scale": 0
                         }
                       },
@@ -18746,11 +20365,11 @@
                       "ScaleType": "Fit",
                       "Size": {
                         "x": {
-                          "offset": 125,
+                          "offset": 139,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 125,
+                          "offset": 139,
                           "scale": 0
                         }
                       },
@@ -18788,11 +20407,11 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 11,
+                          "offset": 4,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 51,
+                          "offset": 40,
                           "scale": 0
                         }
                       },
@@ -18800,11 +20419,11 @@
                       "ScaleType": "Fit",
                       "Size": {
                         "x": {
-                          "offset": 125,
+                          "offset": 139,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 125,
+                          "offset": 139,
                           "scale": 0
                         }
                       },
@@ -19131,22 +20750,22 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 11,
+                          "offset": 4,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 51,
+                          "offset": 40,
                           "scale": 0
                         }
                       },
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 125,
+                          "offset": 139,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 125,
+                          "offset": 139,
                           "scale": 0
                         }
                       },
@@ -19174,11 +20793,11 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 11,
+                          "offset": 4,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 51,
+                          "offset": 40,
                           "scale": 0
                         }
                       },
@@ -19186,11 +20805,11 @@
                       "ScaleType": "Fit",
                       "Size": {
                         "x": {
-                          "offset": 125,
+                          "offset": 139,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 125,
+                          "offset": 139,
                           "scale": 0
                         }
                       },
@@ -19479,14 +21098,14 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 195,
+                      "offset": 208,
                       "scale": 0
                     }
                   },
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 140,
+                      "offset": 141,
                       "scale": 0
                     },
                     "y": {
@@ -19504,6 +21123,68 @@
                   "TextYAlignment": "Center",
                   "Visible": true,
                   "ZIndex": 6
+                }
+              },
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "aadd89a8-aa57-441b-87a5-d635a7a61821",
+                    "name": "TextStroke",
+                    "properties": {
+                      "Color": "#18242b",
+                      "Enabled": true,
+                      "Thickness": 1.56,
+                      "Transparency": 0
+                    }
+                  }
+                ],
+                "className": "TextLabel",
+                "id": "b04a319f-8bb5-4f0f-a36b-58527d3f5fc3",
+                "name": "StatusTxt",
+                "properties": {
+                  "AnchorPoint": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "AutoLocalize": false,
+                  "BackgroundColor3": "#ffffff",
+                  "BackgroundTransparency": 1,
+                  "ClipsDescendants": false,
+                  "Font": "GothamBold",
+                  "LayoutOrder": 0,
+                  "Position": {
+                    "x": {
+                      "offset": 8,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 230,
+                      "scale": 0
+                    }
+                  },
+                  "Rotation": 0,
+                  "Size": {
+                    "x": {
+                      "offset": 131,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 17,
+                      "scale": 0
+                    }
+                  },
+                  "Text": "",
+                  "TextColor3": "#ffffff",
+                  "TextScaled": true,
+                  "TextSize": 16,
+                  "TextTransparency": 0,
+                  "TextWrapped": false,
+                  "TextXAlignment": "Center",
+                  "TextYAlignment": "Center",
+                  "Visible": true,
+                  "ZIndex": 8
                 }
               }
             ],
@@ -19537,7 +21218,7 @@
                   "scale": 0
                 },
                 "y": {
-                  "offset": 256,
+                  "offset": 252,
                   "scale": 0
                 }
               },

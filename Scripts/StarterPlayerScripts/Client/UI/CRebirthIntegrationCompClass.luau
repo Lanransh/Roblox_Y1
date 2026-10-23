@@ -152,6 +152,7 @@ function Component:OnReady()
     self._commonUI:RegisterTrainingClickModal(root)
     self._localization = self._commonUI.Localization
     self.Config = {allowIneligibleAction = true}
+    self._skipPrices = {}
     self.State = {Open = false, Completed = false, Pending = false}
     --- 平台弹窗关闭只恢复交互，重生奖励仍由服务端收据处理。
     --- @param userId number 平台回传的玩家 ID。
@@ -172,9 +173,34 @@ function Component:OnReady()
     self:WatchDataChanged(Fields.RockTrainingLevel, self.RefreshRebirth, self)
     self:WatchDataChanged(Fields.RebirthCount, self.RefreshRebirth, self)
     self:RefreshRebirth()
+    self:LoadSkipPrices()
 end
 
--- 倍率和门槛与服务端共用曲线，不使用设计稿示例数值。
+--- 只查询尚未取得的报价；重新打开时允许重试失败请求，已有查询不重复启动。
+function Component:LoadSkipPrices()
+    if self._priceTask then
+        return
+    end
+    --- 平台价格就绪前保留配置参考价，但不开放跳过购买。
+    self._priceTask = task.defer(function()
+        for goodsId, goods in pairs(_G.GoodsConfig.GoodsData) do
+            local productId = goods.RobloxProductId
+            if goods.BuyHandler == "SkipRebirth" and type(productId) == "number"
+                and productId > 0 and productId % 1 == 0 and self._skipPrices[productId] == nil then
+                local ok, info = pcall(function()
+                    return MarketplaceService:GetProductInfoAsync(productId, Enum.InfoType.Product)
+                end)
+                if ok and type(info) == "table" and type(info.PriceInRobux) == "number" then
+                    self._skipPrices[productId] = info.PriceInRobux
+                    self:RefreshRebirth()
+                end
+            end
+        end
+        self._priceTask = nil
+    end)
+end
+
+--- 倍率和门槛与服务端共用曲线，跳过价格优先使用平台实际报价。
 function Component:RefreshRebirth()
     local count = self:GetNumber(Fields.RebirthCount)
     local nextCount = math.min(count + 1, Rebirth.MaxCount)
@@ -187,7 +213,9 @@ function Component:RefreshRebirth()
     self.State.AtMax = count >= Rebirth.MaxCount
     local goods = Rebirth.GetSkipGoods(count)
     local productId = goods and goods.RobloxProductId
-    self.State.SkipAvailable = type(productId) == "number" and productId > 0 and productId % 1 == 0
+    local platformPrice = productId and self._skipPrices[productId]
+    self.State.SkipCost = platformPrice or (goods and goods.Price or 0)
+    self.State.SkipAvailable = platformPrice ~= nil
     self:RefreshUI()
 end
 
@@ -226,6 +254,7 @@ end
 function Component:OnShow()
     self.State.Open = true
     self:RefreshRebirth()
+    self:LoadSkipPrices()
 end
 
 function Component:OnHide()
@@ -276,8 +305,12 @@ function Component:OnUIAction(action, payload)
     end)
 end
 
---- 停止本组件拥有的重生请求与提示动画，并释放提示界面。
+--- 停止本组件拥有的价格查询、重生请求与提示动画，并释放提示界面。
 function Component:Dtor()
+    if self._priceTask then
+        task.cancel(self._priceTask)
+        self._priceTask = nil
+    end
     if self._rebirthTask then
         task.cancel(self._rebirthTask)
         self._rebirthTask = nil

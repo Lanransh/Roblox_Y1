@@ -28,7 +28,7 @@ return {
         PickupDistance = 10,
         HoldDuration = 0.5,
         PatrolPointCount = 4, -- 与 Studio_Y3 一致，循环经过四个随机巡逻点。
-        WalkSpeed = 6, -- 水平巡逻速度，单位 studs/秒。
+        WalkSpeed = 1, -- 水平巡逻速度，单位 studs/秒。
         ArriveDistance = 1,
         UpdateInterval = 0.05,
         OutlineColor = Color3.fromRGB(255, 215, 0),

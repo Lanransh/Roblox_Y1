@@ -392,7 +392,7 @@ function Component:RefreshStrengthOffers()
     end
 end
 
---- 主界面快捷入口复用钻石单件确认页，仅服务端确认后扣款发奖。
+--- 主界面快捷入口复用钻石确认页；组合文案保留定义，供语言变化时重新翻译。
 --- @param name string 已绑定的右侧按钮名称。
 function Component:OpenStrengthOffer(name)
     local shop = self:GetPlayerObject():RequireComponent("CCurrencyShopUIComp")
@@ -420,10 +420,11 @@ function Component:OpenStrengthOffer(name)
         product = {goodsId = goodsId, currency = "Diamond", icon = button.Icon.Image,
             price = _G.GoodsConfig.GemGoodsData[goodsId].Price,
             title = "", description = "",
-            titleText = Text.Tr(TranslationTexts.TrainingPack),
-            descriptionText = Text.Tr(TranslationTexts.TrainingPackDesc, {
+            nameDefinition = TranslationTexts.TrainingPack,
+            descriptionDefinition = TranslationTexts.TrainingPackDesc,
+            descriptionArguments = {
                 value = GameUtility.NumberToText(gain),
-            })}
+            }}
     end
     if product then
         self:GetPlayerObject():RequireComponent("CShopPurchaseUIComp"):OpenProduct(product)

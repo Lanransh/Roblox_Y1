@@ -13,9 +13,13 @@
     NextStrengthMultiplier: number；下次重生后的力量倍率。
     CurrentMoneyMultiplier: number；当前收益倍率。
     NextMoneyMultiplier: number；下次重生后的收益倍率。
+    SkipCost: number；跳过所需 R 币（Robux）数量，必填、非负、无默认值；
+      由业务数据提供，不从等级推导，不在客户端写死。
+    SkipAvailable: boolean，可选；省略 true，false 时禁用 Skip，价格仍显示。
     Pending: boolean，可选，省略 false；请求期间禁用重生和 Skip，不禁用关闭。
   四项倍率均无量纲，2 表示 x2；由业务提供，不从等级推导。
-  View 用 15 位有效数字显示倍率，不修改原始数值。
+  View 用 15 位有效数字显示倍率，并通过 FormatNumber 显示 SkipCost；
+  不修改原始数值。
   没有列表或 error 字段，失败提示由接入层负责。
   异步未就绪时可设 RequiredLevel=0，但其他必填字段仍须提供；
   若倍率等数据也未就绪，延后 BindUIData/Show，而不是传残缺 State。
@@ -24,7 +28,7 @@
   self.State = {
       Open = true, Level = 317, RequiredLevel = 325, Completed = false,
       CurrentStrengthMultiplier = 7, NextStrengthMultiplier = 7.5,
-      CurrentMoneyMultiplier = 3.4, NextMoneyMultiplier = 3.6,
+      CurrentMoneyMultiplier = 3.4, NextMoneyMultiplier = 3.6, SkipCost = 29,
   }
 
 【初始化与刷新】
@@ -41,16 +45,18 @@
 【动作与覆写】
   必需覆写 OnUIAction(action: string, payload: table)，无返回值；默认报错。
   CloseRebirth -> {}；接入层设置 Open=false 并刷新。
-  RequestSkip -> {}；请求跳过等级条件，View 不执行支付。
+  RequestSkip -> {}；请求跳过等级条件，payload 不传 SkipCost 或其他客户端价格。
+  余额、价格与支付校验由接入层负责，View 不执行��付。
   RequestRebirth -> {}；请求重生，不传等级、倍率或客户端计算的资格。
   Config.allowIneligibleAction:boolean?，true 时未满足门槛或到达上限仍允许点击提示。
   State.AtMax:boolean?，true 显示重生上限提示并保持灰色。
-  State.SkipAvailable:boolean?，省略 true；false 禁用 Skip（例如未配置平台商品）。
-  FormatNumber(value:number)->string 可选覆写，默认 tostring，用于倍率。
+  FormatNumber(value:number)->string 可选覆写，默认 tostring，用于倍率与 SkipCost。
   继承 Render 与输入绑定，不覆盖按钮资格或进度文案。
   重生可用条件：Open、RequiredLevel>0、未 Completed、未 Pending、
   Level>=RequiredLevel；Skip 不要求等级不足，前四项满足即可。
-  真实接入须重新校验资格与支付；请求前 Pending=true 并刷新；
+  Skip 禁用条件为 SkipAvailable=false、Pending=true，或页面不满足上述公共条件；
+  禁用时 SkipCostTxt 仍显示业务提供并与余额无关的价格。
+  真实接入须重新校验资格、余额、价格与支付；请求前 Pending=true 并刷新；
   成功后按真实结果更新等级、Completed、四项倍率，失败保留真实状态并另行提示；
   两种结果均 Pending=false 后刷新。下一轮由业务更新门槛并设 Completed=false。
 
@@ -78,9 +84,9 @@ local TranslationTexts = Text.Define("RebirthUI", {
 -- 暴露只读文案定义，供接入子类通过 self.BaseViewTranslationTexts 复用。
 UI.BaseViewTranslationTexts = TranslationTexts
 
--- 倍率显示接入统一数量工具，等级继续保留等级语义。
--- @param value number 原始倍率。
--- @return string 展示倍率。
+-- 倍率与跳过价格接入统一数量工具，等级继续保留等级语义。
+-- @param value number 原始倍率或 R 币数量。
+-- @return string 展示文本。
 function UI:FormatNumber(value)
     return tostring(value)
 end
@@ -92,6 +98,7 @@ function UI:OnReady()
     self.TitleBox = FXLoader:Here(root, "TitleBox")
     self.RebirthBtn = FXLoader:Here(root, "PopupPanelImg.RebirthBtn")
     self.SkipBtn = FXLoader:Here(root, "PopupPanelImg.SkipBtn")
+    self.SkipCostTxt = FXLoader:Here(root, "PopupPanelImg.SkipBtn.SkipPriceBox.SkipCostTxt")
     self.ProgressFill = FXLoader:Here(root, "PopupPanelImg.ProgressBarImg.ProgressFillImg")
     self.ProgressTxt = FXLoader:Here(root, "PopupPanelImg.ProgressBarImg.ProgressTxt")
     self.WarningTxt = FXLoader:Here(root, "PopupPanelImg.ResetWarningTxt")
@@ -137,6 +144,7 @@ function UI:Render(state)
     self.NextMoneyTxt.Text = Text.Tr(TranslationTexts.Multiplier, {
         value = self:FormatNumber(state.NextMoneyMultiplier),
     })
+    self.SkipCostTxt.Text = self:FormatNumber(state.SkipCost)
     local ready = state.RequiredLevel > 0
     local ratio = 0
     if ready then
@@ -154,7 +162,7 @@ function UI:Render(state)
     self.ProgressTxt.Text = string.gsub(self.ProgressTxt.Text, "%s+$", "")
     local available = state.Open and ready and not state.Completed and not state.Pending
     local eligible = available and not state.AtMax and state.Level >= state.RequiredLevel
-    self:SetButtonEnabled(self.RebirthBtn, eligible or (self:GetUIConfig() and self:GetUIConfig().allowIneligibleAction
+    self:SetButtonEnabled(self.RebirthBtn, eligible or (self:GetUIConfig() ~= nil and self:GetUIConfig().allowIneligibleAction == true
         and state.Open and not state.Pending))
     self:SetButtonEnabled(self.SkipBtn, available and state.SkipAvailable ~= false)
     if eligible then
@@ -174,7 +182,7 @@ end
 
 -- 必须由游戏接入实现，不在展示层执行业务。
 -- @param action string CloseRebirth / RequestSkip / RequestRebirth
--- @param payload table 空表，无业务 ID 字段
+-- @param payload table 空表，不传业务 ID 或客户端价格
 function UI:OnUIAction(action, payload)
     error("Rebirth integration must implement OnUIAction: " .. tostring(action))
 end

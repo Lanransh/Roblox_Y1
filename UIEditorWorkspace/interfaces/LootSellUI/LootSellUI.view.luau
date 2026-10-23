@@ -68,7 +68,7 @@
     返回色用于条目渐变起色、图标底色、描边及色条，不修改物品数据。
   Item.nameText:string? 最终译文，优先 name 原文；Item.icon:string? 动态真实贴图。
   FormatNumber(value:number)->string 可选覆写，默认 tostring，数量计算不使用译文。
-  Config.allowEmptyAction:boolean?，true 空包按钮发送 Empty->{}，菜单库存清空同样通知。
+  Config.allowEmptyAction:boolean?，保留兼容字段；空包禁用出售，不发送 Empty。
   Config.allowVipPurchase:boolean?，true 未具备VIP点击发送 PurchaseVip->{}，不发送Sell。
   Render / ConfirmDoubleSale 继承，项目不再改写展示或重新绑定按钮。
   请求前 pending=true、message=nil、soldAmount=nil 并刷新；服务端重查
@@ -78,7 +78,7 @@
 
 【局部菜单、列表与资源边界】
   双倍按钮仅打开本地 DoubleSaleBox，不发动作；选择方式后才发送 Sell；
-  返回按钮只关闭菜单。菜单打开时禁用底层出售和主窗口关闭。
+  返回按钮只关闭菜单。菜单打开时禁用底层出售，主窗口关闭保持可用。
   isOpen=false 或 items 为空会关闭菜单；菜单状态不是 State 字段。
   Templates.LootTemplateImg 按实例 ID 复用/排序/清理；每条占一容量，
   不合并同名物品；满容量仅改变统计颜色，不负责拦截背包写入。
@@ -158,15 +158,15 @@ function CLootSellView:OnReady()
     self.CloseBtn = FXLoader:Here(root, "TitleBox.CloseSurfaceImg")
     -- 点击时发送当前配置中的稳定 ID。
     self:TrackConnection(self.SellAllBtn.Activated:Connect(function()
-        if #self:GetUIState().items == 0 and self:GetUIConfig().allowEmptyAction then
-            self:EmitUIAction("Empty", {})
+        local state = self:GetUIState()
+        if not state.isOpen or state.pending or #state.items == 0 or self.DoubleSaleOpen then
             return
         end
         self:EmitUIAction("Sell", {entryIds = self:GetEntryIds(), multiplier = 1})
     end))
     self:TrackConnection(self.SellDoubleBtn.Activated:Connect(function()
-        if #self:GetUIState().items == 0 and self:GetUIConfig().allowEmptyAction then
-            self:EmitUIAction("Empty", {})
+        local state = self:GetUIState()
+        if not state.isOpen or state.pending or #state.items == 0 or self.DoubleSaleOpen then
             return
         end
         self.DoubleSaleOpen = true
@@ -181,7 +181,7 @@ end
 -- @param method string Card / Gems / Vip
 function CLootSellView:ConfirmDoubleSale(method)
     local state = self:GetUIState()
-    if not self.DoubleSaleOpen or state.pending or #state.items == 0 then
+    if not state.isOpen or not self.DoubleSaleOpen or state.pending or #state.items == 0 then
         return
     end
     if method == "Card" and (state.doubleSaleCards or 0) < 1 then
@@ -230,10 +230,6 @@ end
 -- 按稳定 ID 更新条目，只创建新增条目并清理已移除条目。
 -- @param state table 完整列表状态，见文件头
 function CLootSellView:Render(state)
-    if state.isOpen and self.DoubleSaleOpen and #state.items == 0 and self:GetUIConfig().allowEmptyAction then
-        self.DoubleSaleOpen = false
-        self:EmitUIAction("Empty", {})
-    end
     if not state.isOpen or #state.items == 0 then
         self.DoubleSaleOpen = false
     end
@@ -327,10 +323,9 @@ function CLootSellView:Render(state)
     elseif count == 0 and not state.message then
         self.StatusTxt.Text = Text.Tr(TranslationTexts.NoItems)
     end
-    local allowEmpty = count > 0 or self:GetUIConfig().allowEmptyAction == true
-    self:SetButtonEnabled(self.SellAllBtn, allowEmpty and not state.pending and not self.DoubleSaleOpen)
-    self:SetButtonEnabled(self.SellDoubleBtn, allowEmpty and not state.pending and not self.DoubleSaleOpen)
-    self:SetButtonEnabled(self.CloseBtn, not self.DoubleSaleOpen)
+    self:SetButtonEnabled(self.SellAllBtn, canSell and not self.DoubleSaleOpen)
+    self:SetButtonEnabled(self.SellDoubleBtn, canSell and not self.DoubleSaleOpen)
+    self:SetButtonEnabled(self.CloseBtn, true)
 end
 
 -- 业务接入必须处理出售和关闭。

@@ -14,7 +14,29 @@ function Preview:Ctor(owner)
         NextStrengthMultiplier = 7.5,
         CurrentMoneyMultiplier = 3.4,
         NextMoneyMultiplier = 3.6,
+        SkipCost = 29,
+        SkipAvailable = true,
     }
+end
+
+-- 演示数量缩写；正式游戏使用统一数量格式器，跳过价格仍由业务提供。
+-- @param value number 原始数量
+-- @return string 不含货币符号的数量，例如 29、1.04K
+function Preview:FormatNumber(value)
+    local suffixes = { "", "K", "M", "B", "T" }
+    local scaled = value
+    local index = 1
+    while math.abs(scaled) >= 1000 and index < #suffixes do
+        scaled = scaled / 1000
+        index = index + 1
+    end
+    if index == 1 then
+        return string.format("%.0f", scaled)
+    end
+    local amount = string.format("%.2f", scaled)
+    amount = string.gsub(amount, "0+$", "")
+    amount = string.gsub(amount, "%.$", "")
+    return amount .. suffixes[index]
 end
 
 -- 先绑定节点，再绑定完整数据并显示界面。
@@ -35,8 +57,17 @@ function Preview:OnUIAction(action, payload)
             return
         end
         if action == "RequestSkip" then
+            assert(next(payload) == nil, "RequestSkip payload must be empty")
+            -- 先呈现待处理态，价格仍由 State.SkipCost 驱动。
+            self.State.Pending = true
+            self:RefreshUI()
+            print("模拟 Skip Pending：SkipCost=" .. self:FormatNumber(self.State.SkipCost))
+            -- 模拟业务完成；随后停用按钮并演示价格变化及长数字缩写。
+            self.State.Pending = false
             self.State.Level = self.State.RequiredLevel
-            print("模拟 Skip：满足等级条件，未执行支付")
+            self.State.SkipAvailable = false
+            self.State.SkipCost = 1040
+            print("模拟 Skip 完成：未执行支付，SkipCost=" .. self:FormatNumber(self.State.SkipCost))
         elseif self.State.Level >= self.State.RequiredLevel then
             -- 仅模拟现有差值成长；真实倍率须由游戏业务提供。
             local strengthIncrease = self.State.NextStrengthMultiplier - self.State.CurrentStrengthMultiplier
