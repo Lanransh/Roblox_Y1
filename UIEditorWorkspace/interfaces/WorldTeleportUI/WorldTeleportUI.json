@@ -721,15 +721,6 @@
               "Visible": false,
               "ZIndex": 6
             }
-          },
-          {
-            "children": [],
-            "className": "UIScale",
-            "id": "6d44c983-9d75-4b74-84e2-ad0a542bd7f3",
-            "name": "WindowScale",
-            "properties": {
-              "Scale": 0.65
-            }
           }
         ],
         "className": "Frame",
@@ -747,11 +738,11 @@
           "LayoutOrder": 0,
           "Position": {
             "x": {
-              "offset": 446,
+              "offset": 340,
               "scale": 0
             },
             "y": {
-              "offset": 188,
+              "offset": 95,
               "scale": 0
             }
           },

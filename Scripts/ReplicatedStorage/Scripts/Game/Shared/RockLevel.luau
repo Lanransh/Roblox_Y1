@@ -3,6 +3,7 @@ local NumericalConfig = _G.NumericalConfig
 local FX = _G.FX
 local FXLoader = FX.Loader
 local CurveSampler = FX.CurveSampler
+local GameEnum = _G.GameEnum
 local RockLevel = {
     CellSize = 8, -- 每块石头占原来的 2×2 格。
     LoadDistance = 64,
@@ -78,14 +79,14 @@ function RockLevel.GetProgress(value, maxLevel)
         value - thresholds[level], RockLevel.GetNextExperience(level)
 end
 
---- 沿用 Studio_Y3 等级差减伤：低于推荐等级每级减伤 7%，差 15 级起伤害为零；升级后重算，无计时惩罚。
+--- 沿用 Studio_Y3 等级差减伤：低于推荐等级每级减伤 5%，差 20 级起伤害为零；升级后重算，无计时惩罚。
 --- @param level number 玩家训练等级。
 --- @param index number 配置中的全局关卡序号。
 --- @param strength number 当前阶段累计训练值，与显示力量一致。
 --- @return number 单次击打伤害。
 function RockLevel.GetDamage(level, index, strength)
     local recommendedLevel = CurveSampler:SampleCurveGroupColumn(NumericalConfig.stageCurves, "grassLevel", index)
-    return strength * math.max(0, 1 - math.max(0, recommendedLevel - level) * 0.07)
+    return strength * math.max(0, 1 - math.max(0, recommendedLevel - level) * GameEnum.RockLevelDamageDecayPerLevel)
 end
 
 --- 本关幸运倍率：相对全局第一关期望道具价格向上取整，用于关卡头顶展示。
@@ -143,23 +144,48 @@ function RockLevel.IsInArea(areas, position, padding)
     return false
 end
 
---- 只检测角色水平朝向前方 3 studs 的格子，空格不继续向远处搜索。
+--- 检测角色水平朝向前方 3 studs 及左右相邻格，按与命中点的距离由近到远返回。
 --- @param area table 关卡边界。
---- @param position Vector3 服务端角色位置。
+--- @param position Vector3 角色根节点位置。
 --- @param look Vector3 角色朝向。
---- @return table 最多包含一个近身格子编号，越界或无水平朝向时为空。
+--- @return table 最多包含三个近身格子编号，越界或无水平朝向时为空。
 function RockLevel.GetFrontCells(area, position, look)
     local forward = Vector3.new(look.X, 0, look.Z)
     if forward.Magnitude < 0.01 then
         return {}
     end
-    local target = position + forward.Unit * 3
-    local column = math.floor((target.X - area.MinX) / RockLevel.CellSize)
-    local row = math.floor((target.Z - area.MinZ) / RockLevel.CellSize)
-    if column < 0 or column >= area.Columns or row < 0 or row >= area.Rows then
-        return {}
+    forward = forward.Unit
+    local right = Vector3.new(-forward.Z, 0, forward.X)
+    local target = position + forward * 3
+    local candidates = {}
+    local seen = {}
+    for side = -1, 1 do
+        local point = target + right * (side * RockLevel.CellSize)
+        local column = math.floor((point.X - area.MinX) / RockLevel.CellSize)
+        local row = math.floor((point.Z - area.MinZ) / RockLevel.CellSize)
+        if column >= 0 and column < area.Columns and row >= 0 and row < area.Rows then
+            local key = tostring(area.Index) .. ":" .. tostring(row * area.Columns + column + 1)
+            if not seen[key] then
+                seen[key] = true
+                local centerX = area.MinX + (column + 0.5) * RockLevel.CellSize
+                local centerZ = area.MinZ + (row + 0.5) * RockLevel.CellSize
+                local deltaX = centerX - target.X
+                local deltaZ = centerZ - target.Z
+                table.insert(candidates, {
+                    Key = key,
+                    DistanceSquared = deltaX * deltaX + deltaZ * deltaZ,
+                })
+            end
+        end
     end
-    return {tostring(area.Index) .. ":" .. tostring(row * area.Columns + column + 1)}
+    table.sort(candidates, function(a, b)
+        return a.DistanceSquared < b.DistanceSquared
+    end)
+    local cells = {}
+    for index, candidate in ipairs(candidates) do
+        cells[index] = candidate.Key
+    end
+    return cells
 end
 
 return RockLevel

@@ -62,6 +62,7 @@ function Component:OnReady()
     self._rebirthBadge = FXLoader:Here(self._rootNode, "LeftCenter/RebirthButton/Badge")
     self._rebirthBadge.AutoLocalize = false
     self:BindNotificationBadges()
+    self:ConfigureTopRightLayout()
     self._commonUI = self:GetPlayerObject():RequireComponent("FCCommonUIComp")
     self._localization = self._commonUI.Localization
     self._trainingStatus = Instance.new("TextLabel")
@@ -105,7 +106,6 @@ function Component:OnReady()
     --- 跟随角色进出关卡及重生切换入口，不重复注册按钮事件。
     self._homeTimer = FX.Task:Interval(0.1, function()
         self:RefreshHomeButton()
-        self:RefreshGMButton()
         self:RefreshLootCapacity()
     end)
     --- 普通训练沿用飞行图标，力量卡成功结算后改为力量图标雨。
@@ -213,10 +213,27 @@ function Component:BindNotificationBadges()
     end))
 end
 
---- 每次主界面布局刷新时恢复 GM 按钮的右上角位置，避免响应式布局重置到旧位置。
-function Component:RefreshGMButton()
-    self._gmButton.AnchorPoint = Vector2.new(1, 0)
-    self._gmButton.Position = UDim2.new(1, -68, 0, 10)
+--- 右上入口统一由容器适配，移出旧分组后等待旧布局释放，再设置容器内坐标。
+function Component:ConfigureTopRightLayout()
+    local button = FXLoader:Here(self._rootNode, "SettingsButton")
+    self._gmButton = FXLoader:Here(self._rootNode, "GMButton")
+    local layout = Instance.new("Frame")
+    layout.Name = "TopRight"
+    layout.BackgroundTransparency = 1
+    layout.AnchorPoint = Vector2.new(1, 0)
+    layout.Position = UDim2.new(1, -12, 0, 10)
+    layout.Size = UDim2.fromOffset(120, 64)
+    layout.ZIndex = button.ZIndex
+    button.Parent = layout
+    self._gmButton.Parent = layout
+    -- ResponsiveLayout 的 ChildRemoved 延迟恢复旧坐标，需先让该回调完成。
+    task.wait()
+    button.AnchorPoint = Vector2.new(1, 0)
+    button.Position = UDim2.fromScale(1, 0)
+    button.Size = UDim2.fromOffset(64, 64)
+    self._gmButton.AnchorPoint = Vector2.zero
+    self._gmButton.Position = UDim2.fromOffset(0, 0)
+    layout.Parent = self._rootNode
 end
 
 --- 只按显式禁点标记判断 UI 占用，弹窗状态由通用 UI 统一查询。
@@ -261,10 +278,8 @@ function Component:ShowClickTrainingEffect(position)
     FX.Network:SendMsgToServer("C2S_TrainingClick", position)
 end
 
---- 将 GM 入口固定在右上角并标记主界面实际内容区域，弹窗入口交给对应业务组件。
+--- 按权限显示右上 GM 入口并标记主界面实际内容区域，弹窗入口交给对应业务组件。
 function Component:BindButtons()
-    self._gmButton = FXLoader:Here(self._rootNode, "GMButton")
-    self:RefreshGMButton()
     self._gmButton.Visible = FX.IsDeveloper(self:GetPlayerNode().UserId)
     for index, path in ipairs({"TopCenter/LevelProgressBar", "TopCenter/Strength",
         "LeftDown/RebirthStat", "LeftDown/BackpackStat", "LeftDown/CashStat", "LeftDown/DiamondStat",

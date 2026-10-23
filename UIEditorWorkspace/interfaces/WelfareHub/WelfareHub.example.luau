@@ -8,7 +8,7 @@ function CWelfarePreview:Ctor(owner)
     self.Config = {
         groups = {
             {
-                kind = "online", page = "OnlineBox", columns = 3, gapX = 20, gapY = 16,
+                kind = "online", page = "OnlineBox", columns = 3, gapX = 16, gapY = 12,
                 items = {
                     { id = "online_5", minutes = 5, reward = { type = "Currency", id = "Gold", amount = 100 }},
                     { id = "online_10", minutes = 10, reward = { type = "Currency", id = "Gold", amount = 200 }},
@@ -19,7 +19,7 @@ function CWelfarePreview:Ctor(owner)
                 }
             },
             {
-                kind = "signin", page = "SignInBox", columns = 3, gapX = 12, gapY = 16,
+                kind = "signin", page = "SignInBox", columns = 3, gapX = 9, gapY = 12,
                 items = {
                     { id = "day_1", day = 1, reward = { type = "Currency", id = "Gold", amount = 100 }},
                     { id = "day_2", day = 2, reward = { type = "Currency", id = "Gold", amount = 200 }},
@@ -31,7 +31,7 @@ function CWelfarePreview:Ctor(owner)
                 }
             },
             {
-                kind = "task", page = "TasksBox", columns = 1, gapX = 0, gapY = 12,
+                kind = "task", page = "TasksBox", columns = 1, gapX = 0, gapY = 9,
                 items = {
                     { id = "collect_coins", title = "Collect Cash", target = 1000, previewValue = 1000, reward = { type = "Currency", id = "Gold", amount = 300 }},
                     { id = "play_matches", title = "Play 3 Matches", target = 3, previewValue = 1, reward = { type = "Currency", id = "Diamond", amount = 30 }},

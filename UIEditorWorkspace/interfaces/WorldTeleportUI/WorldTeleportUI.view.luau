@@ -68,7 +68,7 @@ local TranslationTexts = Text.Define("WorldTeleportUI", {
     Go = "Go",
     Teleporting = "Teleporting",
     Here = "Here",
-    RequiredLevel = "Level {level}",
+    RequiredLevel = "Level {level:int}",
 })
 
 -- 暴露只读文案定义，供接入子类通过 self.BaseViewTranslationTexts 复用。

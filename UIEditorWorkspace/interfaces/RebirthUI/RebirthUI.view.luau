@@ -68,8 +68,8 @@ local UI = FX.Class("CRebirthUICompClass", "CUIView")
 
 local TranslationTexts = Text.Define("RebirthUI", {
     Multiplier = "x{value}",
-    Progress = "Level {level}/{required}",
-    ProgressUnavailable = "Level {level}/--",
+    Progress = "Level {level:int}/{required:int}",
+    ProgressUnavailable = "Level {level:int}/--",
     Complete = "Rebirth complete! Strength reset.",
     ResetWarning = "Rebirth resets your strength!",
     MaxCount = "You have reached the rebirth limit.",

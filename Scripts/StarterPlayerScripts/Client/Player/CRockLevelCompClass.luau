@@ -985,7 +985,7 @@ function Component:UpdateAttacks()
                     else
                         powerRoot = nil
                     end
-                    if damage > 0 and regularAttack then
+                    if regularAttack then
                         self._lastAttack = now
                         self:SwingPickaxe(humanoid, key, area, instantBreak)
                     end

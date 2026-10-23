@@ -1,6 +1,8 @@
 -- 项目公共枚举；背包与快捷栏容量由 SetupProvider 返回。
 return {
     RankingDataStore = "ActivityData",
+    -- 石头关卡：玩家等级低于推荐等级时，每低 1 级的伤害衰减比例。
+    RockLevelDamageDecayPerLevel = 0.05,
     -- 关卡头顶幸运牌：按 LevelConfig 加载的区域创建，倍率由 RockLevel.GetLuck 计算。
     LevelLuckDisplay = {
         Icon = "rbxassetid://99859137989503",

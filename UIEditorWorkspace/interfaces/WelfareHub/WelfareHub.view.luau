@@ -62,7 +62,7 @@
     Entry.status: Status，必填。
     Entry.current: number，task 必填；当前进度，与 Item.target 同单位。
     Entry.pending: boolean，可选，省略 false；禁用本条领取。
-    Entry.error: string，可选，省略 nil；Claimable 且非 pending 时按钮为 Retry，
+    Entry.error: string，可选，省略 nil；Claimable 且非 pending 时按钮�� Retry，
       但列表条目不显示错误原文。
     Entry.label: string，可选，省略 nil；仅 Locked 时作为自定义按钮原文。
       不传时 task 显示 In Progress、online 显示剩余 mm:ss、
@@ -78,10 +78,10 @@
           premiumAmount = 50, friendAmount = 10, friendCap = 100 },
       groups = {
           { kind = "online", page = "OnlineBox", columns = 3,
-            gapX = 20, gapY = 16, items = {} },
+            gapX = 16, gapY = 12, items = {} },
           { kind = "signin", page = "SignInBox", columns = 3,
-            gapX = 12, gapY = 16, items = {} },
-          { kind = "task", page = "TasksBox", columns = 1, gapX = 0, gapY = 12,
+            gapX = 9, gapY = 12, items = {} },
+          { kind = "task", page = "TasksBox", columns = 1, gapX = 0, gapY = 9,
             items = { { id = "collect", title = "Collect Cash", target = 100,
                 reward = { type = "Currency", id = "Gold", amount = 20 } } } },
       },
@@ -168,9 +168,9 @@ local Text = Loader:RequireShared("Scripts/Game/Shared/Text")
 local CWelfareView = FX.Class("CWelfareView", "CUIView")
 
 local TranslationTexts = Text.Define("WelfareHub", {
-    Minutes = "{minutes} min",
-    Day = "Day {day}",
-    TaskProgress = "{current} / {target}",
+    Minutes = "{minutes:int} min",
+    Day = "Day {day:int}",
+    TaskProgress = "{current:int} / {target:int}",
     Locked = "Locked",
     Claiming = "Claiming...",
     CheckedIn = "Checked In",
@@ -190,10 +190,10 @@ local TranslationTexts = Text.Define("WelfareHub", {
     ConfirmingReward = "Confirming your reward...",
     DiamondsClaimed = "Today's diamonds claimed · Come back tomorrow",
     ReadyToClaim = "Ready to claim",
-    DailyLogin = "Daily Login · Day {day}",
+    DailyLogin = "Daily Login · Day {day:int}",
     NoRewards = "No rewards",
     AllMilestones = "All milestones reached!",
-    OnlineProgress = "{current} / {target} min",
+    OnlineProgress = "{current:int} / {target:int} min",
     NoOnlineRewards = "No online rewards available",
     NextReward = "Next reward in {time}",
     NoOfflineRewards = "No offline rewards",
@@ -541,8 +541,8 @@ function CWelfareView:SyncItems(group, states)
             rows[id] = nil
         end
     end
-    container.CanvasSize = UDim2.fromOffset(container.Size.X.Offset - container.ScrollBarThickness, bottom + 4)
-    local maxScroll = math.max(0, bottom + 4 - container.Size.Y.Offset)
+    container.CanvasSize = UDim2.fromOffset(container.Size.X.Offset - container.ScrollBarThickness, bottom + 3)
+    local maxScroll = math.max(0, bottom + 3 - container.Size.Y.Offset)
     container.CanvasPosition = Vector2.new(0, math.min(container.CanvasPosition.Y, maxScroll))
 end
 

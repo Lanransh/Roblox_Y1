@@ -273,7 +273,7 @@ function CLootSellView:Render(state)
             end)
             self.Rows[item.id] = record
         end
-        record.node.Position = UDim2.fromOffset(2, 2 + (index - 1) * 112)
+        record.node.Position = UDim2.fromOffset(1, 1 + (index - 1) * 73)
         record.name.Text = item.nameText or Text.TrSource(item.name)
         record.value.Text = self:FormatCoins(item.value)
         record.icon.Image = item.icon or "rbxassetid://86795093617566"
@@ -306,9 +306,9 @@ function CLootSellView:Render(state)
         end
     end
     local count = #state.items
-    local canvasHeight = math.max(252, count * 112 - 8)
-    self.List.CanvasSize = UDim2.fromOffset(822, canvasHeight)
-    self.List.CanvasPosition = Vector2.new(0, math.min(self.List.CanvasPosition.Y, canvasHeight - 252))
+    local canvasHeight = math.max(164, count * 73 - 5)
+    self.List.CanvasSize = UDim2.fromOffset(534, canvasHeight)
+    self.List.CanvasPosition = Vector2.new(0, math.min(self.List.CanvasPosition.Y, canvasHeight - 164))
     self.Total.Text = self:FormatCoins(total)
     self.CapacityTxt.Text = Text.Tr(TranslationTexts.Capacity, {
         count = count,

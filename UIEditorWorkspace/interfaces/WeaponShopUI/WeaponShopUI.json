@@ -17,7 +17,7 @@
             "name": "UICorner",
             "properties": {
               "CornerRadius": {
-                "offset": 2,
+                "offset": 1,
                 "scale": 0
               }
             }
@@ -30,7 +30,7 @@
             "properties": {
               "Color": "#000000",
               "Enabled": true,
-              "Thickness": 2,
+              "Thickness": 1.3,
               "Transparency": 0
             }
           },
@@ -57,7 +57,7 @@
                   "scale": 0
                 },
                 "y": {
-                  "offset": 524,
+                  "offset": 341,
                   "scale": 0
                 }
               },
@@ -65,11 +65,11 @@
               "LayoutOrder": 0,
               "Position": {
                 "x": {
-                  "offset": 28,
+                  "offset": 18,
                   "scale": 0
                 },
                 "y": {
-                  "offset": 18,
+                  "offset": 12,
                   "scale": 0
                 }
               },
@@ -78,11 +78,11 @@
               "ScrollingDirection": "Y",
               "Size": {
                 "x": {
-                  "offset": 854,
+                  "offset": 555,
                   "scale": 0
                 },
                 "y": {
-                  "offset": 524,
+                  "offset": 341,
                   "scale": 0
                 }
               },
@@ -108,44 +108,35 @@
               "LayoutOrder": 0,
               "Position": {
                 "x": {
-                  "offset": 28,
+                  "offset": 18,
                   "scale": 0
                 },
                 "y": {
-                  "offset": 150,
+                  "offset": 98,
                   "scale": 0
                 }
               },
               "Rotation": 0,
               "Size": {
                 "x": {
-                  "offset": 844,
+                  "offset": 549,
                   "scale": 0
                 },
                 "y": {
-                  "offset": 50,
+                  "offset": 33,
                   "scale": 0
                 }
               },
               "Text": "",
               "TextColor3": "#FFFFFF",
               "TextScaled": false,
-              "TextSize": 24,
+              "TextSize": 16,
               "TextTransparency": 0,
               "TextWrapped": true,
               "TextXAlignment": "Center",
               "TextYAlignment": "Center",
               "Visible": false,
               "ZIndex": 1
-            }
-          },
-          {
-            "children": [],
-            "className": "UIScale",
-            "id": "11bfb344-c0c7-4ea3-89dc-8a86b35112f3",
-            "name": "WindowScale",
-            "properties": {
-              "Scale": 0.65
             }
           }
         ],
@@ -168,18 +159,18 @@
               "scale": 0
             },
             "y": {
-              "offset": 214,
+              "offset": 201,
               "scale": 0
             }
           },
           "Rotation": 0,
           "Size": {
             "x": {
-              "offset": 900,
+              "offset": 585,
               "scale": 0
             },
             "y": {
-              "offset": 560,
+              "offset": 364,
               "scale": 0
             }
           },
@@ -198,7 +189,7 @@
                 "name": "UICorner",
                 "properties": {
                   "CornerRadius": {
-                    "offset": 2,
+                    "offset": 1,
                     "scale": 0
                   }
                 }
@@ -211,7 +202,7 @@
                 "properties": {
                   "Color": "#000000",
                   "Enabled": true,
-                  "Thickness": 3,
+                  "Thickness": 1.9500000000000002,
                   "Transparency": 0
                 }
               },
@@ -257,11 +248,11 @@
                   },
                   "TileSize": {
                     "x": {
-                      "offset": 27,
+                      "offset": 18,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 27,
+                      "offset": 18,
                       "scale": 0
                     }
                   },
@@ -297,11 +288,11 @@
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 900,
+                      "offset": 585,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 2,
+                      "offset": 1,
                       "scale": 0
                     }
                   },
@@ -337,11 +328,11 @@
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 2,
+                      "offset": 1,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 70,
+                      "offset": 46,
                       "scale": 0
                     }
                   },
@@ -370,18 +361,18 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 66,
+                      "offset": 43,
                       "scale": 0
                     }
                   },
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 900,
+                      "offset": 585,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 4,
+                      "offset": 3,
                       "scale": 0
                     }
                   },
@@ -430,11 +421,11 @@
               "Rotation": 0,
               "Size": {
                 "x": {
-                  "offset": 900,
+                  "offset": 585,
                   "scale": 0
                 },
                 "y": {
-                  "offset": 70,
+                  "offset": 46,
                   "scale": 0
                 }
               },
@@ -452,7 +443,7 @@
                 "properties": {
                   "Color": "#000000",
                   "Enabled": true,
-                  "Thickness": 2,
+                  "Thickness": 1.3,
                   "Transparency": 0
                 }
               }
@@ -473,7 +464,7 @@
               "LayoutOrder": 0,
               "Position": {
                 "x": {
-                  "offset": 124,
+                  "offset": 81,
                   "scale": 0
                 },
                 "y": {
@@ -484,33 +475,24 @@
               "Rotation": 0,
               "Size": {
                 "x": {
-                  "offset": 688,
+                  "offset": 447,
                   "scale": 0
                 },
                 "y": {
-                  "offset": 70,
+                  "offset": 46,
                   "scale": 0
                 }
               },
               "Text": "",
               "TextColor3": "#ffffff",
               "TextScaled": false,
-              "TextSize": 30,
+              "TextSize": 19.5,
               "TextTransparency": 0,
               "TextWrapped": false,
               "TextXAlignment": "Left",
               "TextYAlignment": "Center",
               "Visible": true,
               "ZIndex": 6
-            }
-          },
-          {
-            "children": [],
-            "className": "UIScale",
-            "id": "94ee9947-e6de-4576-a208-68dc02a4b79d",
-            "name": "WindowScale",
-            "properties": {
-              "Scale": 0.65
             }
           },
           {
@@ -534,11 +516,11 @@
               "LayoutOrder": 0,
               "Position": {
                 "x": {
-                  "offset": 838,
+                  "offset": 545,
                   "scale": 0
                 },
                 "y": {
-                  "offset": 9,
+                  "offset": 6,
                   "scale": 0
                 }
               },
@@ -546,11 +528,11 @@
               "ScaleType": "Fit",
               "Size": {
                 "x": {
-                  "offset": 52,
+                  "offset": 34,
                   "scale": 0
                 },
                 "y": {
-                  "offset": 52,
+                  "offset": 34,
                   "scale": 0
                 }
               },
@@ -589,11 +571,11 @@
               "LayoutOrder": 0,
               "Position": {
                 "x": {
-                  "offset": 8,
+                  "offset": 5,
                   "scale": 0
                 },
                 "y": {
-                  "offset": -19,
+                  "offset": -12,
                   "scale": 0
                 }
               },
@@ -601,11 +583,11 @@
               "ScaleType": "Fit",
               "Size": {
                 "x": {
-                  "offset": 108,
+                  "offset": 70,
                   "scale": 0
                 },
                 "y": {
-                  "offset": 108,
+                  "offset": 70,
                   "scale": 0
                 }
               },
@@ -643,18 +625,18 @@
               "scale": 0
             },
             "y": {
-              "offset": 168,
+              "offset": 155,
               "scale": 0
             }
           },
           "Rotation": 0,
           "Size": {
             "x": {
-              "offset": 900,
+              "offset": 585,
               "scale": 0
             },
             "y": {
-              "offset": 70,
+              "offset": 46,
               "scale": 0
             }
           },
@@ -673,7 +655,7 @@
                 "name": "UICorner",
                 "properties": {
                   "CornerRadius": {
-                    "offset": 2,
+                    "offset": 1,
                     "scale": 0
                   }
                 }
@@ -686,7 +668,7 @@
                 "properties": {
                   "Color": "#000000",
                   "Enabled": true,
-                  "Thickness": 2,
+                  "Thickness": 1.3,
                   "Transparency": 0
                 }
               },
@@ -748,11 +730,11 @@
                   },
                   "TileSize": {
                     "x": {
-                      "offset": 27,
+                      "offset": 18,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 27,
+                      "offset": 18,
                       "scale": 0
                     }
                   },
@@ -781,11 +763,11 @@
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
-                      "offset": 22,
+                      "offset": 14,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 16,
+                      "offset": 10,
                       "scale": 0
                     }
                   },
@@ -793,11 +775,11 @@
                   "ScaleType": "Fit",
                   "Size": {
                     "x": {
-                      "offset": 128,
+                      "offset": 83,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 128,
+                      "offset": 83,
                       "scale": 0
                     }
                   },
@@ -824,7 +806,7 @@
                     "name": "UICorner",
                     "properties": {
                       "CornerRadius": {
-                        "offset": 6,
+                        "offset": 4,
                         "scale": 0
                       }
                     }
@@ -837,7 +819,7 @@
                     "properties": {
                       "Color": "#000000",
                       "Enabled": true,
-                      "Thickness": 3,
+                      "Thickness": 1.9500000000000002,
                       "Transparency": 0
                     }
                   },
@@ -869,11 +851,11 @@
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 200,
+                          "offset": 130,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 2,
+                          "offset": 1,
                           "scale": 0
                         }
                       },
@@ -902,18 +884,18 @@
                           "scale": 0
                         },
                         "y": {
-                          "offset": 80,
+                          "offset": 52,
                           "scale": 0
                         }
                       },
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 200,
+                          "offset": 130,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 4,
+                          "offset": 3,
                           "scale": 0
                         }
                       },
@@ -931,7 +913,7 @@
                         "properties": {
                           "Color": "#20231c",
                           "Enabled": true,
-                          "Thickness": 2,
+                          "Thickness": 1.3,
                           "Transparency": 0
                         }
                       }
@@ -952,7 +934,7 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 64,
+                          "offset": 42,
                           "scale": 0
                         },
                         "y": {
@@ -963,7 +945,7 @@
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": -72,
+                          "offset": -47,
                           "scale": 1
                         },
                         "y": {
@@ -974,7 +956,7 @@
                       "Text": "",
                       "TextColor3": "#ffffff",
                       "TextScaled": false,
-                      "TextSize": 28,
+                      "TextSize": 18.2,
                       "TextTransparency": 0,
                       "TextWrapped": false,
                       "TextXAlignment": "Left",
@@ -1004,11 +986,11 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 8,
+                          "offset": 5,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 18,
+                          "offset": 12,
                           "scale": 0
                         }
                       },
@@ -1016,11 +998,11 @@
                       "ScaleType": "Fit",
                       "Size": {
                         "x": {
-                          "offset": 48,
+                          "offset": 31,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 48,
+                          "offset": 31,
                           "scale": 0
                         }
                       },
@@ -1057,11 +1039,11 @@
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
-                      "offset": 620,
+                      "offset": 403,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 38,
+                      "offset": 25,
                       "scale": 0
                     }
                   },
@@ -1069,21 +1051,21 @@
                   "ScaleType": "Tile",
                   "Size": {
                     "x": {
-                      "offset": 200,
+                      "offset": 130,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 84,
+                      "offset": 55,
                       "scale": 0
                     }
                   },
                   "TileSize": {
                     "x": {
-                      "offset": 28,
+                      "offset": 18,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 28,
+                      "offset": 18,
                       "scale": 0
                     }
                   },
@@ -1101,7 +1083,7 @@
                     "properties": {
                       "Color": "#000000",
                       "Enabled": true,
-                      "Thickness": 2,
+                      "Thickness": 1.3,
                       "Transparency": 0
                     }
                   }
@@ -1122,29 +1104,29 @@
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
-                      "offset": 174,
+                      "offset": 113,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 24,
+                      "offset": 16,
                       "scale": 0
                     }
                   },
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 422,
+                      "offset": 274,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 40,
+                      "offset": 26,
                       "scale": 0
                     }
                   },
                   "Text": "",
                   "TextColor3": "#FFFFFF",
                   "TextScaled": false,
-                  "TextSize": 28,
+                  "TextSize": 18.2,
                   "TextTransparency": 0,
                   "TextWrapped": false,
                   "TextXAlignment": "Left",
@@ -1163,7 +1145,7 @@
                     "properties": {
                       "Color": "#000000",
                       "Enabled": true,
-                      "Thickness": 2,
+                      "Thickness": 1.3,
                       "Transparency": 0
                     }
                   }
@@ -1184,29 +1166,29 @@
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
-                      "offset": 254,
+                      "offset": 165,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 84,
+                      "offset": 55,
                       "scale": 0
                     }
                   },
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 346,
+                      "offset": 225,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 44,
+                      "offset": 29,
                       "scale": 0
                     }
                   },
                   "Text": "",
                   "TextColor3": "#ffffff",
                   "TextScaled": true,
-                  "TextSize": 34,
+                  "TextSize": 22.1,
                   "TextTransparency": 0,
                   "TextWrapped": false,
                   "TextXAlignment": "Left",
@@ -1246,22 +1228,22 @@
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
-                      "offset": 700,
+                      "offset": 455,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 9,
+                      "offset": 6,
                       "scale": 0
                     }
                   },
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 116,
+                      "offset": 75,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 26,
+                      "offset": 17,
                       "scale": 0
                     }
                   },
@@ -1286,7 +1268,7 @@
                     "name": "UICorner",
                     "properties": {
                       "CornerRadius": {
-                        "offset": 2,
+                        "offset": 1,
                         "scale": 0
                       }
                     }
@@ -1299,7 +1281,7 @@
                     "properties": {
                       "Color": "#000000",
                       "Enabled": true,
-                      "Thickness": 4,
+                      "Thickness": 2.6,
                       "Transparency": 0
                     }
                   }
@@ -1319,22 +1301,22 @@
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
-                      "offset": 18,
+                      "offset": 12,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 12,
+                      "offset": 8,
                       "scale": 0
                     }
                   },
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 136,
+                      "offset": 88,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 136,
+                      "offset": 88,
                       "scale": 0
                     }
                   },
@@ -1363,11 +1345,11 @@
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
-                      "offset": 166,
+                      "offset": 108,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 66,
+                      "offset": 43,
                       "scale": 0
                     }
                   },
@@ -1375,11 +1357,11 @@
                   "ScaleType": "Fit",
                   "Size": {
                     "x": {
-                      "offset": 80,
+                      "offset": 52,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 80,
+                      "offset": 52,
                       "scale": 0
                     }
                   },
@@ -1438,11 +1420,11 @@
               "Rotation": 0,
               "Size": {
                 "x": {
-                  "offset": 838,
+                  "offset": 545,
                   "scale": 0
                 },
                 "y": {
-                  "offset": 160,
+                  "offset": 104,
                   "scale": 0
                 }
               },
@@ -1477,11 +1459,11 @@
           "Rotation": 0,
           "Size": {
             "x": {
-              "offset": 200,
+              "offset": 130,
               "scale": 0
             },
             "y": {
-              "offset": 100,
+              "offset": 65,
               "scale": 0
             }
           },

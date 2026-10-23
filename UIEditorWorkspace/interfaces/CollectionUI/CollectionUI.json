@@ -17,7 +17,7 @@
             "name": "UICorner",
             "properties": {
               "CornerRadius": {
-                "offset": 2,
+                "offset": 1,
                 "scale": 0
               }
             }
@@ -30,7 +30,7 @@
             "properties": {
               "Color": "#000000",
               "Enabled": true,
-              "Thickness": 2,
+              "Thickness": 1.3,
               "Transparency": 0
             }
           },
@@ -53,11 +53,11 @@
               },
               "CanvasSize": {
                 "x": {
-                  "offset": 898,
+                  "offset": 584,
                   "scale": 0
                 },
                 "y": {
-                  "offset": 326,
+                  "offset": 212,
                   "scale": 0
                 }
               },
@@ -65,24 +65,24 @@
               "LayoutOrder": 0,
               "Position": {
                 "x": {
-                  "offset": 16,
+                  "offset": 10,
                   "scale": 0
                 },
                 "y": {
-                  "offset": 16,
+                  "offset": 10,
                   "scale": 0
                 }
               },
               "Rotation": 0,
-              "ScrollBarThickness": 6,
+              "ScrollBarThickness": 4,
               "ScrollingDirection": "Y",
               "Size": {
                 "x": {
-                  "offset": 908,
+                  "offset": 590,
                   "scale": 0
                 },
                 "y": {
-                  "offset": 326,
+                  "offset": 212,
                   "scale": 0
                 }
               },
@@ -99,7 +99,7 @@
                 "name": "UICorner",
                 "properties": {
                   "CornerRadius": {
-                    "offset": 4,
+                    "offset": 3,
                     "scale": 0
                   }
                 }
@@ -122,29 +122,29 @@
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
-                      "offset": 16,
+                      "offset": 10,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 8,
+                      "offset": 4,
                       "scale": 0
                     }
                   },
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 600,
+                      "offset": 340,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 26,
+                      "offset": 22,
                       "scale": 0
                     }
                   },
                   "Text": "Each activated entry grants",
                   "TextColor3": "#FFFFFF",
                   "TextScaled": false,
-                  "TextSize": 18,
+                  "TextSize": 16,
                   "TextTransparency": 0,
                   "TextWrapped": true,
                   "TextXAlignment": "Left",
@@ -171,29 +171,29 @@
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
-                      "offset": 16,
+                      "offset": 10,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 38,
+                      "offset": 26,
                       "scale": 0
                     }
                   },
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 630,
+                      "offset": 340,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 28,
+                      "offset": 22,
                       "scale": 0
                     }
                   },
                   "Text": "",
                   "TextColor3": "#67ED14",
                   "TextScaled": false,
-                  "TextSize": 24,
+                  "TextSize": 16,
                   "TextTransparency": 0,
                   "TextWrapped": true,
                   "TextXAlignment": "Left",
@@ -220,22 +220,22 @@
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
-                      "offset": 680,
+                      "offset": 360,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 8,
+                      "offset": 4,
                       "scale": 0
                     }
                   },
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 212,
+                      "offset": 220,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 26,
+                      "offset": 22,
                       "scale": 0
                     }
                   },
@@ -269,29 +269,29 @@
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
-                      "offset": 680,
+                      "offset": 360,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 34,
+                      "offset": 26,
                       "scale": 0
                     }
                   },
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 212,
+                      "offset": 220,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 36,
+                      "offset": 22,
                       "scale": 0
                     }
                   },
                   "Text": "",
                   "TextColor3": "#67ED14",
                   "TextScaled": false,
-                  "TextSize": 24,
+                  "TextSize": 16,
                   "TextTransparency": 0,
                   "TextWrapped": true,
                   "TextXAlignment": "Left",
@@ -316,36 +316,27 @@
               "LayoutOrder": 0,
               "Position": {
                 "x": {
-                  "offset": 16,
+                  "offset": 10,
                   "scale": 0
                 },
                 "y": {
-                  "offset": 354,
+                  "offset": 230,
                   "scale": 0
                 }
               },
               "Rotation": 0,
               "Size": {
                 "x": {
-                  "offset": 908,
+                  "offset": 590,
                   "scale": 0
                 },
                 "y": {
-                  "offset": 80,
+                  "offset": 52,
                   "scale": 0
                 }
               },
               "Visible": true,
               "ZIndex": 4
-            }
-          },
-          {
-            "children": [],
-            "className": "UIScale",
-            "id": "b40635c2-773f-4664-83ef-e8d8b40d5571",
-            "name": "WindowScale",
-            "properties": {
-              "Scale": 0.65
             }
           }
         ],
@@ -375,11 +366,11 @@
           "Rotation": 0,
           "Size": {
             "x": {
-              "offset": 940,
+              "offset": 611,
               "scale": 0
             },
             "y": {
-              "offset": 450,
+              "offset": 293,
               "scale": 0
             }
           },
@@ -398,7 +389,7 @@
                 "name": "UICorner",
                 "properties": {
                   "CornerRadius": {
-                    "offset": 2,
+                    "offset": 1,
                     "scale": 0
                   }
                 }
@@ -411,7 +402,7 @@
                 "properties": {
                   "Color": "#000000",
                   "Enabled": true,
-                  "Thickness": 3,
+                  "Thickness": 1.9500000000000002,
                   "Transparency": 0
                 }
               },
@@ -457,11 +448,11 @@
                   },
                   "TileSize": {
                     "x": {
-                      "offset": 27,
+                      "offset": 18,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 27,
+                      "offset": 18,
                       "scale": 0
                     }
                   },
@@ -497,11 +488,11 @@
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 940,
+                      "offset": 611,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 2,
+                      "offset": 1,
                       "scale": 0
                     }
                   },
@@ -537,11 +528,11 @@
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 2,
+                      "offset": 1,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 70,
+                      "offset": 46,
                       "scale": 0
                     }
                   },
@@ -570,18 +561,18 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 66,
+                      "offset": 43,
                       "scale": 0
                     }
                   },
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 940,
+                      "offset": 611,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 4,
+                      "offset": 3,
                       "scale": 0
                     }
                   },
@@ -630,11 +621,11 @@
               "Rotation": 0,
               "Size": {
                 "x": {
-                  "offset": 940,
+                  "offset": 611,
                   "scale": 0
                 },
                 "y": {
-                  "offset": 70,
+                  "offset": 46,
                   "scale": 0
                 }
               },
@@ -652,7 +643,7 @@
                 "properties": {
                   "Color": "#000000",
                   "Enabled": true,
-                  "Thickness": 2,
+                  "Thickness": 1.3,
                   "Transparency": 0
                 }
               }
@@ -673,7 +664,7 @@
               "LayoutOrder": 0,
               "Position": {
                 "x": {
-                  "offset": 124,
+                  "offset": 81,
                   "scale": 0
                 },
                 "y": {
@@ -684,18 +675,18 @@
               "Rotation": 0,
               "Size": {
                 "x": {
-                  "offset": 728,
+                  "offset": 473,
                   "scale": 0
                 },
                 "y": {
-                  "offset": 70,
+                  "offset": 46,
                   "scale": 0
                 }
               },
               "Text": "COLLECTION",
               "TextColor3": "#ffffff",
               "TextScaled": false,
-              "TextSize": 30,
+              "TextSize": 19.5,
               "TextTransparency": 0,
               "TextWrapped": false,
               "TextXAlignment": "Left",
@@ -722,7 +713,7 @@
               "LayoutOrder": 0,
               "Position": {
                 "x": {
-                  "offset": 672,
+                  "offset": 437,
                   "scale": 0
                 },
                 "y": {
@@ -733,33 +724,24 @@
               "Rotation": 0,
               "Size": {
                 "x": {
-                  "offset": 190,
+                  "offset": 124,
                   "scale": 0
                 },
                 "y": {
-                  "offset": 70,
+                  "offset": 46,
                   "scale": 0
                 }
               },
               "Text": "",
               "TextColor3": "#FFFFFF",
               "TextScaled": false,
-              "TextSize": 18,
+              "TextSize": 16,
               "TextTransparency": 0,
               "TextWrapped": true,
               "TextXAlignment": "Left",
               "TextYAlignment": "Center",
               "Visible": true,
               "ZIndex": 6
-            }
-          },
-          {
-            "children": [],
-            "className": "UIScale",
-            "id": "e932fe71-7440-43c1-bfe4-85821cca17c5",
-            "name": "WindowScale",
-            "properties": {
-              "Scale": 0.65
             }
           },
           {
@@ -783,11 +765,11 @@
               "LayoutOrder": 0,
               "Position": {
                 "x": {
-                  "offset": 878,
+                  "offset": 571,
                   "scale": 0
                 },
                 "y": {
-                  "offset": 9,
+                  "offset": 6,
                   "scale": 0
                 }
               },
@@ -795,11 +777,11 @@
               "ScaleType": "Fit",
               "Size": {
                 "x": {
-                  "offset": 52,
+                  "offset": 34,
                   "scale": 0
                 },
                 "y": {
-                  "offset": 52,
+                  "offset": 34,
                   "scale": 0
                 }
               },
@@ -838,11 +820,11 @@
               "LayoutOrder": 0,
               "Position": {
                 "x": {
-                  "offset": 8,
+                  "offset": 5,
                   "scale": 0
                 },
                 "y": {
-                  "offset": -19,
+                  "offset": -12,
                   "scale": 0
                 }
               },
@@ -850,11 +832,11 @@
               "ScaleType": "Fit",
               "Size": {
                 "x": {
-                  "offset": 108,
+                  "offset": 70,
                   "scale": 0
                 },
                 "y": {
-                  "offset": 108,
+                  "offset": 70,
                   "scale": 0
                 }
               },
@@ -899,11 +881,11 @@
           "Rotation": 0,
           "Size": {
             "x": {
-              "offset": 940,
+              "offset": 611,
               "scale": 0
             },
             "y": {
-              "offset": 70,
+              "offset": 46,
               "scale": 0
             }
           },
@@ -922,7 +904,7 @@
                 "name": "UICorner",
                 "properties": {
                   "CornerRadius": {
-                    "offset": 4,
+                    "offset": 3,
                     "scale": 0
                   }
                 }
@@ -935,7 +917,7 @@
                 "properties": {
                   "Color": "#000000",
                   "Enabled": true,
-                  "Thickness": 2,
+                  "Thickness": 1.3,
                   "Transparency": 0
                 }
               },
@@ -948,7 +930,7 @@
                     "name": "UICorner",
                     "properties": {
                       "CornerRadius": {
-                        "offset": 6,
+                        "offset": 4,
                         "scale": 0
                       }
                     }
@@ -972,11 +954,11 @@
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
-                      "offset": 66,
+                      "offset": 43,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 12,
+                      "offset": 8,
                       "scale": 0
                     }
                   },
@@ -984,11 +966,11 @@
                   "ScaleType": "Fit",
                   "Size": {
                     "x": {
-                      "offset": 80,
+                      "offset": 52,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 80,
+                      "offset": 52,
                       "scale": 0
                     }
                   },
@@ -1024,29 +1006,29 @@
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
-                      "offset": 66,
+                      "offset": 43,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 12,
+                      "offset": 8,
                       "scale": 0
                     }
                   },
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 80,
+                      "offset": 52,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 80,
+                      "offset": 52,
                       "scale": 0
                     }
                   },
                   "Text": "?",
                   "TextColor3": "#FFFFFF",
                   "TextScaled": false,
-                  "TextSize": 32,
+                  "TextSize": 20.8,
                   "TextTransparency": 0,
                   "TextWrapped": true,
                   "TextXAlignment": "Center",
@@ -1073,29 +1055,29 @@
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
-                      "offset": 12,
+                      "offset": 8,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 100,
+                      "offset": 65,
                       "scale": 0
                     }
                   },
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 188,
+                      "offset": 122,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 30,
+                      "offset": 20,
                       "scale": 0
                     }
                   },
                   "Text": "",
                   "TextColor3": "#FFFFFF",
                   "TextScaled": false,
-                  "TextSize": 24,
+                  "TextSize": 16,
                   "TextTransparency": 0,
                   "TextWrapped": true,
                   "TextXAlignment": "Center",
@@ -1120,22 +1102,22 @@
               "LayoutOrder": 0,
               "Position": {
                 "x": {
-                  "offset": 2,
+                  "offset": 1,
                   "scale": 0
                 },
                 "y": {
-                  "offset": 2,
+                  "offset": 1,
                   "scale": 0
                 }
               },
               "Rotation": 0,
               "Size": {
                 "x": {
-                  "offset": 212,
+                  "offset": 138,
                   "scale": 0
                 },
                 "y": {
-                  "offset": 148,
+                  "offset": 96,
                   "scale": 0
                 }
               },

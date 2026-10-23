@@ -164,7 +164,7 @@ function CAuraShopView:Render(state)
             end
             local row = entry.row
             local quality = config.qualities[aura.qualityId]
-            row.Position = UDim2.fromOffset(2, (index - 1) * 172 + 2)
+            row.Position = UDim2.fromOffset(1, (index - 1) * 112 + 1)
             row.BackgroundColor3 = Color3.fromHex("#FFFFFF")
             local startColor = Color3.fromHex(quality.color)
             local endColor = Color3.fromHex(quality.colorEnd or quality.color)
@@ -222,14 +222,14 @@ function CAuraShopView:Render(state)
             FXLoader:Here(row, "ActionBtn.MoneyIconImg").Visible = showMoney
             local buttonText = FXLoader:Here(row, "ActionBtn.ButtonTxt")
             buttonText.Text = caption
-            buttonText.TextSize = 28
+            buttonText.TextSize = 18.2
             buttonText.TextWrapped = false
             buttonText.Position = UDim2.fromOffset(0, 0)
             buttonText.Size = UDim2.fromScale(1, 1)
             buttonText.TextXAlignment = Enum.TextXAlignment.Center
             if showMoney then
-                buttonText.Position = UDim2.fromOffset(64, 0)
-                buttonText.Size = UDim2.new(1, -72, 1, 0)
+                buttonText.Position = UDim2.fromOffset(42, 0)
+                buttonText.Size = UDim2.new(1, -47, 1, 0)
                 buttonText.TextXAlignment = Enum.TextXAlignment.Left
             end
             FXLoader:Here(row, "ActionBtn.BottomEdgeImg").BackgroundColor3 = Color3.fromHex(edge)
@@ -245,7 +245,7 @@ function CAuraShopView:Render(state)
             self.Rows[auraId] = nil
         end
     end
-    self.List.CanvasSize = UDim2.fromOffset(0, math.max(524, count * 172))
+    self.List.CanvasSize = UDim2.fromOffset(0, math.max(341, count * 112))
     self.EmptyTxt.Visible = count == 0
     self.EmptyTxt.Text = Text.Tr(TranslationTexts.NoAuras)
     if state.loading then
