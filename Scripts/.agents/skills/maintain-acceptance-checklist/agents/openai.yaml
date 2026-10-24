@@ -1,4 +1,0 @@
-interface:
-  display_name: "系统验收清单"
-  short_description: "按受影响系统维护功能与数值验收清单，保留用户确认的验收状态"
-  default_prompt: "使用 $maintain-acceptance-checklist，根据当前系统或核心规则变更维护功能与数值验收清单。"

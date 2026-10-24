@@ -26,4 +26,4 @@ return SExampleCompClass
 
 协议只在玩家管理器或服务中注册一次，再通过已认证 userId 找组件；
 不要在每位玩家的 Ctor 注册同名 RegClientMsgCallback。
-新增或移除系统、改变核心流程或核心数值时，按 maintain-acceptance-checklist 维护 Docs/功能验收清单.md；普通 bug 修复不触发。
+日常开发不自动维护 Docs/功能验收清单.md；仅在用户明确调用 update-acceptance-checklist 时集中生成系统规则与数值条目清单。
