@@ -124,8 +124,9 @@ function Component:RefreshWelfare(data)
     local remaining = math.max(0, Rebirth.GetMaxTrainingValue(self:GetNumber(Fields.RebirthCount))
         - self:GetNumber(Fields.RockTrainingValue))
     self.State.offline.training = math.min(data.offline.training, remaining)
-    self.State.offline.boostedTraining = math.min(data.offline.training * self.Config.offline.boostMultiplier, remaining)
-    self.State.offline.boostAvailable = self.State.offline.boostedTraining > self.State.offline.training
+    -- 加成卡片展示完整倍率收益；领取资格仍按阶段上限内的实际增量判断。
+    self.State.offline.boostedTraining = data.offline.training * self.Config.offline.boostMultiplier
+    self.State.offline.boostAvailable = math.min(self.State.offline.boostedTraining, remaining) > self.State.offline.training
     self.State.offline.boostPrice = _G.GoodsConfig.GemGoodsData[1].Price
     self.State.offline.boostCurrency = "Gem"
     for index, group in ipairs(self.Config.groups) do

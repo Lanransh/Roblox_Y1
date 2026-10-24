@@ -9,7 +9,7 @@
     Product.description: string，必填，无默认值；商品描述原文。
     Product.price: number，必填，无默认值；非负，对应 currency 的货币数量。
     Product.icon: string，可选；Roblox Image 资源地址；省略或 "" 赋空图。
-      当前 View 没有显式设置问号回退，是否有占位取决于设计原型。
+      当前 View 没有显式���置问号回退，是否有占位取决于设计原型。
     Product.cardStyle: "Green" | "Gold" | "Cyan" | "Orange" | "Purple" | "Pink"，
       可选；省略时 Diamond 使用 Green、Robux 使用 Gold。
       其他值不支持，查找原型会失败；卡片渐变、文字、按钮取设计原型。

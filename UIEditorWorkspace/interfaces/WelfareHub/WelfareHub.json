@@ -37,7 +37,20 @@
           {
             "children": [
               {
-                "children": [],
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "50975e8b-c41d-44f9-a122-d7bae6fc80c7",
+                    "name": "TextStroke",
+                    "properties": {
+                      "Color": "#000000",
+                      "Enabled": true,
+                      "Thickness": 1.5,
+                      "Transparency": 0
+                    }
+                  }
+                ],
                 "className": "TextLabel",
                 "id": "e91da73f-d80e-46ba-9fc8-f033a1a83067",
                 "name": "HeadingTxt",
@@ -58,27 +71,27 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 0,
+                      "offset": -6,
                       "scale": 0
                     }
                   },
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 320,
+                      "offset": 328,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 22,
+                      "offset": 28,
                       "scale": 0
                     }
                   },
                   "Text": "Online Rewards",
                   "TextColor3": "#ffffff",
                   "TextScaled": false,
-                  "TextSize": 18.72,
+                  "TextSize": 26,
                   "TextTransparency": 0,
-                  "TextWrapped": true,
+                  "TextWrapped": false,
                   "TextXAlignment": "Left",
                   "TextYAlignment": "Center",
                   "Visible": true,
@@ -86,7 +99,20 @@
                 }
               },
               {
-                "children": [],
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "43ab8020-2d01-4fe3-84db-1d95fc343cfc",
+                    "name": "TextStroke",
+                    "properties": {
+                      "Color": "#000000",
+                      "Enabled": true,
+                      "Thickness": 1.5,
+                      "Transparency": 0
+                    }
+                  }
+                ],
                 "className": "TextLabel",
                 "id": "dd37189f-31c3-4623-b9dd-14960e562a9c",
                 "name": "SubtitleTxt",
@@ -107,7 +133,7 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 23,
+                      "offset": 20,
                       "scale": 0
                     }
                   },
@@ -118,16 +144,16 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 19,
+                      "offset": 26,
                       "scale": 0
                     }
                   },
                   "Text": "",
                   "TextColor3": "#D6DDDA",
                   "TextScaled": false,
-                  "TextSize": 16,
+                  "TextSize": 22,
                   "TextTransparency": 0,
-                  "TextWrapped": true,
+                  "TextWrapped": false,
                   "TextXAlignment": "Left",
                   "TextYAlignment": "Center",
                   "Visible": true,
@@ -135,7 +161,20 @@
                 }
               },
               {
-                "children": [],
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "6da1c373-5ba6-43d1-b79e-faafa3cd53d7",
+                    "name": "TextStroke",
+                    "properties": {
+                      "Color": "#000000",
+                      "Enabled": true,
+                      "Thickness": 1.5,
+                      "Transparency": 0
+                    }
+                  }
+                ],
                 "className": "TextLabel",
                 "id": "1e7457f0-3cf1-40ca-b9ae-f237552e4987",
                 "name": "FooterTxt",
@@ -156,7 +195,7 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 370,
+                      "offset": 366,
                       "scale": 0
                     }
                   },
@@ -167,16 +206,16 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 18,
+                      "offset": 28,
                       "scale": 0
                     }
                   },
                   "Text": "Rewards reset daily · Keep playing for the final reward!",
                   "TextColor3": "#D6DDDA",
                   "TextScaled": false,
-                  "TextSize": 16,
+                  "TextSize": 22,
                   "TextTransparency": 0,
-                  "TextWrapped": true,
+                  "TextWrapped": false,
                   "TextXAlignment": "Center",
                   "TextYAlignment": "Center",
                   "Visible": true,
@@ -872,7 +911,20 @@
           {
             "children": [
               {
-                "children": [],
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "56ba8c24-8955-4548-80ac-d081c1bc853d",
+                    "name": "TextStroke",
+                    "properties": {
+                      "Color": "#000000",
+                      "Enabled": true,
+                      "Thickness": 1.5,
+                      "Transparency": 0
+                    }
+                  }
+                ],
                 "className": "TextLabel",
                 "id": "b4d7d22d-3eb7-46fc-8a6b-375a79ef6361",
                 "name": "HeadingTxt",
@@ -904,16 +956,16 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 25,
+                      "offset": 32,
                       "scale": 0
                     }
                   },
                   "Text": "",
                   "TextColor3": "#ffffff",
                   "TextScaled": false,
-                  "TextSize": 18.72,
+                  "TextSize": 26,
                   "TextTransparency": 0,
-                  "TextWrapped": true,
+                  "TextWrapped": false,
                   "TextXAlignment": "Left",
                   "TextYAlignment": "Center",
                   "Visible": true,
@@ -921,7 +973,20 @@
                 }
               },
               {
-                "children": [],
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "9999f8cd-1d92-4c5b-bc97-1b0c4527f43e",
+                    "name": "TextStroke",
+                    "properties": {
+                      "Color": "#000000",
+                      "Enabled": true,
+                      "Thickness": 1.5,
+                      "Transparency": 0
+                    }
+                  }
+                ],
                 "className": "TextLabel",
                 "id": "f16e9251-3691-49ac-9e75-f5986b670f96",
                 "name": "SubtitleTxt",
@@ -953,16 +1018,16 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 25,
+                      "offset": 32,
                       "scale": 0
                     }
                   },
                   "Text": "Check in once per day",
                   "TextColor3": "#D6DDDA",
                   "TextScaled": false,
-                  "TextSize": 16,
+                  "TextSize": 22,
                   "TextTransparency": 0,
-                  "TextWrapped": true,
+                  "TextWrapped": false,
                   "TextXAlignment": "Right",
                   "TextYAlignment": "Center",
                   "Visible": true,
@@ -970,7 +1035,20 @@
                 }
               },
               {
-                "children": [],
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "30c125aa-22d1-4b20-bfd3-61b7eefce3e2",
+                    "name": "TextStroke",
+                    "properties": {
+                      "Color": "#000000",
+                      "Enabled": true,
+                      "Thickness": 1.5,
+                      "Transparency": 0
+                    }
+                  }
+                ],
                 "className": "TextLabel",
                 "id": "a1d795d5-445d-4847-8a5e-b7e70e595f4f",
                 "name": "FooterTxt",
@@ -991,7 +1069,7 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 370,
+                      "offset": 366,
                       "scale": 0
                     }
                   },
@@ -1002,16 +1080,16 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 18,
+                      "offset": 28,
                       "scale": 0
                     }
                   },
                   "Text": "Log in daily. Get a Rare Egg on Day 7!",
                   "TextColor3": "#D6DDDA",
                   "TextScaled": false,
-                  "TextSize": 16,
+                  "TextSize": 22,
                   "TextTransparency": 0,
-                  "TextWrapped": true,
+                  "TextWrapped": false,
                   "TextXAlignment": "Center",
                   "TextYAlignment": "Center",
                   "Visible": true,
@@ -1386,7 +1464,20 @@
                 }
               },
               {
-                "children": [],
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "b5f5391f-57df-4c56-802c-262b23fff028",
+                    "name": "TextStroke",
+                    "properties": {
+                      "Color": "#000000",
+                      "Enabled": true,
+                      "Thickness": 1.5,
+                      "Transparency": 0
+                    }
+                  }
+                ],
                 "className": "TextLabel",
                 "id": "e39f7f7d-a1f0-4bfc-99cd-8e39bbc56862",
                 "name": "SubtitleTxt",
@@ -1403,7 +1494,7 @@
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
-                      "offset": 312,
+                      "offset": 235,
                       "scale": 0
                     },
                     "y": {
@@ -1414,20 +1505,20 @@
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 303,
+                      "offset": 380,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 25,
+                      "offset": 32,
                       "scale": 0
                     }
                   },
                   "Text": "Complete goals to earn rewards",
                   "TextColor3": "#D6DDDA",
                   "TextScaled": false,
-                  "TextSize": 16,
+                  "TextSize": 22,
                   "TextTransparency": 0,
-                  "TextWrapped": true,
+                  "TextWrapped": false,
                   "TextXAlignment": "Right",
                   "TextYAlignment": "Center",
                   "Visible": true,
@@ -1435,7 +1526,20 @@
                 }
               },
               {
-                "children": [],
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "fe714b64-e950-447b-99b5-d8c3fe54cc54",
+                    "name": "TextStroke",
+                    "properties": {
+                      "Color": "#000000",
+                      "Enabled": true,
+                      "Thickness": 1.5,
+                      "Transparency": 0
+                    }
+                  }
+                ],
                 "className": "TextLabel",
                 "id": "7a56d312-6dba-4d55-9a39-7947e7235a5c",
                 "name": "FooterTxt",
@@ -1467,16 +1571,16 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 17,
+                      "offset": 28,
                       "scale": 0
                     }
                   },
                   "Text": "Tasks reset daily. Claim each reward separately.",
                   "TextColor3": "#D6DDDA",
                   "TextScaled": false,
-                  "TextSize": 16,
+                  "TextSize": 22,
                   "TextTransparency": 0,
-                  "TextWrapped": true,
+                  "TextWrapped": false,
                   "TextXAlignment": "Center",
                   "TextYAlignment": "Center",
                   "Visible": true,
@@ -3396,7 +3500,20 @@
                 }
               },
               {
-                "children": [],
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "09749366-32c6-4418-b7d8-8e3ca7ba22fc",
+                    "name": "TextStroke",
+                    "properties": {
+                      "Color": "#000000",
+                      "Enabled": true,
+                      "Thickness": 1.5,
+                      "Transparency": 0
+                    }
+                  }
+                ],
                 "className": "TextLabel",
                 "id": "e2862cb0-c402-411d-a281-651cd0731ed4",
                 "name": "FooterTxt",
@@ -3428,16 +3545,16 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 19,
+                      "offset": 28,
                       "scale": 0
                     }
                   },
                   "Text": "Resets daily · Rewards are confirmed by the server",
                   "TextColor3": "#d6ddda",
                   "TextScaled": false,
-                  "TextSize": 16,
+                  "TextSize": 22,
                   "TextTransparency": 0,
-                  "TextWrapped": true,
+                  "TextWrapped": false,
                   "TextXAlignment": "Center",
                   "TextYAlignment": "Center",
                   "Visible": true,
@@ -3569,7 +3686,7 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 290,
+                      "offset": 286,
                       "scale": 0
                     }
                   },
@@ -3580,14 +3697,14 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 32,
+                      "offset": 40,
                       "scale": 0
                     }
                   },
                   "Text": "",
                   "TextColor3": "#ffffff",
                   "TextScaled": false,
-                  "TextSize": 16,
+                  "TextSize": 32,
                   "TextTransparency": 0,
                   "TextWrapped": true,
                   "TextXAlignment": "Center",
@@ -7000,7 +7117,20 @@
                 }
               },
               {
-                "children": [],
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "43063339-1c5d-4fbd-b065-97e9b99b2f3c",
+                    "name": "TextStroke",
+                    "properties": {
+                      "Color": "#000000",
+                      "Enabled": true,
+                      "Thickness": 2,
+                      "Transparency": 0
+                    }
+                  }
+                ],
                 "className": "TextLabel",
                 "id": "fba8a807-8b4f-4b2f-aa5f-b3702e121a60",
                 "name": "TimeTxt",
@@ -7028,20 +7158,20 @@
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 70,
+                      "offset": 104,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 17,
+                      "offset": 28,
                       "scale": 0
                     }
                   },
                   "Text": "",
                   "TextColor3": "#ffffff",
                   "TextScaled": false,
-                  "TextSize": 16,
+                  "TextSize": 22,
                   "TextTransparency": 0,
-                  "TextWrapped": true,
+                  "TextWrapped": false,
                   "TextXAlignment": "Left",
                   "TextYAlignment": "Center",
                   "Visible": true,
@@ -8580,7 +8710,20 @@
                 }
               },
               {
-                "children": [],
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "e909de85-8fa4-449d-86f1-2e1812cac963",
+                    "name": "TextStroke",
+                    "properties": {
+                      "Color": "#000000",
+                      "Enabled": true,
+                      "Thickness": 2,
+                      "Transparency": 0
+                    }
+                  }
+                ],
                 "className": "TextLabel",
                 "id": "9beb3598-87d2-4711-9eed-29ee0603e0a1",
                 "name": "DayTxt",
@@ -8608,24 +8751,24 @@
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 86,
+                      "offset": 108,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 17,
+                      "offset": 28,
                       "scale": 0
                     }
                   },
                   "Text": "",
                   "TextColor3": "#ffffff",
                   "TextScaled": false,
-                  "TextSize": 16,
+                  "TextSize": 22,
                   "TextTransparency": 0,
-                  "TextWrapped": true,
+                  "TextWrapped": false,
                   "TextXAlignment": "Left",
                   "TextYAlignment": "Center",
                   "Visible": true,
-                  "ZIndex": 6
+                  "ZIndex": 10
                 }
               },
               {
@@ -11724,7 +11867,20 @@
                 }
               },
               {
-                "children": [],
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "161da2e5-5101-43ae-b636-7c02d8ca9622",
+                    "name": "TextStroke",
+                    "properties": {
+                      "Color": "#000000",
+                      "Enabled": true,
+                      "Thickness": 2,
+                      "Transparency": 0
+                    }
+                  }
+                ],
                 "className": "TextLabel",
                 "id": "2dec8548-133a-4673-821c-7453596da4d1",
                 "name": "TimeTxt",
@@ -11752,20 +11908,20 @@
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 70,
+                      "offset": 104,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 17,
+                      "offset": 28,
                       "scale": 0
                     }
                   },
                   "Text": "",
                   "TextColor3": "#ffffff",
                   "TextScaled": false,
-                  "TextSize": 16,
+                  "TextSize": 22,
                   "TextTransparency": 0,
-                  "TextWrapped": true,
+                  "TextWrapped": false,
                   "TextXAlignment": "Left",
                   "TextYAlignment": "Center",
                   "Visible": true,
@@ -13304,7 +13460,20 @@
                 }
               },
               {
-                "children": [],
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "7f2beecb-c15d-4719-b283-72e208405cda",
+                    "name": "TextStroke",
+                    "properties": {
+                      "Color": "#000000",
+                      "Enabled": true,
+                      "Thickness": 2,
+                      "Transparency": 0
+                    }
+                  }
+                ],
                 "className": "TextLabel",
                 "id": "21fa40a4-7996-4c78-9c18-acce0ea591ca",
                 "name": "TimeTxt",
@@ -13332,20 +13501,20 @@
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 70,
+                      "offset": 104,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 17,
+                      "offset": 28,
                       "scale": 0
                     }
                   },
                   "Text": "",
                   "TextColor3": "#ffffff",
                   "TextScaled": false,
-                  "TextSize": 16,
+                  "TextSize": 22,
                   "TextTransparency": 0,
-                  "TextWrapped": true,
+                  "TextWrapped": false,
                   "TextXAlignment": "Left",
                   "TextYAlignment": "Center",
                   "Visible": true,
@@ -14884,7 +15053,20 @@
                 }
               },
               {
-                "children": [],
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "3ec1ebb5-93f1-4157-82f9-63b2d8fdff0e",
+                    "name": "TextStroke",
+                    "properties": {
+                      "Color": "#000000",
+                      "Enabled": true,
+                      "Thickness": 2,
+                      "Transparency": 0
+                    }
+                  }
+                ],
                 "className": "TextLabel",
                 "id": "a4366fa9-0af4-480b-afd7-4cf157460c34",
                 "name": "TimeTxt",
@@ -14912,20 +15094,20 @@
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 70,
+                      "offset": 104,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 17,
+                      "offset": 28,
                       "scale": 0
                     }
                   },
                   "Text": "",
                   "TextColor3": "#ffffff",
                   "TextScaled": false,
-                  "TextSize": 16,
+                  "TextSize": 22,
                   "TextTransparency": 0,
-                  "TextWrapped": true,
+                  "TextWrapped": false,
                   "TextXAlignment": "Left",
                   "TextYAlignment": "Center",
                   "Visible": true,
@@ -16305,7 +16487,7 @@
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
-                      "offset": 61,
+                      "offset": 110,
                       "scale": 0
                     },
                     "y": {
@@ -16316,11 +16498,11 @@
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 126,
+                      "offset": 74,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 22,
+                      "offset": 38,
                       "scale": 0
                     }
                   },
@@ -16329,7 +16511,7 @@
                   "TextScaled": false,
                   "TextSize": 16,
                   "TextTransparency": 0,
-                  "TextWrapped": false,
+                  "TextWrapped": true,
                   "TextXAlignment": "Center",
                   "TextYAlignment": "Center",
                   "Visible": true,
@@ -16464,7 +16646,20 @@
                 }
               },
               {
-                "children": [],
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "43b91a91-4033-46a0-af91-d9696f61fad8",
+                    "name": "TextStroke",
+                    "properties": {
+                      "Color": "#000000",
+                      "Enabled": true,
+                      "Thickness": 2,
+                      "Transparency": 0
+                    }
+                  }
+                ],
                 "className": "TextLabel",
                 "id": "2029c00e-f247-40db-b0dc-eec88027e708",
                 "name": "DayTxt",
@@ -16492,24 +16687,24 @@
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 86,
+                      "offset": 108,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 17,
+                      "offset": 28,
                       "scale": 0
                     }
                   },
                   "Text": "",
                   "TextColor3": "#ffffff",
                   "TextScaled": false,
-                  "TextSize": 16,
+                  "TextSize": 22,
                   "TextTransparency": 0,
-                  "TextWrapped": true,
+                  "TextWrapped": false,
                   "TextXAlignment": "Left",
                   "TextYAlignment": "Center",
                   "Visible": true,
-                  "ZIndex": 6
+                  "ZIndex": 10
                 }
               },
               {
@@ -18044,7 +18239,20 @@
                 }
               },
               {
-                "children": [],
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "be6cca6c-3d0a-459f-9b94-61234b710b1f",
+                    "name": "TextStroke",
+                    "properties": {
+                      "Color": "#000000",
+                      "Enabled": true,
+                      "Thickness": 2,
+                      "Transparency": 0
+                    }
+                  }
+                ],
                 "className": "TextLabel",
                 "id": "864e581a-bc0b-4d67-b319-b1e27951ab02",
                 "name": "DayTxt",
@@ -18072,24 +18280,24 @@
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 86,
+                      "offset": 108,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 17,
+                      "offset": 28,
                       "scale": 0
                     }
                   },
                   "Text": "",
                   "TextColor3": "#ffffff",
                   "TextScaled": false,
-                  "TextSize": 16,
+                  "TextSize": 22,
                   "TextTransparency": 0,
-                  "TextWrapped": true,
+                  "TextWrapped": false,
                   "TextXAlignment": "Left",
                   "TextYAlignment": "Center",
                   "Visible": true,
-                  "ZIndex": 6
+                  "ZIndex": 10
                 }
               },
               {
@@ -19624,7 +19832,20 @@
                 }
               },
               {
-                "children": [],
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "7871f242-0120-4248-8d40-b9fdac78f5d5",
+                    "name": "TextStroke",
+                    "properties": {
+                      "Color": "#000000",
+                      "Enabled": true,
+                      "Thickness": 2,
+                      "Transparency": 0
+                    }
+                  }
+                ],
                 "className": "TextLabel",
                 "id": "c7c269af-2fb6-4bd9-a64e-2dd376a46953",
                 "name": "DayTxt",
@@ -19652,24 +19873,24 @@
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 86,
+                      "offset": 108,
                       "scale": 0
                     },
                     "y": {
-                      "offset": 17,
+                      "offset": 28,
                       "scale": 0
                     }
                   },
                   "Text": "",
                   "TextColor3": "#ffffff",
                   "TextScaled": false,
-                  "TextSize": 16,
+                  "TextSize": 22,
                   "TextTransparency": 0,
-                  "TextWrapped": true,
+                  "TextWrapped": false,
                   "TextXAlignment": "Left",
                   "TextYAlignment": "Center",
                   "Visible": true,
-                  "ZIndex": 6
+                  "ZIndex": 10
                 }
               },
               {

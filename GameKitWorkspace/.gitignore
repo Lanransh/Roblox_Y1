@@ -25,3 +25,8 @@ Build/FigmaRoblox/
 /翻译文本/translation-report.json
 /翻译文本/translation-review.csv
 /翻译文本/translation-cloud-backup-*.json
+!/Translation/
+!/Translation/translation-upload.csv
+/Translation/translation-report.json
+/Translation/translation-review.csv
+/Translation/translation-cloud-backup-*.json

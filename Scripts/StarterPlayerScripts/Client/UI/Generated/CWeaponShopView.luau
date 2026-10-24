@@ -60,7 +60,7 @@ require(script.Parent.CUIView)
   Buy   -> { weaponId: string }，未拥有时发出，值为当前 Item.id。
   Equip -> { weaponId: string }，已拥有但未装备时发出，值为当前 Item.id。
   Close -> {}，由接入层处理关闭。
-  Config.strengthIsMultiplier: boolean?，true 展示训练倍率，否则力量点数。
+  Config.strengthIsMultiplier: boolean?，true 展示力量倍率，否则力量点数。
   Config.allowUnaffordableAction: boolean?，true 时余额不足保持灰色但允许点击提示。
   State.busy: boolean?，全局请求锁；pending[id] 的等待文案优先于已装备状态。
   FormatNumber(value:number)->string 可选覆写，默认 tostring；接入统一数量工具。
@@ -90,7 +90,7 @@ local TranslationTexts = Text.Define("WeaponShopUI", {
     Waiting = "Waiting...",
     NoWeapons = "No weapons available",
     Loading = "Loading...",
-    TrainingRate = "Training ×{rate}",
+    TrainingRate = "Strength ×{rate}",
 })
 
 -- 暴露只读文案定义，供接入子类通过 self.BaseViewTranslationTexts 复用。
@@ -218,11 +218,15 @@ function CWeaponShopView:Render(state)
             local buttonText = FXLoader:Here(row, "ActionBtn.ButtonTxt")
             buttonText.Text = caption
             buttonText.TextSize = 18.2
+            local buttonTextStroke = FXLoader:Here(buttonText, "TextStroke")
+            buttonTextStroke.Thickness = 1.3
             buttonText.TextWrapped = false
             buttonText.Position = UDim2.fromOffset(0, 0)
             buttonText.Size = UDim2.fromScale(1, 1)
             buttonText.TextXAlignment = Enum.TextXAlignment.Center
             if showMoney then
+                buttonText.TextSize = 22
+                buttonTextStroke.Thickness = 1.6
                 buttonText.Position = UDim2.fromOffset(42, 0)
                 buttonText.Size = UDim2.new(1, -47, 1, 0)
                 buttonText.TextXAlignment = Enum.TextXAlignment.Left

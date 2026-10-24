@@ -156,7 +156,7 @@ require(script.Parent.CUIView)
   父类默认 GetUIConfig/GetUIState 已可读取上述数据。
   请求前将对应 Entry / diamonds / offline 的 pending=true、error=nil 并刷新；
   离线请求同时设置 pendingMultiplier=1 或配置加成倍率，并清 error/errorText。
-  成功后 pending=false、pendingMultiplier=nil、status="Claimed"；数值采用权威结果。
+  成功后 pending=false、pendingMultiplier=nil、status="Claimed"；数值采用��威结果。
   失败 pending=false、保留最新真实数值及可重试状态，设置 error，再刷新。
   真实业务重新校验日期、批次、资格、倍数及领取幂等，并执行发放/持久化。
   钻石与离线状态跨打开/重建须保持当天真实结果，不能每次 Show 重置可领取；

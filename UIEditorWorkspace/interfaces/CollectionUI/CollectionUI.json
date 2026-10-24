@@ -105,7 +105,20 @@
                 }
               },
               {
-                "children": [],
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "5b671b25-268a-4d81-a823-1db193475f12",
+                    "name": "TextStroke",
+                    "properties": {
+                      "Color": "#000000",
+                      "Enabled": true,
+                      "Thickness": 1.5,
+                      "Transparency": 0
+                    }
+                  }
+                ],
                 "className": "TextLabel",
                 "id": "87dba65b-8e84-4914-8713-ee98983d6d6f",
                 "name": "HintTxt",
@@ -126,7 +139,7 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 4,
+                      "offset": 2,
                       "scale": 0
                     }
                   },
@@ -137,16 +150,16 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 22,
+                      "offset": 28,
                       "scale": 0
                     }
                   },
                   "Text": "Each activated entry grants",
                   "TextColor3": "#FFFFFF",
                   "TextScaled": false,
-                  "TextSize": 16,
+                  "TextSize": 22,
                   "TextTransparency": 0,
-                  "TextWrapped": true,
+                  "TextWrapped": false,
                   "TextXAlignment": "Left",
                   "TextYAlignment": "Center",
                   "Visible": true,
@@ -154,7 +167,20 @@
                 }
               },
               {
-                "children": [],
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "72341662-eddb-4060-8a9c-ac6afa7cbf5c",
+                    "name": "TextStroke",
+                    "properties": {
+                      "Color": "#000000",
+                      "Enabled": true,
+                      "Thickness": 1.5,
+                      "Transparency": 0
+                    }
+                  }
+                ],
                 "className": "TextLabel",
                 "id": "3b346d49-2731-4944-9025-170d5c258ab3",
                 "name": "StatusTxt",
@@ -175,7 +201,7 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 26,
+                      "offset": 30,
                       "scale": 0
                     }
                   },
@@ -186,14 +212,14 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 22,
+                      "offset": 36,
                       "scale": 0
                     }
                   },
                   "Text": "",
                   "TextColor3": "#67ED14",
                   "TextScaled": false,
-                  "TextSize": 16,
+                  "TextSize": 22,
                   "TextTransparency": 0,
                   "TextWrapped": true,
                   "TextXAlignment": "Left",
@@ -203,7 +229,20 @@
                 }
               },
               {
-                "children": [],
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "65d01e0a-1ada-4a44-91c4-5231f95f9acd",
+                    "name": "TextStroke",
+                    "properties": {
+                      "Color": "#000000",
+                      "Enabled": true,
+                      "Thickness": 1.5,
+                      "Transparency": 0
+                    }
+                  }
+                ],
                 "className": "TextLabel",
                 "id": "bc3f2456-0a64-42c3-b0a2-34bdd9a66aca",
                 "name": "BoostLabelTxt",
@@ -224,7 +263,7 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 4,
+                      "offset": 2,
                       "scale": 0
                     }
                   },
@@ -235,16 +274,16 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 22,
+                      "offset": 28,
                       "scale": 0
                     }
                   },
                   "Text": "Total Strength Gained",
                   "TextColor3": "#D6DDDA",
                   "TextScaled": false,
-                  "TextSize": 16,
+                  "TextSize": 22,
                   "TextTransparency": 0,
-                  "TextWrapped": true,
+                  "TextWrapped": false,
                   "TextXAlignment": "Left",
                   "TextYAlignment": "Center",
                   "Visible": true,
@@ -252,7 +291,20 @@
                 }
               },
               {
-                "children": [],
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "dcb1311a-1eb9-4cc8-ac87-82fa1f6bf002",
+                    "name": "TextStroke",
+                    "properties": {
+                      "Color": "#000000",
+                      "Enabled": true,
+                      "Thickness": 1.5,
+                      "Transparency": 0
+                    }
+                  }
+                ],
                 "className": "TextLabel",
                 "id": "9fd5f292-ddd7-4564-8526-bffd6d685c38",
                 "name": "BoostTxt",
@@ -273,7 +325,7 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 26,
+                      "offset": 30,
                       "scale": 0
                     }
                   },
@@ -284,16 +336,16 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 22,
+                      "offset": 36,
                       "scale": 0
                     }
                   },
                   "Text": "",
                   "TextColor3": "#67ED14",
                   "TextScaled": false,
-                  "TextSize": 16,
+                  "TextSize": 24,
                   "TextTransparency": 0,
-                  "TextWrapped": true,
+                  "TextWrapped": false,
                   "TextXAlignment": "Left",
                   "TextYAlignment": "Center",
                   "Visible": true,
@@ -331,7 +383,7 @@
                   "scale": 0
                 },
                 "y": {
-                  "offset": 52,
+                  "offset": 68,
                   "scale": 0
                 }
               },
@@ -370,7 +422,7 @@
               "scale": 0
             },
             "y": {
-              "offset": 293,
+              "offset": 309,
               "scale": 0
             }
           },
@@ -696,7 +748,20 @@
             }
           },
           {
-            "children": [],
+            "children": [
+              {
+                "children": [],
+                "className": "UIStroke",
+                "id": "4fcf8080-4fcd-4f07-a477-52fcb8c0d434",
+                "name": "TextStroke",
+                "properties": {
+                  "Color": "#000000",
+                  "Enabled": true,
+                  "Thickness": 1.5,
+                  "Transparency": 0
+                }
+              }
+            ],
             "className": "TextLabel",
             "id": "b568b6aa-68fb-408b-ba79-a056145d556a",
             "name": "CountTxt",
@@ -713,7 +778,7 @@
               "LayoutOrder": 0,
               "Position": {
                 "x": {
-                  "offset": 437,
+                  "offset": 341,
                   "scale": 0
                 },
                 "y": {
@@ -724,7 +789,7 @@
               "Rotation": 0,
               "Size": {
                 "x": {
-                  "offset": 124,
+                  "offset": 220,
                   "scale": 0
                 },
                 "y": {
@@ -735,10 +800,10 @@
               "Text": "",
               "TextColor3": "#FFFFFF",
               "TextScaled": false,
-              "TextSize": 16,
+              "TextSize": 24,
               "TextTransparency": 0,
-              "TextWrapped": true,
-              "TextXAlignment": "Left",
+              "TextWrapped": false,
+              "TextXAlignment": "Right",
               "TextYAlignment": "Center",
               "Visible": true,
               "ZIndex": 6

@@ -8,6 +8,7 @@ local TranslationTexts = Text.Define("Misc", {
     WorldRequiredLevel = "Reach a best level of {level:int} to unlock this world.",
     TrainingCardGained = "Gained {value} Strength.",
     TrainingRequiredRebirths = "Requires {count:int} rebirths to train here.",
+    RebirthReady = "Rebirth is ready! Rebirth to keep growing stronger.",
 })
 local TextService = game:GetService("TextService")
 local Fields = _G.PlayerDataConfig
@@ -291,7 +292,21 @@ function Component:GetTrainingCardGain(seconds, excludeFriendRate)
     return math.min(baseGain * Rebirth.GetTrainingRate(rebirthCount), maxValue - currentValue)
 end
 
---- 立即结算力量卡时长，复用训练基础速率、永久倍率和当前阶段经验上限。
+--- 等级达到界面 100% 门槛时提醒重生，连续点击和用卡共用提示间隔。
+function Component:ShowRebirthReminder()
+    local count = self:GetNumber(Fields.RebirthCount)
+    if count >= Rebirth.MaxCount or self:GetNumber(Fields.RockTrainingLevel) < Rebirth.GetRequiredLevel(count) then
+        return
+    end
+    local now = os.clock()
+    if self._lastRebirthReminder and now - self._lastRebirthReminder < 3 then
+        return
+    end
+    self._lastRebirthReminder = now
+    self:GetPlayerObject():ShowLocalizedTips(TranslationTexts.RebirthReady)
+end
+
+--- 立即结算力量卡时长，复用现有倍率和经验上限，达标后提醒重生。
 ---@param seconds number 力量卡提供的训练秒数。
 ---@return boolean 是否实际增加了训练值。
 function Component:ApplyTrainingCard(seconds)
@@ -314,10 +329,11 @@ function Component:ApplyTrainingCard(seconds)
         warn("[TrainingCard] reward notification failed", message)
     end
     self:GetPlayerObject():ShowLocalizedTips(TranslationTexts.TrainingCardGained, {value = GameUtility.NumberToText(gain)})
+    self:ShowRebirthReminder()
     return true
 end
 
---- 点击复用真实训练速率与永久倍率；服务端限速并检查存活状态，不接受客户端收益。
+--- 点击复用真实训练速率与永久倍率；服务端限速并检查存活状态，达标后提醒重生。
 --- @param position Vector2 客户端飘字起点，仅用于表现。
 function Component:HandleTrainingClick(position)
     if typeof(position) ~= "Vector2" or position.X ~= position.X or position.Y ~= position.Y
@@ -341,6 +357,7 @@ function Component:HandleTrainingClick(position)
         self:RefreshProgress()
         FX.Network:SendMsgToClient(self:GetPlayerId(), "S2C_TrainingEffect", gain, false, position)
     end
+    self:ShowRebirthReminder()
 end
 
 --- 同一结算周期多次有效命中只计一份基础击打收益。

@@ -41,7 +41,7 @@ end
 
 ItemHandlers.WeekCard = WeekCardHandler
 
---- 力量卡使用前确认玩家仍有可增加的训练值，避免先扣道具再发现已满级。
+--- 力量卡使用前确认仍有训练收益；封顶时保留卡片并提醒重生。
 ---@param context FXItemContextClass 当前服务端道具使用上下文。
 ---@return boolean 是否可以使用力量卡。
 function TrainingCardHandler:CanUse(context)
@@ -50,7 +50,11 @@ function TrainingCardHandler:CanUse(context)
         return false
     end
     local gain = player:RequireComponent("SMiscComp"):GetTrainingCardGain(context.itemDataConfig.KVTable.Time)
-    return gain > 0 and player:RequireComponent("FSRewardComp"):CanAddRewards({
+    if gain <= 0 then
+        player:RequireComponent("SMiscComp"):ShowRebirthReminder()
+        return false
+    end
+    return player:RequireComponent("FSRewardComp"):CanAddRewards({
         {Type = "Money", Currency = "RockTrainingValue", Count = gain},
     })
 end
