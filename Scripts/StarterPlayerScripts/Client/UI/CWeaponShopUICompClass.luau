@@ -7,6 +7,7 @@ local TranslationTexts = Text.Define("WeaponShop", {
 local RunService = game:GetService("RunService")
 FXLoader:RequireFromParent(script, "Generated/CWeaponShopView")
 local Fields = _G.PlayerDataConfig
+local GameEnum = _G.GameEnum
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local ShopAreas = FXLoader:RequireFromParent(script, "ShopAreas")
 local Component = FX.Class("CWeaponShopUICompClass", "CWeaponShopView")
@@ -17,7 +18,7 @@ function Component:GetCompName()
     return "CWeaponShopUIComp"
 end
 
---- 从 ToolConfig 提供展示契约，按工具顺序循环配色，数据与区域监听只绑定一次。
+--- 仅从 ToolConfig 提供已开放武器，按工具顺序循环配色，数据与区域监听只绑定一次。
 function Component:OnReady()
     Component.Super.OnReady(self)
     self.Root.ResetOnSpawn = false
@@ -39,6 +40,9 @@ function Component:OnReady()
         {"#FCEBC8", "#F3D396"},
     }
     for index, config in ipairs(_G.GameConfig.ToolConfig) do
+        if index > GameEnum.WeaponLimit then
+            break
+        end
         local colorId = tostring((index - 1) % #rowColors + 1)
         local colors = rowColors[(index - 1) % #rowColors + 1]
         self.Config.qualities[colorId] = {name = "", color = colors[1], colorEnd = colors[2]}

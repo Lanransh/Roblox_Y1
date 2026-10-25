@@ -8,6 +8,7 @@ local TranslationTexts = Text.Define("Aura", {
     NotOwned = "You do not own this aura.",
 })
 local Fields = _G.PlayerDataConfig
+local GameEnum = _G.GameEnum
 local Aura = FXLoader:RequireShared("Scripts/Game/Shared/Aura")
 local InstancePath = FXLoader:RequireShared("Scripts/Game/Shared/InstancePath")
 local Component = FX.Class("SAuraCompClass", "FSPlayerCompClass")
@@ -27,11 +28,14 @@ function Component:GetCompName()
     return "SAuraComp"
 end
 
---- 先缓存可信模板，后续扣款和装备提交过程不等待资源复制。
+--- 仅缓存已开放光环的可信模板，后续扣款和装备提交过程不等待资源复制。
 function Component:OnPlayerLogin()
     self._effects = {}
     self._templates = {}
     for index, config in ipairs(_G.GameConfig.AuraConfig) do
+        if index > GameEnum.AuraLimit then
+            break
+        end
         self._templates[config.AuraId] = InstancePath.Wait(config.ModelId)
     end
     local player = self:GetPlayerNode()

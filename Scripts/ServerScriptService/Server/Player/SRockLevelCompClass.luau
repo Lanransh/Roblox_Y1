@@ -17,6 +17,7 @@ local Collectible = FXLoader:RequireShared("Scripts/Game/Shared/RockCollectible"
 local ToyRoller = FXLoader:RequireFromParent(script, "ToyRoller")
 local RockWeaponTool = require(script.Parent.RockWeaponTool)
 local GameConfig = _G.GameConfig
+local GameEnum = _G.GameEnum
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local Collection = FXLoader:RequireShared("Scripts/Game/Shared/Collection")
 local Weapon = FXLoader:RequireShared("Scripts/Game/Shared/Weapon")
@@ -73,10 +74,13 @@ function Component:ApplyLootCapacityBoost(count, duration)
     })
 end
 
---- 读档后缓存武器模板、校验奖池模型、同步地板颜色并启动位置检查。
+--- 读档后仅缓存已开放武器模板、校验奖池模型、同步地板颜色并启动位置检查。
 function Component:OnPlayerLogin()
     self._weaponTemplates = {}
     for index, config in ipairs(GameConfig.ToolConfig) do
+        if index > GameEnum.WeaponLimit then
+            break
+        end
         self._weaponTemplates[config.ToolId] = InstancePath.Wait(config.ModelId)
     end
     self._areas = RockLevel.GetAreas()

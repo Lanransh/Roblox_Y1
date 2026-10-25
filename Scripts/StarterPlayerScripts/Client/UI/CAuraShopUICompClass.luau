@@ -7,6 +7,7 @@ local TranslationTexts = Text.Define("AuraShop", {
 local RunService = game:GetService("RunService")
 FXLoader:RequireFromParent(script, "Generated/CAuraShopView")
 local Fields = _G.PlayerDataConfig
+local GameEnum = _G.GameEnum
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local ShopAreas = FXLoader:RequireFromParent(script, "ShopAreas")
 local Component = FX.Class("CAuraShopUICompClass", "CAuraShopView")
@@ -17,7 +18,7 @@ function Component:GetCompName()
     return "CAuraShopUIComp"
 end
 
---- 复用编辑器布局与按钮事件，按真实品质接入渐变色、存档和场景触发盒。
+--- 仅展示已开放光环，复用编辑器布局与按钮事件，接入品质、存档和场景触发盒。
 function Component:OnReady()
     Component.Super.OnReady(self)
     self.Root.ResetOnSpawn = false
@@ -36,6 +37,9 @@ function Component:OnReady()
         {"#FCEBC8", "#F3D396"},
     }
     for index, config in ipairs(_G.GameConfig.AuraConfig) do
+        if index > GameEnum.AuraLimit then
+            break
+        end
         local qualityId = tostring(config.Quality)
         local colors = qualityColors[(config.Quality - 1) % #qualityColors + 1]
         local rowColor = config.DisplayColor or colors[1]
