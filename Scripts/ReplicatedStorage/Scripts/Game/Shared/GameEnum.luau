@@ -5,6 +5,8 @@ return {
     AuraLimit = 13,
     -- 镐子仅开放配置顺序中的前 39 个，客户端与服务端共用。
     WeaponLimit = 39,
+    -- 收藏品仅开放配置顺序中的前 117 种，对应当前三个世界，客户端与服务端共用。
+    ItemLimit = 117,
     -- 石头关卡：玩家等级低于推荐等级时，每低 1 级的伤害衰减比例。
     RockLevelDamageDecayPerLevel = 0.05,
     -- 关卡头顶幸运牌：按 LevelConfig 加载的区域创建，倍率由 RockLevel.GetLuck 计算。

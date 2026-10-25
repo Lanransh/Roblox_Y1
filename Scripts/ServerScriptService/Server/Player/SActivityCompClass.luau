@@ -23,7 +23,7 @@ function Component:GetCompName()
     return "SActivityComp"
 end
 
---- 读档后记录本次进服时间、登录日及离线批次；礼包永久领取记录不重置。
+--- 读档后按普通与加成效率分别分段结算离线批次；礼包永久领取记录不重置。
 function Component:OnPlayerLogin()
     self._lastTime = os.time()
     self._retentionStartedAt = workspace:GetServerTimeNow()
@@ -35,7 +35,8 @@ function Component:OnPlayerLogin()
         local seconds = data.lastSeenAt > 0 and math.clamp(self._lastTime - data.lastSeenAt, 0, config.Time) or 0
         data.offline = {
             id = tostring(self._lastTime), seconds = seconds,
-            training = self:RequireComponent("SMiscComp"):GetTrainingCardGain(seconds * config.Rate, true),
+            training = self:RequireComponent("SMiscComp"):GetTrainingCardGain(seconds * config.Rate),
+            boostedTraining = self:RequireComponent("SMiscComp"):GetTrainingCardGain(seconds * config.VIPRate),
         }
     end
     -- 旧福利存档没有任务字段，仅补入本次新增结构。
@@ -91,7 +92,7 @@ function Component:GetDailyAmount()
     return amount
 end
 
---- 私有存档只同步福利所需快照，日期和每日金额均来自服务端。
+--- 私有存档只同步福利所需快照；新离线批次同步独立分段结算的加成收益，旧批次保留原领取值。
 function Component:PublishState()
     local data = self:GetTable(Fields.WelfareData)
     self._revision = (self._revision or 0) + 1
@@ -107,6 +108,9 @@ function Component:PublishState()
             id = data.offline.id,
             seconds = data.offlineClaimDay == data.day and 0 or data.offline.seconds,
             training = data.offlineClaimDay == data.day and 0 or data.offline.training,
+            boostedTraining = data.offlineClaimDay == data.day and 0 or (data.offline.boostedTraining
+                or data.offline.training * (_G.GameConfig.CommonConfig.OfflineReward.VIPRate
+                    / _G.GameConfig.CommonConfig.OfflineReward.Rate)),
             status = data.offlineClaimDay == data.day and "Claimed"
                 or (data.offline.training > 0 and "Claimable" or "Locked"),
         },
@@ -341,7 +345,9 @@ function Component:Claim(kind, rewardId, multiplier)
             local costs = price > 0 and {{Type = "Money", Currency = "Diamonds", Count = price}} or {}
             local remaining = Rebirth.GetMaxTrainingValue(self:GetNumber(Fields.RebirthCount))
                 - self:GetNumber(Fields.RockTrainingValue)
-            local gain = math.max(0, math.min(data.offline.training * multiplier, remaining))
+            local rewardTraining = multiplier == 1 and data.offline.training
+                or (data.offline.boostedTraining or data.offline.training * boostMultiplier)
+            local gain = math.max(0, math.min(rewardTraining, remaining))
             local normalGain = math.max(0, math.min(data.offline.training, remaining))
             if multiplier ~= 1 and gain <= normalGain then
                 key = TranslationTexts.NoBoostGain
@@ -354,6 +360,7 @@ function Component:Claim(kind, rewardId, multiplier)
                 data.offlineClaimDay = data.day
                 data.offline.seconds = 0
                 data.offline.training = 0
+                data.offline.boostedTraining = 0
                 self:SetTable(Fields.WelfareData, data)
                 self:RequireComponent("SMiscComp"):RefreshProgress()
                 FX.Network:SendMsgToClient(self:GetPlayerId(), "S2C_TrainingEffect", gain, true)

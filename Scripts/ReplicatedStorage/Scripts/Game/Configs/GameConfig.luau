@@ -32,8 +32,8 @@ return {
             LuckRefreshInterval = 90
         },
         CollectionData = {
-            UnlockCount = 10,
-            TrainingRate = 0.25
+            UnlockCount = 1,
+            TrainingRate = 0.01
         },
         OfflineReward = {
             Time = 14400,

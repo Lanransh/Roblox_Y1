@@ -22,19 +22,6 @@ local TrainingFields = FXLoader:RequireFromParent(script, "TrainingFields")
 local CurrencyShop = FXLoader:RequireShared("Scripts/Game/Shared/CurrencyShop")
 local Component = FX.Class("SMiscCompClass", "FSPlayerCompClass")
 
---- 计算当前重生次数可用的最高训练场倍率，不要求玩家当前站在训练场内。
----@param rebirthCount number 当前重生次数。
----@return number 最高已解锁训练场倍率。
-function Component:GetHighestTrainingRate(rebirthCount)
-    local highestRate = 0
-    for _, config in ipairs(_G.GameConfig.TrainingFieldData) do
-        if rebirthCount >= config.NeedRebirhLevel then
-            highestRate = math.max(highestRate, config.TrainingRate)
-        end
-    end
-    return highestRate
-end
-
 --- 持有训练结算状态，通过服务端关卡事件接收有效击打。
 --- @param owner FSPlayerObjectClass 已加载的玩家对象。
 function Component:Ctor(owner)
@@ -123,12 +110,12 @@ function Component:OnUpdate(serverTime)
     self:SetNumber(Fields.TrainingFriendCount, FS.FriendService:GetFriendCountInRoom(self:GetPlayerId()) or 0)
 end
 
---- 购买倍率乘当前同服好友倍率；不使用每日任务累计人数。
+--- 付费倍率加当前同服好友额外倍率；不使用每日任务累计人数。
 --- @param excludeFriendRate boolean? 离线奖励传 true，不计当前同服好友。
---- @return number 本次结算的购买及好友综合倍率。
+--- @return number 本次结算的付费及好友综合倍率。
 function Component:GetTrainingBonusRate(excludeFriendRate)
     return CurrencyShop.GetTrainingRate(self:GetTable(Fields.CurrencyShopData))
-        * (excludeFriendRate and 1 or CurrencyShop.GetFriendTrainingRate(self:GetPlayerObject()))
+        + (excludeFriendRate and 0 or CurrencyShop.GetFriendTrainingRate(self:GetPlayerObject()))
 end
 
 --- 更换角色时清理旧显示；头部尚未加载时监听其到达，不阻塞登录。
@@ -272,23 +259,27 @@ function Component:ResetTrainingProgress()
     self._lastGrowth = os.clock()
 end
 
---- 力量卡、离线奖励与点击共用训练速率；离线显式排除好友。
+--- 力量卡与离线共用两端一致的分段追赶结算，不计好友。
 --- @param seconds number 服务端提供的有效训练秒数。
---- @param excludeFriendRate boolean? 仅离线奖励传 true。
 --- @return number 当前阶段经验上限内的训练收益。
-function Component:GetTrainingCardGain(seconds, excludeFriendRate)
+function Component:GetTrainingCardGain(seconds)
+    return CurrencyShop.GetTrainingCardGain(self:GetPlayerObject(), seconds)
+end
+
+--- 主动点击不计场地与追赶，保留付费加好友以及其他通用倍率。
+--- @return number 当前阶段经验上限内的单次点击收益。
+function Component:GetTrainingClickGain()
     local rebirthCount = self:GetNumber(Fields.RebirthCount)
     local currentValue = self:GetNumber(Fields.RockTrainingValue)
     local maxValue = Rebirth.GetMaxTrainingValue(rebirthCount)
     if currentValue >= maxValue then
         return 0
     end
-    local baseGain = _G.NumericalConfig.trainingSettlementsPerSecond * seconds
-        * self:GetHighestTrainingRate(rebirthCount)
+    local baseGain = _G.NumericalConfig.trainingSettlementsPerSecond
     baseGain *= Collection.GetTrainingRate(self:GetTable(Fields.CollectionEntries))
     baseGain *= Aura.GetTrainingRate(self:GetTable(Fields.AuraData))
     baseGain *= Weapon.GetEquippedConfig(self:GetTable(Fields.WeaponData)).TrainingRate
-    baseGain *= self:GetTrainingBonusRate(excludeFriendRate)
+    baseGain *= self:GetTrainingBonusRate()
     return math.min(baseGain * Rebirth.GetTrainingRate(rebirthCount), maxValue - currentValue)
 end
 
@@ -306,7 +297,7 @@ function Component:ShowRebirthReminder()
     self:GetPlayerObject():ShowLocalizedTips(TranslationTexts.RebirthReady)
 end
 
---- 立即结算力量卡时长，复用现有倍率和经验上限，达标后提醒重生。
+--- 立即结算力量卡时长，计最高已解锁场地倍率与分段追赶，不计好友，达标后提醒重生。
 ---@param seconds number 力量卡提供的训练秒数。
 ---@return boolean 是否实际增加了训练值。
 function Component:ApplyTrainingCard(seconds)
@@ -333,7 +324,7 @@ function Component:ApplyTrainingCard(seconds)
     return true
 end
 
---- 点击复用真实训练速率与永久倍率；服务端限速并检查存活状态，达标后提醒重生。
+--- 点击只应用通用训练倍率，不享受场地与追赶加成；服务端限速并检查存活状态，达标后提醒重生。
 --- @param position Vector2 客户端飘字起点，仅用于表现。
 function Component:HandleTrainingClick(position)
     if typeof(position) ~= "Vector2" or position.X ~= position.X or position.Y ~= position.Y
@@ -350,7 +341,7 @@ function Component:HandleTrainingClick(position)
         return
     end
     self._lastTrainingClick = now
-    local gain = self:GetTrainingCardGain(1)
+    local gain = self:GetTrainingClickGain()
     if gain > 0 and self:RequireComponent("FSRewardComp"):AddRewards({
         {Type = "Money", Currency = "RockTrainingValue", Count = gain},
     }) then
@@ -390,7 +381,7 @@ function Component:RefreshTrainingField(config, now)
     return unlocked and config.TrainingRate or 0
 end
 
---- 场内按秒自动训练，替代走路与击打；统一应用装备、图鉴、商店倍率、重生、追赶和经验封顶。
+--- 场内按秒自动训练，替代走路与击打；统一应用装备、图鉴、付费与好友倍率、重生、追赶和经验封顶。
 function Component:TickTraining()
     local character = self:GetPlayerCharacter()
     local root = character and character:FindFirstChild("HumanoidRootPart")

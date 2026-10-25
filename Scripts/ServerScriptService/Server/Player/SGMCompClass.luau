@@ -15,6 +15,7 @@ local TranslationTexts = Text.Define("GM", {
     SaveFailed = "Save failed. Please try again.",
 })
 local Fields = _G.PlayerDataConfig
+local GameEnum = _G.GameEnum
 local RockLevel = FXLoader:RequireShared("Scripts/Game/Shared/RockLevel")
 local Rebirth = FXLoader:RequireShared("Scripts/Game/Shared/Rebirth")
 local Component = FX.Class("SGMCompClass", "FSPlayerCompClass")
@@ -130,13 +131,16 @@ function Component:ReachRebirthLevel()
     return {success = true, key = TranslationTexts.Success}
 end
 
---- 为当前开发者登记全部图鉴 ID；不写入背包或发放任何道具。
+--- 为当前开发者登记全部已开放图鉴 ID；不写入背包或发放任何道具。
 --- @return boolean 图鉴配置完整且已提交图鉴字段时为 true。
 function Component:UnlockAllCollections()
     local itemData = _G.GameConfig.ItemData
     local entries = self:GetTable(Fields.CollectionEntries)
     local itemCount = 0
-    for itemId, item in pairs(itemData) do
+    for itemId, item in ipairs(itemData) do
+        if itemId > GameEnum.ItemLimit then
+            break
+        end
         if type(itemId) ~= "number" or type(item) ~= "table"
             or not IsValidNumber(item.Id) or item.Id < 1 or itemData[item.Id] ~= item then
             return false

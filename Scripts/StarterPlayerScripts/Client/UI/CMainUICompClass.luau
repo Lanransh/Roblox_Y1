@@ -596,7 +596,7 @@ end
 --- 同服好友人数同步后按现有训练倍率规则刷新百分比，无加成时保留 +0%。
 function Component:RefreshFriendBoost()
     local rate = CurrencyShop.GetFriendTrainingRate(self:GetPlayerObject())
-    self._friendBoost.Value.Text = string.format("+%g%%", math.round((rate - 1) * 10000) / 100)
+    self._friendBoost.Value.Text = string.format("+%g%%", math.round(rate * 10000) / 100)
 end
 
 --- @param remaining number 剩余秒数。

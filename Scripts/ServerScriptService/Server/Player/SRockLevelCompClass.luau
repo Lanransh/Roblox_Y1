@@ -99,7 +99,7 @@ function Component:OnPlayerLogin()
     end)
 end
 
---- 按石头总数与通用比例确定刷新件数，按 AreaId 校验幸运倍率并缓存候选模型。
+--- 按石头总数与通用比例确定刷新件数，按 AreaId 校验幸运倍率，仅缓存已开放收藏品的候选模型。
 function Component:PrepareAreaDefinitions()
     local configsById, duplicateConfigs = {}, {}
     local areaConfigs = type(GameConfig.AreaConfig) == "table" and GameConfig.AreaConfig or {}
@@ -114,7 +114,6 @@ function Component:PrepareAreaDefinitions()
         end
     end
     self._areaDefinitions = {}
-    local itemDataById = type(GameConfig.ItemData) == "table" and GameConfig.ItemData or {}
     for _, area in ipairs(self._areas) do
         local areaId = area.Index
         local definition = {AreaId = areaId, Pool = {}}
@@ -144,7 +143,7 @@ function Component:PrepareAreaDefinitions()
                 definition.AreaLuck = areaLuck
                 for _, reward in ipairs(pool) do
                     local itemId = reward.ItemId
-                    local itemData = isFiniteNumber(itemId) and itemDataById[itemId]
+                    local itemData = isFiniteNumber(itemId) and Collection.GetConfig(itemId)
                     local template = type(itemData) == "table" and Collectible.ResolveModel(itemData.DisplayModelId)
                     if not isFiniteNumber(itemId) or itemId % 1 ~= 0 or type(itemData) ~= "table"
                         or itemData.Id ~= itemId or not template

@@ -41,7 +41,7 @@ end
 
 ItemHandlers.WeekCard = WeekCardHandler
 
---- 力量卡使用前确认仍有训练收益；封顶时保留卡片并提醒重生。
+--- 力量卡使用前按不含好友加成的收益检查；封顶时保留卡片并提醒重生。
 ---@param context FXItemContextClass 当前服务端道具使用上下文。
 ---@return boolean 是否可以使用力量卡。
 function TrainingCardHandler:CanUse(context)

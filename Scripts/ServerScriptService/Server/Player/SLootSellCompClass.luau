@@ -12,7 +12,7 @@ local TranslationTexts = Text.Define("LootSell", {
 })
 local HttpService = game:GetService("HttpService")
 local Fields = _G.PlayerDataConfig
-local GameConfig = _G.GameConfig
+local Collection = FXLoader:RequireShared("Scripts/Game/Shared/Collection")
 local Rebirth = FXLoader:RequireShared("Scripts/Game/Shared/Rebirth")
 local Component = FX.Class("SLootSellCompClass", "FSPlayerCompClass")
 
@@ -35,7 +35,7 @@ function Component:RefreshCards()
     self:SetNumber(Fields.DoubleSaleCards, self:RequireComponent("FSInventoryComp"):GetItemCountById(103))
 end
 
---- 给 KV 收藏品补唯一持久 ID，同名同价也不会混淆出售目标。
+--- 给 KV 收藏品补唯一持久 ID，只同步已开放的有效收藏品，同名同价也不会混淆出售目标。
 --- @return table 当前 KV 中配置及价格有效的可出售收藏品快照。
 function Component:RefreshEntries()
     local data = self:GetTable(Fields.StoredLoot)
@@ -49,7 +49,7 @@ function Component:RefreshEntries()
                 changed = true
             end
             ids[extra.SellId] = true
-            if GameConfig.ItemData[extra.ItemId]
+            if Collection.GetConfig(extra.ItemId)
                 and type(extra.Price) == "number" and extra.Price >= 0 and extra.Price < math.huge then
                 table.insert(entries, {
                     id = extra.SellId, itemId = extra.ItemId, price = extra.Price,
@@ -65,7 +65,7 @@ function Component:RefreshEntries()
     return entries
 end
 
---- 全部目标校验通过才扣 KV 记录；无让出执行的结算防止重复请求重复到账。
+--- 全部目标须为已开放收藏品，校验通过才扣 KV 记录；无让出执行的结算防止重复到账。
 --- @param entryIds table 客户端展示的稳定实例 ID 数组，不接受格号或金额。
 --- @param multiplier number 客户端预览倍率，实际倍率由服务端资格决定。
 --- @param method string? Card / Gems / Vip；普通出售省略。
@@ -118,7 +118,7 @@ function Component:SellLoot(entryIds, multiplier, method)
     local amount = 0
     for index, extra in ipairs(data) do
         if type(extra) == "table" and requested[extra.SellId] then
-            if not GameConfig.ItemData[extra.ItemId]
+            if not Collection.GetConfig(extra.ItemId)
                 or type(extra.Price) ~= "number" or not (extra.Price >= 0 and extra.Price < math.huge) then
                 return {success = false, key = TranslationTexts.Changed}
             end

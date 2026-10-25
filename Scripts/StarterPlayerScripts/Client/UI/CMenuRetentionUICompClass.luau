@@ -18,10 +18,7 @@ local TranslationTexts = Text.Define("MenuRetention", {
 })
 local GuiService = game:GetService("GuiService")
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
-local Rebirth = FXLoader:RequireShared("Scripts/Game/Shared/Rebirth")
-local Collection = FXLoader:RequireShared("Scripts/Game/Shared/Collection")
 local Aura = FXLoader:RequireShared("Scripts/Game/Shared/Aura")
-local Weapon = FXLoader:RequireShared("Scripts/Game/Shared/Weapon")
 local CurrencyShop = FXLoader:RequireShared("Scripts/Game/Shared/CurrencyShop")
 local Welfare = FXLoader:RequireShared("Scripts/Game/Shared/Welfare")
 local Fields = _G.PlayerDataConfig
@@ -347,25 +344,11 @@ function Component:FormatText(key, arguments)
     return Text.Tr(key, arguments)
 end
 
---- 使用与服务端离线奖励一致的永久倍率和阶段上限，展示普通领取的最大收益。
+--- 与服务端共用排除好友、按训练份额分段追赶的离线结算，展示普通领取的最大收益。
 --- @return number 当前玩家离线收益上限。
 function Component:GetOfflineMaximum()
-    local rebirthCount = self:GetNumber(Fields.RebirthCount)
-    local highestRate = 0
-    for index, config in ipairs(_G.GameConfig.TrainingFieldData) do
-        if rebirthCount >= config.NeedRebirhLevel then
-            highestRate = math.max(highestRate, config.TrainingRate)
-        end
-    end
     local config = _G.GameConfig.CommonConfig.OfflineReward
-    local gain = _G.NumericalConfig.trainingSettlementsPerSecond * config.Time * config.Rate * highestRate
-    gain *= Collection.GetTrainingRate(self:GetTable(Fields.CollectionEntries))
-    gain *= Aura.GetTrainingRate(self:GetTable(Fields.AuraData))
-    gain *= Weapon.GetEquippedConfig(self:GetTable(Fields.WeaponData)).TrainingRate
-    gain *= CurrencyShop.GetTrainingRate(self:GetTable(Fields.CurrencyShopData))
-    gain *= Rebirth.GetTrainingRate(rebirthCount)
-    return math.clamp(gain, 0, math.max(0,
-        Rebirth.GetMaxTrainingValue(rebirthCount) - self:GetNumber(Fields.RockTrainingValue)))
+    return CurrencyShop.GetTrainingCardGain(self:GetPlayerObject(), config.Time * config.Rate)
 end
 
 --- 快照间逐秒递减显示时间；可领取状态仍以服务端同步的奖励资格为准。

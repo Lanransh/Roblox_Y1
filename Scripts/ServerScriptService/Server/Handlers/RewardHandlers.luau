@@ -3,6 +3,7 @@ local FX = _G.FX
 local Fields = _G.PlayerDataConfig
 local Weapon = FX.Loader:RequireShared("Scripts/Game/Shared/Weapon")
 local Aura = FX.Loader:RequireShared("Scripts/Game/Shared/Aura")
+local Collection = FX.Loader:RequireShared("Scripts/Game/Shared/Collection")
 local RockLevel = FX.Loader:RequireShared("Scripts/Game/Shared/RockLevel")
 local Handlers = {}
 
@@ -99,7 +100,7 @@ function Handlers.LootCapacityBoost(reward, entry, tables)
     return true
 end
 
---- 拾取收藏品使用独立类型，不把其混入原生道具背包；整批累计检查随身及总存储容量。
+--- 仅允许拾取已开放收藏品，使用独立类型并整批累计检查随身及总存储容量。
 --- @param reward table 奖励组件。
 --- @param entry table Count=1 与服务端签发的 Data 收藏品记录。
 --- @param tables table 本批次计划。
@@ -107,7 +108,7 @@ end
 function Handlers.Loot(reward, entry, tables)
     local value = entry.Data
     if entry.Count ~= 1 or type(value) ~= "table" or not Integer(value.ItemId)
-        or not _G.GameConfig.ItemData[value.ItemId] or type(value.Price) ~= "number"
+        or not Collection.GetConfig(value.ItemId) or type(value.Price) ~= "number"
         or not (value.Price >= 0 and value.Price < math.huge) then
         return false
     end

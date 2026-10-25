@@ -29,7 +29,7 @@ function Shop.GetNextGemGoods(group, data)
     return nil
 end
 
---- 永久训练倍率与现有训练加成相乘，未购买时为 1。
+--- 付费永久训练倍率与好友额外倍率相加，未购买时为 1。
 --- @param data table 玩家 CurrencyShopData。
 --- @return number 已购买档位的训练倍率。
 function Shop.GetTrainingRate(data)
@@ -41,21 +41,21 @@ end
 
 --- 服务端读取即时同服好友，客户端使用同步人数预览；平台未就绪时不发好友加成。
 --- @param player table 当前玩家对象。
---- @return number 最多按配置人数计算的好友训练倍率。
+--- @return number 最多按配置人数计算的好友额外倍率，无好友时为 0。
 function Shop.GetFriendTrainingRate(player)
     local count = player:GetNumber(Fields.TrainingFriendCount)
     if game:GetService("RunService"):IsServer() then
         count = FS.FriendService:GetFriendCountInRoom(player:GetPlayerId()) or 0
     end
     local config = _G.GameConfig.CommonConfig.InviteFriendData
-    return 1 + math.min(count, config.MaxCount) * config.AddRate
+    return math.min(count, config.MaxCount) * config.AddRate
 end
 
---- 两端共用力量包预览与结算，沿用 Studio_Y3 每份基础 1 点及最高已解锁场地，不计在线追赶。
---- @param player table 客户端或服务端玩家对象，读取永久加成及当前同服好友。
---- @param goodsId number 已配置的力量包商品 ID。
+--- 力量卡、力量包和离线共用最高已解锁场地及永久倍率，排除好友，按份额分段追赶。
+--- @param player table 客户端或服务端玩家对象。
+--- @param amount number 未应用任何倍率的训练份额。
 --- @return number 当前重生阶段经验上限内可增加的训练值。
-function Shop.GetTrainingPackGain(player, goodsId)
+function Shop.GetAccumulatedTrainingGain(player, amount)
     local count = player:GetNumber(Fields.RebirthCount)
     local highestRate = 1
     for index, config in ipairs(_G.GameConfig.TrainingFieldData) do
@@ -63,15 +63,28 @@ function Shop.GetTrainingPackGain(player, goodsId)
             highestRate = math.max(highestRate, config.TrainingRate)
         end
     end
-    local gain = _G.GoodsConfig.GemGoodsData[goodsId].NumberArray[1] * highestRate
-        * Rebirth.GetTrainingRate(count)
+    local gain = amount * highestRate
         * Shop.GetTrainingRate(player:GetTable(Fields.CurrencyShopData))
-        * Shop.GetFriendTrainingRate(player)
         * Collection.GetTrainingRate(player:GetTable(Fields.CollectionEntries))
         * Aura.GetTrainingRate(player:GetTable(Fields.AuraData))
         * Weapon.GetEquippedConfig(player:GetTable(Fields.WeaponData)).TrainingRate
-    return math.max(0, math.min(gain,
-        Rebirth.GetMaxTrainingValue(count) - player:GetNumber(Fields.RockTrainingValue)))
+    return Rebirth.GetAccumulatedTrainingGain(player:GetNumber(Fields.RockTrainingValue), gain, count)
+end
+
+--- 力量包预览与结算读取同一份商品份额，不额外乘每秒结算量。
+--- @param player table 客户端或服务端玩家对象。
+--- @param goodsId number 已配置的力量包商品 ID。
+--- @return number 分段追赶后的力量包收益。
+function Shop.GetTrainingPackGain(player, goodsId)
+    return Shop.GetAccumulatedTrainingGain(player, _G.GoodsConfig.GemGoodsData[goodsId].NumberArray[1])
+end
+
+--- 力量卡与离线将有效训练秒数换算为份额，预览和实际发放共用。
+--- @param player table 客户端或服务端玩家对象。
+--- @param seconds number 力量卡秒数或已乘离线效率的有效秒数。
+--- @return number 分段追赶后的训练收益。
+function Shop.GetTrainingCardGain(player, seconds)
+    return Shop.GetAccumulatedTrainingGain(player, _G.NumericalConfig.trainingSettlementsPerSecond * seconds)
 end
 
 return Shop

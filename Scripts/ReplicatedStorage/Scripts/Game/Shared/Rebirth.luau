@@ -66,4 +66,20 @@ function Rebirth.GetTrainingGain(value, baseGain, count)
     return math.max(0, math.min(gain, Rebirth.GetMaxTrainingValue(count) - value))
 end
 
+--- 力量卡、力量包及离线按可消耗训练份额分段追赶，达到目标后剩余份额恢复正常倍率。
+--- @param value number 当前累计经验。
+--- @param baseGain number 全部份额在尚未包含重生倍率时的收益。
+--- @param count number 已完成的重生次数。
+--- @return number 分段结算并限制在当前阶段剩余经验内的收益。
+function Rebirth.GetAccumulatedTrainingGain(value, baseGain, count)
+    local gain = baseGain * Rebirth.GetTrainingRate(count)
+    if count > 0 then
+        local target = RockLevel.GetTrainingValueByLevel(Rebirth.GetRequiredLevel(count - 1))
+        local catchUpRate = FX.CurveSampler:SampleCurveGroupColumnFormula(Curves, "catchUpMultiplier", count)
+        local catchUpBaseGain = math.min(gain, math.max(0, target - value) / catchUpRate)
+        gain = catchUpBaseGain * catchUpRate + (gain - catchUpBaseGain)
+    end
+    return math.max(0, math.min(gain, Rebirth.GetMaxTrainingValue(count) - value))
+end
+
 return Rebirth

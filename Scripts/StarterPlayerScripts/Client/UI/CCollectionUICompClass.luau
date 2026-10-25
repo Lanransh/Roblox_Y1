@@ -3,6 +3,7 @@ local FXLoader = FX.Loader
 FXLoader:RequireFromParent(script, "Generated/CCollectionView")
 local Fields = _G.PlayerDataConfig
 local GameConfig = _G.GameConfig
+local GameEnum = _G.GameEnum
 local Collection = FXLoader:RequireShared("Scripts/Game/Shared/Collection")
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local Component = FX.Class("CCollectionUICompClass", "CCollectionView")
@@ -13,7 +14,7 @@ function Component:GetCompName()
     return "CCollectionUIComp"
 end
 
---- 复用导出的节点和关闭事件，只订阅服务端持久图鉴。
+--- 复用导出的节点和关闭事件，只展示已开放的收藏品并订阅服务端持久图鉴。
 function Component:OnReady()
     Component.Super.OnReady(self)
     self.Root.ResetOnSpawn = false
@@ -24,7 +25,10 @@ function Component:OnReady()
     local rules = GameConfig.CommonConfig.CollectionData
     self.Config = {items = {}, strengthPerEntryPercent = rules.TrainingRate * 100,
         unlockCount = rules.UnlockCount, lockedSilhouette = true}
-    for itemId, item in pairs(GameConfig.ItemData) do
+    for index, item in ipairs(GameConfig.ItemData) do
+        if index > GameEnum.ItemLimit then
+            break
+        end
         table.insert(self.Config.items, {
             id = tostring(item.Id), itemId = item.Id,
             name = "", icon = "rbxassetid://" .. item.IconId,
