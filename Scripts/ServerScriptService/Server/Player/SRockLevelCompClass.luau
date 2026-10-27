@@ -440,7 +440,7 @@ function Component:CreateDrop(key, area, cell, result, round)
     for index, reward in ipairs(self._areaDefinitions[area.Index].Pool) do
         previewModelIds[index] = reward.DisplayModelId
     end
-    local expiresAt = now + Collectible.DropRevealDuration + Collectible.DropLifetime
+    local expiresAt = now + Collectible.DropRevealDuration + GameConfig.CommonConfig.DropLifetime
     self._claimed[key] = true
     self._dropNodes[dropId] = {
         CellKey = key,

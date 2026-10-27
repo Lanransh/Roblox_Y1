@@ -30,3 +30,5 @@ Build/FigmaRoblox/
 /Translation/translation-report.json
 /Translation/translation-review.csv
 /Translation/translation-cloud-backup-*.json
+.studiogametoolkit/ai-board/
+.studiogametoolkit/image-process/
