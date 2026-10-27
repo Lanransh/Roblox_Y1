@@ -965,7 +965,7 @@
                       },
                       "Text": "",
                       "TextColor3": "#ffffff",
-                      "TextScaled": false,
+                      "TextScaled": true,
                       "TextSize": 18.2,
                       "TextTransparency": 0,
                       "TextWrapped": false,

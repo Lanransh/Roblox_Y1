@@ -67,12 +67,12 @@ function Guide:OnReady()
     self._label.Size = UDim2.fromOffset(1024, 48)
     self._label.BackgroundTransparency = 1
     self._label.Font = Enum.Font.GothamBold
-    self._label.TextSize = 28
+    self._label.TextSize = 32
     self._label.TextScaled = true
     self._label.TextWrapped = true
     local textSizeConstraint = Instance.new("UITextSizeConstraint")
     textSizeConstraint.MinTextSize = 12
-    textSizeConstraint.MaxTextSize = 28
+    textSizeConstraint.MaxTextSize = 32
     textSizeConstraint.Parent = self._label
     self._label.TextColor3 = Color3.fromRGB(255, 223, 75)
     self._label.TextStrokeTransparency = 1

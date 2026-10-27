@@ -298,7 +298,7 @@ function Guide:GrantTrainingDiamonds()
     self:SetGuideData(data)
 end
 
---- 关卡外先指向首关入口，进入后再锁定本轮道具；不触发生成或修改奖励。
+--- 关卡外先指向首关入口，进入后按服务端掉落记录及有效期锁定本轮道具；模型仅在客户端生成。
 --- @param rock table 玩家的服务端关卡组件。
 --- @param position Vector3 服务端角色当前位置。
 --- @return string? 当前轮次内锁定的石头格号。
@@ -327,7 +327,7 @@ function Guide:GetLootTarget(rock, position)
         local key = "1:" .. cell
         local dropId = rock._dropByCell[key]
         local drop = dropId and rock._dropNodes[dropId]
-        if not rock._claimed[key] or (drop and drop.ExpiresAt > now and drop.Model.Parent == workspace) then
+        if not rock._claimed[key] or (drop and drop.ExpiresAt > now) then
             local candidate = Vector3.new(area.MinX + ((cell - 1) % area.Columns + 0.5) * cellSize,
                 area.FloorY + 1, area.MinZ + (math.floor((cell - 1) / area.Columns) + 0.5) * cellSize)
             if cell == self._lootCell then

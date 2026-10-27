@@ -29,8 +29,11 @@ function CSoundCompClass:Ctor(owner)
     FX.Network:RegServerMsgCallback("S2C_CardActivated", self.OnCardActivated, self)
 end
 
---- 释放拾取与卡片激活通知，再由声音基类释放音乐和短音效池。
+--- 释放升级特效、拾取与卡片激活通知，再由声音基类释放音乐和短音效池。
 function CSoundCompClass:Dtor()
+    if self._trainingEffectCleanup then
+        self._trainingEffectCleanup()
+    end
     if self._cardEffectCleanup then
         self._cardEffectCleanup()
     end
@@ -62,7 +65,7 @@ function CSoundCompClass:OnTrainingLevelChanged(level, oldLevel)
     self:PlayTrainingUpgradeEffect()
 end
 
---- 升级时角色短暂镀金，脚下白色空心方框沿环向外扩开后淡出。
+--- 用蓝金双层冲击环、上冲光束和星芒爆发强调升级，先保留亮度再收尾，连续升级不叠加。
 function CSoundCompClass:PlayTrainingUpgradeEffect()
     local character = self:GetPlayerCharacter()
     local humanoid = character and character:FindFirstChildOfClass("Humanoid")
@@ -71,93 +74,146 @@ function CSoundCompClass:PlayTrainingUpgradeEffect()
         return
     end
 
+    if self._trainingEffectCleanup then
+        self._trainingEffectCleanup()
+    end
+    local effects = Instance.new("Folder")
+    effects.Name = "TrainingUpgradeEffect"
+    effects.Parent = Workspace
+    local attachment = Instance.new("Attachment")
+    attachment.Name = "TrainingUpgradeGlow"
+    attachment.Position = Vector3.new(0, -1, 0)
+    attachment.Parent = root
+    self._trainingEffectCleanup = function()
+        effects:Destroy()
+        attachment:Destroy()
+    end
+    Debris:AddItem(effects, 1.4)
+    Debris:AddItem(attachment, 1.4)
+
     local highlight = Instance.new("Highlight")
     highlight.Name = "TrainingUpgradeHighlight"
     highlight.Adornee = character
-    highlight.FillColor = Color3.fromRGB(255, 210, 55)
-    highlight.FillTransparency = 0.08
-    highlight.OutlineColor = Color3.fromRGB(255, 249, 205)
-    highlight.OutlineTransparency = 0.1
+    highlight.FillColor = Color3.fromRGB(255, 225, 140)
+    highlight.FillTransparency = 0.4
+    highlight.OutlineColor = Color3.fromRGB(120, 235, 255)
+    highlight.OutlineTransparency = 0
     highlight.DepthMode = Enum.HighlightDepthMode.Occluded
-    highlight.Parent = character
-    TweenService:Create(highlight, TweenInfo.new(0.42, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut, 0, false, 0.05), {
+    highlight.Parent = effects
+    TweenService:Create(highlight, TweenInfo.new(0.65, Enum.EasingStyle.Quad, Enum.EasingDirection.In, 0, false, 0.1), {
         FillTransparency = 1,
         OutlineTransparency = 1,
     }):Play()
-    Debris:AddItem(highlight, 0.55)
 
     local light = Instance.new("PointLight")
     light.Name = "TrainingUpgradeLight"
     light.Color = Color3.fromRGB(255, 220, 130)
-    light.Brightness = 0.7
-    light.Range = 6
+    light.Brightness = 2.5
+    light.Range = 12
     light.Shadows = false
-    light.Parent = root
-    TweenService:Create(light, TweenInfo.new(0.45, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+    light.Parent = attachment
+    TweenService:Create(light, TweenInfo.new(0.7, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
         Brightness = 0,
     }):Play()
-    Debris:AddItem(light, 0.55)
+
+    local sparkles = Instance.new("ParticleEmitter")
+    sparkles.Name = "UpgradeSparkles"
+    sparkles.Texture = "rbxasset://textures/particles/sparkles_main.dds"
+    sparkles.Color = ColorSequence.new(Color3.fromRGB(255, 237, 180), Color3.fromRGB(255, 190, 75))
+    sparkles.LightEmission = 1
+    sparkles.LightInfluence = 0
+    sparkles.Rate = 0
+    sparkles.Lifetime = NumberRange.new(0.8, 1.2)
+    sparkles.Speed = NumberRange.new(8, 13)
+    sparkles.Drag = 3
+    sparkles.Acceleration = Vector3.new(0, -3, 0)
+    sparkles.SpreadAngle = Vector2.new(80, 80)
+    sparkles.Rotation = NumberRange.new(0, 360)
+    sparkles.RotSpeed = NumberRange.new(-60, 60)
+    sparkles.Size = NumberSequence.new({
+        NumberSequenceKeypoint.new(0, 0.35),
+        NumberSequenceKeypoint.new(0.12, 0.75),
+        NumberSequenceKeypoint.new(0.6, 0.4),
+        NumberSequenceKeypoint.new(1, 0),
+    })
+    sparkles.Transparency = NumberSequence.new({
+        NumberSequenceKeypoint.new(0, 0),
+        NumberSequenceKeypoint.new(0.65, 0.1),
+        NumberSequenceKeypoint.new(1, 1),
+    })
+    sparkles.Parent = attachment
+    sparkles:Emit(36)
+
+    local burstFrame = CFrame.new(root.Position)
+    for index = 1, 8 do
+        local angle = (index - 1) * math.pi / 4
+        local direction = Vector3.new(math.cos(angle), 0, math.sin(angle))
+        local streak = Instance.new("Part")
+        streak.Name = "UpgradeEnergyStreak"
+        streak.Anchored = true
+        streak.CanCollide = false
+        streak.CanTouch = false
+        streak.CanQuery = false
+        streak.CastShadow = false
+        streak.Material = Enum.Material.Neon
+        streak.Color = index % 2 == 0 and Color3.fromRGB(80, 220, 255) or Color3.fromRGB(255, 225, 140)
+        streak.Size = Vector3.new(0.14, 2.8, 0.14)
+        streak.CFrame = burstFrame * CFrame.new(direction * 1.6 + Vector3.new(0, -0.5, 0))
+        streak.Parent = effects
+        TweenService:Create(streak, TweenInfo.new(0.55, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {
+            CFrame = burstFrame * CFrame.new(direction * 2.8 + Vector3.new(0, 4.5 + index % 3, 0)),
+            Size = Vector3.new(0.04, 0.6, 0.04),
+        }):Play()
+        TweenService:Create(streak, TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.In, 0, false, 0.15), {
+            Transparency = 1,
+        }):Play()
+    end
 
     local raycastParams = RaycastParams.new()
     raycastParams.FilterType = Enum.RaycastFilterType.Exclude
     raycastParams.FilterDescendantsInstances = { character }
     raycastParams.IgnoreWater = true
     local floor = Workspace:Raycast(root.Position, Vector3.new(0, -12, 0), raycastParams)
-    local floorY = root.Position.Y - humanoid.HipHeight - root.Size.Y / 2 + 0.04
-    if floor then
-        floorY = floor.Position.Y + 0.04
+    if not floor then
+        return
     end
-    local floorCenter = Vector3.new(root.Position.X, floorY, root.Position.Z)
-    local effects = Instance.new("Folder")
-    effects.Name = "TrainingUpgradeEffect"
-    effects.Parent = Workspace
-    local barHeight = 0.05
-    local barWidth = 0.045
-    local edges = {
-        { Offset = Vector3.new(0, 0, -1), AlongX = true },
-        { Offset = Vector3.new(0, 0, 1), AlongX = true },
-        { Offset = Vector3.new(-1, 0, 0), AlongX = false },
-        { Offset = Vector3.new(1, 0, 0), AlongX = false },
-    }
-    local squareCount = 10
-    for index = 1, squareCount do
-        local angle = (index - 1) * math.pi * 2 / squareCount + math.random(-20, 20) / 100
-        local startRadius = 1.1 + math.random(0, 65) / 100
-        local endRadius = startRadius + 2 + math.random(0, 75) / 100
-        local startSide = 0.5 + math.random(0, 35) / 100
-        local endSide = startSide * 1.25
-        local yaw = math.random() * math.pi
-        local startFrame = CFrame.new(floorCenter + Vector3.new(math.cos(angle) * startRadius, 0, math.sin(angle) * startRadius))
-            * CFrame.Angles(0, yaw, 0)
-        local endFrame = CFrame.new(floorCenter + Vector3.new(math.cos(angle) * endRadius, 0, math.sin(angle) * endRadius))
-            * CFrame.Angles(0, yaw, 0)
-        local info = TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
-        for edgeIndex, edge in ipairs(edges) do
-            local startSize = edge.AlongX and Vector3.new(startSide, barHeight, barWidth)
-                or Vector3.new(barWidth, barHeight, startSide)
-            local endSize = edge.AlongX and Vector3.new(endSide, barHeight, barWidth)
-                or Vector3.new(barWidth, barHeight, endSide)
-            local bar = Instance.new("Part")
-            bar.Name = "UpgradeSquareBar" .. edgeIndex
-            bar.Anchored = true
-            bar.CanCollide = false
-            bar.CanTouch = false
-            bar.CanQuery = false
-            bar.CastShadow = false
-            bar.Material = Enum.Material.Neon
-            bar.Color = Color3.fromRGB(255, 255, 255)
-            bar.Transparency = 0.05
-            bar.Size = startSize
-            bar.CFrame = startFrame * CFrame.new(edge.Offset * (startSide / 2))
-            bar.Parent = effects
-            TweenService:Create(bar, info, {
-                CFrame = endFrame * CFrame.new(edge.Offset * (endSide / 2)),
-                Size = endSize,
+    local floorCenter = floor.Position + floor.Normal * 0.08
+    local floorFrame = CFrame.lookAt(floorCenter, floorCenter + floor.Normal, Vector3.xAxis)
+    local segmentCount = 32
+    local segmentLength = 2 * math.tan(math.pi / segmentCount)
+    for ringIndex = 1, 2 do
+        local startRadius = ringIndex == 1 and 1.5 or 0.9
+        local endRadius = ringIndex == 1 and 7 or 4.8
+        local width = ringIndex == 1 and 0.22 or 0.32
+        local color = ringIndex == 1 and Color3.fromRGB(80, 220, 255) or Color3.fromRGB(255, 220, 110)
+        local delayTime = (ringIndex - 1) * 0.1
+        local info = TweenInfo.new(0.7, Enum.EasingStyle.Quart, Enum.EasingDirection.Out, 0, false, delayTime)
+        for index = 1, segmentCount do
+            local angle = (index - 1) * math.pi * 2 / segmentCount
+            local direction = Vector3.new(math.cos(angle), math.sin(angle), 0)
+            local rotation = CFrame.Angles(0, 0, angle + math.pi / 2)
+            local segment = Instance.new("Part")
+            segment.Name = "UpgradeRingSegment"
+            segment.Anchored = true
+            segment.CanCollide = false
+            segment.CanTouch = false
+            segment.CanQuery = false
+            segment.CastShadow = false
+            segment.Material = Enum.Material.Neon
+            segment.Color = color
+            segment.Transparency = 0
+            segment.Size = Vector3.new(startRadius * segmentLength, width, 0.06)
+            segment.CFrame = floorFrame * CFrame.new(direction * startRadius) * rotation
+            segment.Parent = effects
+            TweenService:Create(segment, info, {
+                CFrame = floorFrame * CFrame.new(direction * endRadius) * rotation,
+                Size = Vector3.new(endRadius * segmentLength, width * 0.35, 0.06),
+            }):Play()
+            TweenService:Create(segment, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.In, 0, false, delayTime + 0.2), {
                 Transparency = 1,
             }):Play()
         end
     end
-    Debris:AddItem(effects, 0.7)
 end
 
 --- 金币到账时突出收益音效并暂时压低音乐，首次同步、消费和重置不播放。
