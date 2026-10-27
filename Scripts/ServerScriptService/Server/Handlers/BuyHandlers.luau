@@ -75,14 +75,14 @@ function Handlers.SkipRebirth:CanBuy(context)
         and Rebirth.GetSkipGoods(player:GetNumber(Fields.RebirthCount)) == context.goodsConfig
 end
 
---- 仅由平台收据跳过等级要求；沿用普通重生重置并由框架保存与去重。
+--- 仅由平台收据增加重生次数，保留训练值和等级，由框架保存与去重。
 --- @param context table 平台收据对应的购买上下文。
 --- @return boolean 重生是否已写入玩家档案。
 function Handlers.SkipRebirth:Buy(context)
     if not self:CanBuy(context) then
         return false
     end
-    context.playerObject:RequireComponent("SMiscComp"):ApplyRebirth()
+    context.playerObject:AddNumber(Fields.RebirthCount, 1)
     RecordPurchase(context)
     return true
 end

@@ -59,6 +59,12 @@ return {
         AnalyticsEnabled = true,
         AnalyticsExcludedUserIds = {
             [1] = 0,
+        },
+        LuckData = {
+            DefaultLevel = 1,
+            MaxLevel = 10,
+            UpgradeCostBase = 1,
+            UpgradeCostMultiplier = 1
         }
     },
     TrainingFieldData = {
@@ -2846,6 +2852,53 @@ return {
         ["World3.Level_39"] = {
             LevelKey = [[World3.Level_39]],
             StoneHP = 4.0500000000000000101639864188928e+32
+        }
+    },
+    GachaQualityData = {
+        [1] = {
+            Quality = 1,
+            Weight = 3.03e+7,
+            MinProbability = 0.05
+        },
+        [2] = {
+            Quality = 2,
+            Weight = 6.06e+6,
+            MinProbability = 0.05
+        },
+        [3] = {
+            Quality = 3,
+            Weight = 1.212e+6,
+            MinProbability = 0.05
+        },
+        [4] = {
+            Quality = 4,
+            Weight = 242928,
+            MinProbability = 0.05
+        },
+        [5] = {
+            Quality = 5,
+            Weight = 29151,
+            MinProbability = 0.05
+        },
+        [6] = {
+            Quality = 6,
+            Weight = 3498,
+            MinProbability = 0.05
+        },
+        [7] = {
+            Quality = 7,
+            Weight = 318,
+            MinProbability = 0.05
+        },
+        [8] = {
+            Quality = 8,
+            Weight = 29,
+            MinProbability = 0
+        },
+        [9] = {
+            Quality = 9,
+            Weight = 3,
+            MinProbability = 0
         }
     }
 }

@@ -13,7 +13,6 @@ local TranslationTexts = Text.Define("Activity", {
 local GameUtility = FX.Loader:RequireShared("Scripts/Game/Shared/GameUtility")
 local Fields = _G.PlayerDataConfig
 local Welfare = FX.Loader:RequireShared("Scripts/Game/Shared/Welfare")
-local Rebirth = FX.Loader:RequireShared("Scripts/Game/Shared/Rebirth")
 local Component = FX.Class("SActivityCompClass", "FSPlayerCompClass")
 local Players = game:GetService("Players")
 
@@ -92,9 +91,11 @@ function Component:GetDailyAmount()
     return amount
 end
 
---- 私有存档只同步福利所需快照；新离线批次同步独立分段结算的加成收益，旧批次保留原领取值。
+--- 按当前经验与倍率刷新离线预览，避免沿用登录时的追赶加成。
 function Component:PublishState()
     local data = self:GetTable(Fields.WelfareData)
+    local config = _G.GameConfig.CommonConfig.OfflineReward
+    local misc = self:RequireComponent("SMiscComp")
     self._revision = (self._revision or 0) + 1
     self:SetTable(Fields.WelfareState, {
         ready = true, revision = self._revision, day = data.day, onlineSeconds = data.onlineSeconds, loginDays = data.loginDays,
@@ -107,10 +108,10 @@ function Component:PublishState()
         offline = {
             id = data.offline.id,
             seconds = data.offlineClaimDay == data.day and 0 or data.offline.seconds,
-            training = data.offlineClaimDay == data.day and 0 or data.offline.training,
-            boostedTraining = data.offlineClaimDay == data.day and 0 or (data.offline.boostedTraining
-                or data.offline.training * (_G.GameConfig.CommonConfig.OfflineReward.VIPRate
-                    / _G.GameConfig.CommonConfig.OfflineReward.Rate)),
+            training = data.offlineClaimDay == data.day and 0
+                or misc:GetTrainingCardGain(data.offline.seconds * config.Rate),
+            boostedTraining = data.offlineClaimDay == data.day and 0
+                or misc:GetTrainingCardGain(data.offline.seconds * config.VIPRate),
             status = data.offlineClaimDay == data.day and "Claimed"
                 or (data.offline.training > 0 and "Claimable" or "Locked"),
         },
@@ -343,12 +344,10 @@ function Component:Claim(kind, rewardId, multiplier)
             and (multiplier == 1 or multiplier == boostMultiplier) then
             local price = multiplier ~= 1 and _G.GoodsConfig.GemGoodsData[1].Price or 0
             local costs = price > 0 and {{Type = "Money", Currency = "Diamonds", Count = price}} or {}
-            local remaining = Rebirth.GetMaxTrainingValue(self:GetNumber(Fields.RebirthCount))
-                - self:GetNumber(Fields.RockTrainingValue)
-            local rewardTraining = multiplier == 1 and data.offline.training
-                or (data.offline.boostedTraining or data.offline.training * boostMultiplier)
-            local gain = math.max(0, math.min(rewardTraining, remaining))
-            local normalGain = math.max(0, math.min(data.offline.training, remaining))
+            local misc = self:RequireComponent("SMiscComp")
+            local normalGain = misc:GetTrainingCardGain(data.offline.seconds * config.Rate)
+            local gain = multiplier == 1 and normalGain
+                or misc:GetTrainingCardGain(data.offline.seconds * config.VIPRate)
             if multiplier ~= 1 and gain <= normalGain then
                 key = TranslationTexts.NoBoostGain
             elseif self:GetNumber(Fields.Diamonds) < price then

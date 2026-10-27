@@ -39,7 +39,7 @@ function Component:GetCompName()
     return "SMiscComp"
 end
 
---- 普通重生与已支付跳过共用无等待结算，调用方负责资格校验。
+--- 普通重生执行次数增加与训练重置，调用方负责资格校验。
 function Component:ApplyRebirth()
     self:AddNumber(Fields.RebirthCount, 1)
     self:SetNumber(Fields.RockTrainingValue, 0)
