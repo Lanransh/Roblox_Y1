@@ -220,7 +220,7 @@ function CWeaponShopView:Render(state)
             buttonText.TextSize = 18.2
             local buttonTextStroke = FXLoader:Here(buttonText, "TextStroke")
             buttonTextStroke.Thickness = 1.3
-            buttonText.TextWrapped = false
+            -- 沿用原型的自动缩放；关闭换行会在 Roblox 中连带关闭 TextScaled。
             buttonText.Position = UDim2.fromOffset(0, 0)
             buttonText.Size = UDim2.fromScale(1, 1)
             buttonText.TextXAlignment = Enum.TextXAlignment.Center

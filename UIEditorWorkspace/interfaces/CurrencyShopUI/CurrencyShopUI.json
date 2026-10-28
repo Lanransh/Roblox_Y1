@@ -1576,7 +1576,7 @@
                   "BackgroundColor3": "#FFFFFF",
                   "BackgroundTransparency": 1,
                   "ClipsDescendants": false,
-                  "Font": "Gotham",
+                  "Font": "GothamBold",
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
@@ -2171,7 +2171,7 @@
                   "BackgroundColor3": "#FFFFFF",
                   "BackgroundTransparency": 1,
                   "ClipsDescendants": false,
-                  "Font": "Gotham",
+                  "Font": "GothamBold",
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
@@ -2773,7 +2773,7 @@
                   "BackgroundColor3": "#FFFFFF",
                   "BackgroundTransparency": 1,
                   "ClipsDescendants": false,
-                  "Font": "Gotham",
+                  "Font": "GothamBold",
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
@@ -3375,7 +3375,7 @@
                   "BackgroundColor3": "#FFFFFF",
                   "BackgroundTransparency": 1,
                   "ClipsDescendants": false,
-                  "Font": "Gotham",
+                  "Font": "GothamBold",
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
@@ -3977,7 +3977,7 @@
                   "BackgroundColor3": "#FFFFFF",
                   "BackgroundTransparency": 1,
                   "ClipsDescendants": false,
-                  "Font": "Gotham",
+                  "Font": "GothamBold",
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
@@ -4579,7 +4579,7 @@
                   "BackgroundColor3": "#FFFFFF",
                   "BackgroundTransparency": 1,
                   "ClipsDescendants": false,
-                  "Font": "Gotham",
+                  "Font": "GothamBold",
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
@@ -5181,7 +5181,7 @@
                   "BackgroundColor3": "#FFFFFF",
                   "BackgroundTransparency": 1,
                   "ClipsDescendants": false,
-                  "Font": "Gotham",
+                  "Font": "GothamBold",
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
@@ -5783,7 +5783,7 @@
                   "BackgroundColor3": "#FFFFFF",
                   "BackgroundTransparency": 1,
                   "ClipsDescendants": false,
-                  "Font": "Gotham",
+                  "Font": "GothamBold",
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
@@ -6378,7 +6378,7 @@
                   "BackgroundColor3": "#FFFFFF",
                   "BackgroundTransparency": 1,
                   "ClipsDescendants": false,
-                  "Font": "Gotham",
+                  "Font": "GothamBold",
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
@@ -6973,7 +6973,7 @@
                   "BackgroundColor3": "#FFFFFF",
                   "BackgroundTransparency": 1,
                   "ClipsDescendants": false,
-                  "Font": "Gotham",
+                  "Font": "GothamBold",
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
@@ -7568,7 +7568,7 @@
                   "BackgroundColor3": "#FFFFFF",
                   "BackgroundTransparency": 1,
                   "ClipsDescendants": false,
-                  "Font": "Gotham",
+                  "Font": "GothamBold",
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
@@ -8163,7 +8163,7 @@
                   "BackgroundColor3": "#FFFFFF",
                   "BackgroundTransparency": 1,
                   "ClipsDescendants": false,
-                  "Font": "Gotham",
+                  "Font": "GothamBold",
                   "LayoutOrder": 0,
                   "Position": {
                     "x": {
