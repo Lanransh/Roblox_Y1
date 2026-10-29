@@ -60,7 +60,8 @@ return {
         AnalyticsExcludedUserIds = {
             [1] = 0,
         },
-        DropLifetime = 15
+        DropLifetime = 15,
+        DessertRefreshScale = 1
     },
     TrainingFieldData = {
         [1] = {
@@ -2848,5 +2849,22 @@ return {
             LevelKey = [[World3.Level_39]],
             StoneHP = 4.0500000000000000101639864188928e+32
         }
+    },
+    TrainingBonusConfig = {
+        MinInterval = 5,
+        MaxInterval = 5,
+        OfferLifetime = 5,
+        Duration = 2,
+        Multipliers = {
+            [1] = 2,
+            [2] = 3,
+            [3] = 5,
+        },
+        Weights = {
+            [1] = 60,
+            [2] = 30,
+            [3] = 10,
+        },
+        AnimationSpeed = 3
     }
 }

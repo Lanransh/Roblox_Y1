@@ -763,6 +763,10 @@ end
 function Component:SwingPickaxe(humanoid, key, area, instantBreak)
     self:StopSwing()
     local character = self._character
+    local speed = self:GetTrainingAnimationSpeed()
+    if key ~= nil then
+        speed = 1
+    end
     if humanoid.RigType == Enum.HumanoidRigType.R15 then
         local upperTorso = character:FindFirstChild("UpperTorso")
         local waist = upperTorso and upperTorso:FindFirstChild("Waist")
@@ -773,9 +777,9 @@ function Component:SwingPickaxe(humanoid, key, area, instantBreak)
             local attachment = waist.Attachment0
             self._swingJoints[attachment] = {Base = attachment.CFrame, Body = true, Property = "CFrame"}
         end
-        local windup = instantBreak and 0.06 or 0.26
-        local strike = instantBreak and 0.04 or 0.14
-        local recovery = instantBreak and 0.56 or 0.26
+        local windup = (instantBreak and 0.06 or 0.26) / speed
+        local strike = (instantBreak and 0.04 or 0.14) / speed
+        local recovery = (instantBreak and 0.56 or 0.26) / speed
         -- 原轨道 0.25 秒举镐、0.5 秒命中，按阶段调速，让伤害跟随实际下砸。
         self._swingTrack:Play(instantBreak and 0.03 or 0.08, 1, 0.25 / windup)
         self._swingTask = task.spawn(function()
@@ -791,7 +795,7 @@ function Component:SwingPickaxe(humanoid, key, area, instantBreak)
             elseif not instantBreak then
                 self:ResolvePickaxeHit(character, key, area)
             end
-            task.wait(0.06)
+            task.wait(0.06 / speed)
             self._swingTrail.Enabled = false
             self:PoseSwing(recovery, 0, 0, Enum.EasingDirection.Out)
             task.wait(recovery)
@@ -809,9 +813,9 @@ function Component:SwingPickaxe(humanoid, key, area, instantBreak)
             end
         end
     end
-    local windup = instantBreak and 0.06 or 0.22
-    local strike = instantBreak and 0.04 or 0.1
-    local recovery = instantBreak and 0.5 or 0.28
+    local windup = (instantBreak and 0.06 or 0.22) / speed
+    local strike = (instantBreak and 0.04 or 0.1) / speed
+    local recovery = (instantBreak and 0.5 or 0.28) / speed
     self._swingTask = task.spawn(function()
         self:PoseSwing(windup, 85, 12, Enum.EasingDirection.Out)
         task.wait(windup)
@@ -823,13 +827,23 @@ function Component:SwingPickaxe(humanoid, key, area, instantBreak)
         elseif not instantBreak then
             self:ResolvePickaxeHit(character, key, area)
         end
-        task.wait(0.08)
+        task.wait(0.08 / speed)
         self._swingTrail.Enabled = false
         self:PoseSwing(recovery, 0, 0, Enum.EasingDirection.Out)
         task.wait(recovery)
         self._swingTask = nil
         self:StopSwing()
     end)
+end
+
+--- 仅在服务端确认的训练场加成期间加快挥镐，不改变关卡伤害和攻击校验。
+--- @return number 当前训练动作速度倍率。
+function Component:GetTrainingAnimationSpeed()
+    local expiresAt = self:GetPlayerNode():GetAttribute("TrainingBonusUntil") or 0
+    if self:GetNumber(Fields.TrainingFieldIndex) > 0 and workspace:GetServerTimeNow() < expiresAt then
+        return _G.GameConfig.TrainingBonusConfig.AnimationSpeed
+    end
+    return 1
 end
 
 --- 对已解锁场地巨石播放火花、碎屑、声音及短暂缩放，不改血量或关卡命中记录。
@@ -940,7 +954,7 @@ function Component:UpdateAttacks()
     local regularAttack = now - self._lastAttack >= 0.8
     if self:GetNumber(Fields.TrainingFieldIndex) > 0 then
         self:SetPowerAura(nil)
-        if regularAttack then
+        if now - self._lastAttack >= 0.8 / self:GetTrainingAnimationSpeed() then
             self._lastAttack = now
             self:SwingPickaxe(humanoid, nil, nil, true)
         end

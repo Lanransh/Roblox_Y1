@@ -51,6 +51,8 @@ return {
         "C2S_TransferWorld",
         -- position: Vector2，仅用于飘字起点；服务端限速并按真实配置结算，不接受收益参数。
         "C2S_TrainingClick",
+        -- offerId: string，仅提交本人当前气泡凭据；服务端校验训练场、存活和到期时间，单向请求。
+        "C2S_ClaimTrainingBonus",
         -- settings: {musicVolume: integer 0..100, soundEffectsVolume: integer 0..100, showAura: boolean}。
         -- 单向保存本人偏好；身份来自网络层，服务端仅接收这三个字段。
         "C2S_SaveSettings",

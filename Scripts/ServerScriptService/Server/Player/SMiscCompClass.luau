@@ -11,6 +11,7 @@ local TranslationTexts = Text.Define("Misc", {
     RebirthReady = "Rebirth is ready! Rebirth to keep growing stronger.",
 })
 local TextService = game:GetService("TextService")
+local HttpService = game:GetService("HttpService")
 local Fields = _G.PlayerDataConfig
 local Rebirth = FXLoader:RequireShared("Scripts/Game/Shared/Rebirth")
 local Collection = FXLoader:RequireShared("Scripts/Game/Shared/Collection")
@@ -254,6 +255,7 @@ end
 
 --- 重生结算后刷新派生等级，并清除上一轮尚未结算的训练收益。
 function Component:ResetTrainingProgress()
+    self:ClearTrainingBonus()
     self:RefreshProgress()
     self._hit = false
     self._lastGrowth = os.clock()
@@ -374,11 +376,95 @@ function Component:RefreshTrainingField(config, now)
     end
     self._trainingFieldIndex = fieldIndex
     if activeIndex ~= self:GetNumber(Fields.TrainingFieldIndex) then
+        self:ClearTrainingBonus()
         self:SetNumber(Fields.TrainingFieldIndex, activeIndex)
         self._lastGrowth = now
         self._hit = false
     end
     return unlocked and config.TrainingRate or 0
+end
+
+--- 训练场会话变化时撤销气泡和加成，重置下一次随机等待。
+function Component:ClearTrainingBonus()
+    self._trainingBonusOffer = nil
+    self._trainingBonusUntil = nil
+    self._nextTrainingBonus = nil
+    local player = self:GetPlayerNode()
+    player:SetAttribute("TrainingBonusOfferId", nil)
+    player:SetAttribute("TrainingBonusUntil", nil)
+end
+
+--- 挂机时按权重发放一次性气泡；等待从上次加成结束或气泡到期开始，不累计离场时间。
+--- @param now number 当前服务器时间。
+function Component:TickTrainingBonus(now)
+    local config = _G.GameConfig.TrainingBonusConfig
+    if self._trainingBonusUntil and now < self._trainingBonusUntil then
+        return
+    end
+    if self._trainingBonusUntil then
+        self._trainingBonusUntil = nil
+        self:GetPlayerNode():SetAttribute("TrainingBonusUntil", nil)
+    end
+    if self._trainingBonusOffer then
+        if now < self._trainingBonusOffer.ExpiresAt then
+            return
+        end
+        self._trainingBonusOffer = nil
+        self:GetPlayerNode():SetAttribute("TrainingBonusOfferId", nil)
+    end
+    if not self._nextTrainingBonus then
+        self._nextTrainingBonus = now + Random.new():NextNumber(config.MinInterval, config.MaxInterval)
+    end
+    if now < self._nextTrainingBonus then
+        return
+    end
+    local totalWeight = 0
+    for index, weight in ipairs(config.Weights) do
+        totalWeight += weight
+    end
+    local roll = Random.new():NextNumber(0, totalWeight)
+    local selected = #config.Multipliers
+    for index, weight in ipairs(config.Weights) do
+        roll -= weight
+        if roll < 0 then
+            selected = index
+            break
+        end
+    end
+    local offer = {Id = HttpService:GenerateGUID(false), Rate = config.Multipliers[selected],
+        ExpiresAt = now + config.OfferLifetime}
+    self._trainingBonusOffer = offer
+    self._nextTrainingBonus = nil
+    local player = self:GetPlayerNode()
+    player:SetAttribute("TrainingBonusRate", offer.Rate)
+    player:SetAttribute("TrainingBonusOfferUntil", offer.ExpiresAt)
+    player:SetAttribute("TrainingBonusOfferId", offer.Id)
+end
+
+--- 只接受当前训练会话的有效凭据，先消费再生效，重复领取不会刷新加成。
+--- @param offerId string 客户端提交的气泡凭据，不接受客户端倍率。
+function Component:ClaimTrainingBonus(offerId)
+    local offer = self._trainingBonusOffer
+    if type(offerId) ~= "string" or not offer or offer.Id ~= offerId then
+        return
+    end
+    local character = self:GetPlayerCharacter()
+    local root = character and character:FindFirstChild("HumanoidRootPart")
+    local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+    local field = root and TrainingFields.GetAtPosition(root.Position)
+    local now = workspace:GetServerTimeNow()
+    if now >= offer.ExpiresAt or character ~= self._character or not humanoid or humanoid.Health <= 0
+        or not field or field.Index ~= self:GetNumber(Fields.TrainingFieldIndex)
+        or self:GetNumber(Fields.RebirthCount) < field.NeedRebirhLevel then
+        return
+    end
+    self._trainingBonusOffer = nil
+    self._trainingBonusUntil = now + _G.GameConfig.TrainingBonusConfig.Duration
+    self._trainingBonusRate = offer.Rate
+    self._nextTrainingBonus = nil
+    local player = self:GetPlayerNode()
+    player:SetAttribute("TrainingBonusOfferId", nil)
+    player:SetAttribute("TrainingBonusUntil", self._trainingBonusUntil)
 end
 
 --- 场内按秒自动训练，替代走路与击打；统一应用装备、图鉴、付费与好友倍率、重生、追赶和经验封顶。
@@ -387,6 +473,7 @@ function Component:TickTraining()
     local root = character and character:FindFirstChild("HumanoidRootPart")
     local humanoid = character and character:FindFirstChildOfClass("Humanoid")
     if not root or not humanoid or humanoid.Health <= 0 then
+        self:ClearTrainingBonus()
         self:RefreshTrainingField(nil, os.clock())
         self._lastGrowth = os.clock()
         self._hit = false
@@ -394,11 +481,15 @@ function Component:TickTraining()
     end
     local now = os.clock()
     if self._character ~= character then
+        self:ClearTrainingBonus()
         self._character = character
         self._lastGrowth = now
         self._hit = false
     end
     local fieldRate = self:RefreshTrainingField(TrainingFields.GetAtPosition(root.Position), now)
+    if fieldRate > 0 then
+        self:TickTrainingBonus(workspace:GetServerTimeNow())
+    end
     if now - self._lastGrowth < 1 then
         return
     end
@@ -409,6 +500,9 @@ function Component:TickTraining()
     local baseGain = (walking and RockLevel.WalkTraining or 0) + (self._hit and 1 or 0)
     if fieldRate > 0 then
         baseGain = _G.NumericalConfig.trainingSettlementsPerSecond * fieldRate
+        if self._trainingBonusUntil and workspace:GetServerTimeNow() < self._trainingBonusUntil then
+            baseGain *= self._trainingBonusRate
+        end
     end
     baseGain *= Collection.GetTrainingRate(self:GetTable(Fields.CollectionEntries))
     baseGain *= Aura.GetTrainingRate(self:GetTable(Fields.AuraData))
@@ -429,6 +523,7 @@ end
 
 --- 离服停止训练结算并清理头顶显示，避免继续持有旧角色。
 function Component:OnPlayerLogout()
+    self:ClearTrainingBonus()
     FX.Task:Cancel(self._timer)
     self._timer = nil
     self:BindStrengthCharacter(nil)

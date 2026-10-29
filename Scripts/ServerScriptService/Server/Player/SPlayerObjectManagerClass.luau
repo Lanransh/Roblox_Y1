@@ -179,6 +179,16 @@ function Manager:RegMiscMsg()
         end
     end
     FX.Network:RegClientMsgCallback("C2S_TrainingClick", trainingClick)
+    --- 只转发本人气泡凭据，倍率、持续时间和领取资格由服务端决定。
+    --- @param userId number 引擎认证的玩家身份。
+    --- @param offerId string 当前气泡凭据。
+    FX.Network:RegClientMsgCallback("C2S_ClaimTrainingBonus", function(userId, offerId)
+        local player = self:GetPlayerObject(userId)
+        local misc = player and player:GetComponent("SMiscComp")
+        if misc then
+            misc:ClaimTrainingBonus(offerId)
+        end
+    end)
     --- 只操作引擎认证玩家自身的数据，忽略未加载或已离服的玩家。
     --- @param userId number 引擎认证的玩家身份。
     local function rebirth(userId)

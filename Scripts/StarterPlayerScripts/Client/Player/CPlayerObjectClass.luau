@@ -12,6 +12,7 @@ function Player:Ctor(playerId)
         self:AddComponent("CGMIntegrationCompClass"):OnReady()
     end
     self:AddComponent("CTrainingHUDCompClass")
+    self:AddComponent("CTrainingBonusUICompClass")
     self:AddComponent("CLeaderboardUICompClass")
     self:AddComponent("FCFriendCompClass")
     self:AddComponent("CFriendInviteCompClass")
@@ -32,14 +33,15 @@ function Player:Ctor(playerId)
 end
 
 --- 礼包显示前通过业务关闭入口收起其他弹窗，等待关闭动画及 OnHide 完成。
---- @param retainedComponent table 本次保留的礼包组件；主界面始终保留。
+--- @param retainedComponent table 本次保留的礼包组件；主界面和挂机气泡常驻层始终保留。
 function Player:CloseOtherUI(retainedComponent)
     self:RequireComponent("FCCommonUIComp"):HideTooltips()
     self:RequireComponent("CLeaderboardUIComp"):ExitView()
     local closing = {}
     for className, component in pairs(self._components) do
         if component ~= retainedComponent and component:IsA("FCUICompClass")
-            and component:GetCompName() ~= "CMainUIComp" then
+            and component:GetCompName() ~= "CMainUIComp"
+            and component:GetCompName() ~= "CTrainingBonusUIComp" then
             local root = component:GetRootNode()
             if root:IsA("ScreenGui") and root.Enabled then
                 component:Hide()
