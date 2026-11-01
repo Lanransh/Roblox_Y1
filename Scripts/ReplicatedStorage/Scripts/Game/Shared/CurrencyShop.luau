@@ -71,17 +71,17 @@ function Shop.GetAccumulatedTrainingGain(player, amount)
     return Rebirth.GetAccumulatedTrainingGain(player:GetNumber(Fields.RockTrainingValue), gain, count)
 end
 
---- 力量包预览与结算读取同一份商品份额，不额外乘每秒结算量。
+--- 力量包配置数量为秒数，预览与结算统一复用力量卡的时长收益计算。
 --- @param player table 客户端或服务端玩家对象。
 --- @param goodsId number 已配置的力量包商品 ID。
 --- @return number 分段追赶后的力量包收益。
 function Shop.GetTrainingPackGain(player, goodsId)
-    return Shop.GetAccumulatedTrainingGain(player, _G.GoodsConfig.GemGoodsData[goodsId].NumberArray[1])
+    return Shop.GetTrainingCardGain(player, _G.GoodsConfig.GemGoodsData[goodsId].NumberArray[1])
 end
 
---- 力量卡与离线将有效训练秒数换算为份额，预览和实际发放共用。
+--- 力量卡、力量包与离线将有效训练秒数换算为份额，预览和实际发放共用。
 --- @param player table 客户端或服务端玩家对象。
---- @param seconds number 力量卡秒数或已乘离线效率的有效秒数。
+--- @param seconds number 力量卡或力量包秒数，或已乘离线效率的有效秒数。
 --- @return number 分段追赶后的训练收益。
 function Shop.GetTrainingCardGain(player, seconds)
     return Shop.GetAccumulatedTrainingGain(player, _G.NumericalConfig.trainingSettlementsPerSecond * seconds)

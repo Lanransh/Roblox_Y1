@@ -44,7 +44,7 @@ end
 function Provider:GetNativeBackpackConfig()
     return {
         ShortcutEnabled = true,
-        InventoryCapacity = 12, -- 正式背包总容量，包含快捷栏占用的格子。
+        InventoryCapacity = 30, -- 正式背包总容量，包含快捷栏占用的格子。
     }
 end
 
