@@ -156,7 +156,7 @@ function Component:CreateGiftPanel()
     end))
 end
 
---- 仅在本次进服后的配置分钟数之内提示永久未领取的一次性礼包。
+--- 服务端起点已扣除历次在线时长，仅在累计在线未达配置期限时提示一次性礼包。
 --- @return boolean 当前礼包是否可以领取。
 function Component:IsGiftAvailable()
     local state = self:GetTable(Fields.WelfareState)

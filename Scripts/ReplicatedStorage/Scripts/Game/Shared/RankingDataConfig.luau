@@ -1,10 +1,32 @@
--- 协议使用有序榜单索引，时长榜索引为 1；分数单位为秒，由业务调用排行榜 API 写入。
+-- 协议使用有序榜单索引，保留时长榜索引 1；三个榜均为全服总榜，由服务端写入。
 return {
     {
         Name = "Playtime",
         DisplayName = "Playtime",
-        ResetType = "Monthly",
+        ResetType = "Permanent",
         ScoreFormat = "Duration",
+        Ascending = false,
+        MaxCount = 100,
+        DefaultValue = 0,
+        UseHistoricalHighScore = true,
+        unit = 1,
+    },
+    {
+        Name = "Strength",
+        DisplayName = "Strength",
+        ResetType = "Permanent",
+        ScoreFormat = "Number",
+        Ascending = false,
+        MaxCount = 100,
+        DefaultValue = 0,
+        UseHistoricalHighScore = true,
+        unit = 1,
+    },
+    {
+        Name = "Rebirth",
+        DisplayName = "Rebirths",
+        ResetType = "Permanent",
+        ScoreFormat = "Number",
         Ascending = false,
         MaxCount = 100,
         DefaultValue = 0,

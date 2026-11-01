@@ -21,6 +21,10 @@ local RockLevel = FXLoader:RequireShared("Scripts/Game/Shared/RockLevel")
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local TrainingFields = FXLoader:RequireFromParent(script, "TrainingFields")
 local CurrencyShop = FXLoader:RequireShared("Scripts/Game/Shared/CurrencyShop")
+local RankingTypes = {}
+for index, config in ipairs(_G.RankingDataConfig) do
+    RankingTypes[config.Name] = config
+end
 local Component = FX.Class("SMiscCompClass", "FSPlayerCompClass")
 
 --- 持有训练结算状态，通过服务端关卡事件接收有效击打。
@@ -90,6 +94,7 @@ function Component:OnPlayerLogin()
     self._strengthStat = Instance.new("NumberValue")
     self._strengthStat.Name = "Strength"
     self._strengthStat.Parent = self._stats
+    self._rankingScores = {}
     self:RefreshProgress()
     self:TrackConnection(player.CharacterAdded:Connect(function(character)
         self:BindStrengthCharacter(character)
@@ -105,10 +110,33 @@ function Component:OnPlayerLogin()
     end)
 end
 
---- 每秒刷新同服好友人数，供客户端倍率预览使用。
+--- 每秒刷新同服好友人数与真实榜单分数；在线时长复用分析组件的服务端累计记账。
 --- @param serverTime number 框架每秒更新传入的服务器时间，本组件不使用。
 function Component:OnUpdate(serverTime)
     self:SetNumber(Fields.TrainingFriendCount, FS.FriendService:GetFriendCountInRoom(self:GetPlayerId()) or 0)
+    self:RefreshRankingScores()
+end
+
+--- 只将服务端权威值写入总榜；保留历史最高力量，重生清零不撤销已有成绩。
+function Component:RefreshRankingScores()
+    if not self._rankingScores then
+        return
+    end
+    local scores = {
+        Strength = self._strengthStat.Value,
+        Rebirth = self:GetNumber(Fields.RebirthCount),
+        Playtime = self:GetNumber(Fields.TrainingPlaytime),
+    }
+    local player = self:GetPlayerObject()
+    for name, score in pairs(scores) do
+        local config = RankingTypes[name]
+        -- 使用整数原始分数；重进服务器时也不让尚未加载的云榜缓存覆盖持久最高分。
+        score = math.max(math.floor(score), player:GetRankingScore(config) or config.DefaultValue)
+        if self._rankingScores[name] ~= score then
+            player:UpdateRankingScore(config, score)
+            self._rankingScores[name] = score
+        end
+    end
 end
 
 --- 付费倍率加当前同服好友额外倍率；不使用每日任务累计人数。
@@ -248,6 +276,7 @@ function Component:RefreshProgress()
     player:SetAttribute("Strength", strength)
     self._levelStat.Value = level
     self._strengthStat.Value = strength
+    self:RefreshRankingScores()
     if self._strengthText then
         self:RefreshStrengthBillboard()
     end
@@ -521,8 +550,10 @@ function Component:TickTraining()
     self._hit = false
 end
 
---- 离服停止训练结算并清理头顶显示，避免继续持有旧角色。
+--- 分析组件已补齐在线尾差；先提交最终榜单分数，再停止训练并清理头顶显示。
 function Component:OnPlayerLogout()
+    self:RefreshRankingScores()
+    self._rankingScores = nil
     self:ClearTrainingBonus()
     FX.Task:Cancel(self._timer)
     self._timer = nil

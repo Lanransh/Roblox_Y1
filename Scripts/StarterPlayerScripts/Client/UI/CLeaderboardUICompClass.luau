@@ -16,43 +16,41 @@ local TranslationTexts = Text.Define("Leaderboard", {
     Minutes = "{count:int}min",
     Hours = "{count:int}h",
     DaysHours = "{days:int}d{hours:int}h",
+    Loading = "Loading...",
+    Empty = "No rankings yet.",
+    Unavailable = "Leaderboard unavailable.",
 })
 
 local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
 local ContextActionService = game:GetService("ContextActionService")
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
+local RankingDataConfig = FXLoader:RequireShared("Scripts/Game/Shared/RankingDataConfig")
 local Component = FX.Class("CLeaderboardUICompClass", "FCUICompClass")
 
--- 测试名次与分数不是这些账号的真实成绩；UserId 仅用于 Roblox 原生头像。
-local TestUsers = {
-    {Id = 1, Name = "Builder"}, {Id = 156, Name = "StarRunner"},
-    {Id = 261, Name = "RockMaster"}, {Id = 48103520, Name = "PowerHero"},
-    {Id = 1237666, Name = "GoldenEgg"},
-}
 local Gold = Color3.fromRGB(255, 194, 46)
 local Cream = Color3.fromRGB(255, 237, 198)
 local VisibleRankCount = 7
 local BoardTypes = {
-    {Name = "Strength", Title = "Strength Leaderboard", Header = "Strength", TopScore = 35000000, PersonalScore = 6320, TextColor = Gold},
-    {Name = "Rebirth", Title = "Rebirth Leaderboard", Header = "Rebirths", TopScore = 1200, PersonalScore = 6, TextColor = Color3.fromRGB(210, 165, 255)},
-    {Name = "Playtime", Title = "Playtime Leaderboard", Header = "Playtime", TopScore = 6000, PersonalScore = 105, TextColor = Color3.fromRGB(110, 235, 245)},
+    {Name = "Strength", TextColor = Gold},
+    {Name = "Rebirth", TextColor = Color3.fromRGB(210, 165, 255)},
+    {Name = "Playtime", TextColor = Color3.fromRGB(110, 235, 245)},
 }
 
 --- 力量沿用统一缩写，重生次数显示整数；在线不足一小时显示分钟，其余显示整小时或天和剩余小时。
 --- @param kind number 榜单类型，依次为力量、重生和在线时长。
---- @param score number 当前榜单的原始测试分数。
+--- @param score number 服务端原始分数；在线时长单位为秒。
 --- @return string 榜单数值文案。
 local function FormatScore(kind, score)
     if kind == 1 then
         return GameUtility.NumberToText(score)
     end
     if kind == 3 then
-        if score < 60 then
-            return Text.Tr(TranslationTexts.Minutes, {count = math.floor(score)})
+        if score < 3600 then
+            return Text.Tr(TranslationTexts.Minutes, {count = math.floor(score / 60)})
         end
-        local hours = math.floor(score / 60)
-        if hours > 24 then
+        local hours = math.floor(score / 3600)
+        if hours >= 24 then
             return Text.Tr(TranslationTexts.DaysHours, {days = math.floor(hours / 24), hours = hours % 24})
         end
         return Text.Tr(TranslationTexts.Hours, {count = hours})
@@ -98,6 +96,12 @@ end
 --- UI 留在 PlayerGui；绑定现有模型面板，前七名纵向滚动，个人行固定显示。
 function Component:OnReady()
     self._localization = self:GetPlayerObject():RequireComponent("FCCommonUIComp").Localization
+    self._rankingData = {}
+    self._rankingErrors = {}
+    self._rankingIndexes = {}
+    for index, config in ipairs(RankingDataConfig) do
+        self._rankingIndexes[config.Name] = index
+    end
     local panel = FXLoader:Workspace("BlockMeshs/World1Root/Base/排行榜1/橙木空白排行榜/空白深色面板")
     self._panel = panel
     self._gui = Create("SurfaceGui", self:GetPlayerNode():WaitForChild("PlayerGui"), {
@@ -131,14 +135,14 @@ function Component:OnReady()
     })
     Create("UIListLayout", self._list, {SortOrder = Enum.SortOrder.LayoutOrder, Padding = UDim.new(0, 2)})
     for rank = 1, VisibleRankCount do
-        local user = TestUsers[(rank - 1) % #TestUsers + 1]
-        self:CreateRow(self._list, rank, user.Id, user.Name, 35000000 / rank ^ 2, false)
+        self:CreateRow(self._list, rank, false).Visible = false
     end
-    local player = self:GetPlayerNode()
-    local personal = self:CreateRow(self._rootNode, 101, player.UserId, "You", 6320, true)
+    local status = Label(self._rootNode, "", UDim2.fromScale(0.03, 0.38), UDim2.fromScale(0.94, 0.065))
+    status.Name = "Status"
+    status.TextSize = 30
+    local personal = self:CreateRow(self._rootNode, 0, true)
     personal.Position = UDim2.fromScale(0.03, 0.835)
     personal.Size = UDim2.fromScale(0.94, 0.095)
-    self._personalName = personal.PlayerName
     self._boards = {{Panel = panel, Gui = self._gui, Kind = 1}}
     local worldPaths = {"BlockMeshs/World1Root/Base", "BlockMeshs/World2Root/世界2/Base", "BlockMeshs/World3Root/世界3/Base"}
     self:TrackConnection(self._localization.Changed:Connect(function()
@@ -158,6 +162,12 @@ function Component:OnReady()
             end
         end
     end
+    self._rankingTask = task.defer(function()
+        while true do
+            self:RefreshRankingData()
+            task.wait(30)
+        end
+    end)
 end
 
 --- 其余八块榜单沿用前七名布局，异步等待复制，避免阻塞首个榜单初始化。
@@ -179,13 +189,61 @@ function Component:AttachWorldBoard(path, worldIndex, kind)
     local config = BoardTypes[kind]
     gui.Name = config.Name .. "LeaderboardWorld" .. worldIndex
     gui.Adornee = display
-    for rank = 1, VisibleRankCount do
-        gui.Panel.RankList["Rank" .. rank].Score.Text = FormatScore(kind, config.TopScore / rank ^ 2)
-    end
-    gui.Panel.Rank101.Score.Text = FormatScore(kind, config.PersonalScore)
     gui.Parent = self._gui.Parent
     table.insert(self._boards, {Panel = display, Gui = gui, Kind = kind})
     self:RefreshLocalization()
+end
+
+--- 三种榜单各请求一次，所有世界复用结果；串行轮询避免网络请求重叠。
+function Component:RefreshRankingData()
+    for kind, config in ipairs(BoardTypes) do
+        local success, data = pcall(function()
+            return FX.Network:InvokeServer("C2S_RankingData", 2, self._rankingIndexes[config.Name], 1, VisibleRankCount)
+        end)
+        if self._destroyed then
+            return
+        end
+        if success and type(data) == "table" and type(data.itemData) == "table" then
+            self._rankingData[kind] = data
+            self._rankingErrors[kind] = nil
+        else
+            self._rankingData[kind] = nil
+            self._rankingErrors[kind] = true
+        end
+    end
+    self:RefreshLocalization()
+end
+
+--- 用缓存的真实成绩更新榜单；空榜与查询失败均不伪造玩家、分数或个人名次。
+--- @param board table 当前世界的显示面、界面和榜单类型。
+function Component:RefreshBoardData(board)
+    local panel = board.Gui.Panel
+    local data = self._rankingData[board.Kind]
+    local items = data and data.itemData or {}
+    for rank = 1, VisibleRankCount do
+        local row = panel.RankList["Rank" .. rank]
+        local item = items[rank]
+        row.Visible = item ~= nil
+        if item then
+            row.RankNumber.Text = "#" .. item.rankNo
+            row.PlayerName.Text = item.playerName
+            row.Avatar.Image = "rbxthumb://type=AvatarHeadShot&id=" .. item.playerId .. "&w=150&h=150"
+            row.Score.Text = FormatScore(board.Kind, item.rankScore)
+        end
+    end
+    panel.Status.Visible = #items == 0
+    if self._rankingErrors[board.Kind] then
+        panel.Status.Text = Text.Tr(TranslationTexts.Unavailable)
+    elseif data then
+        panel.Status.Text = Text.Tr(TranslationTexts.Empty)
+    else
+        panel.Status.Text = Text.Tr(TranslationTexts.Loading)
+    end
+    local personal = panel.Personal
+    personal.RankNumber.Text = data and data.myNo and ("#" .. data.myNo) or "--"
+    personal.Score.Text = data and data.myScore ~= nil and FormatScore(board.Kind, data.myScore) or "--"
+    personal.PlayerName.Text = Text.Tr(TranslationTexts.You)
+    personal.Avatar.Image = "rbxthumb://type=AvatarHeadShot&id=" .. self:GetPlayerId() .. "&w=150&h=150"
 end
 
 --- 查看与退出按钮位于屏幕右侧，避开底部物品栏，不往模型添加节点。
@@ -321,28 +379,26 @@ end
 
 --- 列表行高保证七名榜单有实际滚动范围，右侧留出滚动条空间；个人行由调用方固定尺寸。
 --- @param parent Instance 列表或固定个人行的父节点。
---- @param rank number 测试名次。
---- @param userId number 头像账号 ID。
---- @param playerName string 测试昵称或个人行英文兜底。
---- @param strength number 原始测试力量。
+--- @param rank number 列表行槽位；个人行传 0，不作为实际名次显示。
 --- @param personal boolean 是否为金色个人行。
 --- @return Frame 排行条目。
-function Component:CreateRow(parent, rank, userId, playerName, strength, personal)
+function Component:CreateRow(parent, rank, personal)
     local row = Create("Frame", parent, {
-        Name = "Rank" .. rank, LayoutOrder = rank, Size = UDim2.new(1, -12, 0, 104), BorderSizePixel = 0,
+        Name = personal and "Personal" or "Rank" .. rank, LayoutOrder = rank, Size = UDim2.new(1, -12, 0, 104), BorderSizePixel = 0,
         BackgroundColor3 = personal and Gold or (rank % 2 == 0 and Color3.fromRGB(48, 33, 31) or Color3.fromRGB(59, 41, 37)),
     })
-    Label(row, "#" .. rank, UDim2.fromScale(0, 0), UDim2.fromScale(0.14, 1))
+    local rankNumber = Label(row, "--", UDim2.fromScale(0, 0), UDim2.fromScale(0.14, 1))
+    rankNumber.Name = "RankNumber"
     local avatar = Create("ImageLabel", row, {
         Name = "Avatar", Position = UDim2.new(0.15, 0, 0.5, -32), Size = UDim2.fromOffset(64, 64),
         BackgroundColor3 = Color3.fromRGB(25, 25, 25), BorderSizePixel = 0,
-        Image = "rbxthumb://type=AvatarHeadShot&id=" .. userId .. "&w=150&h=150",
+        Image = "",
     })
     Create("UICorner", avatar, {CornerRadius = UDim.new(1, 0)})
-    local name = Label(row, playerName, UDim2.fromScale(0.25, 0), UDim2.fromScale(0.43, 1))
+    local name = Label(row, "", UDim2.fromScale(0.25, 0), UDim2.fromScale(0.43, 1))
     name.Name = "PlayerName"
     name.AutoLocalize = false
-    local score = Label(row, GameUtility.NumberToText(strength), UDim2.fromScale(0.70, 0), UDim2.fromScale(0.29, 1))
+    local score = Label(row, "--", UDim2.fromScale(0.70, 0), UDim2.fromScale(0.29, 1))
     score.Name = "Score"
     if personal then
         for index, child in ipairs(row:GetChildren()) do
@@ -355,11 +411,10 @@ function Component:CreateRow(parent, rank, userId, playerName, strength, persona
     return row
 end
 
---- 刷新各世界榜单文案和分类字色；个人行使用深色版本，确保金色背景上的可读性。
+--- 从缓存刷新各世界的真实成绩、翻译和分类字色；个人行使用深色版本保证可读性。
 function Component:RefreshLocalization()
     self._rankHeader.Text = Text.Tr(TranslationTexts.Rank)
     self._playerHeader.Text = Text.Tr(TranslationTexts.Player)
-    self._personalName.Text = Text.Tr(TranslationTexts.You)
     self._viewButton.Text = Text.Tr(TranslationTexts.View)
     local titles = {TranslationTexts.StrengthTitle, TranslationTexts.RebirthTitle, TranslationTexts.PlaytimeTitle}
     local headers = {TranslationTexts.Strength, TranslationTexts.Rebirths, TranslationTexts.Playtime}
@@ -368,26 +423,26 @@ function Component:RefreshLocalization()
         local config = BoardTypes[board.Kind]
         for labelIndex, label in ipairs(panel:GetDescendants()) do
             if label:IsA("TextLabel") then
-                label.TextColor3 = label:IsDescendantOf(panel.Rank101)
+                label.TextColor3 = label:IsDescendantOf(panel.Personal)
                     and config.TextColor:Lerp(Color3.new(0, 0, 0), 0.75) or config.TextColor
             end
         end
         panel.Title.Text = Text.Tr(titles[board.Kind])
         panel.StrengthHeader.Text = Text.Tr(headers[board.Kind])
-        for rank = 1, VisibleRankCount do
-            panel.RankList["Rank" .. rank].Score.Text = FormatScore(board.Kind, config.TopScore / rank ^ 2)
-        end
-        panel.Rank101.Score.Text = FormatScore(board.Kind, config.PersonalScore)
         for labelIndex, label in ipairs({self._rankHeader, self._playerHeader}) do
             panel[label.Name].Text = label.Text
         end
-        panel.Rank101.PlayerName.Text = self._personalName.Text
+        self:RefreshBoardData(board)
     end
     self._closeButton.Text = Text.Tr(TranslationTexts.Close)
 end
 
 --- 只销毁组件创建的界面，模型和显示面保持原样。
 function Component:Dtor()
+    self._destroyed = true
+    if self._rankingTask then
+        task.cancel(self._rankingTask)
+    end
     self:ExitView()
     for index, thread in pairs(self._boardTasks or {}) do
         task.cancel(thread)

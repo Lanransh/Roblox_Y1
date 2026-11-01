@@ -43,7 +43,7 @@ return {
         Type = "table", Key = "CurrencyShopData", KVTable = PlayerKVEnum.eStaticData, Sync = true,
         DefVal = {trainingLevel = 0, capacity = 0, gemBought = {}, robuxBought = {}},
     },
-    -- ESC 礼包仅保存永久领取状态；提示期限按本次进服时间计算。
+    -- ESC 礼包仅保存永久领取状态；提示期限使用 TrainingPlaytime 的跨会话累计在线时长。
     MenuRetentionData = {
         Type = "table", Key = "MenuRetentionData", KVTable = PlayerKVEnum.eStaticData, Sync = true,
         DefVal = {claimed = false},

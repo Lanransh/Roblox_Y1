@@ -13,6 +13,7 @@ local TranslationTexts = Text.Define("Activity", {
 local GameUtility = FX.Loader:RequireShared("Scripts/Game/Shared/GameUtility")
 local Fields = _G.PlayerDataConfig
 local Welfare = FX.Loader:RequireShared("Scripts/Game/Shared/Welfare")
+local Aura = FXLoader:RequireShared("Scripts/Game/Shared/Aura")
 local Component = FX.Class("SActivityCompClass", "FSPlayerCompClass")
 local Players = game:GetService("Players")
 
@@ -22,10 +23,15 @@ function Component:GetCompName()
     return "SActivityComp"
 end
 
---- 读档后按普通与加成效率分别分段结算离线批次；礼包永久领取记录不重置。
+--- 读档后结算离线批次并记录同服进服事件；礼包期限扣除跨会话累计在线时长。
 function Component:OnPlayerLogin()
     self._lastTime = os.time()
-    self._retentionStartedAt = workspace:GetServerTimeNow()
+    self._friendEntries = Players:GetPlayers()
+    self._friendAddedConnection = Players.PlayerAdded:Connect(function(player)
+        table.insert(self._friendEntries, player)
+    end)
+    self:TrackConnection(self._friendAddedConnection)
+    self._retentionStartedAt = workspace:GetServerTimeNow() - self:GetNumber(Fields.TrainingPlaytime)
     self._nextSync = self._lastTime + 10
     local data = self:GetTable(Fields.WelfareData)
     local day = math.floor(self._lastTime / 86400)
@@ -67,6 +73,7 @@ function Component:UpdateTime(now)
         data.taskProgress = {}
         data.taskClaimed = {}
         data.taskFriends = {}
+        self._friendEntries = Players:GetPlayers()
         if not self._loggingIn then
             data.offline = {id = "", seconds = 0, training = 0}
         end
@@ -134,8 +141,12 @@ function Component:OnUpdate(serverTime)
     end
 end
 
---- 保存前结清当前会话在线时长，重进当天继续累计。
+--- 离服时停止记录好友进服，并在保存前结清在线时长，重进当天继续累计。
 function Component:OnPlayerLogout()
+    if self._friendAddedConnection then
+        self._friendAddedConnection:Disconnect()
+        self._friendAddedConnection = nil
+    end
     if self._friendTask then
         task.cancel(self._friendTask)
         self._friendTask = nil
@@ -164,7 +175,7 @@ function Component:RecordNoobPickup()
     self:PublishState()
 end
 
---- 平台好友查询允许 yield；按本次同服快照累计不同好友，每位好友每天只计一次。
+--- 平台好友查询允许 yield；每次进服独立计数，持续同服不因轮询重复增加。
 function Component:CheckFriends()
     if self._friendTask then
         return
@@ -174,10 +185,12 @@ function Component:CheckFriends()
         return
     end
     local day = self:GetTable(Fields.WelfareData).day
-    local presentPlayers = Players:GetPlayers()
+    local entries = self._friendEntries
+    self._friendEntries = {}
     self._friendTask = task.defer(function()
         local friends = {}
-        for index, other in ipairs(presentPlayers) do
+        local retries = {}
+        for index, other in ipairs(entries) do
             if other ~= player then
                 --- 查询失败时不增加任务进度，后续同步周期重试。
                 --- @return boolean 平台确认的好友关系。
@@ -186,6 +199,8 @@ function Component:CheckFriends()
                 end)
                 if ok and isFriend then
                     table.insert(friends, other)
+                elseif not ok and other.Parent == Players then
+                    table.insert(retries, other)
                 end
             end
         end
@@ -198,22 +213,12 @@ function Component:CheckFriends()
         if data.day ~= day then
             return
         end
-        local count = 0
-        for id in pairs(data.taskFriends) do
-            count += 1
+        for index, other in ipairs(retries) do
+            table.insert(self._friendEntries, other)
         end
-        local changed = count ~= (data.taskProgress.ForFriendPlay or 0)
-        for index, friend in ipairs(friends) do
-            local id = tostring(friend.UserId)
-            -- 同服事实来自查询前的快照；好友在平台响应前离开也应计入。
-            if not data.taskFriends[id] then
-                data.taskFriends[id] = true
-                count += 1
-                changed = true
-            end
-        end
-        if changed then
-            data.taskProgress.ForFriendPlay = count
+        -- 进服记录保留同服事实，查询返回前离开也计入；同一用户重进可再次增加。
+        if #friends > 0 then
+            data.taskProgress.ForFriendPlay = (data.taskProgress.ForFriendPlay or 0) + #friends
             self:SetTable(Fields.WelfareData, data)
             self:PublishState()
         end
@@ -307,7 +312,7 @@ function Component:GrantRewards(rewards)
     return self:RequireComponent("FSRewardComp"):AddRewards(batch)
 end
 
---- RPC 只领取本人配置档位；全程不 yield，发奖失败保留领取资格。
+--- RPC 只领取本人配置档位；礼包按累计在线时间限领，成功后装备不弱于当前的赠送光环。
 --- @param kind any 客户端类别，仅接受 online、signin、task、diamonds、offline、retention。
 --- @param rewardId any 稳定字符串 ID，不接受客户端金额或玩家身份。
 --- @param multiplier any 离线领取方式，仅接受 1 或配置 VIPRate/Rate；加成领取消耗配置商品的钻石。
@@ -325,8 +330,15 @@ function Component:Claim(kind, rewardId, multiplier)
         local config = _G.ActivityConfig.MenuRetentionConfig
         if retention.claimed then
             key = TranslationTexts.AlreadyClaimed
-        elseif workspace:GetServerTimeNow() - self._retentionStartedAt < config.TriggerMinutes * 60 then
+        elseif self:RequireComponent("SAnalyticsComp"):AccountTime() < config.TriggerMinutes * 60 then
             if self:GrantRewards({config.Reward}) then
+                local auraData = self:GetTable(Fields.AuraData)
+                if config.Reward.Type == "Aura"
+                    and (auraData.equippedId == 0
+                        or Aura.GetTrainingRate(auraData) <= Aura.GetConfig(config.Reward.Id).TrainingRate) then
+                    auraData.equippedId = config.Reward.Id
+                    self:SetTable(Fields.AuraData, auraData)
+                end
                 -- 发奖与永久标记均不 yield，重复请求不能再次进入发奖分支。
                 retention.claimed = true
                 self:SetTable(Fields.MenuRetentionData, retention)
