@@ -6,6 +6,8 @@ return {
         "C2S_OpenGiftDrop",
         -- goodsId: number，服务端校验钻石余额与下一档；返回 success、key、data。
         "C2S_BuyCurrencyShopGoods",
+        -- goodsId: number；服务端核验通行证，返回 Prompt / Owned / false；Owned 已保存奖励。
+        "C2S_CheckGamePassPurchase",
         -- action: Open|Close|Select|PromptRequested|Cancel，productId: number? 平台产品 ID。
         -- attemptId: string? 本次点击标识；Select/PromptRequested/Cancel 必填，仅匹配动作，不用于收据归属。
         -- 单向行为统计；余额及漏斗会话由服务端确定，成功步骤只来自已保存收据。
@@ -58,6 +60,8 @@ return {
         "C2S_SaveSettings",
     },
     ServerMsgID = {
+        -- passId: number、purchased: boolean；服务端转发通行证弹窗结果，仅供界面恢复交互。
+        "S2C_GamePassPromptFinished",
         -- 无参数，UTC 跨日清理上一日的客户端礼盒。
         "S2C_ClearGiftDrops",
         -- dropId: string、options: {Position: Vector3, Height: number, Duration: number, LandsAt: number}。

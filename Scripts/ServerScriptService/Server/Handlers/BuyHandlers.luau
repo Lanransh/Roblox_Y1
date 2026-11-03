@@ -32,7 +32,7 @@ function Handlers.AddGem:CanBuy(context)
     return CanBuy(context) and context.playerObject:RequireComponent("FSRewardComp"):CanAddRewards(context.extraData)
 end
 
---- 仅收据处理器调用；不依赖客户端购买完成通知发奖。
+--- 由收据结算或服务端核验通行证后调用；不依赖客户端购买完成通知发奖。
 --- @param context table 框架购买上下文。
 --- @return boolean 奖励是否已写入档案。
 function Handlers.AddGem:Buy(context)

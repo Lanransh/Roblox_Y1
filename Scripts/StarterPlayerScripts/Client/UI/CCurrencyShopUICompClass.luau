@@ -67,6 +67,21 @@ function Component:OnReady()
             self:RefreshUI()
         end
     end))
+    --- 通行证弹窗关闭仅恢复交互，实际奖励由服务端平台事件核验。
+    --- @param passId number 通行证 ID。
+    --- @param purchased boolean 是否购买成功。
+    FX.Network:RegServerMsgCallback("S2C_GamePassPromptFinished", function(passId, purchased)
+        if passId == self._promptGamePassId then
+            self._promptGamePassId = nil
+            self._purchaseAttemptId = nil
+            self._busy = false
+            self.State.pending = nil
+            if purchased then
+                self._commonUI:ShowLocalizedTips(TranslationTexts.Processing)
+            end
+            self:RefreshUI()
+        end
+    end)
     self:LoadPrices()
 end
 
@@ -81,7 +96,8 @@ function Component:LoadPrices()
             local productId = goods and goods.RobloxProductId
             if type(productId) == "number" and productId > 0 and self._prices[item.DevGoodsId] == nil then
                 local ok, info = pcall(function()
-                    return MarketplaceService:GetProductInfoAsync(productId, Enum.InfoType.Product)
+                    local infoType = goods.ProductType == "GamePass" and Enum.InfoType.GamePass or Enum.InfoType.Product
+                    return MarketplaceService:GetProductInfoAsync(productId, infoType)
                 end)
                 if ok and type(info) == "table" and type(info.PriceInRobux) == "number" then
                     self._prices[item.DevGoodsId] = info.PriceInRobux
@@ -172,7 +188,7 @@ function Component:BuildProducts()
         end
         local count = self._data.robuxBought[tostring(item.DevGoodsId)] or 0
         table.insert(products, {id = "robux_" .. item.DevGoodsId, currency = "Robux",
-            goodsId = item.DevGoodsId, productId = goods.RobloxProductId,
+            goodsId = item.DevGoodsId, productId = goods.RobloxProductId, productType = goods.ProductType,
             title = goods.BuyHandler == "AddGem" and "" or title, description = description, icon = item.IconId,
             titleText = goods.BuyHandler == "AddGem" and title or nil,
             cardStyle = RobuxCardStyles[item.DevGoodsId],
@@ -253,7 +269,7 @@ function Component:OnUIAction(action, payload)
     end
 end
 
---- Robux 预检或取消支付时恢复交互，奖励仍由平台收据处理。
+--- 按商品类型进行服务端预检，通行证已拥有时由服务端补发，其他商品沿用收据。
 --- @param product table 所选 Robux 商品快照，包含平台 productId。
 function Component:Purchase(product)
     if self._busy then
@@ -264,21 +280,38 @@ function Component:Purchase(product)
     self:RefreshUI()
     self._requestTask = task.defer(function()
         local attemptId = FX.GenObjectID()
+        local isGamePass = product.productType == "GamePass"
         self._purchaseAttemptId = attemptId
-        self:ReportPurchaseAnalytics("Select", product.productId, attemptId)
+        if not isGamePass then
+            self:ReportPurchaseAnalytics("Select", product.productId, attemptId)
+        end
         local ok, result = pcall(function()
+            if isGamePass then
+                local status = FX.Network:InvokeServer("C2S_CheckGamePassPurchase", product.goodsId)
+                if status == "Prompt" then
+                    self._promptGamePassId = product.productId
+                    MarketplaceService:PromptGamePassPurchase(self:GetPlayerNode(), product.productId)
+                    return true
+                end
+                return status == "Owned" and "Owned" or false
+            end
             self._promptProductId = product.productId
             return self._commonUI:ShowDeveloperBuyUI(product.productId)
         end)
         self._requestTask = nil
-        if not ok or not result then
-            self:ReportPurchaseAnalytics("Cancel", product.productId, attemptId)
+        if not ok or not result or result == "Owned" then
+            if not isGamePass then
+                self:ReportPurchaseAnalytics("Cancel", product.productId, attemptId)
+            end
             self._purchaseAttemptId = nil
             self._busy = false
             self.State.pending = nil
             self._promptProductId = nil
-            self._commonUI:ShowLocalizedTips(self.BaseViewTranslationTexts.Unavailable)
-        else
+            self._promptGamePassId = nil
+            if result ~= "Owned" or not ok then
+                self._commonUI:ShowLocalizedTips(self.BaseViewTranslationTexts.Unavailable)
+            end
+        elseif not isGamePass then
             self:ReportPurchaseAnalytics("PromptRequested", product.productId, attemptId)
         end
         self:RefreshUI()
@@ -287,6 +320,7 @@ end
 
 --- 取消组件拥有的请求任务，基类释放卡片和事件连接。
 function Component:Dtor()
+    FX.Network:UnRegServerMsgCallback("S2C_GamePassPromptFinished")
     if self._requestTask then
         task.cancel(self._requestTask)
     end

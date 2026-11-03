@@ -75,7 +75,8 @@ end
 --- @return table 商品定义。
 function Provider:GetGoodsConfig(productId)
     for goodsId, config in pairs(GoodsConfig.GoodsData) do
-        if config.RobloxProductId and config.RobloxProductId > 0 and config.RobloxProductId == productId then
+        if config.ProductType == "DeveloperProduct" and config.RobloxProductId
+            and config.RobloxProductId > 0 and config.RobloxProductId == productId then
             return config
         end
     end

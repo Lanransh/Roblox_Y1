@@ -9,7 +9,8 @@ return {
             RobloxProductId = 3.718980394e+9,
             BuyLimit = nil,
             NumberArray = nil,
-            KVTable = nil
+            KVTable = nil,
+            ProductType = [[DeveloperProduct]]
         },
         [100] = {
             DevGoodsId = 100,
@@ -17,12 +18,13 @@ return {
             Name = [[Starter Diamond Pack (67折)]],
             Desc = [[Get 84 Diamonds. Great value!]],
             Price = 8,
-            RobloxProductId = nil,
+            RobloxProductId = 2.064519003e+9,
             BuyLimit = 1,
             NumberArray = {
                 [1] = 84,
             },
-            KVTable = nil
+            KVTable = nil,
+            ProductType = [[GamePass]]
         },
         [101] = {
             DevGoodsId = 101,
@@ -30,12 +32,13 @@ return {
             Name = [[Small Diamond Pack]],
             Desc = [[Get 152 Diamonds.]],
             Price = 19,
-            RobloxProductId = nil,
+            RobloxProductId = 3.727240991e+9,
             BuyLimit = nil,
             NumberArray = {
                 [1] = 152,
             },
-            KVTable = nil
+            KVTable = nil,
+            ProductType = [[DeveloperProduct]]
         },
         [102] = {
             DevGoodsId = 102,
@@ -43,12 +46,13 @@ return {
             Name = [[Medium Diamond Pack]],
             Desc = [[Get 618 Diamonds.]],
             Price = 69,
-            RobloxProductId = nil,
+            RobloxProductId = 3.72724202e+9,
             BuyLimit = nil,
             NumberArray = {
                 [1] = 618,
             },
-            KVTable = nil
+            KVTable = nil,
+            ProductType = [[DeveloperProduct]]
         },
         [103] = {
             DevGoodsId = 103,
@@ -56,12 +60,13 @@ return {
             Name = [[Large Diamond Pack]],
             Desc = [[Get 1,698 Diamonds.]],
             Price = 169,
-            RobloxProductId = nil,
+            RobloxProductId = 3.727242057e+9,
             BuyLimit = nil,
             NumberArray = {
                 [1] = 1698,
             },
-            KVTable = nil
+            KVTable = nil,
+            ProductType = [[DeveloperProduct]]
         },
         [111] = {
             DevGoodsId = 111,
@@ -69,13 +74,14 @@ return {
             Name = [[Small Weekly Diamond Pass × 1]],
             Desc = [[Get 108 Diamonds instantly, plus 12 bonus Diamonds each day you check in for the next 6 days.]],
             Price = 18,
-            RobloxProductId = nil,
+            RobloxProductId = 3.727242096e+9,
             BuyLimit = nil,
             NumberArray = nil,
             KVTable = {
                 ItemId = 101,
                 Count = 1
-            }
+            },
+            ProductType = [[DeveloperProduct]]
         },
         [112] = {
             DevGoodsId = 112,
@@ -83,13 +89,14 @@ return {
             Name = [[Large Weekly Diamond Pass × 1]],
             Desc = [[Get 400 Diamonds instantly, plus 63 bonus Diamonds each day you check in for the next 6 days.]],
             Price = 68,
-            RobloxProductId = nil,
+            RobloxProductId = 3.727242144e+9,
             BuyLimit = nil,
             NumberArray = nil,
             KVTable = {
                 ItemId = 102,
                 Count = 1
-            }
+            },
+            ProductType = [[DeveloperProduct]]
         },
         [201] = {
             DevGoodsId = 201,
@@ -97,108 +104,116 @@ return {
             Name = [[Send a Diamond Red Packet]],
             Desc = [[Send a Diamond Red Packet.]],
             Price = 6,
-            RobloxProductId = nil,
+            RobloxProductId = 3.727242202e+9,
             BuyLimit = nil,
             NumberArray = nil,
-            KVTable = nil
+            KVTable = nil,
+            ProductType = [[DeveloperProduct]]
         },
         [401] = {
             DevGoodsId = 401,
             BuyHandler = [[SkipRebirth]],
-            Name = [[Skip Rebirth]],
+            Name = [[Skip Rebirth (0–4)]],
             Desc = [[Skip the level requirement and rebirth once.]],
             Price = 6,
-            RobloxProductId = nil,
+            RobloxProductId = 3.727242274e+9,
             BuyLimit = nil,
             NumberArray = nil,
             KVTable = {
                 MinRebirth = 0,
                 MaxRebirth = 4
-            }
+            },
+            ProductType = [[DeveloperProduct]]
         },
         [402] = {
             DevGoodsId = 402,
             BuyHandler = [[SkipRebirth]],
-            Name = [[Skip Rebirth]],
+            Name = [[Skip Rebirth (5–9)]],
             Desc = [[Skip the level requirement and rebirth once.]],
             Price = 10,
-            RobloxProductId = nil,
+            RobloxProductId = 3.727578436e+9,
             BuyLimit = nil,
             NumberArray = nil,
             KVTable = {
                 MinRebirth = 5,
                 MaxRebirth = 9
-            }
+            },
+            ProductType = [[DeveloperProduct]]
         },
         [403] = {
             DevGoodsId = 403,
             BuyHandler = [[SkipRebirth]],
-            Name = [[Skip Rebirth]],
+            Name = [[Skip Rebirth (10–14)]],
             Desc = [[Skip the level requirement and rebirth once.]],
             Price = 18,
-            RobloxProductId = nil,
+            RobloxProductId = 3.727578514e+9,
             BuyLimit = nil,
             NumberArray = nil,
             KVTable = {
                 MinRebirth = 10,
                 MaxRebirth = 14
-            }
+            },
+            ProductType = [[DeveloperProduct]]
         },
         [404] = {
             DevGoodsId = 404,
             BuyHandler = [[SkipRebirth]],
-            Name = [[Skip Rebirth]],
+            Name = [[Skip Rebirth (15–19)]],
             Desc = [[Skip the level requirement and rebirth once.]],
             Price = 38,
-            RobloxProductId = nil,
+            RobloxProductId = 3.727578575e+9,
             BuyLimit = nil,
             NumberArray = nil,
             KVTable = {
                 MinRebirth = 15,
                 MaxRebirth = 19
-            }
+            },
+            ProductType = [[DeveloperProduct]]
         },
         [405] = {
             DevGoodsId = 405,
             BuyHandler = [[SkipRebirth]],
-            Name = [[Skip Rebirth]],
+            Name = [[Skip Rebirth (20–24)]],
             Desc = [[Skip the level requirement and rebirth once.]],
             Price = 68,
-            RobloxProductId = nil,
+            RobloxProductId = 3.727578645e+9,
             BuyLimit = nil,
             NumberArray = nil,
             KVTable = {
                 MinRebirth = 20,
                 MaxRebirth = 24
-            }
+            },
+            ProductType = [[DeveloperProduct]]
         },
         [406] = {
             DevGoodsId = 406,
             BuyHandler = [[SkipRebirth]],
-            Name = [[Skip Rebirth]],
+            Name = [[Skip Rebirth (25–29)]],
             Desc = [[Skip the level requirement and rebirth once.]],
             Price = 118,
-            RobloxProductId = nil,
+            RobloxProductId = 3.727578693e+9,
             BuyLimit = nil,
             NumberArray = nil,
             KVTable = {
                 MinRebirth = 25,
                 MaxRebirth = 29
-            }
+            },
+            ProductType = [[DeveloperProduct]]
         },
         [407] = {
             DevGoodsId = 407,
             BuyHandler = [[SkipRebirth]],
-            Name = [[Skip Rebirth]],
+            Name = [[Skip Rebirth (30–35)]],
             Desc = [[Skip the level requirement and rebirth once.]],
             Price = 198,
-            RobloxProductId = nil,
+            RobloxProductId = 3.727578765e+9,
             BuyLimit = nil,
             NumberArray = nil,
             KVTable = {
                 MinRebirth = 30,
                 MaxRebirth = 35
-            }
+            },
+            ProductType = [[DeveloperProduct]]
         }
     },
     GemGoodsData = {

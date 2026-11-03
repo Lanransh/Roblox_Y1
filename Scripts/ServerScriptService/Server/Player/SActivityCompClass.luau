@@ -325,6 +325,7 @@ function Component:Claim(kind, rewardId, multiplier)
     local data = self:GetTable(Fields.WelfareData)
     local key = TranslationTexts.NotReady
     local success = false
+    local reason = nil
     if kind == "retention" and rewardId == "once" then
         local retention = self:GetTable(Fields.MenuRetentionData)
         local config = _G.ActivityConfig.MenuRetentionConfig
@@ -364,6 +365,7 @@ function Component:Claim(kind, rewardId, multiplier)
                 key = TranslationTexts.NoBoostGain
             elseif self:GetNumber(Fields.Diamonds) < price then
                 key = TranslationTexts.NeedDiamonds
+                reason = "NeedDiamonds"
             elseif gain > 0 and self:RequireComponent("FSRewardComp"):ExchangeRewards(costs, {
                 {Type = "Money", Currency = "RockTrainingValue", Count = gain},
             }) then
@@ -422,7 +424,8 @@ function Component:Claim(kind, rewardId, multiplier)
     end
     self:SetTable(Fields.WelfareData, data)
     self:PublishState()
-    return {success = success, key = success and TranslationTexts.Success or key, state = self:GetTable(Fields.WelfareState)}
+    return {success = success, key = success and TranslationTexts.Success or key, reason = reason,
+        state = self:GetTable(Fields.WelfareState)}
 end
 
 return Component

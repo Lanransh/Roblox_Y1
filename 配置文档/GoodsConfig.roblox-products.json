@@ -5,7 +5,78 @@
     "10768714039": {
       "1": {
         "state": "known",
-        "productId": "3718980394"
+        "productId": "3718980394",
+        "productType": "developerProduct"
+      },
+      "101": {
+        "state": "known",
+        "productId": "3727240991",
+        "productType": "developerProduct"
+      },
+      "100": {
+        "state": "known",
+        "productId": "2064519003",
+        "productType": "gamePass"
+      },
+      "102": {
+        "state": "known",
+        "productId": "3727242020",
+        "productType": "developerProduct"
+      },
+      "103": {
+        "state": "known",
+        "productId": "3727242057",
+        "productType": "developerProduct"
+      },
+      "111": {
+        "state": "known",
+        "productId": "3727242096",
+        "productType": "developerProduct"
+      },
+      "112": {
+        "state": "known",
+        "productId": "3727242144",
+        "productType": "developerProduct"
+      },
+      "201": {
+        "state": "known",
+        "productId": "3727242202",
+        "productType": "developerProduct"
+      },
+      "401": {
+        "state": "known",
+        "productId": "3727242274",
+        "productType": "developerProduct"
+      },
+      "402": {
+        "state": "known",
+        "productId": "3727578436",
+        "productType": "developerProduct"
+      },
+      "403": {
+        "state": "known",
+        "productId": "3727578514",
+        "productType": "developerProduct"
+      },
+      "404": {
+        "state": "known",
+        "productId": "3727578575",
+        "productType": "developerProduct"
+      },
+      "405": {
+        "state": "known",
+        "productId": "3727578645",
+        "productType": "developerProduct"
+      },
+      "406": {
+        "state": "known",
+        "productId": "3727578693",
+        "productType": "developerProduct"
+      },
+      "407": {
+        "state": "known",
+        "productId": "3727578765",
+        "productType": "developerProduct"
       }
     }
   }

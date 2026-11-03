@@ -2012,7 +2012,7 @@
                   "Text": "Rebirth",
                   "TextColor3": "#ffffff",
                   "TextScaled": false,
-                  "TextSize": 20.8,
+                  "TextSize": 26,
                   "TextTransparency": 0,
                   "TextWrapped": true,
                   "TextXAlignment": "Center",
@@ -2229,7 +2229,7 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 4,
+                      "offset": 1,
                       "scale": 0
                     }
                   },
@@ -2240,14 +2240,14 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 20,
+                      "offset": 24,
                       "scale": 0
                     }
                   },
                   "Text": "Skip",
                   "TextColor3": "#ffffff",
                   "TextScaled": false,
-                  "TextSize": 18,
+                  "TextSize": 24,
                   "TextTransparency": 0,
                   "TextWrapped": false,
                   "TextXAlignment": "Center",
@@ -2294,7 +2294,7 @@
                       "Position": {
                         "x": {
                           "offset": 0,
-                          "scale": 0.345
+                          "scale": 0.28
                         },
                         "y": {
                           "offset": 0,
@@ -2305,11 +2305,11 @@
                       "ScaleType": "Fit",
                       "Size": {
                         "x": {
-                          "offset": 16,
+                          "offset": 22,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 16,
+                          "offset": 22,
                           "scale": 0
                         }
                       },
@@ -2359,7 +2359,7 @@
                       "Position": {
                         "x": {
                           "offset": 0,
-                          "scale": 0.58
+                          "scale": 0.62
                         },
                         "y": {
                           "offset": 0,
@@ -2373,14 +2373,14 @@
                           "scale": 0
                         },
                         "y": {
-                          "offset": 18,
+                          "offset": 23,
                           "scale": 0
                         }
                       },
                       "Text": "",
                       "TextColor3": "#ffffff",
                       "TextScaled": false,
-                      "TextSize": 16,
+                      "TextSize": 22,
                       "TextTransparency": 0,
                       "TextWrapped": false,
                       "TextXAlignment": "Center",
@@ -2409,7 +2409,7 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 25,
+                      "offset": 24,
                       "scale": 0
                     }
                   },
@@ -2420,7 +2420,7 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 19,
+                      "offset": 23,
                       "scale": 0
                     }
                   },

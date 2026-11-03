@@ -278,6 +278,13 @@ function Component:OnUIAction(action, payload)
             local key = ok and type(result) == "table" and result.key or TranslationTexts.Unknown
             self._failure = {kind = kind, id = payload.rewardId, key = key}
             self._commonUI:ShowLocalizedTips(key)
+            if ok and type(result) == "table" and result.reason == "NeedDiamonds" then
+                self:Hide()
+                local shop = self:GetPlayerObject():RequireComponent("CCurrencyShopUIComp")
+                shop.State.tab = "Robux"
+                shop:Show()
+                shop:RefreshUI()
+            end
         end
         -- 回包立即恢复权威按钮；revision 避免稍后到达的旧同步覆盖新状态。
         self:RefreshWelfare(ok and type(result) == "table" and result.state or nil)
