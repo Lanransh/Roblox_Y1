@@ -564,7 +564,7 @@ return {
             Index = 1,
             AuraId = 101,
             Name = [[Common]],
-            Price = 3750,
+            Price = 100,
             TrainingRate = 1.5,
             Quality = 1,
             DevGoodId = nil,
@@ -2851,10 +2851,10 @@ return {
         }
     },
     TrainingBonusConfig = {
-        MinInterval = 5,
-        MaxInterval = 5,
+        MinInterval = 15,
+        MaxInterval = 15,
         OfferLifetime = 5,
-        Duration = 2,
+        Duration = 10,
         Multipliers = {
             [1] = 2,
             [2] = 3,

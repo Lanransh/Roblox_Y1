@@ -17,7 +17,7 @@ function Component:GetCompName()
     return "CTrainingBonusUIComp"
 end
 
---- 创建本人专属气泡与倒计时圆环；服务端属性决定可领取凭据和实际加成。
+--- 创建本人专属气泡、倒计时圆环与全屏边缘光；服务端属性决定实际加成。
 function Component:OnReady()
     self._commonUI = self:RequireComponent("FCCommonUIComp")
     self._random = Random.new()
@@ -26,6 +26,7 @@ function Component:OnReady()
     root.ResetOnSpawn = false
     root.DisplayOrder = 15
     self._rootNode = root
+    self:CreateEdgeGlow()
 
     local flash = Instance.new("Frame")
     flash.Size = UDim2.fromScale(1, 1)
@@ -81,6 +82,7 @@ function Component:OnReady()
     stroke.Parent = button
     self._bubble = button
     self._scale = Instance.new("UIScale", button)
+    self._scale.Scale = 0.3
 
     self._ringSegments = {}
     for index = 1, 96 do
@@ -112,6 +114,64 @@ function Component:OnReady()
     end))
 end
 
+--- 独立覆盖完整视口，四边向画面中心渐隐，保持中间视野和点击区域畅通。
+function Component:CreateEdgeGlow()
+    local root = Instance.new("ScreenGui")
+    root.Name = "TrainingBonusEdgeGlow"
+    root.ResetOnSpawn = false
+    root.IgnoreGuiInset = true
+    root.DisplayOrder = 14
+    local group = Instance.new("CanvasGroup")
+    group.Name = "EdgeGlow"
+    group.Size = UDim2.fromScale(1, 1)
+    group.BackgroundTransparency = 1
+    group.GroupTransparency = 1
+    group.Visible = false
+    group.Parent = root
+    self._edgeGlow = group
+    self._edgeGlowStrength = 0
+    self._glowEdges = {}
+    for index, layout in ipairs({
+        {Name = "Top", Position = Vector2.new(0, 0), Size = Vector2.new(1, 0.1), Rotation = 90},
+        {Name = "Bottom", Position = Vector2.new(0, 1), Size = Vector2.new(1, 0.1), Rotation = 270},
+        {Name = "Left", Position = Vector2.new(0, 0), Size = Vector2.new(0.06, 1), Rotation = 0},
+        {Name = "Right", Position = Vector2.new(1, 0), Size = Vector2.new(0.06, 1), Rotation = 180},
+    }) do
+        local edge = Instance.new("Frame")
+        edge.Name = layout.Name
+        edge.AnchorPoint = layout.Position
+        edge.Position = UDim2.fromScale(layout.Position.X, layout.Position.Y)
+        edge.Size = UDim2.fromScale(layout.Size.X, layout.Size.Y)
+        edge.BorderSizePixel = 0
+        local gradient = Instance.new("UIGradient")
+        gradient.Rotation = layout.Rotation
+        gradient.Transparency = NumberSequence.new({
+            NumberSequenceKeypoint.new(0, 0.15),
+            NumberSequenceKeypoint.new(0.35, 0.6),
+            NumberSequenceKeypoint.new(1, 1),
+        })
+        gradient.Parent = edge
+        edge.Parent = group
+        self._glowEdges[index] = edge
+    end
+    root.Parent = FXLoader:Player("PlayerGui")
+    self._edgeGlowRoot = root
+end
+
+--- 加成期间轻微呼吸发光，结束后淡出；不依赖角色特效是否已创建。
+--- @param active boolean 服务端确认的加成是否生效。
+--- @param color Color3 当前倍率主题色。
+--- @param deltaTime number 本帧间隔。
+function Component:RefreshEdgeGlow(active, color, deltaTime)
+    local strength = math.clamp(self._edgeGlowStrength + deltaTime * (active and 4 or -3), 0, 1)
+    self._edgeGlowStrength = strength
+    self._edgeGlow.Visible = strength > 0
+    self._edgeGlow.GroupTransparency = 1 - strength * (0.8 + math.sin(os.clock() * 3) * 0.1)
+    for index, edge in ipairs(self._glowEdges) do
+        edge.BackgroundColor3 = color
+    end
+end
+
 --- 随机选择安全画面位置并弹入；重复刷新同一个凭据不重新移动。
 function Component:ShowBubble()
     self._remainingSegments = nil
@@ -121,7 +181,7 @@ function Component:ShowBubble()
         self._popTween:Cancel()
     end
     self._popTween = TweenService:Create(self._scale,
-        TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {Scale = 1})
+        TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {Scale = 0.3})
     self._popTween:Play()
 end
 
@@ -310,10 +370,11 @@ function Component:RefreshBonus(deltaTime)
             end
         end
     end
+    self:RefreshEdgeGlow(active, color, deltaTime)
     self:RefreshEffect(active and not blocked, color, deltaTime)
 end
 
---- 清除气泡、镜头偏移和人物特效，连接交由父类释放。
+--- 清除气泡、全屏边缘光、镜头偏移和人物特效，连接交由父类释放。
 function Component:Dtor()
     self:ClearAccelerationEffect()
     if self._popTween then
@@ -324,6 +385,9 @@ function Component:Dtor()
     end
     if self._rootNode then
         self._rootNode:Destroy()
+    end
+    if self._edgeGlowRoot then
+        self._edgeGlowRoot:Destroy()
     end
     Component.Super.Dtor(self)
 end

@@ -15,6 +15,7 @@ local RockLevel = require(ReplicatedStorage.Scripts.Game.Shared.RockLevel)
 local Collectible = FXLoader:RequireShared("Scripts/Game/Shared/RockCollectible")
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local GameEnum = FXLoader:RequireShared("Scripts/Game/Shared/GameEnum")
+local Rebirth = FXLoader:RequireShared("Scripts/Game/Shared/Rebirth")
 local Fields = _G.PlayerDataConfig
 local Component = FX.Class("CRockLevelCompClass", "FCPlayerCompClass")
 local ColliderHeight = 16
@@ -387,7 +388,7 @@ function Component:ShowDropPreview(drop, template, groundPosition)
     preview.Parent = self._folder
 end
 
---- 刷新掉落 HUD 的名称、品质、价格和倒计时，云端翻译就绪后也会同步更新。
+--- 刷新掉落 HUD 的名称、品质、含当前重生倍率的价格和倒计时，沿用已含幸运倍率的原始价格。
 --- @param drop table 当前客户端持有的掉落。
 --- @param now number 当前服务器同步时间。
 function Component:UpdateDropText(drop, now)
@@ -400,7 +401,8 @@ function Component:UpdateDropText(drop, now)
         rarityArguments.rate = GameUtility.NumberToText(drop.LuckRate or 1)
     end
     drop.Hud.Frame.Rarity.Text = Text.Tr(TranslationTexts.Quality, rarityArguments)
-    drop.Hud.Frame.Price.Text = "$" .. GameUtility.NumberToText(drop.Price)
+    local price = drop.Price * Rebirth.GetMoneyRate(self:GetNumber(Fields.RebirthCount))
+    drop.Hud.Frame.Price.Text = "$" .. GameUtility.NumberToText(price)
     drop.Hud.Frame.Timer.Text = string.format("%ds", math.max(0, math.ceil(drop.ExpiresAt - now)))
 end
 
