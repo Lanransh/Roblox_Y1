@@ -82,7 +82,7 @@
   isOpen=false 或 items 为空会关闭菜单；菜单状态不是 State 字段。
   Templates.LootTemplateImg 按实例 ID 复用/排序/清理；每条占一容量，
   不合并同名物品；满容量仅改变统计颜色，不负责拦截背包写入。
-  总价为所有 value 之和，展示 +$；>=1000000 缩为一位小数 M，
+  总价为所有 value 之和，展示钱图标与金额，格式由 FormatNumber 决定，
   不截断实际提交值或业务金额。
   所有条目图标沿用模板问号，没有消费 Item.icon 的动态图片接口。
   当前 Render 直接设置底板/标题 Visible，并非完整 Show/Hide 动画流程；
@@ -96,7 +96,7 @@ local CLootSellView = FX.Class("CLootSellView", "CUIView")
 local TranslationTexts = Text.Define("LootSellUI", {
     Capacity = "{count:int}/{capacity:int}",
     NoItems = "No items to sell",
-    Coins = "{amount} Coins",
+    Coins = "{amount}",
     Sold = "{amount} Sold!",
 })
 
@@ -315,7 +315,7 @@ function CLootSellView:Render(state)
         self.CapacityTxt.TextColor3 = Color3.fromHex("#FFD34F")
     end
     self.StatusTxt.Text = Text.TrSource(state.message or "")
-    self.StatusMoneyIcon.Visible = state.soldAmount ~= nil or string.find(state.message or "", "+$", 1, true) ~= nil
+    self.StatusMoneyIcon.Visible = state.soldAmount ~= nil
     if state.soldAmount ~= nil then
         self.StatusTxt.Text = Text.Tr(TranslationTexts.Sold, {
             amount = self:FormatNumber(state.soldAmount),

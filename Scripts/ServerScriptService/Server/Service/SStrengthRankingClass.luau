@@ -1,10 +1,11 @@
 -- 力量总榜沿用框架生命周期；仅云端排序分数采用大数编码，不改变玩家原始力量。
 local FX = _G.FX
+FX.Loader:RequireFromParent(script, "SRankingClass")
 local DataStoreService = game:GetService("DataStoreService")
 local Players = game:GetService("Players")
 local StorageConfig = FX.Loader:Require(script.Parent.Parent, "Config/StorageConfig")
 local Memory = game:GetService("RunService"):IsStudio() and StorageConfig.StudioMemory
-local Ranking = FX.Class("SStrengthRankingClass", "FSRankingClass")
+local Ranking = FX.Class("SStrengthRankingClass", "SRankingClass")
 local BucketSize = 1e12
 
 --- 编码榜使用独立存储版本，避免把旧的未编码分数误解为指数与尾数。

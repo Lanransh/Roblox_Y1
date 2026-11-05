@@ -78,6 +78,14 @@ function Component:OnReady()
     self._trainingStatus.AutoLocalize = false
     self._trainingStatus.Visible = false
     self._trainingStatus.Parent = self._rootNode
+    self._trainingStatusGradient = Instance.new("UIGradient")
+    self._trainingStatusGradient.Color = ColorSequence.new({
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 225, 90)),
+        ColorSequenceKeypoint.new(0.5, Color3.fromRGB(255, 100, 190)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(80, 220, 255)),
+    })
+    self._trainingStatusGradient.Enabled = false
+    self._trainingStatusGradient.Parent = self._trainingStatus
     self._strength.AutoLocalize = false
     self._bar.ProgressLabel.AutoLocalize = false
     --- 翻译就绪或语言切换时刷新主界面，出售界面自行监听语言变化。
@@ -122,10 +130,11 @@ function Component:OnReady()
     self._effectGui = FXLoader:Here(self._playerGui, "ScreenGui")
     self:BindButtons()
     self:RefreshHomeButton()
-    --- 跟随角色进出关卡及重生切换入口，不重复注册按钮事件。
+    --- 跟随角色进出关卡及重生切换入口，并按服务端期限刷新训练倍率，不重复注册按钮事件。
     self._homeTimer = FX.Task:Interval(0.1, function()
         self:RefreshHomeButton()
         self:RefreshLootCapacity()
+        self:RefreshTrainingStatus(self:GetNumber(Fields.TrainingFieldIndex))
     end)
     --- 普通训练沿用飞行图标，力量卡成功结算后改为力量图标雨。
     --- @param gain number 服务端确认的训练收益。
@@ -241,7 +250,7 @@ function Component:ConfigureTopRightLayout()
     layout.BackgroundTransparency = 1
     layout.AnchorPoint = Vector2.new(1, 0)
     layout.Position = UDim2.new(1, -12, 0, 10)
-    layout.Size = UDim2.fromOffset(120, 64)
+    layout.Size = UDim2.fromOffset(104, 48)
     layout.ZIndex = button.ZIndex
     button.Parent = layout
     self._gmButton.Parent = layout
@@ -249,7 +258,7 @@ function Component:ConfigureTopRightLayout()
     task.wait()
     button.AnchorPoint = Vector2.new(1, 0)
     button.Position = UDim2.fromScale(1, 0)
-    button.Size = UDim2.fromOffset(64, 64)
+    button.Size = UDim2.fromOffset(48, 48)
     self._gmButton.AnchorPoint = Vector2.zero
     self._gmButton.Position = UDim2.fromOffset(0, 0)
     layout.Parent = self._rootNode
@@ -488,14 +497,23 @@ function Component:RefreshLocalization()
     self:RefreshStrengthOffers()
 end
 
---- 仅显示服务端确认的已解锁训练基地，不凭客户端位置授予训练资格。
+--- 显示服务端确认的训练基地倍率，已领取气泡有效时叠乘加成并启用渐变文字，到期恢复黄色。
 --- @param index number 同步的训练基地序号，0 表示场外。
 function Component:RefreshTrainingStatus(index)
     local config = _G.GameConfig.TrainingFieldData[index]
     self._trainingStatus.Visible = config ~= nil
     if config then
+        local rate = config.TrainingRate
+        local player = self:GetPlayerNode()
+        local bonusUntil = player:GetAttribute("TrainingBonusUntil") or 0
+        local bonusActive = workspace:GetServerTimeNow() < bonusUntil
+        self._trainingStatusGradient.Enabled = bonusActive
+        self._trainingStatus.TextColor3 = bonusActive and Color3.new(1, 1, 1) or Color3.fromRGB(255, 225, 90)
+        if bonusActive then
+            rate *= player:GetAttribute("TrainingBonusRate") or 1
+        end
         self._trainingStatus.Text = Text.Tr(TranslationTexts.TrainingActive, {
-            rate = GameUtility.NumberToText(config.TrainingRate),
+            rate = GameUtility.NumberToText(rate),
         })
     end
 end

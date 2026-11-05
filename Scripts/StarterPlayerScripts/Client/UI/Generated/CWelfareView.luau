@@ -134,7 +134,7 @@ require(script.Parent.CUIView)
     游戏按 type/id 查询真实配置；查询缺失应明确报错，不返回上一奖励结果。
   可选 FormatReward(name: string, amount: number) -> string。
     默认返回已翻译的 名称 ×数量，保留原始数量；覆写也须返回最终展示文本。
-    Coin 使用独立 +$金额节点，任务另有数量节点，不全部由此方法控制。
+    Coin 使用独立钱图标与金额节点，任务另有数量节点，不全部由此方法控制。
   必需 OnUIAction(action: string, payload: table)，无返回值；默认报错。
     Claim -> { kind: "online" | "signin" | "task", rewardId: string }；
       rewardId 对应该组 Item.id，不是 Item.reward.id。
@@ -228,7 +228,7 @@ local TranslationTexts = Text.Define("WelfareHub", {
     NoOfflineRewards = "No offline rewards",
     RewardAmount = "{name} ×{amount}",
     TaskQuantity = "x{amount}",
-    MoneyAmount = "+${amount}",
+    MoneyAmount = "{amount}",
     DailyAmount = "+{value} Diamonds per day",
     PassTomorrow = "Next claim tomorrow",
     PassRemaining = "{days:int} claims left · {status}",

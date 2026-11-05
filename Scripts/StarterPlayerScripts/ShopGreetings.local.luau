@@ -3,12 +3,16 @@ local RunService = game:GetService("RunService")
 local player = Players.LocalPlayer
 local greetings = {}
 
---- 按店员骨架等待对应身体节点，避免复制未完成时误判为 R6；挥手只改变本地外观。
+--- 按类型等待店员 Humanoid，兼容 Morph 等名称；按骨架等待身体节点，挥手只改变本地外观。
 --- @param hut Model 场景中已复制的商店。
 --- @return table 店员肩部、手臂初始姿势及靠近状态。
 local function CreateGreeting(hut)
     local npc = hut:WaitForChild("ShopNPC")
-    local humanoid = npc:WaitForChild("Humanoid")
+    local humanoid = npc:FindFirstChildOfClass("Humanoid")
+    while not humanoid do
+        npc.ChildAdded:Wait()
+        humanoid = npc:FindFirstChildOfClass("Humanoid")
+    end
     local isR15 = humanoid.RigType == Enum.HumanoidRigType.R15
     local torso = npc:WaitForChild(isR15 and "UpperTorso" or "Torso")
     local armNames = isR15 and {"LeftUpperArm", "LeftLowerArm", "LeftHand"} or {"Left Arm"}

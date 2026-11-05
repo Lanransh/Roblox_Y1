@@ -82,7 +82,7 @@ function Component:OnReady()
     stroke.Parent = button
     self._bubble = button
     self._scale = Instance.new("UIScale", button)
-    self._scale.Scale = 0.3
+    self._scale.Scale = 0.6
 
     self._ringSegments = {}
     for index = 1, 96 do
@@ -172,16 +172,16 @@ function Component:RefreshEdgeGlow(active, color, deltaTime)
     end
 end
 
---- 随机选择安全画面位置并弹入；重复刷新同一个凭据不重新移动。
+--- 随机选择安全画面位置并弹入至 0.6 倍缩放，保证倍率文字和点击区域清晰；重复刷新同一个凭据不重新移动。
 function Component:ShowBubble()
     self._remainingSegments = nil
     self._position = Vector2.new(self._random:NextNumber(0.25, 0.75), self._random:NextNumber(0.3, 0.65))
-    self._scale.Scale = 0.1
+    self._scale.Scale = 0.2
     if self._popTween then
         self._popTween:Cancel()
     end
     self._popTween = TweenService:Create(self._scale,
-        TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {Scale = 0.3})
+        TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {Scale = 0.6})
     self._popTween:Play()
 end
 

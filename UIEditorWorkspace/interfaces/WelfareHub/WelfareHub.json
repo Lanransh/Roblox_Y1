@@ -6138,14 +6138,14 @@
               "Image": "rbxassetid://82793028306773",
               "ImageColor3": "#ffffff",
               "ImageTransparency": 0,
-              "LayoutOrder": 3,
+              "LayoutOrder": 5,
               "Position": {
                 "x": {
                   "offset": 0,
                   "scale": 0
                 },
                 "y": {
-                  "offset": 115,
+                  "offset": 231,
                   "scale": 0
                 }
               },
@@ -6424,14 +6424,14 @@
               "Image": "rbxassetid://82793028306773",
               "ImageColor3": "#ffffff",
               "ImageTransparency": 0,
-              "LayoutOrder": 5,
+              "LayoutOrder": 2,
               "Position": {
                 "x": {
                   "offset": 0,
                   "scale": 0
                 },
                 "y": {
-                  "offset": 231,
+                  "offset": 58,
                   "scale": 0
                 }
               },
@@ -6710,14 +6710,14 @@
               "Image": "rbxassetid://82793028306773",
               "ImageColor3": "#ffffff",
               "ImageTransparency": 0,
-              "LayoutOrder": 2,
+              "LayoutOrder": 3,
               "Position": {
                 "x": {
                   "offset": 0,
                   "scale": 0
                 },
                 "y": {
-                  "offset": 58,
+                  "offset": 115,
                   "scale": 0
                 }
               },

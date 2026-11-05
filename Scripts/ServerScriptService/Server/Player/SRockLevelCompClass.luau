@@ -314,7 +314,7 @@ function Component:SendRockRound()
     end
 end
 
---- 命中记录只累计服务端认可的实际伤害；确认击破时直接结算掉落，再回传剩余血量。
+--- 按历史最高等级校验目标世界资格后累计服务端伤害；确认击破时结算掉落，再回传剩余血量。
 --- @param key string 客户端命中的石头格号。
 --- @param round number 客户端当前关卡轮次。
 --- @return boolean 是否认可本次命中，可用于回滚客户端预测。
@@ -328,6 +328,9 @@ function Component:RecordHit(key, round)
     local cell = tonumber(cellIndex)
     if not area or not cell or cell < 1 or cell > area.Columns * area.Rows
         or key ~= area.Index .. ":" .. cell then
+        return false
+    end
+    if self:GetNumber(Fields.MaxTrainingLevel) < GameEnum.WorldTransferConfig[area.World].NeedTrainingLevel then
         return false
     end
     local areaState = self._areaStates[area.Index]
@@ -397,7 +400,7 @@ function Component:GetRecordedDamage(key)
     return record and record.Damage or 0
 end
 
---- 使用区域预生成记录揭露格子；空格也只结算一次，创建失败保留原记录供重试。
+--- 按历史最高等级复核世界资格后使用预生成记录揭露格子；空格只结算一次，创建失败可重试。
 --- @param key string 客户端提交的石头格号，不接受其位置或奖励数据。
 --- @param round number 客户端当前关卡轮次，拒绝旧轮次请求。
 function Component:RequestDrop(key, round)
@@ -408,6 +411,9 @@ function Component:RequestDrop(key, round)
     local area = areaIndex and self._areas[tonumber(areaIndex)]
     local cell = tonumber(cellIndex)
     if not area or not cell or key ~= area.Index .. ":" .. cell then
+        return
+    end
+    if self:GetNumber(Fields.MaxTrainingLevel) < GameEnum.WorldTransferConfig[area.World].NeedTrainingLevel then
         return
     end
     local record = self._attackRecords[key]

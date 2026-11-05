@@ -1,4 +1,5 @@
 local FX, FS = _G.FX, _G.FS
+local ProjectRanking = FX.Loader:RequireFromParent(script, "SRankingClass")
 local StrengthRanking = FX.Loader:RequireFromParent(script, "SStrengthRankingClass")
 local Ranking = FX.Class("SRankingServiceClass", "FSRankingServiceClass")
 _G.SRankingServiceClass = Ranking
@@ -7,14 +8,16 @@ local function Integer(value, min, max)
     return type(value) == "number" and value == value and value % 1 == 0 and value >= min and value <= max
 end
 
---- 注册力量大数榜实例与只读查询协议；客户端只能请求范围，不能提交成绩。
+--- 注册支持离服更新的项目榜单及力量大数榜；客户端只能请求范围，不能提交成绩。
 function Ranking:Ctor()
     Ranking.Super.Ctor(self)
-    -- 框架没有注册派生榜单的接口；仅替换力量实例，其余榜和管理器定时任务保持不变。
-    local config = _G.RankingDataConfig[2]
-    local strength = StrengthRanking.New(config)
-    FS.RankingManager._rankingMap[config.Name] = strength
-    strength:LoadRankingDataAsync()
+    -- 框架没有注册派生榜单的接口；替换实例，管理器定时任务保持不变。
+    for index, config in ipairs(_G.RankingDataConfig) do
+        local class = index == 2 and StrengthRanking or ProjectRanking
+        local ranking = class.New(config)
+        FS.RankingManager._rankingMap[config.Name] = ranking
+        ranking:LoadRankingDataAsync()
+    end
     FX.Network:RegClientMsgCallback("C2S_RankingData", function(id, scope, kind, first, last)
         if
             not FS.PlayerManager:GetPlayerObject(id)

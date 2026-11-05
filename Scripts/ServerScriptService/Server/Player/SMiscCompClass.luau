@@ -413,14 +413,16 @@ function Component:RefreshTrainingField(config, now)
     return unlocked and config.TrainingRate or 0
 end
 
---- 训练场会话变化时撤销气泡和加成，重置下一次出现时间。
+--- 训练场会话变化时撤销气泡和加成；离服后仅清理会话，不再访问 Player 属性。
 function Component:ClearTrainingBonus()
     self._trainingBonusOffer = nil
     self._trainingBonusUntil = nil
     self._nextTrainingBonus = nil
     local player = self:GetPlayerNode()
-    player:SetAttribute("TrainingBonusOfferId", nil)
-    player:SetAttribute("TrainingBonusUntil", nil)
+    if player then
+        player:SetAttribute("TrainingBonusOfferId", nil)
+        player:SetAttribute("TrainingBonusUntil", nil)
+    end
 end
 
 --- 挂机时按权重发放一次性气泡；出现时间独立于领取和加成结束，不累计离场时间。
@@ -546,13 +548,13 @@ function Component:TickTraining()
     self._hit = false
 end
 
---- 分析组件已补齐在线尾差；先提交最终榜单分数，再停止训练并清理头顶显示。
+--- 先停止训练，再提交分析组件已补齐的最终榜单分数，避免离服结算期间定时器访问玩家。
 function Component:OnPlayerLogout()
+    FX.Task:Cancel(self._timer)
+    self._timer = nil
     self:RefreshRankingScores()
     self._rankingScores = nil
     self:ClearTrainingBonus()
-    FX.Task:Cancel(self._timer)
-    self._timer = nil
     self:BindStrengthCharacter(nil)
 end
 

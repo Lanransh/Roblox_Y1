@@ -11,7 +11,7 @@
     Item.name: string，必填，无默认值；名称原文，经 Text.TrSource 查询。
     Item.qualityId: string，必填，无默认值；必须对应 qualities 中存在的键。
     Item.strength: number，必填，无默认值；力量加成点数，不是倍率。
-    Item.price: number，必填，无默认值；非负金币数量，展示为 $金额。
+    Item.price: number，必填，无默认值；非负金币数量，展示为钱图标与金额。
     Item.icon: string，可选；Roblox Image 资源地址。
       省略时使用问号 rbxassetid://86795093617566；
       当前代码对 "" 直接赋空图，不回退问号。需要占位时省略此字段。
@@ -82,7 +82,7 @@ local CWeaponShopView = FX.Class("CWeaponShopView", "CUIView")
 
 local TranslationTexts = Text.Define("WeaponShopUI", {
     Strength = "Strength +{strength}",
-    Price = "${price}",
+    Price = "{price}",
     Equip = "Equip",
     Equipped = "Equipped",
     Waiting = "Waiting...",
@@ -215,10 +215,10 @@ function CWeaponShopView:Render(state)
             FXLoader:Here(row, "ActionBtn.MoneyIconImg").Visible = showMoney
             local buttonText = FXLoader:Here(row, "ActionBtn.ButtonTxt")
             buttonText.Text = caption
-            buttonText.TextSize = 18.2
+            buttonText.TextSize = 19
             local buttonTextStroke = FXLoader:Here(buttonText, "TextStroke")
             buttonTextStroke.Thickness = 1.3
-            -- 沿用原型的自动缩放；关闭换行会在 Roblox 中连带关闭 TextScaled。
+            -- 使用固定字号，避免短状态文案自动放大撑满按钮。
             buttonText.Position = UDim2.fromOffset(0, 0)
             buttonText.Size = UDim2.fromScale(1, 1)
             buttonText.TextXAlignment = Enum.TextXAlignment.Center
