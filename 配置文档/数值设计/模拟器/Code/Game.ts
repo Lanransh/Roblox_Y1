@@ -1104,7 +1104,9 @@ export class Game extends BaseGame<ProjectConfig, State> implements EditorRender
     this.strengthValueLabel.Text = `<b>${numberToText(this.state.strength)}</b>`;
     this.trainingValueLabel.Text =
       `<b>${numberToText(this.state.trainingValue)}</b>` +
-      `<span color="#98a2b3"> / ${numberToText(required)}</span>`;
+      (required > 0
+        ? `<span color="#98a2b3"> / ${numberToText(required)}</span>`
+        : `<span color="#98a2b3"> · 已满级</span>`);
     this.trainingPerSecondLabel.Text =
       `<span color="#027a48"><b>+${numberToText(trainingPerSecond)}</b> / 秒</span>` +
       (this.state.mode === "challenge"
@@ -1615,7 +1617,7 @@ export class Game extends BaseGame<ProjectConfig, State> implements EditorRender
       ` · 同价值≈${numberToText(values.equivalentDiamonds)} · 7天${numberToText(values.totalDiamonds)}钻`;
     purchaseButton.Text = blocked
       ? "周卡生效中"
-      : `${numberToText(values.miniCoinPrice)}迷你币购买（当天 ${numberToText(values.purchaseDayDiamonds)}钻）`;
+      : `${numberToText(values.robuxPrice)} Robux 购买（当天 ${numberToText(values.purchaseDayDiamonds)}钻）`;
     purchaseButton.Disabled = blocked;
     purchaseButton.ButtonColor = blocked ? "#eef2f6" : "#b54708";
     purchaseButton.TextColor = blocked ? "#98a2b3" : "#ffffff";

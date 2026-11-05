@@ -131,7 +131,7 @@ export class ProjectCharts extends ChartSet {
         },
         {
           id: "strength",
-          label: "当前等级及之前升级需求之和",
+          label: "达到该等级所需累计训练值（力量）",
           sample: (level: number) =>
             calculateLevelStrength(this.projectConfig.levelCurves, level),
         },

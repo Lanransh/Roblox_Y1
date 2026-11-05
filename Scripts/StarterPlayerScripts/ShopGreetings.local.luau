@@ -3,23 +3,23 @@ local RunService = game:GetService("RunService")
 local player = Players.LocalPlayer
 local greetings = {}
 
---- 保存固定店员的左臂姿势，挥手只改变本地外观，不改动碰撞或商店交互。
+--- 按店员骨架等待对应身体节点，避免复制未完成时误判为 R6；挥手只改变本地外观。
 --- @param hut Model 场景中已复制的商店。
 --- @return table 店员肩部、手臂初始姿势及靠近状态。
 local function CreateGreeting(hut)
     local npc = hut:WaitForChild("ShopNPC")
-    local torso = npc:FindFirstChild("UpperTorso") or npc:WaitForChild("Torso")
-    local arm = npc:FindFirstChild("LeftUpperArm") or npc:WaitForChild("Left Arm")
+    local humanoid = npc:WaitForChild("Humanoid")
+    local isR15 = humanoid.RigType == Enum.HumanoidRigType.R15
+    local torso = npc:WaitForChild(isR15 and "UpperTorso" or "Torso")
+    local armNames = isR15 and {"LeftUpperArm", "LeftLowerArm", "LeftHand"} or {"Left Arm"}
     local attachment = torso:FindFirstChild("LeftShoulderRigAttachment")
     local shoulderPosition = attachment and attachment.WorldPosition
         or torso.CFrame:PointToWorldSpace(Vector3.new(-torso.Size.X * 0.5, torso.Size.Y * 0.5, 0))
     local shoulder = CFrame.new(shoulderPosition) * torso.CFrame.Rotation
     local parts = {}
-    for index, name in ipairs({arm.Name, "LeftLowerArm", "LeftHand"}) do
-        local part = npc:FindFirstChild(name)
-        if part then
-            table.insert(parts, {part = part, rest = part.CFrame, offset = shoulder:ToObjectSpace(part.CFrame)})
-        end
+    for index, name in ipairs(armNames) do
+        local part = npc:WaitForChild(name)
+        table.insert(parts, {part = part, rest = part.CFrame, offset = shoulder:ToObjectSpace(part.CFrame)})
     end
     return {torso = torso, shoulder = shoulder, parts = parts, inside = false, started = nil}
 end

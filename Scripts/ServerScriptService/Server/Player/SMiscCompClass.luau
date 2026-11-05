@@ -413,7 +413,7 @@ function Component:RefreshTrainingField(config, now)
     return unlocked and config.TrainingRate or 0
 end
 
---- 训练场会话变化时撤销气泡和加成，重置下一次随机等待。
+--- 训练场会话变化时撤销气泡和加成，重置下一次出现时间。
 function Component:ClearTrainingBonus()
     self._trainingBonusOffer = nil
     self._trainingBonusUntil = nil
@@ -423,14 +423,11 @@ function Component:ClearTrainingBonus()
     player:SetAttribute("TrainingBonusUntil", nil)
 end
 
---- 挂机时按权重发放一次性气泡；等待从上次加成结束或气泡到期开始，不累计离场时间。
+--- 挂机时按权重发放一次性气泡；出现时间独立于领取和加成结束，不累计离场时间。
 --- @param now number 当前服务器时间。
 function Component:TickTrainingBonus(now)
     local config = _G.GameConfig.TrainingBonusConfig
-    if self._trainingBonusUntil and now < self._trainingBonusUntil then
-        return
-    end
-    if self._trainingBonusUntil then
+    if self._trainingBonusUntil and now >= self._trainingBonusUntil then
         self._trainingBonusUntil = nil
         self:GetPlayerNode():SetAttribute("TrainingBonusUntil", nil)
     end
@@ -463,7 +460,7 @@ function Component:TickTrainingBonus(now)
     local offer = {Id = HttpService:GenerateGUID(false), Rate = config.Multipliers[selected],
         ExpiresAt = now + config.OfferLifetime}
     self._trainingBonusOffer = offer
-    self._nextTrainingBonus = nil
+    self._nextTrainingBonus += Random.new():NextNumber(config.MinInterval, config.MaxInterval)
     local player = self:GetPlayerNode()
     player:SetAttribute("TrainingBonusRate", offer.Rate)
     player:SetAttribute("TrainingBonusOfferUntil", offer.ExpiresAt)
@@ -490,7 +487,6 @@ function Component:ClaimTrainingBonus(offerId)
     self._trainingBonusOffer = nil
     self._trainingBonusUntil = now + _G.GameConfig.TrainingBonusConfig.Duration
     self._trainingBonusRate = offer.Rate
-    self._nextTrainingBonus = nil
     local player = self:GetPlayerNode()
     player:SetAttribute("TrainingBonusOfferId", nil)
     player:SetAttribute("TrainingBonusUntil", self._trainingBonusUntil)
