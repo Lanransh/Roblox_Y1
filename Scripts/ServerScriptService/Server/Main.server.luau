@@ -7,7 +7,7 @@ _G.Provider.RewardHandlers = require(Handlers.RewardHandlers)
 local Player = script.Parent.Player
 local Service = script.Parent.Service
 
-require(Player.SRockLevelCompClass)
+local RockLevelClass = require(Player.SRockLevelCompClass)
 require(Player.SMiscCompClass)
 require(Player.SLootSellCompClass)
 require(Player.SAuraCompClass)
@@ -23,6 +23,7 @@ local NoobNpcClass = require(Service.SNoobNpcServiceClass)
 local PurchaseReceiptService = require(Service.SPurchaseReceiptService)
 local GamePassService = require(Service.SGamePassService)
 
+RockLevelClass.InitSharedData()
 _G.SRankingService = RankingClass.New()
 _G.SPlayerObjectManager = ManagerClass.New()
 _G.SGiftDropService = require(Service.SGiftDropService)

@@ -76,7 +76,7 @@ function Component:GetCompName()
     return "CRockLevelComp"
 end
 
---- 同步握手后加载关卡幸运牌、受击、秒杀气场及个人石头资源，订阅轮次和命中校验结果。
+--- 同步握手后加载关卡资源，订阅地板染色变化、轮次和命中校验结果。
 function Component:OnReady()
     self._localization = self:GetPlayerObject():RequireComponent("FCCommonUIComp").Localization
     self._itemHUD = FXLoader:Shared("Nodes/ItemHUD")
@@ -141,6 +141,9 @@ function Component:OnReady()
     self:CreateLevelLuckSigns()
     for index = 1, #self._areas do
         local area = self._areas[index]
+        self:TrackConnection(area.Node:GetPropertyChangedSignal("Color"):Connect(function()
+            self._refreshRocks = true
+        end))
         for row = 0, area.Rows - 1, 6 do
             for column = 0, area.Columns - 1, 6 do
                 table.insert(self._chunks, {
@@ -1456,7 +1459,7 @@ function Component:UpdateNoobVisibility(position)
     end
 end
 
---- 每帧更新碎屑及训练缩放，每 0.1 秒检查分块、攀爬和菜鸟显隐，每帧最多生成 6 块石头。
+--- 每帧更新受击表现，每 0.1 秒检查分块、攀爬和菜鸟显隐；石头仅在依赖变化或新建时刷新。
 function Component:UpdateVisuals()
     self:UpdateFragments()
     self:UpdateTrainingHitReactions()
@@ -1472,7 +1475,6 @@ function Component:UpdateVisuals()
         self._nextChunkCheck = now + 0.1
         self:UpdateClimbing(character, position)
         self:UpdateNoobVisibility(position)
-        self._refreshRocks = true
         local candidate, nearest = nil, math.huge
         for index = 1, #self._chunks do
             local chunk = self._chunks[index]
@@ -1536,7 +1538,7 @@ function Component:UpdateVisuals()
     end
 end
 
---- 在装备、数值变化或低频检查时同步石头；只有手持镐子且能秒杀时允许穿行。
+--- 在血量、装备、数值或地板颜色变化时同步石头；只有手持镐子且能秒杀时允许穿行。
 --- @param level number 当前训练等级，按关卡满血判断是否允许直接穿行。
 --- @param strength number 当前阶段累计训练值，同等级内增长也刷新秒杀碰撞。
 function Component:RefreshVisibleRocks(level, strength)

@@ -36,7 +36,7 @@ function Component:GetCompName()
     return "CMainUIComp"
 end
 
---- 服务端就绪后绑定并显示长生命周期主界面，初始同步不播放收益动画。
+--- 服务端就绪后绑定主界面及容量缓存，初始同步不播放收益动画。
 function Component:OnReady()
     self._playerGui = self:GetPlayerNode():WaitForChild("PlayerGui")
     self._rootNode = FXLoader:Here(self._playerGui, "MainUI")
@@ -94,6 +94,25 @@ function Component:OnReady()
     end
     self:ConfigureBackpackBoostLayout()
     self._backpackBoost.Visible = false
+    self._lootCount = 0
+    self._lootBaseCapacity = RockLevel.LootCapacity
+    self._lootBoostCount = 0
+    self._lootBoostDisplayCount = 1
+    self._lootBoostExpiresAt = 0
+    --- 商店扩容变化时更新永久容量，不在定时刷新中复制整表。
+    --- @param data table 最新商店数据。
+    self:WatchDataChanged(Fields.CurrencyShopData, function(data)
+        self._lootBaseCapacity = RockLevel.LootCapacity + data.capacity
+        self:RefreshLootCapacity()
+    end)
+    --- 缓存临时扩容的数量与到期时间，时钟推进由定时刷新处理。
+    --- @param boost table 最新临时扩容状态。
+    self:WatchDataChanged(Fields.RockLootCapacityBoost, function(boost)
+        self._lootBoostCount = math.max(0, math.floor(boost.count or 0))
+        self._lootBoostDisplayCount = math.max(1, math.floor(boost.count or 1))
+        self._lootBoostExpiresAt = boost.expiresAt or 0
+        self:RefreshLootCapacity()
+    end)
     self:CreateFriendBoostButton()
     self._effects = {}
     self._pickupEffects = {}
@@ -504,11 +523,12 @@ function Component:RefreshDiamonds(value)
     FXLoader:Here(self._leftDown, "DiamondStat/Value").Text = GameUtility.NumberToText(value)
 end
 
---- 刷新随身战利品数量，仅为服务端确认新增的道具播放 UI 拾取表现。
+--- 缓存随身战利品数量，仅为服务端确认新增的道具播放 UI 拾取表现。
 --- @param loot table 当前携带且尚未回基地入库的战利品。
 --- @param oldLoot table? 变化前的战利品，首次同步为空且不播放动画。
 function Component:RefreshLoot(loot, oldLoot)
-    self:RefreshLootCapacity(loot)
+    self._lootCount = #loot
+    self:RefreshLootCapacity()
     if oldLoot == nil or #loot <= #oldLoot then
         return
     end
@@ -611,24 +631,32 @@ function Component:FormatBackpackBoostCountdown(remaining)
     return string.format("%02d:%02d", minutes, seconds)
 end
 
---- 显示基础容量与永久扩容；临时扩容卡仅在有效期内额外增加容量。
----@param loot table? 当前携带的战利品；省略时读取已同步字段。
-function Component:RefreshLootCapacity(loot)
-    loot = loot or self:GetTable(Fields.RockLoot)
-    local boost = self:GetTable(Fields.RockLootCapacityBoost)
+--- 只读取订阅缓存；容量及加成文案按值变化更新，倒计时仅在显示秒数变化时刷新。
+function Component:RefreshLootCapacity()
     local now = workspace:GetServerTimeNow()
-    local activeBoost = type(boost) == "table" and (boost.expiresAt or 0) > now
-    local capacity = RockLevel.LootCapacity + self:GetTable(Fields.CurrencyShopData).capacity
+    local activeBoost = self._lootBoostExpiresAt > now
+    local capacity = self._lootBaseCapacity
     if activeBoost then
-        capacity += math.max(0, math.floor(boost.count or 0))
+        capacity += self._lootBoostCount
     end
-    self._leftDown.BackpackStat.Value.Text = string.format("%d/%d", #loot, capacity)
-    self._backpackBoost.Visible = activeBoost
+    if self._displayedLootCount ~= self._lootCount or self._displayedLootCapacity ~= capacity then
+        self._displayedLootCount = self._lootCount
+        self._displayedLootCapacity = capacity
+        self._leftDown.BackpackStat.Value.Text = string.format("%d/%d", self._lootCount, capacity)
+    end
+    if self._backpackBoost.Visible ~= activeBoost then
+        self._backpackBoost.Visible = activeBoost
+    end
     if activeBoost then
-        local remaining = math.max(0, math.ceil(boost.expiresAt - now))
-        local extraSlots = math.max(1, math.floor(boost.count or 1))
-        self._backpackBoostCount.Text = string.format("+%d", extraSlots)
-        self._backpackBoost.Value.Text = self:FormatBackpackBoostCountdown(remaining)
+        local remaining = math.ceil(self._lootBoostExpiresAt - now)
+        if self._displayedLootBoostCount ~= self._lootBoostDisplayCount then
+            self._displayedLootBoostCount = self._lootBoostDisplayCount
+            self._backpackBoostCount.Text = string.format("+%d", self._lootBoostDisplayCount)
+        end
+        if self._displayedLootBoostRemaining ~= remaining then
+            self._displayedLootBoostRemaining = remaining
+            self._backpackBoost.Value.Text = self:FormatBackpackBoostCountdown(remaining)
+        end
     end
 end
 

@@ -23,6 +23,7 @@ local Collection = FXLoader:RequireShared("Scripts/Game/Shared/Collection")
 local Weapon = FXLoader:RequireShared("Scripts/Game/Shared/Weapon")
 local InstancePath = FXLoader:RequireShared("Scripts/Game/Shared/InstancePath")
 local Component = FX.Class("SRockLevelCompClass", "FSPlayerCompClass")
+local sharedWeaponTemplates, sharedAreas, sharedAreaDefinitions
 
 --- 配置校验和倍率计算共用的有限数检查，拒绝 NaN 与无穷值。
 --- @param value any 待检查的配置值。
@@ -41,7 +42,6 @@ function Component:Ctor(owner)
     self._nextHit = 0
     self._dropNodes = {}
     self._dropByCell = {}
-    self._areaDefinitions = {}
     self._areaStates = {}
     self._inSafeArea = nil
     self._random = Random.new()
@@ -74,33 +74,33 @@ function Component:ApplyLootCapacityBoost(count, duration)
     })
 end
 
---- 读档后仅缓存已开放武器模板、校验奖池模型、同步地板颜色并启动位置检查。
+--- 读档后引用服务器已准备的只读数据，缓存个人装备状态并启动位置检查。
 function Component:OnPlayerLogin()
-    self._weaponTemplates = {}
-    for index, config in ipairs(GameConfig.ToolConfig) do
-        if index > GameEnum.WeaponLimit then
-            break
-        end
-        self._weaponTemplates[config.ToolId] = InstancePath.Wait(config.ModelId)
-    end
-    self._areas = RockLevel.GetAreas()
-    self:PrepareAreaDefinitions()
-    local grounds = {}
-    for worldIndex, world in ipairs(RockLevel.Worlds) do
-        local root = FXLoader:Workspace("BlockMeshs/" .. world.Name .. "Root")
-        grounds[worldIndex] = root:FindFirstChild("GuanQia", true)
-    end
-    for index, area in ipairs(self._areas) do
-        local ground = grounds[area.World]:WaitForChild("Ground" .. area.LocalIndex)
-        area.Node.Color = ground.Color
-    end
+    self._weaponTemplates = sharedWeaponTemplates
+    self._areas = sharedAreas
+    self._areaDefinitions = sharedAreaDefinitions
+    -- 服务端订阅不回放初值，先读取一次；后续仅缓存装备展示所需的数据。
+    self._equippedWeaponConfig = Weapon.GetEquippedConfig(self:GetTable(Fields.WeaponData))
+    self._useGiantPickaxe = self:GetTable(Fields.Settings).giantPickaxe
+    --- 武器解锁或装备变化时重新解析合法装备。
+    --- @param data table 最新武器数据。
+    self:WatchDataChanged(Fields.WeaponData, function(data)
+        self._equippedWeaponConfig = Weapon.GetEquippedConfig(data)
+    end)
+    --- 偏好变化时缓存尺寸开关，交由位置检查统一重建武器。
+    --- @param data table 最新玩家设置。
+    self:WatchDataChanged(Fields.Settings, function(data)
+        self._useGiantPickaxe = data.giantPickaxe
+    end)
     self._timer = FX.Task:Interval(0.1, function()
         self:Tick()
     end)
 end
 
 --- 按石头总数与通用比例确定刷新件数，按 AreaId 校验幸运倍率，仅缓存已开放收藏品的候选模型。
-function Component:PrepareAreaDefinitions()
+--- @param areas table 服务器统一读取的关卡边界。
+--- @return table 只读的静态奖池定义，不包含玩家随机结果。
+local function prepareAreaDefinitions(areas)
     local configsById, duplicateConfigs = {}, {}
     local areaConfigs = type(GameConfig.AreaConfig) == "table" and GameConfig.AreaConfig or {}
     for _, config in pairs(areaConfigs) do
@@ -113,11 +113,11 @@ function Component:PrepareAreaDefinitions()
             end
         end
     end
-    self._areaDefinitions = {}
-    for _, area in ipairs(self._areas) do
+    local definitions = {}
+    for _, area in ipairs(areas) do
         local areaId = area.Index
         local definition = {AreaId = areaId, Pool = {}}
-        self._areaDefinitions[areaId] = definition
+        definitions[areaId] = definition
         local config = configsById[areaId]
         if duplicateConfigs[areaId] then
             definition.Error = "duplicate AreaConfig rows"
@@ -166,7 +166,39 @@ function Component:PrepareAreaDefinitions()
         if definition.Error then
             warn(string.format("Rock rewards disabled for AreaId %s: %s", tostring(areaId), definition.Error))
         end
+        for _, reward in ipairs(definition.Pool) do
+            table.freeze(reward)
+        end
+        table.freeze(definition.Pool)
+        table.freeze(definition)
     end
+    return table.freeze(definitions)
+end
+
+--- 由服务端入口在创建玩家管理器前调用一次，等待公共资源就绪并同步地板颜色。
+function Component.InitSharedData()
+    local weaponTemplates = {}
+    for index, config in ipairs(GameConfig.ToolConfig) do
+        if index > GameEnum.WeaponLimit then
+            break
+        end
+        weaponTemplates[config.ToolId] = InstancePath.Wait(config.ModelId)
+    end
+    local areas = RockLevel.GetAreas()
+    local definitions = prepareAreaDefinitions(areas)
+    local grounds = {}
+    for worldIndex, world in ipairs(RockLevel.Worlds) do
+        local root = FXLoader:Workspace("BlockMeshs/" .. world.Name .. "Root")
+        grounds[worldIndex] = root:FindFirstChild("GuanQia", true)
+    end
+    for index, area in ipairs(areas) do
+        local ground = grounds[area.World]:WaitForChild("Ground" .. area.LocalIndex)
+        area.Node.Color = ground.Color
+        table.freeze(area)
+    end
+    sharedWeaponTemplates = table.freeze(weaponTemplates)
+    sharedAreas = table.freeze(areas)
+    sharedAreaDefinitions = definitions
 end
 
 --- 按 2×2 分区轮流抽取固定比例的石头格，分散道具后打乱幸运位置；已有区域不重抽。
@@ -174,8 +206,9 @@ end
 --- @return boolean 区域是否已可用于本轮。
 function Component:InitializeArea(area)
     local areaId = area.Index
-    if self._areaStates[areaId] then
-        return true
+    local areaState = self._areaStates[areaId]
+    if areaState then
+        return not areaState.Error
     end
     local definition = self._areaDefinitions[areaId]
     if not definition or definition.Error then
@@ -225,8 +258,9 @@ function Component:InitializeArea(area)
         local price = definition.AveragePrice
             * self._random:NextNumber(selected.PriceRateMin, selected.PriceRateMax) * luckRate
         if not isFiniteNumber(price) or price < 0 then
-            definition.Error = "generated reward price is not finite"
-            warn(string.format("Rock rewards disabled for AreaId %s: %s", tostring(areaId), definition.Error))
+            local message = "generated reward price is not finite"
+            self._areaStates[areaId] = {Error = message, Broken = {}}
+            warn(string.format("Rock rewards disabled for AreaId %s: %s", tostring(areaId), message))
             return false
         end
         contents[cells[index]] = {
@@ -584,16 +618,16 @@ function Component:ClearDrops()
     self._dropByCell = {}
 end
 
---- 出生、重生、切换装备或尺寸偏好时重新构建武器，避免累计缩放。
+--- 出生、重生、切换装备或尺寸偏好时按缓存状态重新构建武器，避免累计缩放。
 --- @param humanoid Humanoid 当前存活角色的 Humanoid。
 function Component:EquipPickaxe(humanoid)
     if self._pickaxe then
         self._pickaxe:Destroy()
     end
-    local config = Weapon.GetEquippedConfig(self:GetTable(Fields.WeaponData))
+    local config = self._equippedWeaponConfig
     local template = self._weaponTemplates[config.ToolId]
     local model
-    self._giantPickaxe = self:GetTable(Fields.Settings).giantPickaxe
+    self._giantPickaxe = self._useGiantPickaxe
     self._pickaxe, model = RockWeaponTool.Build(template, self._giantPickaxe)
     local handle = self._pickaxe.Handle
     self._weaponId = config.ToolId
@@ -644,7 +678,7 @@ function Component:EquipPickaxe(humanoid)
     end
 end
 
---- 服务端处理掉落、角色与入库，进入当前关时预生成当前关及下一关；死亡期间仍回收掉落。
+--- 服务端处理掉落、角色与入库，装备检查只比较缓存；死亡期间仍回收掉落。
 function Component:Tick()
     local now = workspace:GetServerTimeNow()
     for dropId, drop in pairs(self._dropNodes) do
@@ -668,8 +702,8 @@ function Component:Tick()
         end
         self._character = character
         self:EquipPickaxe(humanoid)
-    elseif self._weaponId ~= Weapon.GetEquippedConfig(self:GetTable(Fields.WeaponData)).ToolId
-        or self._giantPickaxe ~= self:GetTable(Fields.Settings).giantPickaxe then
+    elseif self._weaponId ~= self._equippedWeaponConfig.ToolId
+        or self._giantPickaxe ~= self._useGiantPickaxe then
         self:EquipPickaxe(humanoid)
     end
     local inSafeArea = false
@@ -742,7 +776,7 @@ function Component:OnPlayerLogout()
     self._attackRecords = {}
     self._claimed = {}
     self._areaStates = {}
-    self._areaDefinitions = {}
+    self._areaDefinitions = nil
 end
 
 --- 析构也释放任务，覆盖初始化中断的生命周期。
