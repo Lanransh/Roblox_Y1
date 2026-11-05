@@ -14,9 +14,9 @@
   },
   "initialDiamonds": {
     "kind": "number",
-    "value": 50,
+    "value": 35,
     "editor": {
-      "displayName": "初始赠送钻石",
+      "displayName": "新手赠送钻石",
       "display": {
         "kind": "number",
         "control": "number",
@@ -280,7 +280,7 @@
   },
   "dailyGiftDiamondAmount": {
     "kind": "number",
-    "value": 25,
+    "value": 28,
     "editor": {
       "displayName": "每日赠送钻石数量",
       "folder": "付费倍率系统",
@@ -315,7 +315,7 @@
     },
     "columns": [
       {
-        "key": "miniCoinPrice",
+        "key": "robuxPrice",
         "formula": {
           "kind": "BaseExp",
           "base": 0,
@@ -354,14 +354,14 @@
               {
                 "fromInput": 1,
                 "toInput": 1,
-                "fromValue": 70,
-                "toValue": 70
+                "fromValue": 65,
+                "toValue": 65
               },
               {
                 "fromInput": 2,
                 "toInput": 2,
-                "fromValue": 280,
-                "toValue": 280
+                "fromValue": 120,
+                "toValue": 120
               }
             ]
           },
@@ -389,8 +389,8 @@
               {
                 "fromInput": 2,
                 "toInput": 2,
-                "fromValue": 120,
-                "toValue": 120
+                "fromValue": 140,
+                "toValue": 140
               }
             ]
           },
@@ -415,8 +415,8 @@
           "step": 1
         },
         "columns": {
-          "miniCoinPrice": {
-            "displayName": "迷你币价格"
+          "robuxPrice": {
+            "displayName": "Robux 价格"
           },
           "instantDiamonds": {
             "displayName": "立即赠送钻石"
@@ -469,68 +469,68 @@
               {
                 "fromInput": 1,
                 "toInput": 1,
-                "fromValue": 28,
-                "toValue": 28
+                "fromValue": 35,
+                "toValue": 35
               },
               {
                 "fromInput": 2,
                 "toInput": 2,
-                "fromValue": 38,
-                "toValue": 38
-              },
-              {
-                "fromInput": 3,
-                "toInput": 3,
                 "fromValue": 48,
                 "toValue": 48
               },
               {
+                "fromInput": 3,
+                "toInput": 3,
+                "fromValue": 60,
+                "toValue": 60
+              },
+              {
                 "fromInput": 4,
                 "toInput": 4,
-                "fromValue": 78,
-                "toValue": 78
+                "fromValue": 98,
+                "toValue": 98
               },
               {
                 "fromInput": 5,
                 "toInput": 5,
-                "fromValue": 228,
-                "toValue": 228
+                "fromValue": 285,
+                "toValue": 285
               },
               {
                 "fromInput": 6,
                 "toInput": 6,
-                "fromValue": 418,
-                "toValue": 418
+                "fromValue": 523,
+                "toValue": 523
               },
               {
                 "fromInput": 7,
                 "toInput": 7,
-                "fromValue": 758,
-                "toValue": 758
+                "fromValue": 948,
+                "toValue": 948
               },
               {
                 "fromInput": 8,
                 "toInput": 8,
-                "fromValue": 1498,
-                "toValue": 1498
+                "fromValue": 1873,
+                "toValue": 1873
               },
               {
                 "fromInput": 9,
                 "toInput": 9,
-                "fromValue": 2688,
-                "toValue": 2688
+                "fromValue": 3360,
+                "toValue": 3360
               },
               {
                 "fromInput": 10,
                 "toInput": 10,
-                "fromValue": 5688,
-                "toValue": 5688
+                "fromValue": 7110,
+                "toValue": 7110
               },
               {
                 "fromInput": 11,
                 "toInput": 11,
-                "fromValue": 10288,
-                "toValue": 10288
+                "fromValue": 12860,
+                "toValue": 12860
               }
             ]
           },

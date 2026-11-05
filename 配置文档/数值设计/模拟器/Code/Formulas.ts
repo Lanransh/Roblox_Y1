@@ -57,7 +57,7 @@ export type BackpackExpansionValues = {
 };
 
 export type WeeklyCardValues = {
-  miniCoinPrice: number;
+  robuxPrice: number;
   instantDiamonds: number;
   dailyDiamonds: number;
   purchaseDayDiamonds: number;
@@ -162,37 +162,57 @@ export function calculateLevelValues(
   };
 }
 
-/** 计算等级力量：第 1 级至目标等级（包含目标等级）的升级需求之和，不含剩余训练值或重生次数。 */
+const levelTrainingThresholds = new WeakMap<CurveGroupValue, number[]>();
+
+/** 计算刚达到目标等级所需的累计训练值；只累加此前各级需求，不含目标等级自身需求。 */
 export function calculateLevelStrength(
   levelCurves: CurveGroupValue,
   targetLevel: number,
 ): number {
-  // 先校验目标等级；满级也包含该等级配置的升级需求。
+  // 校验合法等级；按配置对象缓存累计门槛，供状态、图表与血量公式复用。
   sampleCurveGroupColumnFormula(levelCurves, "nextLevelExperience", targetLevel);
-  let total = 0;
-  for (let level = levelCurves.input?.min ?? 1; level <= targetLevel; level += 1) {
-    total += sampleCurveGroupColumnFormula(levelCurves, "nextLevelExperience", level);
+  const minLevel = levelCurves.input?.min ?? 1;
+  let thresholds = levelTrainingThresholds.get(levelCurves);
+  if (!thresholds) {
+    thresholds = [0];
+    levelTrainingThresholds.set(levelCurves, thresholds);
   }
-  return total;
+  while (thresholds.length <= targetLevel - minLevel) {
+    const required = sampleCurveGroupColumnFormula(
+      levelCurves, "nextLevelExperience", minLevel + thresholds.length - 1,
+    );
+    thresholds.push(thresholds[thresholds.length - 1] + required);
+  }
+  return thresholds[targetLevel - minLevel];
 }
 
-/** 返回等级力量首次达到目标血量的最低等级；满级仍不足时返回 null，不采样上限外等级。 */
+/** 根据累计训练值反查已达到的最高等级；等于门槛时升级，搜索不超过等级上限。 */
+export function calculateTrainingLevel(
+  levelCurves: CurveGroupValue & { input: { max: number } },
+  trainingValue: number,
+): number {
+  let low = levelCurves.input.min ?? 1;
+  let high = levelCurves.input.max;
+  while (low < high) {
+    const middle = Math.ceil((low + high) / 2);
+    if (trainingValue >= calculateLevelStrength(levelCurves, middle)) {
+      low = middle;
+    } else {
+      high = middle - 1;
+    }
+  }
+  return low;
+}
+
+/** 返回力量刚达到目标血量时所属的等级（可在该级训练途中达到）；超过满级力量时返回 null。 */
 export function calculateOneHitKillLevel(
   levelCurves: CurveGroupValue & { input: { max: number } },
   grassHp: number,
 ): number | null {
-  let strength = 0;
-  for (
-    let level = levelCurves.input.min ?? 1;
-    level <= levelCurves.input.max;
-    level += 1
-  ) {
-    strength += sampleCurveGroupColumnFormula(levelCurves, "nextLevelExperience", level);
-    if (strength >= grassHp) {
-      return level;
-    }
+  if (grassHp > calculateLevelStrength(levelCurves, levelCurves.input.max)) {
+    return null;
   }
-  return null;
+  return calculateTrainingLevel(levelCurves, grassHp);
 }
 
 /** 按关卡 ID 采样准入、血量基准等级、血量倍率与道具单价，供定价和难度计算使用。 */
@@ -209,7 +229,7 @@ export function calculateStageValues(
   };
 }
 
-/** 用期望等级及之前各级的升级需求之和作为攻击力基准，再乘关卡血量倍率；起始关基准至少为 1。 */
+/** 用刚达到期望等级所需的累计训练值作为力量基准，再乘关卡血量倍率；起始关基准至少为 1。 */
 export function calculateStageCombatValues(
   stageCurves: CurveGroupValue,
   levelCurves: CurveGroupValue,
@@ -313,7 +333,7 @@ export function calculateBackpackExpansionValues(
   };
 }
 
-/** 按周卡档位采样价格与钻石奖励，并计算购买当天和完整 7 天的总奖励。 */
+/** 按周卡档位采样 Robux 标价与奖励，计算当天、完整 7 天奖励及按基础兑换比例折算的钻石。 */
 export function calculateWeeklyCardValues(
   weeklyCardCurves: CurveGroupValue,
   cardId: number,
@@ -322,11 +342,11 @@ export function calculateWeeklyCardValues(
   const instantDiamonds = Math.max(0, Math.floor(values.instantDiamonds));
   const dailyDiamonds = Math.max(0, Math.floor(values.dailyDiamonds));
   return {
-    miniCoinPrice: Math.max(0, Math.floor(values.miniCoinPrice)),
+    robuxPrice: Math.max(0, Math.floor(values.robuxPrice)),
     instantDiamonds,
     dailyDiamonds,
     purchaseDayDiamonds: instantDiamonds + dailyDiamonds,
-    equivalentDiamonds: Math.max(0, Math.floor(values.miniCoinPrice)) * 8,
+    equivalentDiamonds: Math.max(0, Math.floor(values.robuxPrice)) * 10,
     totalDiamonds:
       instantDiamonds + dailyDiamonds * WEEKLY_CARD_REWARD_DAYS,
   };

@@ -4,7 +4,7 @@ import {
   calculateBackpackExpansionValues,
   calculateLevelStrength,
   calculateItemSaleGold,
-  calculateLevelValues,
+  calculateTrainingLevel,
   calculatePaidMultiplierValues,
   calculateRebirthCatchUpMultiplier,
   calculateRebirthFieldSelection,
@@ -34,6 +34,7 @@ export type StateValues = {
   rebirthCount: number;
   level: number;
   trainingValue: number;
+  trainingValueKind?: "cumulative";
   strength: number;
   rebirthRecoveryTargetLevel: number | null;
   rebirthRecoveryStartedAt: number | null;
@@ -101,9 +102,7 @@ export class State extends BaseState<StateValues> {
   sickleId: number;
   auraId: number;
   rebirthCount: number;
-  level: number;
   trainingValue: number;
-  strength: number;
   rebirthRecoveryTargetLevel: number | null;
   rebirthRecoveryStartedAt: number | null;
   diamonds: number;
@@ -130,18 +129,18 @@ export class State extends BaseState<StateValues> {
     this.sickleId = 1;
     this.auraId = 0;
     this.rebirthCount = 0;
-    this.level = 1;
     this.trainingValue = 0;
-    this.strength = calculateLevelStrength(this.projectConfig.levelCurves, this.level);
     this.rebirthRecoveryTargetLevel = null;
     this.rebirthRecoveryStartedAt = null;
-    this.diamonds = this.projectConfig.initialDiamonds;
+    // 新手赠送与首日每日赠送一起到账，后续每日奖励从下一逻辑日开始。
+    this.diamonds = this.projectConfig.initialDiamonds +
+      Math.max(0, Math.floor(this.projectConfig.dailyGiftDiamondAmount));
     this.diamondGiftElapsedSeconds = 0;
     this.smallWeeklyCardRemainingRewards = 0;
     this.smallWeeklyCardElapsedSeconds = 0;
     this.largeWeeklyCardRemainingRewards = 0;
     this.largeWeeklyCardElapsedSeconds = 0;
-    this.paidTrainingMultiplierId = 1;
+    this.paidTrainingMultiplierId = 0;
     this.autoPaidTrainingUpgradeEnabled = true;
     this.backpackExpansionLevel = 0;
     this.autoBackpackUpgradeEnabled = false;
@@ -158,6 +157,14 @@ export class State extends BaseState<StateValues> {
 
   get summary(): string {
     return this.getSummary();
+  }
+
+  get level(): number {
+    return calculateTrainingLevel(this.projectConfig.levelCurves, this.trainingValue);
+  }
+
+  get strength(): number {
+    return this.trainingValue;
   }
 
   getFieldDisplayNames(): Record<string, string> {
@@ -201,6 +208,7 @@ export class State extends BaseState<StateValues> {
       rebirthCount: this.rebirthCount,
       level: this.level,
       trainingValue: this.trainingValue,
+      trainingValueKind: "cumulative",
       strength: this.strength,
       rebirthRecoveryTargetLevel: this.rebirthRecoveryTargetLevel,
       rebirthRecoveryStartedAt: this.rebirthRecoveryStartedAt,
@@ -229,10 +237,14 @@ export class State extends BaseState<StateValues> {
     this.sickleId = values.sickleId ?? 1;
     this.auraId = values.auraId ?? 0;
     this.rebirthCount = values.rebirthCount ?? 0;
-    this.level = values.level;
-    this.trainingValue = values.trainingValue;
-    // 力量只取决于等级；还原旧版状态时也按同一公式重算。
-    this.strength = calculateLevelStrength(this.projectConfig.levelCurves, this.level);
+    // 上一版保存的是本级剩余训练值；转换为累计量后统一派生等级与力量。
+    const trainingValue = values.trainingValueKind === "cumulative"
+      ? values.trainingValue
+      : calculateLevelStrength(this.projectConfig.levelCurves, values.level) + values.trainingValue;
+    this.trainingValue = Math.max(0, Math.min(
+      calculateLevelStrength(this.projectConfig.levelCurves, this.projectConfig.levelCurves.input.max),
+      trainingValue,
+    ));
     this.rebirthRecoveryTargetLevel = values.rebirthRecoveryTargetLevel ?? null;
     this.rebirthRecoveryStartedAt = values.rebirthRecoveryStartedAt ?? null;
     this.diamonds = values.diamonds ?? this.projectConfig.initialDiamonds;
@@ -270,11 +282,16 @@ export class State extends BaseState<StateValues> {
   }
 
   getNextLevelExperience(): number {
-    return this.getLevelValues().nextLevelExperience;
+    const level = this.level;
+    return level >= this.projectConfig.levelCurves.input.max
+      ? 0
+      : calculateLevelStrength(this.projectConfig.levelCurves, level + 1);
   }
 
   getTrainingValuePerSettlement(): number {
-    return this.getTotalTrainingMultiplier();
+    return this.level >= this.projectConfig.levelCurves.input.max
+      ? 0
+      : this.getTotalTrainingMultiplier();
   }
 
   getTotalTrainingMultiplier(): number {
@@ -520,9 +537,7 @@ export class State extends BaseState<StateValues> {
     this.rebirthRecoveryTargetLevel = recoveryTargetLevel;
     this.rebirthRecoveryStartedAt = recoveryStartedAt;
     this.rebirthCount += 1;
-    this.level = 1;
     this.trainingValue = 0;
-    this.strength = calculateLevelStrength(this.projectConfig.levelCurves, this.level);
     this.mode = "training";
   }
 
@@ -698,9 +713,14 @@ export class State extends BaseState<StateValues> {
       settlement < this.projectConfig.trainingSettlementsPerSecond;
       settlement += 1
     ) {
+      if (this.level >= this.projectConfig.levelCurves.input.max) {
+        break;
+      }
       const trainingGain = this.getTrainingValuePerSettlement();
-      this.trainingValue += trainingGain;
-      this.applyAutomaticLevelUps();
+      this.trainingValue = Math.min(
+        calculateLevelStrength(this.projectConfig.levelCurves, this.projectConfig.levelCurves.input.max),
+        this.trainingValue + trainingGain,
+      );
     }
 
     if (this.mode === "challenge") {
@@ -849,32 +869,6 @@ export class State extends BaseState<StateValues> {
 
   private toTickDuration(duration: number): number {
     return Math.max(1, Math.ceil(duration));
-  }
-
-  private applyAutomaticLevelUps(): void {
-    if (this.level >= this.projectConfig.levelCurves.input.max) {
-      return;
-    }
-
-    const previousLevel = this.level;
-    let levelValues = this.getLevelValues();
-    while (this.level < this.projectConfig.levelCurves.input.max) {
-      const required = levelValues.nextLevelExperience;
-      if (this.trainingValue < required) {
-        break;
-      }
-
-      this.trainingValue -= required;
-      this.level += 1;
-      levelValues = this.getLevelValues();
-    }
-    if (this.level !== previousLevel) {
-      this.strength = calculateLevelStrength(this.projectConfig.levelCurves, this.level);
-    }
-  }
-
-  private getLevelValues() {
-    return calculateLevelValues(this.projectConfig.levelCurves, this.level);
   }
 
   private get projectConfig(): ProjectConfig {
