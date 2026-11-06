@@ -1611,7 +1611,9 @@ export class Game extends BaseGame<ProjectConfig, State> implements EditorRender
 
     valueLabel.Text = remainingRewards > 0
       ? `<b>剩余 ${numberToText(remainingRewards)} 次 · ${this.formatDuration(this.state.getWeeklyCardRewardRemainingSeconds(cardType))}</b>`
-      : "<b>未生效</b>";
+      : this.state.isWeeklyCardActive(cardType)
+        ? `<b>奖励已领完 · 到期 ${this.formatDuration(this.state.getWeeklyCardRemainingSeconds(cardType))}</b>`
+        : "<b>未生效</b>";
     detailsLabel.Text =
       `立即${numberToText(values.instantDiamonds)} · 每日${numberToText(values.dailyDiamonds)}` +
       ` · 同价值≈${numberToText(values.equivalentDiamonds)} · 7天${numberToText(values.totalDiamonds)}钻`;

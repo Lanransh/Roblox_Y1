@@ -42,8 +42,10 @@ export type StateValues = {
   diamondGiftElapsedSeconds: number;
   smallWeeklyCardRemainingRewards: number;
   smallWeeklyCardElapsedSeconds: number;
+  smallWeeklyCardRemainingSeconds?: number;
   largeWeeklyCardRemainingRewards: number;
   largeWeeklyCardElapsedSeconds: number;
+  largeWeeklyCardRemainingSeconds?: number;
   paidTrainingMultiplierId: number;
   autoPaidTrainingUpgradeEnabled: boolean;
   backpackExpansionLevel: number;
@@ -109,8 +111,10 @@ export class State extends BaseState<StateValues> {
   diamondGiftElapsedSeconds: number;
   smallWeeklyCardRemainingRewards: number;
   smallWeeklyCardElapsedSeconds: number;
+  smallWeeklyCardRemainingSeconds: number;
   largeWeeklyCardRemainingRewards: number;
   largeWeeklyCardElapsedSeconds: number;
+  largeWeeklyCardRemainingSeconds: number;
   paidTrainingMultiplierId: number;
   autoPaidTrainingUpgradeEnabled: boolean;
   backpackExpansionLevel: number;
@@ -138,8 +142,10 @@ export class State extends BaseState<StateValues> {
     this.diamondGiftElapsedSeconds = 0;
     this.smallWeeklyCardRemainingRewards = 0;
     this.smallWeeklyCardElapsedSeconds = 0;
+    this.smallWeeklyCardRemainingSeconds = 0;
     this.largeWeeklyCardRemainingRewards = 0;
     this.largeWeeklyCardElapsedSeconds = 0;
+    this.largeWeeklyCardRemainingSeconds = 0;
     this.paidTrainingMultiplierId = 0;
     this.autoPaidTrainingUpgradeEnabled = true;
     this.backpackExpansionLevel = 0;
@@ -152,7 +158,7 @@ export class State extends BaseState<StateValues> {
   }
 
   getSummary(): string {
-    return `${this.mode === "training" ? "训练" : "闯关"}模式 | 自动${this.autoModeEnabled ? "开" : "关"} | 重生 ${this.rebirthCount} 次 | 回级 ${this.rebirthRecoveryTargetLevel === null ? "-" : `${this.level}/${this.rebirthRecoveryTargetLevel}`} | 金币 ${this.gold} | 光环 ${this.auraId} 级 | 钻石 ${this.diamonds} | 钻石自动 ${this.autoPaidTrainingUpgradeEnabled ? "倍率" : "-"}/${this.autoBackpackUpgradeEnabled ? "背包" : "-"} | 周卡余次 ${this.smallWeeklyCardRemainingRewards}/${this.largeWeeklyCardRemainingRewards} | 等级 ${this.level} | 力量 ${this.strength} | 道具 ${this.itemCount}/${this.getBackpackCapacity()}`;
+    return `${this.mode === "training" ? "训练" : "闯关"}模式 | 自动${this.autoModeEnabled ? "开" : "关"} | 重生 ${this.rebirthCount} 次 | 回级 ${this.rebirthRecoveryTargetLevel === null ? "-" : `${this.level}/${this.rebirthRecoveryTargetLevel}`} | 金币 ${this.gold} | 光环 ${this.auraId} 级 | 钻石 ${this.diamonds} | 钻石自动 ${this.autoPaidTrainingUpgradeEnabled ? "倍率" : "-"}/${this.autoBackpackUpgradeEnabled ? "背包" : "-"} | 周卡余次 ${this.smallWeeklyCardRemainingRewards}/${this.largeWeeklyCardRemainingRewards} · 有效秒 ${this.smallWeeklyCardRemainingSeconds}/${this.largeWeeklyCardRemainingSeconds} | 等级 ${this.level} | 力量 ${this.strength} | 道具 ${this.itemCount}/${this.getBackpackCapacity()}`;
   }
 
   get summary(): string {
@@ -184,8 +190,10 @@ export class State extends BaseState<StateValues> {
       diamondGiftElapsedSeconds: "本轮钻石赠送已累计秒数",
       smallWeeklyCardRemainingRewards: "小周卡剩余每日奖励次数",
       smallWeeklyCardElapsedSeconds: "小周卡本轮已累计秒数",
+      smallWeeklyCardRemainingSeconds: "小周卡剩余有效秒数",
       largeWeeklyCardRemainingRewards: "大周卡剩余每日奖励次数",
       largeWeeklyCardElapsedSeconds: "大周卡本轮已累计秒数",
+      largeWeeklyCardRemainingSeconds: "大周卡剩余有效秒数",
       paidTrainingMultiplierId: "付费训练倍率档位",
       autoPaidTrainingUpgradeEnabled: "付费训练倍率钻石自动升级",
       backpackExpansionLevel: "背包扩容等级",
@@ -216,8 +224,10 @@ export class State extends BaseState<StateValues> {
       diamondGiftElapsedSeconds: this.diamondGiftElapsedSeconds,
       smallWeeklyCardRemainingRewards: this.smallWeeklyCardRemainingRewards,
       smallWeeklyCardElapsedSeconds: this.smallWeeklyCardElapsedSeconds,
+      smallWeeklyCardRemainingSeconds: this.smallWeeklyCardRemainingSeconds,
       largeWeeklyCardRemainingRewards: this.largeWeeklyCardRemainingRewards,
       largeWeeklyCardElapsedSeconds: this.largeWeeklyCardElapsedSeconds,
+      largeWeeklyCardRemainingSeconds: this.largeWeeklyCardRemainingSeconds,
       paidTrainingMultiplierId: this.paidTrainingMultiplierId,
       autoPaidTrainingUpgradeEnabled: this.autoPaidTrainingUpgradeEnabled,
       backpackExpansionLevel: this.backpackExpansionLevel,
@@ -265,6 +275,16 @@ export class State extends BaseState<StateValues> {
       0,
       Math.floor(values.largeWeeklyCardElapsedSeconds ?? 0),
     );
+    this.smallWeeklyCardRemainingSeconds = Math.max(0, Math.floor(
+      values.smallWeeklyCardRemainingSeconds ?? (this.smallWeeklyCardRemainingRewards > 0
+        ? (this.smallWeeklyCardRemainingRewards + 1) * this.getLogicalDaySeconds() - this.smallWeeklyCardElapsedSeconds
+        : 0),
+    ));
+    this.largeWeeklyCardRemainingSeconds = Math.max(0, Math.floor(
+      values.largeWeeklyCardRemainingSeconds ?? (this.largeWeeklyCardRemainingRewards > 0
+        ? (this.largeWeeklyCardRemainingRewards + 1) * this.getLogicalDaySeconds() - this.largeWeeklyCardElapsedSeconds
+        : 0),
+    ));
     this.paidTrainingMultiplierId = Math.min(
       MAX_PAID_MULTIPLIER_ID,
       Math.max(0, Math.floor(values.paidTrainingMultiplierId ?? 0)),
@@ -489,13 +509,25 @@ export class State extends BaseState<StateValues> {
   }
 
   isWeeklyCardActive(cardType: WeeklyCardType): boolean {
-    return this.getWeeklyCardRemainingRewards(cardType) > 0;
+    return this.getWeeklyCardRemainingSeconds(cardType) > 0;
+  }
+
+  getWeeklyCardRemainingSeconds(cardType: WeeklyCardType): number {
+    return cardType === "small"
+      ? this.smallWeeklyCardRemainingSeconds
+      : this.largeWeeklyCardRemainingSeconds;
   }
 
   applyWeeklyCardPurchase(cardType: WeeklyCardType): void {
     const { purchaseDayDiamonds } = this.getWeeklyCardValues(cardType);
     this.diamonds += purchaseDayDiamonds;
     this.setWeeklyCardProgress(cardType, WEEKLY_CARD_REWARD_DAYS - 1, 0);
+    const duration = WEEKLY_CARD_REWARD_DAYS * this.getLogicalDaySeconds();
+    if (cardType === "small") {
+      this.smallWeeklyCardRemainingSeconds = duration;
+    } else {
+      this.largeWeeklyCardRemainingSeconds = duration;
+    }
   }
 
   getCurrentRebirthValues() {
@@ -807,6 +839,14 @@ export class State extends BaseState<StateValues> {
   }
 
   private advanceWeeklyCardOneSecond(cardType: WeeklyCardType): void {
+    if (!this.isWeeklyCardActive(cardType)) {
+      return;
+    }
+    if (cardType === "small") {
+      this.smallWeeklyCardRemainingSeconds -= 1;
+    } else {
+      this.largeWeeklyCardRemainingSeconds -= 1;
+    }
     const remainingRewards = this.getWeeklyCardRemainingRewards(cardType);
     if (remainingRewards <= 0) {
       return;
