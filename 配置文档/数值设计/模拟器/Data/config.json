@@ -325,14 +325,14 @@
               {
                 "fromInput": 1,
                 "toInput": 1,
-                "fromValue": 18,
-                "toValue": 18
+                "fromValue": 28,
+                "toValue": 28
               },
               {
                 "fromInput": 2,
                 "toInput": 2,
-                "fromValue": 68,
-                "toValue": 68
+                "fromValue": 88,
+                "toValue": 88
               }
             ]
           },
@@ -383,14 +383,14 @@
               {
                 "fromInput": 1,
                 "toInput": 1,
-                "fromValue": 30,
-                "toValue": 30
+                "fromValue": 53,
+                "toValue": 53
               },
               {
                 "fromInput": 2,
                 "toInput": 2,
-                "fromValue": 140,
-                "toValue": 140
+                "fromValue": 190,
+                "toValue": 190
               }
             ]
           },
@@ -493,44 +493,44 @@
               {
                 "fromInput": 5,
                 "toInput": 5,
-                "fromValue": 285,
-                "toValue": 285
+                "fromValue": 288,
+                "toValue": 288
               },
               {
                 "fromInput": 6,
                 "toInput": 6,
-                "fromValue": 523,
-                "toValue": 523
+                "fromValue": 588,
+                "toValue": 588
               },
               {
                 "fromInput": 7,
                 "toInput": 7,
-                "fromValue": 948,
-                "toValue": 948
+                "fromValue": 1188,
+                "toValue": 1188
               },
               {
                 "fromInput": 8,
                 "toInput": 8,
-                "fromValue": 1873,
-                "toValue": 1873
+                "fromValue": 2688,
+                "toValue": 2688
               },
               {
                 "fromInput": 9,
                 "toInput": 9,
-                "fromValue": 3360,
-                "toValue": 3360
+                "fromValue": 5688,
+                "toValue": 5688
               },
               {
                 "fromInput": 10,
                 "toInput": 10,
-                "fromValue": 7110,
-                "toValue": 7110
+                "fromValue": 12888,
+                "toValue": 12888
               },
               {
                 "fromInput": 11,
                 "toInput": 11,
-                "fromValue": 12860,
-                "toValue": 12860
+                "fromValue": 28888,
+                "toValue": 28888
               }
             ]
           },

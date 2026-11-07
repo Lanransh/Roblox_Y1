@@ -1,20 +1,46 @@
-local Players = game:GetService("Players")
+local FX = _G.FX
+local FXLoader = FX.Loader
 local RunService = game:GetService("RunService")
-local player = Players.LocalPlayer
-local greetings = {}
 
---- 按类型等待店员 Humanoid，兼容 Morph 等名称；按骨架等待身体节点，挥手只改变本地外观。
+--- 店员挥手仅改变客户端外观，保留原有距离与动画时长。
+local Component = FX.Class("CShopGreetingsCompClass", "FCPlayerCompClass")
+
+--- 持有店员初始姿势，用于离开范围和组件释放时还原。
+--- @param owner CPlayerObjectClass 当前客户端玩家对象。
+function Component:Ctor(owner)
+    Component.Super.Ctor(self, owner)
+    self._greetings = {}
+end
+
+--- 提供玩家对象内唯一的组件名称。
+--- @return string 商店招呼组件名称。
+function Component:GetCompName()
+    return "CShopGreetingsComp"
+end
+
+--- 服务端就绪后绑定世界一的三个店员，与原脚本作用范围一致。
+function Component:OnReady()
+    local world1 = FXLoader:Workspace("Decorations/World1Decorations")
+    for index, name in ipairs({"Shop", "BlueHut", "PurpleHut"}) do
+        table.insert(self._greetings, self:CreateGreeting(FXLoader:Here(world1, name)))
+    end
+    self:TrackConnection(RunService.RenderStepped:Connect(function()
+        self:UpdateGreetings()
+    end))
+end
+
+--- 按类型等待 Humanoid，兼容 Morph 名称，并按骨架收集左臂。
 --- @param hut Model 场景中已复制的商店。
 --- @return table 店员肩部、手臂初始姿势及靠近状态。
-local function CreateGreeting(hut)
-    local npc = hut:WaitForChild("ShopNPC")
+function Component:CreateGreeting(hut)
+    local npc = FXLoader:Here(hut, "ShopNPC")
     local humanoid = npc:FindFirstChildOfClass("Humanoid")
     while not humanoid do
         npc.ChildAdded:Wait()
         humanoid = npc:FindFirstChildOfClass("Humanoid")
     end
     local isR15 = humanoid.RigType == Enum.HumanoidRigType.R15
-    local torso = npc:WaitForChild(isR15 and "UpperTorso" or "Torso")
+    local torso = FXLoader:Here(npc, isR15 and "UpperTorso" or "Torso")
     local armNames = isR15 and {"LeftUpperArm", "LeftLowerArm", "LeftHand"} or {"Left Arm"}
     local attachment = torso:FindFirstChild("LeftShoulderRigAttachment")
     local shoulderPosition = attachment and attachment.WorldPosition
@@ -22,25 +48,19 @@ local function CreateGreeting(hut)
     local shoulder = CFrame.new(shoulderPosition) * torso.CFrame.Rotation
     local parts = {}
     for index, name in ipairs(armNames) do
-        local part = npc:WaitForChild(name)
+        local part = FXLoader:Here(npc, name)
         table.insert(parts, {part = part, rest = part.CFrame, offset = shoulder:ToObjectSpace(part.CFrame)})
     end
     return {torso = torso, shoulder = shoulder, parts = parts, inside = false, started = nil}
 end
 
-local world1 = workspace:WaitForChild("Decorations"):WaitForChild("World1Decorations")
-for index, name in ipairs({"Shop", "BlueHut", "PurpleHut"}) do
-    table.insert(greetings, CreateGreeting(world1:WaitForChild(name)))
-end
-
---- 玩家在进入气泡区前提前挥手一次；离开外圈才重新触发，死亡或离开时还原原姿势。
---- @param deltaTime number 引擎帧间隔，本动作按实时时钟计算以保持不同帧率下一致。
-local function UpdateGreetings(deltaTime)
-    local character = player.Character
+--- 进入 70 格内挥手一次，离开 80 格或死亡后还原并允许再次触发。
+function Component:UpdateGreetings()
+    local character = self:GetPlayerCharacter()
     local root = character and character:FindFirstChild("HumanoidRootPart")
     local humanoid = character and character:FindFirstChildOfClass("Humanoid")
     local now = os.clock()
-    for index, greeting in ipairs(greetings) do
+    for index, greeting in ipairs(self._greetings) do
         local distance = math.huge
         if root and humanoid and humanoid.Health > 0 then
             distance = (root.Position - greeting.torso.Position).Magnitude
@@ -51,18 +71,14 @@ local function UpdateGreetings(deltaTime)
         elseif greeting.inside and distance >= 80 then
             greeting.inside = false
             greeting.started = nil
-            for partIndex, entry in ipairs(greeting.parts) do
-                entry.part.CFrame = entry.rest
-            end
+            self:RestoreGreeting(greeting)
         end
         if greeting.started then
             local elapsed = now - greeting.started
             local blend = math.min(elapsed / 0.35, (2.4 - elapsed) / 0.35, 1)
             if elapsed >= 2.4 then
                 greeting.started = nil
-                for partIndex, entry in ipairs(greeting.parts) do
-                    entry.part.CFrame = entry.rest
-                end
+                self:RestoreGreeting(greeting)
             else
                 local angle = math.rad(-140 + 16 * math.sin(elapsed * math.pi * 4)) * math.max(blend, 0)
                 local pose = greeting.shoulder * CFrame.Angles(0, 0, angle)
@@ -74,16 +90,20 @@ local function UpdateGreetings(deltaTime)
     end
 end
 
-local connection = RunService.RenderStepped:Connect(UpdateGreetings)
-
---- 脚本释放时恢复店员姿势，防止本地挥手残留。
-local function Cleanup()
-    connection:Disconnect()
-    for index, greeting in ipairs(greetings) do
-        for partIndex, entry in ipairs(greeting.parts) do
-            entry.part.CFrame = entry.rest
-        end
+--- 还原左臂初始姿势，避免挥手结束或释放后残留动作。
+--- @param greeting table 当前店员的手臂姿势记录。
+function Component:RestoreGreeting(greeting)
+    for partIndex, entry in ipairs(greeting.parts) do
+        entry.part.CFrame = entry.rest
     end
 end
 
-script.Destroying:Connect(Cleanup)
+--- 先断开帧回调，再恢复全部店员的初始姿势。
+function Component:Dtor()
+    Component.Super.Dtor(self)
+    for index, greeting in ipairs(self._greetings) do
+        self:RestoreGreeting(greeting)
+    end
+end
+
+return Component
