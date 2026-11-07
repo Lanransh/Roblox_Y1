@@ -79,14 +79,27 @@ function RockLevel.GetProgress(value, maxLevel)
         value - thresholds[level], RockLevel.GetNextExperience(level)
 end
 
---- 沿用 Studio_Y3 等级差减伤：低于推荐等级每级减伤 5%，差 20 级起伤害为零；升级后重算，无计时惩罚。
+--- 按等级差分段保留伤害：低 3 级以内不额外减伤，档位之间平滑过渡，低 30 级起伤害为零。
 --- @param level number 玩家训练等级。
 --- @param index number 配置中的全局关卡序号。
 --- @param strength number 当前阶段累计训练值，与显示力量一致。
 --- @return number 单次击打伤害。
 function RockLevel.GetDamage(level, index, strength)
     local recommendedLevel = CurveSampler:SampleCurveGroupColumn(NumericalConfig.stageCurves, "grassLevel", index)
-    return strength * math.max(0, 1 - math.max(0, recommendedLevel - level) * GameEnum.RockLevelDamageDecayPerLevel)
+    local levelGap = recommendedLevel - level
+    local points = GameEnum.RockLevelDamagePoints
+    if levelGap <= points[1].LevelGap then
+        return strength
+    end
+    for pointIndex = 2, #points do
+        local point = points[pointIndex]
+        if levelGap <= point.LevelGap then
+            local previous = points[pointIndex - 1]
+            local alpha = (levelGap - previous.LevelGap) / (point.LevelGap - previous.LevelGap)
+            return strength * (previous.DamageMultiplier + (point.DamageMultiplier - previous.DamageMultiplier) * alpha)
+        end
+    end
+    return 0
 end
 
 --- 本关幸运倍率：相对全局第一关期望道具价格向上取整，用于关卡头顶展示。
