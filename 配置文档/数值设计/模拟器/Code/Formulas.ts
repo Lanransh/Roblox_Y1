@@ -151,7 +151,7 @@ export function calculateAuraValues(
   };
 }
 
-/** 按当前等级采样升到下一级所需的训练值；升级只消耗经验进度。 */
+/** 按当前等级采样升到下一级所需的训练值；累计训练值不因升级扣除。 */
 export function calculateLevelValues(
   levelCurves: CurveGroupValue,
   level: number,
@@ -164,8 +164,16 @@ export function calculateLevelValues(
 
 const levelTrainingThresholds = new WeakMap<CurveGroupValue, number[]>();
 
-/** 计算刚达到目标等级所需的累计训练值；只累加此前各级需求，不含目标等级自身需求。 */
+/** 按当前等级读取力量曲线，作为玩家攻击力，与累计训练值独立。 */
 export function calculateLevelStrength(
+  levelCurves: CurveGroupValue,
+  level: number,
+): number {
+  return sampleCurveGroup(levelCurves, level).values.strength;
+}
+
+/** 计算刚达到目标等级所需的累计训练值；只累加此前各级需求，不含目标等级自身需求。 */
+export function calculateLevelTrainingThreshold(
   levelCurves: CurveGroupValue,
   targetLevel: number,
 ): number {
@@ -195,7 +203,7 @@ export function calculateTrainingLevel(
   let high = levelCurves.input.max;
   while (low < high) {
     const middle = Math.ceil((low + high) / 2);
-    if (trainingValue >= calculateLevelStrength(levelCurves, middle)) {
+    if (trainingValue >= calculateLevelTrainingThreshold(levelCurves, middle)) {
       low = middle;
     } else {
       high = middle - 1;
@@ -204,15 +212,21 @@ export function calculateTrainingLevel(
   return low;
 }
 
-/** 返回力量刚达到目标血量时所属的等级（可在该级训练途中达到）；超过满级力量时返回 null。 */
+/** 逐级检查力量曲线，返回能一击击破目标的最低等级；所有合法等级均不足时返回 null。 */
 export function calculateOneHitKillLevel(
   levelCurves: CurveGroupValue & { input: { max: number } },
   grassHp: number,
 ): number | null {
-  if (grassHp > calculateLevelStrength(levelCurves, levelCurves.input.max)) {
-    return null;
+  for (
+    let level = levelCurves.input.min ?? 1;
+    level <= levelCurves.input.max;
+    level += 1
+  ) {
+    if (calculateLevelStrength(levelCurves, level) >= grassHp) {
+      return level;
+    }
   }
-  return calculateTrainingLevel(levelCurves, grassHp);
+  return null;
 }
 
 /** 按关卡 ID 采样准入、血量基准等级、血量倍率与道具单价，供定价和难度计算使用。 */
@@ -229,7 +243,7 @@ export function calculateStageValues(
   };
 }
 
-/** 用刚达到期望等级所需的累计训练值作为力量基准，再乘关卡血量倍率；起始关基准至少为 1。 */
+/** 用期望等级的配置力量作为血量基准，再乘关卡血量倍率；期望等级不大于 1 时保留起始基准 1。 */
 export function calculateStageCombatValues(
   stageCurves: CurveGroupValue,
   levelCurves: CurveGroupValue,

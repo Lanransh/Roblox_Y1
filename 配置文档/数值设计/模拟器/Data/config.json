@@ -1131,6 +1131,22 @@
           },
           "rounding": "round"
         }
+      },
+      {
+        "key": "strength",
+        "formula": {
+          "kind": "BaseExp",
+          "base": 0,
+          "multiplier": {
+            "kind": "constant",
+            "value": 10
+          },
+          "power": {
+            "kind": "constant",
+            "value": 1.1
+          },
+          "rounding": "floor"
+        }
       }
     ],
     "editor": {
@@ -1147,6 +1163,9 @@
         "columns": {
           "nextLevelExperience": {
             "displayName": "升到下一级所需经验"
+          },
+          "strength": {
+            "displayName": "当前等级力量（攻击力）"
           }
         }
       }

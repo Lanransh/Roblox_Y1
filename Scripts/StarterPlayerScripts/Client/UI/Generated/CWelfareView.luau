@@ -177,6 +177,8 @@ require(script.Parent.CUIView)
   未解锁在线卡左上角显示剩余分秒，签到卡显示明天或剩余天数；
   可领取及已领取时恢复分钟门槛或日期，底部只保留领取状态提示。
   普通签到按 day <3 / <6 / >=6 分档，大签到使用独立双行原型。
+  在线与签到奖励图标背后的放射光芒由 View 管理，24 秒匀速旋转一周；
+  切页或关闭时暂停，重开继续，移除条目时释放，不改变领取状态。
   在线总进度取大于 onlineMinutes 的最小门槛，全部达成则用最大门槛；
   空组显示 No rewards；进度宽度截断，原始数据不变。
   无本地倒计时器，游戏须更新 onlineMinutes 并刷新，不能只初始化一次。
@@ -250,11 +252,36 @@ RewardRow.__index = RewardRow
 -- @return table 条目展示对象
 function RewardRow.Attach(view, group, root)
     local row = setmetatable({ View = view, Kind = group.kind, Root = root }, RewardRow)
+    if group.kind == "online" or group.kind == "signin" then
+        row.Glow = Loader:Here(root, "RewardGlowBox")
+        -- 原生游戏负责播放局部动画；没有引擎服务的制作环境保留设计静态效果。
+        if game then
+            row.GlowTween = game:GetService("TweenService"):Create(
+                row.Glow,
+                TweenInfo.new(24, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1),
+                { Rotation = 360 }
+            )
+        end
+    end
     row.Button = Loader:Here(root, "ClaimBtn")
     row.Connection = row.Button.Activated:Connect(function()
         view:EmitUIAction("Claim", { kind = row.Kind, rewardId = row.Config.id })
     end)
     return row
+end
+
+-- 仅在显隐状态变化时播放或暂停，避免定时刷新重置旋转相位。
+-- @param active boolean 页面已打开且当前正在显示本分组。
+function RewardRow:SetGlowActive(active)
+    if not self.GlowTween or self._glowActive == active then
+        return
+    end
+    self._glowActive = active
+    if active then
+        self.GlowTween:Play()
+    else
+        self.GlowTween:Pause()
+    end
 end
 
 -- 使用项目查询结果展示奖励，按业务状态控制按钮，不判断真实领取资格。
@@ -404,6 +431,10 @@ end
 
 -- 释放条目拥有的事件与克隆根；不删除页面设计模板。
 function RewardRow:Destroy()
+    if self.GlowTween then
+        self.GlowTween:Cancel()
+        self.GlowTween = nil
+    end
     self.Connection:Disconnect()
     self.Root:Destroy()
 end
@@ -458,6 +489,7 @@ end
 
 -- 打开时确定本次页签显隐；领取后的刷新保留当前页，下次打开才隐藏。
 function CWelfareView:OnShow()
+    self._glowVisible = true
     local state = self:GetUIState()
     local showOffline = state.offline.status ~= "Claimed"
     Loader:Here(self.Root, "TabsBox.OfflineTabBtn").Visible = showOffline
@@ -480,6 +512,22 @@ function CWelfareView:OnShow()
         self.ActiveTab = "diamonds"
     end
     self:RefreshUI()
+end
+
+-- 关闭完成时暂停奖励光芒，克隆及旋转相位留给下次打开复用。
+function CWelfareView:OnHide()
+    self._glowVisible = false
+    self:RefreshRewardGlows()
+end
+
+-- 分组条目缓存继续复用；隐藏页和关闭窗口不保留运行中的旋转动画。
+function CWelfareView:RefreshRewardGlows()
+    for kind, rows in pairs(self.Rows) do
+        local active = self._glowVisible == true and self.ActiveTab == kind
+        for id, row in pairs(rows) do
+            row:SetGlowActive(active)
+        end
+    end
 end
 
 -- 游戏接入必须提供奖励展示查询。
@@ -785,6 +833,7 @@ function CWelfareView:Render(state)
     signInHeadingTxt.Text = Text.Tr(TranslationTexts.DailyLogin, {
         day = state.signInDay,
     })
+    self:RefreshRewardGlows()
 end
 
 -- 下一档按分钟阈值查询，不依赖配置顺序；空组与全部达成都有明确展示。

@@ -3,6 +3,7 @@ import {
   calculateAuraValues,
   calculateBackpackExpansionValues,
   calculateLevelStrength,
+  calculateLevelTrainingThreshold,
   calculateItemSaleGold,
   calculateTrainingLevel,
   calculatePaidMultiplierValues,
@@ -170,7 +171,7 @@ export class State extends BaseState<StateValues> {
   }
 
   get strength(): number {
-    return this.trainingValue;
+    return calculateLevelStrength(this.projectConfig.levelCurves, this.level);
   }
 
   getFieldDisplayNames(): Record<string, string> {
@@ -247,12 +248,12 @@ export class State extends BaseState<StateValues> {
     this.sickleId = values.sickleId ?? 1;
     this.auraId = values.auraId ?? 0;
     this.rebirthCount = values.rebirthCount ?? 0;
-    // 上一版保存的是本级剩余训练值；转换为累计量后统一派生等级与力量。
+    // 上一版保存的是本级剩余训练值；转换为累计量后派生等级，再按等级曲线读取力量。
     const trainingValue = values.trainingValueKind === "cumulative"
       ? values.trainingValue
-      : calculateLevelStrength(this.projectConfig.levelCurves, values.level) + values.trainingValue;
+      : calculateLevelTrainingThreshold(this.projectConfig.levelCurves, values.level) + values.trainingValue;
     this.trainingValue = Math.max(0, Math.min(
-      calculateLevelStrength(this.projectConfig.levelCurves, this.projectConfig.levelCurves.input.max),
+      calculateLevelTrainingThreshold(this.projectConfig.levelCurves, this.projectConfig.levelCurves.input.max),
       trainingValue,
     ));
     this.rebirthRecoveryTargetLevel = values.rebirthRecoveryTargetLevel ?? null;
@@ -305,7 +306,7 @@ export class State extends BaseState<StateValues> {
     const level = this.level;
     return level >= this.projectConfig.levelCurves.input.max
       ? 0
-      : calculateLevelStrength(this.projectConfig.levelCurves, level + 1);
+      : calculateLevelTrainingThreshold(this.projectConfig.levelCurves, level + 1);
   }
 
   getTrainingValuePerSettlement(): number {
@@ -750,7 +751,7 @@ export class State extends BaseState<StateValues> {
       }
       const trainingGain = this.getTrainingValuePerSettlement();
       this.trainingValue = Math.min(
-        calculateLevelStrength(this.projectConfig.levelCurves, this.projectConfig.levelCurves.input.max),
+        calculateLevelTrainingThreshold(this.projectConfig.levelCurves, this.projectConfig.levelCurves.input.max),
         this.trainingValue + trainingGain,
       );
     }

@@ -14,7 +14,8 @@ export class ProjectCharts extends ChartSet {
     chartSicklePriceAndEfficiency: "镰刀价格与效率",
     chartAuraPriceAndMultiplier: "光环价格与倍率",
     chartStageHpAndRecommendedAttack: "关卡血量与推荐攻击力",
-    chartLevelTrainingAndStrength: "等级训练需求与力量",
+    chartLevelTraining: "等级训练需求",
+    chartLevelAttack: "等级攻击力",
   };
 
   private get projectConfig(): ProjectConfig {
@@ -113,11 +114,11 @@ export class ProjectCharts extends ChartSet {
     };
   }
 
-  chartLevelTrainingAndStrength() {
+  chartLevelTraining() {
     return {
       variable: "level",
       xLabel: "等级",
-      yLabel: "训练值 / 力量",
+      yLabel: "训练值",
       minX: this.projectConfig.levelCurves.input.min ?? 1,
       maxX: this.projectConfig.levelCurves.input.max,
       step: 1,
@@ -129,9 +130,22 @@ export class ProjectCharts extends ChartSet {
             ? 0
             : calculateLevelValues(this.projectConfig.levelCurves, level).nextLevelExperience,
         },
+      ],
+    };
+  }
+
+  chartLevelAttack() {
+    return {
+      variable: "level",
+      xLabel: "等级",
+      yLabel: "攻击力",
+      minX: this.projectConfig.levelCurves.input.min ?? 1,
+      maxX: this.projectConfig.levelCurves.input.max,
+      step: 1,
+      series: [
         {
           id: "strength",
-          label: "达到该等级所需累计训练值（力量）",
+          label: "当前等级力量（攻击力）",
           sample: (level: number) =>
             calculateLevelStrength(this.projectConfig.levelCurves, level),
         },

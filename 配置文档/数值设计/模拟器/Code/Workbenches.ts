@@ -277,10 +277,10 @@ export class ProjectWorkbenches extends WorkbenchSet {
           columnKeys: ["expectedRebirthCount", "grassLevel", "hpMultiplier"],
         },
         {
-          id: "levelTraining",
-          label: "等级训练需求",
+          id: "levelStrength",
+          label: "等级力量",
           configKey: "levelCurves",
-          columnKeys: ["nextLevelExperience"],
+          columnKeys: ["strength"],
         },
       ],
       columns: [
