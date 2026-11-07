@@ -413,11 +413,14 @@ function Component:RefreshTrainingField(config, now)
     return unlocked and config.TrainingRate or 0
 end
 
---- 训练场会话变化时撤销气泡和加成；离服后仅清理会话，不再访问 Player 属性。
+--- 训练场会话变化时撤销气泡和加成；未领取气泡从消失时进入冷却，已有冷却跨场地保留。
 function Component:ClearTrainingBonus()
+    if self._trainingBonusOffer then
+        self._nextTrainingBonus = math.min(workspace:GetServerTimeNow(), self._trainingBonusOffer.ExpiresAt)
+            + _G.GameConfig.TrainingBonusConfig.Cooldown
+    end
     self._trainingBonusOffer = nil
     self._trainingBonusUntil = nil
-    self._nextTrainingBonus = nil
     local player = self:GetPlayerNode()
     if player then
         player:SetAttribute("TrainingBonusOfferId", nil)
@@ -425,7 +428,7 @@ function Component:ClearTrainingBonus()
     end
 end
 
---- 挂机时按权重发放一次性气泡；出现时间独立于领取和加成结束，不累计离场时间。
+--- 场内无冷却立即按权重发放气泡；未领取时从展示到期开始冷却，展示期间不提前计时。
 --- @param now number 当前服务器时间。
 function Component:TickTrainingBonus(now)
     local config = _G.GameConfig.TrainingBonusConfig
@@ -437,13 +440,11 @@ function Component:TickTrainingBonus(now)
         if now < self._trainingBonusOffer.ExpiresAt then
             return
         end
+        self._nextTrainingBonus = self._trainingBonusOffer.ExpiresAt + config.Cooldown
         self._trainingBonusOffer = nil
         self:GetPlayerNode():SetAttribute("TrainingBonusOfferId", nil)
     end
-    if not self._nextTrainingBonus then
-        self._nextTrainingBonus = now + Random.new():NextNumber(config.MinInterval, config.MaxInterval)
-    end
-    if now < self._nextTrainingBonus then
+    if self._nextTrainingBonus and now < self._nextTrainingBonus then
         return
     end
     local totalWeight = 0
@@ -462,14 +463,13 @@ function Component:TickTrainingBonus(now)
     local offer = {Id = HttpService:GenerateGUID(false), Rate = config.Multipliers[selected],
         ExpiresAt = now + config.OfferLifetime}
     self._trainingBonusOffer = offer
-    self._nextTrainingBonus += Random.new():NextNumber(config.MinInterval, config.MaxInterval)
     local player = self:GetPlayerNode()
     player:SetAttribute("TrainingBonusRate", offer.Rate)
     player:SetAttribute("TrainingBonusOfferUntil", offer.ExpiresAt)
     player:SetAttribute("TrainingBonusOfferId", offer.Id)
 end
 
---- 只接受当前训练会话的有效凭据，先消费再生效，重复领取不会刷新加成。
+--- 只接受当前训练会话的有效凭据；领取时同时开始加成和冷却，重复领取不会刷新期限。
 --- @param offerId string 客户端提交的气泡凭据，不接受客户端倍率。
 function Component:ClaimTrainingBonus(offerId)
     local offer = self._trainingBonusOffer
@@ -487,6 +487,7 @@ function Component:ClaimTrainingBonus(offerId)
         return
     end
     self._trainingBonusOffer = nil
+    self._nextTrainingBonus = now + _G.GameConfig.TrainingBonusConfig.Cooldown
     self._trainingBonusUntil = now + _G.GameConfig.TrainingBonusConfig.Duration
     self._trainingBonusRate = offer.Rate
     local player = self:GetPlayerNode()

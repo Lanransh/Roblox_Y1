@@ -2851,10 +2851,9 @@ return {
         }
     },
     TrainingBonusConfig = {
-        MinInterval = 15,
-        MaxInterval = 15,
+        Cooldown = 8,
         OfferLifetime = 5,
-        Duration = 10,
+        Duration = 5,
         Multipliers = {
             [1] = 2,
             [2] = 3,
