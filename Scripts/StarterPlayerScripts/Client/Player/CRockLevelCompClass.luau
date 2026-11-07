@@ -48,7 +48,7 @@ local function FormatLuck(rate)
     return tostring(math.floor(rate))
 end
 
---- 只拥有本客户端生成的石头；不会修改公共 SyntyRocks 模板。
+--- 持有本客户端石头及本轮碎裂播放记录；不会修改公共 SyntyRocks 模板。
 --- @param owner FCPlayerObjectClass 客户端玩家对象。
 function Component:Ctor(owner)
     Component.Super.Ctor(self, owner)
@@ -56,6 +56,7 @@ function Component:Ctor(owner)
     self._pool = {}
     self._templates = {}
     self._health = {}
+    self._playedBreakEffects = {}
     self._fragments = {}
     self._fragmentPool = {}
     self._trainingFragmentPool = {}
@@ -551,6 +552,7 @@ function Component:ResetRound(round, brokenCells)
     self:ClearDrops()
     self._round = round
     self._health = {}
+    self._playedBreakEffects = {}
     self._pendingHits = {}
     self._lastAttack = -math.huge
     for _, key in ipairs(brokenCells or {}) do
@@ -927,7 +929,7 @@ function Component:UpdateTrainingHitReactions(reset)
     end
 end
 
---- 已解锁训练基地复用挥镐表现且不发送关卡命中；场外仍按关卡秒杀资格检查攻击。
+--- 已解锁训练基地复用挥镐表现；场外秒杀只处理角色进入的格子，避免站定后连炸相邻石头。
 function Component:UpdateAttacks()
     local character = self:GetPlayerCharacter()
     local root = character and FXLoader:Find(character, "HumanoidRootPart")
@@ -941,6 +943,7 @@ function Component:UpdateAttacks()
         self:StopSwing()
         self._character = character
         self._health = {}
+        self._playedBreakEffects = {}
         self._pendingHits = {}
         self._lastAttack = -math.huge
         self:ResetVisuals()
@@ -990,7 +993,8 @@ function Component:UpdateAttacks()
             local cells = RockLevel.GetFrontCells(area, position, root.CFrame.LookVector)
             local instantBreak = damage >= RockLevel.HP[index]
             if instantBreak then
-                -- 穿行时先检查脚下，避免玩家越过前方格子后石头仍留在身后。
+                -- 秒杀只击碎角色进入的格子，避免站在原地依次引爆前方和左右的石头。
+                cells = {}
                 local column = math.floor((position.X - area.MinX) / RockLevel.CellSize)
                 local row = math.floor((position.Z - area.MinZ) / RockLevel.CellSize)
                 if column >= 0 and column < area.Columns and row >= 0 and row < area.Rows then
@@ -1051,11 +1055,14 @@ function Component:SetPowerAura(root)
     self._powerAuraRoot = root
 end
 
---- 每次命中以配置颜色爆发粒子闪光、光环及火星；仅击破时散出较大烟尘。
+--- 同轮同格的碎裂表现只播放一次，避免预测回滚后再次爆炸；普通命中仍逐次播放。
 --- @param rock Model 当前受击且仍在场景中的石头。
 --- @param broken boolean 本次扣血是否击破石头。
 --- @param impact RaycastResult? 训练巨石的实际表面命中；提供时只生成表现，不移动巨石。
 function Component:PlayHitEffect(rock, broken, impact)
+    if broken and self._playedBreakEffects[rock.Name] then
+        return
+    end
     local character = self:GetPlayerCharacter()
     local root = character and FXLoader:Find(character, "HumanoidRootPart")
     if not root then
@@ -1083,6 +1090,9 @@ function Component:PlayHitEffect(rock, broken, impact)
         position = impact.Position
         normal = impact.Normal
     end
+    if broken then
+        self._playedBreakEffects[rock.Name] = true
+    end
     local effect = Instance.new("Part")
     effect.Name = "RockHitEffect"
     effect.Size = Vector3.new(0.1, 0.1, 0.1)
@@ -1093,6 +1103,7 @@ function Component:PlayHitEffect(rock, broken, impact)
     effect.CanQuery = false
     effect.CFrame = CFrame.lookAt(position + normal * 0.55, position + normal * 1.55)
     local sound = self._breakSound:Clone()
+    sound.Looped = false
     self:GetPlayerObject():RequireComponent("CSettingsUIComp"):ConfigureEffectSound(sound)
     sound.Parent = effect
     effect.Parent = self._folder
@@ -1101,6 +1112,7 @@ function Component:PlayHitEffect(rock, broken, impact)
         dustOrigin.Position = effect.CFrame:PointToObjectSpace(center)
         dustOrigin.Parent = effect
         local dust = self._smokeTemplate:Clone()
+        dust.Enabled = false
         dust.Lifetime = NumberRange.new(0.3, 0.45)
         dust.Size = NumberSequence.new(3, 7)
         dust.Transparency = NumberSequence.new(0.25, 1)
