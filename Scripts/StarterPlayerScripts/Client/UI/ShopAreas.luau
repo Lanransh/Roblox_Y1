@@ -1,5 +1,6 @@
 local FX = _G.FX
-local ShopReminder = FX.Loader:RequireFromParent(script, "ShopReminder")
+local FXLoader = FX.Loader
+local ShopReminder = FXLoader:RequireFromParent(script, "ShopReminder")
 local ShopAreas = {}
 ShopAreas.__index = ShopAreas
 
@@ -18,16 +19,16 @@ end
 --- @return boolean 角色是否位于任一同类商店触发盒内。
 function ShopAreas:IsInside(position)
     local huts = {}
-    local decorations = workspace:FindFirstChild("Decorations")
-    local world1 = decorations and decorations:FindFirstChild("World1Decorations")
-    local original = world1 and world1:FindFirstChild(self._hutName)
+    local decorations = FXLoader:FindFromWorkspace("Decorations")
+    local world1 = decorations and FXLoader:Find(decorations, "World1Decorations")
+    local original = world1 and FXLoader:Find(world1, self._hutName)
     if original then
         table.insert(huts, original)
     end
     for worldId = 2, 3 do
-        local world = decorations and decorations:FindFirstChild("World" .. worldId .. "Decorations")
-        local group = world and world:FindFirstChild("World" .. worldId .. "Shops")
-        local hut = group and group:FindFirstChild(self._hutName)
+        local world = decorations and FXLoader:Find(decorations, "World" .. worldId .. "Decorations")
+        local group = world and FXLoader:Find(world, "World" .. worldId .. "Shops")
+        local hut = group and FXLoader:Find(group, self._hutName)
         if hut then
             table.insert(huts, hut)
         end
@@ -36,9 +37,9 @@ function ShopAreas:IsInside(position)
     local inside = false
     for index, hut in ipairs(huts) do
         loaded[hut] = true
-        local trigger = hut:FindFirstChild("Trigger")
+        local trigger = FXLoader:Find(hut, "Trigger")
         if trigger and trigger:IsA("BasePart") then
-            local sign = hut:FindFirstChild("ShopSign")
+            local sign = FXLoader:Find(hut, "ShopSign")
             if self._withReminders and self._state and not self._reminders[hut]
                 and sign and sign:IsA("BasePart") then
                 local reminder = ShopReminder.New(hut, sign)

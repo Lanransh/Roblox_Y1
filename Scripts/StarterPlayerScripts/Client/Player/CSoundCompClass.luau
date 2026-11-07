@@ -69,7 +69,7 @@ end
 function CSoundCompClass:PlayTrainingUpgradeEffect()
     local character = self:GetPlayerCharacter()
     local humanoid = character and character:FindFirstChildOfClass("Humanoid")
-    local root = character and character:FindFirstChild("HumanoidRootPart")
+    local root = character and FXLoader:Find(character, "HumanoidRootPart")
     if not humanoid or humanoid.Health <= 0 or not root or not root:IsA("BasePart") then
         return
     end

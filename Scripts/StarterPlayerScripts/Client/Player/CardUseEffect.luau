@@ -1,4 +1,6 @@
 -- 本地用卡表现：举高停顿、快速前推与彩色冲击，不创建服务端特效。
+local FX = _G.FX
+local FXLoader = FX.Loader
 local RunService = game:GetService("RunService")
 local CardUseEffect = {}
 local CardColors = {
@@ -36,10 +38,10 @@ end
 --- @param legacyName string? R6 躯干关节名称。
 --- @return Instance? 可设置 Transform 的角色关节。
 local function FindJoint(character, partName, jointName, legacyName)
-    local part = character:FindFirstChild(partName)
-    local torso = character:FindFirstChild("Torso")
-    local joint = part and part:FindFirstChild(jointName)
-        or (legacyName and torso and torso:FindFirstChild(legacyName))
+    local part = FXLoader:Find(character, partName)
+    local torso = FXLoader:Find(character, "Torso")
+    local joint = part and FXLoader:Find(part, jointName)
+        or (legacyName and torso and FXLoader:Find(torso, legacyName))
     if joint and (joint:IsA("Motor6D") or joint:IsA("AnimationConstraint")) then
         return joint
     end
@@ -52,9 +54,9 @@ end
 --- @param onPush function 推出瞬间播放音效的回调。
 --- @return function? 可重复调用的清理函数；角色不可用时返回 nil。
 function CardUseEffect.Play(character, config, onPush)
-    local root = character and character:FindFirstChild("HumanoidRootPart")
+    local root = character and FXLoader:Find(character, "HumanoidRootPart")
     local humanoid = character and character:FindFirstChildOfClass("Humanoid")
-    local hand = character and (character:FindFirstChild("RightHand") or character:FindFirstChild("Right Arm"))
+    local hand = character and (FXLoader:Find(character, "RightHand") or FXLoader:Find(character, "Right Arm"))
     if not root or not hand or not humanoid or humanoid.Health <= 0 then
         return nil
     end

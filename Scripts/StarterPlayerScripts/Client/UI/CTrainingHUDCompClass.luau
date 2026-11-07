@@ -19,7 +19,7 @@ function Component:OnReady()
     self._huds = {}
     self._previews = {}
     local template = FXLoader:Shared("Nodes/TrainingHUD")
-    local playerGui = self:GetPlayerNode():WaitForChild("PlayerGui")
+    local playerGui = FXLoader:Here(self:GetPlayerNode(), "PlayerGui", math.huge)
     local previews = FXLoader:Workspace("Decorations/TrainingHUDs")
     for index, config in ipairs(_G.GameConfig.TrainingFieldData) do
         local worldName, fieldName = GameUtility.ParseTrainingFieldNode(config.Node)
@@ -27,8 +27,8 @@ function Component:OnReady()
         local field = FXLoader:Workspace("BlockMeshs/" .. worldName .. "/TrainingCenter/" .. fieldName)
         local platform = field:FindFirstChild("彩色训练台", true)
         assert(platform and platform:IsA("BasePart"), "Missing training platform: " .. field:GetFullName())
-        local previewAnchor = previews:FindFirstChild(worldName .. "_" .. fieldName)
-        local preview = previewAnchor and previewAnchor:FindFirstChild("TrainingHUD")
+        local previewAnchor = FXLoader:Find(previews, worldName .. "_" .. fieldName)
+        local preview = previewAnchor and FXLoader:Find(previewAnchor, "TrainingHUD")
         if preview and preview:GetAttribute("TrainingHUDPreview") then
             self._previews[preview] = preview.Enabled
             preview.Enabled = false
@@ -40,7 +40,7 @@ function Component:OnReady()
         hud.Adornee = platform
         hud.StudsOffsetWorldSpace = Vector3.new(0,
             bounds.Position.Y + size.Y / 2 - platform.Position.Y + 5, 0)
-        hud.Frame.Requirement.Count.Text = tostring(config.NeedRebirhLevel)
+        FXLoader:Here(hud, "Frame/Requirement/Count").Text = tostring(config.NeedRebirhLevel)
         hud.Parent = playerGui
         self._huds[index] = {Node = hud, Config = config}
     end
@@ -54,7 +54,7 @@ end
 --- 数量沿用通用格式化，英文兜底由现有本地化入口提供。
 function Component:RefreshLocalization()
     for index, entry in ipairs(self._huds) do
-        entry.Node.Frame.Strength.Text = Text.Tr(TranslationTexts.Strength, {
+        FXLoader:Here(entry.Node, "Frame/Strength").Text = Text.Tr(TranslationTexts.Strength, {
             rate = GameUtility.NumberToText(entry.Config.TrainingRate),
         })
     end

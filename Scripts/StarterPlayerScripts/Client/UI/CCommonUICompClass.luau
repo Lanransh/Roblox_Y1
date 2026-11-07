@@ -46,11 +46,11 @@ function UI:Ctor(owner)
     if self:GetPlayerNode().Character then
         self:BindCharacterTools(self:GetPlayerNode().Character)
     end
-    local playerGui = self:GetPlayerNode():WaitForChild("PlayerGui")
+    local playerGui = FXLoader:Here(self:GetPlayerNode(), "PlayerGui", math.huge)
     self._trainingClickModals = {}
     self:RegisterTrainingClickModal(self.Modal)
     -- 出售界面目前只有可选模板，登记其显示状态，避免主界面依赖弹窗名称。
-    local lootSellUI = playerGui:FindFirstChild("LootSellUI")
+    local lootSellUI = FXLoader:Find(playerGui, "LootSellUI")
     if lootSellUI then
         self:RegisterTrainingClickModal(lootSellUI)
     end
@@ -106,11 +106,12 @@ function UI:ShowTips(message, duration)
     local scale = math.clamp(math.min(viewport.X / 1280, viewport.Y / 720), 0.65, 1)
     self.Tips.Size = UDim2.new(0.86, 0, 0, 64 * scale)
     self.Tips.TextSize = math.round(28 * scale)
-    self.Tips.TextSizeLimit.MaxTextSize = math.round(28 * scale)
-    self.Tips.TextStroke.Thickness = 2 * scale
-    self.Tips.Line1.Size = UDim2.new(1, 0, 0, 2 * scale)
-    self.Tips.Line2.Size = UDim2.new(1, 0, 0, 2 * scale)
-    self.Tips.Line2.Position = UDim2.new(0, 0, 1, -2 * scale)
+    FXLoader:Here(self.Tips, "TextSizeLimit").MaxTextSize = math.round(28 * scale)
+    FXLoader:Here(self.Tips, "TextStroke").Thickness = 2 * scale
+    FXLoader:Here(self.Tips, "Line1").Size = UDim2.new(1, 0, 0, 2 * scale)
+    local line2 = FXLoader:Here(self.Tips, "Line2")
+    line2.Size = UDim2.new(1, 0, 0, 2 * scale)
+    line2.Position = UDim2.new(0, 0, 1, -2 * scale)
     UI.Super.ShowTips(self, message, duration)
 end
 

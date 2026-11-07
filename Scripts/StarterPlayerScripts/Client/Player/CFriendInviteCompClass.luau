@@ -180,7 +180,7 @@ function Component:ShowInviteNotification(friend)
             self:CloseInviteNotification()
         end),
     }
-    screen.Parent = self:GetPlayerNode():WaitForChild("PlayerGui")
+    screen.Parent = FXLoader:Here(self:GetPlayerNode(), "PlayerGui", math.huge)
     updateScale()
     refreshText()
     self._notificationTask = task.delay(12, function()

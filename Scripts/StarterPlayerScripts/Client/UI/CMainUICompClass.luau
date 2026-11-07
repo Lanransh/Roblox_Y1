@@ -22,8 +22,8 @@ local RunService = game:GetService("RunService")
 local GuiService = game:GetService("GuiService")
 local SocialService = game:GetService("SocialService")
 local ContentProvider = game:GetService("ContentProvider")
-local RockLevel = require(game:GetService("ReplicatedStorage").Scripts.Game.Shared.RockLevel)
-local GameUtility = require(game:GetService("ReplicatedStorage").Scripts.Game.Shared.GameUtility)
+local RockLevel = FXLoader:RequireShared("Scripts/Game/Shared/RockLevel")
+local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local CurrencyShop = FXLoader:RequireShared("Scripts/Game/Shared/CurrencyShop")
 local InstancePath = FXLoader:RequireShared("Scripts/Game/Shared/InstancePath")
 local StrengthPacks = {StrengthPack1Button = 301, StrengthPack2Button = 302}
@@ -38,18 +38,19 @@ end
 
 --- 服务端就绪后绑定主界面及容量缓存，初始同步不播放收益动画。
 function Component:OnReady()
-    self._playerGui = self:GetPlayerNode():WaitForChild("PlayerGui")
+    self._playerGui = FXLoader:Here(self:GetPlayerNode(), "PlayerGui", math.huge)
     self._rootNode = FXLoader:Here(self._playerGui, "MainUI")
     self._rootNode.ResetOnSpawn = false
     local top = FXLoader:Here(self._rootNode, "TopCenter")
     self._bar = FXLoader:Here(top, "LevelProgressBar")
+    local levelLabel = FXLoader:Here(self._bar, "LevelLabel")
     self._barLayout = {
         Position = self._bar.Position,
         Size = self._bar.Size,
         AnchorPoint = self._bar.AnchorPoint,
-        LevelPosition = self._bar.LevelLabel.Position,
-        LevelSize = self._bar.LevelLabel.Size,
-        LevelAlignment = self._bar.LevelLabel.TextXAlignment,
+        LevelPosition = levelLabel.Position,
+        LevelSize = levelLabel.Size,
+        LevelAlignment = levelLabel.TextXAlignment,
     }
     self._homeButton = FXLoader:Here(top, "HomeButton")
     self._homeButton.Size = UDim2.fromOffset(160, 54)
@@ -87,16 +88,16 @@ function Component:OnReady()
     self._trainingStatusGradient.Enabled = false
     self._trainingStatusGradient.Parent = self._trainingStatus
     self._strength.AutoLocalize = false
-    self._bar.ProgressLabel.AutoLocalize = false
+    FXLoader:Here(self._bar, "ProgressLabel").AutoLocalize = false
     --- 翻译就绪或语言切换时刷新主界面，出售界面自行监听语言变化。
     self:TrackConnection(self._localization.Changed:Connect(function()
         self:RefreshLocalization()
     end))
     self._leftDown = FXLoader:Here(self._rootNode, "LeftDown")
-    self._backpackBoost = self._rootNode:FindFirstChild("BackpackBoost")
+    self._backpackBoost = FXLoader:Find(self._rootNode, "BackpackBoost")
     self._ownsBackpackBoost = self._backpackBoost == nil
     if self._ownsBackpackBoost then
-        self._backpackBoost = self._leftDown.BackpackStat:Clone()
+        self._backpackBoost = FXLoader:Here(self._leftDown, "BackpackStat"):Clone()
         self._backpackBoost.Name = "BackpackBoost"
         self._backpackBoost.Parent = self._rootNode
     end
@@ -142,7 +143,7 @@ function Component:OnReady()
     --- @param position Vector2? 点击结算的屏幕飘字起点。
     FX.Network:RegServerMsgCallback("S2C_TrainingEffect", function(gain, rewardRain, position)
         if rewardRain then
-            self:ShowRewardRain(self._bar.StrengthIcon)
+            self:ShowRewardRain(FXLoader:Here(self._bar, "StrengthIcon"))
         else
             self:ShowTrainingEffect(gain, position)
         end
@@ -370,7 +371,8 @@ end
 --- @param button GuiButton 力量倍率或力量包按钮。
 --- @param centerY number 价格行中心相对按钮顶部的偏移。
 function Component:LayoutStrengthOfferPrice(button, centerY)
-    local price, diamond = button.Price, button.PriceDiamond
+    local price = FXLoader:Here(button, "Price")
+    local diamond = FXLoader:Here(button, "PriceDiamond")
     local textSize = game:GetService("TextService"):GetTextSize(
         price.Text, price.TextSize, price.Font, Vector2.new(1000, 24))
     local width = math.ceil(textSize.X)
@@ -388,34 +390,38 @@ end
 --- 只调整价格行位置，保留商品图标、收益和按钮原有布局。
 function Component:RefreshStrengthOffers()
     local right = FXLoader:Here(self._rootNode, "RightCenter")
-    right.StrengthPack3Button.Visible = false
+    FXLoader:Here(right, "StrengthPack3Button").Visible = false
     local data = self:GetTable(Fields.CurrencyShopData)
     local nextItem = CurrencyShop.GetNextGemGoods(1, data)
-    local rateButton = right.DoubleStrengthButton
+    local rateButton = FXLoader:Here(right, "DoubleStrengthButton")
+    local ratePrice = FXLoader:Here(rateButton, "Price")
+    local rateLabel = FXLoader:Here(rateButton, "Background/Label")
     rateButton.Interactable = true
-    rateButton.Price.AutoLocalize = false
-    rateButton.Background.Label.AutoLocalize = false
-    rateButton.PriceDiamond.Visible = nextItem ~= nil
+    ratePrice.AutoLocalize = false
+    rateLabel.AutoLocalize = false
+    FXLoader:Here(rateButton, "PriceDiamond").Visible = nextItem ~= nil
     if nextItem then
-        rateButton.Price.Text = GameUtility.NumberToText(_G.GoodsConfig.GemGoodsData[nextItem.GemGoodsId].Price)
-        rateButton.Background.Label.Text = Text.Tr(TranslationTexts.StrengthRate, {
+        ratePrice.Text = GameUtility.NumberToText(_G.GoodsConfig.GemGoodsData[nextItem.GemGoodsId].Price)
+        rateLabel.Text = Text.Tr(TranslationTexts.StrengthRate, {
             rate = GameUtility.NumberToText(_G.GameConfig.TrainingRateConfig[data.trainingLevel + 1].Rate),
         })
     else
-        rateButton.Price.Text = Text.Tr(TranslationTexts.SoldOut)
-        rateButton.Background.Label.Text = Text.Tr(TranslationTexts.StrengthRate, {
+        ratePrice.Text = Text.Tr(TranslationTexts.SoldOut)
+        rateLabel.Text = Text.Tr(TranslationTexts.StrengthRate, {
             rate = GameUtility.NumberToText(CurrencyShop.GetTrainingRate(data)),
         })
     end
     self:LayoutStrengthOfferPrice(rateButton, 10)
     for name, goodsId in pairs(StrengthPacks) do
-        local button = right[name]
+        local button = FXLoader:Here(right, name)
+        local price = FXLoader:Here(button, "Price")
+        local amount = FXLoader:Here(button, "Amount")
         local gain = CurrencyShop.GetTrainingPackGain(self:GetPlayerObject(), goodsId)
         button.Interactable = true
-        button.Price.AutoLocalize = false
-        button.Amount.AutoLocalize = false
-        button.Price.Text = GameUtility.NumberToText(_G.GoodsConfig.GemGoodsData[goodsId].Price)
-        button.Amount.Text = "+" .. GameUtility.NumberToText(gain)
+        price.AutoLocalize = false
+        amount.AutoLocalize = false
+        price.Text = GameUtility.NumberToText(_G.GoodsConfig.GemGoodsData[goodsId].Price)
+        amount.Text = "+" .. GameUtility.NumberToText(gain)
         self:LayoutStrengthOfferPrice(button, 10)
     end
 end
@@ -444,8 +450,8 @@ function Component:OpenStrengthOffer(name)
             self._commonUI:ShowLocalizedTips(TranslationTexts.TrainingFull)
             return
         end
-        local button = self._rootNode.RightCenter[name]
-        product = {goodsId = goodsId, currency = "Diamond", icon = button.Icon.Image,
+        local button = FXLoader:Here(self._rootNode, "RightCenter/" .. name)
+        product = {goodsId = goodsId, currency = "Diamond", icon = FXLoader:Here(button, "Icon").Image,
             price = _G.GoodsConfig.GemGoodsData[goodsId].Price,
             title = "", description = "",
             nameDefinition = TranslationTexts.TrainingPack,
@@ -462,7 +468,7 @@ end
 --- 关卡内显示无棋格的紧凑经验条；离开或死亡时恢复带棋格的完整经验条及力量。
 function Component:RefreshHomeButton()
     local character = self:GetPlayerCharacter()
-    local root = character and character:FindFirstChild("HumanoidRootPart")
+    local root = character and FXLoader:Find(character, "HumanoidRootPart")
     local humanoid = character and character:FindFirstChildOfClass("Humanoid")
     local inArea = false
     if root ~= nil and humanoid ~= nil and humanoid.Health > 0 then
@@ -483,11 +489,12 @@ function Component:RefreshHomeButton()
     self._bar.Size = inArea and UDim2.fromOffset(160, 26) or layout.Size
     FXLoader:Here(self._bar, "ToolkitUIStyle"):SetAttribute("Stud", not inArea)
     FXLoader:Here(self._bar, "Fill/ToolkitUIStyle"):SetAttribute("Stud", not inArea)
-    self._bar.LevelLabel.Position = inArea and UDim2.fromScale(0, 0) or layout.LevelPosition
-    self._bar.LevelLabel.Size = inArea and UDim2.fromScale(1, 1) or layout.LevelSize
-    self._bar.LevelLabel.TextXAlignment = inArea and Enum.TextXAlignment.Center or layout.LevelAlignment
-    self._bar.ProgressLabel.Visible = not inArea
-    self._bar.StrengthIcon.Visible = not inArea
+    local levelLabel = FXLoader:Here(self._bar, "LevelLabel")
+    levelLabel.Position = inArea and UDim2.fromScale(0, 0) or layout.LevelPosition
+    levelLabel.Size = inArea and UDim2.fromScale(1, 1) or layout.LevelSize
+    levelLabel.TextXAlignment = inArea and Enum.TextXAlignment.Center or layout.LevelAlignment
+    FXLoader:Here(self._bar, "ProgressLabel").Visible = not inArea
+    FXLoader:Here(self._bar, "StrengthIcon").Visible = not inArea
 end
 
 --- 语言变化只刷新当前数据显示，不播放训练收益动画或重新打开已关闭弹窗。
@@ -568,12 +575,12 @@ function Component:ConfigureBackpackBoostLayout()
             child:Destroy()
         end
     end
-    local icon = frame.Icon
+    local icon = FXLoader:Here(frame, "Icon")
     icon.AnchorPoint = Vector2.new(0.5, 0.5)
     icon.Position = UDim2.new(0.5, 0, 0, 38)
     icon.Size = UDim2.fromOffset(44, 44)
     icon.ScaleType = Enum.ScaleType.Fit
-    local countLabel = frame:FindFirstChild("Count")
+    local countLabel = FXLoader:Find(frame, "Count")
     if not countLabel then
         countLabel = Instance.new("TextLabel")
         countLabel.Name = "Count"
@@ -583,17 +590,17 @@ function Component:ConfigureBackpackBoostLayout()
     countLabel.Position = UDim2.new(0.5, 12, 0, 10)
     countLabel.Size = UDim2.fromOffset(44, 22)
     countLabel.BackgroundTransparency = 1
-    countLabel.FontFace = frame.Value.FontFace
+    countLabel.FontFace = FXLoader:Here(frame, "Value").FontFace
     countLabel.TextScaled = true
     countLabel.TextColor3 = Color3.new(1, 1, 1)
-    countLabel.TextStrokeColor3 = frame.Value.TextStrokeColor3
+    countLabel.TextStrokeColor3 = FXLoader:Here(frame, "Value").TextStrokeColor3
     countLabel.TextStrokeTransparency = 0
     countLabel.TextXAlignment = Enum.TextXAlignment.Center
     countLabel.TextYAlignment = Enum.TextYAlignment.Center
     countLabel.AutoLocalize = false
     countLabel.ZIndex = 2
     self._backpackBoostCount = countLabel
-    local value = frame.Value
+    local value = FXLoader:Here(frame, "Value")
     value.AnchorPoint = Vector2.new(0.5, 0.5)
     value.Position = UDim2.new(0.5, 0, 1, -10)
     value.Size = UDim2.fromOffset(72, 22)
@@ -623,7 +630,7 @@ function Component:CreateFriendBoostButton()
     icon.Image = "rbxassetid://111169827429075"
     icon.ScaleType = Enum.ScaleType.Fit
     icon.Parent = button
-    local value = self._backpackBoost.Value:Clone()
+    local value = FXLoader:Here(self._backpackBoost, "Value"):Clone()
     value.Text = "+0%"
     value.Parent = button
     button.Parent = self._rootNode
@@ -634,7 +641,7 @@ end
 --- 同服好友人数同步后按现有训练倍率规则刷新百分比，无加成时保留 +0%。
 function Component:RefreshFriendBoost()
     local rate = CurrencyShop.GetFriendTrainingRate(self:GetPlayerObject())
-    self._friendBoost.Value.Text = string.format("+%g%%", math.round(rate * 10000) / 100)
+    FXLoader:Here(self._friendBoost, "Value").Text = string.format("+%g%%", math.round(rate * 10000) / 100)
 end
 
 --- @param remaining number 剩余秒数。
@@ -660,7 +667,7 @@ function Component:RefreshLootCapacity()
     if self._displayedLootCount ~= self._lootCount or self._displayedLootCapacity ~= capacity then
         self._displayedLootCount = self._lootCount
         self._displayedLootCapacity = capacity
-        self._leftDown.BackpackStat.Value.Text = string.format("%d/%d", self._lootCount, capacity)
+        FXLoader:Here(self._leftDown, "BackpackStat/Value").Text = string.format("%d/%d", self._lootCount, capacity)
     end
     if self._backpackBoost.Visible ~= activeBoost then
         self._backpackBoost.Visible = activeBoost
@@ -673,7 +680,7 @@ function Component:RefreshLootCapacity()
         end
         if self._displayedLootBoostRemaining ~= remaining then
             self._displayedLootBoostRemaining = remaining
-            self._backpackBoost.Value.Text = self:FormatBackpackBoostCountdown(remaining)
+            FXLoader:Here(self._backpackBoost, "Value").Text = self:FormatBackpackBoostCountdown(remaining)
         end
     end
 end
@@ -830,7 +837,7 @@ function Component:ShowPickupEffect(entry)
         local origin = self._effectGui.AbsolutePosition
         local screenArea = GuiService:GetInsetArea(Enum.ScreenInsets.None)
         local center = (screenArea.Min + screenArea.Max) / 2 - origin
-        local icon = self._leftDown.BackpackStat.Icon
+        local icon = FXLoader:Here(self._leftDown, "BackpackStat/Icon")
         if isMoney then
             icon = FXLoader:Here(self._leftDown, currencyPath)
         end
@@ -875,13 +882,13 @@ function Component:RefreshProgress(value, oldValue)
     local level, strength, progressValue, required = RockLevel.GetProgress(value, rebirthRequiredLevel)
     self._rebirthBadge.Text = string.format("%d%%", math.floor(math.clamp(level / rebirthRequiredLevel, 0, 1) * 100))
     local progress = math.clamp(progressValue / required, 0, 1)
-    self._bar.LevelLabel.Text = string.format("Lv.%d", level)
-    self._bar.ProgressLabel.Text = string.format("%s/%s",
+    FXLoader:Here(self._bar, "LevelLabel").Text = string.format("Lv.%d", level)
+    FXLoader:Here(self._bar, "ProgressLabel").Text = string.format("%s/%s",
         GameUtility.NumberToText(math.min(progressValue, required)), GameUtility.NumberToText(required))
     self._strength.Text = Text.Tr(TranslationTexts.Strength, {value = GameUtility.NumberToText(strength)})
     if level >= RockLevel.MaxLevel then
         progress = 1
-        self._bar.ProgressLabel.Text = Text.Tr(TranslationTexts.MaxLevel)
+        FXLoader:Here(self._bar, "ProgressLabel").Text = Text.Tr(TranslationTexts.MaxLevel)
     end
     local size = UDim2.new(progress, 0, 1, 0)
     if self._progressTween then
@@ -889,9 +896,9 @@ function Component:RefreshProgress(value, oldValue)
         self._progressTween:Destroy()
     end
     if oldValue == nil then
-        self._bar.Fill.Size = size
+        FXLoader:Here(self._bar, "Fill").Size = size
     else
-        self._progressTween = TweenService:Create(self._bar.Fill,
+        self._progressTween = TweenService:Create(FXLoader:Here(self._bar, "Fill"),
             TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = size})
         self._progressTween:Play()
     end
@@ -930,7 +937,7 @@ function Component:ShowTrainingEffect(gain, position)
             startPosition = spawnCenter + Vector2.new(math.cos(angle), math.sin(angle)) * radius
         end
         local initialDistance = math.max((startPosition - target).Magnitude, 1)
-        local icon = self._bar.StrengthIcon:Clone()
+        local icon = FXLoader:Here(self._bar, "StrengthIcon"):Clone()
         icon.Name = "TrainingGain"
         icon.AnchorPoint = Vector2.new(0.5, 0.5)
         icon.Position = UDim2.fromOffset(startPosition.X, startPosition.Y)

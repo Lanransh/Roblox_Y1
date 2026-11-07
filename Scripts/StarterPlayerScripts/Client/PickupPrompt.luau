@@ -1,4 +1,6 @@
 -- 拾取提示展示：沿用原生交互与服务端校验，仅替换外观。
+local FX = _G.FX
+local FXLoader = FX.Loader
 local Players = game:GetService("Players")
 local ProximityPromptService = game:GetService("ProximityPromptService")
 local TweenService = game:GetService("TweenService")
@@ -217,7 +219,7 @@ local function ShowPrompt(prompt, inputType)
     table.insert(connections, UserInputService.WindowFocusReleased:Connect(ReleasePointer))
     table.insert(connections, workspace:GetPropertyChangedSignal("CurrentCamera"):Connect(BindViewport))
     BindViewport()
-    gui.Parent = Players.LocalPlayer:WaitForChild("PlayerGui")
+    gui.Parent = FXLoader:Player("PlayerGui", math.huge)
 end
 
 --- 客户端入口仅注册一次，全局监听由引擎管理的拾取可见性。

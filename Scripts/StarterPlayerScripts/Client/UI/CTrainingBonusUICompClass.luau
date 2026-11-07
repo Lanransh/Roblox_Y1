@@ -190,7 +190,7 @@ end
 --- @param color Color3 本次倍率的主题色。
 function Component:StartAccelerationEffect(character, color)
     local humanoid = character:FindFirstChildOfClass("Humanoid")
-    local root = character:FindFirstChild("HumanoidRootPart")
+    local root = FXLoader:Find(character, "HumanoidRootPart")
     if not humanoid or not root then
         return
     end
@@ -220,7 +220,7 @@ function Component:StartAccelerationEffect(character, color)
     particles.Parent = attachment
     particles:Emit(10)
     effect.Particles = particles
-    local hand = character:FindFirstChild("RightHand") or character:FindFirstChild("Right Arm")
+    local hand = FXLoader:Find(character, "RightHand") or FXLoader:Find(character, "Right Arm")
     if hand and hand:IsA("BasePart") then
         local edges = {}
         for index = 1, 2 do

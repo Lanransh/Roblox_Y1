@@ -7,11 +7,10 @@ local TranslationTexts = Text.Define("LootDisplay", {
     Quality = "Quality {level:int}",
 })
 local Players = game:GetService("Players")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 local Debris = game:GetService("Debris")
 local TweenService = game:GetService("TweenService")
-local RockLevel = require(ReplicatedStorage.Scripts.Game.Shared.RockLevel)
+local RockLevel = FXLoader:RequireShared("Scripts/Game/Shared/RockLevel")
 local Collectible = FXLoader:RequireShared("Scripts/Game/Shared/RockCollectible")
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local GameEnum = FXLoader:RequireShared("Scripts/Game/Shared/GameEnum")
@@ -97,7 +96,7 @@ function Component:OnReady()
     end
     local sources = FXLoader:Here(assets, "Models/SyntyRocks")
     for index, name in ipairs(RockNames) do
-        local source = sources:WaitForChild(name)
+        local source = FXLoader:Here(sources, name, math.huge)
         local part = source:Clone()
         -- JSON 同步可能丢失原始网格尺寸；恢复后保留已验看的尺寸和贴图。
         if part.MeshSize.Magnitude == 0 then
@@ -246,12 +245,14 @@ function Component:SpawnDrop(data)
     local hud = self._itemHUD:Clone()
     hud.Adornee = root
     Collectible.StyleHUD(hud, model, data.Quality)
-    hud.Frame.LuckIcon.Visible = data.IsLucky == true
-    hud.Frame.ItemName.AutoLocalize = false
-    hud.Frame.Rarity.AutoLocalize = false
-    hud.Frame.Price.AutoLocalize = false
-    hud.Frame.Timer.AutoLocalize = false
-    hud.Frame.Timer.Visible = true
+    local frame = FXLoader:Here(hud, "Frame")
+    FXLoader:Here(frame, "LuckIcon").Visible = data.IsLucky == true
+    FXLoader:Here(frame, "ItemName").AutoLocalize = false
+    FXLoader:Here(frame, "Rarity").AutoLocalize = false
+    FXLoader:Here(frame, "Price").AutoLocalize = false
+    local timer = FXLoader:Here(frame, "Timer")
+    timer.AutoLocalize = false
+    timer.Visible = true
     hud.Parent = root
     hud.Enabled = false
 
@@ -397,16 +398,16 @@ end
 function Component:UpdateDropText(drop, now)
     drop.Prompt.ActionText = Text.Tr(TranslationTexts.PickUp)
     if drop.NameSource then
-        drop.Hud.Frame.ItemName.Text = Text.TrSource(drop.NameSource)
+        FXLoader:Here(drop.Hud, "Frame/ItemName").Text = Text.TrSource(drop.NameSource)
     end
     local rarityArguments = {level = drop.Quality}
     if drop.IsLucky == true then
         rarityArguments.rate = GameUtility.NumberToText(drop.LuckRate or 1)
     end
-    drop.Hud.Frame.Rarity.Text = Text.Tr(TranslationTexts.Quality, rarityArguments)
+    FXLoader:Here(drop.Hud, "Frame/Rarity").Text = Text.Tr(TranslationTexts.Quality, rarityArguments)
     local price = drop.Price * Rebirth.GetMoneyRate(self:GetNumber(Fields.RebirthCount))
-    drop.Hud.Frame.Price.Text = "$" .. GameUtility.NumberToText(price)
-    drop.Hud.Frame.Timer.Text = string.format("%ds", math.max(0, math.ceil(drop.ExpiresAt - now)))
+    FXLoader:Here(drop.Hud, "Frame/Price").Text = "$" .. GameUtility.NumberToText(price)
+    FXLoader:Here(drop.Hud, "Frame/Timer").Text = string.format("%ds", math.max(0, math.ceil(drop.ExpiresAt - now)))
 end
 
 --- 落地后注册按品质着色的放射光环和漂浮动画所需的固定落点数据。
@@ -665,9 +666,9 @@ function Component:BindPickaxe(character, humanoid)
             break
         end
     end
-    local handle = pickaxe and pickaxe:FindFirstChild("Handle")
-    local trail = handle and handle:FindFirstChild("PickaxeSwingTrail")
-    local animation = pickaxe and pickaxe:FindFirstChild("RockUpperBodySwing")
+    local handle = pickaxe and FXLoader:Find(pickaxe, "Handle")
+    local trail = handle and FXLoader:Find(handle, "PickaxeSwingTrail")
+    local animation = pickaxe and FXLoader:Find(pickaxe, "RockUpperBodySwing")
     local animator = humanoid:FindFirstChildOfClass("Animator")
     if not trail or (humanoid.RigType == Enum.HumanoidRigType.R15 and (not animation or not animator)) then
         return false
@@ -737,7 +738,7 @@ end
 --- @param area table 目标所属关卡。
 function Component:ResolvePickaxeHit(character, key, area)
     local humanoid = character:FindFirstChildOfClass("Humanoid")
-    local root = character:FindFirstChild("HumanoidRootPart")
+    local root = FXLoader:Find(character, "HumanoidRootPart")
     if self:GetPlayerCharacter() ~= character or not humanoid or humanoid.Health <= 0
         or not root or self._pickaxe.Parent ~= character
         or math.abs(root.Position.Y - area.FloorY) >= 12 then
@@ -773,8 +774,8 @@ function Component:SwingPickaxe(humanoid, key, area, instantBreak)
         speed = 1
     end
     if humanoid.RigType == Enum.HumanoidRigType.R15 then
-        local upperTorso = character:FindFirstChild("UpperTorso")
-        local waist = upperTorso and upperTorso:FindFirstChild("Waist")
+        local upperTorso = FXLoader:Find(character, "UpperTorso")
+        local waist = upperTorso and FXLoader:Find(upperTorso, "Waist")
         self._swingJoints = {}
         if waist and waist:IsA("Motor6D") then
             self._swingJoints[waist] = {Base = waist.C0, Body = true}
@@ -858,7 +859,7 @@ function Component:PlayTrainingHitEffect(character)
         return
     end
     local config = _G.GameConfig.TrainingFieldData[self:GetNumber(Fields.TrainingFieldIndex)]
-    local root = character:FindFirstChild("HumanoidRootPart")
+    local root = FXLoader:Find(character, "HumanoidRootPart")
     local humanoid = character:FindFirstChildOfClass("Humanoid")
     if not config or not root or not humanoid or humanoid.Health <= 0 then
         return
@@ -929,7 +930,7 @@ end
 --- 已解锁训练基地复用挥镐表现且不发送关卡命中；场外仍按关卡秒杀资格检查攻击。
 function Component:UpdateAttacks()
     local character = self:GetPlayerCharacter()
-    local root = character and character:FindFirstChild("HumanoidRootPart")
+    local root = character and FXLoader:Find(character, "HumanoidRootPart")
     local humanoid = character and character:FindFirstChildOfClass("Humanoid")
     if not root or not humanoid or humanoid.Health <= 0 then
         self:StopSwing()
@@ -1036,7 +1037,7 @@ function Component:SetPowerAura(root)
         return
     end
     local character = root.Parent
-    local torso = character:FindFirstChild("UpperTorso") or character:FindFirstChild("Torso")
+    local torso = FXLoader:Find(character, "UpperTorso") or FXLoader:Find(character, "Torso")
     if not torso or not torso:IsA("BasePart") then
         return
     end
@@ -1056,7 +1057,7 @@ end
 --- @param impact RaycastResult? 训练巨石的实际表面命中；提供时只生成表现，不移动巨石。
 function Component:PlayHitEffect(rock, broken, impact)
     local character = self:GetPlayerCharacter()
-    local root = character and character:FindFirstChild("HumanoidRootPart")
+    local root = character and FXLoader:Find(character, "HumanoidRootPart")
     if not root then
         return
     end
@@ -1072,7 +1073,7 @@ function Component:PlayHitEffect(rock, broken, impact)
         toViewer = -direction
     end
     local normal = toViewer.Unit
-    local rockPart = impact and impact.Instance or rock.Root
+    local rockPart = impact and impact.Instance or FXLoader:Here(rock, "Root")
     local localDirection = rockPart.CFrame:VectorToObjectSpace(normal)
     local halfSize = rockPart.Size / 2
     local distance = 1 / math.max(math.abs(localDirection.X) / halfSize.X,
@@ -1294,7 +1295,7 @@ end
 --- @param rock Model 本组件拥有的客户端石头。
 --- @param healthRatio number 当前血量占最大血量的比例。
 function Component:UpdateRockHealthBar(rock, healthRatio)
-    local billboard = rock:FindFirstChild("RockHealthBar")
+    local billboard = FXLoader:Find(rock, "RockHealthBar")
     if healthRatio >= 1 then
         if billboard then
             billboard.Enabled = false
@@ -1304,7 +1305,7 @@ function Component:UpdateRockHealthBar(rock, healthRatio)
     if not billboard then
         billboard = Instance.new("BillboardGui")
         billboard.Name = "RockHealthBar"
-        billboard.Adornee = rock.Root
+        billboard.Adornee = FXLoader:Here(rock, "Root")
         billboard.Size = UDim2.fromScale(5, 0.6)
         billboard.AlwaysOnTop = true
         billboard.LightInfluence = 0
@@ -1328,8 +1329,8 @@ function Component:UpdateRockHealthBar(rock, healthRatio)
         billboard.Parent = rock
     end
     billboard.Enabled = healthRatio > 0
-    billboard.StudsOffsetWorldSpace = Vector3.new(0, rock.Root.Size.Y / 2 + 1.2, 0)
-    billboard.Background.Fill.Size = UDim2.fromScale(math.clamp(healthRatio, 0, 1), 1)
+    billboard.StudsOffsetWorldSpace = Vector3.new(0, FXLoader:Here(rock, "Root").Size.Y / 2 + 1.2, 0)
+    FXLoader:Here(billboard, "Background/Fill").Size = UDim2.fromScale(math.clamp(healthRatio, 0, 1), 1)
 end
 
 --- 受损与受击更新外观和血条；碰撞盒保持竖直及固定高度，避免缩小或倾斜后可跳上石头。
@@ -1358,8 +1359,9 @@ function Component:UpdateRockAppearance(rock, area, health)
             end
         end
         rock:PivotTo(pose)
-        local collider = rock.Collider
-        collider.Size = Vector3.new(rock.Root.Size.X, ColliderHeight, rock.Root.Size.Z)
+        local collider = FXLoader:Here(rock, "Collider")
+        local root = FXLoader:Here(rock, "Root")
+        collider.Size = Vector3.new(root.Size.X, ColliderHeight, root.Size.Z)
         collider.CFrame = CFrame.new(pivot.Position.X, area.FloorY + ColliderHeight / 2, pivot.Position.Z)
             * pivot.Rotation
         rock:SetAttribute("HealthRatio", ratio)
@@ -1369,7 +1371,7 @@ function Component:UpdateRockAppearance(rock, area, health)
     if rock:GetAttribute("GroundColor") ~= color then
         local baseColor = rock:GetAttribute("BaseColor")
         local tint = Color3.new(1, 1, 1):Lerp(color, 0.2)
-        rock.Root.SurfaceAppearance.Color = Color3.new(baseColor.R * tint.R, baseColor.G * tint.G, baseColor.B * tint.B)
+        FXLoader:Here(rock, "Root/SurfaceAppearance").Color = Color3.new(baseColor.R * tint.R, baseColor.G * tint.G, baseColor.B * tint.B)
         rock:SetAttribute("GroundColor", color)
     end
 end
@@ -1387,8 +1389,9 @@ end
 --- @param rock Model 本组件创建的石头。
 --- @param canCollide boolean 是否阻挡玩家。
 function Component:SetRockState(rock, canCollide)
-    if rock.Collider.CanCollide ~= canCollide then
-        rock.Collider.CanCollide = canCollide
+    local collider = FXLoader:Here(rock, "Collider")
+    if collider.CanCollide ~= canCollide then
+        collider.CanCollide = canCollide
     end
 end
 
@@ -1429,8 +1432,8 @@ end
 --- 公共菜鸟仅在本客户端按距离隐藏，保留服务端模型与其他玩家的拾取资格。
 --- @param position Vector3? 当前角色位置；为空时在组件销毁前恢复显示。
 function Component:UpdateNoobVisibility(position)
-    local decorations = workspace:FindFirstChild("Decorations")
-    local noobs = decorations and decorations:FindFirstChild("NoobNpcs")
+    local decorations = FXLoader:FindFromWorkspace("Decorations")
+    local noobs = decorations and FXLoader:Find(decorations, "NoobNpcs")
     if not noobs then
         return
     end
@@ -1467,7 +1470,7 @@ function Component:UpdateVisuals()
     self:UpdateTrainingHitReactions()
     self:UpdateAttacks()
     local character = self:GetPlayerCharacter()
-    local root = character and character:FindFirstChild("HumanoidRootPart")
+    local root = character and FXLoader:Find(character, "HumanoidRootPart")
     if not root then
         return
     end

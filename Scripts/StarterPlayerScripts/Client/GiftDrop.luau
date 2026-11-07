@@ -231,7 +231,7 @@ function GiftDrop.Spawn(options, onOpened)
     --- @param player Player 原生交互提示触发的玩家。
     promptConnection = prompt.Triggered:Connect(function(player)
         local character = player.Character
-        local root = character and character:FindFirstChild("HumanoidRootPart")
+        local root = character and FXLoader:Find(character, "HumanoidRootPart")
         local humanoid = character and character:FindFirstChildOfClass("Humanoid")
         if destroyed or opening or workspace:GetServerTimeNow() < options.LandsAt or player ~= Players.LocalPlayer
             or not root or not humanoid or humanoid.Health <= 0

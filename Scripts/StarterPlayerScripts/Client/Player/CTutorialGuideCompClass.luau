@@ -107,7 +107,7 @@ function Guide:OnReady()
         self:TrackConnection(node:GetPropertyChangedSignal("AbsoluteSize"):Connect(updateScale))
     end
     self:TrackConnection(strength:GetPropertyChangedSignal("Visible"):Connect(updateScale))
-    self._screen.Parent = self:GetPlayerNode():WaitForChild("PlayerGui")
+    self._screen.Parent = FXLoader:Here(self:GetPlayerNode(), "PlayerGui", math.huge)
     updateScale()
     self._uiArrow = UIGuideArrow.New(self._screen.Parent)
     self._rateButton = FXLoader:PlayerGui("MainUI/RightCenter/DoubleStrengthButton")
@@ -356,7 +356,7 @@ end
 --- 固定间距与滚动周期，移动时只增减末端三角；箭头平铺在水平面并平滑隐藏首尾。
 function Guide:UpdateGuideArrow()
     local character = self:GetPlayerCharacter()
-    local root = character and character:FindFirstChild("HumanoidRootPart")
+    local root = character and FXLoader:Find(character, "HumanoidRootPart")
     if not self._arrowTrans then
         return
     end

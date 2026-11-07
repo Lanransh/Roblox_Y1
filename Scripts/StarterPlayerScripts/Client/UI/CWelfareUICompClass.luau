@@ -30,8 +30,8 @@ function Component:OnReady()
     self._commonUI = self:GetPlayerObject():RequireComponent("FCCommonUIComp")
     self._commonUI:RegisterTrainingClickModal(self.Root)
     self._localization = self._commonUI.Localization
-    self._mainRewardDot = FXLoader:Here(self:GetPlayerNode():WaitForChild("PlayerGui"),
-        "MainUI/LeftCenter/RewardBtn/RedDotImg")
+    local playerGui = FXLoader:Here(self:GetPlayerNode(), "PlayerGui", math.huge)
+    self._mainRewardDot = FXLoader:Here(playerGui, "MainUI/LeftCenter/RewardBtn/RedDotImg")
     self._mainRewardDot.Visible = false
     local offlineConfig = _G.GameConfig.CommonConfig.OfflineReward
     self.Config = {

@@ -101,7 +101,7 @@ function Component:UpdateShopArea()
         self._inside = false
         self:Hide()
     end
-    local root = character and character:FindFirstChild("HumanoidRootPart")
+    local root = character and FXLoader:Find(character, "HumanoidRootPart")
     local humanoid = character and character:FindFirstChildOfClass("Humanoid")
     local position = root and humanoid and humanoid.Health > 0 and root.Position or nil
     local inside = self._shopAreas:IsInside(position)

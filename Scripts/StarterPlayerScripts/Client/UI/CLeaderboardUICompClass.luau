@@ -104,7 +104,7 @@ function Component:OnReady()
     end
     local panel = FXLoader:Workspace("BlockMeshs/World1Root/Base/排行榜1/橙木空白排行榜/空白深色面板")
     self._panel = panel
-    self._gui = Create("SurfaceGui", self:GetPlayerNode():WaitForChild("PlayerGui"), {
+    self._gui = Create("SurfaceGui", FXLoader:Here(self:GetPlayerNode(), "PlayerGui", math.huge), {
         Name = "StrengthLeaderboard", Adornee = panel, Face = Enum.NormalId.Back,
         SizingMode = Enum.SurfaceGuiSizingMode.FixedSize, CanvasSize = Vector2.new(720, 912),
         AlwaysOnTop = false, LightInfluence = 0, Active = true,
@@ -175,10 +175,7 @@ end
 --- @param worldIndex number 世界编号，用于界面节点名。
 --- @param kind number 榜单类型，依次为力量、重生和在线时长。
 function Component:AttachWorldBoard(path, worldIndex, kind)
-    local model = workspace
-    for segment in string.gmatch(path, "[^/]+") do
-        model = model:WaitForChild(segment)
-    end
+    local model = FXLoader:Workspace(path, math.huge)
     local display = model:FindFirstChild("空白深色面板", true)
     while not display do
         model.DescendantAdded:Wait()
@@ -217,38 +214,39 @@ end
 --- 用缓存的真实成绩更新榜单；空榜与查询失败均不伪造玩家、分数或个人名次。
 --- @param board table 当前世界的显示面、界面和榜单类型。
 function Component:RefreshBoardData(board)
-    local panel = board.Gui.Panel
+    local panel = FXLoader:Here(board.Gui, "Panel")
     local data = self._rankingData[board.Kind]
     local items = data and data.itemData or {}
     for rank = 1, VisibleRankCount do
-        local row = panel.RankList["Rank" .. rank]
+        local row = FXLoader:Here(panel, "RankList/Rank" .. rank)
         local item = items[rank]
         row.Visible = item ~= nil
         if item then
-            row.RankNumber.Text = "#" .. item.rankNo
-            row.PlayerName.Text = item.playerName
-            row.Avatar.Image = "rbxthumb://type=AvatarHeadShot&id=" .. item.playerId .. "&w=150&h=150"
-            row.Score.Text = FormatScore(board.Kind, item.rankScore)
+            FXLoader:Here(row, "RankNumber").Text = "#" .. item.rankNo
+            FXLoader:Here(row, "PlayerName").Text = item.playerName
+            FXLoader:Here(row, "Avatar").Image = "rbxthumb://type=AvatarHeadShot&id=" .. item.playerId .. "&w=150&h=150"
+            FXLoader:Here(row, "Score").Text = FormatScore(board.Kind, item.rankScore)
         end
     end
-    panel.Status.Visible = #items == 0
+    local status = FXLoader:Here(panel, "Status")
+    status.Visible = #items == 0
     if self._rankingErrors[board.Kind] then
-        panel.Status.Text = Text.Tr(TranslationTexts.Unavailable)
+        status.Text = Text.Tr(TranslationTexts.Unavailable)
     elseif data then
-        panel.Status.Text = Text.Tr(TranslationTexts.Empty)
+        status.Text = Text.Tr(TranslationTexts.Empty)
     else
-        panel.Status.Text = Text.Tr(TranslationTexts.Loading)
+        status.Text = Text.Tr(TranslationTexts.Loading)
     end
-    local personal = panel.Personal
-    personal.RankNumber.Text = data and data.myNo and ("#" .. data.myNo) or "--"
-    personal.Score.Text = data and data.myScore ~= nil and FormatScore(board.Kind, data.myScore) or "--"
-    personal.PlayerName.Text = Text.Tr(TranslationTexts.You)
-    personal.Avatar.Image = "rbxthumb://type=AvatarHeadShot&id=" .. self:GetPlayerId() .. "&w=150&h=150"
+    local personal = FXLoader:Here(panel, "Personal")
+    FXLoader:Here(personal, "RankNumber").Text = data and data.myNo and ("#" .. data.myNo) or "--"
+    FXLoader:Here(personal, "Score").Text = data and data.myScore ~= nil and FormatScore(board.Kind, data.myScore) or "--"
+    FXLoader:Here(personal, "PlayerName").Text = Text.Tr(TranslationTexts.You)
+    FXLoader:Here(personal, "Avatar").Image = "rbxthumb://type=AvatarHeadShot&id=" .. self:GetPlayerId() .. "&w=150&h=150"
 end
 
 --- 查看与退出按钮位于屏幕右侧，避开底部物品栏，不往模型添加节点。
 function Component:BindCameraView()
-    self._viewUI = Create("ScreenGui", self:GetPlayerNode():WaitForChild("PlayerGui"), {
+    self._viewUI = Create("ScreenGui", FXLoader:Here(self:GetPlayerNode(), "PlayerGui", math.huge), {
         Name = "LeaderboardViewControls", ResetOnSpawn = false, DisplayOrder = 30,
     })
     self._viewButton = Create("TextButton", self._viewUI, {
@@ -294,7 +292,7 @@ function Component:BindCameraView()
         end
         elapsed = 0
         local character = self:GetPlayerCharacter()
-        local root = character and character:FindFirstChild("HumanoidRootPart")
+        local root = character and FXLoader:Find(character, "HumanoidRootPart")
         local humanoid = character and character:FindFirstChildOfClass("Humanoid")
         local activeNear = false
         self._nearBoard = nil
@@ -419,18 +417,19 @@ function Component:RefreshLocalization()
     local titles = {TranslationTexts.StrengthTitle, TranslationTexts.RebirthTitle, TranslationTexts.PlaytimeTitle}
     local headers = {TranslationTexts.Strength, TranslationTexts.Rebirths, TranslationTexts.Playtime}
     for index, board in ipairs(self._boards) do
-        local panel = board.Gui.Panel
+        local panel = FXLoader:Here(board.Gui, "Panel")
+        local personal = FXLoader:Here(panel, "Personal")
         local config = BoardTypes[board.Kind]
         for labelIndex, label in ipairs(panel:GetDescendants()) do
             if label:IsA("TextLabel") then
-                label.TextColor3 = label:IsDescendantOf(panel.Personal)
+                label.TextColor3 = label:IsDescendantOf(personal)
                     and config.TextColor:Lerp(Color3.new(0, 0, 0), 0.75) or config.TextColor
             end
         end
-        panel.Title.Text = Text.Tr(titles[board.Kind])
-        panel.StrengthHeader.Text = Text.Tr(headers[board.Kind])
+        FXLoader:Here(panel, "Title").Text = Text.Tr(titles[board.Kind])
+        FXLoader:Here(panel, "StrengthHeader").Text = Text.Tr(headers[board.Kind])
         for labelIndex, label in ipairs({self._rankHeader, self._playerHeader}) do
-            panel[label.Name].Text = label.Text
+            FXLoader:Here(panel, label.Name).Text = label.Text
         end
         self:RefreshBoardData(board)
     end
