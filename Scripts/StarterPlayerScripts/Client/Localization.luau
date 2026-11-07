@@ -13,6 +13,10 @@ function Localization.New(player)
     local self = setmetatable({}, Localization)
     self._changed = Instance.new("BindableEvent")
     self.Changed = self._changed.Event
+    -- 未发布的本地场景没有云端翻译表，直接使用英文回退。
+    if game.GameId == 0 then
+        return self
+    end
     --- 后台获取云端译文，失败不影响离线文案。
     self._loadTask = task.defer(function()
         -- 平台请求可能失败；有限重试后继续使用本地英文。

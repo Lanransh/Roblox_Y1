@@ -6,6 +6,7 @@ local ProximityPromptService = game:GetService("ProximityPromptService")
 local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
 local PickupPrompt = {}
+local promptShownConnection
 
 --- 创建圆角，保持提示框与进度条的统一轮廓。
 --- @param parent Instance 所属界面节点。
@@ -224,7 +225,10 @@ end
 
 --- 客户端入口仅注册一次，全局监听由引擎管理的拾取可见性。
 function PickupPrompt.Init()
-    ProximityPromptService.PromptShown:Connect(ShowPrompt)
+    if promptShownConnection then
+        return
+    end
+    promptShownConnection = ProximityPromptService.PromptShown:Connect(ShowPrompt)
 end
 
 return PickupPrompt

@@ -43,7 +43,7 @@ end
 --- @param playerGui PlayerGui 全局效果的所属界面容器。
 --- @return boolean 按钮是否处于可交互的显示链中。
 local function CanHover(button, playerGui)
-    if not button.Active or not button.Interactable then
+    if button:GetAttribute("HoverEnabled") == false or not button.Active or not button.Interactable then
         return false
     end
     local node = button

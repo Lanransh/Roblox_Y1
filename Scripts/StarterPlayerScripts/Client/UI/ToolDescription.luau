@@ -29,7 +29,6 @@ function ToolDescription.New(strength)
             size.X.Scale * (0.5 - anchor.X), size.X.Offset * (0.5 - anchor.X),
             size.Y.Scale * (1 - anchor.Y), size.Y.Offset * (1 - anchor.Y) + 10),
         Size = UDim2.fromOffset(220, 72),
-        AutomaticSize = Enum.AutomaticSize.Y,
         BackgroundTransparency = 1, BorderSizePixel = 0, Visible = false,
     })
     self._root:SetAttribute("BlocksTrainingClick", true)
@@ -66,23 +65,23 @@ function ToolDescription.New(strength)
     })
     self._content = Node("Frame", self._root, {
         Name = "Content", Position = UDim2.fromOffset(72, 10), Size = UDim2.new(1, -88, 0, 0),
-        BackgroundTransparency = 1, AutomaticSize = Enum.AutomaticSize.Y, ZIndex = 2,
+        BackgroundTransparency = 1, ZIndex = 2,
     })
     Node("UIPadding", self._content, {PaddingBottom = UDim.new(0, 12)})
-    -- 标题和描述按实际换行高度向下排列，保持大字号而不互相遮挡。
+    -- 文本高度显式计算，背景只跟随面板，避免自动高度与满高背景循环依赖。
     Node("UIListLayout", self._content, {Padding = UDim.new(0, 4), SortOrder = Enum.SortOrder.LayoutOrder})
     self._title = Node("TextLabel", self._content, {
         Name = "Title", Size = UDim2.new(1, 0, 0, 32), LayoutOrder = 1,
         BackgroundTransparency = 1, AutoLocalize = false, Font = Enum.Font.GothamBlack,
         TextSize = 26, TextColor3 = Color3.fromRGB(255, 243, 215), TextXAlignment = Enum.TextXAlignment.Left,
-        TextScaled = false, TextWrapped = true, AutomaticSize = Enum.AutomaticSize.Y, Text = "", ZIndex = 2,
+        TextScaled = false, TextWrapped = true, Text = "", ZIndex = 2,
     })
     self._description = Node("TextLabel", self._content, {
         Name = "Description", Size = UDim2.new(1, 0, 0, 0), LayoutOrder = 2,
         BackgroundTransparency = 1, AutoLocalize = false, Font = Enum.Font.GothamBold,
         TextSize = 22, TextColor3 = Color3.fromRGB(250, 247, 237),
         TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top,
-        TextWrapped = true, TextScaled = false, AutomaticSize = Enum.AutomaticSize.Y, Text = "", ZIndex = 2,
+        TextWrapped = true, TextScaled = false, Text = "", ZIndex = 2,
     })
     for index, label in ipairs({self._title, self._description}) do
         Node("UIStroke", label, {
@@ -94,7 +93,7 @@ function ToolDescription.New(strength)
     return self
 end
 
---- 按当前图标和文案计算宽度；短描述收窄，长描述在最大宽度内换行撑高。
+--- 先按图标和文案确定宽度，再计算换行高度，避免自动高度与满高背景循环依赖。
 --- @param tool Tool? 当前装备的原生道具；nil 时隐藏。
 --- @param description string? 已通过项目本地化入口处理的描述。
 function ToolDescription:SetTool(tool, description)
@@ -111,9 +110,18 @@ function ToolDescription:SetTool(tool, description)
     local titleSize = TextService:GetTextSize(self._title.Text, self._title.TextSize, self._title.Font, Vector2.new(10000, 10000))
     local descriptionSize = TextService:GetTextSize(self._description.Text, self._description.TextSize, self._description.Font, Vector2.new(10000, 10000))
     local width = math.clamp(math.ceil(math.max(titleSize.X, descriptionSize.X)) + left + 22, 220, 420)
-    self._root.Size = UDim2.fromOffset(width, 72)
+    local textWidth = math.max(1, width - left - 16)
+    local bounds = Vector2.new(textWidth, 10000)
+    local titleHeight = math.max(32, math.ceil(TextService:GetTextSize(
+        self._title.Text, self._title.TextSize, self._title.Font, bounds).Y))
+    local descriptionHeight = math.ceil(TextService:GetTextSize(
+        self._description.Text, self._description.TextSize, self._description.Font, bounds).Y)
+    local contentHeight = titleHeight + 4 + descriptionHeight + 12
+    self._root.Size = UDim2.fromOffset(width, math.max(72, 10 + contentHeight))
     self._content.Position = UDim2.fromOffset(left, 10)
-    self._content.Size = UDim2.new(1, -left - 16, 0, 0)
+    self._content.Size = UDim2.fromOffset(textWidth, contentHeight)
+    self._title.Size = UDim2.new(1, 0, 0, titleHeight)
+    self._description.Size = UDim2.new(1, 0, 0, descriptionHeight)
 end
 
 --- 只销毁当前展示对象创建的节点，保留主界面力量栏。
