@@ -8,7 +8,8 @@ local function Integer(value, min, max)
     return type(value) == "number" and value == value and value % 1 == 0 and value >= min and value <= max
 end
 
---- 注册支持离服更新的项目榜单及力量大数榜；客户端只能请求范围，不能提交成绩。
+--- 注册项目榜单和关服等待；客户端只能请求范围，不能提交成绩。
+--- @return nil
 function Ranking:Ctor()
     Ranking.Super.Ctor(self)
     -- 框架没有注册派生榜单的接口；替换实例，管理器定时任务保持不变。
@@ -18,6 +19,11 @@ function Ranking:Ctor()
         FS.RankingManager._rankingMap[config.Name] = ranking
         ranking:LoadRankingDataAsync()
     end
+    --- 复用幂等关档接口，确保离服尾差均已入队；主档与写榜仍并行保存。
+    game:BindToClose(function()
+        FS.PlayerKVDataManager:Close()
+        ProjectRanking.WaitForPendingWrites()
+    end)
     FX.Network:RegClientMsgCallback("C2S_RankingData", function(id, scope, kind, first, last)
         if
             not FS.PlayerManager:GetPlayerObject(id)

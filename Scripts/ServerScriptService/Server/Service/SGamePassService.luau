@@ -23,38 +23,22 @@ end
 
 --- 所有权请求和保存均会等待，返回后必须仍为原玩家档案。
 --- @param player table 已认证的玩家对象。
---- @param db table 本次加载的玩家档案。
+--- @param session string 本次加载的会话标识，不持有 DB 引用。
 --- @return boolean 原会话是否仍可写入。
-local function IsActive(player, db)
+local function IsActive(player, session)
     local id = player:GetPlayerId()
     return FS.PlayerManager:GetPlayerObject(id) == player
-        and FS.PlayerKVDataManager._playerDBMap[id] == db
-        and db:IsLoadFinished() and not db._leaving and not db._released
+        and FS.PlayerKVDataManager:IsSessionActive(id, session)
 end
 
---- 发奖与领取标记不可让出执行；处理器异常时仅恢复本礼包涉及的字段。
+--- 发奖与领取标记不可让出执行；通过公开事务同时回滚存档与待同步数据。
 --- @param player table 当前会话的玩家对象。
 --- @param goods table 一次性钻石礼包配置。
 --- @return boolean 钻石和领取次数是否已共同写入内存。
 local function Grant(player, goods)
-    local diamonds = player:_GetData(Fields.Diamonds)
-    local shopData = player:_GetData(Fields.CurrencyShopData)
-    local pending = FX.Table:DeepCopy(player._pendingSyncData)
-    local thread = coroutine.create(function()
+    return player:RunDataTransaction(function()
         return _G.Provider:GetBuyHandler("AddGem"):Buy({playerObject = player, goodsConfig = goods, num = 1})
     end)
-    local ok, result = coroutine.resume(thread)
-    local finished = coroutine.status(thread) == "dead"
-    if not finished then
-        task.cancel(thread)
-    end
-    if not ok or not finished or result ~= true then
-        player:_SetData(Fields.Diamonds, diamonds, false)
-        player:_SetData(Fields.CurrencyShopData, shopData, false)
-        player._pendingSyncData = pending
-        return false
-    end
-    return true
 end
 
 --- 平台核验后复用钻石处理器；保存失败保留奖励与次数，重试只保存、不重复发放。
@@ -63,28 +47,28 @@ end
 --- @return string|boolean Prompt 表示尚未拥有，Owned 表示已核验并保存，false 表示稍后重试。
 function Service.Check(player, goods)
     local id = player:GetPlayerId()
-    local db = FS.PlayerKVDataManager._playerDBMap[id]
+    local session = FS.PlayerKVDataManager:GetSessionToken(id)
     local shop = FS.ShopService
-    if not db or not IsActive(player, db) or shop._busy[id] then
+    if not session or not IsActive(player, session) or shop._busy[id] then
         return false
     end
     -- 与开发者商品共用购买锁，避免保存期间交叉结算。
     shop._busy[id] = true
     local ok, result = pcall(function()
         local owns = MarketplaceService:UserOwnsGamePassAsync(id, goods.RobloxProductId)
-        if not IsActive(player, db) then
+        if not IsActive(player, session) then
             return false
         end
         if not owns then
             return "Prompt"
         end
-        local data = player:GetTable(Fields.CurrencyShopData)
+        local data = player:GetTableView(Fields.CurrencyShopData)
         if (data.robuxBought[tostring(goods.DevGoodsId)] or 0) < 1 then
             if not Grant(player, goods) then
                 return false
             end
         end
-        if not db:Save(false) or not IsActive(player, db) then
+        if not FS.PlayerKVDataManager:Save(id, session) or not IsActive(player, session) then
             return false
         end
         return "Owned"

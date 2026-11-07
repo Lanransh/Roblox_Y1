@@ -518,11 +518,10 @@ function Player:MigrateData(version)
 end
 
 --- 未拥有初始武器时通过统一奖励组件发放；钻石由出售引导完成后赠送。
+--- @return nil
 function Player:OnPlayerLogin()
     local rewards = {}
-    local weapon = PlayerDataConfig.WeaponData
-    local kv = FS.PlayerKVDataManager:GetKVTable(self:GetPlayerId(), weapon.KVTable)
-    if kv:GetDeep(weapon.Key .. ".RealData") == nil then
+    if not self:HasStoredData(PlayerDataConfig.WeaponData) then
         table.insert(rewards, {Type = "Unlock", Kind = "Weapon", Id = 101, Count = 1})
     end
     assert(self:RequireComponent("FSRewardComp"):AddRewards(rewards), "Initial rewards failed")

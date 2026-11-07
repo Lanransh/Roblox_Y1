@@ -166,15 +166,16 @@ function Component:Request(action, value, count)
         return {success = false, key = TranslationTexts.Forbidden}
     end
     local player = self:GetPlayerObject()
-    local db = FS.PlayerKVDataManager._playerDBMap[userId]
+    local storage = FS.PlayerKVDataManager
+    local state = storage:GetState(userId)
     local misc = player and player:GetComponent("SMiscComp")
     local aura = player and player:GetComponent("SAuraComp")
-    if not player or not db or not db:IsLoadFinished() or db._leaving
+    if not player or not state or not state.loaded or state.leaving
         or not misc or not misc._levelStat or not aura or not aura._ready then
         return {success = false, key = TranslationTexts.Unknown}
     end
     local now = os.clock()
-    if self._busy or db._saving or now < self._nextRequest then
+    if self._busy or state.saving or now < self._nextRequest then
         return {success = false, key = TranslationTexts.Busy}
     end
     self._nextRequest = now + 0.2
@@ -203,13 +204,15 @@ function Component:Request(action, value, count)
             previousEntries = player:GetTable(Fields.CollectionEntries)
             assert(self:UnlockAllCollections(), "Incomplete item config")
         end
-        return db:Save(false)
+        return storage:Save(userId, state.session)
     end)
     self._busy = false
     if not ok then
         warn("[GM] Save/reset/unlock failed", userId, saved)
     end
-    if (not ok or not saved) and previousEntries then
+    if (not ok or not saved) and previousEntries
+        and storage:IsSessionActive(userId, state.session)
+        and FS.PlayerManager:GetPlayerObject(userId) == player then
         player:SetTable(Fields.CollectionEntries, previousEntries)
     end
     if not ok or not saved then

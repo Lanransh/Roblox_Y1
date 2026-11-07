@@ -8,11 +8,30 @@ local TranslationTexts = Text.Define("PurchaseReceipt", {
     ItemReceived = "Purchase received! {item} x{count:int} added to your inventory.",
 })
 local GameUtility = FX.Loader:RequireShared("Scripts/Game/Shared/GameUtility")
+local Rebirth = FXLoader:RequireShared("Scripts/Game/Shared/Rebirth")
+local Fields = _G.PlayerDataConfig
 local MarketplaceService = game:GetService("MarketplaceService")
 local Service = {}
 
---- 项目只包装框架收据结果，不改写发奖、回滚与保存逻辑；保存成功后才提示到账。
+--- 项目区分购买预检与收据结算，沿用框架发奖、回滚与保存逻辑。
 function Service.Init()
+    local canBuy = FS.ShopService.CanBuy
+    --- 发起购买时按当前档位选品，已支付收据直接沿用处理器结算。
+    --- @param playerId number 服务端认证的玩家 ID。
+    --- @param productId number 待购买的 Developer Product ID。
+    --- @return boolean 是否允许展示该商品的购买窗口。
+    function FS.ShopService:CanBuy(playerId, productId)
+        if not canBuy(self, playerId, productId) then
+            return false
+        end
+        local goods = _G.Provider:GetGoodsConfig(productId)
+        if goods.BuyHandler ~= "SkipRebirth" then
+            return true
+        end
+        local player = FS.PlayerManager:GetPlayerObject(playerId)
+        return Rebirth.GetSkipGoods(player:GetNumber(Fields.RebirthCount)) == goods
+    end
+
     --- 在购买串行锁内捕获首付，元数据随同奖励和收据保存。
     --- @param player table 当前权威玩家对象。
     --- @param receipt table Roblox 官方收据。

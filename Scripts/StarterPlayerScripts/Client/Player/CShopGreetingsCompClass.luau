@@ -5,11 +5,15 @@ local RunService = game:GetService("RunService")
 --- 店员挥手仅改变客户端外观，保留原有距离与动画时长。
 local Component = FX.Class("CShopGreetingsCompClass", "FCPlayerCompClass")
 
---- 持有店员初始姿势，用于离开范围和组件释放时还原。
+--- 异步等待店员复制并记录初始姿势，不阻塞玩家对象及其他组件创建。
 --- @param owner CPlayerObjectClass 当前客户端玩家对象。
 function Component:Ctor(owner)
     Component.Super.Ctor(self, owner)
     self._greetings = {}
+    self._initTask = task.defer(function()
+        self:InitGreetings()
+        self._initTask = nil
+    end)
 end
 
 --- 提供玩家对象内唯一的组件名称。
@@ -18,11 +22,12 @@ function Component:GetCompName()
     return "CShopGreetingsComp"
 end
 
---- 服务端就绪后绑定世界一的三个店员，与原脚本作用范围一致。
-function Component:OnReady()
-    local world1 = FXLoader:Workspace("Decorations/World1Decorations")
+--- 复制完成后绑定世界一的三个店员，帧连接由组件统一释放。
+--- @return nil
+function Component:InitGreetings()
+    local world1 = FXLoader:Workspace("Decorations/World1Decorations", math.huge)
     for index, name in ipairs({"Shop", "BlueHut", "PurpleHut"}) do
-        table.insert(self._greetings, self:CreateGreeting(FXLoader:Here(world1, name)))
+        table.insert(self._greetings, self:CreateGreeting(FXLoader:Here(world1, name, math.huge)))
     end
     self:TrackConnection(RunService.RenderStepped:Connect(function()
         self:UpdateGreetings()
@@ -33,14 +38,14 @@ end
 --- @param hut Model 场景中已复制的商店。
 --- @return table 店员肩部、手臂初始姿势及靠近状态。
 function Component:CreateGreeting(hut)
-    local npc = FXLoader:Here(hut, "ShopNPC")
+    local npc = FXLoader:Here(hut, "ShopNPC", math.huge)
     local humanoid = npc:FindFirstChildOfClass("Humanoid")
     while not humanoid do
         npc.ChildAdded:Wait()
         humanoid = npc:FindFirstChildOfClass("Humanoid")
     end
     local isR15 = humanoid.RigType == Enum.HumanoidRigType.R15
-    local torso = FXLoader:Here(npc, isR15 and "UpperTorso" or "Torso")
+    local torso = FXLoader:Here(npc, isR15 and "UpperTorso" or "Torso", math.huge)
     local armNames = isR15 and {"LeftUpperArm", "LeftLowerArm", "LeftHand"} or {"Left Arm"}
     local attachment = torso:FindFirstChild("LeftShoulderRigAttachment")
     local shoulderPosition = attachment and attachment.WorldPosition
@@ -48,7 +53,7 @@ function Component:CreateGreeting(hut)
     local shoulder = CFrame.new(shoulderPosition) * torso.CFrame.Rotation
     local parts = {}
     for index, name in ipairs(armNames) do
-        local part = FXLoader:Here(npc, name)
+        local part = FXLoader:Here(npc, name, math.huge)
         table.insert(parts, {part = part, rest = part.CFrame, offset = shoulder:ToObjectSpace(part.CFrame)})
     end
     return {torso = torso, shoulder = shoulder, parts = parts, inside = false, started = nil}
@@ -98,8 +103,11 @@ function Component:RestoreGreeting(greeting)
     end
 end
 
---- 先断开帧回调，再恢复全部店员的初始姿势。
+--- 取消复制等待、断开帧回调，再恢复全部店员的初始姿势。
 function Component:Dtor()
+    if self._initTask then
+        task.cancel(self._initTask)
+    end
     Component.Super.Dtor(self)
     for index, greeting in ipairs(self._greetings) do
         self:RestoreGreeting(greeting)

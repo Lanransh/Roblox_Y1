@@ -25,5 +25,6 @@
 - 玩家 GetTableView 在字段替换、周期重置后读取当前值，离服后失效；不得跨会话缓存。只读查询优先 View，编辑取深拷贝，不批量替换不涉及的调用点。
 - 底层 GetKVTable 返回冻结的方法句柄，不含 `_db/_table`：Get/GetDeep 深拷贝，GetShallow/GetDeepShallow 安全浅拷贝，GetView/GetDeepView 只读，Set/SetDeep 复制入参后写入。业务层不依赖 RealData/LastSaveTime 存储布局，字段是否写过用玩家 HasStoredData。
 - 异步操作前取得 GetSessionToken，返回后 IsSessionActive 校验原会话；GetState 只返回冻结的标量状态快照，Save(playerId, session) 只保存指定会话。加载、离服、失败恢复与释放由存档管理器负责。
+- 同服重连须等待旧 Player 会话完整关闭，等待后重新核对当前 Player 才加载；关服调用管理器 Close，停止新会话加载、关闭在线玩家并等待已离线及加载中的关闭任务，不读取内部映射。
 - 发奖回滚用玩家 RunDataTransaction(callback)：回调无参数、必须无 yield、成功返回 true，只通过公开接口修改本玩家，不保存、发消息或执行外部副作用。存档快照与回滚留在存档模块；收据去重/元数据和加载失败 GM 恢复走管理器专用接口。
 - 修改数据接口时同步维护接口注释、AGENTS.md 和本节；完成后定向检索内部成员，核对所有命中是否局限在存档模块，不能仅把直接访问换个名字隐藏起来。

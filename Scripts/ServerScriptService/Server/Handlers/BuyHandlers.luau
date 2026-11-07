@@ -1,7 +1,5 @@
 -- 处理器名与 GoodsConfig.GoodsData[productId].BuyHandler 对应。
 -- CanBuy(context) 只做判断；Buy(context) 无 yield，奖励和购买回执由框架一起保存。
-local FX = _G.FX
-local Rebirth = FX.Loader:RequireShared("Scripts/Game/Shared/Rebirth")
 local Fields = _G.PlayerDataConfig
 local Handlers = {AddGem = {}, AddItem = {}, SkipRebirth = {}, UnlockVip = {}}
 
@@ -65,14 +63,13 @@ function Handlers.AddItem:Buy(context)
     return true
 end
 
---- 预检和收据均按服务端当前次数校验分档，拒绝使用低价商品跨档重生。
+--- 档位由购买入口预检；已支付收据不因玩家跨档而拒绝结算。
 --- @param context table 框架提供的已认证购买上下文。
---- @return boolean 当前次数是否适用于该商品且组件已经就绪。
+--- @return boolean 购买数量、限购与组件就绪条件是否满足。
 function Handlers.SkipRebirth:CanBuy(context)
     local player = context.playerObject
     local misc = player:GetComponent("SMiscComp")
     return CanBuy(context) and misc ~= nil and misc._levelStat ~= nil
-        and Rebirth.GetSkipGoods(player:GetNumber(Fields.RebirthCount)) == context.goodsConfig
 end
 
 --- 仅由平台收据增加重生次数，保留训练值和等级，由框架保存与去重。

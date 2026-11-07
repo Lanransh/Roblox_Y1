@@ -2,6 +2,7 @@
 local FX = _G.FX
 local Players = game:GetService("Players")
 local Ranking = FX.Class("SRankingClass", "FSRankingClass")
+local pendingWrites = 0
 
 --- 缓存昵称仅用于本次在线会话，存档结束后释放。
 --- @param rankingType table 框架排行榜配置。
@@ -50,11 +51,40 @@ function Ranking:UpdatePlayerScore(playerId, newScore)
     return true
 end
 
---- 框架提交离服尾差后释放会话昵称，不影响玩家 KV 保存。
+--- 离服云榜延后提交并登记待完成任务，避免阻塞主档保存；失败保留队列供定时重试。
 --- @param playerId number 正在保存的玩家 ID。
+--- @return nil
 function Ranking:OnPlayerDataSaveStarted(playerId)
-    Ranking.Super.OnPlayerDataSaveStarted(self, playerId)
     self._playerNames[playerId] = nil
+    self:MakeRoomRankingDataDirty()
+    local info = self._updateRankingPlayerMap[playerId]
+    if not info then
+        return
+    end
+
+    pendingWrites += 1
+    task.defer(function()
+        local ok, err = pcall(function()
+            if self._updateRankingPlayerMap[playerId] ~= info then
+                return
+            end
+            if self:SetRankValue(playerId, info) and self._updateRankingPlayerMap[playerId] == info then
+                self._updateRankingPlayerMap[playerId] = nil
+            end
+        end)
+        pendingWrites -= 1
+        if not ok then
+            warn("[Ranking] deferred save failed", playerId, err)
+        end
+    end)
+end
+
+--- 玩家关档完成后等待所有项目榜单（含派生榜单）的离服写入，防止关服提前结束。
+--- @return nil
+function Ranking.WaitForPendingWrites()
+    while pendingWrites > 0 do
+        task.wait()
+    end
 end
 
 return Ranking
