@@ -20,9 +20,18 @@
 - 其余业务类、组件、配置和工具使用 `.luau` ModuleScript，通过 `require` 加载，不另建执行入口。
 - 脚本通过 Studio Script Sync 同步；场景、模型和 UI 节点在 Studio 中维护，通过 Roblox MCP 查询和核对。
 
+## 脚本命名与归属
+
+- 新建或迁移手写的端专属模块时，文件名、注册类名及组件协作名保持同一归属：项目客户端 `CXXX`、框架客户端 `FCXXX`、项目服务端 `SXXX`、框架服务端 `FSXXX`，框架共享能力沿用 `FX` 前缀。
+- 项目客户端放在 `StarterPlayerScripts/Client/`，项目服务端放在 `ServerScriptService/Server/`；框架按 `Framework/Client/`、`Server/`、`Shared/` 分层。两端公共的项目配置与业务模块不强加客户端或服务端前缀。
+- `Main`、`GameInit`、`FClient/FServer/FShared/FrameworkInit` 等固定入口沿用既有名称；不为执行命名规则批量重命名已有模块，Generated 名称由生成工具维护。
+- 普通项目开发只继承和接入框架；用户明确要求框架迁移或框架维护时，才修改授权范围内的框架代码。迁入框架的通用模块不得反向依赖 `Game/` 或项目客户端模块，项目差异通过既有 Provider、回调或项目子类接入。
+
 ## 技能使用
 
 项目技能位于 `.agents/skills/`，由 Codex 根据各技能的 name 和 description 发现并选择。使用时读取对应 `SKILL.md`，参考文档按需渐进加载；不要默认读取全部技能。
+
+新增处理器、组件、服务或通用工具前，使用 [框架开发技能](.agents/skills/roblox-framework-dev/SKILL.md)，先按能力复用索引查已有实现，再按项目文件职责选择扩展位置。已有能力通过现有接口接入，不重复实现支付、存档、背包、奖励、同步或 UI 基础设施，不把独立业务集中到 Main、玩家对象或杂项组件。
 
 ## 明确的禁止(必须遵守)
 - 禁止修改 `StarterPlayerScripts/Client/UI/Generated/` 及其所有子目录中的脚本；这些脚本仅可只读查看，不得为修复报错而修改。
@@ -46,7 +55,7 @@
 - MCP 不可用时说明当前实例结构尚未确认；本地同步脚本、模型副本和动态创建代码可用于分析预期结构，但不能作为当前 Studio 或运行时节点已存在、同步已完成的证据。
 - 业务模块显式声明 `local FX, FC, FS = _G.FX, _G.FC, _G.FS` 中实际用到的变量；每个 ModuleScript 返回有效结果。
 - 项目协议声明在 `ReplicatedStorage/Scripts/Game/Shared/NetworkProtocol.luau` 的 `ClientMsgID/ServerMsgID`；框架协议在 `ReplicatedStorage/Scripts/Framework/FrameworkInit.luau`。
-- `FC` 开头的代码属于框架，统一放在 `ReplicatedStorage/Scripts/Framework/Client/`；项目开发不直接修改这些框架代码，只通过项目子类继承和覆写接入，子类放在本地 `StarterPlayerScripts/Client/`。
+- 客户端、服务端的项目与框架代码按上文“脚本命名与归属”放置；普通项目开发通过项目子类继承和覆写接入框架，不直接修改框架实现。
 - 框架采用 `Scripts/Framework/Shared`、`Client`、`Server` 分层，`FShared/FClient/FServer/FrameworkInit` 放在框架根目录。服务端框架仅由服务器初始化，私有配置仍放在 `ServerScriptService`。
 - 代码使用 Roblox 原生服务、节点 API 和有效资源 URI。
 
@@ -73,6 +82,7 @@
 - `GetKVTable` 仅返回冻结的公开方法句柄：`Get/GetDeep` 深拷贝，`GetShallow/GetDeepShallow` 安全浅拷贝，`GetView/GetDeepView` 只读代理，`Set/SetDeep` 复制入参后写入。业务字段不得依赖 `RealData/LastSaveTime` 存储布局，是否已存储用 `HasStoredData`。
 - 会话检查、状态快照和保存使用 `GetSessionToken/IsSessionActive/GetState/Save`；跨 yield 后重验原会话。支付发奖回滚用玩家 `RunDataTransaction`，回调只能通过公开接口修改当前玩家，禁止 yield、保存和外部副作用；收据元数据、GM 恢复、会话释放走管理器专用接口，不在业务层操作底层存档。
 - 同服重连等待旧 Player 会话关闭后，重新核对当前 Player 再加载；关服调用存档管理器 `Close`，停止新会话加载、关闭在线玩家并等待已离服及加载中的关闭任务。
+- 购买容量预检使用 `GetDataSize(id, session)` 获取 JSON 字节数；只限制发起新购买，不据此拒绝已付款回执。收据持久化保留全部 PurchaseId 的最小去重标记，分析快照只留在当前会话。
 - 接口维护必须同步更新注释和 `.agents/skills/roblox-framework-dev/reference-rules.md`；检查存档改动时检索上述内部成员，确保存档模块之外没有新增直接访问。
 
 ## 数值文案显示
