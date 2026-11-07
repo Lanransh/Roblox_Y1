@@ -55,6 +55,14 @@ function DB:LoadAsync()
         end
 
         self._data = record.Data
+        -- 历史分析元数据不再持久化，保留全部 PurchaseId 以防重复发奖。
+        if self._data.PurchaseReceipts then
+            for purchaseId, receiptRecord in pairs(self._data.PurchaseReceipts) do
+                if type(receiptRecord) == "table" then
+                    self._data.PurchaseReceipts[purchaseId] = true
+                end
+            end
+        end
         for enumKey, name in pairs(_G.Provider:GetPlayerKVEnum()) do
             local data = self._data[name]
             if data ~= nil and type(data) ~= "table" then

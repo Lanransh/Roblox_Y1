@@ -1,5 +1,7 @@
 local FX, FS = _G.FX, _G.FS
 local MarketplaceService = game:GetService("MarketplaceService")
+-- 为已付款但尚未结算的回执及后续玩法数据留出空间，不以容量预检拒绝已付款回执。
+local PURCHASE_PROFILE_BUDGET = 3 * 1024 * 1024
 local Shop = { _busy = {}, _pendingAnalytics = setmetatable({}, {__mode = "k"}) }
 FS.ShopService = Shop
 
@@ -17,7 +19,7 @@ local function Immediate(callback)
     return ok and result == true
 end
 
---- 框架可先于业务管理器初始化，玩家尚未就绪时拒绝购买预检。
+--- 框架可先于业务管理器初始化；未就绪或档案接近容量预算时不再发起新购买。
 --- @param playerId number 服务端认证的玩家 ID。
 --- @param productId number 已登记的 Developer Product ID。
 --- @return boolean 是否允许展示购买窗口；不授予任何奖励。
@@ -27,7 +29,16 @@ function Shop:CanBuy(playerId, productId)
     end
 
     local player = FS.PlayerManager and FS.PlayerManager:GetPlayerObject(playerId)
-    if not player or not _G.Provider:GetGoodsConfig(productId) then
+    local storage = FS.PlayerKVDataManager
+    local session = storage:GetSessionToken(playerId)
+    if not player or not session
+        or not _G.Provider:GetGoodsConfig(productId) then
+        return false
+    end
+
+    local dataSize = storage:GetDataSize(playerId, session)
+    if not dataSize or dataSize >= PURCHASE_PROFILE_BUDGET then
+        warn("[Shop] profile cannot start a new purchase", playerId, dataSize)
         return false
     end
 
@@ -74,8 +85,9 @@ function Shop:ProcessReceipt(receipt)
                         return true
                     end)
                 end
-                record = {analytics = metadata, analyticsAttemptScheduled = true}
-                return storage:RecordPurchaseReceipt(id, session, receipt.PurchaseId, record)
+                -- 档案只保留最小去重标记，分析元数据保留在当前会话。
+                record = {analytics = metadata}
+                return storage:RecordPurchaseReceipt(id, session, receipt.PurchaseId, true)
             end) then
                 return retry
             end

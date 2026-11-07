@@ -28,7 +28,7 @@ end
 --- @param playerId number Roblox UserId；默认没有额外管理员。
 --- @return boolean 是否在项目管理员白名单中。
 function FX.IsDeveloper(playerId)
-    local ids = _G.GameConfig.DeveloperUserIds
+    local ids = _G.Provider:GetDeveloperUserIds()
     return table.find(ids, playerId) ~= nil
 end
 

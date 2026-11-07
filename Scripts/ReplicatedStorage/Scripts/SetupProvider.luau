@@ -3,6 +3,13 @@ local PlayerDataConfig, ServerDataConfig = _G.PlayerDataConfig, _G.ServerDataCon
 local NetworkProtocol, RankingDataConfig = _G.NetworkProtocol, _G.RankingDataConfig
 local ItemConfig, GoodsConfig = _G.ItemConfig, _G.GoodsConfig
 local Provider = { ItemHandlers = {}, BuyHandlers = {} }
+local developerUserIds = {10001624241, 2563885143}
+
+--- 项目管理员名单通过 Provider 提供，框架不读取具体游戏配置。
+--- @return table 沿用项目原有两个开发者账户的 UserId 列表。
+function Provider:GetDeveloperUserIds()
+    return developerUserIds
+end
 
 --- @return table 客户端可发送的项目协议名。
 function Provider:GetClientMsgID()
@@ -32,6 +39,19 @@ end
 --- @return table 玩家字段定义与默认值。
 function Provider:GetPlayerDataConfig()
     return PlayerDataConfig
+end
+
+--- 货币白名单由项目维护，训练值沿用当前项目的奖励约定。
+--- @param currencyName string? 奖励指定的货币字段名，省略时使用 Money。
+--- @return table? 允许发放的数值字段，非白名单字段返回 nil。
+function Provider:GetCurrencyDataConfig(currencyName)
+    if currencyName == nil or currencyName == "Money" then
+        return PlayerDataConfig.Money
+    end
+    if currencyName == "Diamonds" or currencyName == "RockTrainingValue" then
+        return PlayerDataConfig[currencyName]
+    end
+    return nil
 end
 
 --- @return table 供共享数据同步器使用的服务器字段定义。

@@ -32,11 +32,11 @@ function Service.Init()
         return Rebirth.GetSkipGoods(player:GetNumber(Fields.RebirthCount)) == goods
     end
 
-    --- 在购买串行锁内捕获首付，元数据随同奖励和收据保存。
+    --- 在购买串行锁内捕获首付；档案只保存去重标记，分析快照留在当前会话。
     --- @param player table 当前权威玩家对象。
     --- @param receipt table Roblox 官方收据。
     --- @param receipts table 档案内既有收据记录。
-    --- @return table 待保存的分析快照。
+    --- @return table 保存成功后待上报的会话内分析快照。
     FS.ShopService.CaptureReceiptAnalytics = function(player, receipt, receipts)
         return player:RequireComponent("SAnalyticsComp"):CapturePurchase(receipt, receipts)
     end

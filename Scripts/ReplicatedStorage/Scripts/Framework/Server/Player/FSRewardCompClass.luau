@@ -1,5 +1,5 @@
 local FX, FS = _G.FX, _G.FS
-local ItemConfig, PlayerDataConfig = _G.ItemConfig, _G.PlayerDataConfig
+local ItemConfig = _G.ItemConfig
 local Reward = FX.Class("FSRewardCompClass", "FSPlayerCompClass")
 FS.RewardCompClass = Reward
 local MAX_INTEGER = 9007199254740991
@@ -85,11 +85,7 @@ function Reward:_Prepare(rewards, consume, previous)
             if not Finite(count) or count == 0 then
                 return nil
             end
-            local fieldName = entry.Currency or "Money"
-            if fieldName ~= "Money" and fieldName ~= "Diamonds" and fieldName ~= "RockTrainingValue" then
-                return nil
-            end
-            local field = PlayerDataConfig[fieldName]
+            local field = _G.Provider:GetCurrencyDataConfig(entry.Currency)
             if not field or field.Type ~= "number" then
                 return nil
             end
@@ -116,13 +112,22 @@ function Reward:_Prepare(rewards, consume, previous)
         end
         balances[field] = value
     end
+    local tableFields = {}
+    local fields = _G.Provider:GetPlayerDataConfig()
+    for fieldName, value in pairs(tables) do
+        local field = fields[fieldName]
+        if not field or field.Type ~= "table" or type(value) ~= "table" then
+            return nil
+        end
+        tableFields[fieldName] = field
+    end
     if #items > 0 then
         local check = consume and inventory.CanRemoveItems or inventory.CanAddItems
-        if not check(inventory, items) then
+        if not check(inventory, items, previous and previous.items) then
             return nil
         end
     end
-    return { items = items, balances = balances, tables = tables, inventory = inventory }
+    return { items = items, balances = balances, tables = tables, tableFields = tableFields, inventory = inventory }
 end
 
 function Reward:CanAddRewards(rewards)
@@ -145,22 +150,43 @@ function Reward:_Apply(rewards, consume)
     if not plan then
         return false
     end
+    return self:_Commit(plan, consume)
+end
+
+--- 提交已校验的计划；异常仍向调用方报告，但始终释放重入标记。
+--- @param plan table 奖励或消耗计划，表字段已在预检时解析。
+--- @param consume boolean 是否提交单独的消耗计划。
+--- @param cost table? 兑换时先执行的消耗计划。
+--- @return boolean 是否完成提交。
+function Reward:_Commit(plan, consume, cost)
+    local inventoryData = cost and cost.inventory and cost.inventory:_GetData()
     self._applying = true
-    if #plan.items > 0 then
-        local apply = consume and plan.inventory.RemoveItems or plan.inventory.AddItems
-        if not apply(plan.inventory, plan.items) then
-            self._applying = nil
+    local ok, result = pcall(function()
+        if cost and #cost.items > 0 and not cost.inventory:RemoveItems(cost.items) then
             return false
         end
-    end
-    for field, value in pairs(plan.balances) do
-        self:SetNumber(field, value)
-    end
-    for fieldName, value in pairs(plan.tables) do
-        self:SetTable(PlayerDataConfig[fieldName], value)
-    end
+        if #plan.items > 0 then
+            local apply = consume and plan.inventory.RemoveItems or plan.inventory.AddItems
+            if not apply(plan.inventory, plan.items) then
+                if cost and #cost.items > 0 then
+                    cost.inventory:_SetData(inventoryData)
+                end
+                return false
+            end
+        end
+        for field, value in pairs(plan.balances) do
+            self:SetNumber(field, value)
+        end
+        for fieldName, value in pairs(plan.tables) do
+            self:SetTable(plan.tableFields[fieldName], value)
+        end
+        return true
+    end)
     self._applying = nil
-    return true
+    if not ok then
+        error(result, 0)
+    end
+    return result
 end
 
 --- 消耗和奖励先共同预检，数值以扣除后的余额计算，失败不扣款或扣道具。
@@ -176,27 +202,7 @@ function Reward:ExchangeRewards(costs, rewards)
     if not plan then
         return false
     end
-    local inventoryData = cost.inventory and cost.inventory:_GetData()
-    self._applying = true
-    if #cost.items > 0 and not cost.inventory:RemoveItems(cost.items) then
-        self._applying = nil
-        return false
-    end
-    if #plan.items > 0 and not plan.inventory:AddItems(plan.items) then
-        if #cost.items > 0 then
-            cost.inventory:_SetData(inventoryData)
-        end
-        self._applying = nil
-        return false
-    end
-    for field, value in pairs(plan.balances) do
-        self:SetNumber(field, value)
-    end
-    for fieldName, value in pairs(plan.tables) do
-        self:SetTable(PlayerDataConfig[fieldName], value)
-    end
-    self._applying = nil
-    return true
+    return self:_Commit(plan, false, cost)
 end
 
 function Reward:AddRewards(rewards)

@@ -111,8 +111,9 @@ end
 -- items: 物品对象列表
 --- 用独立模拟数据累计所有待添加堆叠量，保证批量预检不超卖空位。
 --- @param items table 道具对象列表。
+--- @param removedItems table? 兑换时先按默认快捷栏优先顺序消耗的道具，不修改实际背包。
 --- @return boolean 全批道具是否均可容纳。
-function FSInventoryCompClass:CanAddItems(items)
+function FSInventoryCompClass:CanAddItems(items, removedItems)
     for _, itemObject in pairs(items) do
         if not self:CheckItemObjectValid(itemObject) then
             FXLog:ErrorFmt("CanAddItemObjectList failed, itemObject: %s", FXTable:ToString(itemObject))
@@ -121,6 +122,31 @@ function FSInventoryCompClass:CanAddItems(items)
     end
 
     local data = self:_GetData()
+    if removedItems then
+        for itemIndex, itemObject in ipairs(removedItems) do
+            if not self:CheckItemObjectValid(itemObject) then
+                return false
+            end
+            local remaining = itemObject:GetStackCount()
+            for gridIndex = 1, self:GetTotalCapacity() do
+                local gridData = data[gridIndex]
+                if gridData and gridData.itemId == itemObject:GetItemId() then
+                    local count = math.min(remaining, gridData.stackCount)
+                    gridData.stackCount -= count
+                    remaining -= count
+                    if gridData.stackCount == 0 then
+                        data[gridIndex] = nil
+                    end
+                    if remaining == 0 then
+                        break
+                    end
+                end
+            end
+            if remaining > 0 then
+                return false
+            end
+        end
+    end
     local dataCopy = {}
     local function canAddItemObject(itemObject)
         local serializedData = itemObject:GetSerializeData()

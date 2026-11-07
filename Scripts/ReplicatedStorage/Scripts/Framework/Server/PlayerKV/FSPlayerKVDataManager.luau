@@ -1,5 +1,6 @@
 local FX, FS = _G.FX, _G.FS
 local Players = game:GetService("Players")
+local HttpService = game:GetService("HttpService")
 local Config = require(game:GetService("ServerScriptService").Server.Config.StorageConfig)
 local Access = require(script.Parent.FSPlayerDataAccess)
 require(script.Parent.FSPlayerKVTableClass)
@@ -155,6 +156,24 @@ function Manager:GetState(id)
     })
 end
 
+--- 获取指定会话档案的 JSON 字节数，购买容量预检不接触原始存档。
+--- @param id number 玩家 ID。
+--- @param session string 本次会话标识。
+--- @return number? 档案编码字节数；会话失效或无法编码时返回 nil。
+function Manager:GetDataSize(id, session)
+    if not self:IsSessionActive(id, session) then
+        return nil
+    end
+    local ok, encoded = pcall(function()
+        return HttpService:JSONEncode({Data = playerDBMap[id]._data})
+    end)
+    if not ok then
+        warn("[Storage] Profile encoding failed", id, encoded)
+        return nil
+    end
+    return #encoded
+end
+
 --- 保存指定会话；保存会 yield，调用方有后续副作用时必须再次 IsSessionActive。
 --- @param id number 玩家 ID。
 --- @param session string 操作开始时取得的会话标识。
@@ -248,7 +267,7 @@ end
 --- @param id number 玩家 ID。
 --- @param session string 本次会话标识。
 --- @param purchaseId string Roblox 收据 ID。
---- @param record table 分析元数据与去重标记。
+--- @param record boolean|table 去重标记或兼容的收据元数据，复制后持有。
 --- @return boolean 是否首次登记成功。
 function Manager:RecordPurchaseReceipt(id, session, purchaseId, record)
     if not self:IsSessionActive(id, session) or self:HasPurchaseReceipt(id, session, purchaseId) then
