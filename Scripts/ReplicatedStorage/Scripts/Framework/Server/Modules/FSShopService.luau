@@ -43,17 +43,16 @@ end
 function Shop:ProcessReceipt(receipt)
     local id = receipt.PlayerId
     local player = FS.PlayerManager and FS.PlayerManager:GetPlayerObject(id)
-    local db = FS.PlayerKVDataManager._playerDBMap[id]
+    local storage = FS.PlayerKVDataManager
+    local session = storage:GetSessionToken(id)
     local retry = Enum.ProductPurchaseDecision.NotProcessedYet
-    if not player or not db or not db:IsLoadFinished() or db._leaving or self._busy[id] then
+    if not player or not session or self._busy[id] then
         return retry
     end
 
     self._busy[id] = true
     local ok, decision = pcall(function()
-        local receipts = db._data.PurchaseReceipts or {}
-        db._data.PurchaseReceipts = receipts
-        if not receipts[receipt.PurchaseId] then
+        if not storage:HasPurchaseReceipt(id, session, receipt.PurchaseId) then
             local context = FX.BuyContextClass.New(player, receipt.ProductId, 1)
             if not Immediate(function()
                 return context:CanBuy()
@@ -61,69 +60,47 @@ function Shop:ProcessReceipt(receipt)
                 return retry
             end
 
-            -- 处理器必须不 yield，且奖励只能修改当前玩家档案；失败则恢复档案。
-            local before = FX.Table:DeepCopy(db._data)
-            local pendingBefore = FX.Table:DeepCopy(player._pendingSyncData)
-            if not Immediate(function()
-                return context:Buy()
+            -- 原始档案快照与回滚由存档模块独占，业务回调只使用玩家/KV 公开接口。
+            local record
+            if not player:RunDataTransaction(function()
+                if context:Buy() ~= true then
+                    return false
+                end
+                -- 项目回调只取得收据副本，异常或 yield 不改变已完成的发奖。
+                local metadata
+                if self.CaptureReceiptAnalytics then
+                    Immediate(function()
+                        metadata = self.CaptureReceiptAnalytics(player, receipt, storage:GetPurchaseReceipts(id, session))
+                        return true
+                    end)
+                end
+                record = {analytics = metadata, analyticsAttemptScheduled = true}
+                return storage:RecordPurchaseReceipt(id, session, receipt.PurchaseId, record)
             end) then
-                for name in pairs(db._data) do
-                    if before[name] == nil then
-                        db._data[name] = nil
-                    end
-                end
-
-                for name, values in pairs(before) do
-                    if db._data[name] then
-                        table.clear(db._data[name])
-                        for key, value in pairs(values) do
-                            db._data[name][key] = value
-                        end
-                    else
-                        db._data[name] = values
-                    end
-                end
-
-                player._pendingSyncData = pendingBefore
-                local inventory = player:GetComponent("FSInventoryComp")
-                if inventory then
-                    inventory:OnAllChanged()
-                end
-
                 return retry
             end
 
-            -- 项目回调仅生成元数据，不发送；异常或 yield 不改变支付结果。
-            local metadata
-            if self.CaptureReceiptAnalytics then
-                Immediate(function()
-                    metadata = self.CaptureReceiptAnalytics(player, receipt, receipts)
-                    return true
-                end)
-            end
-            local record = {analytics = metadata, analyticsAttemptScheduled = true}
-            receipts[receipt.PurchaseId] = record
-            local pending = self._pendingAnalytics[db]
+            local pending = self._pendingAnalytics[player]
             if not pending then
                 pending = {}
-                self._pendingAnalytics[db] = pending
+                self._pendingAnalytics[player] = pending
             end
             pending[receipt.PurchaseId] = record
         end
 
-        if not db:Save(false) then
+        if not storage:Save(id, session) then
             return retry
         end
 
         -- 首次保存失败后保留内存快照，重试保存成功才消费；历史记录不会进入 pending。
         -- 持久标记先于分析副作用，崩溃或平台失败允许漏报，不为分析重试支付。
-        local pending = self._pendingAnalytics[db]
+        local pending = self._pendingAnalytics[player]
         local record = pending and pending[receipt.PurchaseId]
         if record then
             pending[receipt.PurchaseId] = nil
-            if record.analytics and self.OnReceiptAnalyticsSaved and not db._leaving
+            if record.analytics and self.OnReceiptAnalyticsSaved
                 and FS.PlayerManager:GetPlayerObject(id) == player
-                and FS.PlayerKVDataManager._playerDBMap[id] == db then
+                and storage:IsSessionActive(id, session) then
                 pcall(self.OnReceiptAnalyticsSaved, player, FX.Table:DeepCopy(record.analytics))
             end
         end
