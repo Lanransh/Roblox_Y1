@@ -173,46 +173,58 @@ function RockLevel.IsInArea(areas, position, padding)
     return false
 end
 
---- 沿真实水平朝向遍历近身半格范围，先检查脚下格，避免跨过眼前石头攻击后一格。
+--- 锁定目标必须仍在脚下或周围八格，且角色到格子边界的水平距离不超过半格。
 --- @param area table 关卡边界。
 --- @param position Vector3 角色根节点位置。
---- @param look Vector3 角色朝向。
---- @return table 按射线经过顺序排列的格号；调用方须在第一块未击破石头处停止。
-function RockLevel.GetFrontCells(area, position, look)
-    local forward = Vector3.new(look.X, 0, look.Z)
-    if forward.Magnitude < 0.01 then
-        return {}
-    end
-    forward = forward.Unit
+--- @param cell number 从一开始的目标格号，调用方已校验关卡及格号范围。
+--- @param tolerance number? 服务端位置复制容差，客户端选目标及落锤时不提供。
+--- @return boolean 目标是否仍在近身攻击范围，不受朝向及最近目标变化影响。
+function RockLevel.CanHitCell(area, position, cell, tolerance)
     local size = RockLevel.CellSize
-    local x, z = position.X - area.MinX, position.Z - area.MinZ
-    local column, row = math.floor(x / size), math.floor(z / size)
-    local stepX, stepZ = math.sign(forward.X), math.sign(forward.Z)
-    local deltaX = stepX == 0 and math.huge or size / math.abs(forward.X)
-    local deltaZ = stepZ == 0 and math.huge or size / math.abs(forward.Z)
-    local nextX = stepX == 0 and math.huge
-        or ((column + (stepX > 0 and 1 or 0)) * size - x) / forward.X
-    local nextZ = stepZ == 0 and math.huge
-        or ((row + (stepZ > 0 and 1 or 0)) * size - z) / forward.Z
+    local column, row = (cell - 1) % area.Columns, math.floor((cell - 1) / area.Columns)
+    local x, z = (position.X - area.MinX) / size, (position.Z - area.MinZ) / size
+    if math.abs(column - math.floor(x)) > 1 or math.abs(row - math.floor(z)) > 1 then
+        return false
+    end
+    local dx = math.max(math.abs(x - column - 0.5) - 0.5, 0)
+    local dz = math.max(math.abs(z - row - 0.5) - 0.5, 0)
+    local reach = 0.5 + (tolerance or 0) / size
+    return dx * dx + dz * dz <= reach * reach
+end
+
+--- 脚下格优先，其余八格按中心距离从近到远排列；只返回近身候选，调用方跳过已碎石头。
+--- @param area table 关卡边界。
+--- @param position Vector3 角色根节点位置。
+--- @return table 脚下格及附近八格中可攻击的格号数组。
+function RockLevel.GetNearbyCells(area, position)
+    local size = RockLevel.CellSize
+    local x, z = (position.X - area.MinX) / size, (position.Z - area.MinZ) / size
+    local column, row = math.floor(x), math.floor(z)
+    local candidates = {}
+    for candidateRow = math.max(0, row - 1), math.min(area.Rows - 1, row + 1) do
+        for candidateColumn = math.max(0, column - 1), math.min(area.Columns - 1, column + 1) do
+            local cell = candidateRow * area.Columns + candidateColumn + 1
+            if RockLevel.CanHitCell(area, position, cell) then
+                table.insert(candidates, {
+                    Cell = cell,
+                    Current = candidateColumn == column and candidateRow == row,
+                    Distance = (x - candidateColumn - 0.5) ^ 2 + (z - candidateRow - 0.5) ^ 2,
+                })
+            end
+        end
+    end
+    table.sort(candidates, function(left, right)
+        if left.Current ~= right.Current then
+            return left.Current
+        end
+        if left.Distance ~= right.Distance then
+            return left.Distance < right.Distance
+        end
+        return left.Cell < right.Cell
+    end)
     local cells = {}
-    local distance = 0
-    while distance <= size / 2 do
-        local facing = ((column + 0.5) * size - x) * forward.X
-            + ((row + 0.5) * size - z) * forward.Z
-        if column >= 0 and column < area.Columns and row >= 0 and row < area.Rows
-            and facing >= 0 and math.min(nextX, nextZ) > distance then
-            table.insert(cells, area.Index .. ":" .. (row * area.Columns + column + 1))
-        end
-        distance = math.min(nextX, nextZ)
-        -- 穿过格角时同时前进行列，不命中只与射线接触一个角的侧边格。
-        if nextX == distance then
-            column += stepX
-            nextX += deltaX
-        end
-        if nextZ == distance then
-            row += stepZ
-            nextZ += deltaZ
-        end
+    for index, candidate in ipairs(candidates) do
+        cells[index] = area.Index .. ":" .. candidate.Cell
     end
     return cells
 end

@@ -563,7 +563,7 @@ function Component:ResetRound(round, brokenCells)
     self:ResetVisuals()
 end
 
---- 服务端回包更新实际血量，血条只向下校正；拒绝命中不回涨，碎裂仍等待确认。
+--- 回包以服务端实际血量纠正预测；拒绝时撤销本次预扣，避免下一锤追上旧预测却看似没扣血。
 --- @param key string 本次命中的格号。
 --- @param round number 本次命中所属轮次。
 --- @param accepted boolean 是否通过服务端位置、装备及频率校验。
@@ -579,7 +579,7 @@ function Component:OnHitResult(key, round, accepted, health)
     end
     if accepted then
         self._health[key] = health
-        self._displayHealth[key] = math.min(self._displayHealth[key] or health, health)
+        self._displayHealth[key] = health
         if health == 0 then
             for index, chunk in ipairs(self._chunks) do
                 local rock = chunk.Rocks and chunk.Rocks[key]
@@ -589,6 +589,8 @@ function Component:OnHitResult(key, round, accepted, health)
                 end
             end
         end
+    else
+        self._displayHealth[key] = self._health[key] or pending.Health
     end
     self._refreshRocks = true
 end
@@ -608,8 +610,8 @@ function Component:ApplyHit(key, area)
         return
     end
     local predicted = math.max(oldValue - damage, math.min(oldValue, RockLevel.HP[area.Index] * 0.01))
-    self._displayHealth[key] = math.min(self._displayHealth[key] or oldValue, predicted)
-    self._pendingHits[key] = {Round = self._round, Character = self:GetPlayerCharacter()}
+    self._displayHealth[key] = predicted
+    self._pendingHits[key] = {Round = self._round, Character = self:GetPlayerCharacter(), Health = oldValue}
     for index, chunk in ipairs(self._chunks) do
         local rock = chunk.Rocks and chunk.Rocks[key]
         if rock then
@@ -705,7 +707,7 @@ function Component:PoseSwing(duration, armAngle, bodyAngle, direction)
     end
 end
 
---- 下砸时重验装备与近身首块石头，移动或转身后不越过阻挡石头命中旧目标。
+--- 下砸时只重验锁定目标的距离、血量和装备，转身或最近目标变化不取消仍在近身范围内的敲击。
 --- @param character Model 起手时的角色。
 --- @param key string 起手时锁定的石头格子。
 --- @param area table 目标所属关卡。
@@ -717,26 +719,11 @@ function Component:ResolvePickaxeHit(character, key, area)
         or math.abs(root.Position.Y - area.FloorY) >= 12 then
         return
     end
-    local cells = RockLevel.GetFrontCells(area, root.Position, root.CFrame.LookVector)
+    local cell = tonumber(string.match(key, ":(%d+)$"))
     local health = self._health[key] or RockLevel.HP[area.Index]
     local damage = RockLevel.GetDamage(self:GetNumber(Fields.RockTrainingLevel), area.Index,
         self:GetNumber(Fields.RockTrainingValue))
-    if damage >= RockLevel.HP[area.Index] then
-        cells = {}
-        local column = math.floor((root.Position.X - area.MinX) / RockLevel.CellSize)
-        local row = math.floor((root.Position.Z - area.MinZ) / RockLevel.CellSize)
-        if column >= 0 and column < area.Columns and row >= 0 and row < area.Rows then
-            table.insert(cells, 1, area.Index .. ":" .. (row * area.Columns + column + 1))
-        end
-    end
-    local target
-    for cellIndex, candidate in ipairs(cells) do
-        if (self._health[candidate] or RockLevel.HP[area.Index]) > 0 then
-            target = candidate
-            break
-        end
-    end
-    if target ~= key or health <= 0 or damage <= 0 then
+    if not RockLevel.CanHitCell(area, root.Position, cell) or health <= 0 or damage <= 0 then
         return
     end
     self:ApplyHit(key, area)
@@ -970,7 +957,7 @@ function Component:UpdateAttacks()
             and position.X >= area.MinX - 8 and position.X < area.MinX + area.Node.Size.X + 8
             and position.Z >= area.MinZ - 8 and position.Z < area.MinZ + area.Node.Size.Z + 8 then
             local damage = RockLevel.GetDamage(level, index, strength)
-            local cells = RockLevel.GetFrontCells(area, position, root.CFrame.LookVector)
+            local cells = RockLevel.GetNearbyCells(area, position)
             local instantBreak = damage >= RockLevel.HP[index]
             if instantBreak then
                 -- 秒杀只击碎角色进入的格子，避免站在原地依次引爆前方和左右的石头。
