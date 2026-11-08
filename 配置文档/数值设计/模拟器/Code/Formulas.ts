@@ -169,7 +169,7 @@ export function calculateLevelStrength(
   levelCurves: CurveGroupValue,
   targetLevel: number,
 ): number {
-  // 校验合法等级；按配置对象缓存累计门槛，供状态、图表与血量公式复用。
+  // 校验合法等级；按配置对象缓存累计门槛，供状态和等级图表复用。
   sampleCurveGroupColumnFormula(levelCurves, "nextLevelExperience", targetLevel);
   const minLevel = levelCurves.input?.min ?? 1;
   let thresholds = levelTrainingThresholds.get(levelCurves);
@@ -204,15 +204,49 @@ export function calculateTrainingLevel(
   return low;
 }
 
-/** 返回力量刚达到目标血量时所属的等级（可在该级训练途中达到）；超过满级力量时返回 null。 */
+/** 按整数等级采样独立攻击力曲线；与该等级的升级经验需求无关。 */
+export function calculateLevelAttack(
+  levelCurves: CurveGroupValue,
+  level: number,
+): number {
+  return sampleCurveGroupColumnFormula(levelCurves, "attackPower", level);
+}
+
+/** 用累计训练值确定等级与级内进度，在本级和下级攻击力间线性插值；满级不再采样下一级。 */
+export function calculateTrainingAttack(
+  levelCurves: CurveGroupValue & { input: { max: number } },
+  trainingValue: number,
+): number {
+  const level = calculateTrainingLevel(levelCurves, trainingValue);
+  const attack = calculateLevelAttack(levelCurves, level);
+  if (level >= levelCurves.input.max) {
+    return attack;
+  }
+  const threshold = calculateLevelStrength(levelCurves, level);
+  const nextThreshold = calculateLevelStrength(levelCurves, level + 1);
+  const progress = (trainingValue - threshold) / (nextThreshold - threshold);
+  return attack + (calculateLevelAttack(levelCurves, level + 1) - attack) * progress;
+}
+
+/** 反查基础攻击力刚达到目标血量时所属的等级（可在级内达到）；超过满级攻击力时返回 null。 */
 export function calculateOneHitKillLevel(
   levelCurves: CurveGroupValue & { input: { max: number } },
   grassHp: number,
 ): number | null {
-  if (grassHp > calculateLevelStrength(levelCurves, levelCurves.input.max)) {
+  if (grassHp > calculateLevelAttack(levelCurves, levelCurves.input.max)) {
     return null;
   }
-  return calculateTrainingLevel(levelCurves, grassHp);
+  let low = levelCurves.input.min ?? 1;
+  let high = levelCurves.input.max;
+  while (low < high) {
+    const middle = Math.ceil((low + high) / 2);
+    if (calculateLevelAttack(levelCurves, middle) <= grassHp) {
+      low = middle;
+    } else {
+      high = middle - 1;
+    }
+  }
+  return low;
 }
 
 /** 按关卡 ID 采样准入、血量基准等级、血量倍率与道具单价，供定价和难度计算使用。 */
@@ -229,7 +263,7 @@ export function calculateStageValues(
   };
 }
 
-/** 用刚达到期望等级所需的累计训练值作为力量基准，再乘关卡血量倍率；起始关基准至少为 1。 */
+/** 用期望等级的独立攻击力乘关卡血量倍率；期望等级不大于 1 的起始关沿用力量 1。 */
 export function calculateStageCombatValues(
   stageCurves: CurveGroupValue,
   levelCurves: CurveGroupValue,
@@ -238,7 +272,7 @@ export function calculateStageCombatValues(
   const values = calculateStageValues(stageCurves, globalStageId);
   const expectedStrength = values.grassLevel <= 1
     ? 1
-    : calculateLevelStrength(levelCurves, values.grassLevel);
+    : calculateLevelAttack(levelCurves, values.grassLevel);
   return {
     ...values,
     expectedStrength,

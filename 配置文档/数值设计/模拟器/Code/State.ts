@@ -5,6 +5,7 @@ import {
   calculateLevelStrength,
   calculateItemSaleGold,
   calculateTrainingLevel,
+  calculateTrainingAttack,
   calculatePaidMultiplierValues,
   calculateRebirthCatchUpMultiplier,
   calculateRebirthFieldSelection,
@@ -170,7 +171,7 @@ export class State extends BaseState<StateValues> {
   }
 
   get strength(): number {
-    return this.trainingValue;
+    return calculateTrainingAttack(this.projectConfig.levelCurves, this.trainingValue);
   }
 
   getFieldDisplayNames(): Record<string, string> {

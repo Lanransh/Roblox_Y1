@@ -1,6 +1,7 @@
 import { ChartSet } from "@game-simulator/framework";
 import {
   calculateAuraValues,
+  calculateLevelAttack,
   calculateLevelStrength,
   calculateLevelValues,
   calculateOneHitKillLevel,
@@ -131,9 +132,15 @@ export class ProjectCharts extends ChartSet {
         },
         {
           id: "strength",
-          label: "达到该等级所需累计训练值（力量）",
+          label: "达到该等级所需累计训练值",
           sample: (level: number) =>
             calculateLevelStrength(this.projectConfig.levelCurves, level),
+        },
+        {
+          id: "attackPower",
+          label: "攻击力（力量）",
+          sample: (level: number) =>
+            calculateLevelAttack(this.projectConfig.levelCurves, level),
         },
       ],
     };
