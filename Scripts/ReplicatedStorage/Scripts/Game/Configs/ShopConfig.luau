@@ -29,14 +29,14 @@ return {
             Index = 2,
             DevGoodsId = 111,
             NameTxt = [[Small Weekly Diamond Pass × 1]],
-            DescTxt = [[Get 108 Diamonds instantly, plus 12 bonus Diamonds each day you check in for the next 6 days.]],
+            DescTxt = [[Get 118 Diamonds instantly (includes day 1), then 53 Diamonds daily for the next 6 days. Total: 436 Diamonds.]],
             IconId = [[rbxassetid://131496626025159]]
         },
         [3] = {
             Index = 3,
             DevGoodsId = 112,
             NameTxt = [[Large Weekly Diamond Pass × 1]],
-            DescTxt = [[Get 400 Diamonds instantly, plus 63 bonus Diamonds each day you check in for the next 6 days.]],
+            DescTxt = [[Get 310 Diamonds instantly (includes day 1), then 190 Diamonds daily for the next 6 days. Total: 1,450 Diamonds.]],
             IconId = [[rbxassetid://106263117856612]]
         },
         [4] = {

@@ -81,7 +81,7 @@ return {
         KVTable = PlayerKVEnum.ePlayerData,
         Sync = true,
     },
-    -- 钻石默认 0；首次缺失该存档字段时由统一奖励组件一次赠送 30 钻石。
+    -- 钻石默认 0；完成出售引导后由统一奖励组件一次赠送 35 钻石。
     Diamonds = {
         Type = "number",
         Key = "Diamonds",

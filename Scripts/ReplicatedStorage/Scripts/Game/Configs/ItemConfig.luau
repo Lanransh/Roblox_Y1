@@ -8,9 +8,9 @@ return {
             HeldHandler = [[Image]],
             NumberArray = nil,
             KVTable = {
-                InstantGemCount = 108,
+                InstantGemCount = 118,
                 DayTime = 6,
-                DurationDays = 12
+                DurationDays = 53
             }
         },
         [102] = {
@@ -21,9 +21,9 @@ return {
             HeldHandler = [[Image]],
             NumberArray = nil,
             KVTable = {
-                InstantGemCount = 400,
+                InstantGemCount = 310,
                 DayTime = 6,
-                DurationDays = 63
+                DurationDays = 190
             }
         },
         [103] = {
@@ -83,7 +83,7 @@ return {
         [101] = {
             Id = 101,
             Name = [[Small Weekly Diamond Pass]],
-            Desc = [[Get 108 Diamonds instantly, plus 12 bonus Diamonds each day you check in for the next 6 days.]],
+            Desc = [[Get 118 Diamonds instantly (includes day 1), then 53 Diamonds daily for the next 6 days. Total: 436 Diamonds.]],
             Quality = 12,
             IconId = [[rbxassetid://131496626025159]],
             DisplayModelId = nil
@@ -91,7 +91,7 @@ return {
         [102] = {
             Id = 102,
             Name = [[Large Weekly Diamond Pass]],
-            Desc = [[Get 400 Diamonds instantly, plus 63 bonus Diamonds each day you check in for the next 6 days.]],
+            Desc = [[Get 310 Diamonds instantly (includes day 1), then 190 Diamonds daily for the next 6 days. Total: 1,450 Diamonds.]],
             Quality = 12,
             IconId = [[rbxassetid://106263117856612]],
             DisplayModelId = nil

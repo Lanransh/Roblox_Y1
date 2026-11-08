@@ -283,7 +283,7 @@ function Guide:RecordSale()
     self:GrantTrainingDiamonds()
 end
 
---- 出售引导完成后赠送训练倍率所需钻石；领取状态随引导存档，重复事件和重登不重复发放。
+--- 出售引导完成后赠送 35 钻石用于首次倍率升级；领取状态随引导存档，重复事件和重登不重复发放。
 function Guide:GrantTrainingDiamonds()
     if not self:IsLootStep(4) then
         return
@@ -292,7 +292,7 @@ function Guide:GrantTrainingDiamonds()
     if data.trainingDiamondsGranted then
         return
     end
-    assert(self:RequireComponent("FSRewardComp"):AddRewards({{Type = "Money", Currency = "Diamonds", Count = 30}}),
+    assert(self:RequireComponent("FSRewardComp"):AddRewards({{Type = "Money", Currency = "Diamonds", Count = 35}}),
         "Tutorial diamonds failed")
     data.trainingDiamondsGranted = true
     self:SetGuideData(data)

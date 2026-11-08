@@ -72,8 +72,8 @@ return {
             DevGoodsId = 111,
             BuyHandler = [[AddItem]],
             Name = [[Small Weekly Diamond Pass × 1]],
-            Desc = [[Get 108 Diamonds instantly, plus 12 bonus Diamonds each day you check in for the next 6 days.]],
-            Price = 18,
+            Desc = [[Get 118 Diamonds instantly (includes day 1), then 53 Diamonds daily for the next 6 days. Total: 436 Diamonds.]],
+            Price = 28,
             RobloxProductId = 3.727242096e+9,
             BuyLimit = nil,
             NumberArray = nil,
@@ -87,8 +87,8 @@ return {
             DevGoodsId = 112,
             BuyHandler = [[AddItem]],
             Name = [[Large Weekly Diamond Pass × 1]],
-            Desc = [[Get 400 Diamonds instantly, plus 63 bonus Diamonds each day you check in for the next 6 days.]],
-            Price = 68,
+            Desc = [[Get 310 Diamonds instantly (includes day 1), then 190 Diamonds daily for the next 6 days. Total: 1,450 Diamonds.]],
+            Price = 88,
             RobloxProductId = 3.727242144e+9,
             BuyLimit = nil,
             NumberArray = nil,
@@ -231,7 +231,7 @@ return {
             BuyHandler = [[TrainingRateLevel]],
             BuyLimit = nil,
             Desc = [[Training Multiplier × 2]],
-            Price = 28,
+            Price = 35,
             NumberArray = nil,
             KVTable = nil
         },
@@ -240,7 +240,7 @@ return {
             BuyHandler = [[TrainingRateLevel]],
             BuyLimit = nil,
             Desc = [[Training Multiplier × 4]],
-            Price = 38,
+            Price = 48,
             NumberArray = nil,
             KVTable = nil
         },
@@ -249,7 +249,7 @@ return {
             BuyHandler = [[TrainingRateLevel]],
             BuyLimit = nil,
             Desc = [[Training Multiplier × 8]],
-            Price = 48,
+            Price = 60,
             NumberArray = nil,
             KVTable = nil
         },
@@ -258,7 +258,7 @@ return {
             BuyHandler = [[TrainingRateLevel]],
             BuyLimit = nil,
             Desc = [[Training Multiplier × 16]],
-            Price = 78,
+            Price = 98,
             NumberArray = nil,
             KVTable = nil
         },
@@ -267,7 +267,7 @@ return {
             BuyHandler = [[TrainingRateLevel]],
             BuyLimit = nil,
             Desc = [[Training Multiplier × 32]],
-            Price = 228,
+            Price = 288,
             NumberArray = nil,
             KVTable = nil
         },
@@ -276,7 +276,7 @@ return {
             BuyHandler = [[TrainingRateLevel]],
             BuyLimit = nil,
             Desc = [[Training Multiplier × 64]],
-            Price = 418,
+            Price = 588,
             NumberArray = nil,
             KVTable = nil
         },
@@ -285,7 +285,7 @@ return {
             BuyHandler = [[TrainingRateLevel]],
             BuyLimit = nil,
             Desc = [[Training Multiplier × 128]],
-            Price = 758,
+            Price = 1188,
             NumberArray = nil,
             KVTable = nil
         },
@@ -294,7 +294,7 @@ return {
             BuyHandler = [[TrainingRateLevel]],
             BuyLimit = nil,
             Desc = [[Training Multiplier × 256]],
-            Price = 1498,
+            Price = 2688,
             NumberArray = nil,
             KVTable = nil
         },
@@ -303,7 +303,7 @@ return {
             BuyHandler = [[TrainingRateLevel]],
             BuyLimit = nil,
             Desc = [[Training Multiplier × 512]],
-            Price = 2688,
+            Price = 5688,
             NumberArray = nil,
             KVTable = nil
         },
@@ -312,7 +312,7 @@ return {
             BuyHandler = [[TrainingRateLevel]],
             BuyLimit = nil,
             Desc = [[Training Multiplier × 1024]],
-            Price = 5688,
+            Price = 12888,
             NumberArray = nil,
             KVTable = nil
         },
@@ -321,7 +321,7 @@ return {
             BuyHandler = [[TrainingRateLevel]],
             BuyLimit = nil,
             Desc = [[Training Multiplier × 2048]],
-            Price = 10288,
+            Price = 28888,
             NumberArray = nil,
             KVTable = nil
         },
