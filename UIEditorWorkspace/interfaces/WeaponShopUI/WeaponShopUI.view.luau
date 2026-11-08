@@ -54,7 +54,7 @@
 
 【动作与覆写】
   必需覆写 OnUIAction(action: string, payload: table)，无返回值；
-  默认实现报错。无其他页面专用必需或可选覆写。
+  默认实现报错。页面专用可选格式化接口见下文。
   Buy   -> { weaponId: string }，未拥有时发出，值为当前 Item.id。
   Equip -> { weaponId: string }，已拥有但未装备时发出，值为当前 Item.id。
   Close -> {}，由接入层处理关闭。
@@ -62,6 +62,9 @@
   Config.allowUnaffordableAction: boolean?，true 时余额不足保持灰色但允许点击提示。
   State.busy: boolean?，全局请求锁；pending[id] 的等待文案优先于已装备状态。
   FormatNumber(value:number)->string 可选覆写，默认 tostring；接入统一数量工具。
+  FormatPrice(value:number)->string 可选覆写，仅格式化购买价格；
+  默认调用 self:FormatNumber(value)，不改变力量或倍率格式；Render 刷新时调用。
+  value 为原始价格，返回展示字符串；覆写时无需调用 Super，不修改原始数据。
   仅覆盖 OnUIAction 与上述格式化接口；禁止覆写 Render 或重绑条目事件。
   请求前设置 pending[id] = true 并刷新；成功后用真实结果更新
   owned/equippedId/coins，失败保留真实状态；两者均清除 pending[id] 并刷新。
@@ -99,6 +102,13 @@ CWeaponShopView.BaseViewTranslationTexts = TranslationTexts
 -- @return string 展示数量。
 function CWeaponShopView:FormatNumber(value)
     return tostring(value)
+end
+
+-- 价格可独立指定精度，默认沿用数量格式以兼容现有接入。
+-- @param value number 未格式化的价格。
+-- @return string 展示价格。
+function CWeaponShopView:FormatPrice(value)
+    return self:FormatNumber(value)
 end
 
 -- 绑定窗口与隐藏原型，只在首次准备时连接关闭按钮。
@@ -193,7 +203,7 @@ function CWeaponShopView:Render(state)
             local equipped = state.equippedId == weapon.id
             local pending = state.pending and state.pending[weapon.id]
             local caption = Text.Tr(TranslationTexts.Price, {
-                price = self:FormatNumber(weapon.price),
+                price = self:FormatPrice(weapon.price),
             })
             local color = "#67ED14"
             local edge = "#225A07"

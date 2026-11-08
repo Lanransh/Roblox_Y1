@@ -50,22 +50,34 @@ local units = {
     { 1e12, "T" }, { 1e9, "B" }, { 1e6, "M" }, { 1e3, "K" },
 }
 
---- 按 K 到 Ud 缩写数量；不足千的整数直接显示，小数与大单位均保留两位小数。
+--- 按 K 到 Ud 缩写数量；按指定小数位四舍五入，并去掉末尾多余的零和小数点。
 --- @param number number 待显示数值，nil 按零处理。
+--- @param decimalPlaces number? 最多保留的小数位数，非负整数，默认两位。
 --- @return string 数值文本。
-function GameUtility.NumberToText(number)
+function GameUtility.NumberToText(number, decimalPlaces)
     number = number or 0
+    decimalPlaces = decimalPlaces or 2
+    local format = "%." .. decimalPlaces .. "f"
+    local factor = 10 ^ decimalPlaces
     local absNumber = math.abs(number)
     if absNumber < 1e3 then
         if number % 1 ~= 0 then
-            return string.format("%.2f", number)
+            local text = string.format(format, math.round(number * factor) / factor)
+            if decimalPlaces > 0 then
+                text = text:gsub("0+$", ""):gsub("%.$", "")
+            end
+            return text
         end
         return tostring(math.floor(number))
     end
     for index, entry in ipairs(units) do
         local value, unit = entry[1], entry[2]
         if absNumber >= value then
-            return string.format("%.2f%s", number / value, unit)
+            local text = string.format(format, math.round(number / value * factor) / factor)
+            if decimalPlaces > 0 then
+                text = text:gsub("0+$", ""):gsub("%.$", "")
+            end
+            return text .. unit
         end
     end
     return tostring(number)

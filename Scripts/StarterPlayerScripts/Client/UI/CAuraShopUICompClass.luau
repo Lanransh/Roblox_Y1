@@ -123,6 +123,13 @@ function Component:FormatNumber(value)
     return GameUtility.NumberToText(value)
 end
 
+--- 价格最多保留一位小数并四舍五入，不影响力量倍率的显示精度。
+--- @param value number 未格式化的价格。
+--- @return string 用于显示的价格。
+function Component:FormatPrice(value)
+    return GameUtility.NumberToText(value, 1)
+end
+
 --- 打开时读取最新同步状态，不重复绑定按钮。
 function Component:OnShow()
     self.State.open = true
