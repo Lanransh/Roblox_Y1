@@ -10,6 +10,7 @@ description: 接入或排查 UIEditor 生成的 Roblox UI；UI/Generated 中存�
 - `StarterPlayerScripts/Client/UI/Generated/`（简称 `UI/Generated/`）中存在该界面对应脚本，就判定为 UIEditor 生成的 UI，使用本 skill；不要求额外生成标记或其他来源证明。
 - 没有对应脚本时，按 [普通 UI 组件](../roblox-ui-components/SKILL.md) 接入。已有证据表明生成脚本缺失或对应关系不清时，先说明并核对，不另写一套展示实现。
 - ScreenGuiName 和 Roblox MCP 节点查询用于核对具体界面及接入路径，不作为额外的生成来源判定条件。
+- 节点查询及同步核验使用 [Studio 操作](../roblox-studio-operations/SKILL.md)。报错堆栈指向 Generated 时先排查接入脚本；无法从接入侧解决时，报告当前报错、已排查内容和原因，再按回源流程处理，不手工修改生成脚本。
 
 ## 先确认契约
 
@@ -52,5 +53,5 @@ Generated、框架和导入元数据不得手工修补；生成内容只能经�
 ## 交付检查
 
 - 核对数据、动作、pending、初始化与清理；确认没有父子两套展示规则、重复事件和二次翻译。已有绕过仅在本次授权范围内迁移，不能删掉有意保留的业务差异。
-- 按项目规则做 Luau 语法验证和 Roblox MCP 只读同步核验；文本节点、隐藏原型及祖先 AutoLocalize 按本地化 skill 核验。
+- 按 [Luau 验证规则](../roblox-luau-standards/reference-rules.md#验证) 做语法验证和 Roblox MCP 只读同步核验；文本节点、隐藏原型及祖先 AutoLocalize 按本地化 skill 核验。
 - 分别报告 UIEditor 模拟、MCP 导出、Studio/Script Sync 核对与真实游戏测试结果。UIEditor 模拟不代表游戏业务验证；未获试玩授权不启动 Roblox 游戏。
