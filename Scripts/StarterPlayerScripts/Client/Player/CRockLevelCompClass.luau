@@ -534,7 +534,7 @@ function Component:ClearDrops()
     end
 end
 
---- 新轮时清除旧命中及预测血条；同轮快照只补已击破格号，保留未击破石头的状态。
+--- 新轮时清除旧命中及预测血条；同轮快照将已碎格子的实际与预测血量归零，保留未碎状态。
 --- @param round number 服务器当前关卡轮次。
 --- @param brokenCells table? 本玩家当前轮次已通过服务端校验的格号。
 function Component:ResetRound(round, brokenCells)
@@ -544,6 +544,7 @@ function Component:ResetRound(round, brokenCells)
     if self._round == round then
         for _, key in ipairs(brokenCells or {}) do
             self._health[key] = 0
+            self._displayHealth[key] = 0
             self._pendingHits[key] = nil
         end
         self._refreshRocks = true
@@ -563,7 +564,7 @@ function Component:ResetRound(round, brokenCells)
     self:ResetVisuals()
 end
 
---- 回包以服务端实际血量纠正预测；拒绝时撤销本次预扣，避免下一锤追上旧预测却看似没扣血。
+--- 回包纠正预测血量；未击破时恢复隐藏石头并清除碎裂记录，已预测击破不重复播放。
 --- @param key string 本次命中的格号。
 --- @param round number 本次命中所属轮次。
 --- @param accepted boolean 是否通过服务端位置、装备及频率校验。
@@ -592,11 +593,14 @@ function Component:OnHitResult(key, round, accepted, health)
     else
         self._displayHealth[key] = self._health[key] or pending.Health
     end
+    if self._displayHealth[key] > 0 then
+        self._playedBreakEffects[key] = nil
+    end
     self._refreshRocks = true
 end
 
 --- 命中即时预扣血条；以实际血量预测一击，避免重复拒绝把血条越扣越低。
---- 未确认致命命中保留百分之一血条，实际血量继续阻挡后方目标，碎裂与掉落等待确认。
+--- 预测致命时立即碎裂并隐藏石头及血条；保留实际血量以便回包纠正，掉落仍由服务端决定。
 --- @param key string 已经过本地目标检查的格号。
 --- @param area table 目标所属关卡。
 function Component:ApplyHit(key, area)
@@ -609,13 +613,17 @@ function Component:ApplyHit(key, area)
     if oldValue <= 0 or damage <= 0 then
         return
     end
-    local predicted = math.max(oldValue - damage, math.min(oldValue, RockLevel.HP[area.Index] * 0.01))
+    local predicted = math.max(oldValue - damage, 0)
     self._displayHealth[key] = predicted
     self._pendingHits[key] = {Round = self._round, Character = self:GetPlayerCharacter(), Health = oldValue}
     for index, chunk in ipairs(self._chunks) do
         local rock = chunk.Rocks and chunk.Rocks[key]
         if rock then
-            self:PlayHitEffect(rock, false)
+            self:PlayHitEffect(rock, false, nil, predicted == 0)
+            if predicted == 0 then
+                self:PlayHitEffect(rock, true)
+            end
+            self:UpdateRockAppearance(rock, area, oldValue)
             break
         end
     end
@@ -895,7 +903,7 @@ function Component:UpdateTrainingHitReactions(reset)
     end
 end
 
---- 已解锁训练基地复用挥镐表现；场外秒杀只处理角色进入的格子，避免站定后连炸相邻石头。
+--- 已解锁训练基地复用挥镐表现；选目标跳过预测已碎石头，场外秒杀只处理角色进入的格子。
 function Component:UpdateAttacks()
     local character = self:GetPlayerCharacter()
     local root = character and FXLoader:Find(character, "HumanoidRootPart")
@@ -957,7 +965,7 @@ function Component:UpdateAttacks()
             and position.X >= area.MinX - 8 and position.X < area.MinX + area.Node.Size.X + 8
             and position.Z >= area.MinZ - 8 and position.Z < area.MinZ + area.Node.Size.Z + 8 then
             local damage = RockLevel.GetDamage(level, index, strength)
-            local cells = RockLevel.GetNearbyCells(area, position)
+            local cells = RockLevel.GetNearbyCells(area, position, root.CFrame.LookVector)
             local instantBreak = damage >= RockLevel.HP[index]
             if instantBreak then
                 -- 秒杀只击碎角色进入的格子，避免站在原地依次引爆前方和左右的石头。
@@ -970,7 +978,7 @@ function Component:UpdateAttacks()
             end
             for cellIndex = 1, #cells do
                 local key = cells[cellIndex]
-                local health = self._health[key] or RockLevel.HP[index]
+                local health = self._displayHealth[key] or self._health[key] or RockLevel.HP[index]
                 if health > 0 then
                     targetFound = true
                     if instantBreak then
@@ -1024,12 +1032,14 @@ function Component:SetPowerAura(root)
     self._powerAuraRoot = root
 end
 
---- 同轮同格的碎裂表现只播放一次，避免预测回滚后再次爆炸；普通命中仍逐次播放。
+--- 每次预测命中播放一次声音和飞溅碎石；预测或确认击破只补一次烟尘，回包不重复反馈。
 --- @param rock Model 当前受击且仍在场景中的石头。
 --- @param broken boolean 本次扣血是否击破石头。
 --- @param impact RaycastResult? 训练巨石的实际表面命中；提供时只生成表现，不移动巨石。
-function Component:PlayHitEffect(rock, broken, impact)
-    if broken and self._playedBreakEffects[rock.Name] then
+--- @param lethalHit boolean? 预测本次命中致命时直接播放大碎石，确认击破不再重复播放。
+function Component:PlayHitEffect(rock, broken, impact, lethalHit)
+    local key = rock:GetAttribute("CellKey")
+    if broken and self._playedBreakEffects[key] then
         return
     end
     local character = self:GetPlayerCharacter()
@@ -1060,7 +1070,7 @@ function Component:PlayHitEffect(rock, broken, impact)
         normal = impact.Normal
     end
     if broken then
-        self._playedBreakEffects[rock.Name] = true
+        self._playedBreakEffects[key] = true
     end
     local effect = Instance.new("Part")
     effect.Name = "RockHitEffect"
@@ -1071,10 +1081,6 @@ function Component:PlayHitEffect(rock, broken, impact)
     effect.CanTouch = false
     effect.CanQuery = false
     effect.CFrame = CFrame.lookAt(position + normal * 0.55, position + normal * 1.55)
-    local sound = self._breakSound:Clone()
-    sound.Looped = false
-    self:GetPlayerObject():RequireComponent("CSettingsUIComp"):ConfigureEffectSound(sound)
-    sound.Parent = effect
     effect.Parent = self._folder
     if broken then
         local dustOrigin = Instance.new("Attachment")
@@ -1087,22 +1093,28 @@ function Component:PlayHitEffect(rock, broken, impact)
         dust.Transparency = NumberSequence.new(0.25, 1)
         dust.Parent = dustOrigin
         dust:Emit(3)
+        Debris:AddItem(effect, 3)
+        return
     end
+    local sound = self._breakSound:Clone()
+    sound.Looped = false
+    self:GetPlayerObject():RequireComponent("CSettingsUIComp"):ConfigureEffectSound(sound)
+    sound.Parent = effect
     local effectColor = RockLevel.HitEffectColors[math.random(1, #RockLevel.HitEffectColors)]
     local radius = math.clamp(math.max(rockPart.Size.X, rockPart.Size.Y, rockPart.Size.Z) * 0.55, 1.5, 4)
-    self:PlayImpactParticles(effect, radius, broken, effectColor)
+    self:PlayImpactParticles(effect, radius, lethalHit == true, effectColor)
     sound:Play()
     local away = Vector3.new(direction.X, 0, direction.Z)
     if away.Magnitude < 0.01 then
         away = Vector3.new(0, 0, 1)
     end
     away = away.Unit
-    if not broken and not impact then
+    if not impact then
         self._hitReactions[rock] = {Started = os.clock(), Direction = away}
     end
-    local fragmentOrigin = broken and CFrame.lookAt(center, center + normal) or effect.CFrame
+    local fragmentOrigin = lethalHit and CFrame.lookAt(center, center + normal) or effect.CFrame
     self:SpawnFragments(fragmentOrigin, impact and rockPart.Color or rock:GetAttribute("GroundColor"), rockPart.Size,
-        broken, impact ~= nil)
+        lethalHit == true, impact ~= nil)
     Debris:AddItem(effect, math.max(3, sound.TimeLength + 0.1))
 end
 
@@ -1315,12 +1327,21 @@ function Component:UpdateRockHealthBar(rock, healthRatio)
     FXLoader:Here(billboard, "Background/Fill").Size = UDim2.fromScale(math.clamp(healthRatio, 0, 1), 1)
 end
 
---- 受损与受击更新外观和血条；碰撞盒保持竖直及固定高度，避免缩小或倾斜后可跳上石头。
+--- 大小、血条及显隐统一跟随预测血量，回包纠正后恢复；碰撞盒保持竖直及固定高度。
 --- @param rock Model 当前客户端石头。
 --- @param area table 所属关卡及常驻颜色标记。
---- @param health number 大于零的服务端实际血量；血条独立使用仅递减的预测显示值。
+--- @param health number 大于零的服务端实际血量，仅在尚无预测显示值时使用。
 function Component:UpdateRockAppearance(rock, area, health)
-    local healthRatio = health / RockLevel.HP[area.Index]
+    local displayHealth = self._displayHealth[rock:GetAttribute("CellKey")] or health
+    if displayHealth <= 0 then
+        self._hitReactions[rock] = nil
+        rock:SetAttribute("HealthRatio", nil)
+        self:UpdateRockHealthBar(rock, 0)
+        self:SetRockState(rock, false)
+        rock.Parent = nil
+        return
+    end
+    local healthRatio = displayHealth / RockLevel.HP[area.Index]
     local ratio = healthRatio > 0.66 and 1 or (healthRatio > 0.33 and 0.92 or 0.84)
     local reaction = self._hitReactions[rock]
     if rock:GetAttribute("HealthRatio") ~= ratio or reaction then
@@ -1348,14 +1369,16 @@ function Component:UpdateRockAppearance(rock, area, health)
             * pivot.Rotation
         rock:SetAttribute("HealthRatio", ratio)
     end
-    local displayHealth = self._displayHealth[rock:GetAttribute("CellKey")] or health
-    self:UpdateRockHealthBar(rock, displayHealth / RockLevel.HP[area.Index])
+    self:UpdateRockHealthBar(rock, healthRatio)
     local color = area.Node.Color
     if rock:GetAttribute("GroundColor") ~= color then
         local baseColor = rock:GetAttribute("BaseColor")
         local tint = Color3.new(1, 1, 1):Lerp(color, 0.2)
         FXLoader:Here(rock, "Root/SurfaceAppearance").Color = Color3.new(baseColor.R * tint.R, baseColor.G * tint.G, baseColor.B * tint.B)
         rock:SetAttribute("GroundColor", color)
+    end
+    if rock.Parent ~= self._folder then
+        rock.Parent = self._folder
     end
 end
 
@@ -1368,10 +1391,11 @@ function Component:RecycleRock(rock)
     table.insert(self._pool[rock:GetAttribute("Variant")], rock)
 end
 
---- 仅切换独立方块的碰撞；满血可一击击破的关卡允许穿行，由客户端即时破坏近身石头。
+--- 仅切换独立方块的碰撞；预测已碎的石头始终关闭碰撞，回包纠正后按调用方规则恢复。
 --- @param rock Model 本组件创建的石头。
 --- @param canCollide boolean 是否阻挡玩家。
 function Component:SetRockState(rock, canCollide)
+    canCollide = canCollide and self._displayHealth[rock:GetAttribute("CellKey")] ~= 0
     local collider = FXLoader:Here(rock, "Collider")
     if collider.CanCollide ~= canCollide then
         collider.CanCollide = canCollide
@@ -1565,7 +1589,7 @@ function Component:ResetVisuals()
     end
 end
 
---- 释放特效、场景及对象池，恢复训练巨石、攀爬和菜鸟显示，基类负责断开监听。
+--- 释放特效、场景及对象池（包含预测隐藏的石头），恢复训练巨石、攀爬和菜鸟显示。
 function Component:Dtor()
     self:UpdateTrainingHitReactions(true)
     self:UpdateNoobVisibility(nil)
@@ -1597,6 +1621,7 @@ function Component:Dtor()
         fragment:Destroy()
     end
     self._trainingFragmentPool = {}
+    self:ResetVisuals()
     if self._folder then
         self._folder:Destroy()
     end

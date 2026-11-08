@@ -350,8 +350,8 @@ function Component:RecordHit(key, round)
         return false
     end
     local instantBreak = damage >= RockLevel.HP[area.Index]
-    -- 允许一 stud 的位置复制误差，避免边界处客户端可命中而服务端略微超距。
-    local canHit = RockLevel.CanHitCell(area, root.Position, cell, 1)
+    -- 与客户端共用脚下及八邻格边界，避免斜角邻格在服务端被拒绝。
+    local canHit = RockLevel.CanHitCell(area, root.Position, cell)
     if instantBreak then
         local column = math.floor((root.Position.X - area.MinX) / RockLevel.CellSize)
         local row = math.floor((root.Position.Z - area.MinZ) / RockLevel.CellSize)

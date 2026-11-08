@@ -173,30 +173,24 @@ function RockLevel.IsInArea(areas, position, padding)
     return false
 end
 
---- 锁定目标必须仍在脚下或周围八格，且角色到格子边界的水平距离不超过半格。
+--- 锁定目标必须仍在脚下或周围八格，斜角邻格同样可命中，禁止跨到第二圈。
 --- @param area table 关卡边界。
 --- @param position Vector3 角色根节点位置。
 --- @param cell number 从一开始的目标格号，调用方已校验关卡及格号范围。
---- @param tolerance number? 服务端位置复制容差，客户端选目标及落锤时不提供。
 --- @return boolean 目标是否仍在近身攻击范围，不受朝向及最近目标变化影响。
-function RockLevel.CanHitCell(area, position, cell, tolerance)
+function RockLevel.CanHitCell(area, position, cell)
     local size = RockLevel.CellSize
     local column, row = (cell - 1) % area.Columns, math.floor((cell - 1) / area.Columns)
     local x, z = (position.X - area.MinX) / size, (position.Z - area.MinZ) / size
-    if math.abs(column - math.floor(x)) > 1 or math.abs(row - math.floor(z)) > 1 then
-        return false
-    end
-    local dx = math.max(math.abs(x - column - 0.5) - 0.5, 0)
-    local dz = math.max(math.abs(z - row - 0.5) - 0.5, 0)
-    local reach = 0.5 + (tolerance or 0) / size
-    return dx * dx + dz * dz <= reach * reach
+    return math.abs(column - math.floor(x)) <= 1 and math.abs(row - math.floor(z)) <= 1
 end
 
---- 脚下格优先，其余八格按中心距离从近到远排列；只返回近身候选，调用方跳过已碎石头。
+--- 从脚下及八邻格筛选角色前方半圆内的目标，按中心距离排序；调用方跳过已碎石头。
 --- @param area table 关卡边界。
 --- @param position Vector3 角色根节点位置。
+--- @param lookVector Vector3 角色朝向，仅使用水平分量筛选前方目标。
 --- @return table 脚下格及附近八格中可攻击的格号数组。
-function RockLevel.GetNearbyCells(area, position)
+function RockLevel.GetNearbyCells(area, position, lookVector)
     local size = RockLevel.CellSize
     local x, z = (position.X - area.MinX) / size, (position.Z - area.MinZ) / size
     local column, row = math.floor(x), math.floor(z)
@@ -204,19 +198,17 @@ function RockLevel.GetNearbyCells(area, position)
     for candidateRow = math.max(0, row - 1), math.min(area.Rows - 1, row + 1) do
         for candidateColumn = math.max(0, column - 1), math.min(area.Columns - 1, column + 1) do
             local cell = candidateRow * area.Columns + candidateColumn + 1
-            if RockLevel.CanHitCell(area, position, cell) then
+            local dx, dz = candidateColumn + 0.5 - x, candidateRow + 0.5 - z
+            local distance = dx * dx + dz * dz
+            if distance < 0.000001 or dx * lookVector.X + dz * lookVector.Z > 0 then
                 table.insert(candidates, {
                     Cell = cell,
-                    Current = candidateColumn == column and candidateRow == row,
-                    Distance = (x - candidateColumn - 0.5) ^ 2 + (z - candidateRow - 0.5) ^ 2,
+                    Distance = distance,
                 })
             end
         end
     end
     table.sort(candidates, function(left, right)
-        if left.Current ~= right.Current then
-            return left.Current
-        end
         if left.Distance ~= right.Distance then
             return left.Distance < right.Distance
         end
