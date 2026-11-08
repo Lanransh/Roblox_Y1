@@ -43,21 +43,21 @@ return {
             Index = 4,
             DevGoodsId = 101,
             NameTxt = [[Small Diamond Pack]],
-            DescTxt = [[Get 152 Diamonds.]],
+            DescTxt = [[Get 190 Diamonds.]],
             IconId = [[rbxassetid://118332681865511]]
         },
         [5] = {
             Index = 5,
             DevGoodsId = 102,
             NameTxt = [[Medium Diamond Pack]],
-            DescTxt = [[Get 618 Diamonds.]],
+            DescTxt = [[Get 720 Diamonds.]],
             IconId = [[rbxassetid://107919640061477]]
         },
         [6] = {
             Index = 6,
             DevGoodsId = 103,
             NameTxt = [[Large Diamond Pack]],
-            DescTxt = [[Get 1,698 Diamonds.]],
+            DescTxt = [[Get 1,860 Diamonds.]],
             IconId = [[rbxassetid://115268170237382]]
         }
     },

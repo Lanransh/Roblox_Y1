@@ -30,12 +30,12 @@ return {
             DevGoodsId = 101,
             BuyHandler = [[AddGem]],
             Name = [[Small Diamond Pack]],
-            Desc = [[Get 152 Diamonds.]],
+            Desc = [[Get 190 Diamonds.]],
             Price = 19,
             RobloxProductId = 3.727240991e+9,
             BuyLimit = nil,
             NumberArray = {
-                [1] = 152,
+                [1] = 190,
             },
             KVTable = nil,
             ProductType = [[DeveloperProduct]]
@@ -44,12 +44,12 @@ return {
             DevGoodsId = 102,
             BuyHandler = [[AddGem]],
             Name = [[Medium Diamond Pack]],
-            Desc = [[Get 618 Diamonds.]],
+            Desc = [[Get 720 Diamonds.]],
             Price = 69,
             RobloxProductId = 3.72724202e+9,
             BuyLimit = nil,
             NumberArray = {
-                [1] = 618,
+                [1] = 720,
             },
             KVTable = nil,
             ProductType = [[DeveloperProduct]]
@@ -58,12 +58,12 @@ return {
             DevGoodsId = 103,
             BuyHandler = [[AddGem]],
             Name = [[Large Diamond Pack]],
-            Desc = [[Get 1,698 Diamonds.]],
+            Desc = [[Get 1,860 Diamonds.]],
             Price = 169,
             RobloxProductId = 3.727242057e+9,
             BuyLimit = nil,
             NumberArray = {
-                [1] = 1698,
+                [1] = 1860,
             },
             KVTable = nil,
             ProductType = [[DeveloperProduct]]
