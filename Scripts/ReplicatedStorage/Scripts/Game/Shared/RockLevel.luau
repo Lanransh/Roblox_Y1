@@ -173,24 +173,48 @@ function RockLevel.IsInArea(areas, position, padding)
     return false
 end
 
---- 以角色所在格为基准，将水平朝向划分为八方向，只返回朝向上的相邻一格。
+--- 沿真实水平朝向遍历近身半格范围，先检查脚下格，避免跨过眼前石头攻击后一格。
 --- @param area table 关卡边界。
 --- @param position Vector3 角色根节点位置。
 --- @param look Vector3 角色朝向。
---- @return table 最多包含一个格子编号，行列差均不超过一格；目标越界或无水平朝向时为空。
+--- @return table 按射线经过顺序排列的格号；调用方须在第一块未击破石头处停止。
 function RockLevel.GetFrontCells(area, position, look)
     local forward = Vector3.new(look.X, 0, look.Z)
     if forward.Magnitude < 0.01 then
         return {}
     end
-    local sectorAngle = math.pi / 4
-    local angle = math.round(math.atan2(forward.Z, forward.X) / sectorAngle) * sectorAngle
-    local column = math.floor((position.X - area.MinX) / RockLevel.CellSize) + math.round(math.cos(angle))
-    local row = math.floor((position.Z - area.MinZ) / RockLevel.CellSize) + math.round(math.sin(angle))
-    if column < 0 or column >= area.Columns or row < 0 or row >= area.Rows then
-        return {}
+    forward = forward.Unit
+    local size = RockLevel.CellSize
+    local x, z = position.X - area.MinX, position.Z - area.MinZ
+    local column, row = math.floor(x / size), math.floor(z / size)
+    local stepX, stepZ = math.sign(forward.X), math.sign(forward.Z)
+    local deltaX = stepX == 0 and math.huge or size / math.abs(forward.X)
+    local deltaZ = stepZ == 0 and math.huge or size / math.abs(forward.Z)
+    local nextX = stepX == 0 and math.huge
+        or ((column + (stepX > 0 and 1 or 0)) * size - x) / forward.X
+    local nextZ = stepZ == 0 and math.huge
+        or ((row + (stepZ > 0 and 1 or 0)) * size - z) / forward.Z
+    local cells = {}
+    local distance = 0
+    while distance <= size / 2 do
+        local facing = ((column + 0.5) * size - x) * forward.X
+            + ((row + 0.5) * size - z) * forward.Z
+        if column >= 0 and column < area.Columns and row >= 0 and row < area.Rows
+            and facing >= 0 and math.min(nextX, nextZ) > distance then
+            table.insert(cells, area.Index .. ":" .. (row * area.Columns + column + 1))
+        end
+        distance = math.min(nextX, nextZ)
+        -- 穿过格角时同时前进行列，不命中只与射线接触一个角的侧边格。
+        if nextX == distance then
+            column += stepX
+            nextX += deltaX
+        end
+        if nextZ == distance then
+            row += stepZ
+            nextZ += deltaZ
+        end
     end
-    return {tostring(area.Index) .. ":" .. tostring(row * area.Columns + column + 1)}
+    return cells
 end
 
 return RockLevel

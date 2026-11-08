@@ -314,10 +314,10 @@ function Component:SendRockRound()
     end
 end
 
---- 按历史最高等级校验目标世界资格后累计服务端伤害；确认击破时结算掉落，再回传剩余血量。
+--- 校验近身首块石头及世界资格后累计伤害，阻止隔石攻击；确认击破后结算掉落并回传血量。
 --- @param key string 客户端命中的石头格号。
 --- @param round number 客户端当前关卡轮次。
---- @return boolean 是否认可本次命中，可用于回滚客户端预测。
+--- @return boolean 是否认可本次命中，客户端仅在认可后更新血量。
 --- @return number? 认可命中后的服务端剩余血量，拒绝时不返回。
 function Component:RecordHit(key, round)
     if not self._areas or round ~= self._round or type(key) ~= "string" or #key > 40 then
@@ -352,10 +352,19 @@ function Component:RecordHit(key, round)
     local instantBreak = damage >= RockLevel.HP[area.Index]
     local cells = RockLevel.GetFrontCells(area, root.Position, root.CFrame.LookVector)
     if instantBreak then
+        cells = {}
         local column = math.floor((root.Position.X - area.MinX) / RockLevel.CellSize)
         local row = math.floor((root.Position.Z - area.MinZ) / RockLevel.CellSize)
         if column >= 0 and column < area.Columns and row >= 0 and row < area.Rows then
             table.insert(cells, 1, area.Index .. ":" .. (row * area.Columns + column + 1))
+        end
+    end
+    local target
+    for cellIndex, candidate in ipairs(cells) do
+        local candidateCell = tonumber(string.match(candidate, ":(%d+)$"))
+        if not (areaState and areaState.Broken[candidateCell]) then
+            target = candidate
+            break
         end
     end
     local now = os.clock()
@@ -364,7 +373,7 @@ function Component:RecordHit(key, round)
     if self._hitInterval then
         nextHit += interval - self._hitInterval
     end
-    if not table.find(cells, key) or now < nextHit - 0.1 then
+    if target ~= key or now < nextHit - 0.1 then
         return false
     end
     -- 小幅网络到达抖动不丢正常命中；累计时间预算仍限制持续攻击速率。

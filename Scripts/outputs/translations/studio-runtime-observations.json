@@ -1,0 +1,44 @@
+[
+  {
+    "path": "WelfareUI.PopupPanelImg.OnlineBox.SubtitleTxt",
+    "note": "当前运行文本来自已有云端翻译；本次候选 CSV 尚未上传或加载到该界面。",
+    "text": "下一个奖励将在06:06后发放",
+    "screen": "WelfareUI",
+    "fits": true
+  },
+  {
+    "path": "WelfareUI.PopupPanelImg.OnlineBox.ProgressBarImg.ProgressTxt",
+    "note": "当前运行文本来自已有云端翻译；本次候选 CSV 尚未上传或加载到该界面。",
+    "text": "13.00 / 20.00 分钟",
+    "screen": "WelfareUI",
+    "fits": true
+  },
+  {
+    "path": "WelfareUI.PopupPanelImg.SignInBox.HeadingTxt",
+    "note": "当前运行文本来自已有云端翻译；本次候选 CSV 尚未上传或加载到该界面。",
+    "text": "每日签到 · 第 3.00 天",
+    "screen": "WelfareUI",
+    "fits": true
+  },
+  {
+    "path": "AuraShopUI.PopupPanelImg.AuraListBox.Aura_107.ActionBtn.ButtonTxt",
+    "note": "当前运行文本来自已有云端翻译；本次候选 CSV 尚未上传或加载到该界面。",
+    "text": "+$469Qa",
+    "screen": "AuraShopUI",
+    "fits": false
+  },
+  {
+    "path": "WeaponShopUI.PopupPanelImg.WeaponListBox.Weapon_120.ActionBtn.ButtonTxt",
+    "note": "当前运行文本来自已有云端翻译；本次候选 CSV 尚未上传或加载到该界面。",
+    "text": "+$16.9Qa",
+    "screen": "WeaponShopUI",
+    "fits": false
+  },
+  {
+    "path": "LootSellUI.PopupPanelImg.TotalImg.TotalValueTxt",
+    "note": "当前运行文本来自已有云端翻译；本次候选 CSV 尚未上传或加载到该界面。",
+    "text": "+$0",
+    "screen": "LootSellUI",
+    "fits": true
+  }
+]

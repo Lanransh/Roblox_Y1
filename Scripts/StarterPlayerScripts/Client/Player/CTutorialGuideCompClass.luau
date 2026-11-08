@@ -1,13 +1,14 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
+local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local TranslationTexts = Text.Define("Tutorial", {
     Collect = "Head into the rocks! Your pickaxe clears the way. Pick up 2 pieces of loot.",
     Deposit = "Return to your base to store your loot. You can also use HOME.",
     Sell = "Visit the merchant and sell your stored loot for coins!",
     Rate = "Use your 30 welcome diamonds to buy the training multiplier on the right!",
     Weapon = "You earned 100 coins! Visit the weapon shop and equip a better pickaxe.",
-    AutomaticTraining = "Automatic training is now active!",
+    AutomaticTraining = "Train here automatically, even while AFK! Rebirth to unlock training areas with higher multipliers.",
     Done = "Keep getting stronger and discover more valuable loot!",
     Rewards = "Claim your rewards from the Rewards button!",
     Aura = "You can afford your first aura! Visit the blue shop to boost your training.",
@@ -52,7 +53,7 @@ function Guide:GetGuideStorage()
     return Fields.Guide
 end
 
---- 创建等比缩放的上方提示层，短句保持字号，长句自动缩小；角色重生不销毁。
+--- 创建等比缩放的上方提示层，等待初始训练台复制完成后缓存目标；角色重生不销毁。
 function Guide:OnReady()
     self._localization = self:RequireComponent("FCCommonUIComp").Localization
     self._screen = Instance.new("ScreenGui")
@@ -114,6 +115,9 @@ function Guide:OnReady()
     self._homeButton = FXLoader:PlayerGui("MainUI/TopCenter/HomeButton")
     self._rewardButton = FXLoader:PlayerGui("MainUI/LeftCenter/RewardBtn")
     self._purchaseScreen = FXLoader:PlayerGui("ShopPurchaseUI")
+    local worldName, fieldName = GameUtility.ParseTrainingFieldNode(_G.GameConfig.TrainingFieldData[1].Node)
+    local trainingField = FXLoader:Workspace("BlockMeshs/" .. worldName .. "/TrainingCenter/" .. fieldName)
+    self._trainingPlatform = FXLoader:Here(trainingField, "紫色巨岩训练基地/彩色训练台", math.huge)
     self:TrackConnection(self._localization.Changed:Connect(function()
         self:RefreshText()
     end))
@@ -281,7 +285,7 @@ function Guide:GetUIGuideButton(target)
     return nil
 end
 
---- 有界面操作时切换到 UI 箭头，否则用世界箭头带路；死亡和步骤退出时清理。
+--- 有界面操作时切换到 UI 箭头，否则指向对应世界目标；训练提示固定指向初始训练台。
 function Guide:RefreshTarget()
     local target = self._activeTarget
     local character = self:GetPlayerCharacter()
@@ -317,6 +321,8 @@ function Guide:RefreshTarget()
         position = coordinates and Vector3.new(coordinates[1], coordinates[2], coordinates[3])
     elseif target.type == "Base" then
         position = _G.GameEnum.WorldTransferConfig[1].Position
+    elseif target.type == "Training" then
+        position = self._trainingPlatform.Position
     else
         local names = {Sell = "Shop", Weapon = "PurpleHut", Aura = "BlueHut"}
         local name = names[target.type]

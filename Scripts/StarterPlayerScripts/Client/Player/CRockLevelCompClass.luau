@@ -56,6 +56,7 @@ function Component:Ctor(owner)
     self._pool = {}
     self._templates = {}
     self._health = {}
+    self._displayHealth = {}
     self._playedBreakEffects = {}
     self._fragments = {}
     self._fragmentPool = {}
@@ -533,7 +534,7 @@ function Component:ClearDrops()
     end
 end
 
---- 新轮时清除旧命中；同轮快照只补已击破格号，保留未击破石头的本地血量。
+--- 新轮时清除旧命中及预测血条；同轮快照只补已击破格号，保留未击破石头的状态。
 --- @param round number 服务器当前关卡轮次。
 --- @param brokenCells table? 本玩家当前轮次已通过服务端校验的格号。
 function Component:ResetRound(round, brokenCells)
@@ -552,6 +553,7 @@ function Component:ResetRound(round, brokenCells)
     self:ClearDrops()
     self._round = round
     self._health = {}
+    self._displayHealth = {}
     self._playedBreakEffects = {}
     self._pendingHits = {}
     self._lastAttack = -math.huge
@@ -561,7 +563,7 @@ function Component:ResetRound(round, brokenCells)
     self:ResetVisuals()
 end
 
---- 保留即时碎裂预测；拒绝或未击破时恢复血量和石头，掉落由服务端确认击破时直接结算。
+--- 服务端回包更新实际血量，血条只向下校正；拒绝命中不回涨，碎裂仍等待确认。
 --- @param key string 本次命中的格号。
 --- @param round number 本次命中所属轮次。
 --- @param accepted boolean 是否通过服务端位置、装备及频率校验。
@@ -575,11 +577,10 @@ function Component:OnHitResult(key, round, accepted, health)
     if pending.Character ~= self:GetPlayerCharacter() then
         return
     end
-    if not accepted then
-        self._health[key] = pending.Health
-    else
+    if accepted then
         self._health[key] = health
-        if pending.Value > 0 and health == 0 then
+        self._displayHealth[key] = math.min(self._displayHealth[key] or health, health)
+        if health == 0 then
             for index, chunk in ipairs(self._chunks) do
                 local rock = chunk.Rocks and chunk.Rocks[key]
                 if rock then
@@ -589,41 +590,11 @@ function Component:OnHitResult(key, round, accepted, health)
             end
         end
     end
-    if pending.Value == 0 and self._health[key] > 0 then
-        self:RestorePredictedRock(key)
-    end
     self._refreshRocks = true
 end
 
---- 只补回已加载分块内被误判击碎的一格，避免一次拒绝让周围石头全部重建。
---- @param key string 本轮已经收到命中回包的格号。
-function Component:RestorePredictedRock(key)
-    local areaIndex, cellIndex = string.match(key, "^(%d+):(%d+)$")
-    local area = self._areas[tonumber(areaIndex)]
-    local cell = tonumber(cellIndex) - 1
-    local row, column = math.floor(cell / area.Columns), cell % area.Columns
-    for index, chunk in ipairs(self._chunks) do
-        if chunk.Area == area and row >= chunk.Row and row < chunk.Row + 6
-            and column >= chunk.Column and column < chunk.Column + 6 then
-            if chunk.Rocks and not chunk.Rocks[key] then
-                local chunkCell = (row - chunk.Row) * math.min(6, area.Columns - chunk.Column)
-                    + column - chunk.Column
-                -- 尚未加载的格子交给原分帧加载流程，避免重复创建。
-                if self._loadingChunk ~= chunk or chunkCell < chunk.NextCell then
-                    local rock = self:CreateRock(area, column, row)
-                    chunk.Rocks[key] = rock
-                    self:UpdateRockAppearance(rock, area, self._health[key])
-                    self:SetRockState(rock, not self:HasEquippedPickaxe() or RockLevel.GetDamage(self:GetNumber(Fields.RockTrainingLevel), area.Index,
-                        self:GetNumber(Fields.RockTrainingValue))
-                        < RockLevel.HP[area.Index])
-                end
-            end
-            return
-        end
-    end
-end
-
---- 命中即时预测血量与碎裂，致命命中不等待服务器回包，掉落仍由服务端确认。
+--- 命中即时预扣血条；以实际血量预测一击，避免重复拒绝把血条越扣越低。
+--- 未确认致命命中保留百分之一血条，实际血量继续阻挡后方目标，碎裂与掉落等待确认。
 --- @param key string 已经过本地目标检查的格号。
 --- @param area table 目标所属关卡。
 function Component:ApplyHit(key, area)
@@ -636,13 +607,13 @@ function Component:ApplyHit(key, area)
     if oldValue <= 0 or damage <= 0 then
         return
     end
-    local value = math.max(0, oldValue - damage)
-    self._pendingHits[key] = {Round = self._round, Health = oldValue, Value = value, Character = self:GetPlayerCharacter()}
-    self._health[key] = value
+    local predicted = math.max(oldValue - damage, math.min(oldValue, RockLevel.HP[area.Index] * 0.01))
+    self._displayHealth[key] = math.min(self._displayHealth[key] or oldValue, predicted)
+    self._pendingHits[key] = {Round = self._round, Character = self:GetPlayerCharacter()}
     for index, chunk in ipairs(self._chunks) do
         local rock = chunk.Rocks and chunk.Rocks[key]
         if rock then
-            self:PlayHitEffect(rock, value == 0)
+            self:PlayHitEffect(rock, false)
             break
         end
     end
@@ -734,7 +705,7 @@ function Component:PoseSwing(duration, armAngle, bodyAngle, direction)
     end
 end
 
---- 下砸时重验装备与近身目标；秒杀穿行允许命中已走到脚下的起手目标。
+--- 下砸时重验装备与近身首块石头，移动或转身后不越过阻挡石头命中旧目标。
 --- @param character Model 起手时的角色。
 --- @param key string 起手时锁定的石头格子。
 --- @param area table 目标所属关卡。
@@ -751,13 +722,21 @@ function Component:ResolvePickaxeHit(character, key, area)
     local damage = RockLevel.GetDamage(self:GetNumber(Fields.RockTrainingLevel), area.Index,
         self:GetNumber(Fields.RockTrainingValue))
     if damage >= RockLevel.HP[area.Index] then
+        cells = {}
         local column = math.floor((root.Position.X - area.MinX) / RockLevel.CellSize)
         local row = math.floor((root.Position.Z - area.MinZ) / RockLevel.CellSize)
         if column >= 0 and column < area.Columns and row >= 0 and row < area.Rows then
             table.insert(cells, 1, area.Index .. ":" .. (row * area.Columns + column + 1))
         end
     end
-    if not table.find(cells, key) or health <= 0 or damage <= 0 then
+    local target
+    for cellIndex, candidate in ipairs(cells) do
+        if (self._health[candidate] or RockLevel.HP[area.Index]) > 0 then
+            target = candidate
+            break
+        end
+    end
+    if target ~= key or health <= 0 or damage <= 0 then
         return
     end
     self:ApplyHit(key, area)
@@ -943,6 +922,7 @@ function Component:UpdateAttacks()
         self:StopSwing()
         self._character = character
         self._health = {}
+        self._displayHealth = {}
         self._playedBreakEffects = {}
         self._pendingHits = {}
         self._lastAttack = -math.huge
@@ -1004,14 +984,16 @@ function Component:UpdateAttacks()
             for cellIndex = 1, #cells do
                 local key = cells[cellIndex]
                 local health = self._health[key] or RockLevel.HP[index]
-                if health > 0 and not self._pendingHits[key] then
+                if health > 0 then
                     targetFound = true
                     if instantBreak then
-                        self:ApplyHit(key, area)
+                        if not self._pendingHits[key] then
+                            self:ApplyHit(key, area)
+                        end
                     else
                         powerRoot = nil
                     end
-                    if regularAttack then
+                    if regularAttack and (instantBreak or not self._pendingHits[key]) then
                         self._lastAttack = now
                         self:SwingPickaxe(humanoid, key, area, instantBreak)
                     end
@@ -1292,6 +1274,7 @@ function Component:CreateRock(area, column, row)
         rock = self._templates[variant]:Clone()
     end
     rock.Name = "Rock_" .. area.Index .. "_" .. (row * area.Columns + column + 1)
+    rock:SetAttribute("CellKey", area.Index .. ":" .. (row * area.Columns + column + 1))
     rock:ScaleTo(1)
     rock:SetAttribute("BaseColor", RockColors[Random.new(seed + 17):NextInteger(1, #RockColors)])
     rock:SetAttribute("HealthRatio", nil)
@@ -1348,7 +1331,7 @@ end
 --- 受损与受击更新外观和血条；碰撞盒保持竖直及固定高度，避免缩小或倾斜后可跳上石头。
 --- @param rock Model 当前客户端石头。
 --- @param area table 所属关卡及常驻颜色标记。
---- @param health number 大于零的当前血量。
+--- @param health number 大于零的服务端实际血量；血条独立使用仅递减的预测显示值。
 function Component:UpdateRockAppearance(rock, area, health)
     local healthRatio = health / RockLevel.HP[area.Index]
     local ratio = healthRatio > 0.66 and 1 or (healthRatio > 0.33 and 0.92 or 0.84)
@@ -1378,7 +1361,8 @@ function Component:UpdateRockAppearance(rock, area, health)
             * pivot.Rotation
         rock:SetAttribute("HealthRatio", ratio)
     end
-    self:UpdateRockHealthBar(rock, healthRatio)
+    local displayHealth = self._displayHealth[rock:GetAttribute("CellKey")] or health
+    self:UpdateRockHealthBar(rock, displayHealth / RockLevel.HP[area.Index])
     local color = area.Node.Color
     if rock:GetAttribute("GroundColor") ~= color then
         local baseColor = rock:GetAttribute("BaseColor")
