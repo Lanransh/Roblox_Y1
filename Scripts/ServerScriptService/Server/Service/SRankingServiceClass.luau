@@ -1,6 +1,5 @@
 local FX, FS = _G.FX, _G.FS
 local ProjectRanking = FX.Loader:RequireFromParent(script, "SRankingClass")
-local StrengthRanking = FX.Loader:RequireFromParent(script, "SStrengthRankingClass")
 local Ranking = FX.Class("SRankingServiceClass", "FSRankingServiceClass")
 _G.SRankingServiceClass = Ranking
 
@@ -8,14 +7,13 @@ local function Integer(value, min, max)
     return type(value) == "number" and value == value and value % 1 == 0 and value >= min and value <= max
 end
 
---- 注册项目榜单和关服等待；客户端只能请求范围，不能提交成绩。
+--- 注册统一项目榜单和关服等待；编码由框架按配置处理，客户端不能提交成绩。
 --- @return nil
 function Ranking:Ctor()
     Ranking.Super.Ctor(self)
     -- 框架没有注册派生榜单的接口；替换实例，管理器定时任务保持不变。
     for index, config in ipairs(_G.RankingDataConfig) do
-        local class = index == 2 and StrengthRanking or ProjectRanking
-        local ranking = class.New(config)
+        local ranking = ProjectRanking.New(config)
         FS.RankingManager._rankingMap[config.Name] = ranking
         ranking:LoadRankingDataAsync()
     end

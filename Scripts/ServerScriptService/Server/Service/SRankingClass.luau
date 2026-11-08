@@ -14,7 +14,7 @@ end
 --- 在线更新沿用框架；离服更新保留相同的历史最高分和入榜规则，不依赖 Player 节点。
 --- @param playerId number 服务端确定的玩家 ID。
 --- @param newScore number 原始排行榜分数。
---- @return boolean? 是否进入榜单刷新流程；未达单位或开发者跳过时返回 nil。
+--- @return boolean? 是否进入榜单刷新流程；分数不足 1 或开发者跳过时返回 nil。
 function Ranking:UpdatePlayerScore(playerId, newScore)
     local player = Players:GetPlayerByUserId(playerId)
     if player then
@@ -30,8 +30,7 @@ function Ranking:UpdatePlayerScore(playerId, newScore)
     if not self._rankingType.UseHistoricalHighScore or not oldScore or self:CompareRankingScore(newScore, oldScore) then
         self:SetPlayerScore(playerId, newScore)
     end
-    local unit = self._rankingType.unit or 1
-    if newScore < unit then
+    if newScore < 1 then
         return
     end
     local lastEntry = self._isDataLoaded and self._rankingDataCache[self._rankingType.MaxCount]
@@ -45,7 +44,7 @@ function Ranking:UpdatePlayerScore(playerId, newScore)
         end
     end
     self._updateRankingPlayerMap[playerId] = {
-        score = newScore / unit,
+        score = newScore,
         name = self._playerNames[playerId] or tostring(playerId),
     }
     return true
