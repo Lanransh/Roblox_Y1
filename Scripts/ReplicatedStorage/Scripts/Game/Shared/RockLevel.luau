@@ -185,22 +185,40 @@ function RockLevel.CanHitCell(area, position, cell)
     return math.abs(column - math.floor(x)) <= 1 and math.abs(row - math.floor(z)) <= 1
 end
 
---- 从脚下及八邻格筛选角色前方半圆内的目标，按中心距离排序；调用方跳过已碎石头。
+--- 用角色前方宽 6、长 8 studs 的矩形与格子占地求交，再按中心距离排序；仅检查脚下及八邻格。
 --- @param area table 关卡边界。
 --- @param position Vector3 角色根节点位置。
---- @param lookVector Vector3 角色朝向，仅使用水平分量筛选前方目标。
+--- @param lookVector Vector3 角色朝向，水平分量决定攻击矩形的朝向。
 --- @return table 脚下格及附近八格中可攻击的格号数组。
 function RockLevel.GetNearbyCells(area, position, lookVector)
     local size = RockLevel.CellSize
     local x, z = (position.X - area.MinX) / size, (position.Z - area.MinZ) / size
     local column, row = math.floor(x), math.floor(z)
+    local forward = Vector3.new(lookVector.X, 0, lookVector.Z)
+    if forward.Magnitude < 0.001 then
+        return {}
+    end
+    forward = forward.Unit
+    local halfWidth, halfLength = 3 / size, 4 / size
+    local centerX, centerZ = x + forward.X * halfLength, z + forward.Z * halfLength
+    local absX, absZ = math.abs(forward.X), math.abs(forward.Z)
+    local extentX = absX * halfLength + absZ * halfWidth
+    local extentZ = absZ * halfLength + absX * halfWidth
+    local cellExtent = (absX + absZ) * 0.5
     local candidates = {}
     for candidateRow = math.max(0, row - 1), math.min(area.Rows - 1, row + 1) do
         for candidateColumn = math.max(0, column - 1), math.min(area.Columns - 1, column + 1) do
             local cell = candidateRow * area.Columns + candidateColumn + 1
             local dx, dz = candidateColumn + 0.5 - x, candidateRow + 0.5 - z
             local distance = dx * dx + dz * dz
-            if distance < 0.000001 or dx * lookVector.X + dz * lookVector.Z > 0 then
+            local offsetX = candidateColumn + 0.5 - centerX
+            local offsetZ = candidateRow + 0.5 - centerZ
+            -- 沿世界 X/Z 和矩形前向/侧向四条轴判定重叠，避免旋转后的包围盒误选侧面石头。
+            if dx * forward.X + dz * forward.Z > 0
+                and math.abs(offsetX) < 0.5 + extentX
+                and math.abs(offsetZ) < 0.5 + extentZ
+                and math.abs(offsetX * forward.X + offsetZ * forward.Z) < halfLength + cellExtent
+                and math.abs(offsetX * forward.Z - offsetZ * forward.X) < halfWidth + cellExtent then
                 table.insert(candidates, {
                     Cell = cell,
                     Distance = distance,
