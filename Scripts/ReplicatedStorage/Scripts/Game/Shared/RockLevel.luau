@@ -57,11 +57,26 @@ function RockLevel.GetNextExperience(level)
     return CurveSampler:SampleCurveGroupColumnFormula(NumericalConfig.levelCurves, "nextLevelExperience", level)
 end
 
---- 累计配置中的升级门槛；力量直接使用当前阶段累计训练值，不再按等级采样曲线。
+--- 按整数等级读取基础攻击力，并按本级训练进度插值；满级不采样越界的下一级。
+--- @param level number 当前训练等级。
+--- @param value number 当前阶段累计训练值。
+--- @return number 与面板显示一致的基础攻击力。
+function RockLevel.GetAttackPower(level, value)
+    local attack = CurveSampler:SampleCurveGroupColumnFormula(NumericalConfig.levelCurves, "attackPower", level)
+    if level >= RockLevel.MaxLevel then
+        return attack
+    end
+    local threshold = RockLevel.GetTrainingValueByLevel(level)
+    local progress = (value - threshold) / RockLevel.GetNextExperience(level)
+    local nextAttack = CurveSampler:SampleCurveGroupColumnFormula(NumericalConfig.levelCurves, "attackPower", level + 1)
+    return attack + (nextAttack - attack) * progress
+end
+
+--- 累计训练值决定等级和进度，独立攻击力曲线决定显示力量。
 --- @param value number 服务端持久化的累计训练值。
 --- @param maxLevel number? 当前重生阶段允许达到的等级。
 --- @return number 训练等级。
---- @return number 已累计的力量，与训练值同步增长并在重生时归零。
+--- @return number 基础攻击力，同级训练平滑增长，重生恢复为 1 级曲线值。
 --- @return number 当前等级内的训练进度。
 --- @return number 当前等级升级需求。
 function RockLevel.GetProgress(value, maxLevel)
@@ -75,16 +90,17 @@ function RockLevel.GetProgress(value, maxLevel)
         end
         level += 1
     end
-    return level, value,
+    return level, RockLevel.GetAttackPower(level, value),
         value - thresholds[level], RockLevel.GetNextExperience(level)
 end
 
---- 按等级差分段保留伤害：低 3 级以内不额外减伤，档位之间平滑过渡，低 30 级起伤害为零。
+--- 落后推荐等级 15 级以内全额伤害，15–30 级线性降低，30 级及以上保留 1%。
 --- @param level number 玩家训练等级。
 --- @param index number 配置中的全局关卡序号。
---- @param strength number 当前阶段累计训练值，与显示力量一致。
+--- @param trainingValue number 当前阶段累计训练值，用于派生基础攻击力。
 --- @return number 单次击打伤害。
-function RockLevel.GetDamage(level, index, strength)
+function RockLevel.GetDamage(level, index, trainingValue)
+    local strength = RockLevel.GetAttackPower(level, trainingValue)
     local recommendedLevel = CurveSampler:SampleCurveGroupColumn(NumericalConfig.stageCurves, "grassLevel", index)
     local levelGap = recommendedLevel - level
     local points = GameEnum.RockLevelDamagePoints
@@ -99,7 +115,7 @@ function RockLevel.GetDamage(level, index, strength)
             return strength * (previous.DamageMultiplier + (point.DamageMultiplier - previous.DamageMultiplier) * alpha)
         end
     end
-    return 0
+    return strength * points[#points].DamageMultiplier
 end
 
 --- 本关幸运倍率：相对全局第一关期望道具价格向上取整，用于关卡头顶展示。
@@ -157,48 +173,24 @@ function RockLevel.IsInArea(areas, position, padding)
     return false
 end
 
---- 检测角色水平朝向前方 3 studs 及左右相邻格，按与命中点的距离由近到远返回。
+--- 以角色所在格为基准，将水平朝向划分为八方向，只返回朝向上的相邻一格。
 --- @param area table 关卡边界。
 --- @param position Vector3 角色根节点位置。
 --- @param look Vector3 角色朝向。
---- @return table 最多包含三个近身格子编号，越界或无水平朝向时为空。
+--- @return table 最多包含一个格子编号，行列差均不超过一格；目标越界或无水平朝向时为空。
 function RockLevel.GetFrontCells(area, position, look)
     local forward = Vector3.new(look.X, 0, look.Z)
     if forward.Magnitude < 0.01 then
         return {}
     end
-    forward = forward.Unit
-    local right = Vector3.new(-forward.Z, 0, forward.X)
-    local target = position + forward * 3
-    local candidates = {}
-    local seen = {}
-    for side = -1, 1 do
-        local point = target + right * (side * RockLevel.CellSize)
-        local column = math.floor((point.X - area.MinX) / RockLevel.CellSize)
-        local row = math.floor((point.Z - area.MinZ) / RockLevel.CellSize)
-        if column >= 0 and column < area.Columns and row >= 0 and row < area.Rows then
-            local key = tostring(area.Index) .. ":" .. tostring(row * area.Columns + column + 1)
-            if not seen[key] then
-                seen[key] = true
-                local centerX = area.MinX + (column + 0.5) * RockLevel.CellSize
-                local centerZ = area.MinZ + (row + 0.5) * RockLevel.CellSize
-                local deltaX = centerX - target.X
-                local deltaZ = centerZ - target.Z
-                table.insert(candidates, {
-                    Key = key,
-                    DistanceSquared = deltaX * deltaX + deltaZ * deltaZ,
-                })
-            end
-        end
+    local sectorAngle = math.pi / 4
+    local angle = math.round(math.atan2(forward.Z, forward.X) / sectorAngle) * sectorAngle
+    local column = math.floor((position.X - area.MinX) / RockLevel.CellSize) + math.round(math.cos(angle))
+    local row = math.floor((position.Z - area.MinZ) / RockLevel.CellSize) + math.round(math.sin(angle))
+    if column < 0 or column >= area.Columns or row < 0 or row >= area.Rows then
+        return {}
     end
-    table.sort(candidates, function(a, b)
-        return a.DistanceSquared < b.DistanceSquared
-    end)
-    local cells = {}
-    for index, candidate in ipairs(candidates) do
-        cells[index] = candidate.Key
-    end
-    return cells
+    return {tostring(area.Index) .. ":" .. tostring(row * area.Columns + column + 1)}
 end
 
 return RockLevel

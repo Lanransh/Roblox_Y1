@@ -7,15 +7,10 @@ return {
     WeaponLimit = 39,
     -- 收藏品仅开放配置顺序中的前 117 种，对应当前三个世界，客户端与服务端共用。
     ItemLimit = 117,
-    -- 石头关卡：等级差对应的伤害保留倍率，档位之间线性插值；低 30 级起伤害为零。
+    -- 石头关卡：低 15 级以内全额伤害，15–30 级线性减伤，之后至少保留 1%。
     RockLevelDamagePoints = {
-        {LevelGap = 3, DamageMultiplier = 1},
-        {LevelGap = 5, DamageMultiplier = 0.85},
-        {LevelGap = 10, DamageMultiplier = 0.65},
-        {LevelGap = 15, DamageMultiplier = 0.35},
-        {LevelGap = 20, DamageMultiplier = 0.15},
-        {LevelGap = 25, DamageMultiplier = 0.05},
-        {LevelGap = 30, DamageMultiplier = 0},
+        {LevelGap = 15, DamageMultiplier = 1},
+        {LevelGap = 30, DamageMultiplier = 0.01},
     },
     -- 关卡头顶幸运牌：按 LevelConfig 加载的区域创建，倍率由 RockLevel.GetLuck 计算。
     LevelLuckDisplay = {

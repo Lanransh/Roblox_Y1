@@ -24,7 +24,7 @@
 | `Service/SRankingServiceClass.luau` | 项目榜单接入与查询，结合 SRankingClass/SStrengthRankingClass 核对实际写分和关服流程。 |
 | `Config/StorageConfig.luau` | 私有存档名称、测试模式、保存周期和会话锁；变更时说明对测试及正式数据的影响，不当作玩法配置。 |
 
-三个 Handlers 表由 Main 注册到 Provider，已有业务实现不得用空模板覆盖。预留名称沿用既有约定；新建端专属模块遵循 AGENTS.md。
+三个 Handlers 表由 Main 注册到 Provider，已有业务实现不得用空模板覆盖。预留名称沿用既有约定；新建端专属模块遵循 [目录与命名](reference-project-structure.md)。
 
 ## 处理器调用契约
 
@@ -55,4 +55,4 @@
 - 跨项目可复用且不依赖项目配置或节点的能力才考虑放入框架；普通业务通过现有 Provider、回调或子类接入，框架维护仍须有用户任务授权。
 - 查询节点复用 FX.Loader；本项目支持 `.` 与 `/` 路径，不照搬其他仓库仅点分隔的实现；特殊名称按编码规则使用原生节点 API。
 
-验证遵循 AGENTS.md，默认编译和同步只读核对；加载成功或静态检查不等于实际玩法验收。
+验证遵循 [Luau 验证规则](../roblox-luau-standards/reference-rules.md#验证)；加载成功或静态检查不等于实际玩法验收。

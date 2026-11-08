@@ -889,6 +889,22 @@ return {
           rounding = "round",
         },
       },
+      {
+        key = "attackPower",
+        formula = {
+          kind = "BaseExp",
+          base = 0,
+          multiplier = {
+            kind = "constant",
+            value = 0.8874078169240217,
+          },
+          power = {
+            kind = "constant",
+            value = 1.1268776101908264,
+          },
+          rounding = "none",
+        },
+      },
     },
   },
   stageCurves = {
@@ -953,7 +969,7 @@ return {
           base = 0,
           multiplier = {
             kind = "constant",
-            value = 2.5,
+            value = 2.99,
           },
           power = {
             kind = "constant",

@@ -9,7 +9,6 @@ return {
         MaxCount = 100,
         DefaultValue = 0,
         UseHistoricalHighScore = true,
-        unit = 1,
     },
     {
         Name = "Strength",
@@ -20,7 +19,6 @@ return {
         MaxCount = 100,
         DefaultValue = 0,
         UseHistoricalHighScore = true,
-        unit = 1,
     },
     {
         Name = "Rebirth",
@@ -31,6 +29,5 @@ return {
         MaxCount = 100,
         DefaultValue = 0,
         UseHistoricalHighScore = true,
-        unit = 1,
     },
 }
