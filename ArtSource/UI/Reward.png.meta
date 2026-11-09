@@ -3,5 +3,15 @@
   "id": "c3ec6e287d044c9c9c465bb5e773a171",
   "kind": "Image",
   "tags": [],
-  "uploads": []
+  "uploads": [
+    {
+      "ownerType": "user",
+      "ownerId": "2563885143",
+      "sha256": "cee5f28ed1aa0e0c8cd4dd47acd9088887caa47a21b1ae4bcd2c85e46b508147",
+      "assetType": "Image",
+      "assetId": "93142227208339",
+      "uploadedAt": "2026-11-09T04:02:20.810165+00:00",
+      "grantedUniverseId": "10768714039"
+    }
+  ]
 }

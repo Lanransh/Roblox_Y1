@@ -8,15 +8,13 @@ local TranslationTexts = Text.Define("PurchaseReceipt", {
     ItemReceived = "Purchase received! {item} x{count:int} added to your inventory.",
 })
 local GameUtility = FX.Loader:RequireShared("Scripts/Game/Shared/GameUtility")
-local Rebirth = FXLoader:RequireShared("Scripts/Game/Shared/Rebirth")
-local Fields = _G.PlayerDataConfig
 local MarketplaceService = game:GetService("MarketplaceService")
 local Service = {}
 
 --- 项目区分购买预检与收据结算，沿用框架发奖、回滚与保存逻辑。
 function Service.Init()
     local canBuy = FS.ShopService.CanBuy
-    --- 发起购买时按当前档位选品，已支付收据直接沿用处理器结算。
+    --- 重生已改为钻石购买；关闭旧平台购买入口，已支付收据仍沿用原处理器结算。
     --- @param playerId number 服务端认证的玩家 ID。
     --- @param productId number 待购买的 Developer Product ID。
     --- @return boolean 是否允许展示该商品的购买窗口。
@@ -25,11 +23,7 @@ function Service.Init()
             return false
         end
         local goods = _G.Provider:GetGoodsConfig(productId)
-        if goods.BuyHandler ~= "SkipRebirth" then
-            return true
-        end
-        local player = FS.PlayerManager:GetPlayerObject(playerId)
-        return Rebirth.GetSkipGoods(player:GetNumber(Fields.RebirthCount)) == goods
+        return goods.BuyHandler ~= "SkipRebirth"
     end
 
     --- 在购买串行锁内捕获首付；档案只保存去重标记，分析快照留在当前会话。

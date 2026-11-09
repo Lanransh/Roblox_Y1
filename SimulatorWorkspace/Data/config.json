@@ -740,12 +740,6 @@
               },
               {
                 "fromInput": 23,
-                "toInput": 23,
-                "fromValue": 20,
-                "toValue": 20
-              },
-              {
-                "fromInput": 24,
                 "toInput": 24,
                 "fromValue": 25,
                 "toValue": 25
@@ -950,13 +944,13 @@
               {
                 "fromInput": 120,
                 "toInput": 134,
-                "fromValue": 5.8,
-                "toValue": 5.8
+                "fromValue": 5.6,
+                "toValue": 5.5
               },
               {
                 "fromInput": 135,
                 "toInput": 149,
-                "fromValue": 5.8,
+                "fromValue": 5.5,
                 "toValue": 5.8
               },
               {
@@ -969,36 +963,36 @@
                 "fromInput": 165,
                 "toInput": 179,
                 "fromValue": 6.2,
-                "toValue": 6.5
+                "toValue": 6.3
               },
               {
                 "fromInput": 180,
                 "toInput": 194,
-                "fromValue": 6.5,
-                "toValue": 6.8
+                "fromValue": 6.3,
+                "toValue": 6.7
               },
               {
                 "fromInput": 195,
                 "toInput": 209,
-                "fromValue": 6.8,
-                "toValue": 7.2
+                "fromValue": 6.7,
+                "toValue": 7.3
               },
               {
                 "fromInput": 210,
                 "toInput": 224,
-                "fromValue": 7.2,
-                "toValue": 7.6
+                "fromValue": 7.3,
+                "toValue": 7.4
               },
               {
                 "fromInput": 225,
                 "toInput": 239,
-                "fromValue": 7.6,
-                "toValue": 8
+                "fromValue": 7.4,
+                "toValue": 7.95
               },
               {
                 "fromInput": 240,
                 "toInput": 254,
-                "fromValue": 8,
+                "fromValue": 7.95,
                 "toValue": 8
               },
               {
@@ -1010,62 +1004,62 @@
               {
                 "fromInput": 270,
                 "toInput": 284,
-                "fromValue": 8.4,
-                "toValue": 8.7
+                "fromValue": 8.35,
+                "toValue": 8.55
               },
               {
                 "fromInput": 285,
                 "toInput": 299,
-                "fromValue": 8.7,
-                "toValue": 8.85
+                "fromValue": 8.55,
+                "toValue": 8.8
               },
               {
                 "fromInput": 300,
                 "toInput": 314,
-                "fromValue": 8.85,
+                "fromValue": 8.8,
                 "toValue": 9.1
               },
               {
                 "fromInput": 315,
                 "toInput": 329,
                 "fromValue": 9.1,
-                "toValue": 9.3
+                "toValue": 9.35
               },
               {
                 "fromInput": 330,
                 "toInput": 344,
-                "fromValue": 9.3,
-                "toValue": 9.6
+                "fromValue": 9.35,
+                "toValue": 9.45
               },
               {
                 "fromInput": 345,
                 "toInput": 359,
-                "fromValue": 9.6,
-                "toValue": 9.85
+                "fromValue": 9.45,
+                "toValue": 9.75
               },
               {
                 "fromInput": 360,
                 "toInput": 374,
-                "fromValue": 9.85,
-                "toValue": 10.1
+                "fromValue": 9.75,
+                "toValue": 10
               },
               {
                 "fromInput": 375,
                 "toInput": 389,
-                "fromValue": 10.1,
+                "fromValue": 10,
                 "toValue": 10
               },
               {
                 "fromInput": 390,
                 "toInput": 404,
                 "fromValue": 10,
-                "toValue": 10.2
+                "toValue": 10.25
               },
               {
                 "fromInput": 405,
                 "toInput": 419,
-                "fromValue": 10.2,
-                "toValue": 10.3
+                "fromValue": 10.25,
+                "toValue": 10.25
               },
               {
                 "fromInput": 435,

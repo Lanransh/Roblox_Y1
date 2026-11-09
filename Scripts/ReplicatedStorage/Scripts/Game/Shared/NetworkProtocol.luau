@@ -24,6 +24,9 @@ return {
         "C2S_GMCommand",
         -- 无参数，服务端校验请求者当前等级与重生次数；RPC 返回 {success: boolean}。
         "C2S_Rebirth",
+        -- expectedCount: number，请求前看到的重生次数；服务端按最新档位扣钻并增加一次重生，保留力量。
+        -- RPC 返回 {success: boolean, count: number?}；拒绝旧次数的重复请求，不接受客户端价格。
+        "C2S_SkipRebirth",
         -- entryIds: string[]，正式库存的稳定实例 ID；multiplier: 1|2，暂时允许免费双倍。
         -- RPC 返回 {success: boolean, key: string, amount: number?, count: number?, entries: table?}。
         -- 价格、幸运与重生倍率均由服务端决定，不接受客户端金额。

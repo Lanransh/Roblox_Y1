@@ -13,6 +13,8 @@ local TranslationTexts = Text.Define("Main", {
     Strength = "Strength: {value}",
     MaxLevel = "MAX LEVEL",
     CoinReward = "{value} Coins",
+    NewPickaxeAvailable = "A new pickaxe is available to buy!",
+    NewAuraAvailable = "A new aura is available to buy!",
 })
 local Rebirth = FXLoader:RequireShared("Scripts/Game/Shared/Rebirth")
 local Fields = _G.PlayerDataConfig
@@ -26,6 +28,7 @@ local RockLevel = FXLoader:RequireShared("Scripts/Game/Shared/RockLevel")
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local CurrencyShop = FXLoader:RequireShared("Scripts/Game/Shared/CurrencyShop")
 local InstancePath = FXLoader:RequireShared("Scripts/Game/Shared/InstancePath")
+local AnimatedText = FXLoader:RequireFromParent(script, "CAnimatedText")
 local StrengthPacks = {StrengthPack1Button = 301, StrengthPack2Button = 302}
 local AREA_EXIT_PADDING = 2
 local Component = FX.Class("CMainUICompClass", "FCUICompClass")
@@ -70,23 +73,17 @@ function Component:OnReady()
     self._trainingStatus.Name = "TrainingStatus"
     self._trainingStatus.AnchorPoint = Vector2.new(0.5, 0)
     self._trainingStatus.Position = UDim2.new(0.5, 0, 0, 150)
-    self._trainingStatus.Size = UDim2.fromOffset(360, 32)
+    self._trainingStatus.Size = UDim2.fromOffset(480, 44)
     self._trainingStatus.BackgroundTransparency = 1
     self._trainingStatus.Font = Enum.Font.GothamBold
-    self._trainingStatus.TextSize = 22
+    self._trainingStatus.TextSize = 32
     self._trainingStatus.TextColor3 = Color3.fromRGB(255, 225, 90)
     self._trainingStatus.TextStrokeTransparency = 0.3
     self._trainingStatus.AutoLocalize = false
     self._trainingStatus.Visible = false
     self._trainingStatus.Parent = self._rootNode
-    self._trainingStatusGradient = Instance.new("UIGradient")
-    self._trainingStatusGradient.Color = ColorSequence.new({
-        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 225, 90)),
-        ColorSequenceKeypoint.new(0.5, Color3.fromRGB(255, 100, 190)),
-        ColorSequenceKeypoint.new(1, Color3.fromRGB(80, 220, 255)),
-    })
-    self._trainingStatusGradient.Enabled = false
-    self._trainingStatusGradient.Parent = self._trainingStatus
+    self._trainingTextEffect = AnimatedText.Attach(self._trainingStatus)
+    self:CreatePurchaseReminder()
     self._strength.AutoLocalize = false
     FXLoader:Here(self._bar, "ProgressLabel").AutoLocalize = false
     --- 翻译就绪或语言切换时刷新主界面，出售界面自行监听语言变化。
@@ -159,6 +156,9 @@ function Component:OnReady()
         self:RefreshProgress(self:GetNumber(Fields.RockTrainingValue))
     end, self)
     self:WatchDataChanged(Fields.Money, self.RefreshCoins, self)
+    for index, field in ipairs({Fields.Money, Fields.WeaponData, Fields.AuraData}) do
+        self:WatchDataChanged(field, self.RefreshPurchaseReminder, self)
+    end
     self:WatchDataChanged(Fields.RebirthCount, self.RefreshRebirthCount, self)
     self:WatchDataChanged(Fields.Diamonds, self.RefreshDiamonds, self)
     self:WatchDataChanged(Fields.RockLoot, self.RefreshLoot, self)
@@ -502,9 +502,70 @@ function Component:RefreshLocalization()
     self:RefreshProgress(self:GetNumber(Fields.RockTrainingValue))
     self:RefreshTrainingStatus(self:GetNumber(Fields.TrainingFieldIndex))
     self:RefreshStrengthOffers()
+    self:RefreshPurchaseReminder()
 end
 
---- 显示服务端确认的训练基地倍率，已领取气泡有效时叠乘加成并启用渐变文字，到期恢复黄色。
+--- 在快捷栏上方显示购买提醒，文字不拦截世界点击，并与训练提示共用动态渐变。
+function Component:CreatePurchaseReminder()
+    local label = Instance.new("TextLabel")
+    label.Name = "PurchaseReminder"
+    label.AnchorPoint = Vector2.new(0.5, 0.5)
+    label.Position = UDim2.fromScale(0.5, 0.8)
+    label.Size = UDim2.new(0.9, 0, 0, 144)
+    label.BackgroundTransparency = 1
+    label.Font = Enum.Font.GothamBold
+    label.TextScaled = true
+    label.LineHeight = 1.35
+    label.TextStrokeColor3 = Color3.new(0, 0, 0)
+    label.TextStrokeTransparency = 1
+    label.AutoLocalize = false
+    label.Text = ""
+    label.Visible = false
+    label.Active = false
+    label.Interactable = false
+    label.Parent = self._rootNode
+    local constraint = Instance.new("UITextSizeConstraint")
+    constraint.MinTextSize = 20
+    constraint.MaxTextSize = 28
+    constraint.Parent = label
+    local stroke = Instance.new("UIStroke")
+    stroke.Name = "TextOutline"
+    stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
+    stroke.Color = Color3.new(0, 0, 0)
+    stroke.Thickness = 3
+    stroke.Transparency = 0
+    stroke.Parent = label
+    self._purchaseReminder = label
+    self._purchaseTextEffect = AnimatedText.Attach(label)
+end
+
+--- 仅提示已开放、未拥有且当前金币足够的商品；两个商店都满足时各显示一行。
+function Component:RefreshPurchaseReminder()
+    local coins = self:GetNumber(Fields.Money)
+    local lines = {}
+    local shops = {
+        {Configs = _G.GameConfig.ToolConfig, Limit = _G.GameEnum.WeaponLimit,
+            Field = Fields.WeaponData, IdKey = "ToolId", Text = TranslationTexts.NewPickaxeAvailable},
+        {Configs = _G.GameConfig.AuraConfig, Limit = _G.GameEnum.AuraLimit,
+            Field = Fields.AuraData, IdKey = "AuraId", Text = TranslationTexts.NewAuraAvailable},
+    }
+    for shopIndex, shop in ipairs(shops) do
+        local owned = self:GetTable(shop.Field).owned
+        for index, config in ipairs(shop.Configs) do
+            if index > shop.Limit then
+                break
+            end
+            if owned[tostring(config[shop.IdKey])] ~= true and coins >= config.Price then
+                table.insert(lines, Text.Tr(shop.Text))
+                break
+            end
+        end
+    end
+    self._purchaseReminder.Text = table.concat(lines, "\n")
+    self._purchaseReminder.Visible = #lines > 0
+end
+
+--- 显示服务端确认的训练基地倍率，训练期间持续播放渐变扫光，气泡加成仍按到期时间叠乘。
 --- @param index number 同步的训练基地序号，0 表示场外。
 function Component:RefreshTrainingStatus(index)
     local config = _G.GameConfig.TrainingFieldData[index]
@@ -514,8 +575,6 @@ function Component:RefreshTrainingStatus(index)
         local player = self:GetPlayerNode()
         local bonusUntil = player:GetAttribute("TrainingBonusUntil") or 0
         local bonusActive = workspace:GetServerTimeNow() < bonusUntil
-        self._trainingStatusGradient.Enabled = bonusActive
-        self._trainingStatus.TextColor3 = bonusActive and Color3.new(1, 1, 1) or Color3.fromRGB(255, 225, 90)
         if bonusActive then
             rate *= player:GetAttribute("TrainingBonusRate") or 1
         end
@@ -1042,6 +1101,13 @@ end
 
 --- 释放自建节点和未结束动画，保留共用 ScreenGui；基类负责取消数据及按钮监听。
 function Component:Dtor()
+    if self._purchaseTextEffect then
+        self._purchaseTextEffect:Destroy()
+        self._purchaseReminder:Destroy()
+    end
+    if self._trainingTextEffect then
+        self._trainingTextEffect:Destroy()
+    end
     for index, entry in ipairs(self._notificationBadges or {}) do
         entry.Mark:Destroy()
         entry.Node.Position = entry.Position

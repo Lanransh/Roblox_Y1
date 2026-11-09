@@ -14,14 +14,14 @@ function Preview:Ctor(owner)
         NextStrengthMultiplier = 7.5,
         CurrentMoneyMultiplier = 3.4,
         NextMoneyMultiplier = 3.6,
-        SkipCost = 29,
+        SkipCost = 60,
         SkipAvailable = true,
     }
 end
 
 -- 演示数量缩写；正式游戏使用统一数量格式器，跳过价格仍由业务提供。
 -- @param value number 原始数量
--- @return string 不含货币符号的数量，例如 29、1.04K
+-- @return string 不含货币符号的数量，例如 60、1.98K
 function Preview:FormatNumber(value)
     local suffixes = { "", "K", "M", "B", "T" }
     local scaled = value
@@ -53,7 +53,7 @@ function Preview:OnUIAction(action, payload)
     if action == "CloseRebirth" then
         self.State.Open = false
     elseif action == "RequestSkip" or action == "RequestRebirth" then
-        if not self.State.Open or self.State.RequiredLevel <= 0 or self.State.Completed or self.State.Pending then
+        if not self.State.Open or self.State.RequiredLevel <= 0 or self.State.Completed or self.State.Pending or self.State.AtMax then
             return
         end
         if action == "RequestSkip" then
@@ -66,7 +66,7 @@ function Preview:OnUIAction(action, payload)
             self.State.Pending = false
             self.State.Level = self.State.RequiredLevel
             self.State.SkipAvailable = false
-            self.State.SkipCost = 1040
+            self.State.SkipCost = 1980
             print("模拟 Skip 完成：未执行支付，SkipCost=" .. self:FormatNumber(self.State.SkipCost))
         elseif self.State.Level >= self.State.RequiredLevel then
             -- 仅模拟现有差值成长；真实倍率须由游戏业务提供。

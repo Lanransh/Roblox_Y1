@@ -200,6 +200,18 @@ function Manager:RegMiscMsg()
         return {success = false}
     end
     FX.Network:RegClientMsgCallback("C2S_Rebirth", rebirth)
+    --- 跳过重生只接受当前次数，价格、余额和次数上限由服务端校验。
+    --- @param userId number 引擎认证的玩家身份。
+    --- @param expectedCount any 客户端请求前看到的重生次数。
+    --- @return table 权威购买结果。
+    FX.Network:RegClientMsgCallback("C2S_SkipRebirth", function(userId, expectedCount)
+        local player = self:GetPlayerObject(userId)
+        local misc = player and player:GetComponent("SMiscComp")
+        if misc then
+            return misc:HandleSkipRebirth(expectedCount)
+        end
+        return {success = false}
+    end)
     --- 世界传送只接受配置序号，重生门槛与落点由杂项组件按服务端数据校验。
     --- @param userId number 引擎认证的玩家身份。
     --- @param index any 客户端请求的世界传送序号。

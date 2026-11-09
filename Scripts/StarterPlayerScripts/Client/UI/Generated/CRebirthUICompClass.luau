@@ -15,7 +15,7 @@ require(script.Parent.CUIView)
     NextStrengthMultiplier: number；下次重生后的力量倍率。
     CurrentMoneyMultiplier: number；当前收益倍率。
     NextMoneyMultiplier: number；下次重生后的收益倍率。
-    SkipCost: number；跳过所需 R 币（Robux）数量，必填、非负、无默认值；
+    SkipCost: number；跳过所需钻石数量，必填、非负、无默认值；
       由业务数据提供，不从等级推导，不在客户端写死。
     SkipAvailable: boolean，可选；省略 true，false 时禁用 Skip，价格仍显示。
     Pending: boolean，可选，省略 false；请求期间禁用重生和 Skip，不禁用关闭。
@@ -30,7 +30,7 @@ require(script.Parent.CUIView)
   self.State = {
       Open = true, Level = 317, RequiredLevel = 325, Completed = false,
       CurrentStrengthMultiplier = 7, NextStrengthMultiplier = 7.5,
-      CurrentMoneyMultiplier = 3.4, NextMoneyMultiplier = 3.6, SkipCost = 29,
+      CurrentMoneyMultiplier = 3.4, NextMoneyMultiplier = 3.6, SkipCost = 60,
   }
 
 【初始化与刷新】
@@ -55,8 +55,8 @@ require(script.Parent.CUIView)
   FormatNumber(value:number)->string 可选覆写，默认 tostring，用于倍率与 SkipCost。
   继承 Render 与输入绑定，不覆盖按钮资格或进度文案。
   重生可用条件：Open、RequiredLevel>0、未 Completed、未 Pending、
-  Level>=RequiredLevel；Skip 不要求等级不足，前四项满足即可。
-  Skip 禁用条件为 SkipAvailable=false、Pending=true，或页面不满足上述公共条件；
+  Level>=RequiredLevel；Skip 不要求等级不足，前四项满足且未到上限即可。
+  Skip 禁用条件为 SkipAvailable=false、Pending=true、AtMax=true，或页面不满足上述公共条件；
   禁用时 SkipCostTxt 仍显示业务提供并与余额无关的价格。
   真实接入须重新校验资格、余额、价格与支付；请求前 Pending=true 并刷新；
   成功后按真实结果更新等级、Completed、四项倍率，失败保留真实状态并另行提示；
@@ -87,7 +87,7 @@ local TranslationTexts = Text.Define("RebirthUI", {
 UI.BaseViewTranslationTexts = TranslationTexts
 
 -- 倍率与跳过价格接入统一数量工具，等级继续保留等级语义。
--- @param value number 原始倍率或 R 币数量。
+-- @param value number 原始倍率或钻石数量。
 -- @return string 展示文本。
 function UI:FormatNumber(value)
     return tostring(value)
@@ -166,7 +166,7 @@ function UI:Render(state)
     local eligible = available and not state.AtMax and state.Level >= state.RequiredLevel
     self:SetButtonEnabled(self.RebirthBtn, eligible or (self:GetUIConfig() ~= nil and self:GetUIConfig().allowIneligibleAction == true
         and state.Open and not state.Pending))
-    self:SetButtonEnabled(self.SkipBtn, available and state.SkipAvailable ~= false)
+    self:SetButtonEnabled(self.SkipBtn, available and not state.AtMax and state.SkipAvailable ~= false)
     if eligible then
         self.RebirthBtn.BackgroundColor3 = Color3.fromHex("#67ED14")
     else

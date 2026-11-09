@@ -9,6 +9,8 @@ local TranslationTexts = Text.Define("Misc", {
     TrainingCardGained = "Gained {value} Strength.",
     TrainingRequiredRebirths = "Requires {count:int} rebirths to train here.",
     RebirthReady = "Rebirth is ready! Rebirth to keep growing stronger.",
+    NeedDiamonds = "Not enough diamonds.",
+    RebirthOfferChanged = "This rebirth offer has changed. Please try again.",
 })
 local TextService = game:GetService("TextService")
 local HttpService = game:GetService("HttpService")
@@ -70,6 +72,39 @@ function Component:HandleRebirth()
     end
     self:ApplyRebirth()
     return {success = true}
+end
+
+--- 钻石跳过沿用原付费效果，保留力量和等级；客户端只提交看到的次数以拒绝重复旧请求。
+--- @param expectedCount any 客户端请求前看到的重生次数，不接受客户端价格。
+--- @return table 权威结算结果与成功后的重生次数。
+function Component:HandleSkipRebirth(expectedCount)
+    if not self._levelStat then
+        return {success = false}
+    end
+    local player = self:GetPlayerObject()
+    local count = self:GetNumber(Fields.RebirthCount)
+    local goods = Rebirth.GetSkipGoods(count)
+    if expectedCount ~= count or not goods then
+        player:ShowLocalizedTips(TranslationTexts.RebirthOfferChanged)
+        return {success = false}
+    end
+    if self:GetNumber(Fields.Diamonds) < goods.Price then
+        player:ShowLocalizedTips(TranslationTexts.NeedDiamonds)
+        return {success = false}
+    end
+    -- 事务内不 yield、不发送提示，扣款与重生次数必须一起提交或回滚。
+    local success = player:RunDataTransaction(function()
+        player:AddNumber(Fields.Diamonds, -goods.Price)
+        player:AddNumber(Fields.RebirthCount, 1)
+        return true
+    end)
+    if not success then
+        player:ShowLocalizedTips(TranslationTexts.Unknown)
+        return {success = false}
+    end
+    self:RequireComponent("SAnalyticsComp"):Sink("Diamonds", goods.Price,
+        self:GetNumber(Fields.Diamonds), "SkipRebirth:" .. goods.GemGoodsId)
+    return {success = true, count = count + 1}
 end
 
 --- 读档后建立排行榜和公开头顶力量显示，并按原频率检查每秒结算条件。

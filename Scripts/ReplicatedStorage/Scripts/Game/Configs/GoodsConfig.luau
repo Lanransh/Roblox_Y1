@@ -16,12 +16,12 @@ return {
             DevGoodsId = 100,
             BuyHandler = [[AddGem]],
             Name = [[Starter Diamond Pack (67折)]],
-            Desc = [[Get 84 Diamonds. Great value!]],
+            Desc = [[Get 120 Diamonds. Great value!]],
             Price = 8,
             RobloxProductId = 2.064519003e+9,
             BuyLimit = 1,
             NumberArray = {
-                [1] = 84,
+                [1] = 120,
             },
             KVTable = nil,
             ProductType = [[GamePass]]
@@ -399,6 +399,54 @@ return {
             Price = 40,
             NumberArray = nil,
             KVTable = nil
+        },
+        [401] = {
+            GemGoodsId = 401,
+            BuyHandler = [[SkipRebirth]],
+            BuyLimit = nil,
+            Desc = [[Skip the level requirement and rebirth once.]],
+            Price = 288,
+            NumberArray = nil,
+            KVTable = {
+                MinRebirth = 0,
+                MaxRebirth = 4
+            }
+        },
+        [402] = {
+            GemGoodsId = 402,
+            BuyHandler = [[SkipRebirth]],
+            BuyLimit = nil,
+            Desc = [[Skip the level requirement and rebirth once.]],
+            Price = 688,
+            NumberArray = nil,
+            KVTable = {
+                MinRebirth = 5,
+                MaxRebirth = 9
+            }
+        },
+        [403] = {
+            GemGoodsId = 403,
+            BuyHandler = [[SkipRebirth]],
+            BuyLimit = nil,
+            Desc = [[Skip the level requirement and rebirth once.]],
+            Price = 1288,
+            NumberArray = nil,
+            KVTable = {
+                MinRebirth = 10,
+                MaxRebirth = 14
+            }
+        },
+        [404] = {
+            GemGoodsId = 404,
+            BuyHandler = [[SkipRebirth]],
+            BuyLimit = nil,
+            Desc = [[Skip the level requirement and rebirth once.]],
+            Price = 2688,
+            NumberArray = nil,
+            KVTable = {
+                MinRebirth = 15,
+                MaxRebirth = 19
+            }
         }
     },
     GoodsItemData = {}
