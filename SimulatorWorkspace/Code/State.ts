@@ -78,7 +78,7 @@ type TrainingMultiplierFactorCache = {
 };
 
 type HighestChallengeStageCache = {
-  stageCurves: ProjectConfig["stageCurves"];
+  signature: string;
   rebirthCount: number;
   stageId: number;
 };
@@ -93,8 +93,7 @@ const highestChallengeStageCache = new WeakMap<
   HighestChallengeStageCache
 >();
 const stageCombatValueCache = new WeakMap<object, {
-  stageCurves: ProjectConfig["stageCurves"];
-  levelCurves: ProjectConfig["levelCurves"];
+  signature: string;
   values: Map<number, ReturnType<typeof calculateStageCombatValues>>;
 }>();
 
@@ -612,22 +611,27 @@ export class State extends BaseState<StateValues> {
 
   getHighestChallengeStageId(): number {
     const config = this.projectConfig;
+    const stageCount = this.getStageCount();
+    // 准入曲线、输入约束和可搜索关卡范围的原地修改都必须使缓存失效。
+    const signature = JSON.stringify([
+      config.stageCurves.input, config.stageCurves.columns, stageCount,
+    ]);
     const cached = highestChallengeStageCache.get(this);
     if (
-      cached?.stageCurves === config.stageCurves &&
+      cached?.signature === signature &&
       cached.rebirthCount === this.rebirthCount
     ) {
       return cached.stageId;
     }
 
-    for (let stageId = this.getStageCount(); stageId >= 1; stageId -= 1) {
+    for (let stageId = stageCount; stageId >= 1; stageId -= 1) {
       const { expectedRebirthCount } = calculateStageValues(
         config.stageCurves,
         stageId,
       );
       if (this.rebirthCount >= expectedRebirthCount) {
         highestChallengeStageCache.set(this, {
-          stageCurves: config.stageCurves,
+          signature,
           rebirthCount: this.rebirthCount,
           stageId,
         });
@@ -635,7 +639,7 @@ export class State extends BaseState<StateValues> {
       }
     }
     highestChallengeStageCache.set(this, {
-      stageCurves: config.stageCurves,
+      signature,
       rebirthCount: this.rebirthCount,
       stageId: 0,
     });
@@ -669,9 +673,14 @@ export class State extends BaseState<StateValues> {
 
   private getStageCombatValues(stageId: number) {
     const { stageCurves, levelCurves } = this.projectConfig;
+    // 原地编辑曲线或输入约束时，也要使上层关卡缓存失效。
+    const signature = JSON.stringify([
+      stageCurves.input, stageCurves.columns,
+      levelCurves.input, levelCurves.columns,
+    ]);
     let cached = stageCombatValueCache.get(this);
-    if (cached?.stageCurves !== stageCurves || cached.levelCurves !== levelCurves) {
-      cached = { stageCurves, levelCurves, values: new Map() };
+    if (cached?.signature !== signature) {
+      cached = { signature, values: new Map() };
       stageCombatValueCache.set(this, cached);
     }
     let values = cached.values.get(stageId);

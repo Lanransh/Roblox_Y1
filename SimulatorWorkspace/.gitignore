@@ -2,6 +2,7 @@
 !/.gitignore
 !/simulator.project.json
 !/Code/
+!/Tests/
 !/Docs/
 !/Data/
 /Data/*

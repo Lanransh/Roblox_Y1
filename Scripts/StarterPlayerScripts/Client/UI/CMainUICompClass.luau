@@ -15,6 +15,9 @@ local TranslationTexts = Text.Define("Main", {
     CoinReward = "{value} Coins",
     NewPickaxeAvailable = "A new pickaxe is available to buy!",
     NewAuraAvailable = "A new aura is available to buy!",
+    DiamondPackDiscount = "67折",
+    DiamondPackAmount = "{value} Diamonds",
+    DiamondPackPrice = "仅需 {robux}{price}",
 })
 local Rebirth = FXLoader:RequireShared("Scripts/Game/Shared/Rebirth")
 local Fields = _G.PlayerDataConfig
@@ -120,6 +123,7 @@ function Component:OnReady()
         self:RefreshLootCapacity()
     end)
     self:CreateFriendBoostButton()
+    self:CreateDiamondPackButton()
     self._effects = {}
     self._pickupEffects = {}
     self._rainEffects = {}
@@ -335,6 +339,8 @@ function Component:BindButtons()
                     self:GetPlayerObject():RequireComponent("CWelfareUIComp"):Show()
                 elseif node.Name == "ShopBtn" then
                     self:GetPlayerObject():RequireComponent("CCurrencyShopUIComp"):Show()
+                elseif node == self._diamondPackButton then
+                    self:GetPlayerObject():RequireComponent("CCurrencyShopUIComp"):PurchaseGoods(100)
                 elseif node.Name == "SettingsButton" then
                     self:GetPlayerObject():RequireComponent("CSettingsUIComp"):Show()
                 elseif node == self._homeButton then
@@ -503,6 +509,174 @@ function Component:RefreshLocalization()
     self:RefreshTrainingStatus(self:GetNumber(Fields.TrainingFieldIndex))
     self:RefreshStrengthOffers()
     self:RefreshPurchaseReminder()
+    self:RefreshDiamondPack()
+end
+
+--- 左上角独立分组避开原生顶栏和左侧按钮，交给主界面统一适配缩放。
+function Component:CreateDiamondPackButton()
+    local group = Instance.new("Frame")
+    group.Name = "DiamondPackOffer"
+    group.Position = UDim2.fromOffset(12, 40)
+    group.Size = UDim2.fromOffset(148, 122)
+    group.BackgroundTransparency = 1
+    self._diamondPackGroup = group
+    local content = Instance.new("Frame")
+    content.Name = "Content"
+    content.Size = UDim2.fromScale(1, 1)
+    content.BackgroundTransparency = 1
+    content.Parent = group
+    local fitScale = Instance.new("UIScale")
+    fitScale.Parent = content
+    local button = Instance.new("ImageButton")
+    button.Name = "DiamondPackButton"
+    button.AnchorPoint = Vector2.new(0.5, 0)
+    button.Position = UDim2.fromOffset(74, 0)
+    button.Size = UDim2.fromOffset(100, 92)
+    button.BackgroundTransparency = 1
+    button.AutoButtonColor = false
+    button.Image = "rbxassetid://97758765626770"
+    button.ScaleType = Enum.ScaleType.Fit
+    self._diamondPackLabels = {}
+    for index, spec in ipairs({
+        {Name = "Discount", Position = UDim2.fromOffset(56, -2), Width = 76, Color = Color3.fromRGB(60, 32, 5)},
+        {Name = "Amount", Position = UDim2.fromOffset(-24, 78), Width = 148, Color = Color3.fromRGB(85, 255, 100)},
+        {Name = "Price", Position = UDim2.fromOffset(-24, 100), Width = 148, Color = Color3.fromRGB(255, 229, 90)},
+    }) do
+        local label = Instance.new("TextLabel")
+        label.Name = spec.Name
+        label.Position = spec.Position
+        label.Size = UDim2.fromOffset(spec.Width, 24)
+        label.BackgroundTransparency = 1
+        label.Font = Enum.Font.FredokaOne
+        label.TextScaled = true
+        label.TextColor3 = spec.Color
+        label.TextStrokeColor3 = Color3.new(0, 0, 0)
+        label.TextStrokeTransparency = 0
+        label.AutoLocalize = false
+        label.Text = ""
+        label.ZIndex = button.ZIndex + 1
+        label.Parent = button
+        local limit = Instance.new("UITextSizeConstraint")
+        limit.MaxTextSize = spec.Name == "Amount" and 22 or 28
+        limit.Parent = label
+        self._diamondPackLabels[spec.Name] = label
+    end
+    local discount = self._diamondPackLabels.Discount
+    discount.Font = Enum.Font.GothamBlack
+    discount.BackgroundTransparency = 0
+    discount.BackgroundColor3 = Color3.fromRGB(255, 215, 60)
+    discount.TextStrokeTransparency = 1
+    discount.Rotation = 8
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 6)
+    corner.Parent = discount
+    local outline = Instance.new("UIStroke")
+    outline.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    outline.Color = Color3.fromRGB(85, 46, 5)
+    outline.Thickness = 2
+    outline.Parent = discount
+    self._diamondPackLabels.Price.Font = Enum.Font.GothamBold
+    button.Parent = content
+    group.Parent = self._rootNode
+    local menuButton = FXLoader:Here(self._rootNode, "LeftCenter/RebirthButton")
+    --- 顶栏、安全区和窗口变化后使用屏幕坐标定位，并缩入左侧菜单上方的空隙。
+    local function LayoutOffer()
+        local top = GuiService.TopbarInset.Max.Y + 8
+        group.Position = UDim2.fromOffset(12, top - self._rootNode.AbsolutePosition.Y)
+        local responsiveScale = group:FindFirstChildOfClass("UIScale")
+        local scale = responsiveScale and responsiveScale.Scale or 1
+        local available = math.max(0, menuButton.AbsolutePosition.Y - top - 8)
+        fitScale.Scale = math.min(1, available / (124 * scale))
+    end
+    --- 延后到主界面通用缩放完成，避免安全区和分组布局覆盖入口坐标。
+    local function QueueLayoutOffer()
+        task.defer(function()
+            if group.Parent then
+                LayoutOffer()
+            end
+        end)
+    end
+    self:TrackConnection(self._rootNode:GetPropertyChangedSignal("AbsoluteSize"):Connect(QueueLayoutOffer))
+    self:TrackConnection(self._rootNode:GetPropertyChangedSignal("AbsolutePosition"):Connect(QueueLayoutOffer))
+    self:TrackConnection(menuButton:GetPropertyChangedSignal("AbsolutePosition"):Connect(QueueLayoutOffer))
+    self:TrackConnection(GuiService:GetPropertyChangedSignal("TopbarInset"):Connect(QueueLayoutOffer))
+    QueueLayoutOffer()
+    self._diamondPackButton = button
+    self:RefreshDiamondPack()
+    --- 到账次数以服务端同步为准，重登后也隐藏已购买礼包。
+    --- @param data table 服务端权威商店进度。
+    self:WatchDataChanged(Fields.CurrencyShopData, function(data)
+        group.Visible = (data.robuxBought["100"] or 0) < _G.GoodsConfig.GoodsData[100].BuyLimit
+    end)
+    local elapsed = 0
+    local hovered, pressed = false, false
+    --- 悬停或按下时停稳，离开后重新等待下一次轻抖。
+    local function ResetShake()
+        elapsed = 0
+        button.Rotation = 0
+    end
+    self:TrackConnection(button.MouseEnter:Connect(function()
+        hovered = true
+        ResetShake()
+    end))
+    self:TrackConnection(button.MouseLeave:Connect(function()
+        hovered = false
+        pressed = false
+        ResetShake()
+    end))
+    --- 鼠标或触屏按下后暂停提醒动画，直到对应输入结束。
+    --- @param input InputObject 当前按钮收到的输入。
+    self:TrackConnection(button.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            pressed = true
+            ResetShake()
+        end
+    end))
+    --- 全局释放也能结束按压，避免在按钮外松开后一直停留按下状态。
+    --- @param input InputObject 已结束的输入。
+    self:TrackConnection(UserInputService.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            pressed = false
+            ResetShake()
+        end
+    end))
+    --- 空闲四秒后轻抖半秒，无上下位移；隐藏、悬停和按下时保持静止。
+    --- @param deltaTime number 当前帧经过的秒数。
+    self:TrackConnection(RunService.RenderStepped:Connect(function(deltaTime)
+        if not group.Visible or not self._rootNode.Enabled or hovered or pressed then
+            ResetShake()
+            return
+        end
+        elapsed += deltaTime
+        local phase = elapsed % 4.5
+        local shakeTime = phase - 4
+        button.Rotation = phase >= 4 and math.sin(shakeTime * math.pi * 12) * 4 * (1 - shakeTime / 0.5) or 0
+    end))
+end
+
+--- 使用商品配置数量及平台报价，未取得价格前不展示可能过期的配置价格。
+function Component:RefreshDiamondPack()
+    local goods = _G.GoodsConfig.GoodsData[100]
+    local product = self:GetPlayerObject():RequireComponent("CCurrencyShopUIComp"):GetRobuxProduct(100)
+    self._diamondPackLabels.Discount.Text = Text.Tr(TranslationTexts.DiamondPackDiscount)
+    self._diamondPackLabels.Amount.Text = Text.Tr(TranslationTexts.DiamondPackAmount, {
+        value = GameUtility.NumberToText(goods.NumberArray[1]),
+    })
+    self._diamondPackLabels.Price.Visible = product ~= nil and not product.unavailable
+    if product and not product.unavailable then
+        self._diamondPackLabels.Price.Text = Text.Tr(TranslationTexts.DiamondPackPrice, {
+            robux = utf8.char(0xE002),
+            price = GameUtility.NumberToText(product.price),
+        })
+    end
+end
+
+--- 跟随框架每秒更新平台报价，不为常驻入口新增轮询任务。
+--- @param serverTime number 框架传入的服务器时间；入口不展示倒计时。
+function Component:OnUpdate(serverTime)
+    if self._diamondPackGroup and self._diamondPackGroup.Visible then
+        self:RefreshDiamondPack()
+    end
 end
 
 --- 在快捷栏上方显示购买提醒，文字不拦截世界点击，并与训练提示共用动态渐变。
@@ -1101,6 +1275,9 @@ end
 
 --- 释放自建节点和未结束动画，保留共用 ScreenGui；基类负责取消数据及按钮监听。
 function Component:Dtor()
+    if self._diamondPackGroup then
+        self._diamondPackGroup:Destroy()
+    end
     if self._purchaseTextEffect then
         self._purchaseTextEffect:Destroy()
         self._purchaseReminder:Destroy()

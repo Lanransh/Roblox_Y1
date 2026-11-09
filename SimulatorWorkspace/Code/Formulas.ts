@@ -162,20 +162,47 @@ export function calculateLevelValues(
   };
 }
 
-const levelTrainingThresholds = new WeakMap<CurveGroupValue, number[]>();
+type LevelCalculationCache = {
+  signature: string;
+  thresholds: number[];
+  attacks: Map<number, number>;
+};
+
+const levelCalculationCaches = new WeakMap<CurveGroupValue, LevelCalculationCache>();
+
+function getLevelCalculationCache(levelCurves: CurveGroupValue): LevelCalculationCache {
+  // 同时识别原地编辑公式及输入规则；不能只依赖配置对象身份。
+  const signature = JSON.stringify([levelCurves.input, levelCurves.columns]);
+  let cache = levelCalculationCaches.get(levelCurves);
+  if (!cache || cache.signature !== signature) {
+    cache = { signature, thresholds: [], attacks: new Map() };
+    levelCalculationCaches.set(levelCurves, cache);
+  }
+  return cache;
+}
 
 /** 计算刚达到目标等级所需的累计训练值；只累加此前各级需求，不含目标等级自身需求。 */
 export function calculateLevelStrength(
   levelCurves: CurveGroupValue,
   targetLevel: number,
 ): number {
-  // 校验合法等级；按配置对象缓存累计门槛，供状态和等级图表复用。
-  sampleCurveGroupColumnFormula(levelCurves, "nextLevelExperience", targetLevel);
+  return getLevelStrength(levelCurves, targetLevel, getLevelCalculationCache(levelCurves).thresholds);
+}
+
+function getLevelStrength(
+  levelCurves: CurveGroupValue,
+  targetLevel: number,
+  thresholds: number[],
+): number {
   const minLevel = levelCurves.input?.min ?? 1;
-  let thresholds = levelTrainingThresholds.get(levelCurves);
-  if (!thresholds) {
-    thresholds = [0];
-    levelTrainingThresholds.set(levelCurves, thresholds);
+  const cached = thresholds[targetLevel - minLevel];
+  if (cached !== undefined) {
+    return cached;
+  }
+  // 只在缓存未命中时校验和采样；等级反查的二分搜索直接复用累计门槛。
+  sampleCurveGroupColumnFormula(levelCurves, "nextLevelExperience", targetLevel);
+  if (thresholds.length === 0) {
+    thresholds.push(0);
   }
   while (thresholds.length <= targetLevel - minLevel) {
     const required = sampleCurveGroupColumnFormula(
@@ -193,9 +220,10 @@ export function calculateTrainingLevel(
 ): number {
   let low = levelCurves.input.min ?? 1;
   let high = levelCurves.input.max;
+  const { thresholds } = getLevelCalculationCache(levelCurves);
   while (low < high) {
     const middle = Math.ceil((low + high) / 2);
-    if (trainingValue >= calculateLevelStrength(levelCurves, middle)) {
+    if (trainingValue >= getLevelStrength(levelCurves, middle, thresholds)) {
       low = middle;
     } else {
       high = middle - 1;
@@ -204,12 +232,23 @@ export function calculateTrainingLevel(
   return low;
 }
 
-/** 按整数等级采样独立攻击力曲线；与该等级的升级经验需求无关。 */
+/** 按整数等级缓存独立攻击力；配置内容变化后重新采样。 */
 export function calculateLevelAttack(
   levelCurves: CurveGroupValue,
   level: number,
 ): number {
-  return sampleCurveGroupColumnFormula(levelCurves, "attackPower", level);
+  // 关卡配置也会传入小数等级；只缓存有限的整数等级，保留小数采样语义。
+  if (!Number.isInteger(level)) {
+    return sampleCurveGroupColumnFormula(levelCurves, "attackPower", level);
+  }
+  const { attacks } = getLevelCalculationCache(levelCurves);
+  const cached = attacks.get(level);
+  if (cached !== undefined) {
+    return cached;
+  }
+  const attack = sampleCurveGroupColumnFormula(levelCurves, "attackPower", level);
+  attacks.set(level, attack);
+  return attack;
 }
 
 /** 用累计训练值确定等级与级内进度，在本级和下级攻击力间线性插值；满级不再采样下一级。 */
