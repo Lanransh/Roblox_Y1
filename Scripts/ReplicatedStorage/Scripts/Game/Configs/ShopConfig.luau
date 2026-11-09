@@ -21,8 +21,8 @@ return {
         [1] = {
             Index = 1,
             DevGoodsId = 100,
-            NameTxt = [[Starter Diamond Pack (50% Off)]],
-            DescTxt = [[Get 48 Diamonds. Great value!]],
+            NameTxt = [[Starter Diamond Pack (67折)]],
+            DescTxt = [[Get 120 Diamonds. Great value!]],
             IconId = [[rbxassetid://97758765626770]]
         },
         [2] = {

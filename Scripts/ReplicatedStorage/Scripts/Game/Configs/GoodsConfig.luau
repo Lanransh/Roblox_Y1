@@ -16,12 +16,12 @@ return {
             DevGoodsId = 100,
             BuyHandler = [[AddGem]],
             Name = [[Starter Diamond Pack (67折)]],
-            Desc = [[Get 84 Diamonds. Great value!]],
+            Desc = [[Get 120 Diamonds. Great value!]],
             Price = 8,
             RobloxProductId = 2.064519003e+9,
             BuyLimit = 1,
             NumberArray = {
-                [1] = 84,
+                [1] = 120,
             },
             KVTable = nil,
             ProductType = [[GamePass]]
@@ -405,7 +405,7 @@ return {
             BuyHandler = [[SkipRebirth]],
             BuyLimit = nil,
             Desc = [[Skip the level requirement and rebirth once.]],
-            Price = 60,
+            Price = 288,
             NumberArray = nil,
             KVTable = {
                 MinRebirth = 0,
@@ -417,7 +417,7 @@ return {
             BuyHandler = [[SkipRebirth]],
             BuyLimit = nil,
             Desc = [[Skip the level requirement and rebirth once.]],
-            Price = 100,
+            Price = 688,
             NumberArray = nil,
             KVTable = {
                 MinRebirth = 5,
@@ -429,7 +429,7 @@ return {
             BuyHandler = [[SkipRebirth]],
             BuyLimit = nil,
             Desc = [[Skip the level requirement and rebirth once.]],
-            Price = 180,
+            Price = 1288,
             NumberArray = nil,
             KVTable = {
                 MinRebirth = 10,
@@ -441,47 +441,11 @@ return {
             BuyHandler = [[SkipRebirth]],
             BuyLimit = nil,
             Desc = [[Skip the level requirement and rebirth once.]],
-            Price = 380,
+            Price = 2688,
             NumberArray = nil,
             KVTable = {
                 MinRebirth = 15,
                 MaxRebirth = 19
-            }
-        },
-        [405] = {
-            GemGoodsId = 405,
-            BuyHandler = [[SkipRebirth]],
-            BuyLimit = nil,
-            Desc = [[Skip the level requirement and rebirth once.]],
-            Price = 680,
-            NumberArray = nil,
-            KVTable = {
-                MinRebirth = 20,
-                MaxRebirth = 24
-            }
-        },
-        [406] = {
-            GemGoodsId = 406,
-            BuyHandler = [[SkipRebirth]],
-            BuyLimit = nil,
-            Desc = [[Skip the level requirement and rebirth once.]],
-            Price = 1180,
-            NumberArray = nil,
-            KVTable = {
-                MinRebirth = 25,
-                MaxRebirth = 29
-            }
-        },
-        [407] = {
-            GemGoodsId = 407,
-            BuyHandler = [[SkipRebirth]],
-            BuyLimit = nil,
-            Desc = [[Skip the level requirement and rebirth once.]],
-            Price = 1980,
-            NumberArray = nil,
-            KVTable = {
-                MinRebirth = 30,
-                MaxRebirth = 35
             }
         }
     },
