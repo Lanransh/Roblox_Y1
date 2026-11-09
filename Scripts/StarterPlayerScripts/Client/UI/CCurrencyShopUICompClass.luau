@@ -269,6 +269,36 @@ function Component:OnUIAction(action, payload)
     end
 end
 
+--- 主界面快捷入口复用商店商品、限购判断和同一购买锁，不需要先打开商店。
+--- @param goodsId number Robux 商品配置 ID。
+function Component:PurchaseGoods(goodsId)
+    local product = self:GetRobuxProduct(goodsId)
+    if not product or product.soldOut then
+        return
+    end
+    if product.unavailable then
+        self:LoadPrices()
+        self._commonUI:ShowLocalizedTips(self.BaseViewTranslationTexts.Unavailable)
+        return
+    end
+    self:Purchase(product)
+end
+
+--- 向快捷入口提供平台报价；各组件 OnReady 无固定顺序，商店未就绪时返回 nil。
+--- @param goodsId number Robux 商品配置 ID。
+--- @return table? 当前 Robux 商品；未展示时返回 nil。
+function Component:GetRobuxProduct(goodsId)
+    if not self.Config then
+        return nil
+    end
+    for index, product in ipairs(self.Config.products) do
+        if product.currency == "Robux" and product.goodsId == goodsId then
+            return product
+        end
+    end
+    return nil
+end
+
 --- 按商品类型进行服务端预检，通行证已拥有时由服务端补发，其他商品沿用收据。
 --- @param product table 所选 Robux 商品快照，包含平台 productId。
 function Component:Purchase(product)
