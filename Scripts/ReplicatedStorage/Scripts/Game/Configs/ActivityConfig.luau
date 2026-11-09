@@ -235,12 +235,16 @@ return {
             }
         }
     },
-    MenuRetentionConfig = {
-        TriggerMinutes = 5,
-        Reward = {
+    CommonConfig = {
+        MenuRetentionTriggerMinutes = 5,
+        MenuRetentionReward = {
             Type = [[Aura]],
             Id = 102,
             Count = 1
+        },
+        GroupRewardChestReward = {
+            Type = [[Gem]],
+            Count = 5
         }
     }
 }

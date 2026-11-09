@@ -30,7 +30,9 @@ GM 面板接入契约（仅管理员自用）
   无其他页面专用必需或可选覆写。每个命令参数如下：
   SetLevel / SetRebirth / SetMoney / SetDiamonds
     -> { value: number, param2: string, param3: string }。
-    value 来自参数1，是 0..9007199254740991 的安全整数；SetLevel 至少 1。
+    value 来自参数1，支持科学计数法，例如 1e16。
+    SetMoney 接受有限非负整数，超出安全整数范围时遵循 number 浮点精度。
+    其他数值命令接受 0..9007199254740991 的安全整数；SetLevel 至少 1。
     单位依次为级、重生次数、金币、钻石。param2/param3 是参数2/3原文，
     空框为 ""；当前这四项业务不消费它们，不将备用框当作玩家 ID。
   AddItem -> { itemId: number, count: number }。
@@ -106,7 +108,7 @@ function CGMPanelView:CancelReset()
     self.ResetTxt.Text = "重置数据"
 end
 
--- 校验输入后发送命令；重置需要连续两次点击。
+-- 校验输入后发送命令；仅金钱允许超出安全整数范围，重置需要连续两次点击。
 -- @param action string 契约中声明的稳定命令名
 function CGMPanelView:ExecuteCommand(action)
     if self:GetUIState().pending then
@@ -142,7 +144,8 @@ function CGMPanelView:ExecuteCommand(action)
         return
     end
     local value = tonumber(self.Inputs[1].Text)
-    if not value or value ~= value or value < 0 or value > 9007199254740991 or value % 1 ~= 0 then
+    if not value or value ~= value or value < 0 or value == math.huge or value % 1 ~= 0
+        or (action ~= "SetMoney" and value > 9007199254740991) then
         self:OnInvalidInput(action)
         return
     end

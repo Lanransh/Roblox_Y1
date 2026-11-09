@@ -123,7 +123,7 @@ function Component:CreateGiftPanel()
     image.Name = "Gift"
     image.BackgroundTransparency = 1
     image.Position, image.Size = UDim2.fromScale(0.25, 0.23), UDim2.fromScale(0.5, 0.38)
-    local reward = self._retention.Reward
+    local reward = self._retention.MenuRetentionReward
     image.Image = reward.Type == "Aura"
         and "rbxassetid://" .. Aura.GetConfig(reward.Id).Img
         or FXLoader:Here(rewardButton, "IconImg").Image
@@ -162,7 +162,7 @@ function Component:IsGiftAvailable()
     local state = self:GetTable(Fields.WelfareState)
     local retention = self:GetTable(Fields.MenuRetentionData)
     return state.ready and not self._claimed and not retention.claimed
-        and workspace:GetServerTimeNow() - state.retentionStartedAt < self._retention.TriggerMinutes * 60
+        and workspace:GetServerTimeNow() - state.retentionStartedAt < self._retention.MenuRetentionTriggerMinutes * 60
 end
 
 --- 先关闭 Main 以外的游戏弹窗，关闭完成且仍在提示期限内时才显示礼包。
@@ -220,13 +220,13 @@ function Component:RefreshGift()
     self._giftTitle.Text = Text.Tr(TranslationTexts.GiftTitle)
     self._giftHint.Text = Text.Tr(TranslationTexts.GiftHint)
     self._giftHint.Visible = GuiService.MenuIsOpen
-    local reward = Welfare.ToDisplayReward(self._retention.Reward)
+    local reward = Welfare.ToDisplayReward(self._retention.MenuRetentionReward)
     if reward.type == "Gem" then
         self._giftReward.Text = Text.Tr(TranslationTexts.Diamonds, {value = GameUtility.NumberToText(reward.amount)})
     else
         local rewardName = reward.type == "Aura"
-            and Text.TrSource(Aura.GetConfig(self._retention.Reward.Id).Name)
-            or Text.TrSource(_G.ItemConfig.Display[self._retention.Reward.Id].Name)
+            and Text.TrSource(Aura.GetConfig(self._retention.MenuRetentionReward.Id).Name)
+            or Text.TrSource(_G.ItemConfig.Display[self._retention.MenuRetentionReward.Id].Name)
         self._giftReward.Text = Text.Tr(TranslationTexts.ItemReward, {
             item = rewardName,
             value = GameUtility.NumberToText(reward.amount),
@@ -301,7 +301,7 @@ end
 function Component:OnReady()
     self._commonUI = self:GetPlayerObject():RequireComponent("FCCommonUIComp")
     self._localization = self._commonUI.Localization
-    self._retention = _G.ActivityConfig.MenuRetentionConfig
+    self._retention = _G.ActivityConfig.CommonConfig
     self._rootNode = Instance.new("ScreenGui")
     self._rootNode.Name = "MenuRetentionUI"
     self._rootNode.ResetOnSpawn = false

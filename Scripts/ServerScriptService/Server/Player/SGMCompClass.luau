@@ -35,12 +35,13 @@ function Component:GetCompName()
     return "SGMComp"
 end
 
---- 面板契约中的数值必须为非负安全整数。
+--- 面板数值必须为有限非负整数，仅金钱允许超过安全整数上限。
 --- @param value any 客户端提交的数值。
+--- @param allowLarge boolean? 是否允许大额金钱，其他字段保持安全整数限制。
 --- @return boolean 是否可以写入数值字段。
-local function IsValidNumber(value)
+local function IsValidNumber(value, allowLarge)
     return type(value) == "number" and value == value and value >= 0
-        and value <= 9007199254740991 and value % 1 == 0
+        and value < math.huge and (allowLarge or value <= 9007199254740991) and value % 1 == 0
 end
 
 --- 沿用正式奖励入口整批添加，容量不足时不发放部分道具。
@@ -82,13 +83,13 @@ function Component:ResetData()
     player:PublishEvent("Tutorial.Login")
 end
 
---- 修改持久源字段，再沿用现有训练组件刷新等级、力量和排行榜显示。
+--- 修改持久源字段，金钱支持科学计数法对应的大数，其他字段保留安全整数限制。
 --- @param action string 已确认的 GM 数值动作。
 --- @param value any 客户端提交值。
 --- @return table 权威校验与操作结果。
 function Component:SetValue(action, value)
     local player = self:GetPlayerObject()
-    if not IsValidNumber(value) then
+    if not IsValidNumber(value, action == "SetMoney") then
         return {success = false, key = TranslationTexts.InvalidValue}
     end
     if action == "SetLevel" then

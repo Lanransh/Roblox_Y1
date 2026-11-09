@@ -328,16 +328,16 @@ function Component:Claim(kind, rewardId, multiplier)
     local reason = nil
     if kind == "retention" and rewardId == "once" then
         local retention = self:GetTable(Fields.MenuRetentionData)
-        local config = _G.ActivityConfig.MenuRetentionConfig
+        local config = _G.ActivityConfig.CommonConfig
         if retention.claimed then
             key = TranslationTexts.AlreadyClaimed
-        elseif self:RequireComponent("SAnalyticsComp"):AccountTime() < config.TriggerMinutes * 60 then
-            if self:GrantRewards({config.Reward}) then
+        elseif self:RequireComponent("SAnalyticsComp"):AccountTime() < config.MenuRetentionTriggerMinutes * 60 then
+            if self:GrantRewards({config.MenuRetentionReward}) then
                 local auraData = self:GetTable(Fields.AuraData)
-                if config.Reward.Type == "Aura"
+                if config.MenuRetentionReward.Type == "Aura"
                     and (auraData.equippedId == 0
-                        or Aura.GetTrainingRate(auraData) <= Aura.GetConfig(config.Reward.Id).TrainingRate) then
-                    auraData.equippedId = config.Reward.Id
+                        or Aura.GetTrainingRate(auraData) <= Aura.GetConfig(config.MenuRetentionReward.Id).TrainingRate) then
+                    auraData.equippedId = config.MenuRetentionReward.Id
                     self:SetTable(Fields.AuraData, auraData)
                 end
                 -- 发奖与永久标记均不 yield，重复请求不能再次进入发奖分支。
