@@ -765,14 +765,20 @@
               {
                 "fromInput": 32,
                 "toInput": 32,
-                "fromValue": 75,
-                "toValue": 75
+                "fromValue": 80,
+                "toValue": 80
               },
               {
                 "fromInput": 34,
                 "toInput": 34,
                 "fromValue": 85,
                 "toValue": 85
+              },
+              {
+                "fromInput": 35,
+                "toInput": 35,
+                "fromValue": 95,
+                "toValue": 95
               }
             ]
           },
@@ -1083,42 +1089,42 @@
                 "fromInput": 450,
                 "toInput": 464,
                 "fromValue": 10.5,
-                "toValue": 10.6
+                "toValue": 10.55
               },
               {
                 "fromInput": 465,
                 "toInput": 479,
-                "fromValue": 10.6,
-                "toValue": 10.75
+                "fromValue": 10.55,
+                "toValue": 10.6
               },
               {
                 "fromInput": 480,
                 "toInput": 494,
-                "fromValue": 10.75,
-                "toValue": 10.85
+                "fromValue": 10.6,
+                "toValue": 10.78
               },
               {
                 "fromInput": 495,
                 "toInput": 509,
-                "fromValue": 10.85,
-                "toValue": 10.92
+                "fromValue": 10.78,
+                "toValue": 10.95
               },
               {
                 "fromInput": 510,
                 "toInput": 524,
-                "fromValue": 10.92,
-                "toValue": 10.96
+                "fromValue": 10.95,
+                "toValue": 10.98
               },
               {
                 "fromInput": 525,
                 "toInput": 539,
-                "fromValue": 10.96,
-                "toValue": 11.1
+                "fromValue": 10.98,
+                "toValue": 11.05
               },
               {
                 "fromInput": 540,
                 "toInput": 554,
-                "fromValue": 11.1,
+                "fromValue": 11.05,
                 "toValue": 11.15
               },
               {
@@ -1131,7 +1137,7 @@
                 "fromInput": 570,
                 "toInput": 584,
                 "fromValue": 11.19,
-                "toValue": 11.28
+                "toValue": 11.32
               }
             ]
           },
