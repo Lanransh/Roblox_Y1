@@ -2276,8 +2276,8 @@
                     "children": [],
                     "className": "ImageLabel",
                     "id": "d593ea00-9a35-4150-a84c-a4f5a5e13390",
-                    "imageAssetId": "f21e2345b80f46eea8e85f21eee07995",
-                    "name": "SkipCoinIconImg",
+                    "imageAssetId": "c9dc7cb60bf741c49535a5ad318f21c8",
+                    "name": "SkipDiamondIconImg",
                     "properties": {
                       "AnchorPoint": {
                         "x": 0.5,
@@ -2287,14 +2287,14 @@
                       "BackgroundColor3": "#ffffff",
                       "BackgroundTransparency": 1,
                       "ClipsDescendants": false,
-                      "Image": "rbxassetid://87283536652233",
+                      "Image": "rbxassetid://123110249883616",
                       "ImageColor3": "#ffffff",
                       "ImageTransparency": 0,
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 0,
-                          "scale": 0.28
+                          "offset": 32,
+                          "scale": 0
                         },
                         "y": {
                           "offset": 0,
@@ -2305,11 +2305,11 @@
                       "ScaleType": "Fit",
                       "Size": {
                         "x": {
-                          "offset": 22,
+                          "offset": 54,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 22,
+                          "offset": 54,
                           "scale": 0
                         }
                       },
@@ -2358,8 +2358,8 @@
                       "LayoutOrder": 0,
                       "Position": {
                         "x": {
-                          "offset": 0,
-                          "scale": 0.62
+                          "offset": 98,
+                          "scale": 0
                         },
                         "y": {
                           "offset": 0,
@@ -2369,11 +2369,11 @@
                       "Rotation": 0,
                       "Size": {
                         "x": {
-                          "offset": 70,
+                          "offset": 90,
                           "scale": 0
                         },
                         "y": {
-                          "offset": 23,
+                          "offset": 30,
                           "scale": 0
                         }
                       },
@@ -2409,7 +2409,7 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 24,
+                      "offset": 23,
                       "scale": 0
                     }
                   },
@@ -2420,7 +2420,7 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 23,
+                      "offset": 30,
                       "scale": 0
                     }
                   },
@@ -2463,7 +2463,7 @@
                   "scale": 0
                 },
                 "y": {
-                  "offset": 49,
+                  "offset": 56,
                   "scale": 0
                 }
               },

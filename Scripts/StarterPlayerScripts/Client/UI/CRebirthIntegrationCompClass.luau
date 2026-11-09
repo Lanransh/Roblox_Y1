@@ -11,7 +11,6 @@ local TranslationTexts = Text.Define("Rebirth", {
 })
 FXLoader:RequireFromParent(script, "Generated/CRebirthUICompClass")
 local Fields = _G.PlayerDataConfig
-local MarketplaceService = game:GetService("MarketplaceService")
 local Rebirth = FXLoader:RequireShared("Scripts/Game/Shared/Rebirth")
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local Component = FX.Class("CRebirthIntegrationCompClass", "CRebirthUICompClass")
@@ -153,19 +152,7 @@ function Component:OnReady()
     self._commonUI:RegisterTrainingClickModal(root)
     self._localization = self._commonUI.Localization
     self.Config = {allowIneligibleAction = true}
-    self._skipPrices = {}
     self.State = {Open = false, Completed = false, Pending = false}
-    --- 平台弹窗关闭只恢复交互，重生奖励仍由服务端收据处理。
-    --- @param userId number 平台回传的玩家 ID。
-    --- @param productId number 平台 Developer Product ID。
-    --- @param purchased boolean 平台支付结果，不作为发奖依据。
-    self:TrackConnection(MarketplaceService.PromptProductPurchaseFinished:Connect(function(userId, productId, purchased)
-        if userId == self:GetPlayerNode().UserId and productId == self._promptProductId then
-            self._promptProductId = nil
-            self.State.Pending = false
-            self:RefreshRebirth()
-        end
-    end))
     self:Hide()
     self:TrackConnection(self._localization.Changed:Connect(function()
         self:RefreshRebirth()
@@ -174,34 +161,9 @@ function Component:OnReady()
     self:WatchDataChanged(Fields.RockTrainingLevel, self.RefreshRebirth, self)
     self:WatchDataChanged(Fields.RebirthCount, self.RefreshRebirth, self)
     self:RefreshRebirth()
-    self:LoadSkipPrices()
 end
 
---- 只查询尚未取得的报价；重新打开时允许重试失败请求，已有查询不重复启动。
-function Component:LoadSkipPrices()
-    if self._priceTask then
-        return
-    end
-    --- 平台价格就绪前保留配置参考价，但不开放跳过购买。
-    self._priceTask = task.defer(function()
-        for goodsId, goods in pairs(_G.GoodsConfig.GoodsData) do
-            local productId = goods.RobloxProductId
-            if goods.BuyHandler == "SkipRebirth" and type(productId) == "number"
-                and productId > 0 and productId % 1 == 0 and self._skipPrices[productId] == nil then
-                local ok, info = pcall(function()
-                    return MarketplaceService:GetProductInfoAsync(productId, Enum.InfoType.Product)
-                end)
-                if ok and type(info) == "table" and type(info.PriceInRobux) == "number" then
-                    self._skipPrices[productId] = info.PriceInRobux
-                    self:RefreshRebirth()
-                end
-            end
-        end
-        self._priceTask = nil
-    end)
-end
-
---- 倍率和门槛与服务端共用曲线，跳过价格优先使用平台实际报价。
+--- 倍率和门槛与服务端共用曲线，跳过价格读取钻石商品配置。
 function Component:RefreshRebirth()
     local count = self:GetNumber(Fields.RebirthCount)
     local nextCount = math.min(count + 1, Rebirth.MaxCount)
@@ -213,10 +175,8 @@ function Component:RefreshRebirth()
     self.State.NextMoneyMultiplier = Rebirth.GetMoneyRate(nextCount)
     self.State.AtMax = count >= Rebirth.MaxCount
     local goods = Rebirth.GetSkipGoods(count)
-    local productId = goods and goods.RobloxProductId
-    local platformPrice = productId and self._skipPrices[productId]
-    self.State.SkipCost = platformPrice or (goods and goods.Price or 0)
-    self.State.SkipAvailable = platformPrice ~= nil
+    self.State.SkipCost = goods and goods.Price or 0
+    self.State.SkipAvailable = goods ~= nil
     self:RefreshUI()
 end
 
@@ -227,35 +187,34 @@ function Component:FormatNumber(value)
     return GameUtility.NumberToText(value)
 end
 
---- 按当前次数选择真实平台商品，复用服务端预检和平台购买窗口。
+--- 请求按服务端当前档位消耗钻石，pending 防连点，旧次数请求由服务端拒绝。
 function Component:RequestSkip()
-    local goods = Rebirth.GetSkipGoods(self:GetNumber(Fields.RebirthCount))
-    local productId = goods and goods.RobloxProductId
-    if type(productId) ~= "number" or productId <= 0 or productId % 1 ~= 0 then
+    local previousCount = self:GetNumber(Fields.RebirthCount)
+    if not Rebirth.GetSkipGoods(previousCount) then
         self._commonUI:ShowLocalizedTips(TranslationTexts.InDevelopment)
         return
     end
     self.State.Pending = true
-    self._promptProductId = productId
     self:RefreshUI()
     self._rebirthTask = task.defer(function()
         local ok, result = pcall(function()
-            return self._commonUI:ShowDeveloperBuyUI(productId)
+            return FX.Network:InvokeServer("C2S_SkipRebirth", previousCount)
         end)
         self._rebirthTask = nil
-        if not ok or not result then
-            self._promptProductId = nil
-            self.State.Pending = false
+        self.State.Pending = false
+        if not ok or type(result) ~= "table" then
             self._commonUI:ShowLocalizedTips(TranslationTexts.Unknown)
+        elseif result.success == true then
+            self:ShowRebirthNotice(previousCount, result.count)
         end
         self:RefreshRebirth()
     end)
 end
 
+--- 打开时读取当前服务端同步的档位和钻石价格。
 function Component:OnShow()
     self.State.Open = true
     self:RefreshRebirth()
-    self:LoadSkipPrices()
 end
 
 function Component:OnHide()
@@ -306,12 +265,8 @@ function Component:OnUIAction(action, payload)
     end)
 end
 
---- 停止本组件拥有的价格查询、重生请求与提示动画，并释放提示界面。
+--- 停止本组件拥有的重生请求与提示动画，并释放提示界面。
 function Component:Dtor()
-    if self._priceTask then
-        task.cancel(self._priceTask)
-        self._priceTask = nil
-    end
     if self._rebirthTask then
         task.cancel(self._rebirthTask)
         self._rebirthTask = nil

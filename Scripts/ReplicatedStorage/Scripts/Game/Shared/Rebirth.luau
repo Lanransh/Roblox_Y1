@@ -4,14 +4,14 @@ local RockLevel = FXLoader:RequireShared("Scripts/Game/Shared/RockLevel")
 local Curves = _G.NumericalConfig.rebirthCurves
 local Rebirth = {MaxCount = Curves.input.max}
 
---- 按当前重生次数选择跳过商品；没有配置的区间不开放购买。
+--- 按当前重生次数选择钻石跳过商品；没有配置的区间不开放购买。
 --- @param count number 已完成的重生次数。
 --- @return table? 区间包含当前次数的商品配置。
 function Rebirth.GetSkipGoods(count)
     if count >= Rebirth.MaxCount then
         return nil
     end
-    for goodsId, goods in pairs(_G.GoodsConfig.GoodsData) do
+    for goodsId, goods in pairs(_G.GoodsConfig.GemGoodsData) do
         if goods.BuyHandler == "SkipRebirth" then
             local range = goods.KVTable
             if count >= range.MinRebirth and count <= range.MaxRebirth then
