@@ -46,7 +46,7 @@
 | `Game/Shared/NetworkProtocol.luau` | 初始化前声明项目协议；先核对 FrameworkInit 已有消息，避免重复声明。 |
 | `Game/Shared/Text.luau` | 当前项目文案定义与翻译入口；客户端 Main 初始化 FC.Localization，业务文案仍在所属脚本声明。 |
 
-`Game/Configs/` 只读；配置通过 MCP 修改源 XLSX，检查、保存成功后导出。扩展已有 Shared 模块前按文件定向搜索，不批量读取整个目录。
+`Game/Configs/` 只读；按来源回源：XLSX 配置遵循 [XLSX 游戏配置](../roblox-external-tools/references/game-config.md)，`NumericalConfig.luau` 遵循 [模拟器协作](../roblox-external-tools/references/simulator.md)，均经对应流程校验、保存、导出，不手改生成文件。扩展已有 Shared 模块前按文件定向搜索，不批量读取整个目录。
 
 ## 添加功能时的判断
 

@@ -12,6 +12,8 @@ description: 使用 Roblox MCP 查询和核对 Studio 场景、存储、UI 与�
 3. 编辑态查询使用 `Edit`；已有试玩中的运行时查询按目标使用 `Client` 或 `Server`。UI 模板查 `StarterGui`，玩家实际 UI 在客户端 DataModel 中查目标玩家的 `PlayerGui`，不把模板当作运行时界面。
 
 - `Workspace`、`ServerStorage`、`StarterGui` 等非脚本实例在 Studio 中维护，不假设本地同步目录包含它们，不通过 Script Sync 创建。
+- 涉及外部编辑器托管的源 UI、方块模型、资源或数值配置时，先按 [外部工具协作](../roblox-external-tools/SKILL.md) 回源及导出，再用本 skill 核验实际 Studio 结果；不在 Studio 手改托管产物来替代源内容修复。
+- 修改现有 UI 节点前，先按 [UI 归属与业务接入](../roblox-external-tools/references/ui-integration.md) 将实际节点与 Generated View、源 UI 对应，确认是否由 UIEditor 管理；不能仅按名称或 `StarterGui` 位置判断，归属未明不写入。
 - 只读查询可直接执行；所需运行时 DataModel 尚未开启时，说明待确认范围，仅在已有测试或试玩授权涵盖本次操作时启动游戏。
 - MCP 不可用时报告当前实例结构尚未确认；本地脚本、模型副本和动态创建代码仅能说明预期结构，不能证明 Studio 实例已存在或同步完成。
 - UI 文本与隐藏原型的 AutoLocalize 核验按 [本地化](../roblox-localization/SKILL.md)；代码中的节点加载按 [FXLoader 规则](../roblox-luau-standards/reference-rules.md#fxloader-节点与模块加载)。
