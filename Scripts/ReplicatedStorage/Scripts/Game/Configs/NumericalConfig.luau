@@ -63,18 +63,18 @@ return {
             ranges = {
               {
                 fromInput = 1,
-                toInput = 7,
+                toInput = 9,
                 fromValue = 0,
                 toValue = 0,
               },
               {
-                fromInput = 8,
-                toInput = 14,
+                fromInput = 10,
+                toInput = 16,
                 fromValue = 1,
                 toValue = 3,
               },
               {
-                fromInput = 15,
+                fromInput = 17,
                 toInput = 27,
                 fromValue = 4,
                 toValue = 27,
@@ -197,14 +197,20 @@ return {
             ranges = {
               {
                 fromInput = 1,
-                toInput = 7,
+                toInput = 2,
                 fromValue = 3,
                 toValue = 3,
               },
               {
-                fromInput = 8,
-                toInput = 12,
+                fromInput = 3,
+                toInput = 5,
                 fromValue = 4,
+                toValue = 6,
+              },
+              {
+                fromInput = 6,
+                toInput = 12,
+                fromValue = 7,
                 toValue = 14,
               },
               {
