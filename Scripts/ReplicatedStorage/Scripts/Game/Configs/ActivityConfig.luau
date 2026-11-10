@@ -244,7 +244,7 @@ return {
         },
         GroupRewardChestReward = {
             Type = [[Gem]],
-            Count = 5
+            Count = 30
         }
     }
 }

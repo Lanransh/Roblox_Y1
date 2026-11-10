@@ -80,6 +80,17 @@ end
 
 --- 福利协议只注册一次，按引擎认证身份取得本人的活动组件。
 function Manager:RegActivityMsg()
+    --- 群组和金额由服务端固定，请求只能领取认证玩家本人的奖励。
+    --- @param userId number 引擎认证的请求者。
+    --- @return table 群组奖励领取结果。
+    FX.Network:RegClientMsgCallback("C2S_ClaimGroupReward", function(userId)
+        local player = self:GetPlayerObject(userId)
+        local activity = player and player:GetComponent("SActivityComp")
+        if not activity then
+            return {success = false, key = TranslationTexts.NotReady}
+        end
+        return activity:ClaimGroupReward()
+    end)
     --- 会话未就绪时拒绝，类别与稳定 ID 由活动组件校验。
     --- @param userId number 引擎认证的请求者。
     --- @param kind any 客户端奖励类别。

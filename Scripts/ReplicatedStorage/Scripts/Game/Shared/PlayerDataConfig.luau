@@ -9,6 +9,11 @@ _G.PlayerKVEnum = {
 local PlayerKVEnum = _G.PlayerKVEnum
 
 return {
+    -- 群组宝箱每位玩家永久限领一次，重生与跨日不重置。
+    GroupRewardClaimed = {
+        Type = "boolean", Key = "GroupRewardClaimed", DefVal = false,
+        KVTable = PlayerKVEnum.eStaticData, Sync = true,
+    },
     -- VIP 由平台收据永久解锁；客户端只读取服务端同步资格。
     Vip = {
         Type = "boolean", Key = "Vip", DefVal = false,

@@ -1,4 +1,4 @@
-local FX = _G.FX
+local FX, FS = _G.FX, _G.FS
 local FXLoader = FX.Loader
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local TranslationTexts = Text.Define("Activity", {
@@ -9,6 +9,8 @@ local TranslationTexts = Text.Define("Activity", {
     Success = "Reward claimed!",
     NeedDiamonds = "Not enough diamonds.",
     NoBoostGain = "The boosted reward would not add any extra Strength. Claim the normal reward instead.",
+    JoinGroup = "Join the group to claim this reward!",
+    GroupCheckFailed = "Unable to check group membership. Please try again.",
 })
 local GameUtility = FX.Loader:RequireShared("Scripts/Game/Shared/GameUtility")
 local Fields = _G.PlayerDataConfig
@@ -16,6 +18,64 @@ local Welfare = FX.Loader:RequireShared("Scripts/Game/Shared/Welfare")
 local Aura = FXLoader:RequireShared("Scripts/Game/Shared/Aura")
 local Component = FX.Class("SActivityCompClass", "FSPlayerCompClass")
 local Players = game:GetService("Players")
+local RewardGroupId = 771149851 -- Oddlet Studio
+
+--- 平台查询前后均校验实际宝箱距离，拒绝远程伪造或查询期间离开宝箱的请求。
+--- @param playerNode Player 已认证的玩家实例。
+--- @return boolean 玩家是否存活且位于宝箱交互范围内。
+local function IsNearGroupChest(playerNode)
+    local chestRoot = FXLoader:Find(workspace, "Decorations/GroupRewardChest/Root")
+    local character = playerNode.Character
+    local root = character and character:FindFirstChild("HumanoidRootPart")
+    local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+    return chestRoot ~= nil and root ~= nil and humanoid ~= nil and humanoid.Health > 0
+        and (root.Position - chestRoot.Position).Magnitude <= 12
+end
+
+--- 服务端核实入群；发钻石与永久标记在同一无等待事务内提交，失败共同回滚。
+--- @return table 权威领取结果；未入群时附带固定群组 ID，供客户端展示平台入群弹窗。
+function Component:ClaimGroupReward()
+    if not self._lastTime or self._groupRewardBusy then
+        return {success = false, key = TranslationTexts.NotReady}
+    end
+    if self:GetFlag(Fields.GroupRewardClaimed) then
+        return {success = false, key = TranslationTexts.AlreadyClaimed}
+    end
+    local player = self:GetPlayerObject()
+    local playerNode = self:GetPlayerNode()
+    local userId = self:GetPlayerId()
+    local storage = FS.PlayerKVDataManager
+    local session = storage:GetSessionToken(userId)
+    if not session or not IsNearGroupChest(playerNode) then
+        return {success = false, key = TranslationTexts.NotReady}
+    end
+    self._groupRewardBusy = true
+    local ok, isMember = pcall(function()
+        return playerNode:IsInGroupAsync(RewardGroupId)
+    end)
+    self._groupRewardBusy = nil
+    -- 平台查询允许 yield，旧会话或旧 Player 的结果不能写入重进后的档案。
+    if not self._lastTime or FS.PlayerManager:GetPlayerObject(userId) ~= player
+        or not storage:IsSessionActive(userId, session) or not IsNearGroupChest(playerNode) then
+        return {success = false, key = TranslationTexts.NotReady}
+    end
+    if not ok then
+        warn("[GroupReward] membership check failed", userId, isMember)
+        return {success = false, key = TranslationTexts.GroupCheckFailed}
+    end
+    if not isMember then
+        return {success = false, key = TranslationTexts.JoinGroup, groupId = RewardGroupId}
+    end
+    local reward = _G.ActivityConfig.CommonConfig.GroupRewardChestReward
+    local success = player:RunDataTransaction(function()
+        if self:GetFlag(Fields.GroupRewardClaimed) or not self:GrantRewards({reward}) then
+            return false
+        end
+        return self:SetFlag(Fields.GroupRewardClaimed, true)
+    end)
+    return {success = success, key = success and TranslationTexts.Success or TranslationTexts.NotReady,
+        amount = success and reward.Count or nil}
+end
 
 --- 返回玩家内协作名，供道具使用与福利协议定位。
 --- @return string 活动组件名。

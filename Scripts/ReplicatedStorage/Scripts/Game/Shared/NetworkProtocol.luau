@@ -2,6 +2,8 @@
 -- 框架已有的 Ready、玩家数据和服务器数据同步协议继续由 FrameworkInit 声明。
 return {
     ClientMsgID = {
+        -- 无参数；服务端校验入群、距离和永久领取记录，返回 success、key、groupId?、amount?。
+        "C2S_ClaimGroupReward",
         -- dropId: string，RPC 返回 boolean；校验今日个人档位、落地与距离，按 GiftData 发钻石并去重。
         "C2S_OpenGiftDrop",
         -- goodsId: number，服务端校验钻石余额与下一档；返回 success、key、data。
