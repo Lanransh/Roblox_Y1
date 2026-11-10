@@ -14,6 +14,7 @@ local FX = _G.FX
 local FXLoader = FX.Loader
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local TranslationTexts = Text.Define("Main", {
+    GoHome = "Go Home",
     StrengthRate = "x{rate} Strength",
     SoldOut = "Sold Out",
     RateMaxed = "You have reached the maximum training multiplier.",
@@ -27,9 +28,9 @@ local TranslationTexts = Text.Define("Main", {
     CoinReward = "{value} Coins",
     NewPickaxeAvailable = "A new pickaxe is available to buy!",
     NewAuraAvailable = "A new aura is available to buy!",
-    DiamondPackDiscount = "67折",
+    DiamondPackDiscount = "Pay 67%",
     DiamondPackAmount = "{value} Diamonds",
-    DiamondPackPrice = "仅需 {robux}{price}",
+    DiamondPackPrice = "Only {robux}{price}",
 })
 local Rebirth = FXLoader:RequireShared("Scripts/Game/Shared/Rebirth")
 local Fields = _G.PlayerDataConfig
@@ -71,6 +72,7 @@ function Component:OnReady()
         LevelAlignment = levelLabel.TextXAlignment,
     }
     self._homeButton = FXLoader:Here(top, "HomeButton")
+    self._homeButton.Text = Text.Tr(TranslationTexts.GoHome)
     self._homeButton.Size = UDim2.fromOffset(160, 54)
     self._homeButton.TextScaled = false
     self._homeButton.TextSize = 32
@@ -554,6 +556,7 @@ end
 
 --- 语言变化只刷新当前数据显示，不播放训练收益动画或重新打开已关闭弹窗。
 function Component:RefreshLocalization()
+    self._homeButton.Text = Text.Tr(TranslationTexts.GoHome)
     self:RefreshProgress(self:GetNumber(Fields.RockTrainingValue))
     self:RefreshTrainingStatus(self:GetNumber(Fields.TrainingFieldIndex))
     self:RefreshStrengthOffers()
@@ -565,8 +568,8 @@ end
 function Component:CreateDiamondPackButton()
     local group = Instance.new("Frame")
     group.Name = "DiamondPackOffer"
-    group.Position = UDim2.fromOffset(12, 40)
-    group.Size = UDim2.fromOffset(148, 122)
+    group.Position = UDim2.fromOffset(0, 0)
+    group.Size = UDim2.fromOffset(120, 108)
     group.BackgroundTransparency = 1
     self._diamondPackGroup = group
     local content = Instance.new("Frame")
@@ -577,26 +580,26 @@ function Component:CreateDiamondPackButton()
     local button = Instance.new("ImageButton")
     button.Name = "DiamondPackButton"
     button.AnchorPoint = Vector2.new(0.5, 0)
-    button.Position = UDim2.fromOffset(74, 0)
-    button.Size = UDim2.fromOffset(100, 92)
+    button.Position = UDim2.fromOffset(60, 6)
+    button.Size = UDim2.fromOffset(80, 74)
     button.BackgroundTransparency = 1
     button.AutoButtonColor = false
     button.Image = "rbxassetid://97758765626770"
     button.ScaleType = Enum.ScaleType.Fit
     self._diamondPackLabels = {}
     for index, spec in ipairs({
-        {Name = "Discount", Position = UDim2.fromOffset(56, -2), Width = 76, Color = Color3.fromRGB(60, 32, 5)},
-        {Name = "Amount", Position = UDim2.fromOffset(-24, 78), Width = 148, Color = Color3.fromRGB(85, 255, 100)},
-        {Name = "Price", Position = UDim2.fromOffset(-24, 100), Width = 148, Color = Color3.fromRGB(255, 229, 90)},
+        {Name = "Discount", Position = UDim2.fromOffset(18, -4), Width = 80, Color = Color3.new(1, 1, 1)},
+        {Name = "Amount", Position = UDim2.fromOffset(-20, 60), Width = 120, Color = Color3.fromRGB(85, 255, 100)},
+        {Name = "Price", Position = UDim2.fromOffset(-20, 80), Width = 120, Color = Color3.fromRGB(255, 229, 90)},
     }) do
         local label = Instance.new("TextLabel")
         label.Name = spec.Name
         label.Position = spec.Position
-        label.Size = UDim2.fromOffset(spec.Width, 24)
+        label.Size = UDim2.fromOffset(spec.Width, 22)
         label.BackgroundTransparency = 1
         label.Font = Enum.Font.FredokaOne
-        label.TextSize = spec.Name == "Amount" and 18 or 22
-        label.TextScaled = spec.Name ~= "Discount"
+        label.TextSize = spec.Name == "Amount" and 16 or 18
+        label.TextScaled = true
         label.TextColor3 = spec.Color
         label.TextStrokeColor3 = Color3.new(0, 0, 0)
         label.TextStrokeTransparency = 0
@@ -608,33 +611,41 @@ function Component:CreateDiamondPackButton()
     end
     local discount = self._diamondPackLabels.Discount
     discount.Font = Enum.Font.GothamBlack
+    discount.TextSize = 16
+    discount.Size = UDim2.fromOffset(80, 24)
     discount.BackgroundTransparency = 0
-    discount.BackgroundColor3 = Color3.fromRGB(255, 215, 60)
-    discount.TextStrokeTransparency = 1
+    discount.BackgroundColor3 = Color3.fromRGB(215, 35, 45)
+    discount.TextStrokeColor3 = Color3.fromRGB(85, 12, 20)
+    discount.TextStrokeTransparency = 0
     discount.Rotation = 8
     local corner = Instance.new("UICorner")
     corner.CornerRadius = UDim.new(0, 6)
     corner.Parent = discount
     local outline = Instance.new("UIStroke")
     outline.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    outline.Color = Color3.fromRGB(85, 46, 5)
+    outline.Color = Color3.fromRGB(85, 12, 20)
     outline.Thickness = 2
     outline.Parent = discount
     self._diamondPackLabels.Price.Font = Enum.Font.GothamBold
     button.Parent = content
     group.Parent = self._rootNode
-    local menuButton = FXLoader:Here(self._rootNode, "LeftCenter/RebirthButton")
-    --- 只调整位置避让顶栏和菜单；上方空间不足时移至菜单右侧，不再二次缩放。
+    local menu = FXLoader:Here(self._rootNode, "LeftCenter")
+    local menuButton = FXLoader:Here(menu, "RebirthButton")
+    --- 使用统一安全区坐标；只移动内层内容，避免通用适配恢复分组位置时覆盖礼包定位。
     local function LayoutOffer()
-        local top = GuiService.TopbarInset.Max.Y + 8
         local responsiveScale = group:FindFirstChildOfClass("UIScale")
         local scale = responsiveScale and responsiveScale.Scale or 1
-        local available = math.max(0, menuButton.AbsolutePosition.Y - top - 8)
-        local left = 12
-        if available < 124 * scale then
-            left += FXLoader:Here(self._rootNode, "LeftCenter").AbsoluteSize.X + 8
+        local origin = GuiService:GetInsetArea(self._rootNode.ScreenInsets).Min
+        local topbar = GuiService:GetInsetArea(Enum.ScreenInsets.TopbarSafeInsets)
+        local gap = 8 * scale
+        local top = math.max(0, topbar.Max.Y - origin.Y) + gap
+        local menuPosition = menuButton.AbsolutePosition - self._rootNode.AbsolutePosition
+        local left = menuPosition.X
+        if menuPosition.Y - top - gap < group.Size.Y.Offset * scale then
+            left = menu.AbsolutePosition.X - self._rootNode.AbsolutePosition.X + menu.AbsoluteSize.X + gap
+            top = math.max(top, menuPosition.Y)
         end
-        group.Position = UDim2.fromOffset(left, top - self._rootNode.AbsolutePosition.Y)
+        content.Position = UDim2.fromOffset(left / scale, top / scale)
     end
     --- 延后到主界面通用缩放完成，避免安全区和分组布局覆盖入口坐标。
     local function QueueLayoutOffer()
@@ -647,6 +658,9 @@ function Component:CreateDiamondPackButton()
     self:TrackConnection(self._rootNode:GetPropertyChangedSignal("AbsoluteSize"):Connect(QueueLayoutOffer))
     self:TrackConnection(self._rootNode:GetPropertyChangedSignal("AbsolutePosition"):Connect(QueueLayoutOffer))
     self:TrackConnection(menuButton:GetPropertyChangedSignal("AbsolutePosition"):Connect(QueueLayoutOffer))
+    self:TrackConnection(menu:GetPropertyChangedSignal("AbsoluteSize"):Connect(QueueLayoutOffer))
+    self:TrackConnection(group:GetPropertyChangedSignal("AbsoluteSize"):Connect(QueueLayoutOffer))
+    self:TrackConnection(self._rootNode:GetPropertyChangedSignal("ScreenInsets"):Connect(QueueLayoutOffer))
     self:TrackConnection(GuiService:GetPropertyChangedSignal("TopbarInset"):Connect(QueueLayoutOffer))
     QueueLayoutOffer()
     self._diamondPackButton = button
@@ -786,12 +800,14 @@ function Component:RefreshPurchaseReminder()
     self._purchaseReminder.Visible = #lines > 0
 end
 
---- 显示服务端确认的训练基地倍率，训练期间持续播放渐变扫光，气泡加成仍按到期时间叠乘。
+--- 新手主引导完成后显示训练基地倍率；训练期间持续扫光，气泡加成仍按到期时间叠乘。
 --- @param index number 同步的训练基地序号，0 表示场外。
 function Component:RefreshTrainingStatus(index)
     local config = _G.GameConfig.TrainingFieldData[index]
-    self._trainingStatus.Visible = config ~= nil
-    if config then
+    local guide = self:GetTable(Fields.Guide)
+    local first = guide.guideMap and guide.guideMap.FirstLootGuide
+    self._trainingStatus.Visible = config ~= nil and first ~= nil and first.state == "Finished"
+    if self._trainingStatus.Visible then
         local rate = config.TrainingRate
         local player = self:GetPlayerNode()
         local bonusUntil = player:GetAttribute("TrainingBonusUntil") or 0

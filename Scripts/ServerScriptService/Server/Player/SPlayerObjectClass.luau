@@ -298,23 +298,6 @@ function Guide:GrantTrainingDiamonds()
     self:SetGuideData(data)
 end
 
---- 主引导结束后一次性补足首个光环的购置差额；按当前价格计算，领取状态持久化防止重复发钱。
-function Guide:GrantAuraMoney()
-    local data = self:GetGuideData()
-    if data.auraMoneyGranted then
-        return
-    end
-    local config = _G.GameConfig.AuraConfig[1]
-    local owned = self:GetTable(PlayerDataConfig.AuraData).owned
-    local shortfall = config.Price - self:GetNumber(PlayerDataConfig.Money)
-    if owned[tostring(config.AuraId)] ~= true and shortfall > 0 then
-        assert(self:RequireComponent("FSRewardComp"):AddRewards({{Type = "Money", Currency = "Money", Count = shortfall}}),
-            "Tutorial aura money failed")
-    end
-    data.auraMoneyGranted = true
-    self:SetGuideData(data)
-end
-
 --- 关卡外先指向首关入口，进入后按服务端掉落记录及有效期锁定本轮道具；模型仅在客户端生成。
 --- @param rock table 玩家的服务端关卡组件。
 --- @param position Vector3 服务端角色当前位置。
@@ -397,6 +380,26 @@ function Guide:OnUpdate(serverTime)
             self:PublishEvent("Tutorial.Weapon")
         end
     end
+    if self:IsLootStep(6) then
+        local auraData = self:GetTable(PlayerDataConfig.AuraData)
+        if auraData.equippedId ~= 0 then
+            self:PublishEvent("Tutorial.Aura")
+        else
+            local guideData = self:GetGuideData()
+            if not guideData.auraMoneyGranted then
+                -- 第六步仅补足首个光环的购买差额一次，已有光环则等待装备，不再补钱。
+                local config = _G.GameConfig.AuraConfig[1]
+                local shortfall = config.Price - self:GetNumber(PlayerDataConfig.Money)
+                if auraData.owned[tostring(config.AuraId)] ~= true and shortfall > 0 then
+                    assert(self:RequireComponent("FSRewardComp"):AddRewards({
+                        {Type = "Money", Currency = "Money", Count = shortfall},
+                    }), "Tutorial aura money failed")
+                end
+                guideData.auraMoneyGranted = true
+                self:SetGuideData(guideData)
+            end
+        end
+    end
     local data = self:GetGuideData()
     local first = data.guideMap.FirstLootGuide
     if data.activeGuideId == "FirstLootGuide" then
@@ -412,29 +415,6 @@ function Guide:OnUpdate(serverTime)
                 self._reminderStep = nil
                 self._reminderEnd = nil
             end
-        end
-    end
-    data = self:GetGuideData()
-    first = data.guideMap.FirstLootGuide
-    if not first or first.state ~= "Finished" then
-        return
-    end
-    self:GrantAuraMoney()
-    if self:GetNumber(PlayerDataConfig.Money) >= _G.GameConfig.AuraConfig[1].Price then
-        self:PublishEvent("Tutorial.AuraAffordable")
-    end
-    if self:GetTable(PlayerDataConfig.AuraData).equippedId ~= 0 then
-        self:PublishEvent("Tutorial.AuraEntered")
-        return
-    end
-    local trigger = FXLoader:Find(workspace, "Decorations/World1Decorations/BlueHut/Trigger")
-    local character = self:GetPlayerCharacter()
-    local root = character and character:FindFirstChild("HumanoidRootPart")
-    if trigger and root then
-        local position = trigger.CFrame:PointToObjectSpace(root.Position)
-        if math.abs(position.X) <= trigger.Size.X / 2 and math.abs(position.Z) <= trigger.Size.Z / 2
-            and math.abs(position.Y) <= trigger.Size.Y / 2 + 3 then
-            self:PublishEvent("Tutorial.AuraEntered")
         end
     end
 end

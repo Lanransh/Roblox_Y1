@@ -187,7 +187,7 @@ function Component:FormatNumber(value)
     return GameUtility.NumberToText(value)
 end
 
---- 请求按服务端当前档位消耗钻石，pending 防连点，旧次数请求由服务端拒绝。
+--- 请求按服务端当前档位消耗钻石，余额不足时打开商店 Robux 页；pending 防连点。
 function Component:RequestSkip()
     local previousCount = self:GetNumber(Fields.RebirthCount)
     if not Rebirth.GetSkipGoods(previousCount) then
@@ -206,6 +206,12 @@ function Component:RequestSkip()
             self._commonUI:ShowLocalizedTips(TranslationTexts.Unknown)
         elseif result.success == true then
             self:ShowRebirthNotice(previousCount, result.count)
+        elseif result.reason == "NeedDiamonds" then
+            self:Hide()
+            local shop = self:GetPlayerObject():RequireComponent("CCurrencyShopUIComp")
+            shop.State.tab = "Robux"
+            shop:Show()
+            shop:RefreshUI()
         end
         self:RefreshRebirth()
     end)

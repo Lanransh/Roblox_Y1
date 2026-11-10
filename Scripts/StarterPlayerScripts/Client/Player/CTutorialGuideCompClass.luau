@@ -11,7 +11,7 @@ local TranslationTexts = Text.Define("Tutorial", {
     AutomaticTraining = "Train here automatically, even while AFK! Rebirth to unlock training areas with higher multipliers.",
     Done = "Keep getting stronger and discover more valuable loot!",
     Rewards = "Claim your rewards from the Rewards button!",
-    Aura = "You can afford your first aura! Visit the blue shop to boost your training.",
+    Aura = "You're doing great! You can now buy an aura!",
     UpgradeWeapon = "Buy a stronger pickaxe!",
     UpgradeAura = "Buy a stronger aura!",
 })

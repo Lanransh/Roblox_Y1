@@ -88,7 +88,7 @@ function Component:RefreshWeapon()
     self:RefreshUI()
 end
 
---- 手动关闭后留在区域内不会重开，离开再进入、死亡和重生按边沿处理。
+--- 主引导第五步起允许区域打开；手动关闭后必须离开再进入才重新打开。
 function Component:UpdateShopArea()
     local character = self:GetPlayerCharacter()
     if character ~= self._character then
@@ -100,6 +100,9 @@ function Component:UpdateShopArea()
     local humanoid = character and character:FindFirstChildOfClass("Humanoid")
     local position = root and humanoid and humanoid.Health > 0 and root.Position or nil
     local inside = self._shopAreas:IsInside(position)
+    local guide = self:GetTable(Fields.Guide)
+    local first = guide.guideMap and guide.guideMap.FirstLootGuide
+    inside = inside and first ~= nil and (first.state == "Finished" or first.stepIndex >= 5)
     if inside == self._inside then
         return
     end

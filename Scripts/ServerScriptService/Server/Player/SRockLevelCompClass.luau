@@ -314,7 +314,7 @@ function Component:SendRockRound()
     end
 end
 
---- 校验锁定目标的近身范围及世界资格后累计伤害，秒杀仍限脚下格；确认击破后结算掉落并回传血量。
+--- 校验近身范围及世界资格后累计伤害，容纳移动时一格位置复制偏差；确认击破后结算掉落并回传血量。
 --- @param key string 客户端命中的石头格号。
 --- @param round number 客户端当前关卡轮次。
 --- @return boolean 是否认可本次命中，客户端仅在认可后更新血量。
@@ -350,14 +350,8 @@ function Component:RecordHit(key, round)
         return false
     end
     local instantBreak = damage >= RockLevel.HP[area.Index]
-    -- 与客户端共用脚下及八邻格边界，避免斜角邻格在服务端被拒绝。
+    -- 客户端秒杀只选择脚下格；服务端允许相邻一格，避免位置复制滞后导致已碎石头恢复。
     local canHit = RockLevel.CanHitCell(area, root.Position, cell)
-    if instantBreak then
-        local column = math.floor((root.Position.X - area.MinX) / RockLevel.CellSize)
-        local row = math.floor((root.Position.Z - area.MinZ) / RockLevel.CellSize)
-        canHit = column >= 0 and column < area.Columns and row >= 0 and row < area.Rows
-            and cell == row * area.Columns + column + 1
-    end
     local now = os.clock()
     local interval = instantBreak and 0.1 or 0.8
     local nextHit = self._nextHit

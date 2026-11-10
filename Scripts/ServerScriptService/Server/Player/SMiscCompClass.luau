@@ -76,7 +76,7 @@ end
 
 --- 钻石跳过沿用原付费效果，保留力量和等级；客户端只提交看到的次数以拒绝重复旧请求。
 --- @param expectedCount any 客户端请求前看到的重生次数，不接受客户端价格。
---- @return table 权威结算结果与成功后的重生次数。
+--- @return table 权威结算结果、余额不足原因与成功后的重生次数。
 function Component:HandleSkipRebirth(expectedCount)
     if not self._levelStat then
         return {success = false}
@@ -90,7 +90,7 @@ function Component:HandleSkipRebirth(expectedCount)
     end
     if self:GetNumber(Fields.Diamonds) < goods.Price then
         player:ShowLocalizedTips(TranslationTexts.NeedDiamonds)
-        return {success = false}
+        return {success = false, reason = "NeedDiamonds"}
     end
     -- 事务内不 yield、不发送提示，扣款与重生次数必须一起提交或回滚。
     local success = player:RunDataTransaction(function()

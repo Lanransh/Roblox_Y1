@@ -24,30 +24,35 @@ local Welfare = FXLoader:RequireShared("Scripts/Game/Shared/Welfare")
 local Fields = _G.PlayerDataConfig
 local Component = FX.Class("CMenuRetentionUICompClass", "FCUICompClass")
 
---- 创建礼包文字；动态文案统一使用项目本地化入口。
+--- 创建居中的粗体礼包文字；动态文案统一使用项目本地化入口。
 --- @param parent Instance 本组件拥有的容器。
 --- @param name string 节点名。
 --- @param position UDim2 容器内位置。
 --- @param size UDim2 文字区域。
+--- @param maxTextSize number? 字号上限，按标题、奖励和按钮区分层级。
 --- @return TextLabel 文字节点。
-local function CreateGiftText(parent, name, position, size)
+local function CreateGiftText(parent, name, position, size, maxTextSize)
     local text = Instance.new("TextLabel")
     text.Name = name
     text.BackgroundTransparency = 1
     text.Position, text.Size = position, size
-    text.Font = Enum.Font.GothamBold
+    text.Font = Enum.Font.GothamBlack
     text.TextColor3 = Color3.new(1, 1, 1)
+    text.TextXAlignment = Enum.TextXAlignment.Center
+    text.TextYAlignment = Enum.TextYAlignment.Center
+    text.TextStrokeColor3 = Color3.fromRGB(20, 12, 36)
+    text.TextStrokeTransparency = 0.2
     text.TextScaled, text.TextWrapped = true, true
     text.AutoLocalize = false
     text.Text = ""
     text.Parent = parent
     local limit = Instance.new("UITextSizeConstraint")
-    limit.MaxTextSize = 28
+    limit.MaxTextSize = maxTextSize or 28
     limit.Parent = text
     return text
 end
 
---- 创建礼包和两侧提示；光环奖励使用配置图标，其他奖励保留礼物图标，菜单关闭后可领取。
+--- 创建礼包和两侧提示；标题沿面板中轴居中，以金色渐变粗体突出奖励，菜单关闭后可领取。
 function Component:CreateGiftPanel()
     local rewardButton = FXLoader:PlayerGui("MainUI/LeftCenter/RewardBtn")
     self._sideTexts = {}
@@ -118,7 +123,14 @@ function Component:CreateGiftPanel()
     stroke.Color, stroke.Thickness = Color3.fromRGB(255, 204, 77), 3
     self._giftPanel = panel
     self._commonUI:RegisterTrainingClickModal(panel)
-    self._giftTitle = CreateGiftText(panel, "Title", UDim2.fromScale(0.07, 0.04), UDim2.fromScale(0.8, 0.18))
+    self._giftTitle = CreateGiftText(panel, "Title", UDim2.fromScale(0.12, 0.04), UDim2.fromScale(0.76, 0.18), 40)
+    local titleGradient = Instance.new("UIGradient", self._giftTitle)
+    titleGradient.Rotation = 90
+    titleGradient.Color = ColorSequence.new({
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 249, 207)),
+        ColorSequenceKeypoint.new(0.5, Color3.fromRGB(255, 220, 100)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 170, 35)),
+    })
     local image = Instance.new("ImageLabel")
     image.Name = "Gift"
     image.BackgroundTransparency = 1
@@ -129,7 +141,14 @@ function Component:CreateGiftPanel()
         or FXLoader:Here(rewardButton, "IconImg").Image
     image.ScaleType = Enum.ScaleType.Fit
     image.Parent = panel
-    self._giftReward = CreateGiftText(panel, "Reward", UDim2.fromScale(0.05, 0.61), UDim2.fromScale(0.9, 0.12))
+    self._giftReward = CreateGiftText(panel, "Reward", UDim2.fromScale(0.05, 0.61), UDim2.fromScale(0.9, 0.12), 34)
+    local rewardGradient = Instance.new("UIGradient", self._giftReward)
+    rewardGradient.Rotation = 90
+    rewardGradient.Color = ColorSequence.new({
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 253, 234)),
+        ColorSequenceKeypoint.new(0.5, Color3.fromRGB(255, 235, 163)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(245, 200, 100)),
+    })
     self._giftHint = CreateGiftText(panel, "MenuHint", UDim2.fromScale(0.05, 0.9), UDim2.fromScale(0.9, 0.08))
     local claim = Instance.new("TextButton")
     claim.Name = "Claim"
@@ -138,7 +157,7 @@ function Component:CreateGiftPanel()
     claim.Text = ""
     claim.Parent = panel
     Instance.new("UICorner", claim)
-    self._giftClaimText = CreateGiftText(claim, "Label", UDim2.fromScale(0.05, 0.05), UDim2.fromScale(0.9, 0.9))
+    self._giftClaimText = CreateGiftText(claim, "Label", UDim2.fromScale(0.05, 0.05), UDim2.fromScale(0.9, 0.9), 36)
     self._giftClaim = claim
     self:TrackConnection(claim.Activated:Connect(function()
         self:ClaimGift()
