@@ -18,21 +18,30 @@ local Welfare = FX.Loader:RequireShared("Scripts/Game/Shared/Welfare")
 local Aura = FXLoader:RequireShared("Scripts/Game/Shared/Aura")
 local Component = FX.Class("SActivityCompClass", "FSPlayerCompClass")
 local Players = game:GetService("Players")
+local GroupService = game:GetService("GroupService")
 local RewardGroupId = 771149851 -- Oddlet Studio
 
---- 平台查询前后均校验实际宝箱距离，拒绝远程伪造或查询期间离开宝箱的请求。
+--- 平台查询前后均校验到三个世界任一宝箱的距离，拒绝远程伪造或查询期间离开的请求。
 --- @param playerNode Player 已认证的玩家实例。
---- @return boolean 玩家是否存活且位于宝箱交互范围内。
+--- @return boolean 玩家是否存活且位于任一世界的宝箱交互范围内。
 local function IsNearGroupChest(playerNode)
-    local chestRoot = FXLoader:Find(workspace, "Decorations/GroupRewardChest/Root")
     local character = playerNode.Character
     local root = character and character:FindFirstChild("HumanoidRootPart")
     local humanoid = character and character:FindFirstChildOfClass("Humanoid")
-    return chestRoot ~= nil and root ~= nil and humanoid ~= nil and humanoid.Health > 0
-        and (root.Position - chestRoot.Position).Magnitude <= 12
+    if not root or not humanoid or humanoid.Health <= 0 then
+        return false
+    end
+    for worldIndex = 1, 3 do
+        local chestRoot = FXLoader:Find(workspace,
+            string.format("Decorations/World%dDecorations/GroupRewardChest/Root", worldIndex))
+        if chestRoot and (root.Position - chestRoot.Position).Magnitude <= 12 then
+            return true
+        end
+    end
+    return false
 end
 
---- 服务端核实入群；发钻石与永久标记在同一无等待事务内提交，失败共同回滚。
+--- 服务端通过群组列表核实入群，避开 IsInGroupAsync 的会话缓存；发奖与永久标记共同提交。
 --- @return table 权威领取结果；未入群时附带固定群组 ID，供客户端展示平台入群弹窗。
 function Component:ClaimGroupReward()
     if not self._lastTime or self._groupRewardBusy then
@@ -51,7 +60,13 @@ function Component:ClaimGroupReward()
     end
     self._groupRewardBusy = true
     local ok, isMember = pcall(function()
-        return playerNode:IsInGroupAsync(RewardGroupId)
+        local groups = GroupService:GetGroupsAsync(userId)
+        for index, group in ipairs(groups) do
+            if group.Id == RewardGroupId then
+                return true
+            end
+        end
+        return false
     end)
     self._groupRewardBusy = nil
     -- 平台查询允许 yield，旧会话或旧 Player 的结果不能写入重进后的档案。

@@ -1,0 +1,1801 @@
+[
+  {
+    "key": "CurrencyShop.Invalid",
+    "source": "This offer has changed. Please select the next upgrade.",
+    "location": "code:../Scripts/ServerScriptService/Server/Handlers/CurrencyShop.luau:6",
+    "line": "    Invalid = \"This offer has changed. Please select the next upgrade.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "CurrencyShop.TrainingFull",
+    "source": "Training XP is full. Rebirth before buying a training pack.",
+    "location": "code:../Scripts/ServerScriptService/Server/Handlers/CurrencyShop.luau:7",
+    "line": "    TrainingFull = \"Training XP is full. Rebirth before buying a training pack.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "CurrencyShop.NeedDiamonds",
+    "source": "Not enough diamonds.",
+    "location": "code:../Scripts/ServerScriptService/Server/Handlers/CurrencyShop.luau:8",
+    "line": "    NeedDiamonds = \"Not enough diamonds.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "CurrencyShop.TrainingReceived",
+    "source": "Purchase complete! +{value} training XP.",
+    "location": "code:../Scripts/ServerScriptService/Server/Handlers/CurrencyShop.luau:9",
+    "line": "    TrainingReceived = \"Purchase complete! +{value} training XP.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "CurrencyShop.RateUpgraded",
+    "source": "Purchase complete! Training multiplier upgraded to x{rate}.",
+    "location": "code:../Scripts/ServerScriptService/Server/Handlers/CurrencyShop.luau:10",
+    "line": "    RateUpgraded = \"Purchase complete! Training multiplier upgraded to x{rate}.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "CurrencyShop.CapacityUpgraded",
+    "source": "Purchase complete! Backpack capacity +{count:int}.",
+    "location": "code:../Scripts/ServerScriptService/Server/Handlers/CurrencyShop.luau:11",
+    "line": "    CapacityUpgraded = \"Purchase complete! Backpack capacity +{count:int}.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "GMRecovery.Forbidden",
+    "source": "Only developers can use these controls.",
+    "location": "code:../Scripts/ServerScriptService/Server/Handlers/GMRecovery.luau:5",
+    "line": "    Forbidden = \"Only developers can use these controls.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "GMRecovery.Unknown",
+    "source": "Something went wrong. Please try again.",
+    "location": "code:../Scripts/ServerScriptService/Server/Handlers/GMRecovery.luau:6",
+    "line": "    Unknown = \"Something went wrong. Please try again.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "GMRecovery.Busy",
+    "source": "An operation is in progress. Please try again shortly.",
+    "location": "code:../Scripts/ServerScriptService/Server/Handlers/GMRecovery.luau:7",
+    "line": "    Busy = \"An operation is in progress. Please try again shortly.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "GMRecovery.SaveFailed",
+    "source": "Save failed. Please try again.",
+    "location": "code:../Scripts/ServerScriptService/Server/Handlers/GMRecovery.luau:8",
+    "line": "    SaveFailed = \"Save failed. Please try again.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "GMRecovery.Success",
+    "source": "Operation completed.",
+    "location": "code:../Scripts/ServerScriptService/Server/Handlers/GMRecovery.luau:9",
+    "line": "    Success = \"Operation completed.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Activity.PassActivated",
+    "source": "Gained {value} Diamonds and activated a {days:int}-day weekly pass!",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SActivityCompClass.luau:5",
+    "line": "    PassActivated = \"Gained {value} Diamonds and activated a {days:int}-day weekly pass!\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Activity.NotReady",
+    "source": "This reward is not available yet.",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SActivityCompClass.luau:6",
+    "line": "    NotReady = \"This reward is not available yet.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Activity.AlreadyClaimed",
+    "source": "You have already claimed this reward.",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SActivityCompClass.luau:7",
+    "line": "    AlreadyClaimed = \"You have already claimed this reward.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Activity.InventoryFull",
+    "source": "Not enough inventory space. Your reward is still available.",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SActivityCompClass.luau:8",
+    "line": "    InventoryFull = \"Not enough inventory space. Your reward is still available.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Activity.Success",
+    "source": "Reward claimed!",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SActivityCompClass.luau:9",
+    "line": "    Success = \"Reward claimed!\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Activity.NeedDiamonds",
+    "source": "Not enough diamonds.",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SActivityCompClass.luau:10",
+    "line": "    NeedDiamonds = \"Not enough diamonds.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Activity.NoBoostGain",
+    "source": "The boosted reward would not add any extra Strength. Claim the normal reward instead.",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SActivityCompClass.luau:11",
+    "line": "    NoBoostGain = \"The boosted reward would not add any extra Strength. Claim the normal reward instead.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Aura.Unknown",
+    "source": "Something went wrong. Please try again.",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SAuraCompClass.luau:5",
+    "line": "    Unknown = \"Something went wrong. Please try again.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Aura.AlreadyOwned",
+    "source": "You already own this aura.",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SAuraCompClass.luau:6",
+    "line": "    AlreadyOwned = \"You already own this aura.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Aura.NotEnoughCoins",
+    "source": "Not enough Coins.",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SAuraCompClass.luau:7",
+    "line": "    NotEnoughCoins = \"Not enough Coins.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Aura.NotOwned",
+    "source": "You do not own this aura.",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SAuraCompClass.luau:8",
+    "line": "    NotOwned = \"You do not own this aura.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "GM.InvalidItemInput",
+    "source": "Enter a valid item ID and a positive whole-number quantity.",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SGMCompClass.luau:5",
+    "line": "    InvalidItemInput = \"Enter a valid item ID and a positive whole-number quantity.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "GM.InvalidItem",
+    "source": "Unknown item ID.",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SGMCompClass.luau:6",
+    "line": "    InvalidItem = \"Unknown item ID.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "GM.ItemFull",
+    "source": "Not enough inventory space.",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SGMCompClass.luau:7",
+    "line": "    ItemFull = \"Not enough inventory space.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "GM.ItemAdded",
+    "source": "Item added.",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SGMCompClass.luau:8",
+    "line": "    ItemAdded = \"Item added.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "GM.InvalidValue",
+    "source": "Enter a valid whole number within the allowed range.",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SGMCompClass.luau:9",
+    "line": "    InvalidValue = \"Enter a valid whole number within the allowed range.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "GM.LevelLimit",
+    "source": "The current level limit is {level:int}.",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SGMCompClass.luau:10",
+    "line": "    LevelLimit = \"The current level limit is {level:int}.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "GM.Success",
+    "source": "Operation completed.",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SGMCompClass.luau:11",
+    "line": "    Success = \"Operation completed.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "GM.Forbidden",
+    "source": "Only developers can use these controls.",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SGMCompClass.luau:12",
+    "line": "    Forbidden = \"Only developers can use these controls.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "GM.Unknown",
+    "source": "Something went wrong. Please try again.",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SGMCompClass.luau:13",
+    "line": "    Unknown = \"Something went wrong. Please try again.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "GM.Busy",
+    "source": "An operation is in progress. Please try again shortly.",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SGMCompClass.luau:14",
+    "line": "    Busy = \"An operation is in progress. Please try again shortly.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "GM.SaveFailed",
+    "source": "Save failed. Please try again.",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SGMCompClass.luau:15",
+    "line": "    SaveFailed = \"Save failed. Please try again.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "LootSell.Unknown",
+    "source": "Something went wrong. Please try again.",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SLootSellCompClass.luau:5",
+    "line": "    Unknown = \"Something went wrong. Please try again.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "LootSell.Changed",
+    "source": "Your items have changed. Please try again.",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SLootSellCompClass.luau:6",
+    "line": "    Changed = \"Your items have changed. Please try again.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "LootSell.Empty",
+    "source": "You have no items to sell.",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SLootSellCompClass.luau:7",
+    "line": "    Empty = \"You have no items to sell.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "LootSell.NeedDoubleCard",
+    "source": "You need a Double Sell Value Card to sell for double value.",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SLootSellCompClass.luau:8",
+    "line": "    NeedDoubleCard = \"You need a Double Sell Value Card to sell for double value.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "LootSell.NeedDiamonds",
+    "source": "Not enough diamonds.",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SLootSellCompClass.luau:9",
+    "line": "    NeedDiamonds = \"Not enough diamonds.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "LootSell.NeedVip",
+    "source": "Unlock VIP to use free double selling.",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SLootSellCompClass.luau:10",
+    "line": "    NeedVip = \"Unlock VIP to use free double selling.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "LootSell.Success",
+    "source": "Items sold!",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SLootSellCompClass.luau:11",
+    "line": "    Success = \"Items sold!\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Misc.InDevelopment",
+    "source": "Coming soon.",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SMiscCompClass.luau:5",
+    "line": "    InDevelopment = \"Coming soon.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Misc.RebirthRequiredLevel",
+    "source": "Reach level {level:int} to rebirth.",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SMiscCompClass.luau:6",
+    "line": "    RebirthRequiredLevel = \"Reach level {level:int} to rebirth.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Misc.Unknown",
+    "source": "Something went wrong. Please try again.",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SMiscCompClass.luau:7",
+    "line": "    Unknown = \"Something went wrong. Please try again.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Misc.WorldRequiredLevel",
+    "source": "Reach a best level of {level:int} to unlock this world.",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SMiscCompClass.luau:8",
+    "line": "    WorldRequiredLevel = \"Reach a best level of {level:int} to unlock this world.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Misc.TrainingCardGained",
+    "source": "Gained {value} Strength.",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SMiscCompClass.luau:9",
+    "line": "    TrainingCardGained = \"Gained {value} Strength.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Misc.TrainingRequiredRebirths",
+    "source": "Requires {count:int} rebirths to train here.",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SMiscCompClass.luau:10",
+    "line": "    TrainingRequiredRebirths = \"Requires {count:int} rebirths to train here.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Misc.RebirthReady",
+    "source": "Rebirth is ready! Rebirth to keep growing stronger.",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SMiscCompClass.luau:11",
+    "line": "    RebirthReady = \"Rebirth is ready! Rebirth to keep growing stronger.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Misc.NeedDiamonds",
+    "source": "Not enough diamonds.",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SMiscCompClass.luau:12",
+    "line": "    NeedDiamonds = \"Not enough diamonds.\",",
+    "old_source_same": false
+  },
+  {
+    "key": "Misc.RebirthOfferChanged",
+    "source": "This rebirth offer has changed. Please try again.",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SMiscCompClass.luau:13",
+    "line": "    RebirthOfferChanged = \"This rebirth offer has changed. Please try again.\",",
+    "old_source_same": false
+  },
+  {
+    "key": "PlayerRequests.Unknown",
+    "source": "Something went wrong. Please try again.",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SPlayerObjectManagerClass.luau:5",
+    "line": "    Unknown = \"Something went wrong. Please try again.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "PlayerRequests.NotReady",
+    "source": "This reward is not available yet.",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SPlayerObjectManagerClass.luau:6",
+    "line": "    NotReady = \"This reward is not available yet.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Loot.InventoryFull",
+    "source": "Storage limit reached: {capacity:int} items.",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SRockLevelCompClass.luau:5",
+    "line": "    InventoryFull = \"Storage limit reached: {capacity:int} items.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Loot.BagFull",
+    "source": "Your backpack is full. Return to your base to store your loot.",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SRockLevelCompClass.luau:6",
+    "line": "    BagFull = \"Your backpack is full. Return to your base to store your loot.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Loot.LuckyPickedUp",
+    "source": "Picked up lucky {item} (×{rate})!",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SRockLevelCompClass.luau:7",
+    "line": "    LuckyPickedUp = \"Picked up lucky {item} (×{rate})!\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Loot.PickedUp",
+    "source": "Picked up {item}!",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SRockLevelCompClass.luau:8",
+    "line": "    PickedUp = \"Picked up {item}!\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Loot.Deposited",
+    "source": "Loot stored: {count:int}",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SRockLevelCompClass.luau:9",
+    "line": "    Deposited = \"Loot stored: {count:int}\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Loot.DepositFull",
+    "source": "Your storage is full.",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SRockLevelCompClass.luau:10",
+    "line": "    DepositFull = \"Your storage is full.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Weapon.Unknown",
+    "source": "Something went wrong. Please try again.",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SWeaponCompClass.luau:5",
+    "line": "    Unknown = \"Something went wrong. Please try again.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Weapon.AlreadyOwned",
+    "source": "You already own this weapon.",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SWeaponCompClass.luau:6",
+    "line": "    AlreadyOwned = \"You already own this weapon.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Weapon.NotEnoughCoins",
+    "source": "Not enough Coins.",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SWeaponCompClass.luau:7",
+    "line": "    NotEnoughCoins = \"Not enough Coins.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Weapon.NotOwned",
+    "source": "You do not own this weapon.",
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SWeaponCompClass.luau:8",
+    "line": "    NotOwned = \"You do not own this weapon.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "PurchaseReceipt.DiamondsReceived",
+    "source": "Purchase received! +{value} Diamonds.",
+    "location": "code:../Scripts/ServerScriptService/Server/Service/SPurchaseReceiptService.luau:5",
+    "line": "    DiamondsReceived = \"Purchase received! +{value} Diamonds.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "PurchaseReceipt.RebirthSuccess",
+    "source": "Rebirth complete!",
+    "location": "code:../Scripts/ServerScriptService/Server/Service/SPurchaseReceiptService.luau:6",
+    "line": "    RebirthSuccess = \"Rebirth complete!\",",
+    "old_source_same": true
+  },
+  {
+    "key": "PurchaseReceipt.VipUnlocked",
+    "source": "VIP unlocked! Free double selling is now available.",
+    "location": "code:../Scripts/ServerScriptService/Server/Service/SPurchaseReceiptService.luau:7",
+    "line": "    VipUnlocked = \"VIP unlocked! Free double selling is now available.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "PurchaseReceipt.ItemReceived",
+    "source": "Purchase received! {item} x{count:int} added to your inventory.",
+    "location": "code:../Scripts/ServerScriptService/Server/Service/SPurchaseReceiptService.luau:8",
+    "line": "    ItemReceived = \"Purchase received! {item} x{count:int} added to your inventory.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "GiftDrop.PickUp",
+    "source": "Pick Up",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/GiftDrop.luau:8",
+    "line": "    PickUp = \"Pick Up\",",
+    "old_source_same": true
+  },
+  {
+    "key": "GiftDrop.Ready",
+    "source": "Gifts ready to collect!",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/GiftDrop.luau:9",
+    "line": "    Ready = \"Gifts ready to collect!\",",
+    "old_source_same": true
+  },
+  {
+    "key": "GiftDrop.Complete",
+    "source": "All gifts collected today",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/GiftDrop.luau:10",
+    "line": "    Complete = \"All gifts collected today\",",
+    "old_source_same": true
+  },
+  {
+    "key": "FriendInvite.Title",
+    "source": "Play with friends",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CFriendInviteCompClass.luau:5",
+    "line": "    Title = \"Play with friends\",",
+    "old_source_same": true
+  },
+  {
+    "key": "FriendInvite.Online",
+    "source": "{name} is online. Invite them to play!",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CFriendInviteCompClass.luau:6",
+    "line": "    Online = \"{name} is online. Invite them to play!\",",
+    "old_source_same": true
+  },
+  {
+    "key": "FriendInvite.Invite",
+    "source": "Invite",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CFriendInviteCompClass.luau:7",
+    "line": "    Invite = \"Invite\",",
+    "old_source_same": true
+  },
+  {
+    "key": "FriendInvite.Close",
+    "source": "Close",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CFriendInviteCompClass.luau:8",
+    "line": "    Close = \"Close\",",
+    "old_source_same": true
+  },
+  {
+    "key": "GroupRewardChest.Invitation",
+    "source": "Join the group for a FREE reward!",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CGroupRewardChestCompClass.luau:7",
+    "line": "    Invitation = \"Join the group for a FREE reward!\",",
+    "old_source_same": false
+  },
+  {
+    "key": "GroupRewardChest.Claim",
+    "source": "CLAIM {value} DIAMONDS",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CGroupRewardChestCompClass.luau:8",
+    "line": "    Claim = \"CLAIM {value} DIAMONDS\",",
+    "old_source_same": false
+  },
+  {
+    "key": "GroupRewardChest.Claimed",
+    "source": "Reward claimed!",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CGroupRewardChestCompClass.luau:9",
+    "line": "    Claimed = \"Reward claimed!\",",
+    "old_source_same": false
+  },
+  {
+    "key": "LootDisplay.PickUp",
+    "source": "Pick Up",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CRockLevelCompClass.luau:5",
+    "line": "    PickUp = \"Pick Up\",",
+    "old_source_same": true
+  },
+  {
+    "key": "LootDisplay.Luck",
+    "source": "x{rate} Luck",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CRockLevelCompClass.luau:6",
+    "line": "    Luck = \"x{rate} Luck\",",
+    "old_source_same": true
+  },
+  {
+    "key": "LootDisplay.Quality",
+    "source": "Quality {level:int}",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CRockLevelCompClass.luau:7",
+    "line": "    Quality = \"Quality {level:int}\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Tutorial.Collect",
+    "source": "Head into the rocks! Your pickaxe clears the way. Pick up 2 pieces of loot.",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CTutorialGuideCompClass.luau:6",
+    "line": "    Collect = \"Head into the rocks! Your pickaxe clears the way. Pick up 2 pieces of loot.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Tutorial.Deposit",
+    "source": "Return to your base to store your loot. You can also use HOME.",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CTutorialGuideCompClass.luau:7",
+    "line": "    Deposit = \"Return to your base to store your loot. You can also use HOME.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Tutorial.Sell",
+    "source": "Visit the merchant and sell your stored loot for coins!",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CTutorialGuideCompClass.luau:8",
+    "line": "    Sell = \"Visit the merchant and sell your stored loot for coins!\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Tutorial.Rate",
+    "source": "Use your 30 welcome diamonds to buy the training multiplier on the right!",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CTutorialGuideCompClass.luau:9",
+    "line": "    Rate = \"Use your 30 welcome diamonds to buy the training multiplier on the right!\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Tutorial.Weapon",
+    "source": "You earned 100 coins! Visit the weapon shop and equip a better pickaxe.",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CTutorialGuideCompClass.luau:10",
+    "line": "    Weapon = \"You earned 100 coins! Visit the weapon shop and equip a better pickaxe.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Tutorial.AutomaticTraining",
+    "source": "Train here automatically, even while AFK! Rebirth to unlock training areas with higher multipliers.",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CTutorialGuideCompClass.luau:11",
+    "line": "    AutomaticTraining = \"Train here automatically, even while AFK! Rebirth to unlock training areas with higher multipliers.\",",
+    "old_source_same": false
+  },
+  {
+    "key": "Tutorial.Done",
+    "source": "Keep getting stronger and discover more valuable loot!",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CTutorialGuideCompClass.luau:12",
+    "line": "    Done = \"Keep getting stronger and discover more valuable loot!\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Tutorial.Rewards",
+    "source": "Claim your rewards from the Rewards button!",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CTutorialGuideCompClass.luau:13",
+    "line": "    Rewards = \"Claim your rewards from the Rewards button!\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Tutorial.Aura",
+    "source": "You're doing great! You can now buy an aura!",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CTutorialGuideCompClass.luau:14",
+    "line": "    Aura = \"You're doing great! You can now buy an aura!\",",
+    "old_source_same": false
+  },
+  {
+    "key": "Tutorial.UpgradeWeapon",
+    "source": "Buy a stronger pickaxe!",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CTutorialGuideCompClass.luau:15",
+    "line": "    UpgradeWeapon = \"Buy a stronger pickaxe!\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Tutorial.UpgradeAura",
+    "source": "Buy a stronger aura!",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CTutorialGuideCompClass.luau:16",
+    "line": "    UpgradeAura = \"Buy a stronger aura!\",",
+    "old_source_same": true
+  },
+  {
+    "key": "AuraShop.Unknown",
+    "source": "Something went wrong. Please try again.",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CAuraShopUICompClass.luau:5",
+    "line": "    Unknown = \"Something went wrong. Please try again.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Tooltips.LuckyTooltip",
+    "source": "{item} · Lucky ×{rate} · {price} Coins",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CCommonUICompClass.luau:5",
+    "line": "    LuckyTooltip = \"{item} · Lucky ×{rate} · {price} Coins\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Tooltips.Tooltip",
+    "source": "{item} · {price} Coins",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CCommonUICompClass.luau:6",
+    "line": "    Tooltip = \"{item} · {price} Coins\",",
+    "old_source_same": true
+  },
+  {
+    "key": "CurrencyShopUI.Processing",
+    "source": "Payment completed. Waiting for your reward.",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CCurrencyShopUICompClass.luau:6",
+    "line": "    Processing = \"Payment completed. Waiting for your reward.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "CurrencyShopUI.Training",
+    "source": "Training x{rate}",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CCurrencyShopUICompClass.luau:7",
+    "line": "    Training = \"Training x{rate}\",",
+    "old_source_same": true
+  },
+  {
+    "key": "CurrencyShopUI.Capacity",
+    "source": "+{count:int} Carry Slot",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CCurrencyShopUICompClass.luau:8",
+    "line": "    Capacity = \"+{count:int} Carry Slot\",",
+    "old_source_same": true
+  },
+  {
+    "key": "CurrencyShopUI.CapacityDesc",
+    "source": "Permanently carry {count:int} collectibles.",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CCurrencyShopUICompClass.luau:9",
+    "line": "    CapacityDesc = \"Permanently carry {count:int} collectibles.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "CurrencyShopUI.Diamonds",
+    "source": "{value} Diamonds",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CCurrencyShopUICompClass.luau:10",
+    "line": "    Diamonds = \"{value} Diamonds\",",
+    "old_source_same": true
+  },
+  {
+    "key": "CurrencyShopUI.RateMaxed",
+    "source": "You have reached the maximum training multiplier.",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CCurrencyShopUICompClass.luau:11",
+    "line": "    RateMaxed = \"You have reached the maximum training multiplier.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "GMUI.InvalidItemInput",
+    "source": "Enter a valid item ID and a positive whole-number quantity.",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CGMIntegrationCompClass.luau:5",
+    "line": "    InvalidItemInput = \"Enter a valid item ID and a positive whole-number quantity.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "GMUI.InvalidValue",
+    "source": "Enter a valid whole number within the allowed range.",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CGMIntegrationCompClass.luau:6",
+    "line": "    InvalidValue = \"Enter a valid whole number within the allowed range.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "GMUI.Unknown",
+    "source": "Something went wrong. Please try again.",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CGMIntegrationCompClass.luau:7",
+    "line": "    Unknown = \"Something went wrong. Please try again.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Leaderboard.StrengthTitle",
+    "source": "Strength Leaderboard",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CLeaderboardUICompClass.luau:5",
+    "line": "    StrengthTitle = \"Strength Leaderboard\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Leaderboard.RebirthTitle",
+    "source": "Rebirth Leaderboard",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CLeaderboardUICompClass.luau:6",
+    "line": "    RebirthTitle = \"Rebirth Leaderboard\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Leaderboard.PlaytimeTitle",
+    "source": "Playtime Leaderboard",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CLeaderboardUICompClass.luau:7",
+    "line": "    PlaytimeTitle = \"Playtime Leaderboard\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Leaderboard.Strength",
+    "source": "Strength",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CLeaderboardUICompClass.luau:8",
+    "line": "    Strength = \"Strength\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Leaderboard.Rebirths",
+    "source": "Rebirths",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CLeaderboardUICompClass.luau:9",
+    "line": "    Rebirths = \"Rebirths\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Leaderboard.Playtime",
+    "source": "Playtime",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CLeaderboardUICompClass.luau:10",
+    "line": "    Playtime = \"Playtime\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Leaderboard.Rank",
+    "source": "Rank",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CLeaderboardUICompClass.luau:11",
+    "line": "    Rank = \"Rank\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Leaderboard.Player",
+    "source": "Player",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CLeaderboardUICompClass.luau:12",
+    "line": "    Player = \"Player\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Leaderboard.You",
+    "source": "You",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CLeaderboardUICompClass.luau:13",
+    "line": "    You = \"You\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Leaderboard.View",
+    "source": "E · View Leaderboard",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CLeaderboardUICompClass.luau:14",
+    "line": "    View = \"E · View Leaderboard\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Leaderboard.Close",
+    "source": "Close · E",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CLeaderboardUICompClass.luau:15",
+    "line": "    Close = \"Close · E\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Leaderboard.Minutes",
+    "source": "{count:int}min",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CLeaderboardUICompClass.luau:16",
+    "line": "    Minutes = \"{count:int}min\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Leaderboard.Hours",
+    "source": "{count:int}h",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CLeaderboardUICompClass.luau:17",
+    "line": "    Hours = \"{count:int}h\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Leaderboard.DaysHours",
+    "source": "{days:int}d{hours:int}h",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CLeaderboardUICompClass.luau:18",
+    "line": "    DaysHours = \"{days:int}d{hours:int}h\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Leaderboard.Loading",
+    "source": "Loading...",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CLeaderboardUICompClass.luau:19",
+    "line": "    Loading = \"Loading...\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Leaderboard.Empty",
+    "source": "No rankings yet.",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CLeaderboardUICompClass.luau:20",
+    "line": "    Empty = \"No rankings yet.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Leaderboard.Unavailable",
+    "source": "Leaderboard unavailable.",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CLeaderboardUICompClass.luau:21",
+    "line": "    Unavailable = \"Leaderboard unavailable.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "LootSellUI.LuckyName",
+    "source": "Lucky {item} (×{rate})",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CLootSellUICompClass.luau:5",
+    "line": "    LuckyName = \"Lucky {item} (×{rate})\",",
+    "old_source_same": true
+  },
+  {
+    "key": "LootSellUI.Empty",
+    "source": "You have no items to sell.",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CLootSellUICompClass.luau:6",
+    "line": "    Empty = \"You have no items to sell.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "LootSellUI.Gained",
+    "source": "You earned {value} Coins!",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CLootSellUICompClass.luau:7",
+    "line": "    Gained = \"You earned {value} Coins!\",",
+    "old_source_same": true
+  },
+  {
+    "key": "LootSellUI.Unknown",
+    "source": "Something went wrong. Please try again.",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CLootSellUICompClass.luau:8",
+    "line": "    Unknown = \"Something went wrong. Please try again.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Main.GoHome",
+    "source": "Go Home",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMainUICompClass.luau:17",
+    "line": "    GoHome = \"Go Home\",",
+    "old_source_same": false
+  },
+  {
+    "key": "Main.StrengthRate",
+    "source": "x{rate} Strength",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMainUICompClass.luau:18",
+    "line": "    StrengthRate = \"x{rate} Strength\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Main.SoldOut",
+    "source": "Sold Out",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMainUICompClass.luau:19",
+    "line": "    SoldOut = \"Sold Out\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Main.RateMaxed",
+    "source": "You have reached the maximum training multiplier.",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMainUICompClass.luau:20",
+    "line": "    RateMaxed = \"You have reached the maximum training multiplier.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Main.TrainingFull",
+    "source": "Training XP is full. Rebirth before buying a training pack.",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMainUICompClass.luau:21",
+    "line": "    TrainingFull = \"Training XP is full. Rebirth before buying a training pack.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Main.TrainingPack",
+    "source": "Training Pack",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMainUICompClass.luau:22",
+    "line": "    TrainingPack = \"Training Pack\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Main.TrainingPackDesc",
+    "source": "Gain {value} training XP, up to your current rebirth limit.",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMainUICompClass.luau:23",
+    "line": "    TrainingPackDesc = \"Gain {value} training XP, up to your current rebirth limit.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Main.TrainingActive",
+    "source": "Training active · ×{rate}",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMainUICompClass.luau:24",
+    "line": "    TrainingActive = \"Training active · ×{rate}\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Main.InDevelopment",
+    "source": "Coming soon.",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMainUICompClass.luau:25",
+    "line": "    InDevelopment = \"Coming soon.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Main.Strength",
+    "source": "Strength: {value}",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMainUICompClass.luau:26",
+    "line": "    Strength = \"Strength: {value}\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Main.MaxLevel",
+    "source": "MAX LEVEL",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMainUICompClass.luau:27",
+    "line": "    MaxLevel = \"MAX LEVEL\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Main.CoinReward",
+    "source": "{value} Coins",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMainUICompClass.luau:28",
+    "line": "    CoinReward = \"{value} Coins\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Main.NewPickaxeAvailable",
+    "source": "A new pickaxe is available to buy!",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMainUICompClass.luau:29",
+    "line": "    NewPickaxeAvailable = \"A new pickaxe is available to buy!\",",
+    "old_source_same": false
+  },
+  {
+    "key": "Main.NewAuraAvailable",
+    "source": "A new aura is available to buy!",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMainUICompClass.luau:30",
+    "line": "    NewAuraAvailable = \"A new aura is available to buy!\",",
+    "old_source_same": false
+  },
+  {
+    "key": "Main.DiamondPackDiscount",
+    "source": "Pay 67%",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMainUICompClass.luau:31",
+    "line": "    DiamondPackDiscount = \"Pay 67%\",",
+    "old_source_same": false
+  },
+  {
+    "key": "Main.DiamondPackAmount",
+    "source": "{value} Diamonds",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMainUICompClass.luau:32",
+    "line": "    DiamondPackAmount = \"{value} Diamonds\",",
+    "old_source_same": false
+  },
+  {
+    "key": "Main.DiamondPackPrice",
+    "source": "Only {robux}{price}",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMainUICompClass.luau:33",
+    "line": "    DiamondPackPrice = \"Only {robux}{price}\",",
+    "old_source_same": false
+  },
+  {
+    "key": "MenuRetention.GiftTitle",
+    "source": "Don't leave yet! A gift is ready for you!",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMenuRetentionUICompClass.luau:6",
+    "line": "    GiftTitle = \"Don't leave yet! A gift is ready for you!\",",
+    "old_source_same": true
+  },
+  {
+    "key": "MenuRetention.GiftHint",
+    "source": "Close the Roblox menu to claim your gift.",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMenuRetentionUICompClass.luau:7",
+    "line": "    GiftHint = \"Close the Roblox menu to claim your gift.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "MenuRetention.OnlineCountdown",
+    "source": "Your next online reward is available in {time}!",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMenuRetentionUICompClass.luau:8",
+    "line": "    OnlineCountdown = \"Your next online reward is available in {time}!\",",
+    "old_source_same": true
+  },
+  {
+    "key": "MenuRetention.Available",
+    "source": "Reward ready! Claim now!",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMenuRetentionUICompClass.luau:9",
+    "line": "    Available = \"Reward ready! Claim now!\",",
+    "old_source_same": true
+  },
+  {
+    "key": "MenuRetention.Unknown",
+    "source": "Something went wrong. Please try again.",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMenuRetentionUICompClass.luau:10",
+    "line": "    Unknown = \"Something went wrong. Please try again.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "MenuRetention.Diamonds",
+    "source": "{value} Diamonds",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMenuRetentionUICompClass.luau:11",
+    "line": "    Diamonds = \"{value} Diamonds\",",
+    "old_source_same": true
+  },
+  {
+    "key": "MenuRetention.ItemReward",
+    "source": "{item} ×{value}",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMenuRetentionUICompClass.luau:12",
+    "line": "    ItemReward = \"{item} ×{value}\",",
+    "old_source_same": true
+  },
+  {
+    "key": "MenuRetention.Pending",
+    "source": "Claiming...",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMenuRetentionUICompClass.luau:13",
+    "line": "    Pending = \"Claiming...\",",
+    "old_source_same": true
+  },
+  {
+    "key": "MenuRetention.Claim",
+    "source": "Claim",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMenuRetentionUICompClass.luau:14",
+    "line": "    Claim = \"Claim\",",
+    "old_source_same": true
+  },
+  {
+    "key": "MenuRetention.Offline",
+    "source": "You can earn up to {amount} Strength while offline!",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMenuRetentionUICompClass.luau:15",
+    "line": "    Offline = \"You can earn up to {amount} Strength while offline!\",",
+    "old_source_same": true
+  },
+  {
+    "key": "MenuRetention.Complete",
+    "source": "You have claimed all of today's online rewards!",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMenuRetentionUICompClass.luau:16",
+    "line": "    Complete = \"You have claimed all of today's online rewards!\",",
+    "old_source_same": true
+  },
+  {
+    "key": "MenuRetention.Ready",
+    "source": "Your online reward is ready to claim!",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMenuRetentionUICompClass.luau:17",
+    "line": "    Ready = \"Your online reward is ready to claim!\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Rebirth.CompleteNotice",
+    "source": "Rebirth complete!  {previous:int} → {current:int}",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CRebirthIntegrationCompClass.luau:6",
+    "line": "    CompleteNotice = \"Rebirth complete!  {previous:int} → {current:int}\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Rebirth.MaxCount",
+    "source": "You have reached the rebirth limit.",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CRebirthIntegrationCompClass.luau:7",
+    "line": "    MaxCount = \"You have reached the rebirth limit.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Rebirth.InDevelopment",
+    "source": "Coming soon.",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CRebirthIntegrationCompClass.luau:8",
+    "line": "    InDevelopment = \"Coming soon.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Rebirth.Unknown",
+    "source": "Something went wrong. Please try again.",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CRebirthIntegrationCompClass.luau:9",
+    "line": "    Unknown = \"Something went wrong. Please try again.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Rebirth.RequiredLevel",
+    "source": "Reach level {level:int} to rebirth.",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CRebirthIntegrationCompClass.luau:10",
+    "line": "    RequiredLevel = \"Reach level {level:int} to rebirth.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "ShopPurchase.NeedDiamonds",
+    "source": "Not enough diamonds.",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CShopPurchaseUICompClass.luau:6",
+    "line": "    NeedDiamonds = \"Not enough diamonds.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "ShopPurchase.Unknown",
+    "source": "Something went wrong. Please try again.",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CShopPurchaseUICompClass.luau:7",
+    "line": "    Unknown = \"Something went wrong. Please try again.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "TrainingBonus.Multiplier",
+    "source": "×{rate}",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CTrainingBonusUICompClass.luau:6",
+    "line": "    Multiplier = \"×{rate}\",",
+    "old_source_same": true
+  },
+  {
+    "key": "TrainingHUD.Strength",
+    "source": "{rate}x Strength",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CTrainingHUDCompClass.luau:5",
+    "line": "    Strength = \"{rate}x Strength\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WeaponShop.Unknown",
+    "source": "Something went wrong. Please try again.",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CWeaponShopUICompClass.luau:5",
+    "line": "    Unknown = \"Something went wrong. Please try again.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Welfare.OfflineEmpty",
+    "source": "No offline rewards available.",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CWelfareUICompClass.luau:5",
+    "line": "    OfflineEmpty = \"No offline rewards available.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Welfare.NotReady",
+    "source": "This reward is not available yet.",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CWelfareUICompClass.luau:6",
+    "line": "    NotReady = \"This reward is not available yet.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Welfare.AlreadyClaimed",
+    "source": "You have already claimed this reward.",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CWelfareUICompClass.luau:7",
+    "line": "    AlreadyClaimed = \"You have already claimed this reward.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Welfare.OnlineRequired",
+    "source": "Stay online for {minutes:int} more minute(s) to claim this reward.",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CWelfareUICompClass.luau:8",
+    "line": "    OnlineRequired = \"Stay online for {minutes:int} more minute(s) to claim this reward.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Welfare.LoginRequired",
+    "source": "Log in on {days:int} days to claim this reward.",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CWelfareUICompClass.luau:9",
+    "line": "    LoginRequired = \"Log in on {days:int} days to claim this reward.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Welfare.TaskIncomplete",
+    "source": "Complete this task before claiming ({current:int}/{target:int}).",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CWelfareUICompClass.luau:10",
+    "line": "    TaskIncomplete = \"Complete this task before claiming ({current:int}/{target:int}).\",",
+    "old_source_same": true
+  },
+  {
+    "key": "Welfare.Unknown",
+    "source": "Something went wrong. Please try again.",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CWelfareUICompClass.luau:11",
+    "line": "    Unknown = \"Something went wrong. Please try again.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WorldTeleport.RequiredLevel",
+    "source": "Reach a best level of {level:int} to unlock this world.",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CWorldTeleportUICompClass.luau:5",
+    "line": "    RequiredLevel = \"Reach a best level of {level:int} to unlock this world.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WorldTeleport.Unknown",
+    "source": "Something went wrong. Please try again.",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CWorldTeleportUICompClass.luau:6",
+    "line": "    Unknown = \"Something went wrong. Please try again.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "AuraShopUI.Strength",
+    "source": "Strength +{strength}",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CAuraShopView.luau:90",
+    "line": "    Strength = \"Strength +{strength}\",",
+    "old_source_same": true
+  },
+  {
+    "key": "AuraShopUI.Price",
+    "source": "{price}",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CAuraShopView.luau:91",
+    "line": "    Price = \"{price}\",",
+    "old_source_same": true
+  },
+  {
+    "key": "AuraShopUI.Equip",
+    "source": "Equip",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CAuraShopView.luau:92",
+    "line": "    Equip = \"Equip\",",
+    "old_source_same": true
+  },
+  {
+    "key": "AuraShopUI.Equipped",
+    "source": "Equipped",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CAuraShopView.luau:93",
+    "line": "    Equipped = \"Equipped\",",
+    "old_source_same": true
+  },
+  {
+    "key": "AuraShopUI.Waiting",
+    "source": "Waiting...",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CAuraShopView.luau:94",
+    "line": "    Waiting = \"Waiting...\",",
+    "old_source_same": true
+  },
+  {
+    "key": "AuraShopUI.NoAuras",
+    "source": "No auras available",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CAuraShopView.luau:95",
+    "line": "    NoAuras = \"No auras available\",",
+    "old_source_same": true
+  },
+  {
+    "key": "AuraShopUI.Loading",
+    "source": "Loading...",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CAuraShopView.luau:96",
+    "line": "    Loading = \"Loading...\",",
+    "old_source_same": true
+  },
+  {
+    "key": "AuraShopUI.TrainingRate",
+    "source": "Strength ×{rate}",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CAuraShopView.luau:97",
+    "line": "    TrainingRate = \"Strength ×{rate}\",",
+    "old_source_same": true
+  },
+  {
+    "key": "AuraShopUI.Unequip",
+    "source": "Unequip",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CAuraShopView.luau:98",
+    "line": "    Unequip = \"Unequip\",",
+    "old_source_same": true
+  },
+  {
+    "key": "CollectionUI.StrengthRule",
+    "source": "+{percent}% Strength",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CCollectionView.luau:71",
+    "line": "    StrengthRule = \"+{percent}% Strength\",",
+    "old_source_same": true
+  },
+  {
+    "key": "CollectionUI.StrengthBoost",
+    "source": "+{percent}%",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CCollectionView.luau:72",
+    "line": "    StrengthBoost = \"+{percent}%\",",
+    "old_source_same": true
+  },
+  {
+    "key": "CollectionUI.ActivatedCount",
+    "source": "Activated {active:int} / {total:int}",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CCollectionView.luau:73",
+    "line": "    ActivatedCount = \"Activated {active:int} / {total:int}\",",
+    "old_source_same": true
+  },
+  {
+    "key": "CollectionUI.TrainingRule",
+    "source": "Collect {count:int} items for +{percent}% training.",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CCollectionView.luau:74",
+    "line": "    TrainingRule = \"Collect {count:int} items for +{percent}% training.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "CollectionUI.CollectedCount",
+    "source": "{count:int}/{total:int} collected",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CCollectionView.luau:75",
+    "line": "    CollectedCount = \"{count:int}/{total:int} collected\",",
+    "old_source_same": true
+  },
+  {
+    "key": "CurrencyShopUI.DiamondShop",
+    "source": "DIAMOND SHOP",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CCurrencyShopView.luau:80",
+    "line": "    DiamondShop = \"DIAMOND SHOP\",",
+    "old_source_same": true
+  },
+  {
+    "key": "CurrencyShopUI.RobuxShop",
+    "source": "ROBUX SHOP",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CCurrencyShopView.luau:81",
+    "line": "    RobuxShop = \"ROBUX SHOP\",",
+    "old_source_same": true
+  },
+  {
+    "key": "CurrencyShopUI.Price",
+    "source": "{price}",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CCurrencyShopView.luau:82",
+    "line": "    Price = \"{price}\",",
+    "old_source_same": true
+  },
+  {
+    "key": "CurrencyShopUI.Waiting",
+    "source": "Waiting...",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CCurrencyShopView.luau:83",
+    "line": "    Waiting = \"Waiting...\",",
+    "old_source_same": true
+  },
+  {
+    "key": "CurrencyShopUI.Unavailable",
+    "source": "Unavailable",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CCurrencyShopView.luau:84",
+    "line": "    Unavailable = \"Unavailable\",",
+    "old_source_same": true
+  },
+  {
+    "key": "CurrencyShopUI.SoldOut",
+    "source": "Sold out",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CCurrencyShopView.luau:85",
+    "line": "    SoldOut = \"Sold out\",",
+    "old_source_same": true
+  },
+  {
+    "key": "LootSellUI.Capacity",
+    "source": "{count:int}/{capacity:int}",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CLootSellView.luau:99",
+    "line": "    Capacity = \"{count:int}/{capacity:int}\",",
+    "old_source_same": true
+  },
+  {
+    "key": "LootSellUI.NoItems",
+    "source": "No items to sell",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CLootSellView.luau:100",
+    "line": "    NoItems = \"No items to sell\",",
+    "old_source_same": true
+  },
+  {
+    "key": "LootSellUI.Coins",
+    "source": "{amount}",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CLootSellView.luau:101",
+    "line": "    Coins = \"{amount}\",",
+    "old_source_same": true
+  },
+  {
+    "key": "LootSellUI.Sold",
+    "source": "{amount} Sold!",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CLootSellView.luau:102",
+    "line": "    Sold = \"{amount} Sold!\",",
+    "old_source_same": true
+  },
+  {
+    "key": "RebirthUI.Multiplier",
+    "source": "x{value}",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CRebirthUICompClass.luau:78",
+    "line": "    Multiplier = \"x{value}\",",
+    "old_source_same": true
+  },
+  {
+    "key": "RebirthUI.Progress",
+    "source": "Level {level:int}/{required:int}",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CRebirthUICompClass.luau:79",
+    "line": "    Progress = \"Level {level:int}/{required:int}\",",
+    "old_source_same": true
+  },
+  {
+    "key": "RebirthUI.ProgressUnavailable",
+    "source": "Level {level:int}/--",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CRebirthUICompClass.luau:80",
+    "line": "    ProgressUnavailable = \"Level {level:int}/--\",",
+    "old_source_same": true
+  },
+  {
+    "key": "RebirthUI.Complete",
+    "source": "Rebirth complete! Strength reset.",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CRebirthUICompClass.luau:81",
+    "line": "    Complete = \"Rebirth complete! Strength reset.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "RebirthUI.ResetWarning",
+    "source": "Rebirth resets your strength!",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CRebirthUICompClass.luau:82",
+    "line": "    ResetWarning = \"Rebirth resets your strength!\",",
+    "old_source_same": true
+  },
+  {
+    "key": "RebirthUI.MaxCount",
+    "source": "You have reached the rebirth limit.",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CRebirthUICompClass.luau:83",
+    "line": "    MaxCount = \"You have reached the rebirth limit.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "SettingsUI.Volume",
+    "source": "{value:int}%",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CSettingsView.luau:63",
+    "line": "    Volume = \"{value:int}%\",",
+    "old_source_same": true
+  },
+  {
+    "key": "SettingsUI.On",
+    "source": "ON",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CSettingsView.luau:64",
+    "line": "    On = \"ON\",",
+    "old_source_same": true
+  },
+  {
+    "key": "SettingsUI.Off",
+    "source": "OFF",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CSettingsView.luau:65",
+    "line": "    Off = \"OFF\",",
+    "old_source_same": true
+  },
+  {
+    "key": "ShopPurchaseUI.Buy",
+    "source": "{price} · Buy",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CShopPurchaseView.luau:68",
+    "line": "    Buy = \"{price} · Buy\",",
+    "old_source_same": true
+  },
+  {
+    "key": "ShopPurchaseUI.Buying",
+    "source": "Buying...",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CShopPurchaseView.luau:69",
+    "line": "    Buying = \"Buying...\",",
+    "old_source_same": true
+  },
+  {
+    "key": "ShopPurchaseUI.Purchased",
+    "source": "Purchased",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CShopPurchaseView.luau:70",
+    "line": "    Purchased = \"Purchased\",",
+    "old_source_same": true
+  },
+  {
+    "key": "ShopPurchaseUI.Retry",
+    "source": "Retry",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CShopPurchaseView.luau:71",
+    "line": "    Retry = \"Retry\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WeaponShopUI.Strength",
+    "source": "Strength +{strength}",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWeaponShopView.luau:89",
+    "line": "    Strength = \"Strength +{strength}\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WeaponShopUI.Price",
+    "source": "{price}",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWeaponShopView.luau:90",
+    "line": "    Price = \"{price}\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WeaponShopUI.Equip",
+    "source": "Equip",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWeaponShopView.luau:91",
+    "line": "    Equip = \"Equip\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WeaponShopUI.Equipped",
+    "source": "Equipped",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWeaponShopView.luau:92",
+    "line": "    Equipped = \"Equipped\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WeaponShopUI.Waiting",
+    "source": "Waiting...",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWeaponShopView.luau:93",
+    "line": "    Waiting = \"Waiting...\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WeaponShopUI.NoWeapons",
+    "source": "No weapons available",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWeaponShopView.luau:94",
+    "line": "    NoWeapons = \"No weapons available\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WeaponShopUI.Loading",
+    "source": "Loading...",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWeaponShopView.luau:95",
+    "line": "    Loading = \"Loading...\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WeaponShopUI.TrainingRate",
+    "source": "Strength ×{rate}",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWeaponShopView.luau:96",
+    "line": "    TrainingRate = \"Strength ×{rate}\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WelfareHub.Minutes",
+    "source": "{minutes:int} min",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:201",
+    "line": "    Minutes = \"{minutes:int} min\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WelfareHub.Day",
+    "source": "Day {day:int}",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:202",
+    "line": "    Day = \"Day {day:int}\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WelfareHub.TaskProgress",
+    "source": "{current:int} / {target:int}",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:203",
+    "line": "    TaskProgress = \"{current:int} / {target:int}\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WelfareHub.Locked",
+    "source": "Locked",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:204",
+    "line": "    Locked = \"Locked\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WelfareHub.Claiming",
+    "source": "Claiming...",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:205",
+    "line": "    Claiming = \"Claiming...\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WelfareHub.CheckedIn",
+    "source": "Checked In",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:206",
+    "line": "    CheckedIn = \"Checked In\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WelfareHub.Claimed",
+    "source": "Claimed",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:207",
+    "line": "    Claimed = \"Claimed\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WelfareHub.Retry",
+    "source": "Retry",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:208",
+    "line": "    Retry = \"Retry\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WelfareHub.CheckIn",
+    "source": "Check In",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:209",
+    "line": "    CheckIn = \"Check In\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WelfareHub.Claim",
+    "source": "Claim",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:210",
+    "line": "    Claim = \"Claim\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WelfareHub.ClaimAll",
+    "source": "Claim All ({count:int})",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:211",
+    "line": "    ClaimAll = \"Claim All ({count:int})\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WelfareHub.InProgress",
+    "source": "In Progress",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:212",
+    "line": "    InProgress = \"In Progress\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WelfareHub.Tomorrow",
+    "source": "Tomorrow",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:213",
+    "line": "    Tomorrow = \"Tomorrow\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WelfareHub.DaysUntil",
+    "source": "In {days:int} days",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:214",
+    "line": "    DaysUntil = \"In {days:int} days\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WelfareHub.Countdown",
+    "source": "{minutes}:{seconds}",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:215",
+    "line": "    Countdown = \"{minutes}:{seconds}\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WelfareHub.DiamondAmount",
+    "source": "×{amount} Diamonds",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:216",
+    "line": "    DiamondAmount = \"×{amount} Diamonds\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WelfareHub.DiamondBonus",
+    "source": "+{amount} Diamonds",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:217",
+    "line": "    DiamondBonus = \"+{amount} Diamonds\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WelfareHub.DiamondPerFriend",
+    "source": "+{amount} per friend",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:218",
+    "line": "    DiamondPerFriend = \"+{amount} per friend\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WelfareHub.DiamondCap",
+    "source": "Up to +{amount} Diamonds",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:219",
+    "line": "    DiamondCap = \"Up to +{amount} Diamonds\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WelfareHub.NoDiamonds",
+    "source": "No diamonds available today",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:220",
+    "line": "    NoDiamonds = \"No diamonds available today\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WelfareHub.ConfirmingReward",
+    "source": "Confirming your reward...",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:221",
+    "line": "    ConfirmingReward = \"Confirming your reward...\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WelfareHub.DiamondsClaimed",
+    "source": "Today's diamonds claimed · Come back tomorrow",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:222",
+    "line": "    DiamondsClaimed = \"Today's diamonds claimed · Come back tomorrow\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WelfareHub.ReadyToClaim",
+    "source": "Ready to claim",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:223",
+    "line": "    ReadyToClaim = \"Ready to claim\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WelfareHub.DailyLogin",
+    "source": "Daily Login · Day {day:int}",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:224",
+    "line": "    DailyLogin = \"Daily Login · Day {day:int}\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WelfareHub.NoRewards",
+    "source": "No rewards",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:225",
+    "line": "    NoRewards = \"No rewards\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WelfareHub.AllMilestones",
+    "source": "All milestones reached!",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:226",
+    "line": "    AllMilestones = \"All milestones reached!\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WelfareHub.OnlineProgress",
+    "source": "{current:int} / {target:int} min",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:227",
+    "line": "    OnlineProgress = \"{current:int} / {target:int} min\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WelfareHub.NoOnlineRewards",
+    "source": "No online rewards available",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:228",
+    "line": "    NoOnlineRewards = \"No online rewards available\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WelfareHub.NextReward",
+    "source": "Next reward in {time}",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:229",
+    "line": "    NextReward = \"Next reward in {time}\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WelfareHub.NoOfflineRewards",
+    "source": "No offline rewards",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:230",
+    "line": "    NoOfflineRewards = \"No offline rewards\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WelfareHub.RewardAmount",
+    "source": "{name} ×{amount}",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:231",
+    "line": "    RewardAmount = \"{name} ×{amount}\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WelfareHub.TaskQuantity",
+    "source": "x{amount}",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:232",
+    "line": "    TaskQuantity = \"x{amount}\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WelfareHub.MoneyAmount",
+    "source": "{amount}",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:233",
+    "line": "    MoneyAmount = \"{amount}\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WelfareHub.DailyAmount",
+    "source": "+{value} Diamonds per day",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:234",
+    "line": "    DailyAmount = \"+{value} Diamonds per day\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WelfareHub.PassTomorrow",
+    "source": "Next claim tomorrow",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:235",
+    "line": "    PassTomorrow = \"Next claim tomorrow\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WelfareHub.PassRemaining",
+    "source": "{days:int} claims left · {status}",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:236",
+    "line": "    PassRemaining = \"{days:int} claims left · {status}\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WelfareHub.PassInactive",
+    "source": "Use this pass from your backpack to activate it.",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:237",
+    "line": "    PassInactive = \"Use this pass from your backpack to activate it.\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WelfareHub.ClaimBoost",
+    "source": "Claim {multiplier}X",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:238",
+    "line": "    ClaimBoost = \"Claim {multiplier}X\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WorldTeleportUI.Go",
+    "source": "Go",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWorldTeleportView.luau:70",
+    "line": "    Go = \"Go\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WorldTeleportUI.Teleporting",
+    "source": "Teleporting",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWorldTeleportView.luau:71",
+    "line": "    Teleporting = \"Teleporting\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WorldTeleportUI.Here",
+    "source": "Here",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWorldTeleportView.luau:72",
+    "line": "    Here = \"Here\",",
+    "old_source_same": true
+  },
+  {
+    "key": "WorldTeleportUI.RequiredLevel",
+    "source": "Level {level:int}",
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWorldTeleportView.luau:73",
+    "line": "    RequiredLevel = \"Level {level:int}\",",
+    "old_source_same": true
+  }
+]
