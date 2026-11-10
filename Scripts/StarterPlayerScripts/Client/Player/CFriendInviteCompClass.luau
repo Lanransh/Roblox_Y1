@@ -78,7 +78,7 @@ function Component:ShowInviteNotification(friend)
     screen.Name = "FriendInviteUI"
     screen.ResetOnSpawn = false
     screen.DisplayOrder = 30
-    screen.ScreenInsets = Enum.ScreenInsets.CoreUISafeInsets
+    screen.ScreenInsets = Enum.ScreenInsets.DeviceSafeInsets
     self._notificationScreen = screen
 
     local panel = Instance.new("Frame")
@@ -151,11 +151,11 @@ function Component:ShowInviteNotification(friend)
     buttonDivider.Size = UDim2.fromOffset(1, 40)
     buttonDivider.Parent = panel
 
-    --- 跟随屏幕尺寸缩放，底部留出操作区的空间。
+    --- 按设计分辨率缩小，不设最小倍率；底部固定预留操作区，避免遮挡手机跳跃按钮。
     local function updateScale()
         local size = screen.AbsoluteSize
-        scale.Scale = math.clamp(math.min(size.X / 1280, size.Y / 720), 0.65, 1)
-        panel.Position = UDim2.new(1, -12 * scale.Scale, 1, -120 * scale.Scale)
+        scale.Scale = math.min(size.X / 1280, size.Y / 720, 1)
+        panel.Position = UDim2.new(1, -12 * scale.Scale, 1, -120)
     end
     --- 语言变化时同步刷新已显示的提示及按钮。
     local function refreshText()

@@ -1,3 +1,15 @@
+-- 主界面适配方案（仅 MainUI，其他界面沿用各自规则）：
+-- 1. StarterGui.MainUI.ResponsiveLayout 以安全区可用尺寸计算统一倍率：
+--    scale = math.min(可用宽度 / 1280, 可用高度 / 720, 1.25)。
+--    顶部、左右两侧和底部提示各用一个 UIScale，文字、图标、按钮和间距整体缩放。
+-- 2. 主界面常驻文字运行时全部关闭 TextScaled，包括按钮名称、提示、长数字和动态文案。
+--    设计字号按原有显示效果校准，不区分电脑和手机，不再按分辨率乘字号或主动取整。
+--    例如设计字号 28，倍率 0.5 时显示约为 14；固定文字只跟随分组 UIScale 缩放。
+--    长数字和动态文案由 ConfigureMainTextSizing 检查设计空间，仅在放不下时缩小字号；购买提醒允许换行。
+--    初始化前的 TextScaled = true 仅用于标记需注册溢出适配的节点，注册时立即关闭，之后由代码控制字号。
+--    临时拾取奖励的 RewardAmount 飘字仍开启 TextScaled，适应动画容器，不属于常驻分组文字。
+-- 3. 定位独立维护：顶部避让原生顶栏，横向空间不足时下移，不额外缩小；
+--    购买提醒距安全区底部 78 像素，预留物品栏和间距；左上礼包空间不足时移至菜单右侧。
 local FX = _G.FX
 local FXLoader = FX.Loader
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
@@ -124,6 +136,7 @@ function Component:OnReady()
     end)
     self:CreateFriendBoostButton()
     self:CreateDiamondPackButton()
+    self:ConfigureMainTextSizing()
     self._effects = {}
     self._pickupEffects = {}
     self._rainEffects = {}
@@ -190,6 +203,42 @@ function Component:OnReady()
         end
     end))
     self:Show()
+end
+
+--- 接管初始化时标记为 TextScaled 的常驻文字，关闭该属性并注册代码溢出适配；固定文字保持设计字号。
+function Component:ConfigureMainTextSizing()
+    local textService = game:GetService("TextService")
+    for index, label in ipairs(self._rootNode:GetDescendants()) do
+        if not (label:IsA("TextLabel") or label:IsA("TextButton")) or not label.TextScaled then
+            continue
+        end
+        local designSize = label.TextSize
+        label.TextScaled = false
+        local limit = label:FindFirstChildOfClass("UITextSizeConstraint")
+        if limit then
+            limit:Destroy()
+        end
+        local group = label
+        while group.Parent ~= self._rootNode do
+            group = group.Parent
+        end
+        local responsiveScale = FXLoader:Here(group, "ResponsiveScale")
+        --- 按设计坐标测量溢出，不把分辨率倍率再乘进字号；实际显示统一交给 UIScale。
+        local function FitText()
+            local scale = responsiveScale.Scale
+            if scale <= 0 then
+                return
+            end
+            local available = label.AbsoluteSize / scale
+            local bounds = textService:GetTextSize(label.ContentText, designSize, label.Font, Vector2.new(100000, 100000))
+            label.TextSize = designSize * math.min(1, available.X / math.max(1, bounds.X),
+                available.Y / math.max(1, bounds.Y))
+        end
+        self:TrackConnection(label:GetPropertyChangedSignal("ContentText"):Connect(FitText))
+        self:TrackConnection(label:GetPropertyChangedSignal("AbsoluteSize"):Connect(FitText))
+        self:TrackConnection(responsiveScale:GetPropertyChangedSignal("Scale"):Connect(FitText))
+        FitText()
+    end
 end
 
 --- 商店不显示提示徽标；奖励沿用原红点显隐条件，以不拦截输入的感叹号提示可用内容。
@@ -381,7 +430,7 @@ function Component:LayoutStrengthOfferPrice(button, centerY)
     local diamond = FXLoader:Here(button, "PriceDiamond")
     local textSize = game:GetService("TextService"):GetTextSize(
         price.Text, price.TextSize, price.Font, Vector2.new(1000, 24))
-    local width = math.ceil(textSize.X)
+    local width = math.ceil(textSize.X) + 1
     local diamondWidth = diamond.Visible and 26 or 0
     local left = -(width + diamondWidth) / 2 + 8
     price.AnchorPoint = Vector2.new(0, 0.5)
@@ -525,8 +574,6 @@ function Component:CreateDiamondPackButton()
     content.Size = UDim2.fromScale(1, 1)
     content.BackgroundTransparency = 1
     content.Parent = group
-    local fitScale = Instance.new("UIScale")
-    fitScale.Parent = content
     local button = Instance.new("ImageButton")
     button.Name = "DiamondPackButton"
     button.AnchorPoint = Vector2.new(0.5, 0)
@@ -548,7 +595,8 @@ function Component:CreateDiamondPackButton()
         label.Size = UDim2.fromOffset(spec.Width, 24)
         label.BackgroundTransparency = 1
         label.Font = Enum.Font.FredokaOne
-        label.TextScaled = true
+        label.TextSize = spec.Name == "Amount" and 18 or 22
+        label.TextScaled = spec.Name ~= "Discount"
         label.TextColor3 = spec.Color
         label.TextStrokeColor3 = Color3.new(0, 0, 0)
         label.TextStrokeTransparency = 0
@@ -556,9 +604,6 @@ function Component:CreateDiamondPackButton()
         label.Text = ""
         label.ZIndex = button.ZIndex + 1
         label.Parent = button
-        local limit = Instance.new("UITextSizeConstraint")
-        limit.MaxTextSize = spec.Name == "Amount" and 22 or 28
-        limit.Parent = label
         self._diamondPackLabels[spec.Name] = label
     end
     local discount = self._diamondPackLabels.Discount
@@ -579,14 +624,17 @@ function Component:CreateDiamondPackButton()
     button.Parent = content
     group.Parent = self._rootNode
     local menuButton = FXLoader:Here(self._rootNode, "LeftCenter/RebirthButton")
-    --- 顶栏、安全区和窗口变化后使用屏幕坐标定位，并缩入左侧菜单上方的空隙。
+    --- 只调整位置避让顶栏和菜单；上方空间不足时移至菜单右侧，不再二次缩放。
     local function LayoutOffer()
         local top = GuiService.TopbarInset.Max.Y + 8
-        group.Position = UDim2.fromOffset(12, top - self._rootNode.AbsolutePosition.Y)
         local responsiveScale = group:FindFirstChildOfClass("UIScale")
         local scale = responsiveScale and responsiveScale.Scale or 1
         local available = math.max(0, menuButton.AbsolutePosition.Y - top - 8)
-        fitScale.Scale = math.min(1, available / (124 * scale))
+        local left = 12
+        if available < 124 * scale then
+            left += FXLoader:Here(self._rootNode, "LeftCenter").AbsoluteSize.X + 8
+        end
+        group.Position = UDim2.fromOffset(left, top - self._rootNode.AbsolutePosition.Y)
     end
     --- 延后到主界面通用缩放完成，避免安全区和分组布局覆盖入口坐标。
     local function QueueLayoutOffer()
@@ -679,16 +727,19 @@ function Component:OnUpdate(serverTime)
     end
 end
 
---- 在快捷栏上方显示购买提醒，文字不拦截世界点击，并与训练提示共用动态渐变。
+--- 从安全区底部预留原生快捷栏的 70 像素和 8 像素间距，统一设计字号随分组缩放。
 function Component:CreatePurchaseReminder()
     local label = Instance.new("TextLabel")
     label.Name = "PurchaseReminder"
-    label.AnchorPoint = Vector2.new(0.5, 0.5)
-    label.Position = UDim2.fromScale(0.5, 0.8)
-    label.Size = UDim2.new(0.9, 0, 0, 144)
+    label.AnchorPoint = Vector2.new(0.5, 1)
+    label.Position = UDim2.new(0.5, 0, 1, -78)
+    label.Size = UDim2.fromOffset(1152, 80)
     label.BackgroundTransparency = 1
     label.Font = Enum.Font.GothamBold
-    label.TextScaled = true
+    label.TextScaled = false
+    label.TextWrapped = true
+    label.TextYAlignment = Enum.TextYAlignment.Bottom
+    label.TextSize = 28
     label.LineHeight = 1.35
     label.TextStrokeColor3 = Color3.new(0, 0, 0)
     label.TextStrokeTransparency = 1
@@ -698,10 +749,6 @@ function Component:CreatePurchaseReminder()
     label.Active = false
     label.Interactable = false
     label.Parent = self._rootNode
-    local constraint = Instance.new("UITextSizeConstraint")
-    constraint.MinTextSize = 20
-    constraint.MaxTextSize = 28
-    constraint.Parent = label
     local stroke = Instance.new("UIStroke")
     stroke.Name = "TextOutline"
     stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
@@ -825,6 +872,7 @@ function Component:ConfigureBackpackBoostLayout()
     countLabel.BackgroundTransparency = 1
     countLabel.FontFace = FXLoader:Here(frame, "Value").FontFace
     countLabel.TextScaled = true
+    countLabel.TextSize = 22
     countLabel.TextColor3 = Color3.new(1, 1, 1)
     countLabel.TextStrokeColor3 = FXLoader:Here(frame, "Value").TextStrokeColor3
     countLabel.TextStrokeTransparency = 0
@@ -993,6 +1041,7 @@ function Component:ShowPickupEffect(entry)
         moneyText.Size = UDim2.fromScale(1.5, 0.22)
         moneyText.BackgroundTransparency = 1
         moneyText.Font = Enum.Font.GothamBold
+        -- 临时奖励飘字随动画容器适配，不使用常驻主界面的设计字号规则。
         moneyText.TextScaled = true
         moneyText.TextColor3 = Color3.new(1, 1, 1)
         moneyText.AutoLocalize = false
