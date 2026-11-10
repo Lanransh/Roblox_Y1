@@ -1,4 +1,4 @@
-local FX = _G.FX
+local FX, FC = _G.FX, _G.FC
 local FXLoader = FX.Loader
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
@@ -17,7 +17,7 @@ function Component:GetCompName()
     return "CTrainingBonusUIComp"
 end
 
---- 创建本人专属气泡、倒计时圆环与全屏边缘光；服务端属性决定实际加成。
+--- 创建随屏幕短边缩放的气泡、倒计时圆环与全屏边缘光；服务端属性决定实际加成。
 function Component:OnReady()
     self._commonUI = self:RequireComponent("FCCommonUIComp")
     self._random = Random.new()
@@ -61,6 +61,14 @@ function Component:OnReady()
             Phase = self._random:NextNumber(), Speed = self._random:NextNumber(1.5, 2.4)}
     end
 
+    local bubbleAnchor = Instance.new("Frame")
+    bubbleAnchor.Name = "BubbleAnchor"
+    bubbleAnchor.Size = UDim2.fromOffset(0, 0)
+    bubbleAnchor.BackgroundTransparency = 1
+    bubbleAnchor.Parent = root
+    self._bubbleAnchor = bubbleAnchor
+    self._responsiveScale = Instance.new("UIScale", bubbleAnchor)
+
     local button = Instance.new("TextButton")
     button.Name = "MultiplierBubble"
     button.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -73,7 +81,7 @@ function Component:OnReady()
     button.TextSize = 60
     button.Visible = false
     button:SetAttribute("BlocksTrainingClick", true)
-    button.Parent = root
+    button.Parent = bubbleAnchor
     Instance.new("UICorner", button).CornerRadius = UDim.new(1, 0)
     local stroke = Instance.new("UIStroke")
     stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
@@ -114,12 +122,14 @@ function Component:OnReady()
     end))
 end
 
---- 独立覆盖完整视口，四边向画面中心渐隐，保持中间视野和点击区域畅通。
+--- 边缘光越过设备安全区覆盖完整视口，四边向画面中心渐隐，不拦截点击。
 function Component:CreateEdgeGlow()
     local root = Instance.new("ScreenGui")
     root.Name = "TrainingBonusEdgeGlow"
     root.ResetOnSpawn = false
-    root.IgnoreGuiInset = true
+    root.ScreenInsets = Enum.ScreenInsets.None
+    root.ClipToDeviceSafeArea = false
+    root.SafeAreaCompatibility = Enum.SafeAreaCompatibility.None
     root.DisplayOrder = 14
     local group = Instance.new("CanvasGroup")
     group.Name = "EdgeGlow"
@@ -132,16 +142,15 @@ function Component:CreateEdgeGlow()
     self._edgeGlowStrength = 0
     self._glowEdges = {}
     for index, layout in ipairs({
-        {Name = "Top", Position = Vector2.new(0, 0), Size = Vector2.new(1, 0.1), Rotation = 90},
-        {Name = "Bottom", Position = Vector2.new(0, 1), Size = Vector2.new(1, 0.1), Rotation = 270},
-        {Name = "Left", Position = Vector2.new(0, 0), Size = Vector2.new(0.06, 1), Rotation = 0},
-        {Name = "Right", Position = Vector2.new(1, 0), Size = Vector2.new(0.06, 1), Rotation = 180},
+        {Name = "Top", Position = Vector2.new(0, 0), Rotation = 90},
+        {Name = "Bottom", Position = Vector2.new(0, 1), Rotation = 270},
+        {Name = "Left", Position = Vector2.new(0, 0), Rotation = 0},
+        {Name = "Right", Position = Vector2.new(1, 0), Rotation = 180},
     }) do
         local edge = Instance.new("Frame")
         edge.Name = layout.Name
         edge.AnchorPoint = layout.Position
         edge.Position = UDim2.fromScale(layout.Position.X, layout.Position.Y)
-        edge.Size = UDim2.fromScale(layout.Size.X, layout.Size.Y)
         edge.BorderSizePixel = 0
         local gradient = Instance.new("UIGradient")
         gradient.Rotation = layout.Rotation
@@ -158,7 +167,7 @@ function Component:CreateEdgeGlow()
     self._edgeGlowRoot = root
 end
 
---- 加成期间轻微呼吸发光，结束后淡出；不依赖角色特效是否已创建。
+--- 四边厚度统一按视口短边计算；加成期间呼吸发光，结束后淡出。
 --- @param active boolean 服务端确认的加成是否生效。
 --- @param color Color3 当前倍率主题色。
 --- @param deltaTime number 本帧间隔。
@@ -167,7 +176,10 @@ function Component:RefreshEdgeGlow(active, color, deltaTime)
     self._edgeGlowStrength = strength
     self._edgeGlow.Visible = strength > 0
     self._edgeGlow.GroupTransparency = 1 - strength * (0.8 + math.sin(os.clock() * 3) * 0.1)
+    local size = self._edgeGlow.AbsoluteSize
+    local thickness = math.min(size.X, size.Y) * 0.1
     for index, edge in ipairs(self._glowEdges) do
+        edge.Size = index <= 2 and UDim2.new(1, 0, 0, thickness) or UDim2.new(0, thickness, 1, 0)
         edge.BackgroundColor3 = color
     end
 end
@@ -185,7 +197,7 @@ function Component:ShowBubble()
     self._popTween:Play()
 end
 
---- 为本地角色创建上冲光粒和手部短拖尾，不更改角色颜色或接管原挥镐特效。
+--- 为本地角色创建上冲光粒和手部短拖尾；镜头由逐帧刷新在可用时绑定。
 --- @param character Model 当前存活角色。
 --- @param color Color3 本次倍率的主题色。
 function Component:StartAccelerationEffect(character, color)
@@ -197,11 +209,6 @@ function Component:StartAccelerationEffect(character, color)
     local effect = {Character = character, Humanoid = humanoid, Nodes = {}, Strength = 0,
         StartedAt = os.clock(), BaseOffset = humanoid.CameraOffset}
     self._acceleration = effect
-    local camera = workspace.CurrentCamera
-    if camera and camera.CameraType == Enum.CameraType.Custom and camera.CameraSubject == humanoid then
-        effect.Camera = camera
-        effect.BaseFov = camera.FieldOfView
-    end
     local attachment = Instance.new("Attachment")
     attachment.Name = "TrainingAccelerationParticles"
     attachment.Position = Vector3.new(0, -1.5, 0)
@@ -244,14 +251,14 @@ function Component:StartAccelerationEffect(character, color)
     end
 end
 
---- 只恢复本组件最后写入的镜头值，并释放本地角色特效，避免覆盖其他镜头接管。
+--- 只释放本次加速的视野增量及角色特效，保留弹窗等其他效果的镜头状态。
 function Component:ClearAccelerationEffect()
     local effect = self._acceleration
     if not effect then
         return
     end
-    if effect.Camera and effect.Camera.Parent and effect.Camera.FieldOfView == effect.LastFov then
-        effect.Camera.FieldOfView = effect.BaseFov
+    if effect.Camera then
+        FC.UIAnim:SetCameraFovOffset(effect.Camera, effect, 0)
     end
     if effect.Humanoid.Parent and effect.Humanoid.CameraOffset == effect.LastOffset then
         effect.Humanoid.CameraOffset = effect.BaseOffset
@@ -263,7 +270,7 @@ function Component:ClearAccelerationEffect()
     self._acceleration = nil
 end
 
---- 服务端确认后同步爆发镜头、边缘速度线和人物特效；结束时平滑衰减，不改变人物轮廓。
+--- 服务端确认后同步镜头与角色特效；镜头归还后补绑，接管时释放视野和震动偏移。
 --- @param active boolean 是否仍在已确认的加成期间。
 --- @param color Color3 本次倍率的主题色。
 --- @param deltaTime number 本帧间隔，用于保持不同帧率下相同的淡入淡出速度。
@@ -301,20 +308,25 @@ function Component:RefreshEffect(active, color, deltaTime)
         return
     end
     local elapsed = os.clock() - effect.StartedAt
-    local camera = effect.Camera
+    local camera = workspace.CurrentCamera
     if camera and camera.CameraType == Enum.CameraType.Custom and camera.CameraSubject == effect.Humanoid then
-        if effect.LastFov and math.abs(camera.FieldOfView - effect.LastFov) > 0.001 then
-            effect.BaseFov = camera.FieldOfView
-        end
-        camera.FieldOfView = math.clamp(effect.BaseFov + 12 * effect.Strength, 1, 120)
-        effect.LastFov = camera.FieldOfView
-        if effect.LastOffset and effect.Humanoid.CameraOffset ~= effect.LastOffset then
+        effect.Camera = camera
+        FC.UIAnim:SetCameraFovOffset(camera, effect, 12 * effect.Strength)
+        if not effect.LastOffset or effect.Humanoid.CameraOffset ~= effect.LastOffset then
             effect.BaseOffset = effect.Humanoid.CameraOffset
         end
         local shake = math.max(0, 1 - elapsed / 0.25) * effect.Strength * 0.12
         effect.Humanoid.CameraOffset = effect.BaseOffset
             + Vector3.new(math.sin(elapsed * 85), math.cos(elapsed * 71), 0) * shake
         effect.LastOffset = effect.Humanoid.CameraOffset
+    else
+        if effect.Camera then
+            FC.UIAnim:SetCameraFovOffset(effect.Camera, effect, 0)
+        end
+        if effect.Humanoid.CameraOffset == effect.LastOffset then
+            effect.Humanoid.CameraOffset = effect.BaseOffset
+        end
+        effect.LastOffset = nil
     end
     self._speedLines.Visible = true
     local size = self._speedLines.AbsoluteSize
@@ -332,7 +344,7 @@ function Component:RefreshEffect(active, color, deltaTime)
     end
 end
 
---- 圆环按服务器期限递减，到期隐藏气泡；弹窗期间隐藏，气泡点击不触发普通训练点击。
+--- 气泡、文字和圆环整体适配屏幕短边；按服务器期限隐藏，弹窗期间不接受点击。
 --- @param deltaTime number 本帧间隔，用于加速表现的渐变。
 function Component:RefreshBonus(deltaTime)
     local player = self:GetPlayerNode()
@@ -357,9 +369,12 @@ function Component:RefreshBonus(deltaTime)
     self._bubble.Visible = eligible and not blocked and offerId ~= nil and self._pendingId ~= offerId
         and now < (player:GetAttribute("TrainingBonusOfferUntil") or 0)
     if self._bubble.Visible then
+        local size = self._speedLines.AbsoluteSize
+        local scale = math.min(size.X, size.Y, 720) / 720
+        self._responsiveScale.Scale = scale
         self._bubble.BackgroundColor3 = color
         self._bubble.Text = Text.Tr(TranslationTexts.Multiplier, {rate = GameUtility.NumberToText(rate)})
-        self._bubble.Position = UDim2.new(self._position.X, 0, self._position.Y, math.sin(now * 3) * 6)
+        self._bubbleAnchor.Position = UDim2.new(self._position.X, 0, self._position.Y, math.sin(now * 3) * 6 * scale)
         local remaining = (player:GetAttribute("TrainingBonusOfferUntil") - now)
             / _G.GameConfig.TrainingBonusConfig.OfferLifetime
         local count = math.ceil(math.clamp(remaining, 0, 1) * #self._ringSegments)

@@ -1,0 +1,4539 @@
+[
+  {
+    "identity": [
+      "key",
+      "CurrencyShop.Invalid"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Handlers/CurrencyShop.luau:6",
+    "source": "This offer has changed. Please select the next upgrade.",
+    "sha256": "ea48ea88dec34355df7b4673b7aeced156c70c3d52129f851c55aba25c481ec7",
+    "definition": "    Invalid = \"This offer has changed. Please select the next upgrade.\",",
+    "calls": [
+      {
+        "line": 24,
+        "text": "        return {success = false, key = TranslationTexts.Invalid}"
+      },
+      {
+        "line": 38,
+        "text": "        return {success = false, key = TranslationTexts.Invalid}"
+      },
+      {
+        "line": 60,
+        "text": "        return {success = false, key = TranslationTexts.Invalid}"
+      },
+      {
+        "line": 64,
+        "text": "        return {success = false, key = TranslationTexts.Invalid}"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "CurrencyShop.TrainingFull"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Handlers/CurrencyShop.luau:7",
+    "source": "Training XP is full. Rebirth before buying a training pack.",
+    "sha256": "ea48ea88dec34355df7b4673b7aeced156c70c3d52129f851c55aba25c481ec7",
+    "definition": "    TrainingFull = \"Training XP is full. Rebirth before buying a training pack.\",",
+    "calls": [
+      {
+        "line": 42,
+        "text": "        return {success = false, key = TranslationTexts.TrainingFull}"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "CurrencyShop.NeedDiamonds"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Handlers/CurrencyShop.luau:8",
+    "source": "Not enough diamonds.",
+    "sha256": "ea48ea88dec34355df7b4673b7aeced156c70c3d52129f851c55aba25c481ec7",
+    "definition": "    NeedDiamonds = \"Not enough diamonds.\",",
+    "calls": [
+      {
+        "line": 46,
+        "text": "        return {success = false, key = TranslationTexts.NeedDiamonds}"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "CurrencyShop.TrainingReceived"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Handlers/CurrencyShop.luau:9",
+    "source": "Purchase complete! +{value} training XP.",
+    "sha256": "ea48ea88dec34355df7b4673b7aeced156c70c3d52129f851c55aba25c481ec7",
+    "definition": "    TrainingReceived = \"Purchase complete! +{value} training XP.\",",
+    "calls": [
+      {
+        "line": 52,
+        "text": "        key, arguments = TranslationTexts.TrainingReceived, {value = GameUtility.NumberToText(gain)}"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "CurrencyShop.RateUpgraded"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Handlers/CurrencyShop.luau:10",
+    "source": "Purchase complete! Training multiplier upgraded to x{rate}.",
+    "sha256": "ea48ea88dec34355df7b4673b7aeced156c70c3d52129f851c55aba25c481ec7",
+    "definition": "    RateUpgraded = \"Purchase complete! Training multiplier upgraded to x{rate}.\",",
+    "calls": [
+      {
+        "line": 55,
+        "text": "        key = TranslationTexts.RateUpgraded"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "CurrencyShop.CapacityUpgraded"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Handlers/CurrencyShop.luau:11",
+    "source": "Purchase complete! Backpack capacity +{count:int}.",
+    "sha256": "ea48ea88dec34355df7b4673b7aeced156c70c3d52129f851c55aba25c481ec7",
+    "definition": "    CapacityUpgraded = \"Purchase complete! Backpack capacity +{count:int}.\",",
+    "calls": [
+      {
+        "line": 58,
+        "text": "        key, arguments = TranslationTexts.CapacityUpgraded, {count = goods.NumberArray[1]}"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "GMRecovery.Forbidden"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Handlers/GMRecovery.luau:5",
+    "source": "Only developers can use these controls.",
+    "sha256": "90b8aaa4c7eec5c8d371f21cda7e81aaaa834ca281216d144fae02b00f3bf4d2",
+    "definition": "    Forbidden = \"Only developers can use these controls.\",",
+    "calls": [
+      {
+        "line": 19,
+        "text": "        return {success = false, key = TranslationTexts.Forbidden}"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "GMRecovery.Unknown"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Handlers/GMRecovery.luau:6",
+    "source": "Something went wrong. Please try again.",
+    "sha256": "90b8aaa4c7eec5c8d371f21cda7e81aaaa834ca281216d144fae02b00f3bf4d2",
+    "definition": "    Unknown = \"Something went wrong. Please try again.\",",
+    "calls": [
+      {
+        "line": 22,
+        "text": "        return {success = false, key = TranslationTexts.Unknown}"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "GMRecovery.Busy"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Handlers/GMRecovery.luau:7",
+    "source": "An operation is in progress. Please try again shortly.",
+    "sha256": "90b8aaa4c7eec5c8d371f21cda7e81aaaa834ca281216d144fae02b00f3bf4d2",
+    "definition": "    Busy = \"An operation is in progress. Please try again shortly.\",",
+    "calls": []
+  },
+  {
+    "identity": [
+      "key",
+      "GMRecovery.SaveFailed"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Handlers/GMRecovery.luau:8",
+    "source": "Save failed. Please try again.",
+    "sha256": "90b8aaa4c7eec5c8d371f21cda7e81aaaa834ca281216d144fae02b00f3bf4d2",
+    "definition": "    SaveFailed = \"Save failed. Please try again.\",",
+    "calls": []
+  },
+  {
+    "identity": [
+      "key",
+      "GMRecovery.Success"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Handlers/GMRecovery.luau:9",
+    "source": "Operation completed.",
+    "sha256": "90b8aaa4c7eec5c8d371f21cda7e81aaaa834ca281216d144fae02b00f3bf4d2",
+    "definition": "    Success = \"Operation completed.\",",
+    "calls": []
+  },
+  {
+    "identity": [
+      "key",
+      "Activity.PassActivated"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SActivityCompClass.luau:5",
+    "source": "Gained {value} Diamonds and activated a {days:int}-day weekly pass!",
+    "sha256": "7a147cb804bddcd10bdcb6901856edc547dbafef6db22caf0ce8e29326d9060c",
+    "definition": "    PassActivated = \"Gained {value} Diamonds and activated a {days:int}-day weekly pass!\",",
+    "calls": [
+      {
+        "line": 361,
+        "text": "        TranslationTexts.PassActivated, {value = GameUtility.NumberToText(config.InstantGemCount), days = config.DayTime})"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Activity.NotReady"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SActivityCompClass.luau:6",
+    "source": "This reward is not available yet.",
+    "sha256": "7a147cb804bddcd10bdcb6901856edc547dbafef6db22caf0ce8e29326d9060c",
+    "definition": "    NotReady = \"This reward is not available yet.\",",
+    "calls": [
+      {
+        "line": 48,
+        "text": "        return {success = false, key = TranslationTexts.NotReady}"
+      },
+      {
+        "line": 59,
+        "text": "        return {success = false, key = TranslationTexts.NotReady}"
+      },
+      {
+        "line": 75,
+        "text": "        return {success = false, key = TranslationTexts.NotReady}"
+      },
+      {
+        "line": 91,
+        "text": "    return {success = success, key = success and TranslationTexts.Success or TranslationTexts.NotReady,"
+      },
+      {
+        "line": 397,
+        "text": "        return {success = false, key = TranslationTexts.NotReady}"
+      },
+      {
+        "line": 401,
+        "text": "    local key = TranslationTexts.NotReady"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Activity.AlreadyClaimed"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SActivityCompClass.luau:7",
+    "source": "You have already claimed this reward.",
+    "sha256": "7a147cb804bddcd10bdcb6901856edc547dbafef6db22caf0ce8e29326d9060c",
+    "definition": "    AlreadyClaimed = \"You have already claimed this reward.\",",
+    "calls": [
+      {
+        "line": 51,
+        "text": "        return {success = false, key = TranslationTexts.AlreadyClaimed}"
+      },
+      {
+        "line": 408,
+        "text": "            key = TranslationTexts.AlreadyClaimed"
+      },
+      {
+        "line": 430,
+        "text": "            key = TranslationTexts.AlreadyClaimed"
+      },
+      {
+        "line": 474,
+        "text": "            key = TranslationTexts.AlreadyClaimed"
+      },
+      {
+        "line": 485,
+        "text": "                key = TranslationTexts.AlreadyClaimed"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Activity.InventoryFull"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SActivityCompClass.luau:8",
+    "source": "Not enough inventory space. Your reward is still available.",
+    "sha256": "7a147cb804bddcd10bdcb6901856edc547dbafef6db22caf0ce8e29326d9060c",
+    "definition": "    InventoryFull = \"Not enough inventory space. Your reward is still available.\",",
+    "calls": [
+      {
+        "line": 423,
+        "text": "                key = TranslationTexts.InventoryFull"
+      },
+      {
+        "line": 495,
+        "text": "                    key = TranslationTexts.InventoryFull"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Activity.Success"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SActivityCompClass.luau:9",
+    "source": "Reward claimed!",
+    "sha256": "7a147cb804bddcd10bdcb6901856edc547dbafef6db22caf0ce8e29326d9060c",
+    "definition": "    Success = \"Reward claimed!\",",
+    "calls": [
+      {
+        "line": 91,
+        "text": "    return {success = success, key = success and TranslationTexts.Success or TranslationTexts.NotReady,"
+      },
+      {
+        "line": 502,
+        "text": "    return {success = success, key = success and TranslationTexts.Success or key, reason = reason,"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Activity.NeedDiamonds"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SActivityCompClass.luau:10",
+    "source": "Not enough diamonds.",
+    "sha256": "7a147cb804bddcd10bdcb6901856edc547dbafef6db22caf0ce8e29326d9060c",
+    "definition": "    NeedDiamonds = \"Not enough diamonds.\",",
+    "calls": [
+      {
+        "line": 442,
+        "text": "                key = TranslationTexts.NeedDiamonds"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Activity.NoBoostGain"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SActivityCompClass.luau:11",
+    "source": "The boosted reward would not add any extra Strength. Claim the normal reward instead.",
+    "sha256": "7a147cb804bddcd10bdcb6901856edc547dbafef6db22caf0ce8e29326d9060c",
+    "definition": "    NoBoostGain = \"The boosted reward would not add any extra Strength. Claim the normal reward instead.\",",
+    "calls": [
+      {
+        "line": 440,
+        "text": "                key = TranslationTexts.NoBoostGain"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Activity.JoinGroup"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SActivityCompClass.luau:12",
+    "source": "Join the group to claim this reward!",
+    "sha256": "7a147cb804bddcd10bdcb6901856edc547dbafef6db22caf0ce8e29326d9060c",
+    "definition": "    JoinGroup = \"Join the group to claim this reward!\",",
+    "calls": [
+      {
+        "line": 82,
+        "text": "        return {success = false, key = TranslationTexts.JoinGroup, groupId = RewardGroupId}"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Activity.GroupCheckFailed"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SActivityCompClass.luau:13",
+    "source": "Unable to check group membership. Please try again.",
+    "sha256": "7a147cb804bddcd10bdcb6901856edc547dbafef6db22caf0ce8e29326d9060c",
+    "definition": "    GroupCheckFailed = \"Unable to check group membership. Please try again.\",",
+    "calls": [
+      {
+        "line": 79,
+        "text": "        return {success = false, key = TranslationTexts.GroupCheckFailed}"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Aura.Unknown"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SAuraCompClass.luau:5",
+    "source": "Something went wrong. Please try again.",
+    "sha256": "4559f480a8809c9d84a797d7548bea085e9fbea5533ec5b39b583190bf77aedb",
+    "definition": "    Unknown = \"Something went wrong. Please try again.\",",
+    "calls": [
+      {
+        "line": 150,
+        "text": "        return {success = false, key = TranslationTexts.Unknown}"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Aura.AlreadyOwned"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SAuraCompClass.luau:6",
+    "source": "You already own this aura.",
+    "sha256": "4559f480a8809c9d84a797d7548bea085e9fbea5533ec5b39b583190bf77aedb",
+    "definition": "    AlreadyOwned = \"You already own this aura.\",",
+    "calls": [
+      {
+        "line": 156,
+        "text": "            return {success = false, key = TranslationTexts.AlreadyOwned}"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Aura.NotEnoughCoins"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SAuraCompClass.luau:7",
+    "source": "Not enough Coins.",
+    "sha256": "4559f480a8809c9d84a797d7548bea085e9fbea5533ec5b39b583190bf77aedb",
+    "definition": "    NotEnoughCoins = \"Not enough Coins.\",",
+    "calls": [
+      {
+        "line": 162,
+        "text": "            return {success = false, key = TranslationTexts.NotEnoughCoins}"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Aura.NotOwned"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SAuraCompClass.luau:8",
+    "source": "You do not own this aura.",
+    "sha256": "4559f480a8809c9d84a797d7548bea085e9fbea5533ec5b39b583190bf77aedb",
+    "definition": "    NotOwned = \"You do not own this aura.\",",
+    "calls": [
+      {
+        "line": 171,
+        "text": "            return {success = false, key = TranslationTexts.NotOwned}"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "GM.InvalidItemInput"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SGMCompClass.luau:5",
+    "source": "Enter a valid item ID and a positive whole-number quantity.",
+    "sha256": "0f0b2f5e3c51ce39907dba724b70cf9b915b6ddb460ae26d20e2c2f287b46fce",
+    "definition": "    InvalidItemInput = \"Enter a valid item ID and a positive whole-number quantity.\",",
+    "calls": [
+      {
+        "line": 53,
+        "text": "        return {success = false, key = TranslationTexts.InvalidItemInput}"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "GM.InvalidItem"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SGMCompClass.luau:6",
+    "source": "Unknown item ID.",
+    "sha256": "0f0b2f5e3c51ce39907dba724b70cf9b915b6ddb460ae26d20e2c2f287b46fce",
+    "definition": "    InvalidItem = \"Unknown item ID.\",",
+    "calls": [
+      {
+        "line": 53,
+        "text": "        return {success = false, key = TranslationTexts.InvalidItemInput}"
+      },
+      {
+        "line": 56,
+        "text": "        return {success = false, key = TranslationTexts.InvalidItem}"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "GM.ItemFull"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SGMCompClass.luau:7",
+    "source": "Not enough inventory space.",
+    "sha256": "0f0b2f5e3c51ce39907dba724b70cf9b915b6ddb460ae26d20e2c2f287b46fce",
+    "definition": "    ItemFull = \"Not enough inventory space.\",",
+    "calls": [
+      {
+        "line": 60,
+        "text": "        return {success = false, key = TranslationTexts.ItemFull}"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "GM.ItemAdded"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SGMCompClass.luau:8",
+    "source": "Item added.",
+    "sha256": "0f0b2f5e3c51ce39907dba724b70cf9b915b6ddb460ae26d20e2c2f287b46fce",
+    "definition": "    ItemAdded = \"Item added.\",",
+    "calls": [
+      {
+        "line": 62,
+        "text": "    return {success = true, key = TranslationTexts.ItemAdded}"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "GM.InvalidValue"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SGMCompClass.luau:9",
+    "source": "Enter a valid whole number within the allowed range.",
+    "sha256": "0f0b2f5e3c51ce39907dba724b70cf9b915b6ddb460ae26d20e2c2f287b46fce",
+    "definition": "    InvalidValue = \"Enter a valid whole number within the allowed range.\",",
+    "calls": [
+      {
+        "line": 93,
+        "text": "        return {success = false, key = TranslationTexts.InvalidValue}"
+      },
+      {
+        "line": 98,
+        "text": "            return {success = false, key = TranslationTexts.InvalidValue}"
+      },
+      {
+        "line": 107,
+        "text": "            return {success = false, key = TranslationTexts.InvalidValue}"
+      },
+      {
+        "line": 116,
+        "text": "        return {success = false, key = TranslationTexts.InvalidValue}"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "GM.LevelLimit"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SGMCompClass.luau:10",
+    "source": "The current level limit is {level:int}.",
+    "sha256": "0f0b2f5e3c51ce39907dba724b70cf9b915b6ddb460ae26d20e2c2f287b46fce",
+    "definition": "    LevelLimit = \"The current level limit is {level:int}.\",",
+    "calls": [
+      {
+        "line": 101,
+        "text": "            return {success = false, key = TranslationTexts.LevelLimit, arguments = {level = maxLevel}}"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "GM.Success"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SGMCompClass.luau:11",
+    "source": "Operation completed.",
+    "sha256": "0f0b2f5e3c51ce39907dba724b70cf9b915b6ddb460ae26d20e2c2f287b46fce",
+    "definition": "    Success = \"Operation completed.\",",
+    "calls": [
+      {
+        "line": 118,
+        "text": "    return {success = true, key = TranslationTexts.Success}"
+      },
+      {
+        "line": 128,
+        "text": "        return {success = true, key = TranslationTexts.Success}"
+      },
+      {
+        "line": 132,
+        "text": "    return {success = true, key = TranslationTexts.Success}"
+      },
+      {
+        "line": 222,
+        "text": "    return {success = true, key = TranslationTexts.Success}"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "GM.Forbidden"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SGMCompClass.luau:12",
+    "source": "Only developers can use these controls.",
+    "sha256": "0f0b2f5e3c51ce39907dba724b70cf9b915b6ddb460ae26d20e2c2f287b46fce",
+    "definition": "    Forbidden = \"Only developers can use these controls.\",",
+    "calls": [
+      {
+        "line": 167,
+        "text": "        return {success = false, key = TranslationTexts.Forbidden}"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "GM.Unknown"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SGMCompClass.luau:13",
+    "source": "Something went wrong. Please try again.",
+    "sha256": "0f0b2f5e3c51ce39907dba724b70cf9b915b6ddb460ae26d20e2c2f287b46fce",
+    "definition": "    Unknown = \"Something went wrong. Please try again.\",",
+    "calls": [
+      {
+        "line": 176,
+        "text": "        return {success = false, key = TranslationTexts.Unknown}"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "GM.Busy"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SGMCompClass.luau:14",
+    "source": "An operation is in progress. Please try again shortly.",
+    "sha256": "0f0b2f5e3c51ce39907dba724b70cf9b915b6ddb460ae26d20e2c2f287b46fce",
+    "definition": "    Busy = \"An operation is in progress. Please try again shortly.\",",
+    "calls": [
+      {
+        "line": 180,
+        "text": "        return {success = false, key = TranslationTexts.Busy}"
+      },
+      {
+        "line": 193,
+        "text": "        return {success = false, key = TranslationTexts.Busy}"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "GM.SaveFailed"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SGMCompClass.luau:15",
+    "source": "Save failed. Please try again.",
+    "sha256": "0f0b2f5e3c51ce39907dba724b70cf9b915b6ddb460ae26d20e2c2f287b46fce",
+    "definition": "    SaveFailed = \"Save failed. Please try again.\",",
+    "calls": [
+      {
+        "line": 220,
+        "text": "        return {success = false, key = TranslationTexts.SaveFailed}"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "LootSell.Unknown"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SLootSellCompClass.luau:5",
+    "source": "Something went wrong. Please try again.",
+    "sha256": "6eefc481c2cc92a8adc3741406fc45ad6374ce67faee16256a3cb5c0dbe5abc8",
+    "definition": "    Unknown = \"Something went wrong. Please try again.\",",
+    "calls": [
+      {
+        "line": 77,
+        "text": "    local costFailure = TranslationTexts.Unknown"
+      },
+      {
+        "line": 92,
+        "text": "        return {success = false, key = TranslationTexts.Unknown}"
+      },
+      {
+        "line": 95,
+        "text": "        return {success = false, key = TranslationTexts.Unknown}"
+      },
+      {
+        "line": 138,
+        "text": "        return {success = false, key = TranslationTexts.Unknown}"
+      },
+      {
+        "line": 146,
+        "text": "        return {success = false, key = TranslationTexts.Unknown}"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "LootSell.Changed"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SLootSellCompClass.luau:6",
+    "source": "Your items have changed. Please try again.",
+    "sha256": "6eefc481c2cc92a8adc3741406fc45ad6374ce67faee16256a3cb5c0dbe5abc8",
+    "definition": "    Changed = \"Your items have changed. Please try again.\",",
+    "calls": [
+      {
+        "line": 105,
+        "text": "            return {success = false, key = TranslationTexts.Changed}"
+      },
+      {
+        "line": 114,
+        "text": "            return {success = false, key = TranslationTexts.Changed}"
+      },
+      {
+        "line": 123,
+        "text": "                return {success = false, key = TranslationTexts.Changed}"
+      },
+      {
+        "line": 132,
+        "text": "        return {success = false, key = TranslationTexts.Changed}"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "LootSell.Empty"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SLootSellCompClass.luau:7",
+    "source": "You have no items to sell.",
+    "sha256": "6eefc481c2cc92a8adc3741406fc45ad6374ce67faee16256a3cb5c0dbe5abc8",
+    "definition": "    Empty = \"You have no items to sell.\",",
+    "calls": [
+      {
+        "line": 110,
+        "text": "        return {success = false, key = TranslationTexts.Empty}"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "LootSell.NeedDoubleCard"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SLootSellCompClass.luau:8",
+    "source": "You need a Double Sell Value Card to sell for double value.",
+    "sha256": "6eefc481c2cc92a8adc3741406fc45ad6374ce67faee16256a3cb5c0dbe5abc8",
+    "definition": "    NeedDoubleCard = \"You need a Double Sell Value Card to sell for double value.\",",
+    "calls": [
+      {
+        "line": 81,
+        "text": "        costFailure = TranslationTexts.NeedDoubleCard"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "LootSell.NeedDiamonds"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SLootSellCompClass.luau:9",
+    "source": "Not enough diamonds.",
+    "sha256": "6eefc481c2cc92a8adc3741406fc45ad6374ce67faee16256a3cb5c0dbe5abc8",
+    "definition": "    NeedDiamonds = \"Not enough diamonds.\",",
+    "calls": [
+      {
+        "line": 85,
+        "text": "        costFailure = TranslationTexts.NeedDiamonds"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "LootSell.NeedVip"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SLootSellCompClass.luau:10",
+    "source": "Unlock VIP to use free double selling.",
+    "sha256": "6eefc481c2cc92a8adc3741406fc45ad6374ce67faee16256a3cb5c0dbe5abc8",
+    "definition": "    NeedVip = \"Unlock VIP to use free double selling.\",",
+    "calls": [
+      {
+        "line": 88,
+        "text": "            return {success = false, key = TranslationTexts.NeedVip}"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "LootSell.Success"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SLootSellCompClass.luau:11",
+    "source": "Items sold!",
+    "sha256": "6eefc481c2cc92a8adc3741406fc45ad6374ce67faee16256a3cb5c0dbe5abc8",
+    "definition": "    Success = \"Items sold!\",",
+    "calls": [
+      {
+        "line": 151,
+        "text": "        success = true, key = TranslationTexts.Success, count = count, amount = amount,"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Misc.InDevelopment"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SMiscCompClass.luau:5",
+    "source": "Coming soon.",
+    "sha256": "fcade062ca55658f39ad2dc0fa3e08fc8c361928be3ebbe9198134590a5878f1",
+    "definition": "    InDevelopment = \"Coming soon.\",",
+    "calls": [
+      {
+        "line": 65,
+        "text": "        player:ShowLocalizedTips(TranslationTexts.InDevelopment)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Misc.RebirthRequiredLevel"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SMiscCompClass.luau:6",
+    "source": "Reach level {level:int} to rebirth.",
+    "sha256": "fcade062ca55658f39ad2dc0fa3e08fc8c361928be3ebbe9198134590a5878f1",
+    "definition": "    RebirthRequiredLevel = \"Reach level {level:int} to rebirth.\",",
+    "calls": [
+      {
+        "line": 70,
+        "text": "        player:ShowLocalizedTips(TranslationTexts.RebirthRequiredLevel, {level = required})"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Misc.Unknown"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SMiscCompClass.luau:7",
+    "source": "Something went wrong. Please try again.",
+    "sha256": "fcade062ca55658f39ad2dc0fa3e08fc8c361928be3ebbe9198134590a5878f1",
+    "definition": "    Unknown = \"Something went wrong. Please try again.\",",
+    "calls": [
+      {
+        "line": 102,
+        "text": "        player:ShowLocalizedTips(TranslationTexts.Unknown)"
+      },
+      {
+        "line": 279,
+        "text": "        return {success = false, key = TranslationTexts.Unknown}"
+      },
+      {
+        "line": 291,
+        "text": "        return {success = false, key = TranslationTexts.Unknown}"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Misc.WorldRequiredLevel"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SMiscCompClass.luau:8",
+    "source": "Reach a best level of {level:int} to unlock this world.",
+    "sha256": "fcade062ca55658f39ad2dc0fa3e08fc8c361928be3ebbe9198134590a5878f1",
+    "definition": "    WorldRequiredLevel = \"Reach a best level of {level:int} to unlock this world.\",",
+    "calls": [
+      {
+        "line": 285,
+        "text": "            key = TranslationTexts.WorldRequiredLevel,"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Misc.TrainingCardGained"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SMiscCompClass.luau:9",
+    "source": "Gained {value} Strength.",
+    "sha256": "fcade062ca55658f39ad2dc0fa3e08fc8c361928be3ebbe9198134590a5878f1",
+    "definition": "    TrainingCardGained = \"Gained {value} Strength.\",",
+    "calls": [
+      {
+        "line": 388,
+        "text": "    self:GetPlayerObject():ShowLocalizedTips(TranslationTexts.TrainingCardGained, {value = GameUtility.NumberToText(gain)})"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Misc.TrainingRequiredRebirths"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SMiscCompClass.luau:10",
+    "source": "Requires {count:int} rebirths to train here.",
+    "sha256": "fcade062ca55658f39ad2dc0fa3e08fc8c361928be3ebbe9198134590a5878f1",
+    "definition": "    TrainingRequiredRebirths = \"Requires {count:int} rebirths to train here.\",",
+    "calls": [
+      {
+        "line": 439,
+        "text": "        self:GetPlayerObject():ShowLocalizedTips(TranslationTexts.TrainingRequiredRebirths, {count = config.NeedRebirhLevel})"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Misc.RebirthReady"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SMiscCompClass.luau:11",
+    "source": "Rebirth is ready! Rebirth to keep growing stronger.",
+    "sha256": "fcade062ca55658f39ad2dc0fa3e08fc8c361928be3ebbe9198134590a5878f1",
+    "definition": "    RebirthReady = \"Rebirth is ready! Rebirth to keep growing stronger.\",",
+    "calls": [
+      {
+        "line": 363,
+        "text": "    self:GetPlayerObject():ShowLocalizedTips(TranslationTexts.RebirthReady)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Misc.NeedDiamonds"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SMiscCompClass.luau:12",
+    "source": "Not enough diamonds.",
+    "sha256": "fcade062ca55658f39ad2dc0fa3e08fc8c361928be3ebbe9198134590a5878f1",
+    "definition": "    NeedDiamonds = \"Not enough diamonds.\",",
+    "calls": [
+      {
+        "line": 92,
+        "text": "        player:ShowLocalizedTips(TranslationTexts.NeedDiamonds)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Misc.RebirthOfferChanged"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SMiscCompClass.luau:13",
+    "source": "This rebirth offer has changed. Please try again.",
+    "sha256": "fcade062ca55658f39ad2dc0fa3e08fc8c361928be3ebbe9198134590a5878f1",
+    "definition": "    RebirthOfferChanged = \"This rebirth offer has changed. Please try again.\",",
+    "calls": [
+      {
+        "line": 88,
+        "text": "        player:ShowLocalizedTips(TranslationTexts.RebirthOfferChanged)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "PlayerRequests.Unknown"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SPlayerObjectManagerClass.luau:5",
+    "source": "Something went wrong. Please try again.",
+    "sha256": "44a0295cd5fd6550ab49ef1359f87a589273d6c9cb2b6e7f116b261ec7ddf0ac",
+    "definition": "    Unknown = \"Something went wrong. Please try again.\",",
+    "calls": [
+      {
+        "line": 75,
+        "text": "            return {success = false, key = TranslationTexts.Unknown}"
+      },
+      {
+        "line": 139,
+        "text": "            return {success = false, key = TranslationTexts.Unknown}"
+      },
+      {
+        "line": 156,
+        "text": "            return {success = false, key = TranslationTexts.Unknown}"
+      },
+      {
+        "line": 174,
+        "text": "            return {success = false, key = TranslationTexts.Unknown}"
+      },
+      {
+        "line": 234,
+        "text": "            return {success = false, key = TranslationTexts.Unknown}"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "PlayerRequests.NotReady"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SPlayerObjectManagerClass.luau:6",
+    "source": "This reward is not available yet.",
+    "sha256": "44a0295cd5fd6550ab49ef1359f87a589273d6c9cb2b6e7f116b261ec7ddf0ac",
+    "definition": "    NotReady = \"This reward is not available yet.\",",
+    "calls": [
+      {
+        "line": 90,
+        "text": "            return {success = false, key = TranslationTexts.NotReady}"
+      },
+      {
+        "line": 104,
+        "text": "            return {success = false, key = TranslationTexts.NotReady}"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Loot.InventoryFull"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SRockLevelCompClass.luau:5",
+    "source": "Storage limit reached: {capacity:int} items.",
+    "sha256": "3f2b0fe6ad14e4378c0603fd8de0475bd34c4f82ddac8738b432f209ff9e8191",
+    "definition": "    InventoryFull = \"Storage limit reached: {capacity:int} items.\",",
+    "calls": [
+      {
+        "line": 530,
+        "text": "        self:GetPlayerObject():ShowLocalizedTips(TranslationTexts.InventoryFull, {capacity = capacity})"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Loot.BagFull"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SRockLevelCompClass.luau:6",
+    "source": "Your backpack is full. Return to your base to store your loot.",
+    "sha256": "3f2b0fe6ad14e4378c0603fd8de0475bd34c4f82ddac8738b432f209ff9e8191",
+    "definition": "    BagFull = \"Your backpack is full. Return to your base to store your loot.\",",
+    "calls": [
+      {
+        "line": 535,
+        "text": "        self:GetPlayerObject():ShowLocalizedTips(TranslationTexts.BagFull)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Loot.LuckyPickedUp"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SRockLevelCompClass.luau:7",
+    "source": "Picked up lucky {item} (×{rate})!",
+    "sha256": "3f2b0fe6ad14e4378c0603fd8de0475bd34c4f82ddac8738b432f209ff9e8191",
+    "definition": "    LuckyPickedUp = \"Picked up lucky {item} (×{rate})!\",",
+    "calls": [
+      {
+        "line": 556,
+        "text": "        self:GetPlayerObject():ShowLocalizedTips(TranslationTexts.LuckyPickedUp,"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Loot.PickedUp"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SRockLevelCompClass.luau:8",
+    "source": "Picked up {item}!",
+    "sha256": "3f2b0fe6ad14e4378c0603fd8de0475bd34c4f82ddac8738b432f209ff9e8191",
+    "definition": "    PickedUp = \"Picked up {item}!\",",
+    "calls": [
+      {
+        "line": 559,
+        "text": "        self:GetPlayerObject():ShowLocalizedTips(TranslationTexts.PickedUp, {itemSource = nameSource})"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Loot.Deposited"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SRockLevelCompClass.luau:9",
+    "source": "Loot stored: {count:int}",
+    "sha256": "3f2b0fe6ad14e4378c0603fd8de0475bd34c4f82ddac8738b432f209ff9e8191",
+    "definition": "    Deposited = \"Loot stored: {count:int}\",",
+    "calls": [
+      {
+        "line": 589,
+        "text": "        self:GetPlayerObject():ShowLocalizedTips(TranslationTexts.Deposited, {count = deposited})"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Loot.DepositFull"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SRockLevelCompClass.luau:10",
+    "source": "Your storage is full.",
+    "sha256": "3f2b0fe6ad14e4378c0603fd8de0475bd34c4f82ddac8738b432f209ff9e8191",
+    "definition": "    DepositFull = \"Your storage is full.\",",
+    "calls": [
+      {
+        "line": 593,
+        "text": "        self:GetPlayerObject():ShowLocalizedTips(TranslationTexts.DepositFull)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Weapon.Unknown"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SWeaponCompClass.luau:5",
+    "source": "Something went wrong. Please try again.",
+    "sha256": "eba85d471e88b9202cf1de572bb06ec2a1da97ba5543225857fbc62fd1514fd2",
+    "definition": "    Unknown = \"Something went wrong. Please try again.\",",
+    "calls": [
+      {
+        "line": 45,
+        "text": "        return {success = false, key = TranslationTexts.Unknown}"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Weapon.AlreadyOwned"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SWeaponCompClass.luau:6",
+    "source": "You already own this weapon.",
+    "sha256": "eba85d471e88b9202cf1de572bb06ec2a1da97ba5543225857fbc62fd1514fd2",
+    "definition": "    AlreadyOwned = \"You already own this weapon.\",",
+    "calls": [
+      {
+        "line": 51,
+        "text": "            return {success = false, key = TranslationTexts.AlreadyOwned}"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Weapon.NotEnoughCoins"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SWeaponCompClass.luau:7",
+    "source": "Not enough Coins.",
+    "sha256": "eba85d471e88b9202cf1de572bb06ec2a1da97ba5543225857fbc62fd1514fd2",
+    "definition": "    NotEnoughCoins = \"Not enough Coins.\",",
+    "calls": [
+      {
+        "line": 57,
+        "text": "            return {success = false, key = TranslationTexts.NotEnoughCoins}"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Weapon.NotOwned"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Player/SWeaponCompClass.luau:8",
+    "source": "You do not own this weapon.",
+    "sha256": "eba85d471e88b9202cf1de572bb06ec2a1da97ba5543225857fbc62fd1514fd2",
+    "definition": "    NotOwned = \"You do not own this weapon.\",",
+    "calls": [
+      {
+        "line": 66,
+        "text": "            return {success = false, key = TranslationTexts.NotOwned}"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "PurchaseReceipt.DiamondsReceived"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Service/SPurchaseReceiptService.luau:5",
+    "source": "Purchase received! +{value} Diamonds.",
+    "sha256": "ad70cde5d4d8ccb74360aa6dd857390a5853ace26b3f73b302e187983345cf2b",
+    "definition": "    DiamondsReceived = \"Purchase received! +{value} Diamonds.\",",
+    "calls": [
+      {
+        "line": 75,
+        "text": "                player:ShowLocalizedTips(TranslationTexts.DiamondsReceived, {value = GameUtility.NumberToText(goods.NumberArray[1])})"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "PurchaseReceipt.RebirthSuccess"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Service/SPurchaseReceiptService.luau:6",
+    "source": "Rebirth complete!",
+    "sha256": "ad70cde5d4d8ccb74360aa6dd857390a5853ace26b3f73b302e187983345cf2b",
+    "definition": "    RebirthSuccess = \"Rebirth complete!\",",
+    "calls": [
+      {
+        "line": 77,
+        "text": "                player:ShowLocalizedTips(TranslationTexts.RebirthSuccess)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "PurchaseReceipt.VipUnlocked"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Service/SPurchaseReceiptService.luau:7",
+    "source": "VIP unlocked! Free double selling is now available.",
+    "sha256": "ad70cde5d4d8ccb74360aa6dd857390a5853ace26b3f73b302e187983345cf2b",
+    "definition": "    VipUnlocked = \"VIP unlocked! Free double selling is now available.\",",
+    "calls": [
+      {
+        "line": 79,
+        "text": "                player:ShowLocalizedTips(TranslationTexts.VipUnlocked)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "PurchaseReceipt.ItemReceived"
+    ],
+    "location": "code:../Scripts/ServerScriptService/Server/Service/SPurchaseReceiptService.luau:8",
+    "source": "Purchase received! {item} x{count:int} added to your inventory.",
+    "sha256": "ad70cde5d4d8ccb74360aa6dd857390a5853ace26b3f73b302e187983345cf2b",
+    "definition": "    ItemReceived = \"Purchase received! {item} x{count:int} added to your inventory.\",",
+    "calls": [
+      {
+        "line": 81,
+        "text": "                player:ShowLocalizedTips(TranslationTexts.ItemReceived, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "GiftDrop.PickUp"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/GiftDrop.luau:8",
+    "source": "Pick Up",
+    "sha256": "9f1f774ad7d4722ff6cda9f8325836bfa3f322c250b4b960e58c522939c7a6a2",
+    "definition": "    PickUp = \"Pick Up\",",
+    "calls": [
+      {
+        "line": 200,
+        "text": "    prompt.ActionText = Text.Tr(TranslationTexts.PickUp)"
+      },
+      {
+        "line": 215,
+        "text": "        prompt.ActionText = Text.Tr(TranslationTexts.PickUp)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "GiftDrop.Ready"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/GiftDrop.luau:9",
+    "source": "Gifts ready to collect!",
+    "sha256": "9f1f774ad7d4722ff6cda9f8325836bfa3f322c250b4b960e58c522939c7a6a2",
+    "definition": "    Ready = \"Gifts ready to collect!\",",
+    "calls": [
+      {
+        "line": 27,
+        "text": "            text = Text.Tr(TranslationTexts.Ready)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "GiftDrop.Complete"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/GiftDrop.luau:10",
+    "source": "All gifts collected today",
+    "sha256": "9f1f774ad7d4722ff6cda9f8325836bfa3f322c250b4b960e58c522939c7a6a2",
+    "definition": "    Complete = \"All gifts collected today\",",
+    "calls": [
+      {
+        "line": 29,
+        "text": "            text = Text.Tr(TranslationTexts.Complete)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "FriendInvite.Title"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CFriendInviteCompClass.luau:5",
+    "source": "Play with friends",
+    "sha256": "eff0a2b156b922d5f7c1775a1acd9b6c0c414e9dff16e32972482636e9c70c49",
+    "definition": "    Title = \"Play with friends\",",
+    "calls": [
+      {
+        "line": 162,
+        "text": "        title.Text = Text.Tr(TranslationTexts.Title)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "FriendInvite.Online"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CFriendInviteCompClass.luau:6",
+    "source": "{name} is online. Invite them to play!",
+    "sha256": "eff0a2b156b922d5f7c1775a1acd9b6c0c414e9dff16e32972482636e9c70c49",
+    "definition": "    Online = \"{name} is online. Invite them to play!\",",
+    "calls": [
+      {
+        "line": 163,
+        "text": "        message.Text = Text.Tr(TranslationTexts.Online, {name = friend.DisplayName or friend.UserName})"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "FriendInvite.Invite"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CFriendInviteCompClass.luau:7",
+    "source": "Invite",
+    "sha256": "eff0a2b156b922d5f7c1775a1acd9b6c0c414e9dff16e32972482636e9c70c49",
+    "definition": "    Invite = \"Invite\",",
+    "calls": [
+      {
+        "line": 164,
+        "text": "        invite.Text = Text.Tr(TranslationTexts.Invite)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "FriendInvite.Close"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CFriendInviteCompClass.luau:8",
+    "source": "Close",
+    "sha256": "eff0a2b156b922d5f7c1775a1acd9b6c0c414e9dff16e32972482636e9c70c49",
+    "definition": "    Close = \"Close\",",
+    "calls": [
+      {
+        "line": 165,
+        "text": "        close.Text = Text.Tr(TranslationTexts.Close)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "GroupRewardChest.Invitation"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CGroupRewardChestCompClass.luau:9",
+    "source": "Join the group for a FREE reward!",
+    "sha256": "3b2028f1aa779dd108f3c23a70eea747168439c08d6e87526df0dbe3d8ba68d7",
+    "definition": "    Invitation = \"Join the group for a FREE reward!\",",
+    "calls": [
+      {
+        "line": 121,
+        "text": "        chest.invitation.Text = Text.Tr(TranslationTexts.Invitation)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "GroupRewardChest.Free"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CGroupRewardChestCompClass.luau:10",
+    "source": "Free!",
+    "sha256": "3b2028f1aa779dd108f3c23a70eea747168439c08d6e87526df0dbe3d8ba68d7",
+    "definition": "    Free = \"Free!\",",
+    "calls": [
+      {
+        "line": 122,
+        "text": "        chest.freeLabel.Text = Text.Tr(TranslationTexts.Free)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "GroupRewardChest.Claim"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CGroupRewardChestCompClass.luau:11",
+    "source": "CLAIM {value} DIAMONDS",
+    "sha256": "3b2028f1aa779dd108f3c23a70eea747168439c08d6e87526df0dbe3d8ba68d7",
+    "definition": "    Claim = \"CLAIM {value} DIAMONDS\",",
+    "calls": [
+      {
+        "line": 117,
+        "text": "    local actionText = Text.Tr(TranslationTexts.Claim, {"
+      },
+      {
+        "line": 198,
+        "text": "    commonUI:ShowTips(Text.Tr(TranslationTexts.Claimed))"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "GroupRewardChest.Claimed"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CGroupRewardChestCompClass.luau:12",
+    "source": "Reward claimed!",
+    "sha256": "3b2028f1aa779dd108f3c23a70eea747168439c08d6e87526df0dbe3d8ba68d7",
+    "definition": "    Claimed = \"Reward claimed!\",",
+    "calls": [
+      {
+        "line": 198,
+        "text": "    commonUI:ShowTips(Text.Tr(TranslationTexts.Claimed))"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "GroupRewardChest.Failed"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CGroupRewardChestCompClass.luau:13",
+    "source": "Something went wrong. Please try again.",
+    "sha256": "3b2028f1aa779dd108f3c23a70eea747168439c08d6e87526df0dbe3d8ba68d7",
+    "definition": "    Failed = \"Something went wrong. Please try again.\",",
+    "calls": [
+      {
+        "line": 186,
+        "text": "        commonUI:ShowTips(Text.Tr(TranslationTexts.Failed))"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "GroupRewardChest.MembershipPending"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CGroupRewardChestCompClass.luau:14",
+    "source": "If you just joined the group, rejoin the game to claim your reward.",
+    "sha256": "3b2028f1aa779dd108f3c23a70eea747168439c08d6e87526df0dbe3d8ba68d7",
+    "definition": "    MembershipPending = \"If you just joined the group, rejoin the game to claim your reward.\",",
+    "calls": [
+      {
+        "line": 174,
+        "text": "                    response.key = TranslationTexts.MembershipPending"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "LootDisplay.PickUp"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CRockLevelCompClass.luau:5",
+    "source": "Pick Up",
+    "sha256": "03658ba9ca489f685cc154f976468c1d79f64b0affe615c08b245f469a7f5d0d",
+    "definition": "    PickUp = \"Pick Up\",",
+    "calls": [
+      {
+        "line": 266,
+        "text": "    prompt.ActionText = Text.Tr(TranslationTexts.PickUp)"
+      },
+      {
+        "line": 401,
+        "text": "    drop.Prompt.ActionText = Text.Tr(TranslationTexts.PickUp)"
+      },
+      {
+        "line": 1457,
+        "text": "                    node.ActionText = Text.Tr(TranslationTexts.PickUp)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "LootDisplay.Luck"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CRockLevelCompClass.luau:6",
+    "source": "x{rate} Luck",
+    "sha256": "03658ba9ca489f685cc154f976468c1d79f64b0affe615c08b245f469a7f5d0d",
+    "definition": "    Luck = \"x{rate} Luck\",",
+    "calls": [
+      {
+        "line": 216,
+        "text": "        entry.Label.Text = Text.Tr(TranslationTexts.Luck, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "LootDisplay.Quality"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CRockLevelCompClass.luau:7",
+    "source": "Quality {level:int}",
+    "sha256": "03658ba9ca489f685cc154f976468c1d79f64b0affe615c08b245f469a7f5d0d",
+    "definition": "    Quality = \"Quality {level:int}\",",
+    "calls": [
+      {
+        "line": 409,
+        "text": "    FXLoader:Here(drop.Hud, \"Frame/Rarity\").Text = Text.Tr(TranslationTexts.Quality, rarityArguments)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Tutorial.Collect"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CTutorialGuideCompClass.luau:6",
+    "source": "Head into the rocks! Your pickaxe clears the way. Pick up 2 pieces of loot.",
+    "sha256": "d38342559730d176e82ee72584e90c083a0290c2a4c3ba71a9639e76c1ed3168",
+    "definition": "    Collect = \"Head into the rocks! Your pickaxe clears the way. Pick up 2 pieces of loot.\",",
+    "calls": [
+      {
+        "line": 21,
+        "text": "    [\"Tutorial.Collect\"] = TranslationTexts.Collect,"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Tutorial.Deposit"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CTutorialGuideCompClass.luau:7",
+    "source": "Return to your base to store your loot. You can also use HOME.",
+    "sha256": "d38342559730d176e82ee72584e90c083a0290c2a4c3ba71a9639e76c1ed3168",
+    "definition": "    Deposit = \"Return to your base to store your loot. You can also use HOME.\",",
+    "calls": [
+      {
+        "line": 22,
+        "text": "    [\"Tutorial.Deposit\"] = TranslationTexts.Deposit,"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Tutorial.Sell"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CTutorialGuideCompClass.luau:8",
+    "source": "Visit the merchant and sell your stored loot for coins!",
+    "sha256": "d38342559730d176e82ee72584e90c083a0290c2a4c3ba71a9639e76c1ed3168",
+    "definition": "    Sell = \"Visit the merchant and sell your stored loot for coins!\",",
+    "calls": [
+      {
+        "line": 23,
+        "text": "    [\"Tutorial.Sell\"] = TranslationTexts.Sell,"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Tutorial.Rate"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CTutorialGuideCompClass.luau:9",
+    "source": "Use your 30 welcome diamonds to buy the training multiplier on the right!",
+    "sha256": "d38342559730d176e82ee72584e90c083a0290c2a4c3ba71a9639e76c1ed3168",
+    "definition": "    Rate = \"Use your 30 welcome diamonds to buy the training multiplier on the right!\",",
+    "calls": [
+      {
+        "line": 24,
+        "text": "    [\"Tutorial.Rate\"] = TranslationTexts.Rate,"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Tutorial.Weapon"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CTutorialGuideCompClass.luau:10",
+    "source": "You earned 100 coins! Visit the weapon shop and equip a better pickaxe.",
+    "sha256": "d38342559730d176e82ee72584e90c083a0290c2a4c3ba71a9639e76c1ed3168",
+    "definition": "    Weapon = \"You earned 100 coins! Visit the weapon shop and equip a better pickaxe.\",",
+    "calls": [
+      {
+        "line": 25,
+        "text": "    [\"Tutorial.Weapon\"] = TranslationTexts.Weapon,"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Tutorial.AutomaticTraining"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CTutorialGuideCompClass.luau:11",
+    "source": "Train here automatically, even while AFK! Rebirth to unlock training areas with higher multipliers.",
+    "sha256": "d38342559730d176e82ee72584e90c083a0290c2a4c3ba71a9639e76c1ed3168",
+    "definition": "    AutomaticTraining = \"Train here automatically, even while AFK! Rebirth to unlock training areas with higher multipliers.\",",
+    "calls": [
+      {
+        "line": 26,
+        "text": "    [\"Tutorial.AutomaticTraining\"] = TranslationTexts.AutomaticTraining,"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Tutorial.Done"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CTutorialGuideCompClass.luau:12",
+    "source": "Keep getting stronger and discover more valuable loot!",
+    "sha256": "d38342559730d176e82ee72584e90c083a0290c2a4c3ba71a9639e76c1ed3168",
+    "definition": "    Done = \"Keep getting stronger and discover more valuable loot!\",",
+    "calls": [
+      {
+        "line": 27,
+        "text": "    [\"Tutorial.Done\"] = TranslationTexts.Done,"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Tutorial.Rewards"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CTutorialGuideCompClass.luau:13",
+    "source": "Claim your rewards from the Rewards button!",
+    "sha256": "d38342559730d176e82ee72584e90c083a0290c2a4c3ba71a9639e76c1ed3168",
+    "definition": "    Rewards = \"Claim your rewards from the Rewards button!\",",
+    "calls": [
+      {
+        "line": 28,
+        "text": "    [\"Tutorial.Rewards\"] = TranslationTexts.Rewards,"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Tutorial.Aura"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CTutorialGuideCompClass.luau:14",
+    "source": "You're doing great! You can now buy an aura!",
+    "sha256": "d38342559730d176e82ee72584e90c083a0290c2a4c3ba71a9639e76c1ed3168",
+    "definition": "    Aura = \"You're doing great! You can now buy an aura!\",",
+    "calls": [
+      {
+        "line": 29,
+        "text": "    [\"Tutorial.Aura\"] = TranslationTexts.Aura,"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Tutorial.UpgradeWeapon"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CTutorialGuideCompClass.luau:15",
+    "source": "Buy a stronger pickaxe!",
+    "sha256": "d38342559730d176e82ee72584e90c083a0290c2a4c3ba71a9639e76c1ed3168",
+    "definition": "    UpgradeWeapon = \"Buy a stronger pickaxe!\",",
+    "calls": [
+      {
+        "line": 30,
+        "text": "    [\"Upgrade.Weapon\"] = TranslationTexts.UpgradeWeapon,"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Tutorial.UpgradeAura"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/Player/CTutorialGuideCompClass.luau:16",
+    "source": "Buy a stronger aura!",
+    "sha256": "d38342559730d176e82ee72584e90c083a0290c2a4c3ba71a9639e76c1ed3168",
+    "definition": "    UpgradeAura = \"Buy a stronger aura!\",",
+    "calls": [
+      {
+        "line": 31,
+        "text": "    [\"Upgrade.Aura\"] = TranslationTexts.UpgradeAura,"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "AuraShop.Unknown"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CAuraShopUICompClass.luau:5",
+    "source": "Something went wrong. Please try again.",
+    "sha256": "1294f6c30d043fb0efb1d71f8e07e8670e8568eb3c313916e3659e1cdd13624a",
+    "definition": "    Unknown = \"Something went wrong. Please try again.\",",
+    "calls": [
+      {
+        "line": 176,
+        "text": "            self._commonUI:ShowLocalizedTips(ok and result.key or TranslationTexts.Unknown)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Tooltips.LuckyTooltip"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CCommonUICompClass.luau:5",
+    "source": "{item} · Lucky ×{rate} · {price} Coins",
+    "sha256": "28924b6d32f06121759ce912468cebeed082b3b9f80b051fe50d6aef1599a348",
+    "definition": "    LuckyTooltip = \"{item} · Lucky ×{rate} · {price} Coins\",",
+    "calls": [
+      {
+        "line": 235,
+        "text": "            tool.ToolTip = Text.Tr(TranslationTexts.LuckyTooltip, arguments)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Tooltips.Tooltip"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CCommonUICompClass.luau:6",
+    "source": "{item} · {price} Coins",
+    "sha256": "28924b6d32f06121759ce912468cebeed082b3b9f80b051fe50d6aef1599a348",
+    "definition": "    Tooltip = \"{item} · {price} Coins\",",
+    "calls": [
+      {
+        "line": 237,
+        "text": "            tool.ToolTip = Text.Tr(TranslationTexts.Tooltip, arguments)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "CurrencyShopUI.Processing"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CCurrencyShopUICompClass.luau:6",
+    "source": "Payment completed. Waiting for your reward.",
+    "sha256": "e7ed7c4bd672d7599c8f9a067142d0c22450375e9dc7ca3ca5f50db6f006d0d7",
+    "definition": "    Processing = \"Payment completed. Waiting for your reward.\",",
+    "calls": [
+      {
+        "line": 65,
+        "text": "                self._commonUI:ShowLocalizedTips(TranslationTexts.Processing)"
+      },
+      {
+        "line": 80,
+        "text": "                self._commonUI:ShowLocalizedTips(TranslationTexts.Processing)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "CurrencyShopUI.Training"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CCurrencyShopUICompClass.luau:7",
+    "source": "Training x{rate}",
+    "sha256": "e7ed7c4bd672d7599c8f9a067142d0c22450375e9dc7ca3ca5f50db6f006d0d7",
+    "definition": "    Training = \"Training x{rate}\",",
+    "calls": [
+      {
+        "line": 156,
+        "text": "                title = Text.Tr(TranslationTexts.Training, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "CurrencyShopUI.Capacity"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CCurrencyShopUICompClass.luau:8",
+    "source": "+{count:int} Carry Slot",
+    "sha256": "e7ed7c4bd672d7599c8f9a067142d0c22450375e9dc7ca3ca5f50db6f006d0d7",
+    "definition": "    Capacity = \"+{count:int} Carry Slot\",",
+    "calls": [
+      {
+        "line": 161,
+        "text": "                title = Text.Tr(TranslationTexts.Capacity, {count = goods.NumberArray[1]})"
+      },
+      {
+        "line": 162,
+        "text": "                description = Text.Tr(TranslationTexts.CapacityDesc, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "CurrencyShopUI.CapacityDesc"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CCurrencyShopUICompClass.luau:9",
+    "source": "Permanently carry {count:int} collectibles.",
+    "sha256": "e7ed7c4bd672d7599c8f9a067142d0c22450375e9dc7ca3ca5f50db6f006d0d7",
+    "definition": "    CapacityDesc = \"Permanently carry {count:int} collectibles.\",",
+    "calls": [
+      {
+        "line": 162,
+        "text": "                description = Text.Tr(TranslationTexts.CapacityDesc, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "CurrencyShopUI.Diamonds"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CCurrencyShopUICompClass.luau:10",
+    "source": "{value} Diamonds",
+    "sha256": "e7ed7c4bd672d7599c8f9a067142d0c22450375e9dc7ca3ca5f50db6f006d0d7",
+    "definition": "    Diamonds = \"{value} Diamonds\",",
+    "calls": [
+      {
+        "line": 180,
+        "text": "            title = Text.Tr(TranslationTexts.Diamonds, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "CurrencyShopUI.RateMaxed"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CCurrencyShopUICompClass.luau:11",
+    "source": "You have reached the maximum training multiplier.",
+    "sha256": "e7ed7c4bd672d7599c8f9a067142d0c22450375e9dc7ca3ca5f50db6f006d0d7",
+    "definition": "    RateMaxed = \"You have reached the maximum training multiplier.\",",
+    "calls": [
+      {
+        "line": 257,
+        "text": "                self._commonUI:ShowLocalizedTips(TranslationTexts.RateMaxed)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "GMUI.InvalidItemInput"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CGMIntegrationCompClass.luau:5",
+    "source": "Enter a valid item ID and a positive whole-number quantity.",
+    "sha256": "09c375a82fc4c23581def197a1339291b35d85153111ae336007425ac2bf9835",
+    "definition": "    InvalidItemInput = \"Enter a valid item ID and a positive whole-number quantity.\",",
+    "calls": [
+      {
+        "line": 53,
+        "text": "        self._commonUI:ShowLocalizedTips(TranslationTexts.InvalidItemInput)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "GMUI.InvalidValue"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CGMIntegrationCompClass.luau:6",
+    "source": "Enter a valid whole number within the allowed range.",
+    "sha256": "09c375a82fc4c23581def197a1339291b35d85153111ae336007425ac2bf9835",
+    "definition": "    InvalidValue = \"Enter a valid whole number within the allowed range.\",",
+    "calls": [
+      {
+        "line": 55,
+        "text": "        self._commonUI:ShowLocalizedTips(TranslationTexts.InvalidValue)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "GMUI.Unknown"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CGMIntegrationCompClass.luau:7",
+    "source": "Something went wrong. Please try again.",
+    "sha256": "09c375a82fc4c23581def197a1339291b35d85153111ae336007425ac2bf9835",
+    "definition": "    Unknown = \"Something went wrong. Please try again.\",",
+    "calls": [
+      {
+        "line": 84,
+        "text": "            ok and type(result) == \"table\" and result.key or TranslationTexts.Unknown,"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Leaderboard.StrengthTitle"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CLeaderboardUICompClass.luau:5",
+    "source": "Strength Leaderboard",
+    "sha256": "a3b9968999a9205ac49bb276c268a79f2ef7f57f7c59f350d62d88730b3dca53",
+    "definition": "    StrengthTitle = \"Strength Leaderboard\",",
+    "calls": [
+      {
+        "line": 417,
+        "text": "    local titles = {TranslationTexts.StrengthTitle, TranslationTexts.RebirthTitle, TranslationTexts.PlaytimeTitle}"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Leaderboard.RebirthTitle"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CLeaderboardUICompClass.luau:6",
+    "source": "Rebirth Leaderboard",
+    "sha256": "a3b9968999a9205ac49bb276c268a79f2ef7f57f7c59f350d62d88730b3dca53",
+    "definition": "    RebirthTitle = \"Rebirth Leaderboard\",",
+    "calls": [
+      {
+        "line": 417,
+        "text": "    local titles = {TranslationTexts.StrengthTitle, TranslationTexts.RebirthTitle, TranslationTexts.PlaytimeTitle}"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Leaderboard.PlaytimeTitle"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CLeaderboardUICompClass.luau:7",
+    "source": "Playtime Leaderboard",
+    "sha256": "a3b9968999a9205ac49bb276c268a79f2ef7f57f7c59f350d62d88730b3dca53",
+    "definition": "    PlaytimeTitle = \"Playtime Leaderboard\",",
+    "calls": [
+      {
+        "line": 417,
+        "text": "    local titles = {TranslationTexts.StrengthTitle, TranslationTexts.RebirthTitle, TranslationTexts.PlaytimeTitle}"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Leaderboard.Strength"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CLeaderboardUICompClass.luau:8",
+    "source": "Strength",
+    "sha256": "a3b9968999a9205ac49bb276c268a79f2ef7f57f7c59f350d62d88730b3dca53",
+    "definition": "    Strength = \"Strength\",",
+    "calls": [
+      {
+        "line": 417,
+        "text": "    local titles = {TranslationTexts.StrengthTitle, TranslationTexts.RebirthTitle, TranslationTexts.PlaytimeTitle}"
+      },
+      {
+        "line": 418,
+        "text": "    local headers = {TranslationTexts.Strength, TranslationTexts.Rebirths, TranslationTexts.Playtime}"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Leaderboard.Rebirths"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CLeaderboardUICompClass.luau:9",
+    "source": "Rebirths",
+    "sha256": "a3b9968999a9205ac49bb276c268a79f2ef7f57f7c59f350d62d88730b3dca53",
+    "definition": "    Rebirths = \"Rebirths\",",
+    "calls": [
+      {
+        "line": 418,
+        "text": "    local headers = {TranslationTexts.Strength, TranslationTexts.Rebirths, TranslationTexts.Playtime}"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Leaderboard.Playtime"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CLeaderboardUICompClass.luau:10",
+    "source": "Playtime",
+    "sha256": "a3b9968999a9205ac49bb276c268a79f2ef7f57f7c59f350d62d88730b3dca53",
+    "definition": "    Playtime = \"Playtime\",",
+    "calls": [
+      {
+        "line": 417,
+        "text": "    local titles = {TranslationTexts.StrengthTitle, TranslationTexts.RebirthTitle, TranslationTexts.PlaytimeTitle}"
+      },
+      {
+        "line": 418,
+        "text": "    local headers = {TranslationTexts.Strength, TranslationTexts.Rebirths, TranslationTexts.Playtime}"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Leaderboard.Rank"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CLeaderboardUICompClass.luau:11",
+    "source": "Rank",
+    "sha256": "a3b9968999a9205ac49bb276c268a79f2ef7f57f7c59f350d62d88730b3dca53",
+    "definition": "    Rank = \"Rank\",",
+    "calls": [
+      {
+        "line": 414,
+        "text": "    self._rankHeader.Text = Text.Tr(TranslationTexts.Rank)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Leaderboard.Player"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CLeaderboardUICompClass.luau:12",
+    "source": "Player",
+    "sha256": "a3b9968999a9205ac49bb276c268a79f2ef7f57f7c59f350d62d88730b3dca53",
+    "definition": "    Player = \"Player\",",
+    "calls": [
+      {
+        "line": 415,
+        "text": "    self._playerHeader.Text = Text.Tr(TranslationTexts.Player)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Leaderboard.You"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CLeaderboardUICompClass.luau:13",
+    "source": "You",
+    "sha256": "a3b9968999a9205ac49bb276c268a79f2ef7f57f7c59f350d62d88730b3dca53",
+    "definition": "    You = \"You\",",
+    "calls": [
+      {
+        "line": 243,
+        "text": "    FXLoader:Here(personal, \"PlayerName\").Text = Text.Tr(TranslationTexts.You)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Leaderboard.View"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CLeaderboardUICompClass.luau:14",
+    "source": "E · View Leaderboard",
+    "sha256": "a3b9968999a9205ac49bb276c268a79f2ef7f57f7c59f350d62d88730b3dca53",
+    "definition": "    View = \"E · View Leaderboard\",",
+    "calls": [
+      {
+        "line": 256,
+        "text": "        AutoLocalize = false, Visible = false, Text = Text.Tr(TranslationTexts.View),"
+      },
+      {
+        "line": 416,
+        "text": "    self._viewButton.Text = Text.Tr(TranslationTexts.View)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Leaderboard.Close"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CLeaderboardUICompClass.luau:15",
+    "source": "Close · E",
+    "sha256": "a3b9968999a9205ac49bb276c268a79f2ef7f57f7c59f350d62d88730b3dca53",
+    "definition": "    Close = \"Close · E\",",
+    "calls": [
+      {
+        "line": 268,
+        "text": "        AutoLocalize = false, Visible = false, Modal = true, Text = Text.Tr(TranslationTexts.Close),"
+      },
+      {
+        "line": 436,
+        "text": "    self._closeButton.Text = Text.Tr(TranslationTexts.Close)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Leaderboard.Minutes"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CLeaderboardUICompClass.luau:16",
+    "source": "{count:int}min",
+    "sha256": "a3b9968999a9205ac49bb276c268a79f2ef7f57f7c59f350d62d88730b3dca53",
+    "definition": "    Minutes = \"{count:int}min\",",
+    "calls": [
+      {
+        "line": 50,
+        "text": "            return Text.Tr(TranslationTexts.Minutes, {count = math.floor(score / 60)})"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Leaderboard.Hours"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CLeaderboardUICompClass.luau:17",
+    "source": "{count:int}h",
+    "sha256": "a3b9968999a9205ac49bb276c268a79f2ef7f57f7c59f350d62d88730b3dca53",
+    "definition": "    Hours = \"{count:int}h\",",
+    "calls": [
+      {
+        "line": 56,
+        "text": "        return Text.Tr(TranslationTexts.Hours, {count = hours})"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Leaderboard.DaysHours"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CLeaderboardUICompClass.luau:18",
+    "source": "{days:int}d{hours:int}h",
+    "sha256": "a3b9968999a9205ac49bb276c268a79f2ef7f57f7c59f350d62d88730b3dca53",
+    "definition": "    DaysHours = \"{days:int}d{hours:int}h\",",
+    "calls": [
+      {
+        "line": 54,
+        "text": "            return Text.Tr(TranslationTexts.DaysHours, {days = math.floor(hours / 24), hours = hours % 24})"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Leaderboard.Loading"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CLeaderboardUICompClass.luau:19",
+    "source": "Loading...",
+    "sha256": "a3b9968999a9205ac49bb276c268a79f2ef7f57f7c59f350d62d88730b3dca53",
+    "definition": "    Loading = \"Loading...\",",
+    "calls": [
+      {
+        "line": 238,
+        "text": "        status.Text = Text.Tr(TranslationTexts.Loading)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Leaderboard.Empty"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CLeaderboardUICompClass.luau:20",
+    "source": "No rankings yet.",
+    "sha256": "a3b9968999a9205ac49bb276c268a79f2ef7f57f7c59f350d62d88730b3dca53",
+    "definition": "    Empty = \"No rankings yet.\",",
+    "calls": [
+      {
+        "line": 236,
+        "text": "        status.Text = Text.Tr(TranslationTexts.Empty)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Leaderboard.Unavailable"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CLeaderboardUICompClass.luau:21",
+    "source": "Leaderboard unavailable.",
+    "sha256": "a3b9968999a9205ac49bb276c268a79f2ef7f57f7c59f350d62d88730b3dca53",
+    "definition": "    Unavailable = \"Leaderboard unavailable.\",",
+    "calls": [
+      {
+        "line": 234,
+        "text": "        status.Text = Text.Tr(TranslationTexts.Unavailable)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "LootSellUI.LuckyName"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CLootSellUICompClass.luau:5",
+    "source": "Lucky {item} (×{rate})",
+    "sha256": "a603bbf17953259e1eced2cff506db1af28137187c3f802a026667110c3bb99b",
+    "definition": "    LuckyName = \"Lucky {item} (×{rate})\",",
+    "calls": [
+      {
+        "line": 123,
+        "text": "            name = Text.Tr(TranslationTexts.LuckyName, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "LootSellUI.Empty"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CLootSellUICompClass.luau:6",
+    "source": "You have no items to sell.",
+    "sha256": "a603bbf17953259e1eced2cff506db1af28137187c3f802a026667110c3bb99b",
+    "definition": "    Empty = \"You have no items to sell.\",",
+    "calls": [
+      {
+        "line": 168,
+        "text": "        self._commonUI:ShowLocalizedTips(TranslationTexts.Empty)"
+      },
+      {
+        "line": 182,
+        "text": "        self._commonUI:ShowLocalizedTips(TranslationTexts.Empty)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "LootSellUI.Gained"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CLootSellUICompClass.luau:7",
+    "source": "You earned {value} Coins!",
+    "sha256": "a603bbf17953259e1eced2cff506db1af28137187c3f802a026667110c3bb99b",
+    "definition": "    Gained = \"You earned {value} Coins!\",",
+    "calls": [
+      {
+        "line": 197,
+        "text": "            self._commonUI:ShowLocalizedTips(TranslationTexts.Gained, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "LootSellUI.Unknown"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CLootSellUICompClass.luau:8",
+    "source": "Something went wrong. Please try again.",
+    "sha256": "a603bbf17953259e1eced2cff506db1af28137187c3f802a026667110c3bb99b",
+    "definition": "    Unknown = \"Something went wrong. Please try again.\",",
+    "calls": [
+      {
+        "line": 205,
+        "text": "            self._commonUI:ShowLocalizedTips(ok and result.key or TranslationTexts.Unknown)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Main.GoHome"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMainUICompClass.luau:17",
+    "source": "Go Home",
+    "sha256": "1debfcaed5778000ec52f3d5e1ea4b2bb4baf9f89a43561badae8f762b20e7e7",
+    "definition": "    GoHome = \"Go Home\",",
+    "calls": [
+      {
+        "line": 75,
+        "text": "    self._homeButton.Text = Text.Tr(TranslationTexts.GoHome)"
+      },
+      {
+        "line": 559,
+        "text": "    self._homeButton.Text = Text.Tr(TranslationTexts.GoHome)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Main.StrengthRate"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMainUICompClass.luau:18",
+    "source": "x{rate} Strength",
+    "sha256": "1debfcaed5778000ec52f3d5e1ea4b2bb4baf9f89a43561badae8f762b20e7e7",
+    "definition": "    StrengthRate = \"x{rate} Strength\",",
+    "calls": [
+      {
+        "line": 462,
+        "text": "        rateLabel.Text = Text.Tr(TranslationTexts.StrengthRate, {"
+      },
+      {
+        "line": 467,
+        "text": "        rateLabel.Text = Text.Tr(TranslationTexts.StrengthRate, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Main.SoldOut"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMainUICompClass.luau:19",
+    "source": "Sold Out",
+    "sha256": "1debfcaed5778000ec52f3d5e1ea4b2bb4baf9f89a43561badae8f762b20e7e7",
+    "definition": "    SoldOut = \"Sold Out\",",
+    "calls": [
+      {
+        "line": 466,
+        "text": "        ratePrice.Text = Text.Tr(TranslationTexts.SoldOut)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Main.RateMaxed"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMainUICompClass.luau:20",
+    "source": "You have reached the maximum training multiplier.",
+    "sha256": "1debfcaed5778000ec52f3d5e1ea4b2bb4baf9f89a43561badae8f762b20e7e7",
+    "definition": "    RateMaxed = \"You have reached the maximum training multiplier.\",",
+    "calls": [
+      {
+        "line": 500,
+        "text": "            self._commonUI:ShowLocalizedTips(TranslationTexts.RateMaxed)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Main.TrainingFull"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMainUICompClass.luau:21",
+    "source": "Training XP is full. Rebirth before buying a training pack.",
+    "sha256": "1debfcaed5778000ec52f3d5e1ea4b2bb4baf9f89a43561badae8f762b20e7e7",
+    "definition": "    TrainingFull = \"Training XP is full. Rebirth before buying a training pack.\",",
+    "calls": [
+      {
+        "line": 507,
+        "text": "            self._commonUI:ShowLocalizedTips(TranslationTexts.TrainingFull)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Main.TrainingPack"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMainUICompClass.luau:22",
+    "source": "Training Pack",
+    "sha256": "1debfcaed5778000ec52f3d5e1ea4b2bb4baf9f89a43561badae8f762b20e7e7",
+    "definition": "    TrainingPack = \"Training Pack\",",
+    "calls": [
+      {
+        "line": 514,
+        "text": "            nameDefinition = TranslationTexts.TrainingPack,"
+      },
+      {
+        "line": 515,
+        "text": "            descriptionDefinition = TranslationTexts.TrainingPackDesc,"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Main.TrainingPackDesc"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMainUICompClass.luau:23",
+    "source": "Gain {value} training XP, up to your current rebirth limit.",
+    "sha256": "1debfcaed5778000ec52f3d5e1ea4b2bb4baf9f89a43561badae8f762b20e7e7",
+    "definition": "    TrainingPackDesc = \"Gain {value} training XP, up to your current rebirth limit.\",",
+    "calls": [
+      {
+        "line": 515,
+        "text": "            descriptionDefinition = TranslationTexts.TrainingPackDesc,"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Main.TrainingActive"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMainUICompClass.luau:24",
+    "source": "Training active · ×{rate}",
+    "sha256": "1debfcaed5778000ec52f3d5e1ea4b2bb4baf9f89a43561badae8f762b20e7e7",
+    "definition": "    TrainingActive = \"Training active · ×{rate}\",",
+    "calls": [
+      {
+        "line": 818,
+        "text": "        self._trainingStatus.Text = Text.Tr(TranslationTexts.TrainingActive, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Main.InDevelopment"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMainUICompClass.luau:25",
+    "source": "Coming soon.",
+    "sha256": "1debfcaed5778000ec52f3d5e1ea4b2bb4baf9f89a43561badae8f762b20e7e7",
+    "definition": "    InDevelopment = \"Coming soon.\",",
+    "calls": [
+      {
+        "line": 826,
+        "text": "    self._commonUI:ShowLocalizedTips(TranslationTexts.InDevelopment)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Main.Strength"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMainUICompClass.luau:26",
+    "source": "Strength: {value}",
+    "sha256": "1debfcaed5778000ec52f3d5e1ea4b2bb4baf9f89a43561badae8f762b20e7e7",
+    "definition": "    Strength = \"Strength: {value}\",",
+    "calls": [
+      {
+        "line": 462,
+        "text": "        rateLabel.Text = Text.Tr(TranslationTexts.StrengthRate, {"
+      },
+      {
+        "line": 467,
+        "text": "        rateLabel.Text = Text.Tr(TranslationTexts.StrengthRate, {"
+      },
+      {
+        "line": 1186,
+        "text": "    self._strength.Text = Text.Tr(TranslationTexts.Strength, {value = GameUtility.NumberToText(strength)})"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Main.MaxLevel"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMainUICompClass.luau:27",
+    "source": "MAX LEVEL",
+    "sha256": "1debfcaed5778000ec52f3d5e1ea4b2bb4baf9f89a43561badae8f762b20e7e7",
+    "definition": "    MaxLevel = \"MAX LEVEL\",",
+    "calls": [
+      {
+        "line": 1189,
+        "text": "        FXLoader:Here(self._bar, \"ProgressLabel\").Text = Text.Tr(TranslationTexts.MaxLevel)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Main.CoinReward"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMainUICompClass.luau:28",
+    "source": "{value} Coins",
+    "sha256": "1debfcaed5778000ec52f3d5e1ea4b2bb4baf9f89a43561badae8f762b20e7e7",
+    "definition": "    CoinReward = \"{value} Coins\",",
+    "calls": [
+      {
+        "line": 1065,
+        "text": "            or Text.Tr(TranslationTexts.CoinReward, {value = GameUtility.NumberToText(entry.MoneyAmount)})"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Main.NewPickaxeAvailable"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMainUICompClass.luau:29",
+    "source": "A new pickaxe is available to buy!",
+    "sha256": "1debfcaed5778000ec52f3d5e1ea4b2bb4baf9f89a43561badae8f762b20e7e7",
+    "definition": "    NewPickaxeAvailable = \"A new pickaxe is available to buy!\",",
+    "calls": [
+      {
+        "line": 783,
+        "text": "            Field = Fields.WeaponData, IdKey = \"ToolId\", Text = TranslationTexts.NewPickaxeAvailable},"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Main.NewAuraAvailable"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMainUICompClass.luau:30",
+    "source": "A new aura is available to buy!",
+    "sha256": "1debfcaed5778000ec52f3d5e1ea4b2bb4baf9f89a43561badae8f762b20e7e7",
+    "definition": "    NewAuraAvailable = \"A new aura is available to buy!\",",
+    "calls": [
+      {
+        "line": 785,
+        "text": "            Field = Fields.AuraData, IdKey = \"AuraId\", Text = TranslationTexts.NewAuraAvailable},"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Main.DiamondPackDiscount"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMainUICompClass.luau:31",
+    "source": "Pay 67%",
+    "sha256": "1debfcaed5778000ec52f3d5e1ea4b2bb4baf9f89a43561badae8f762b20e7e7",
+    "definition": "    DiamondPackDiscount = \"Pay 67%\",",
+    "calls": [
+      {
+        "line": 723,
+        "text": "    self._diamondPackLabels.Discount.Text = Text.Tr(TranslationTexts.DiamondPackDiscount)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Main.DiamondPackAmount"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMainUICompClass.luau:32",
+    "source": "{value} Diamonds",
+    "sha256": "1debfcaed5778000ec52f3d5e1ea4b2bb4baf9f89a43561badae8f762b20e7e7",
+    "definition": "    DiamondPackAmount = \"{value} Diamonds\",",
+    "calls": [
+      {
+        "line": 724,
+        "text": "    self._diamondPackLabels.Amount.Text = Text.Tr(TranslationTexts.DiamondPackAmount, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Main.DiamondPackPrice"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMainUICompClass.luau:33",
+    "source": "Only {robux}{price}",
+    "sha256": "1debfcaed5778000ec52f3d5e1ea4b2bb4baf9f89a43561badae8f762b20e7e7",
+    "definition": "    DiamondPackPrice = \"Only {robux}{price}\",",
+    "calls": [
+      {
+        "line": 729,
+        "text": "        self._diamondPackLabels.Price.Text = Text.Tr(TranslationTexts.DiamondPackPrice, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "MenuRetention.GiftTitle"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMenuRetentionUICompClass.luau:6",
+    "source": "Don't leave yet! A gift is ready for you!",
+    "sha256": "8235ab136b0a91c1a9d6e0f1783e7a31848ef169bfa0865d16882ac8855fa5ef",
+    "definition": "    GiftTitle = \"Don't leave yet! A gift is ready for you!\",",
+    "calls": [
+      {
+        "line": 239,
+        "text": "    self._giftTitle.Text = Text.Tr(TranslationTexts.GiftTitle)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "MenuRetention.GiftHint"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMenuRetentionUICompClass.luau:7",
+    "source": "Close the Roblox menu to claim your gift.",
+    "sha256": "8235ab136b0a91c1a9d6e0f1783e7a31848ef169bfa0865d16882ac8855fa5ef",
+    "definition": "    GiftHint = \"Close the Roblox menu to claim your gift.\",",
+    "calls": [
+      {
+        "line": 240,
+        "text": "    self._giftHint.Text = Text.Tr(TranslationTexts.GiftHint)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "MenuRetention.OnlineCountdown"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMenuRetentionUICompClass.luau:8",
+    "source": "Your next online reward is available in {time}!",
+    "sha256": "8235ab136b0a91c1a9d6e0f1783e7a31848ef169bfa0865d16882ac8855fa5ef",
+    "definition": "    OnlineCountdown = \"Your next online reward is available in {time}!\",",
+    "calls": [
+      {
+        "line": 394,
+        "text": "        or remaining == 0 and TranslationTexts.Ready or TranslationTexts.OnlineCountdown"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "MenuRetention.Available"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMenuRetentionUICompClass.luau:9",
+    "source": "Reward ready! Claim now!",
+    "sha256": "8235ab136b0a91c1a9d6e0f1783e7a31848ef169bfa0865d16882ac8855fa5ef",
+    "definition": "    Available = \"Reward ready! Claim now!\",",
+    "calls": [
+      {
+        "line": 233,
+        "text": "    local sideText = self:FormatText(TranslationTexts.Available)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "MenuRetention.Unknown"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMenuRetentionUICompClass.luau:10",
+    "source": "Something went wrong. Please try again.",
+    "sha256": "8235ab136b0a91c1a9d6e0f1783e7a31848ef169bfa0865d16882ac8855fa5ef",
+    "definition": "    Unknown = \"Something went wrong. Please try again.\",",
+    "calls": [
+      {
+        "line": 219,
+        "text": "            local key = ok and type(result) == \"table\" and result.key or TranslationTexts.Unknown"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "MenuRetention.Diamonds"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMenuRetentionUICompClass.luau:11",
+    "source": "{value} Diamonds",
+    "sha256": "8235ab136b0a91c1a9d6e0f1783e7a31848ef169bfa0865d16882ac8855fa5ef",
+    "definition": "    Diamonds = \"{value} Diamonds\",",
+    "calls": [
+      {
+        "line": 244,
+        "text": "        self._giftReward.Text = Text.Tr(TranslationTexts.Diamonds, {value = GameUtility.NumberToText(reward.amount)})"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "MenuRetention.ItemReward"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMenuRetentionUICompClass.luau:12",
+    "source": "{item} ×{value}",
+    "sha256": "8235ab136b0a91c1a9d6e0f1783e7a31848ef169bfa0865d16882ac8855fa5ef",
+    "definition": "    ItemReward = \"{item} ×{value}\",",
+    "calls": [
+      {
+        "line": 249,
+        "text": "        self._giftReward.Text = Text.Tr(TranslationTexts.ItemReward, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "MenuRetention.Pending"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMenuRetentionUICompClass.luau:13",
+    "source": "Claiming...",
+    "sha256": "8235ab136b0a91c1a9d6e0f1783e7a31848ef169bfa0865d16882ac8855fa5ef",
+    "definition": "    Pending = \"Claiming...\",",
+    "calls": [
+      {
+        "line": 256,
+        "text": "    self._giftClaimText.Text = Text.Tr(pending and TranslationTexts.Pending or TranslationTexts.Claim)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "MenuRetention.Claim"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMenuRetentionUICompClass.luau:14",
+    "source": "Claim",
+    "sha256": "8235ab136b0a91c1a9d6e0f1783e7a31848ef169bfa0865d16882ac8855fa5ef",
+    "definition": "    Claim = \"Claim\",",
+    "calls": [
+      {
+        "line": 256,
+        "text": "    self._giftClaimText.Text = Text.Tr(pending and TranslationTexts.Pending or TranslationTexts.Claim)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "MenuRetention.Offline"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMenuRetentionUICompClass.luau:15",
+    "source": "You can earn up to {amount} Strength while offline!",
+    "sha256": "8235ab136b0a91c1a9d6e0f1783e7a31848ef169bfa0865d16882ac8855fa5ef",
+    "definition": "    Offline = \"You can earn up to {amount} Strength while offline!\",",
+    "calls": [
+      {
+        "line": 378,
+        "text": "    self._topText.Text = self:FormatText(TranslationTexts.Offline, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "MenuRetention.Complete"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMenuRetentionUICompClass.luau:16",
+    "source": "You have claimed all of today's online rewards!",
+    "sha256": "8235ab136b0a91c1a9d6e0f1783e7a31848ef169bfa0865d16882ac8855fa5ef",
+    "definition": "    Complete = \"You have claimed all of today's online rewards!\",",
+    "calls": [
+      {
+        "line": 393,
+        "text": "    local key = remaining == nil and TranslationTexts.Complete"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "MenuRetention.Ready"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CMenuRetentionUICompClass.luau:17",
+    "source": "Your online reward is ready to claim!",
+    "sha256": "8235ab136b0a91c1a9d6e0f1783e7a31848ef169bfa0865d16882ac8855fa5ef",
+    "definition": "    Ready = \"Your online reward is ready to claim!\",",
+    "calls": [
+      {
+        "line": 394,
+        "text": "        or remaining == 0 and TranslationTexts.Ready or TranslationTexts.OnlineCountdown"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Rebirth.CompleteNotice"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CRebirthIntegrationCompClass.luau:6",
+    "source": "Rebirth complete!  {previous:int} → {current:int}",
+    "sha256": "a2160f072095a38c1ab350327a11b0fad14bf7ef60f61427d9346bfa9b80d818",
+    "definition": "    CompleteNotice = \"Rebirth complete!  {previous:int} → {current:int}\",",
+    "calls": [
+      {
+        "line": 104,
+        "text": "    self._rebirthNoticeText.Text = Text.Tr(TranslationTexts.CompleteNotice, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Rebirth.MaxCount"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CRebirthIntegrationCompClass.luau:7",
+    "source": "You have reached the rebirth limit.",
+    "sha256": "a2160f072095a38c1ab350327a11b0fad14bf7ef60f61427d9346bfa9b80d818",
+    "definition": "    MaxCount = \"You have reached the rebirth limit.\",",
+    "calls": [
+      {
+        "line": 242,
+        "text": "        self._commonUI:ShowLocalizedTips(TranslationTexts.MaxCount)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Rebirth.InDevelopment"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CRebirthIntegrationCompClass.luau:8",
+    "source": "Coming soon.",
+    "sha256": "a2160f072095a38c1ab350327a11b0fad14bf7ef60f61427d9346bfa9b80d818",
+    "definition": "    InDevelopment = \"Coming soon.\",",
+    "calls": [
+      {
+        "line": 194,
+        "text": "        self._commonUI:ShowLocalizedTips(TranslationTexts.InDevelopment)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Rebirth.Unknown"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CRebirthIntegrationCompClass.luau:9",
+    "source": "Something went wrong. Please try again.",
+    "sha256": "a2160f072095a38c1ab350327a11b0fad14bf7ef60f61427d9346bfa9b80d818",
+    "definition": "    Unknown = \"Something went wrong. Please try again.\",",
+    "calls": [
+      {
+        "line": 206,
+        "text": "            self._commonUI:ShowLocalizedTips(TranslationTexts.Unknown)"
+      },
+      {
+        "line": 265,
+        "text": "            self._commonUI:ShowLocalizedTips(TranslationTexts.Unknown)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Rebirth.RequiredLevel"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CRebirthIntegrationCompClass.luau:10",
+    "source": "Reach level {level:int} to rebirth.",
+    "sha256": "a2160f072095a38c1ab350327a11b0fad14bf7ef60f61427d9346bfa9b80d818",
+    "definition": "    RequiredLevel = \"Reach level {level:int} to rebirth.\",",
+    "calls": [
+      {
+        "line": 252,
+        "text": "        self._commonUI:ShowLocalizedTips(TranslationTexts.RequiredLevel, {level = required})"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "ShopPurchase.NeedDiamonds"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CShopPurchaseUICompClass.luau:6",
+    "source": "Not enough diamonds.",
+    "sha256": "d50ee76a5d0fea27d87abf59b5c8d0b821fe36edee76b78f79b9c24203d90a3a",
+    "definition": "    NeedDiamonds = \"Not enough diamonds.\",",
+    "calls": [
+      {
+        "line": 48,
+        "text": "        self._commonUI:ShowLocalizedTips(TranslationTexts.NeedDiamonds)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "ShopPurchase.Unknown"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CShopPurchaseUICompClass.luau:7",
+    "source": "Something went wrong. Please try again.",
+    "sha256": "d50ee76a5d0fea27d87abf59b5c8d0b821fe36edee76b78f79b9c24203d90a3a",
+    "definition": "    Unknown = \"Something went wrong. Please try again.\",",
+    "calls": [
+      {
+        "line": 108,
+        "text": "                self._commonUI:ShowLocalizedTips(TranslationTexts.Unknown)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "TrainingBonus.Multiplier"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CTrainingBonusUICompClass.luau:6",
+    "source": "×{rate}",
+    "sha256": "78d0a867978acfc040e1e7d7b853c51129b8df0e1d02792fdb7b5752f318eec4",
+    "definition": "    Multiplier = \"×{rate}\",",
+    "calls": [
+      {
+        "line": 376,
+        "text": "        self._bubble.Text = Text.Tr(TranslationTexts.Multiplier, {rate = GameUtility.NumberToText(rate)})"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "TrainingHUD.Strength"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CTrainingHUDCompClass.luau:5",
+    "source": "{rate}x Strength",
+    "sha256": "9429835834575922525281141733f554ca98a4e2a78959e2b600dec5d3ed366f",
+    "definition": "    Strength = \"{rate}x Strength\",",
+    "calls": [
+      {
+        "line": 57,
+        "text": "        FXLoader:Here(entry.Node, \"Frame/Strength\").Text = Text.Tr(TranslationTexts.Strength, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WeaponShop.Unknown"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CWeaponShopUICompClass.luau:5",
+    "source": "Something went wrong. Please try again.",
+    "sha256": "c4de0170594efd8a9ffb2933de4133719707256c5d13b90e92da896e785e48a8",
+    "definition": "    Unknown = \"Something went wrong. Please try again.\",",
+    "calls": [
+      {
+        "line": 171,
+        "text": "            self._commonUI:ShowLocalizedTips(ok and result.key or TranslationTexts.Unknown)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Welfare.OfflineEmpty"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CWelfareUICompClass.luau:5",
+    "source": "No offline rewards available.",
+    "sha256": "de4668de4bb9e23ce4258f54865ae52cc9f15681f904557f1b1abfe367bcf681",
+    "definition": "    OfflineEmpty = \"No offline rewards available.\",",
+    "calls": [
+      {
+        "line": 244,
+        "text": "            key = TranslationTexts.OfflineEmpty"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Welfare.NotReady"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CWelfareUICompClass.luau:6",
+    "source": "This reward is not available yet.",
+    "sha256": "de4668de4bb9e23ce4258f54865ae52cc9f15681f904557f1b1abfe367bcf681",
+    "definition": "    NotReady = \"This reward is not available yet.\",",
+    "calls": [
+      {
+        "line": 234,
+        "text": "        self._commonUI:ShowLocalizedTips(TranslationTexts.NotReady)"
+      },
+      {
+        "line": 246,
+        "text": "            key = TranslationTexts.NotReady"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Welfare.AlreadyClaimed"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CWelfareUICompClass.luau:7",
+    "source": "You have already claimed this reward.",
+    "sha256": "de4668de4bb9e23ce4258f54865ae52cc9f15681f904557f1b1abfe367bcf681",
+    "definition": "    AlreadyClaimed = \"You have already claimed this reward.\",",
+    "calls": [
+      {
+        "line": 242,
+        "text": "        local key, arguments = TranslationTexts.AlreadyClaimed, nil"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Welfare.OnlineRequired"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CWelfareUICompClass.luau:8",
+    "source": "Stay online for {minutes:int} more minute(s) to claim this reward.",
+    "sha256": "de4668de4bb9e23ce4258f54865ae52cc9f15681f904557f1b1abfe367bcf681",
+    "definition": "    OnlineRequired = \"Stay online for {minutes:int} more minute(s) to claim this reward.\",",
+    "calls": [
+      {
+        "line": 250,
+        "text": "                key, arguments = TranslationTexts.OnlineRequired, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Welfare.LoginRequired"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CWelfareUICompClass.luau:9",
+    "source": "Log in on {days:int} days to claim this reward.",
+    "sha256": "de4668de4bb9e23ce4258f54865ae52cc9f15681f904557f1b1abfe367bcf681",
+    "definition": "    LoginRequired = \"Log in on {days:int} days to claim this reward.\",",
+    "calls": [
+      {
+        "line": 254,
+        "text": "                key, arguments = TranslationTexts.LoginRequired, {days = config.day}"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Welfare.TaskIncomplete"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CWelfareUICompClass.luau:10",
+    "source": "Complete this task before claiming ({current:int}/{target:int}).",
+    "sha256": "de4668de4bb9e23ce4258f54865ae52cc9f15681f904557f1b1abfe367bcf681",
+    "definition": "    TaskIncomplete = \"Complete this task before claiming ({current:int}/{target:int}).\",",
+    "calls": [
+      {
+        "line": 256,
+        "text": "                key, arguments = TranslationTexts.TaskIncomplete, {current = entry.current, target = config.target}"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "Welfare.Unknown"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CWelfareUICompClass.luau:11",
+    "source": "Something went wrong. Please try again.",
+    "sha256": "de4668de4bb9e23ce4258f54865ae52cc9f15681f904557f1b1abfe367bcf681",
+    "definition": "    Unknown = \"Something went wrong. Please try again.\",",
+    "calls": [
+      {
+        "line": 278,
+        "text": "            local key = ok and type(result) == \"table\" and result.key or TranslationTexts.Unknown"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WorldTeleport.RequiredLevel"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CWorldTeleportUICompClass.luau:5",
+    "source": "Reach a best level of {level:int} to unlock this world.",
+    "sha256": "99c041d8d83d3794b6d6fda240f8e21d27052597413239ddfd9bf33d6efa14d1",
+    "definition": "    RequiredLevel = \"Reach a best level of {level:int} to unlock this world.\",",
+    "calls": [
+      {
+        "line": 158,
+        "text": "        self._commonUI:ShowLocalizedTips(TranslationTexts.RequiredLevel, {level = world.NeedTrainingLevel})"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WorldTeleport.Unknown"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/CWorldTeleportUICompClass.luau:6",
+    "source": "Something went wrong. Please try again.",
+    "sha256": "99c041d8d83d3794b6d6fda240f8e21d27052597413239ddfd9bf33d6efa14d1",
+    "definition": "    Unknown = \"Something went wrong. Please try again.\",",
+    "calls": [
+      {
+        "line": 174,
+        "text": "            failure = {key = TranslationTexts.Unknown}"
+      },
+      {
+        "line": 176,
+        "text": "            failure = {key = result.key or TranslationTexts.Unknown, arguments = result.arguments}"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "AuraShopUI.Strength"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CAuraShopView.luau:90",
+    "source": "Strength +{strength}",
+    "sha256": "e879abdf9cc06fde90ff41e86ee1d196995e1941445a790928b334e5a1185260",
+    "definition": "    Strength = \"Strength +{strength}\",",
+    "calls": [
+      {
+        "line": 198,
+        "text": "            strengthTxt.Text = Text.Tr(TranslationTexts.Strength, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "AuraShopUI.Price"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CAuraShopView.luau:91",
+    "source": "{price}",
+    "sha256": "e879abdf9cc06fde90ff41e86ee1d196995e1941445a790928b334e5a1185260",
+    "definition": "    Price = \"{price}\",",
+    "calls": [
+      {
+        "line": 209,
+        "text": "            local caption = Text.Tr(TranslationTexts.Price, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "AuraShopUI.Equip"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CAuraShopView.luau:92",
+    "source": "Equip",
+    "sha256": "e879abdf9cc06fde90ff41e86ee1d196995e1941445a790928b334e5a1185260",
+    "definition": "    Equip = \"Equip\",",
+    "calls": [
+      {
+        "line": 215,
+        "text": "                caption = Text.Tr(TranslationTexts.Equip)"
+      },
+      {
+        "line": 221,
+        "text": "                caption = Text.Tr(TranslationTexts.Equipped)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "AuraShopUI.Equipped"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CAuraShopView.luau:93",
+    "source": "Equipped",
+    "sha256": "e879abdf9cc06fde90ff41e86ee1d196995e1941445a790928b334e5a1185260",
+    "definition": "    Equipped = \"Equipped\",",
+    "calls": [
+      {
+        "line": 221,
+        "text": "                caption = Text.Tr(TranslationTexts.Equipped)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "AuraShopUI.Waiting"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CAuraShopView.luau:94",
+    "source": "Waiting...",
+    "sha256": "e879abdf9cc06fde90ff41e86ee1d196995e1941445a790928b334e5a1185260",
+    "definition": "    Waiting = \"Waiting...\",",
+    "calls": [
+      {
+        "line": 218,
+        "text": "                caption = Text.Tr(TranslationTexts.Waiting)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "AuraShopUI.NoAuras"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CAuraShopView.luau:95",
+    "source": "No auras available",
+    "sha256": "e879abdf9cc06fde90ff41e86ee1d196995e1941445a790928b334e5a1185260",
+    "definition": "    NoAuras = \"No auras available\",",
+    "calls": [
+      {
+        "line": 266,
+        "text": "    self.EmptyTxt.Text = Text.Tr(TranslationTexts.NoAuras)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "AuraShopUI.Loading"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CAuraShopView.luau:96",
+    "source": "Loading...",
+    "sha256": "e879abdf9cc06fde90ff41e86ee1d196995e1941445a790928b334e5a1185260",
+    "definition": "    Loading = \"Loading...\",",
+    "calls": [
+      {
+        "line": 268,
+        "text": "        self.EmptyTxt.Text = Text.Tr(TranslationTexts.Loading)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "AuraShopUI.TrainingRate"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CAuraShopView.luau:97",
+    "source": "Strength ×{rate}",
+    "sha256": "e879abdf9cc06fde90ff41e86ee1d196995e1941445a790928b334e5a1185260",
+    "definition": "    TrainingRate = \"Strength ×{rate}\",",
+    "calls": [
+      {
+        "line": 202,
+        "text": "                strengthTxt.Text = Text.Tr(TranslationTexts.TrainingRate, {rate = self:FormatNumber(aura.strength)})"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "AuraShopUI.Unequip"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CAuraShopView.luau:98",
+    "source": "Unequip",
+    "sha256": "e879abdf9cc06fde90ff41e86ee1d196995e1941445a790928b334e5a1185260",
+    "definition": "    Unequip = \"Unequip\",",
+    "calls": [
+      {
+        "line": 225,
+        "text": "                    caption = Text.Tr(TranslationTexts.Unequip)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "CollectionUI.StrengthRule"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CCollectionView.luau:71",
+    "source": "+{percent}% Strength",
+    "sha256": "196b763970db18023f6cd672d965afffd60db9df00952b1167e131c2d1617fd6",
+    "definition": "    StrengthRule = \"+{percent}% Strength\",",
+    "calls": [
+      {
+        "line": 135,
+        "text": "    self.Rule.Text = Text.Tr(TranslationTexts.StrengthRule, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "CollectionUI.StrengthBoost"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CCollectionView.luau:72",
+    "source": "+{percent}%",
+    "sha256": "196b763970db18023f6cd672d965afffd60db9df00952b1167e131c2d1617fd6",
+    "definition": "    StrengthBoost = \"+{percent}%\",",
+    "calls": [
+      {
+        "line": 143,
+        "text": "    self.Boost.Text = Text.Tr(TranslationTexts.StrengthBoost, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "CollectionUI.ActivatedCount"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CCollectionView.luau:73",
+    "source": "Activated {active:int} / {total:int}",
+    "sha256": "196b763970db18023f6cd672d965afffd60db9df00952b1167e131c2d1617fd6",
+    "definition": "    ActivatedCount = \"Activated {active:int} / {total:int}\",",
+    "calls": [
+      {
+        "line": 186,
+        "text": "    self.Count.Text = Text.Tr(TranslationTexts.ActivatedCount, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "CollectionUI.TrainingRule"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CCollectionView.luau:74",
+    "source": "Collect {count:int} items for +{percent}% training.",
+    "sha256": "196b763970db18023f6cd672d965afffd60db9df00952b1167e131c2d1617fd6",
+    "definition": "    TrainingRule = \"Collect {count:int} items for +{percent}% training.\",",
+    "calls": [
+      {
+        "line": 139,
+        "text": "        self.Rule.Text = Text.Tr(TranslationTexts.TrainingRule, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "CollectionUI.CollectedCount"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CCollectionView.luau:75",
+    "source": "{count:int}/{total:int} collected",
+    "sha256": "196b763970db18023f6cd672d965afffd60db9df00952b1167e131c2d1617fd6",
+    "definition": "    CollectedCount = \"{count:int}/{total:int} collected\",",
+    "calls": [
+      {
+        "line": 191,
+        "text": "        self.Count.Text = Text.Tr(TranslationTexts.CollectedCount, {count = activeCount, total = #config.items})"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "CurrencyShopUI.DiamondShop"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CCurrencyShopView.luau:80",
+    "source": "DIAMOND SHOP",
+    "sha256": "3beccef973c097254af49490c9fb8fb08e64fc6644d06cba8fe23ec74365372c",
+    "definition": "    DiamondShop = \"DIAMOND SHOP\",",
+    "calls": [
+      {
+        "line": 172,
+        "text": "        self.ContentTitle.Text = Text.Tr(TranslationTexts.DiamondShop)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "CurrencyShopUI.RobuxShop"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CCurrencyShopView.luau:81",
+    "source": "ROBUX SHOP",
+    "sha256": "3beccef973c097254af49490c9fb8fb08e64fc6644d06cba8fe23ec74365372c",
+    "definition": "    RobuxShop = \"ROBUX SHOP\",",
+    "calls": [
+      {
+        "line": 174,
+        "text": "        self.ContentTitle.Text = Text.Tr(TranslationTexts.RobuxShop)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "CurrencyShopUI.Price"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CCurrencyShopView.luau:82",
+    "source": "{price}",
+    "sha256": "3beccef973c097254af49490c9fb8fb08e64fc6644d06cba8fe23ec74365372c",
+    "definition": "    Price = \"{price}\",",
+    "calls": [
+      {
+        "line": 209,
+        "text": "            card.price.Text = Text.Tr(TranslationTexts.Price, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "CurrencyShopUI.Waiting"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CCurrencyShopView.luau:83",
+    "source": "Waiting...",
+    "sha256": "3beccef973c097254af49490c9fb8fb08e64fc6644d06cba8fe23ec74365372c",
+    "definition": "    Waiting = \"Waiting...\",",
+    "calls": [
+      {
+        "line": 214,
+        "text": "                card.price.Text = Text.Tr(TranslationTexts.Waiting)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "CurrencyShopUI.Unavailable"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CCurrencyShopView.luau:84",
+    "source": "Unavailable",
+    "sha256": "3beccef973c097254af49490c9fb8fb08e64fc6644d06cba8fe23ec74365372c",
+    "definition": "    Unavailable = \"Unavailable\",",
+    "calls": [
+      {
+        "line": 216,
+        "text": "                card.price.Text = Text.Tr(TranslationTexts.Unavailable)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "CurrencyShopUI.SoldOut"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CCurrencyShopView.luau:85",
+    "source": "Sold out",
+    "sha256": "3beccef973c097254af49490c9fb8fb08e64fc6644d06cba8fe23ec74365372c",
+    "definition": "    SoldOut = \"Sold out\",",
+    "calls": [
+      {
+        "line": 218,
+        "text": "                card.price.Text = Text.Tr(TranslationTexts.SoldOut)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "LootSellUI.Capacity"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CLootSellView.luau:99",
+    "source": "{count:int}/{capacity:int}",
+    "sha256": "8ff5d5f82e87e63b74b466e8fe4cb0ebfbf768dc7e46ebca329888bc2f49ed3a",
+    "definition": "    Capacity = \"{count:int}/{capacity:int}\",",
+    "calls": [
+      {
+        "line": 311,
+        "text": "    self.CapacityTxt.Text = Text.Tr(TranslationTexts.Capacity, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "LootSellUI.NoItems"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CLootSellView.luau:100",
+    "source": "No items to sell",
+    "sha256": "8ff5d5f82e87e63b74b466e8fe4cb0ebfbf768dc7e46ebca329888bc2f49ed3a",
+    "definition": "    NoItems = \"No items to sell\",",
+    "calls": [
+      {
+        "line": 326,
+        "text": "        self.StatusTxt.Text = Text.Tr(TranslationTexts.NoItems)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "LootSellUI.Coins"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CLootSellView.luau:101",
+    "source": "{amount}",
+    "sha256": "8ff5d5f82e87e63b74b466e8fe4cb0ebfbf768dc7e46ebca329888bc2f49ed3a",
+    "definition": "    Coins = \"{amount}\",",
+    "calls": [
+      {
+        "line": 112,
+        "text": "    return Text.Tr(TranslationTexts.Coins, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "LootSellUI.Sold"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CLootSellView.luau:102",
+    "source": "{amount} Sold!",
+    "sha256": "8ff5d5f82e87e63b74b466e8fe4cb0ebfbf768dc7e46ebca329888bc2f49ed3a",
+    "definition": "    Sold = \"{amount} Sold!\",",
+    "calls": [
+      {
+        "line": 322,
+        "text": "        self.StatusTxt.Text = Text.Tr(TranslationTexts.Sold, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "RebirthUI.Multiplier"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CRebirthUICompClass.luau:78",
+    "source": "x{value}",
+    "sha256": "9b707afc2731254495bf4f8cf7065301a4c5d03fde5eff5a7d166a3814e959d1",
+    "definition": "    Multiplier = \"x{value}\",",
+    "calls": [
+      {
+        "line": 137,
+        "text": "    self.CurrentStrengthTxt.Text = Text.Tr(TranslationTexts.Multiplier, {"
+      },
+      {
+        "line": 140,
+        "text": "    self.NextStrengthTxt.Text = Text.Tr(TranslationTexts.Multiplier, {"
+      },
+      {
+        "line": 143,
+        "text": "    self.CurrentMoneyTxt.Text = Text.Tr(TranslationTexts.Multiplier, {"
+      },
+      {
+        "line": 146,
+        "text": "    self.NextMoneyTxt.Text = Text.Tr(TranslationTexts.Multiplier, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "RebirthUI.Progress"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CRebirthUICompClass.luau:79",
+    "source": "Level {level:int}/{required:int}",
+    "sha256": "9b707afc2731254495bf4f8cf7065301a4c5d03fde5eff5a7d166a3814e959d1",
+    "definition": "    Progress = \"Level {level:int}/{required:int}\",",
+    "calls": [
+      {
+        "line": 153,
+        "text": "        self.ProgressTxt.Text = Text.Tr(TranslationTexts.Progress, {"
+      },
+      {
+        "line": 159,
+        "text": "        self.ProgressTxt.Text = Text.Tr(TranslationTexts.ProgressUnavailable, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "RebirthUI.ProgressUnavailable"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CRebirthUICompClass.luau:80",
+    "source": "Level {level:int}/--",
+    "sha256": "9b707afc2731254495bf4f8cf7065301a4c5d03fde5eff5a7d166a3814e959d1",
+    "definition": "    ProgressUnavailable = \"Level {level:int}/--\",",
+    "calls": [
+      {
+        "line": 159,
+        "text": "        self.ProgressTxt.Text = Text.Tr(TranslationTexts.ProgressUnavailable, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "RebirthUI.Complete"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CRebirthUICompClass.luau:81",
+    "source": "Rebirth complete! Strength reset.",
+    "sha256": "9b707afc2731254495bf4f8cf7065301a4c5d03fde5eff5a7d166a3814e959d1",
+    "definition": "    Complete = \"Rebirth complete! Strength reset.\",",
+    "calls": [
+      {
+        "line": 179,
+        "text": "        self.WarningTxt.Text = Text.Tr(TranslationTexts.Complete)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "RebirthUI.ResetWarning"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CRebirthUICompClass.luau:82",
+    "source": "Rebirth resets your strength!",
+    "sha256": "9b707afc2731254495bf4f8cf7065301a4c5d03fde5eff5a7d166a3814e959d1",
+    "definition": "    ResetWarning = \"Rebirth resets your strength!\",",
+    "calls": [
+      {
+        "line": 181,
+        "text": "        self.WarningTxt.Text = Text.Tr(TranslationTexts.ResetWarning)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "RebirthUI.MaxCount"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CRebirthUICompClass.luau:83",
+    "source": "You have reached the rebirth limit.",
+    "sha256": "9b707afc2731254495bf4f8cf7065301a4c5d03fde5eff5a7d166a3814e959d1",
+    "definition": "    MaxCount = \"You have reached the rebirth limit.\",",
+    "calls": [
+      {
+        "line": 177,
+        "text": "        self.WarningTxt.Text = Text.Tr(TranslationTexts.MaxCount)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "SettingsUI.Volume"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CSettingsView.luau:63",
+    "source": "{value:int}%",
+    "sha256": "5bbc7bd7502ad86e51ea770bcd61cbaf8ee3f054b6023693a3b0f70eb5df0a4b",
+    "definition": "    Volume = \"{value:int}%\",",
+    "calls": [
+      {
+        "line": 224,
+        "text": "        slider.value.Text = Text.Tr(TranslationTexts.Volume, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "SettingsUI.On"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CSettingsView.luau:64",
+    "source": "ON",
+    "sha256": "5bbc7bd7502ad86e51ea770bcd61cbaf8ee3f054b6023693a3b0f70eb5df0a4b",
+    "definition": "    On = \"ON\",",
+    "calls": [
+      {
+        "line": 240,
+        "text": "            toggle.text.Text = Text.Tr(TranslationTexts.On)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "SettingsUI.Off"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CSettingsView.luau:65",
+    "source": "OFF",
+    "sha256": "5bbc7bd7502ad86e51ea770bcd61cbaf8ee3f054b6023693a3b0f70eb5df0a4b",
+    "definition": "    Off = \"OFF\",",
+    "calls": [
+      {
+        "line": 242,
+        "text": "            toggle.text.Text = Text.Tr(TranslationTexts.Off)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "ShopPurchaseUI.Buy"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CShopPurchaseView.luau:68",
+    "source": "{price} · Buy",
+    "sha256": "93bc7039402372d437eb056bc47c7c476bfc2b236c9ec679a3f2d71dba1baf54",
+    "definition": "    Buy = \"{price} · Buy\",",
+    "calls": [
+      {
+        "line": 129,
+        "text": "    self.ButtonTxt.Text = Text.Tr(TranslationTexts.Buy, {"
+      },
+      {
+        "line": 133,
+        "text": "        self.ButtonTxt.Text = Text.Tr(TranslationTexts.Buying)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "ShopPurchaseUI.Buying"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CShopPurchaseView.luau:69",
+    "source": "Buying...",
+    "sha256": "93bc7039402372d437eb056bc47c7c476bfc2b236c9ec679a3f2d71dba1baf54",
+    "definition": "    Buying = \"Buying...\",",
+    "calls": [
+      {
+        "line": 133,
+        "text": "        self.ButtonTxt.Text = Text.Tr(TranslationTexts.Buying)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "ShopPurchaseUI.Purchased"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CShopPurchaseView.luau:70",
+    "source": "Purchased",
+    "sha256": "93bc7039402372d437eb056bc47c7c476bfc2b236c9ec679a3f2d71dba1baf54",
+    "definition": "    Purchased = \"Purchased\",",
+    "calls": [
+      {
+        "line": 135,
+        "text": "        self.ButtonTxt.Text = Text.Tr(TranslationTexts.Purchased)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "ShopPurchaseUI.Retry"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CShopPurchaseView.luau:71",
+    "source": "Retry",
+    "sha256": "93bc7039402372d437eb056bc47c7c476bfc2b236c9ec679a3f2d71dba1baf54",
+    "definition": "    Retry = \"Retry\",",
+    "calls": [
+      {
+        "line": 138,
+        "text": "            self.ButtonTxt.Text = Text.Tr(TranslationTexts.Retry)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WeaponShopUI.Strength"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWeaponShopView.luau:89",
+    "source": "Strength +{strength}",
+    "sha256": "b23e5672a6bb2a71db4f6b69a36f61a73e8a0c762e2f8c353e7893d7132f91c9",
+    "definition": "    Strength = \"Strength +{strength}\",",
+    "calls": [
+      {
+        "line": 196,
+        "text": "            strengthTxt.Text = Text.Tr(TranslationTexts.Strength, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WeaponShopUI.Price"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWeaponShopView.luau:90",
+    "source": "{price}",
+    "sha256": "b23e5672a6bb2a71db4f6b69a36f61a73e8a0c762e2f8c353e7893d7132f91c9",
+    "definition": "    Price = \"{price}\",",
+    "calls": [
+      {
+        "line": 207,
+        "text": "            local caption = Text.Tr(TranslationTexts.Price, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WeaponShopUI.Equip"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWeaponShopView.luau:91",
+    "source": "Equip",
+    "sha256": "b23e5672a6bb2a71db4f6b69a36f61a73e8a0c762e2f8c353e7893d7132f91c9",
+    "definition": "    Equip = \"Equip\",",
+    "calls": [
+      {
+        "line": 213,
+        "text": "                caption = Text.Tr(TranslationTexts.Equip)"
+      },
+      {
+        "line": 219,
+        "text": "                caption = Text.Tr(TranslationTexts.Equipped)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WeaponShopUI.Equipped"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWeaponShopView.luau:92",
+    "source": "Equipped",
+    "sha256": "b23e5672a6bb2a71db4f6b69a36f61a73e8a0c762e2f8c353e7893d7132f91c9",
+    "definition": "    Equipped = \"Equipped\",",
+    "calls": [
+      {
+        "line": 219,
+        "text": "                caption = Text.Tr(TranslationTexts.Equipped)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WeaponShopUI.Waiting"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWeaponShopView.luau:93",
+    "source": "Waiting...",
+    "sha256": "b23e5672a6bb2a71db4f6b69a36f61a73e8a0c762e2f8c353e7893d7132f91c9",
+    "definition": "    Waiting = \"Waiting...\",",
+    "calls": [
+      {
+        "line": 216,
+        "text": "                caption = Text.Tr(TranslationTexts.Waiting)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WeaponShopUI.NoWeapons"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWeaponShopView.luau:94",
+    "source": "No weapons available",
+    "sha256": "b23e5672a6bb2a71db4f6b69a36f61a73e8a0c762e2f8c353e7893d7132f91c9",
+    "definition": "    NoWeapons = \"No weapons available\",",
+    "calls": [
+      {
+        "line": 258,
+        "text": "    self.EmptyTxt.Text = Text.Tr(TranslationTexts.NoWeapons)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WeaponShopUI.Loading"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWeaponShopView.luau:95",
+    "source": "Loading...",
+    "sha256": "b23e5672a6bb2a71db4f6b69a36f61a73e8a0c762e2f8c353e7893d7132f91c9",
+    "definition": "    Loading = \"Loading...\",",
+    "calls": [
+      {
+        "line": 260,
+        "text": "        self.EmptyTxt.Text = Text.Tr(TranslationTexts.Loading)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WeaponShopUI.TrainingRate"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWeaponShopView.luau:96",
+    "source": "Strength ×{rate}",
+    "sha256": "b23e5672a6bb2a71db4f6b69a36f61a73e8a0c762e2f8c353e7893d7132f91c9",
+    "definition": "    TrainingRate = \"Strength ×{rate}\",",
+    "calls": [
+      {
+        "line": 200,
+        "text": "                strengthTxt.Text = Text.Tr(TranslationTexts.TrainingRate, {rate = self:FormatNumber(weapon.strength)})"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WelfareHub.Minutes"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:201",
+    "source": "{minutes:int} min",
+    "sha256": "c64bd6411c5bebabaab7ffc5eb47f9d71c3cff8749209a1c6b21acacdaf12784",
+    "definition": "    Minutes = \"{minutes:int} min\",",
+    "calls": [
+      {
+        "line": 330,
+        "text": "            text = Text.Tr(TranslationTexts.Minutes, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WelfareHub.Day"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:202",
+    "source": "Day {day:int}",
+    "sha256": "c64bd6411c5bebabaab7ffc5eb47f9d71c3cff8749209a1c6b21acacdaf12784",
+    "definition": "    Day = \"Day {day:int}\",",
+    "calls": [
+      {
+        "line": 334,
+        "text": "            text = Text.Tr(TranslationTexts.Day, {"
+      },
+      {
+        "line": 352,
+        "text": "                    text = Text.Tr(TranslationTexts.DaysUntil, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WelfareHub.TaskProgress"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:203",
+    "source": "{current:int} / {target:int}",
+    "sha256": "c64bd6411c5bebabaab7ffc5eb47f9d71c3cff8749209a1c6b21acacdaf12784",
+    "definition": "    TaskProgress = \"{current:int} / {target:int}\",",
+    "calls": [
+      {
+        "line": 320,
+        "text": "            progressTxt.Text = Text.Tr(TranslationTexts.TaskProgress, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WelfareHub.Locked"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:204",
+    "source": "Locked",
+    "sha256": "c64bd6411c5bebabaab7ffc5eb47f9d71c3cff8749209a1c6b21acacdaf12784",
+    "definition": "    Locked = \"Locked\",",
+    "calls": [
+      {
+        "line": 365,
+        "text": "    local label = Text.Tr(TranslationTexts.Locked)"
+      },
+      {
+        "line": 685,
+        "text": "    local label = Text.Tr(TranslationTexts.Locked)"
+      },
+      {
+        "line": 765,
+        "text": "    local label = Text.Tr(TranslationTexts.Locked)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WelfareHub.Claiming"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:205",
+    "source": "Claiming...",
+    "sha256": "c64bd6411c5bebabaab7ffc5eb47f9d71c3cff8749209a1c6b21acacdaf12784",
+    "definition": "    Claiming = \"Claiming...\",",
+    "calls": [
+      {
+        "line": 367,
+        "text": "        label = Text.Tr(TranslationTexts.Claiming)"
+      },
+      {
+        "line": 687,
+        "text": "        label = Text.Tr(TranslationTexts.Claiming)"
+      },
+      {
+        "line": 768,
+        "text": "        label = Text.Tr(TranslationTexts.Claiming)"
+      },
+      {
+        "line": 900,
+        "text": "        singleLabel = Text.Tr(TranslationTexts.Claiming)"
+      },
+      {
+        "line": 902,
+        "text": "        boostLabel = Text.Tr(TranslationTexts.Claiming)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WelfareHub.CheckedIn"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:206",
+    "source": "Checked In",
+    "sha256": "c64bd6411c5bebabaab7ffc5eb47f9d71c3cff8749209a1c6b21acacdaf12784",
+    "definition": "    CheckedIn = \"Checked In\",",
+    "calls": [
+      {
+        "line": 370,
+        "text": "            label = Text.Tr(TranslationTexts.CheckedIn)"
+      },
+      {
+        "line": 697,
+        "text": "        label = Text.Tr(group.kind == \"signin\" and TranslationTexts.CheckedIn or TranslationTexts.Claimed)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WelfareHub.Claimed"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:207",
+    "source": "Claimed",
+    "sha256": "c64bd6411c5bebabaab7ffc5eb47f9d71c3cff8749209a1c6b21acacdaf12784",
+    "definition": "    Claimed = \"Claimed\",",
+    "calls": [
+      {
+        "line": 372,
+        "text": "            label = Text.Tr(TranslationTexts.Claimed)"
+      },
+      {
+        "line": 697,
+        "text": "        label = Text.Tr(group.kind == \"signin\" and TranslationTexts.CheckedIn or TranslationTexts.Claimed)"
+      },
+      {
+        "line": 771,
+        "text": "        label = Text.Tr(TranslationTexts.Claimed)"
+      },
+      {
+        "line": 917,
+        "text": "        hint = Text.Tr(TranslationTexts.Claimed)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WelfareHub.Retry"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:208",
+    "source": "Retry",
+    "sha256": "c64bd6411c5bebabaab7ffc5eb47f9d71c3cff8749209a1c6b21acacdaf12784",
+    "definition": "    Retry = \"Retry\",",
+    "calls": [
+      {
+        "line": 376,
+        "text": "            label = Text.Tr(TranslationTexts.Retry)"
+      },
+      {
+        "line": 777,
+        "text": "            label = Text.Tr(TranslationTexts.Retry)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WelfareHub.CheckIn"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:209",
+    "source": "Check In",
+    "sha256": "c64bd6411c5bebabaab7ffc5eb47f9d71c3cff8749209a1c6b21acacdaf12784",
+    "definition": "    CheckIn = \"Check In\",",
+    "calls": [
+      {
+        "line": 690,
+        "text": "            label = Text.Tr(TranslationTexts.CheckIn)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WelfareHub.Claim"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:210",
+    "source": "Claim",
+    "sha256": "c64bd6411c5bebabaab7ffc5eb47f9d71c3cff8749209a1c6b21acacdaf12784",
+    "definition": "    Claim = \"Claim\",",
+    "calls": [
+      {
+        "line": 367,
+        "text": "        label = Text.Tr(TranslationTexts.Claiming)"
+      },
+      {
+        "line": 372,
+        "text": "            label = Text.Tr(TranslationTexts.Claimed)"
+      },
+      {
+        "line": 687,
+        "text": "        label = Text.Tr(TranslationTexts.Claiming)"
+      },
+      {
+        "line": 692,
+        "text": "            label = Text.Tr(TranslationTexts.ClaimAll, {"
+      },
+      {
+        "line": 697,
+        "text": "        label = Text.Tr(group.kind == \"signin\" and TranslationTexts.CheckedIn or TranslationTexts.Claimed)"
+      },
+      {
+        "line": 768,
+        "text": "        label = Text.Tr(TranslationTexts.Claiming)"
+      },
+      {
+        "line": 771,
+        "text": "        label = Text.Tr(TranslationTexts.Claimed)"
+      },
+      {
+        "line": 774,
+        "text": "        label = Text.Tr(TranslationTexts.Claim)"
+      },
+      {
+        "line": 897,
+        "text": "    local singleLabel = Text.Tr(TranslationTexts.Claim)"
+      },
+      {
+        "line": 898,
+        "text": "    local boostLabel = Text.Tr(TranslationTexts.ClaimBoost, { multiplier = self:FormatNumber(boostMultiplier) })"
+      },
+      {
+        "line": 900,
+        "text": "        singleLabel = Text.Tr(TranslationTexts.Claiming)"
+      },
+      {
+        "line": 902,
+        "text": "        boostLabel = Text.Tr(TranslationTexts.Claiming)"
+      },
+      {
+        "line": 917,
+        "text": "        hint = Text.Tr(TranslationTexts.Claimed)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WelfareHub.ClaimAll"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:211",
+    "source": "Claim All ({count:int})",
+    "sha256": "c64bd6411c5bebabaab7ffc5eb47f9d71c3cff8749209a1c6b21acacdaf12784",
+    "definition": "    ClaimAll = \"Claim All ({count:int})\",",
+    "calls": [
+      {
+        "line": 692,
+        "text": "            label = Text.Tr(TranslationTexts.ClaimAll, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WelfareHub.InProgress"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:212",
+    "source": "In Progress",
+    "sha256": "c64bd6411c5bebabaab7ffc5eb47f9d71c3cff8749209a1c6b21acacdaf12784",
+    "definition": "    InProgress = \"In Progress\",",
+    "calls": [
+      {
+        "line": 386,
+        "text": "            label = Text.Tr(TranslationTexts.InProgress)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WelfareHub.Tomorrow"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:213",
+    "source": "Tomorrow",
+    "sha256": "c64bd6411c5bebabaab7ffc5eb47f9d71c3cff8749209a1c6b21acacdaf12784",
+    "definition": "    Tomorrow = \"Tomorrow\",",
+    "calls": [
+      {
+        "line": 350,
+        "text": "                    text = Text.Tr(TranslationTexts.Tomorrow)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WelfareHub.DaysUntil"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:214",
+    "source": "In {days:int} days",
+    "sha256": "c64bd6411c5bebabaab7ffc5eb47f9d71c3cff8749209a1c6b21acacdaf12784",
+    "definition": "    DaysUntil = \"In {days:int} days\",",
+    "calls": [
+      {
+        "line": 352,
+        "text": "                    text = Text.Tr(TranslationTexts.DaysUntil, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WelfareHub.Countdown"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:215",
+    "source": "{minutes}:{seconds}",
+    "sha256": "c64bd6411c5bebabaab7ffc5eb47f9d71c3cff8749209a1c6b21acacdaf12784",
+    "definition": "    Countdown = \"{minutes}:{seconds}\",",
+    "calls": [
+      {
+        "line": 341,
+        "text": "                text = Text.Tr(TranslationTexts.Countdown, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WelfareHub.DiamondAmount"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:216",
+    "source": "×{amount} Diamonds",
+    "sha256": "c64bd6411c5bebabaab7ffc5eb47f9d71c3cff8749209a1c6b21acacdaf12784",
+    "definition": "    DiamondAmount = \"×{amount} Diamonds\",",
+    "calls": [
+      {
+        "line": 739,
+        "text": "    amountTxt.Text = Text.Tr(TranslationTexts.DiamondAmount, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WelfareHub.DiamondBonus"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:217",
+    "source": "+{amount} Diamonds",
+    "sha256": "c64bd6411c5bebabaab7ffc5eb47f9d71c3cff8749209a1c6b21acacdaf12784",
+    "definition": "    DiamondBonus = \"+{amount} Diamonds\",",
+    "calls": [
+      {
+        "line": 742,
+        "text": "    loginAmountTxt.Text = Text.Tr(TranslationTexts.DiamondBonus, {"
+      },
+      {
+        "line": 761,
+        "text": "        premiumAmountTxt.Text = Text.Tr(TranslationTexts.DiamondBonus, {amount = self:FormatNumber(config.premiumAmount)})"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WelfareHub.DiamondPerFriend"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:218",
+    "source": "+{amount} per friend",
+    "sha256": "c64bd6411c5bebabaab7ffc5eb47f9d71c3cff8749209a1c6b21acacdaf12784",
+    "definition": "    DiamondPerFriend = \"+{amount} per friend\",",
+    "calls": [
+      {
+        "line": 762,
+        "text": "        friendAmountTxt.Text = Text.Tr(TranslationTexts.DiamondPerFriend, {amount = self:FormatNumber(config.friendAmount)})"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WelfareHub.DiamondCap"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:219",
+    "source": "Up to +{amount} Diamonds",
+    "sha256": "c64bd6411c5bebabaab7ffc5eb47f9d71c3cff8749209a1c6b21acacdaf12784",
+    "definition": "    DiamondCap = \"Up to +{amount} Diamonds\",",
+    "calls": [
+      {
+        "line": 763,
+        "text": "        friendHintTxt.Text = Text.Tr(TranslationTexts.DiamondCap, {amount = self:FormatNumber(config.friendCap)})"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WelfareHub.NoDiamonds"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:220",
+    "source": "No diamonds available today",
+    "sha256": "c64bd6411c5bebabaab7ffc5eb47f9d71c3cff8749209a1c6b21acacdaf12784",
+    "definition": "    NoDiamonds = \"No diamonds available today\",",
+    "calls": [
+      {
+        "line": 766,
+        "text": "    local hint = Text.Tr(TranslationTexts.NoDiamonds)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WelfareHub.ConfirmingReward"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:221",
+    "source": "Confirming your reward...",
+    "sha256": "c64bd6411c5bebabaab7ffc5eb47f9d71c3cff8749209a1c6b21acacdaf12784",
+    "definition": "    ConfirmingReward = \"Confirming your reward...\",",
+    "calls": [
+      {
+        "line": 769,
+        "text": "        hint = Text.Tr(TranslationTexts.ConfirmingReward)"
+      },
+      {
+        "line": 915,
+        "text": "        hint = Text.Tr(TranslationTexts.ConfirmingReward)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WelfareHub.DiamondsClaimed"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:222",
+    "source": "Today's diamonds claimed · Come back tomorrow",
+    "sha256": "c64bd6411c5bebabaab7ffc5eb47f9d71c3cff8749209a1c6b21acacdaf12784",
+    "definition": "    DiamondsClaimed = \"Today's diamonds claimed · Come back tomorrow\",",
+    "calls": [
+      {
+        "line": 772,
+        "text": "        hint = Text.Tr(TranslationTexts.DiamondsClaimed)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WelfareHub.ReadyToClaim"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:223",
+    "source": "Ready to claim",
+    "sha256": "c64bd6411c5bebabaab7ffc5eb47f9d71c3cff8749209a1c6b21acacdaf12784",
+    "definition": "    ReadyToClaim = \"Ready to claim\",",
+    "calls": [
+      {
+        "line": 378,
+        "text": "            label = Text.Tr(TranslationTexts.ReadyToClaim)"
+      },
+      {
+        "line": 755,
+        "text": "                    status = Text.Tr(pass.claimedToday and TranslationTexts.PassTomorrow or TranslationTexts.ReadyToClaim),"
+      },
+      {
+        "line": 775,
+        "text": "        hint = Text.Tr(TranslationTexts.ReadyToClaim)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WelfareHub.DailyLogin"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:224",
+    "source": "Daily Login · Day {day:int}",
+    "sha256": "c64bd6411c5bebabaab7ffc5eb47f9d71c3cff8749209a1c6b21acacdaf12784",
+    "definition": "    DailyLogin = \"Daily Login · Day {day:int}\",",
+    "calls": [
+      {
+        "line": 833,
+        "text": "    signInHeadingTxt.Text = Text.Tr(TranslationTexts.DailyLogin, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WelfareHub.NoRewards"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:225",
+    "source": "No rewards",
+    "sha256": "c64bd6411c5bebabaab7ffc5eb47f9d71c3cff8749209a1c6b21acacdaf12784",
+    "definition": "    NoRewards = \"No rewards\",",
+    "calls": [
+      {
+        "line": 859,
+        "text": "    local progress = Text.Tr(TranslationTexts.NoRewards)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WelfareHub.AllMilestones"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:226",
+    "source": "All milestones reached!",
+    "sha256": "c64bd6411c5bebabaab7ffc5eb47f9d71c3cff8749209a1c6b21acacdaf12784",
+    "definition": "    AllMilestones = \"All milestones reached!\",",
+    "calls": [
+      {
+        "line": 860,
+        "text": "    local hint = Text.Tr(TranslationTexts.AllMilestones)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WelfareHub.OnlineProgress"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:227",
+    "source": "{current:int} / {target:int} min",
+    "sha256": "c64bd6411c5bebabaab7ffc5eb47f9d71c3cff8749209a1c6b21acacdaf12784",
+    "definition": "    OnlineProgress = \"{current:int} / {target:int} min\",",
+    "calls": [
+      {
+        "line": 862,
+        "text": "        progress = Text.Tr(TranslationTexts.OnlineProgress, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WelfareHub.NoOnlineRewards"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:228",
+    "source": "No online rewards available",
+    "sha256": "c64bd6411c5bebabaab7ffc5eb47f9d71c3cff8749209a1c6b21acacdaf12784",
+    "definition": "    NoOnlineRewards = \"No online rewards available\",",
+    "calls": [
+      {
+        "line": 867,
+        "text": "        hint = Text.Tr(TranslationTexts.NoOnlineRewards)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WelfareHub.NextReward"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:229",
+    "source": "Next reward in {time}",
+    "sha256": "c64bd6411c5bebabaab7ffc5eb47f9d71c3cff8749209a1c6b21acacdaf12784",
+    "definition": "    NextReward = \"Next reward in {time}\",",
+    "calls": [
+      {
+        "line": 871,
+        "text": "        hint = Text.Tr(TranslationTexts.NextReward, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WelfareHub.NoOfflineRewards"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:230",
+    "source": "No offline rewards",
+    "sha256": "c64bd6411c5bebabaab7ffc5eb47f9d71c3cff8749209a1c6b21acacdaf12784",
+    "definition": "    NoOfflineRewards = \"No offline rewards\",",
+    "calls": [
+      {
+        "line": 923,
+        "text": "        hint = Text.Tr(TranslationTexts.NoOfflineRewards)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WelfareHub.RewardAmount"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:231",
+    "source": "{name} ×{amount}",
+    "sha256": "c64bd6411c5bebabaab7ffc5eb47f9d71c3cff8749209a1c6b21acacdaf12784",
+    "definition": "    RewardAmount = \"{name} ×{amount}\",",
+    "calls": [
+      {
+        "line": 545,
+        "text": "    return Text.Tr(TranslationTexts.RewardAmount, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WelfareHub.TaskQuantity"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:232",
+    "source": "x{amount}",
+    "sha256": "c64bd6411c5bebabaab7ffc5eb47f9d71c3cff8749209a1c6b21acacdaf12784",
+    "definition": "    TaskQuantity = \"x{amount}\",",
+    "calls": [
+      {
+        "line": 305,
+        "text": "        Loader:Here(root, \"QuantityTxt\").Text = Text.Tr(TranslationTexts.TaskQuantity, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WelfareHub.MoneyAmount"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:233",
+    "source": "{amount}",
+    "sha256": "c64bd6411c5bebabaab7ffc5eb47f9d71c3cff8749209a1c6b21acacdaf12784",
+    "definition": "    MoneyAmount = \"{amount}\",",
+    "calls": [
+      {
+        "line": 298,
+        "text": "    Loader:Here(moneyBox, \"AmountTxt\").Text = Text.Tr(TranslationTexts.MoneyAmount, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WelfareHub.DailyAmount"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:234",
+    "source": "+{value} Diamonds per day",
+    "sha256": "c64bd6411c5bebabaab7ffc5eb47f9d71c3cff8749209a1c6b21acacdaf12784",
+    "definition": "    DailyAmount = \"+{value} Diamonds per day\",",
+    "calls": [
+      {
+        "line": 750,
+        "text": "            Loader:Here(box, \"AmountTxt\").Text = Text.Tr(TranslationTexts.DailyAmount, {value = self:FormatNumber(pass.amount)})"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WelfareHub.PassTomorrow"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:235",
+    "source": "Next claim tomorrow",
+    "sha256": "c64bd6411c5bebabaab7ffc5eb47f9d71c3cff8749209a1c6b21acacdaf12784",
+    "definition": "    PassTomorrow = \"Next claim tomorrow\",",
+    "calls": [
+      {
+        "line": 755,
+        "text": "                    status = Text.Tr(pass.claimedToday and TranslationTexts.PassTomorrow or TranslationTexts.ReadyToClaim),"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WelfareHub.PassRemaining"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:236",
+    "source": "{days:int} claims left · {status}",
+    "sha256": "c64bd6411c5bebabaab7ffc5eb47f9d71c3cff8749209a1c6b21acacdaf12784",
+    "definition": "    PassRemaining = \"{days:int} claims left · {status}\",",
+    "calls": [
+      {
+        "line": 753,
+        "text": "                hint = Text.Tr(TranslationTexts.PassRemaining, {"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WelfareHub.PassInactive"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:237",
+    "source": "Use this pass from your backpack to activate it.",
+    "sha256": "c64bd6411c5bebabaab7ffc5eb47f9d71c3cff8749209a1c6b21acacdaf12784",
+    "definition": "    PassInactive = \"Use this pass from your backpack to activate it.\",",
+    "calls": [
+      {
+        "line": 751,
+        "text": "            local hint = Text.Tr(TranslationTexts.PassInactive)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WelfareHub.ClaimBoost"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWelfareView.luau:238",
+    "source": "Claim {multiplier}X",
+    "sha256": "c64bd6411c5bebabaab7ffc5eb47f9d71c3cff8749209a1c6b21acacdaf12784",
+    "definition": "    ClaimBoost = \"Claim {multiplier}X\",",
+    "calls": [
+      {
+        "line": 898,
+        "text": "    local boostLabel = Text.Tr(TranslationTexts.ClaimBoost, { multiplier = self:FormatNumber(boostMultiplier) })"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WorldTeleportUI.Go"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWorldTeleportView.luau:70",
+    "source": "Go",
+    "sha256": "349de340fd5d59deef53c65692334714c416f2841834f4c91ec8dcc85998e1f3",
+    "definition": "    Go = \"Go\",",
+    "calls": [
+      {
+        "line": 158,
+        "text": "        local buttonText = Text.Tr(TranslationTexts.Go)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WorldTeleportUI.Teleporting"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWorldTeleportView.luau:71",
+    "source": "Teleporting",
+    "sha256": "349de340fd5d59deef53c65692334714c416f2841834f4c91ec8dcc85998e1f3",
+    "definition": "    Teleporting = \"Teleporting\",",
+    "calls": [
+      {
+        "line": 160,
+        "text": "            buttonText = Text.Tr(TranslationTexts.Teleporting)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WorldTeleportUI.Here"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWorldTeleportView.luau:72",
+    "source": "Here",
+    "sha256": "349de340fd5d59deef53c65692334714c416f2841834f4c91ec8dcc85998e1f3",
+    "definition": "    Here = \"Here\",",
+    "calls": [
+      {
+        "line": 162,
+        "text": "            buttonText = Text.Tr(TranslationTexts.Here)"
+      }
+    ]
+  },
+  {
+    "identity": [
+      "key",
+      "WorldTeleportUI.RequiredLevel"
+    ],
+    "location": "code:../Scripts/StarterPlayerScripts/Client/UI/Generated/CWorldTeleportView.luau:73",
+    "source": "Level {level:int}",
+    "sha256": "349de340fd5d59deef53c65692334714c416f2841834f4c91ec8dcc85998e1f3",
+    "definition": "    RequiredLevel = \"Level {level:int}\",",
+    "calls": [
+      {
+        "line": 164,
+        "text": "            buttonText = Text.Tr(TranslationTexts.RequiredLevel, {"
+      }
+    ]
+  }
+]

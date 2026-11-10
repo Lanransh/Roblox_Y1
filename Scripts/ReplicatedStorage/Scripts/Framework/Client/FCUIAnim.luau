@@ -1,7 +1,7 @@
 local TweenService = game:GetService("TweenService")
 local Lighting = game:GetService("Lighting")
 local Workspace = game:GetService("Workspace")
-local Anim = { _active = setmetatable({}, { __mode = "k" }), _popupOwners = {} }
+local Anim = { _active = setmetatable({}, { __mode = "k" }), _popupOwners = {}, _cameraFovStates = {} }
 _G.FC.UIAnim = Anim
 
 --- @param node GuiObject 动画根节点。
@@ -218,22 +218,50 @@ function Anim:CreatePopup(node)
     return popup
 end
 
---- 用一个共享插值倍率同步背景模糊与视野，保持弹窗本身清晰。
+--- 按持有者叠加视野增量，释放时只撤销自身效果，避免弹窗与训练加速互存临时视野。
+--- @param camera Camera 本次效果作用的镜头。
+--- @param owner table 效果持有者，用于更新及释放同一份增量。
+--- @param offset number 视野增量；传入 0 释放该持有者。
+function Anim:SetCameraFovOffset(camera, owner, offset)
+    local state = self._cameraFovStates[camera]
+    if not state then
+        if offset == 0 then
+            return
+        end
+        local baseFov = camera.FieldOfView
+        state = { BaseFov = baseFov, LastFov = baseFov, Offsets = {} }
+        self._cameraFovStates[camera] = state
+    elseif math.abs(camera.FieldOfView - state.LastFov) > 0.001 then
+        -- 外部镜头明确设置新视野时，以其值作为新的基础视野。
+        state.BaseFov = camera.FieldOfView
+    end
+    state.Offsets[owner] = offset ~= 0 and offset or nil
+    local total = 0
+    for effectOwner, value in pairs(state.Offsets) do
+        total += value
+    end
+    camera.FieldOfView = math.clamp(state.BaseFov + total, 1, 120)
+    state.LastFov = camera.FieldOfView
+    if not next(state.Offsets) then
+        self._cameraFovStates[camera] = nil
+    end
+end
+
+--- 用一个共享插值倍率同步背景模糊与视野，视野增量与其他效果统一合成。
 function Anim:_ApplyPopupBackground()
     local value = self._popupBlend.Value
     self._popupBlur.Size = 16 * value
     if self._popupCamera then
-        self._popupCamera.FieldOfView = math.clamp(self._popupFov + 8 * value, 1, 120)
+        self:SetCameraFovOffset(self._popupCamera, self, 8 * value)
     end
 end
 
---- 相机替换时恢复旧相机，并记录新相机原来的视野。
+--- 相机替换时释放旧相机的弹窗增量，再将当前增量应用到新相机。
 function Anim:_BindPopupCamera()
     if self._popupCamera then
-        self._popupCamera.FieldOfView = self._popupFov
+        self:SetCameraFovOffset(self._popupCamera, self, 0)
     end
     self._popupCamera = Workspace.CurrentCamera
-    self._popupFov = self._popupCamera and self._popupCamera.FieldOfView
     self:_ApplyPopupBackground()
 end
 
@@ -242,14 +270,13 @@ function Anim:_ClearPopupBackground()
     self._popupBlendConnection:Disconnect()
     self._popupCameraConnection:Disconnect()
     if self._popupCamera then
-        self._popupCamera.FieldOfView = self._popupFov
+        self:SetCameraFovOffset(self._popupCamera, self, 0)
     end
     self._popupBlur:Destroy()
     self._popupBlend:Destroy()
     self._popupBlur = nil
     self._popupBlend = nil
     self._popupCamera = nil
-    self._popupFov = nil
     self._popupBlendConnection = nil
     self._popupCameraConnection = nil
 end
