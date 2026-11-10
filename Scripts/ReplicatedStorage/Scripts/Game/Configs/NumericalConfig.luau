@@ -59,8 +59,33 @@ return {
           kind = "Power",
           base = 3,
           multiplier = {
-            kind = "constant",
-            value = 1,
+            kind = "linear",
+            ranges = {
+              {
+                fromInput = 1,
+                toInput = 7,
+                fromValue = 0,
+                toValue = 0,
+              },
+              {
+                fromInput = 8,
+                toInput = 14,
+                fromValue = 1,
+                toValue = 3,
+              },
+              {
+                fromInput = 15,
+                toInput = 27,
+                fromValue = 4,
+                toValue = 27,
+              },
+              {
+                fromInput = 28,
+                toInput = 53,
+                fromValue = 1,
+                toValue = 1,
+              },
+            },
           },
           power = {
             kind = "linear",
@@ -68,8 +93,8 @@ return {
               {
                 fromInput = 1,
                 toInput = 27,
-                fromValue = 1.1,
-                toValue = 1,
+                fromValue = 0,
+                toValue = 0,
               },
               {
                 fromInput = 28,
@@ -166,27 +191,33 @@ return {
         key = "expectedItemCount",
         formula = {
           kind = "Power",
-          base = 5,
+          base = 0,
           multiplier = {
-            kind = "constant",
-            value = 1,
-          },
-          power = {
             kind = "linear",
             ranges = {
               {
                 fromInput = 1,
-                toInput = 8,
-                fromValue = 1.6,
-                toValue = 1.5,
+                toInput = 7,
+                fromValue = 3,
+                toValue = 3,
               },
               {
-                fromInput = 9,
+                fromInput = 8,
                 toInput = 12,
-                fromValue = 1.47,
-                toValue = 1.28,
+                fromValue = 4,
+                toValue = 14,
+              },
+              {
+                fromInput = 13,
+                toInput = 17,
+                fromValue = 18,
+                toValue = 42,
               },
             },
+          },
+          power = {
+            kind = "constant",
+            value = 0,
           },
           rounding = "floor",
         },
