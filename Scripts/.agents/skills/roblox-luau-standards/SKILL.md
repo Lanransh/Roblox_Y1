@@ -11,4 +11,4 @@ description: Roblox_Y1 的 Luau 编码、FXLoader、数值文案与验证规范�
 
 编码或普通审查读取 [项目编码规则、FXLoader、数值文案与验证](reference-rules.md)。纯服务端安全审查使用 [服务端关键审查](../server-code-critical-review/SKILL.md)，不额外触发风格审查。
 
-涉及动态文本或语言刷新时，读取 [本地化](../roblox-localization/SKILL.md)；涉及 UIEditor 生成界面时，读取 [生成 UI 接入](../roblox-uieditor-integration/SKILL.md)。翻译与 View 接入细则只在对应 skill 维护。
+涉及动态文本或语言刷新时，读取 [本地化](../roblox-localization/SKILL.md)；涉及 UI 节点归属或 UIEditor 生成界面时，读取 [外部工具协作](../roblox-external-tools/SKILL.md) 和 [UI 归属与业务接入](../roblox-external-tools/references/ui-integration.md)。翻译与 View 接入细则分别在本地化 skill 和该参考维护。

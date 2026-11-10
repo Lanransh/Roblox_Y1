@@ -16,7 +16,7 @@
 - 文件名、注册类名及组件协作名保持同一归属前缀；类注册名与组件协作名仍按各自接口约定命名。
 - `Main`、`GameInit`、`FClient/FServer/FShared/FrameworkInit` 等固定引导名称沿用既有名称；不为执行命名规则批量重命名已有模块；Generated 名称由生成工具维护，不手工重命名。
 - `FShared/FClient/FServer/FrameworkInit` 位于框架根目录；服务端框架仅由服务器初始化。通用框架模块不得反向依赖 `Game/` 或项目客户端模块，项目差异经 Provider、回调或子类接入。
-- 配置由 `ReplicatedStorage/Scripts/SetupProvider.luau` 接入；私有配置放 `ServerScriptService/Server/Config`，不暴露到公共目录。生成配置的修改使用 [游戏配置技能](../game-config/SKILL.md)。
+- 配置由 `ReplicatedStorage/Scripts/SetupProvider.luau` 接入；私有配置放 `ServerScriptService/Server/Config`，不暴露到公共目录。生成配置按来源回源：XLSX 使用 [XLSX 游戏配置](../roblox-external-tools/references/game-config.md)，`NumericalConfig.luau` 使用 [模拟器协作](../roblox-external-tools/references/simulator.md)。
 
 ## 入口、模块与协议
 
