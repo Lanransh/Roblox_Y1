@@ -1012,30 +1012,30 @@
                 "fromInput": 165,
                 "toInput": 179,
                 "fromValue": 6.4,
-                "toValue": 6.4
+                "toValue": 6.6
               },
               {
                 "fromInput": 180,
                 "toInput": 194,
-                "fromValue": 6.4,
-                "toValue": 6.9
+                "fromValue": 6.6,
+                "toValue": 7
               },
               {
                 "fromInput": 195,
                 "toInput": 209,
-                "fromValue": 6.9,
-                "toValue": 7.3
+                "fromValue": 7,
+                "toValue": 7.2
               },
               {
                 "fromInput": 210,
                 "toInput": 224,
-                "fromValue": 7.3,
-                "toValue": 7.4
+                "fromValue": 7.2,
+                "toValue": 7.6
               },
               {
                 "fromInput": 225,
                 "toInput": 239,
-                "fromValue": 7.4,
+                "fromValue": 7.6,
                 "toValue": 7.95
               },
               {
