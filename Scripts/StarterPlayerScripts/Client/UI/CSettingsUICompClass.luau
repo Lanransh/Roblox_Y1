@@ -56,6 +56,7 @@ function Component:BindUIData()
             self.State = {
                 musicVolume = settings.musicVolume, soundEffectsVolume = settings.soundEffectsVolume,
                 showAura = settings.showAura, giantPickaxe = settings.giantPickaxe,
+                renderDistance = settings.renderDistance,
             }
             self:ApplySettings()
         end
@@ -72,7 +73,8 @@ function Component:OnUIAction(action, payload)
     elseif action == "SliderDragEnded" then
         self:SaveSettings()
     elseif action == "ChangeSetting" and (self.Sliders[payload.setting]
-        or payload.setting == "showAura" or payload.setting == "giantPickaxe") then
+        or payload.setting == "showAura" or payload.setting == "giantPickaxe"
+        or payload.setting == "renderDistance") then
         if self.State[payload.setting] == payload.value then
             return
         end
@@ -89,10 +91,11 @@ function Component:OnUIAction(action, payload)
     end
 end
 
---- 音量分组保留原曲目音量和音效压低音乐行为；光环只影响本机显示。
+--- 应用音量、光环及本机可视距离，切换档位立即刷新关卡分块。
 function Component:ApplySettings()
     self._musicGroup.Volume = self.State.musicVolume / 100
     self._effectsGroup.Volume = self.State.soundEffectsVolume / 100
+    self:GetPlayerObject():RequireComponent("CRockLevelComp"):SetRenderDistance(self.State.renderDistance)
     if self._appliedShowAura ~= self.State.showAura then
         self._appliedShowAura = self.State.showAura
         for index, node in ipairs(workspace:GetDescendants()) do
@@ -120,7 +123,7 @@ function Component:ApplyAura(node)
     node.Enabled = self.State.showAura and self._auraStates[node]
 end
 
---- 合并拖动事件，提交音量、光环和武器尺寸偏好，沿用框架自动保存与离服保存。
+--- 合并拖动事件，提交音量、光环、武器尺寸和可视距离，沿用框架保存。
 function Component:SaveSettings()
     if self._saveTask then
         task.cancel(self._saveTask)
@@ -131,6 +134,7 @@ function Component:SaveSettings()
         soundEffectsVolume = self.State.soundEffectsVolume,
         showAura = self.State.showAura,
         giantPickaxe = self.State.giantPickaxe,
+        renderDistance = self.State.renderDistance,
     })
 end
 

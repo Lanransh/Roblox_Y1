@@ -63,7 +63,10 @@ function Component:Ctor(owner)
     self._trainingFragmentPool = {}
     self._hitReactions = {}
     self._trainingHitReactions = {}
+    self._treasureCells = {}
+    self._treasureEffects = {}
     self._nextChunkCheck = 0
+    self._renderDistanceScale = 1
     self._lastAttack = -math.huge
     self._nextAttackCheck = 0
     self._pendingHits = {}
@@ -157,6 +160,7 @@ function Component:OnReady()
         end
     end
     FX.Network:RegServerMsgCallback("S2C_RockReset", self.ResetRound, self)
+    FX.Network:RegServerMsgCallback("S2C_RockTreasureCells", self.OnTreasureCells, self)
     FX.Network:RegServerMsgCallback("S2C_RockHitResult", self.OnHitResult, self)
     FX.Network:RegServerMsgCallback("S2C_SpawnRockDrop", self.SpawnDrop, self)
     FX.Network:RegServerMsgCallback("S2C_RemoveRockDrop", self.RemoveDrop, self)
@@ -534,7 +538,20 @@ function Component:ClearDrops()
     end
 end
 
---- 新轮时清除旧命中及预测血条；同轮快照将已碎格子的实际与预测血量归零，保留未碎状态。
+--- 接收本轮藏宝格号并刷新已加载石头；晚到的旧轮消息不影响当前外观。
+--- @param round number 服务端生成藏宝位置时的轮次。
+--- @param cells table 本轮新增或恢复的未碎藏宝格号数组。
+function Component:OnTreasureCells(round, cells)
+    if round ~= self._round then
+        return
+    end
+    for index, key in ipairs(cells) do
+        self._treasureCells[key] = true
+    end
+    self._refreshRocks = true
+end
+
+--- 新轮时清除旧命中、藏宝标记及预测血条；同轮快照恢复已碎格号，保留未碎状态。
 --- @param round number 服务器当前关卡轮次。
 --- @param brokenCells table? 本玩家当前轮次已通过服务端校验的格号。
 function Component:ResetRound(round, brokenCells)
@@ -553,6 +570,7 @@ function Component:ResetRound(round, brokenCells)
     self:StopSwing()
     self:ClearDrops()
     self._round = round
+    self._treasureCells = {}
     self._health = {}
     self._displayHealth = {}
     self._playedBreakEffects = {}
@@ -1032,7 +1050,7 @@ function Component:SetPowerAura(root)
     self._powerAuraRoot = root
 end
 
---- 每次预测命中播放一次声音和飞溅碎石；预测或确认击破只补一次烟尘，回包不重复反馈。
+--- 预测命中播放声音、碎石和短促金色星光；预测或确认击破只补一次烟尘，回包不重复反馈。
 --- @param rock Model 当前受击且仍在场景中的石头。
 --- @param broken boolean 本次扣血是否击破石头。
 --- @param impact RaycastResult? 训练巨石的实际表面命中；提供时只生成表现，不移动巨石。
@@ -1051,6 +1069,15 @@ function Component:PlayHitEffect(rock, broken, impact, lethalHit)
     local direction = center - root.Position
     if direction.Magnitude < 0.01 then
         return
+    end
+    local treasure = self._treasureEffects[rock]
+    if not broken and treasure and treasure.Enabled then
+        if treasure.Tween then
+            treasure.Tween:Cancel()
+        end
+        treasure.Glow.Brightness = 2
+        treasure.Tween = TweenService:Create(treasure.Glow, TweenInfo.new(0.3), {Brightness = 1.1})
+        treasure.Tween:Play()
     end
     -- 表现点放在镜头可见侧的包围盒外，避免碰撞网格内凹或角色贴入石头时遮住火花。
     local camera = workspace.CurrentCamera
@@ -1082,6 +1109,13 @@ function Component:PlayHitEffect(rock, broken, impact, lethalHit)
     effect.CanQuery = false
     effect.CFrame = CFrame.lookAt(position + normal * 0.55, position + normal * 1.55)
     effect.Parent = self._folder
+    if not broken and treasure and treasure.Enabled then
+        -- 脱离石头挂到本次命中特效上，致命一击回收石头时仍能播完星光。
+        local burst = treasure.Burst:Clone()
+        burst.EmissionDirection = Enum.NormalId.Front
+        burst.Parent = effect
+        burst:Emit(6)
+    end
     if broken then
         local dustOrigin = Instance.new("Attachment")
         dustOrigin.Position = effect.CFrame:PointToObjectSpace(center)
@@ -1256,7 +1290,150 @@ function Component:UpdateFragments()
     end
 end
 
---- 按格子固定随机模型、朝向和灰色，分模型复用，避免重新载入时外观跳变。
+--- 使用项目现有四角星贴图，在石头外缘闪现尖锐金光；柔光集中在上部，避免烟雾覆盖轮廓。
+--- @param rock Model 本组件持有且已挂入场景的石头；隐藏时无需处于场景中。
+--- @param enabled boolean 是否展示藏宝粒子，关闭时取消受击提亮并恢复底光。
+--- @param position Vector3? 当前玩家位置；未提供时读取角色，按水平半径四格限制显示。
+function Component:SetTreasureEffect(rock, enabled, position)
+    if enabled then
+        if not position then
+            local character = self:GetPlayerCharacter()
+            local root = character and FXLoader:Find(character, "HumanoidRootPart")
+            position = root and root.Position
+        end
+        if position then
+            local center = rock:GetAttribute("RestPivot").Position
+            local dx, dz = center.X - position.X, center.Z - position.Z
+            local radius = RockLevel.CellSize * 4
+            enabled = dx * dx + dz * dz <= radius * radius
+        else
+            enabled = false
+        end
+    end
+    local effect = self._treasureEffects[rock]
+    if not effect and enabled then
+        local root = FXLoader:Here(rock, "Root")
+        local origin = Instance.new("Part")
+        origin.Name = "TreasureSparkleOrigin"
+        -- 盒状外壳覆盖上半部，避免球壳落在不规则石头内部而遮住星光。
+        origin.Size = root.Size * Vector3.new(1.08, 0.65, 1.08)
+        origin.CFrame = root.CFrame * CFrame.new(0, root.Size.Y * 0.28, 0)
+        origin.Transparency = 1
+        origin.Anchored = true
+        origin.CanCollide = false
+        origin.CanTouch = false
+        origin.CanQuery = false
+        origin.CastShadow = false
+        origin.Parent = rock
+        local sparkles = Instance.new("ParticleEmitter")
+        sparkles.Name = "TreasureSparkles"
+        -- 已有 Aura/24_Prismatic/Head/Stars 使用的四角星，不使用模糊的内置星尘贴图。
+        sparkles.Texture = "rbxassetid://13768810492"
+        sparkles.Color = ColorSequence.new(Color3.fromRGB(255, 225, 0))
+        sparkles.LightEmission = 0.15
+        sparkles.LightInfluence = 0
+        sparkles.Brightness = 1.4
+        sparkles.Rate = 0
+        sparkles.Enabled = false
+        sparkles.Lifetime = NumberRange.new(0.7, 1.1)
+        sparkles.Speed = NumberRange.new(0, 0.03)
+        sparkles.LockedToPart = true
+        sparkles.Shape = Enum.ParticleEmitterShape.Box
+        sparkles.ShapeStyle = Enum.ParticleEmitterShapeStyle.Surface
+        sparkles.ShapeInOut = Enum.ParticleEmitterShapeInOut.Outward
+        sparkles.ZOffset = 0.15
+        sparkles.Size = NumberSequence.new({
+            NumberSequenceKeypoint.new(0, 0),
+            NumberSequenceKeypoint.new(0.18, 2.4, 0.45),
+            NumberSequenceKeypoint.new(0.42, 1.3, 0.25),
+            NumberSequenceKeypoint.new(0.75, 0.4, 0.1),
+            NumberSequenceKeypoint.new(1, 0),
+        })
+        sparkles.Transparency = NumberSequence.new({
+            NumberSequenceKeypoint.new(0, 1),
+            NumberSequenceKeypoint.new(0.12, 0),
+            NumberSequenceKeypoint.new(0.55, 0.05),
+            NumberSequenceKeypoint.new(1, 1),
+        })
+        sparkles.Rotation = NumberRange.new(-8, 8)
+        sparkles.Parent = origin
+        local glowOrigin = Instance.new("Attachment")
+        glowOrigin.Name = "SurfaceGlowOrigin"
+        glowOrigin.Position = Vector3.new(0, root.Size.Y * 0.25, 0)
+        glowOrigin.Parent = origin
+        local glow = sparkles:Clone()
+        glow.Name = "TreasureSurfaceGlow"
+        -- 已有 Goku (SSJ)/Torso/C/glow 的径向光晕，透明边缘不带烟雾纹理。
+        glow.Texture = "rbxassetid://1075864321"
+        glow.Color = ColorSequence.new(Color3.fromRGB(255, 185, 0))
+        glow.LightEmission = 0.65
+        glow.Shape = Enum.ParticleEmitterShape.Box
+        glow.ShapeStyle = Enum.ParticleEmitterShapeStyle.Volume
+        glow.Brightness = 1.1
+        glow.Lifetime = NumberRange.new(1.4)
+        glow.Speed = NumberRange.new(0)
+        glow.Acceleration = Vector3.zero
+        glow.LockedToPart = true
+        glow.Size = NumberSequence.new(root.Size.Magnitude * 0.4)
+        glow.Transparency = NumberSequence.new({
+            NumberSequenceKeypoint.new(0, 1),
+            NumberSequenceKeypoint.new(0.3, 0.72),
+            NumberSequenceKeypoint.new(1, 1),
+        })
+        glow.Parent = glowOrigin
+        local burst = sparkles:Clone()
+        burst.Name = "TreasureHitSparkles"
+        burst.Brightness = 1.6
+        burst.LockedToPart = false
+        burst.Speed = NumberRange.new(0.6, 1.2)
+        burst.Lifetime = NumberRange.new(0.25, 0.45)
+        burst.Parent = origin
+        effect = {Origin = origin, Sparkles = sparkles, Glow = glow, Burst = burst, Enabled = false}
+        self._treasureEffects[rock] = effect
+    end
+    if not effect or effect.Enabled == enabled then
+        return
+    end
+    effect.Enabled = enabled
+    if effect.Tween then
+        effect.Tween:Cancel()
+        effect.Tween = nil
+    end
+    effect.Glow.Brightness = 1.1
+    if enabled then
+        local position = effect.Origin.Position
+        effect.Phase = position.X * 0.37 + position.Z * 0.61
+    end
+    effect.Sparkles.Enabled = enabled
+    effect.Glow.Enabled = enabled
+    if not enabled then
+        effect.Sparkles:Clear()
+        effect.Glow:Clear()
+        effect.Burst:Clear()
+    end
+end
+
+--- 每次检查重新判定四格范围，进出时直接开关；范围内保持正常密度并错开发射节奏。
+--- @param position Vector3 当前玩家位置。
+--- @param now number 当前本机时钟，控制各石头独立的缓慢起伏。
+function Component:UpdateTreasureEffects(position, now)
+    for index = 1, #self._chunks do
+        local chunk = self._chunks[index]
+        if chunk.Rocks then
+            for key, rock in pairs(chunk.Rocks) do
+                self:SetTreasureEffect(rock, rock.Parent == self._folder and self._treasureCells[key] == true, position)
+                local effect = self._treasureEffects[rock]
+                if effect and effect.Enabled then
+                    local pulse = 0.7 + math.sin(now * 1.6 + effect.Phase) * 0.3
+                    effect.Sparkles.Rate = 6 * pulse
+                    effect.Glow.Rate = 1.4
+                end
+            end
+        end
+    end
+end
+
+--- 按格子固定随机模型、朝向和灰色，清理复用的藏宝效果，避免重新载入时外观跳变。
 --- @param area table 所属关卡。
 --- @param column number 从零开始的列号。
 --- @param row number 从零开始的行号。
@@ -1275,6 +1452,7 @@ function Component:CreateRock(area, column, row)
     rock.Name = "Rock_" .. area.Index .. "_" .. (row * area.Columns + column + 1)
     rock:SetAttribute("CellKey", area.Index .. ":" .. (row * area.Columns + column + 1))
     rock:ScaleTo(1)
+    self:SetTreasureEffect(rock, false)
     rock:SetAttribute("BaseColor", RockColors[Random.new(seed + 17):NextInteger(1, #RockColors)])
     rock:SetAttribute("HealthRatio", nil)
     rock:SetAttribute("GroundColor", nil)
@@ -1327,13 +1505,14 @@ function Component:UpdateRockHealthBar(rock, healthRatio)
     FXLoader:Here(billboard, "Background/Fill").Size = UDim2.fromScale(math.clamp(healthRatio, 0, 1), 1)
 end
 
---- 大小、血条及显隐统一跟随预测血量，回包纠正后恢复；碰撞盒保持竖直及固定高度。
+--- 藏宝石放大 12%，星光源跟随原受损缩小；血条及显隐跟随预测血量并可由回包恢复。
 --- @param rock Model 当前客户端石头。
 --- @param area table 所属关卡及常驻颜色标记。
 --- @param health number 大于零的服务端实际血量，仅在尚无预测显示值时使用。
 function Component:UpdateRockAppearance(rock, area, health)
     local displayHealth = self._displayHealth[rock:GetAttribute("CellKey")] or health
     if displayHealth <= 0 then
+        self:SetTreasureEffect(rock, false)
         self._hitReactions[rock] = nil
         rock:SetAttribute("HealthRatio", nil)
         self:UpdateRockHealthBar(rock, 0)
@@ -1343,6 +1522,8 @@ function Component:UpdateRockAppearance(rock, area, health)
     end
     local healthRatio = displayHealth / RockLevel.HP[area.Index]
     local ratio = healthRatio > 0.66 and 1 or (healthRatio > 0.33 and 0.92 or 0.84)
+    local hasTreasure = self._treasureCells[rock:GetAttribute("CellKey")] == true
+    ratio *= hasTreasure and 1.12 or 1
     local reaction = self._hitReactions[rock]
     if rock:GetAttribute("HealthRatio") ~= ratio or reaction then
         local pivot = rock:GetAttribute("RestPivot")
@@ -1380,11 +1561,13 @@ function Component:UpdateRockAppearance(rock, area, health)
     if rock.Parent ~= self._folder then
         rock.Parent = self._folder
     end
+    self:SetTreasureEffect(rock, hasTreasure)
 end
 
---- 隐藏时解除碰撞并移出场景，按模型种类回收，避免复用时改变选定的轮廓。
+--- 隐藏时清空藏宝效果、解除碰撞并移出场景，按模型种类回收。
 --- @param rock Model 本组件创建的石头。
 function Component:RecycleRock(rock)
+    self:SetTreasureEffect(rock, false)
     self._hitReactions[rock] = nil
     self:SetRockState(rock, false)
     rock.Parent = nil
@@ -1436,6 +1619,16 @@ function Component:UpdateClimbing(character, position)
     end
 end
 
+--- 采用中档现有距离的倍率，仅调整本机石头的加载和隐藏范围。
+--- @param value string 已校验的 Low、Medium 或 High 档位。
+function Component:SetRenderDistance(value)
+    local scale = ({Low = 0.5, Medium = 1, High = 1.5})[value]
+    if self._renderDistanceScale ~= scale then
+        self._renderDistanceScale = scale
+        self._nextChunkCheck = 0
+    end
+end
+
 --- 公共菜鸟仅在本客户端按距离隐藏，保留服务端模型与其他玩家的拾取资格。
 --- @param position Vector3? 当前角色位置；为空时在组件销毁前恢复显示。
 function Component:UpdateNoobVisibility(position)
@@ -1471,7 +1664,7 @@ function Component:UpdateNoobVisibility(position)
     end
 end
 
---- 每帧更新受击表现，每 0.1 秒检查分块、攀爬和菜鸟显隐；石头仅在依赖变化或新建时刷新。
+--- 每帧更新受击表现，每 0.1 秒检查分块、星光密度、攀爬和菜鸟显隐；按需刷新石头。
 function Component:UpdateVisuals()
     self:UpdateFragments()
     self:UpdateTrainingHitReactions()
@@ -1485,14 +1678,17 @@ function Component:UpdateVisuals()
     local now = os.clock()
     if now >= self._nextChunkCheck then
         self._nextChunkCheck = now + 0.1
+        local loadDistance = RockLevel.LoadDistance * self._renderDistanceScale
+        local hideDistance = RockLevel.HideDistance * self._renderDistanceScale
         self:UpdateClimbing(character, position)
         self:UpdateNoobVisibility(position)
+        self:UpdateTreasureEffects(position, now)
         local candidate, nearest = nil, math.huge
         for index = 1, #self._chunks do
             local chunk = self._chunks[index]
             local dx, dz = position.X - chunk.Center.X, position.Z - chunk.Center.Z
             local distanceSquared = dx * dx + dz * dz
-            if chunk.Rocks and distanceSquared > RockLevel.HideDistance * RockLevel.HideDistance then
+            if chunk.Rocks and distanceSquared > hideDistance * hideDistance then
                 for key, rock in pairs(chunk.Rocks) do
                     self:RecycleRock(rock)
                 end
@@ -1500,7 +1696,7 @@ function Component:UpdateVisuals()
                 if self._loadingChunk == chunk then
                     self._loadingChunk = nil
                 end
-            elseif not chunk.Rocks and distanceSquared <= RockLevel.LoadDistance * RockLevel.LoadDistance
+            elseif not chunk.Rocks and distanceSquared <= loadDistance * loadDistance
                 and distanceSquared < nearest then
                 candidate, nearest = chunk, distanceSquared
             end
@@ -1595,6 +1791,7 @@ function Component:Dtor()
     self:UpdateNoobVisibility(nil)
     self:ClearDrops()
     FX.Network:UnRegServerMsgCallback("S2C_RockReset")
+    FX.Network:UnRegServerMsgCallback("S2C_RockTreasureCells")
     FX.Network:UnRegServerMsgCallback("S2C_RockHitResult")
     FX.Network:UnRegServerMsgCallback("S2C_SpawnRockDrop")
     FX.Network:UnRegServerMsgCallback("S2C_RemoveRockDrop")
@@ -1627,6 +1824,7 @@ function Component:Dtor()
     end
     self._fragments = {}
     self._hitReactions = {}
+    self._treasureEffects = {}
     for index, pool in ipairs(self._pool) do
         for rockIndex, rock in ipairs(pool) do
             rock:Destroy()

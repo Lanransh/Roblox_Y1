@@ -10,6 +10,7 @@ require(script.Parent.CUIView)
     soundEffectsVolume: number；音效音量，0..100 百分比整数。
     showAura: boolean；是否显示光环。
     giantPickaxe: boolean；是否启用镐子尺寸巨大化。
+    renderDistance: string；必填 Low / Medium / High，游戏默认 Medium。
   View 按状态显示，不替业务层保存设置或改变声音/模型。
   无 open、pending、error、列表或独立加载态；异步读取完成前不显示。
   音量图形宽度截断到 0..1、文字取整，但不替业务修正超范围的原始状态。
@@ -19,6 +20,7 @@ require(script.Parent.CUIView)
   self.State = {
       musicVolume = 70, soundEffectsVolume = 85,
       showAura = true, giantPickaxe = false,
+      renderDistance = "Medium",
   }
 
 【初始化与刷新】
@@ -34,9 +36,10 @@ require(script.Parent.CUIView)
 
 【动作与覆写】
   必需覆写 OnUIAction(action: string, payload: table)，无返回值；默认报错。
-  ChangeSetting -> { setting: string, value: number | boolean }。
+  ChangeSetting -> { setting: string, value: number | boolean | string }。
     setting="musicVolume" / "soundEffectsVolume"：value 为 0..100 整数百分比。
     setting="showAura" / "giantPickaxe"：value 为 boolean，取当前 State 的反值。
+    setting="renderDistance"：value 为 Low / Medium / High；选中亮绿，其余灰绿，均可点击。
     不支持其他设置键；setting 为稳定字段名，不是翻译后的标签。
   Close -> {}；由接入层调用 self:Hide()，没有 State.open。
   SliderDragEnded -> {}；鼠标/触摸释放或窗口失焦时提交最后设置。
@@ -203,6 +206,19 @@ function CSettingsView:OnReady()
         end))
     end
 
+    self.DistanceButtons = {}
+    for index, value in ipairs({"Low", "Medium", "High"}) do
+        local button = FXLoader:Here(root, "SettingsPanel.ContentBox.RenderDistanceRowImg." .. value .. "Btn")
+        self.DistanceButtons[value] = {
+            button = button,
+            edge = FXLoader:Here(button, "BottomEdgeImg"),
+        }
+        -- 发送稳定档位，重复点击由业务层忽略。
+        self:TrackConnection(button.Activated:Connect(function()
+            self:EmitUIAction("ChangeSetting", {setting = "renderDistance", value = value})
+        end))
+    end
+
     local closeButton = FXLoader:Here(root, "TitleBox.CloseSurfaceImg")
     -- Close 由接入层转换为窗口 Hide。
     self:TrackConnection(closeButton.Activated:Connect(function()
@@ -226,6 +242,12 @@ function CSettingsView:Render(state)
         })
         slider.fill.Size = UDim2.new(ratio, 0, 1, 0)
         slider.knob.Position = UDim2.new(ratio, 0, 0.5, 0)
+    end
+
+    for value, option in pairs(self.DistanceButtons) do
+        local selected = state.renderDistance == value
+        option.button.BackgroundColor3 = Color3.fromHex(selected and "#67ED14" or "#638079")
+        option.edge.BackgroundColor3 = Color3.fromHex(selected and "#225A07" or "#263E36")
     end
 
     for setting, toggle in pairs(self.Toggles) do

@@ -95,5 +95,7 @@ return {
         "S2C_CardActivated",
         -- seconds: number，下一档剩余在线秒数，-1 为今日全部到期；hasDrops: boolean，是否有待领取礼盒。
         "S2C_GiftDropCountdown",
+        -- round: number、cells: string[]；本轮新增或恢复的未碎藏宝格号，仅用于本人石头外观。
+        "S2C_RockTreasureCells",
     },
 }

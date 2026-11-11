@@ -33,7 +33,9 @@ function Manager:RegSettingsMsg()
     FX.Network:RegClientMsgCallback("C2S_SaveSettings", function(userId, settings)
         local player = self:GetPlayerObject(userId)
         if not player or type(settings) ~= "table" or type(settings.showAura) ~= "boolean"
-            or type(settings.giantPickaxe) ~= "boolean" then
+            or type(settings.giantPickaxe) ~= "boolean"
+            or (settings.renderDistance ~= "Low" and settings.renderDistance ~= "Medium"
+                and settings.renderDistance ~= "High") then
             return
         end
         for index, key in ipairs({"musicVolume", "soundEffectsVolume"}) do
@@ -47,6 +49,7 @@ function Manager:RegSettingsMsg()
             soundEffectsVolume = settings.soundEffectsVolume,
             showAura = settings.showAura,
             giantPickaxe = settings.giantPickaxe,
+            renderDistance = settings.renderDistance,
         })
     end)
 end

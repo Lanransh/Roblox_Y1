@@ -36,7 +36,8 @@ return {
     -- 玩家表现偏好，不参与装备属性和奖励计算。
     Settings = {
         Type = "table", Key = "Settings", KVTable = PlayerKVEnum.eStaticData, Sync = true,
-        DefVal = {musicVolume = 100, soundEffectsVolume = 100, showAura = true, giantPickaxe = true},
+        DefVal = {musicVolume = 100, soundEffectsVolume = 100, showAura = true, giantPickaxe = true,
+            renderDistance = "Medium"},
     },
     -- 每日礼盒私有状态，累计在线与已领取档位重登保留。
     GiftData = {

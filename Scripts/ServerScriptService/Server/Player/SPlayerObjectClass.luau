@@ -448,7 +448,7 @@ function Player:ShowLocalizedTips(key, arguments, duration)
     FX.Network:SendMsgToClient(self:GetPlayerId(), "S2C_ShowLocalizedTips", key, arguments, duration)
 end
 
---- 补齐历史数据、重建引导业务目标，并将小狗任务进度迁移为菜鸟任务。
+--- 补齐历史数据、重建引导业务目标，并迁移菜鸟任务和可视距离设置。
 --- @param version number 框架传入的旧存档版本。
 function Player:MigrateData(version)
     if version < 1 then
@@ -494,6 +494,12 @@ function Player:MigrateData(version)
             self:SetTable(PlayerDataConfig.WelfareData, welfare)
         end
         self:SetNumber(PlayerDataConfig.DataVersion, 5)
+    end
+    if version < 6 then
+        local settings = self:GetTable(PlayerDataConfig.Settings)
+        settings.renderDistance = PlayerDataConfig.Settings.DefVal.renderDistance
+        self:SetTable(PlayerDataConfig.Settings, settings)
+        self:SetNumber(PlayerDataConfig.DataVersion, 6)
     end
 end
 

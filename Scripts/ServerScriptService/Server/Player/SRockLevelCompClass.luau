@@ -78,6 +78,15 @@ end
 function Component:OnPlayerLogin()
     self._weaponTemplates = sharedWeaponTemplates
     self._areas = sharedAreas
+    self._baseFloors = {}
+    for _, path in ipairs({"BlockMeshs/World1Root/Base", "BlockMeshs/World2Root/世界2/Base", "BlockMeshs/World3Root/世界3/Base"}) do
+        local base = FXLoader:Workspace(path)
+        for _, node in ipairs(base:GetDescendants()) do
+            if node:IsA("BasePart") and string.match(node.Name, "^Floor_") then
+                table.insert(self._baseFloors, node)
+            end
+        end
+    end
     self._areaDefinitions = sharedAreaDefinitions
     -- 服务端订阅不回放初值，先读取一次；后续仅缓存装备展示所需的数据。
     self._equippedWeaponConfig = Weapon.GetEquippedConfig(self:GetTable(Fields.WeaponData))
@@ -274,7 +283,24 @@ function Component:InitializeArea(area)
         }
     end
     self._areaStates[areaId] = {Initialized = true, Contents = contents, Broken = {}}
+    self:SendTreasureCells(areaId)
     return true
+end
+
+--- 仅同步藏宝格号，不泄露道具种类、品质、价格或幸运倍率。
+--- @param areaId number? 新初始化的区域；为空时补发本轮全部已初始化区域。
+function Component:SendTreasureCells(areaId)
+    local cells = {}
+    for index, state in pairs(self._areaStates) do
+        if (not areaId or index == areaId) and state.Initialized then
+            for cell in pairs(state.Contents) do
+                if not state.Broken[cell] then
+                    table.insert(cells, index .. ":" .. cell)
+                end
+            end
+        end
+    end
+    FX.Network:SendMsgToClient(self:GetPlayerId(), "S2C_RockTreasureCells", self._round, cells)
 end
 
 --- 返回本玩家当前轮次已击破的格号，供角色更换或网络重连后恢复。
@@ -306,6 +332,7 @@ end
 --- 回放轮次及个人已击破格号，并补发本人仍有效的掉落；客户端可区分新轮和同轮状态恢复。
 function Component:SendRockRound()
     FX.Network:SendMsgToClient(self:GetPlayerId(), "S2C_RockReset", self._round, self:GetBrokenCells())
+    self:SendTreasureCells()
     local now = workspace:GetServerTimeNow()
     for dropId, drop in pairs(self._dropNodes) do
         if now < drop.ExpiresAt then
@@ -678,7 +705,7 @@ function Component:EquipPickaxe(humanoid)
     end
 end
 
---- 服务端处理掉落、角色与入库，装备检查只比较缓存；死亡期间仍回收掉落。
+--- 服务端处理掉落、角色与入库，按基地判定切换移速；死亡期间仍回收掉落。
 function Component:Tick()
     local now = workspace:GetServerTimeNow()
     for dropId, drop in pairs(self._dropNodes) do
@@ -716,6 +743,21 @@ function Component:Tick()
             inSafeArea = true
             break
         end
+    end
+    -- 基地加速覆盖三个世界的基地地板，不把其他关卡外位置算作基地。
+    local inBase = false
+    for _, floor in ipairs(self._baseFloors) do
+        local offset = floor.CFrame:PointToObjectSpace(position)
+        if math.abs(offset.X) <= floor.Size.X / 2
+            and math.abs(offset.Z) <= floor.Size.Z / 2
+            and math.abs(offset.Y - floor.Size.Y / 2) < 16 then
+            inBase = true
+            break
+        end
+    end
+    local walkSpeed = inBase and 50 or 30
+    if humanoid.WalkSpeed ~= walkSpeed then
+        humanoid.WalkSpeed = walkSpeed
     end
     if self._inSafeArea == nil then
         self._inSafeArea = inSafeArea

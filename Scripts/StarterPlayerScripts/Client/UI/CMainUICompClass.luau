@@ -26,8 +26,10 @@ local TranslationTexts = Text.Define("Main", {
     Strength = "Strength: {value}",
     MaxLevel = "MAX LEVEL",
     CoinReward = "{value} Coins",
-    NewPickaxeAvailable = "A new pickaxe is available to buy!",
-    NewAuraAvailable = "A new aura is available to buy!",
+    RebirthReady = "Ready to rebirth!",
+    BetterTrainingAvailable = "Move to a better training area for a higher strength multiplier!",
+    NewPickaxeAvailable = "A better pickaxe is available to buy!",
+    NewAuraAvailable = "A better aura is available to buy!",
     DiamondPackDiscount = "Pay 67%",
     DiamondPackAmount = "{value} Diamonds",
     DiamondPackPrice = "Only {robux}{price}",
@@ -45,6 +47,7 @@ local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local CurrencyShop = FXLoader:RequireShared("Scripts/Game/Shared/CurrencyShop")
 local InstancePath = FXLoader:RequireShared("Scripts/Game/Shared/InstancePath")
 local AnimatedText = FXLoader:RequireFromParent(script, "CAnimatedText")
+local UIGuideArrow = FXLoader:RequireFromParent(script, "UIGuideArrow")
 local StrengthPacks = {StrengthPack1Button = 301, StrengthPack2Button = 302}
 local AREA_EXIT_PADDING = 2
 local Component = FX.Class("CMainUICompClass", "FCUICompClass")
@@ -82,6 +85,7 @@ function Component:OnReady()
     self._strength = FXLoader:Here(top, "Strength/Value")
     self._rebirthBadge = FXLoader:Here(self._rootNode, "LeftCenter/RebirthButton/Badge")
     self._rebirthBadge.AutoLocalize = false
+    self._rebirthArrow = UIGuideArrow.New(self._playerGui)
     self:BindNotificationBadges()
     self:ConfigureTopRightLayout()
     self._commonUI = self:GetPlayerObject():RequireComponent("FCCommonUIComp")
@@ -175,7 +179,8 @@ function Component:OnReady()
         self:RefreshProgress(self:GetNumber(Fields.RockTrainingValue))
     end, self)
     self:WatchDataChanged(Fields.Money, self.RefreshCoins, self)
-    for index, field in ipairs({Fields.Money, Fields.WeaponData, Fields.AuraData}) do
+    for index, field in ipairs({Fields.Money, Fields.WeaponData, Fields.AuraData,
+        Fields.RockTrainingValue, Fields.RebirthCount, Fields.TrainingFieldIndex}) do
         self:WatchDataChanged(field, self.RefreshPurchaseReminder, self)
     end
     self:WatchDataChanged(Fields.RebirthCount, self.RefreshRebirthCount, self)
@@ -774,10 +779,24 @@ function Component:CreatePurchaseReminder()
     self._purchaseTextEffect = AnimatedText.Attach(label)
 end
 
---- 仅提示已开放、未拥有且当前金币足够的商品；两个商店都满足时各显示一行。
-function Component:RefreshPurchaseReminder()
+--- 统一提示优先级：重生、训练时可用的更好训练台、可购买的新镐子、新光环。
+--- @return table? 最高优先级的文案定义，没有符合条件的提醒时为 nil。
+function Component:GetPriorityReminder()
+    local rebirthCount = self:GetNumber(Fields.RebirthCount)
+    local requiredLevel = Rebirth.GetRequiredLevel(rebirthCount)
+    local level = RockLevel.GetProgress(self:GetNumber(Fields.RockTrainingValue), requiredLevel)
+    if rebirthCount < Rebirth.MaxCount and level >= requiredLevel then
+        return TranslationTexts.RebirthReady
+    end
+    local currentField = _G.GameConfig.TrainingFieldData[self:GetNumber(Fields.TrainingFieldIndex)]
+    if currentField then
+        for index, config in ipairs(_G.GameConfig.TrainingFieldData) do
+            if rebirthCount >= config.NeedRebirhLevel and config.TrainingRate > currentField.TrainingRate then
+                return TranslationTexts.BetterTrainingAvailable
+            end
+        end
+    end
     local coins = self:GetNumber(Fields.Money)
-    local lines = {}
     local shops = {
         {Configs = _G.GameConfig.ToolConfig, Limit = _G.GameEnum.WeaponLimit,
             Field = Fields.WeaponData, IdKey = "ToolId", Text = TranslationTexts.NewPickaxeAvailable},
@@ -786,18 +805,30 @@ function Component:RefreshPurchaseReminder()
     }
     for shopIndex, shop in ipairs(shops) do
         local owned = self:GetTable(shop.Field).owned
+        local ownedRate = 0
+        for index, config in ipairs(shop.Configs) do
+            if owned[tostring(config[shop.IdKey])] == true then
+                ownedRate = math.max(ownedRate, config.TrainingRate)
+            end
+        end
         for index, config in ipairs(shop.Configs) do
             if index > shop.Limit then
                 break
             end
-            if owned[tostring(config[shop.IdKey])] ~= true and coins >= config.Price then
-                table.insert(lines, Text.Tr(shop.Text))
-                break
+            if owned[tostring(config[shop.IdKey])] ~= true and coins >= config.Price
+                and config.TrainingRate > ownedRate then
+                return shop.Text
             end
         end
     end
-    self._purchaseReminder.Text = table.concat(lines, "\n")
-    self._purchaseReminder.Visible = #lines > 0
+    return nil
+end
+
+--- 复用底部购买提醒的字号、颜色与动画，只展示当前最高优先级的一条文案。
+function Component:RefreshPurchaseReminder()
+    local definition = self:GetPriorityReminder()
+    self._purchaseReminder.Text = definition and Text.Tr(definition) or ""
+    self._purchaseReminder.Visible = definition ~= nil
 end
 
 --- 新手主引导完成后显示训练基地倍率；训练期间持续扫光，气泡加成仍按到期时间叠乘。
@@ -1172,13 +1203,19 @@ function Component:ShowPickupEffect(entry)
     self._pickupEffects[effect] = connection
 end
 
---- 刷新经验、力量与整数重生百分比；经验条以 0.3 秒 Quad Out 平滑填充。
+--- 刷新经验、力量与整数重生百分比；达到可重生门槛时显示引导箭头，封顶后隐藏。
 --- @param value number 同步后的累计训练值。
 --- @param oldValue number? 上一次训练值，首次回放为 nil。
 function Component:RefreshProgress(value, oldValue)
-    local rebirthRequiredLevel = Rebirth.GetRequiredLevel(self:GetNumber(Fields.RebirthCount))
+    local rebirthCount = self:GetNumber(Fields.RebirthCount)
+    local rebirthRequiredLevel = Rebirth.GetRequiredLevel(rebirthCount)
     local level, strength, progressValue, required = RockLevel.GetProgress(value, rebirthRequiredLevel)
     self._rebirthBadge.Text = string.format("%d%%", math.floor(math.clamp(level / rebirthRequiredLevel, 0, 1) * 100))
+    if level >= rebirthRequiredLevel and rebirthCount < Rebirth.MaxCount then
+        self._rebirthArrow:Show(self._rebirthBadge.Parent, "Right")
+    else
+        self._rebirthArrow:Hide()
+    end
     local progress = math.clamp(progressValue / required, 0, 1)
     FXLoader:Here(self._bar, "LevelLabel").Text = string.format("Lv.%d", level)
     FXLoader:Here(self._bar, "ProgressLabel").Text = string.format("%s/%s",
@@ -1340,6 +1377,9 @@ end
 
 --- 释放自建节点和未结束动画，保留共用 ScreenGui；基类负责取消数据及按钮监听。
 function Component:Dtor()
+    if self._rebirthArrow then
+        self._rebirthArrow:Destroy()
+    end
     if self._diamondPackGroup then
         self._diamondPackGroup:Destroy()
     end
