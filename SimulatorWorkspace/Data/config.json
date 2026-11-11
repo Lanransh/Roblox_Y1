@@ -993,37 +993,37 @@
               {
                 "fromInput": 120,
                 "toInput": 134,
-                "fromValue": 5.6,
+                "fromValue": 5.4,
                 "toValue": 5.5
               },
               {
                 "fromInput": 135,
                 "toInput": 149,
                 "fromValue": 5.5,
-                "toValue": 5.8
+                "toValue": 5.9
               },
               {
                 "fromInput": 150,
                 "toInput": 164,
-                "fromValue": 5.8,
-                "toValue": 6.2
+                "fromValue": 5.9,
+                "toValue": 6.4
               },
               {
                 "fromInput": 165,
                 "toInput": 179,
-                "fromValue": 6.2,
-                "toValue": 6.3
+                "fromValue": 6.4,
+                "toValue": 6.4
               },
               {
                 "fromInput": 180,
                 "toInput": 194,
-                "fromValue": 6.3,
-                "toValue": 6.7
+                "fromValue": 6.4,
+                "toValue": 6.9
               },
               {
                 "fromInput": 195,
                 "toInput": 209,
-                "fromValue": 6.7,
+                "fromValue": 6.9,
                 "toValue": 7.3
               },
               {
