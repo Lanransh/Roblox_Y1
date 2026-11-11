@@ -1137,7 +1137,7 @@
                   },
                   "Rotation": 0,
                   "ScrollBarThickness": 3,
-                  "ScrollingDirection": "XY",
+                  "ScrollingDirection": "Y",
                   "Size": {
                     "x": {
                       "offset": 618,
@@ -1628,7 +1628,7 @@
                   },
                   "Rotation": 0,
                   "ScrollBarThickness": 3,
-                  "ScrollingDirection": "XY",
+                  "ScrollingDirection": "Y",
                   "Size": {
                     "x": {
                       "offset": 621,

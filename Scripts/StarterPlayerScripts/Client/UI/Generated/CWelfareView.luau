@@ -444,6 +444,13 @@ function CWelfareView:OnReady()
     self.Root = Loader:PlayerGui("WelfareUI")
     -- 仅关闭主动翻译的具体动态文本；原型克隆继承设置，静态节点保持自动本地化。
     self.Rows = {}
+    -- 原生越界弹性只在 Roblox 中提供；三个奖励列表到边界即停止。
+    if game then
+        for index, pageName in ipairs({ "OnlineBox", "SignInBox", "TasksBox" }) do
+            local container = Loader:Here(self.Root, "PopupPanelImg." .. pageName .. ".ItemsBox")
+            container.ElasticBehavior = Enum.ElasticBehavior.Never
+        end
+    end
     self.ActiveTab = "offline"
     local tabs = { { "offline", "OfflineTabBtn" }, { "diamonds", "DiamondsTabBtn" }, { "signin", "SignInTabBtn" }, { "online", "OnlineTabBtn" }, { "task", "TasksTabBtn" } }
     for _, tab in ipairs(tabs) do
@@ -639,9 +646,12 @@ function CWelfareView:SyncItems(group, states)
             rows[id] = nil
         end
     end
-    container.CanvasSize = UDim2.fromOffset(container.Size.X.Offset - container.ScrollBarThickness, bottom + 3)
-    local maxScroll = math.max(0, bottom + 3 - container.Size.Y.Offset)
-    container.CanvasPosition = Vector2.new(0, math.min(container.CanvasPosition.Y, maxScroll))
+    local canvasSize = UDim2.fromOffset(0, bottom + 3)
+    -- 仅内容高度变化时更新画布，避免计时与领取刷新干扰滚动。
+    if container.CanvasSize ~= canvasSize then
+        container.CanvasSize = canvasSize
+    end
+    -- 保留当前滚动位置；画布缩短时由 ScrollingFrame 按实际窗口范围限制。
 end
 
 -- 当前在线/签到页统一领取所有可领条目；每个条目仍发送原有 Claim 契约。

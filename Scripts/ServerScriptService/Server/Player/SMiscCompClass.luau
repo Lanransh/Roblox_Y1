@@ -107,7 +107,7 @@ function Component:HandleSkipRebirth(expectedCount)
     return {success = true, count = count + 1}
 end
 
---- 读档后建立排行榜和公开头顶力量显示，并按原频率检查每秒结算条件。
+--- 读档后建立排行榜和公开头顶力量、重生次数显示，并按原频率检查每秒结算条件。
 function Component:OnPlayerLogin()
     self:SetNumber(Fields.TrainingFriendCount, FS.FriendService:GetFriendCountInRoom(self:GetPlayerId()) or 0)
     TrainingFields.GetFields()
@@ -140,6 +140,12 @@ function Component:OnPlayerLogin()
         end
     end))
     self:BindStrengthCharacter(player.Character)
+    -- 普通重生与付费跳过都会修改次数，沿用数据订阅即时刷新公开显示。
+    self:WatchDataChanged(Fields.RebirthCount, function()
+        if self._strengthText then
+            self:RefreshStrengthBillboard()
+        end
+    end)
     self._timer = FX.Task:Interval(0.1, function()
         self:TickTraining()
     end)
@@ -194,6 +200,10 @@ function Component:BindStrengthCharacter(character)
         self._strengthBillboard = nil
         self._strengthText = nil
     end
+    if self._rebirthBillboard then
+        self._rebirthBillboard:Destroy()
+        self._rebirthBillboard = nil
+    end
     self._strengthCharacter = character
     if not character then
         return
@@ -212,7 +222,7 @@ function Component:BindStrengthCharacter(character)
     end
 end
 
---- 由服务端创建按世界尺寸缩放的头顶显示，图标与数字整体居中。
+--- 由服务端创建力量与重生次数两行头顶显示，图标与数字分别整体居中。
 --- @param head BasePart 当前角色头部，兼容 R6 和 R15。
 function Component:CreateStrengthBillboard(head)
     local billboard = Instance.new("BillboardGui")
@@ -249,23 +259,35 @@ function Component:CreateStrengthBillboard(head)
     stroke.Thickness = 2
     stroke.Parent = text
 
+    local rebirthBillboard = billboard:Clone()
+    rebirthBillboard.Name = "RebirthBillboard"
+    rebirthBillboard.StudsOffsetWorldSpace = Vector3.new(0, 2, 0)
+    rebirthBillboard.StrengthIcon.Image = "rbxassetid://76673431315141"
+    self._rebirthBillboard = rebirthBillboard
     self._strengthBillboard = billboard
     self._strengthText = text
     self:RefreshStrengthBillboard()
     billboard.Parent = head
+    rebirthBillboard.Parent = head
 end
 
---- 按格式化数字的实际宽度调整整组世界尺寸，保持不同位数的力量显示居中。
+--- 按各行数字的实际宽度调整世界尺寸，力量沿用数量缩写，重生次数显示整数。
 function Component:RefreshStrengthBillboard()
-    local text = self._strengthText
-    local value = GameUtility.NumberToText(self._strengthStat.Value)
-    local textWidth = TextService:GetTextSize(value, 28, text.Font, Vector2.new(1000, 44)).X + 4
-    local width = 44 + 6 + textWidth
-    self._strengthBillboard.Size = UDim2.fromScale(width / 44 * 0.9, 0.9)
-    self._strengthBillboard.StrengthIcon.Size = UDim2.fromScale(44 / width, 1)
-    text.Position = UDim2.fromScale(50 / width, 0.5)
-    text.Size = UDim2.fromScale(textWidth / width, 28 / 44)
-    text.Text = value
+    local rows = {
+        {self._strengthBillboard, GameUtility.NumberToText(self._strengthStat.Value)},
+        {self._rebirthBillboard, tostring(self:GetNumber(Fields.RebirthCount))},
+    }
+    for index, row in ipairs(rows) do
+        local billboard, value = row[1], row[2]
+        local text = billboard.StrengthText
+        local textWidth = TextService:GetTextSize(value, 28, text.Font, Vector2.new(1000, 44)).X + 4
+        local width = 44 + 6 + textWidth
+        billboard.Size = UDim2.fromScale(width / 44 * 0.9, 0.9)
+        billboard.StrengthIcon.Size = UDim2.fromScale(44 / width, 1)
+        text.Position = UDim2.fromScale(50 / width, 0.5)
+        text.Size = UDim2.fromScale(textWidth / width, 28 / 44)
+        text.Text = value
+    end
 end
 
 --- 校验世界序号与历史最高等级后，把角色移动到配置落点并同步当前世界。
@@ -296,7 +318,7 @@ function Component:HandleTransferWorld(index)
     return {success = true, index = index}
 end
 
---- 将持久训练值派生为同步等级，并同步排行榜、玩家属性与头顶力量。
+--- 将持久训练值派生为同步等级，并同步排行榜、玩家属性与头顶力量及重生次数。
 function Component:RefreshProgress()
     local count = self:GetNumber(Fields.RebirthCount)
     local value = math.min(self:GetNumber(Fields.RockTrainingValue), Rebirth.GetMaxTrainingValue(count))

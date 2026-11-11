@@ -181,6 +181,11 @@ function Component:OnReady()
     end
     self:WatchDataChanged(Fields.RebirthCount, self.RefreshRebirthCount, self)
     self:WatchDataChanged(Fields.Diamonds, self.RefreshDiamonds, self)
+    --- 已拥有 VIP 时隐藏主界面入口，首次回放覆盖重新登录的存档状态。
+    --- @param isVip boolean 服务端同步的永久 VIP 资格。
+    self:WatchDataChanged(Fields.Vip, function(isVip)
+        FXLoader:Here(self._rootNode, "LeftCenter/VipBtn").Visible = not isVip
+    end)
     self:WatchDataChanged(Fields.RockLoot, self.RefreshLoot, self)
     self:WatchDataChanged(Fields.TrainingFriendCount, self.RefreshFriendBoost, self)
     for index, field in ipairs({Fields.CurrencyShopData, Fields.RockTrainingValue, Fields.RebirthCount,
@@ -391,6 +396,8 @@ function Component:BindButtons()
                     self:GetPlayerObject():RequireComponent("CWelfareUIComp"):Show()
                 elseif node.Name == "ShopBtn" then
                     self:GetPlayerObject():RequireComponent("CCurrencyShopUIComp"):Show()
+                elseif node.Name == "VipBtn" then
+                    self:GetPlayerObject():RequireComponent("CVipPurchaseUIComp"):Open()
                 elseif node.Name == "SettingsButton" then
                     self:GetPlayerObject():RequireComponent("CSettingsUIComp"):Show()
                 elseif node == self._homeButton then

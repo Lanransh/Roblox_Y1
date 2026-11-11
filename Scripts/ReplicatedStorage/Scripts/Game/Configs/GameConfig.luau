@@ -41,7 +41,7 @@ return {
             VIPRate = 0.5
         },
         LoginData = {
-            GemCount = 28
+            GemCount = 5
         },
         GiftData = {
             Gem = 5,

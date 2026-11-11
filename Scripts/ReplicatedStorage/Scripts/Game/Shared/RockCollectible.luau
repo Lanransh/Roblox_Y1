@@ -16,7 +16,7 @@ local QualityColors = {
 }
 
 Collectible.PickupDistance = 10
-Collectible.DropRevealDuration = 1 -- 黑色候选轮转时长，客户端表现与服务端拾取等待共用。
+Collectible.DropRevealDuration = 0.5 -- 黑色候选轮转时长，客户端表现与服务端拾取等待共用。
 
 --- 按配置中的品质编号返回统一品质颜色，未知品质回退到默认灰色。
 --- @param quality number 配置中的道具品质编号。
