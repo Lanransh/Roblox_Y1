@@ -2,6 +2,7 @@ local FX = _G.FX
 local FXLoader = FX.Loader
 local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
+local InstancePath = FXLoader:RequireShared("Scripts/Game/Shared/InstancePath")
 local TranslationTexts = Text.Define("Tutorial", {
     Collect = "Head into the rocks! Your pickaxe clears the way. Pick up 2 pieces of loot.",
     Deposit = "Return to your base to store your loot. You can also use HOME.",
@@ -285,15 +286,31 @@ function Guide:GetUIGuideButton(target)
     return nil
 end
 
---- 有界面操作时切换到 UI 箭头，否则指向对应世界目标；训练提示固定指向初始训练台。
+--- 主引导结束后的训练台提醒复用彩色世界箭头；其他步骤沿用原目标与 UI 箭头。
 function Guide:RefreshTarget()
     local target = self._activeTarget
+    local trainingConfig
+    if self._mainGuideFinished then
+        trainingConfig = select(2, self:RequireComponent("CMainUIComp"):GetPriorityReminder())
+    end
     local character = self:GetPlayerCharacter()
     local humanoid = character and character:FindFirstChildOfClass("Humanoid")
-    if not target or not humanoid or humanoid.Health <= 0 then
+    if (not target and not trainingConfig) or not humanoid or humanoid.Health <= 0 then
         self._uiGuideButton = nil
         self:HideGuideArrow()
         self._uiArrow:Hide()
+        return
+    end
+    if trainingConfig then
+        self._uiGuideButton = nil
+        self._uiArrow:Hide()
+        local field = InstancePath.Find(trainingConfig.Node)
+        local platform = field and field:FindFirstChild("彩色训练台", true)
+        if platform and platform:IsA("BasePart") then
+            self:ShowGuideArrowToPosition(platform.Position)
+        else
+            self:HideGuideArrow()
+        end
         return
     end
     local button = self:GetUIGuideButton(target)

@@ -12,20 +12,6 @@ return {
             KVTable = nil,
             ProductType = [[DeveloperProduct]]
         },
-        [100] = {
-            DevGoodsId = 100,
-            BuyHandler = [[AddGem]],
-            Name = [[Starter Diamond Pack (67折)]],
-            Desc = [[Get 120 Diamonds. Great value!]],
-            Price = 8,
-            RobloxProductId = 2.064519003e+9,
-            BuyLimit = 1,
-            NumberArray = {
-                [1] = 120,
-            },
-            KVTable = nil,
-            ProductType = [[GamePass]]
-        },
         [101] = {
             DevGoodsId = 101,
             BuyHandler = [[AddGem]],

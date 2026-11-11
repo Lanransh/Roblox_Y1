@@ -20,41 +20,34 @@ return {
     MiniCoinData = {
         [1] = {
             Index = 1,
-            DevGoodsId = 100,
-            NameTxt = [[Starter Diamond Pack (67折)]],
-            DescTxt = [[Get 120 Diamonds. Great value!]],
-            IconId = [[rbxassetid://97758765626770]]
-        },
-        [2] = {
-            Index = 2,
             DevGoodsId = 111,
             NameTxt = [[Small Weekly Diamond Pass × 1]],
             DescTxt = [[Get 118 Diamonds instantly (includes day 1), then 53 Diamonds daily for the next 6 days. Total: 436 Diamonds.]],
             IconId = [[rbxassetid://131496626025159]]
         },
-        [3] = {
-            Index = 3,
+        [2] = {
+            Index = 2,
             DevGoodsId = 112,
             NameTxt = [[Large Weekly Diamond Pass × 1]],
             DescTxt = [[Get 310 Diamonds instantly (includes day 1), then 190 Diamonds daily for the next 6 days. Total: 1,450 Diamonds.]],
             IconId = [[rbxassetid://106263117856612]]
         },
-        [4] = {
-            Index = 4,
+        [3] = {
+            Index = 3,
             DevGoodsId = 101,
             NameTxt = [[Small Diamond Pack]],
             DescTxt = [[Get 190 Diamonds.]],
             IconId = [[rbxassetid://118332681865511]]
         },
-        [5] = {
-            Index = 5,
+        [4] = {
+            Index = 4,
             DevGoodsId = 102,
             NameTxt = [[Medium Diamond Pack]],
             DescTxt = [[Get 720 Diamonds.]],
             IconId = [[rbxassetid://107919640061477]]
         },
-        [6] = {
-            Index = 6,
+        [5] = {
+            Index = 5,
             DevGoodsId = 103,
             NameTxt = [[Large Diamond Pack]],
             DescTxt = [[Get 1,860 Diamonds.]],
