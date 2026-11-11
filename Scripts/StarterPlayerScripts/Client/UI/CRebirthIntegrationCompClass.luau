@@ -1,3 +1,5 @@
+-- 重生业务接入：成功后显示次数横幅与屏幕彩纸礼炮。
+local RunService = game:GetService("RunService")
 local FX = _G.FX
 local FC = _G.FC
 local FXLoader = FX.Loader
@@ -106,10 +108,103 @@ function Component:RefreshRebirthNotice()
     })
 end
 
---- 按屏幕缩小成功横幅，显示服务端确认的重生次数变化后淡出。
+--- 结束或替换礼炮时断开更新并销毁彩纸，不影响成功横幅。
+function Component:StopRebirthConfetti()
+    if self._rebirthConfettiConnection then
+        self._rebirthConfettiConnection:Disconnect()
+        self._rebirthConfettiConnection = nil
+    end
+    if self._rebirthConfettiLayer then
+        self._rebirthConfettiLayer:Destroy()
+        self._rebirthConfettiLayer = nil
+    end
+end
+
+--- 从屏幕两侧喷出宽片彩纸，缓慢翻转且保留厚度；连续重生替换上一轮，限制节点数量。
+function Component:PlayRebirthConfetti()
+    self:StopRebirthConfetti()
+    local layer = Instance.new("Frame")
+    layer.Name = "RebirthConfetti"
+    layer.Size = UDim2.fromScale(1, 1)
+    layer.BackgroundTransparency = 1
+    layer.Active = false
+    layer.Interactable = false
+    layer.Selectable = false
+    layer.ClipsDescendants = true
+    layer.ZIndex = 1
+    layer.Parent = self._rebirthNoticeGui
+    self._rebirthConfettiLayer = layer
+
+    local colors = {
+        Color3.fromRGB(255, 211, 64), Color3.fromRGB(255, 94, 120),
+        Color3.fromRGB(78, 209, 255), Color3.fromRGB(117, 239, 139),
+        Color3.fromRGB(190, 128, 255), Color3.fromRGB(255, 155, 67),
+    }
+    local random = Random.new()
+    local viewport = self._rebirthNoticeGui.AbsoluteSize
+    local scale = math.clamp(math.min(viewport.X / 1280, viewport.Y / 720), 0.65, 1)
+    local particles = {}
+    for index = 1, 84 do
+        local fromLeft = index % 2 == 0
+        local width = random:NextNumber(18, 28) * scale
+        local height = width * random:NextNumber(0.7, 1)
+        local piece = Instance.new("Frame")
+        piece.Name = "Confetti"
+        piece.AnchorPoint = Vector2.new(0.5, 0.5)
+        piece.Size = UDim2.fromOffset(width, height)
+        piece.BackgroundColor3 = colors[random:NextInteger(1, #colors)]
+        piece.BorderSizePixel = 0
+        piece.Active = false
+        piece.Interactable = false
+        piece.Selectable = false
+        piece.Visible = false
+        piece.Parent = layer
+        particles[index] = {
+            Node = piece, Width = width, Height = height,
+            OriginX = fromLeft and 0.08 or 0.92,
+            VelocityX = random:NextNumber(0.15, 0.65) * (fromLeft and 1 or -1),
+            VelocityY = random:NextNumber(-1.85, -1.1),
+            Rotation = random:NextNumber(0, 360),
+            Spin = random:NextNumber(-540, 540),
+            Flutter = random:NextNumber(4, 7),
+            Delay = random:NextNumber(0, 0.22),
+            Lifetime = random:NextNumber(2.4, 3.1),
+        }
+    end
+
+    local elapsed = 0
+    self._rebirthConfettiConnection = RunService.RenderStepped:Connect(function(deltaTime)
+        elapsed += deltaTime
+        local active = false
+        for index = 1, #particles do
+            local particle = particles[index]
+            local age = elapsed - particle.Delay
+            local piece = particle.Node
+            piece.Visible = age >= 0 and age < particle.Lifetime
+            if age < particle.Lifetime then
+                active = true
+            end
+            if piece.Visible then
+                local x = particle.OriginX + particle.VelocityX * age
+                local y = 1.05 + particle.VelocityY * age + 0.8 * age * age
+                piece.Position = UDim2.fromScale(x, y)
+                piece.Rotation = particle.Rotation + particle.Spin * age
+                piece.Size = UDim2.fromOffset(particle.Width,
+                    particle.Height * math.max(0.55, math.abs(math.cos(age * particle.Flutter))))
+                piece.BackgroundTransparency = math.clamp((age - particle.Lifetime + 0.6) / 0.6, 0, 1)
+            end
+        end
+        if not active then
+            self:StopRebirthConfetti()
+        end
+    end)
+end
+
+--- 播放成功礼炮并按屏幕缩小横幅，显示服务端确认的重生次数变化后淡出。
 --- @param previousCount number 请求前的重生次数。
 --- @param currentCount number 服务端确认的新重生次数。
 function Component:ShowRebirthNotice(previousCount, currentCount)
+    self:PlayRebirthConfetti()
     local viewport = self._rebirthNoticeGui.AbsoluteSize
     local scale = math.clamp(math.min(viewport.X / 1280, viewport.Y / 720), 0.65, 1)
     local group = self._rebirthNoticeGroup
@@ -271,8 +366,9 @@ function Component:OnUIAction(action, payload)
     end)
 end
 
---- 停止本组件拥有的重生请求与提示动画，并释放提示界面。
+--- 停止本组件拥有的重生请求、提示动画与礼炮，并释放提示界面。
 function Component:Dtor()
+    self:StopRebirthConfetti()
     if self._rebirthTask then
         task.cancel(self._rebirthTask)
         self._rebirthTask = nil

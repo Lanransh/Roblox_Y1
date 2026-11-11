@@ -1056,7 +1056,7 @@ function Component:RefreshProgress(value, oldValue)
     end
 end
 
---- 点击显示一个全额图标，走路及击打在角色周围独立随机显示三个均分图标，飞向中心时最小缩至 50%。
+--- 点击显示一个全额图标，走路及击打显示三个均分图标；收益文案取整，飞向中心时最小缩至 50%。
 --- @param gain number 服务器确认的实际训练收益。
 --- @param position Vector2? 点击起点，走路及击打收益不传。
 function Component:ShowTrainingEffect(gain, position)
@@ -1076,8 +1076,8 @@ function Component:ShowTrainingEffect(gain, position)
         end
     end
     local count = position and 1 or 3
-    -- 先均分实际收益再统一格式化，仅改变客户端文案，不改变服务端奖励。
-    local gainText = GameUtility.NumberToText(gain / count)
+    -- 先均分实际收益再取整显示，仅改变客户端文案，不改变服务端奖励。
+    local gainText = GameUtility.NumberToText(math.floor(gain / count), 0)
     for index = 1, count do
         local startPosition
         if position then
