@@ -139,7 +139,7 @@ return {
     OnlineRewardData = {
         [1] = {
             Index = 1,
-            TargetMinutes = 5,
+            TargetMinutes = 2,
             Desc = [[NoobCard × 2]],
             Reward = {
                 Type = [[Item]],
@@ -149,7 +149,7 @@ return {
         },
         [2] = {
             Index = 2,
-            TargetMinutes = 10,
+            TargetMinutes = 5,
             Desc = [[Strength Card (15 Minutes) × 1]],
             Reward = {
                 Type = [[Item]],
@@ -159,7 +159,7 @@ return {
         },
         [3] = {
             Index = 3,
-            TargetMinutes = 20,
+            TargetMinutes = 8,
             Desc = [[Double Sell Value Card × 1]],
             Reward = {
                 Type = [[Item]],
@@ -169,7 +169,7 @@ return {
         },
         [4] = {
             Index = 4,
-            TargetMinutes = 25,
+            TargetMinutes = 10,
             Desc = [[2 Diamonds]],
             Reward = {
                 Type = [[Gem]],
@@ -178,7 +178,7 @@ return {
         },
         [5] = {
             Index = 5,
-            TargetMinutes = 35,
+            TargetMinutes = 15,
             Desc = [[Strength Card (30 Minutes) × 1]],
             Reward = {
                 Type = [[Item]],
@@ -188,7 +188,7 @@ return {
         },
         [6] = {
             Index = 6,
-            TargetMinutes = 45,
+            TargetMinutes = 20,
             Desc = [[3 Diamonds]],
             Reward = {
                 Type = [[Gem]],
@@ -197,7 +197,7 @@ return {
         },
         [7] = {
             Index = 7,
-            TargetMinutes = 55,
+            TargetMinutes = 25,
             Desc = [[Backpack Boost Card (1 Hour) × 1]],
             Reward = {
                 Type = [[Item]],
@@ -207,7 +207,7 @@ return {
         },
         [8] = {
             Index = 8,
-            TargetMinutes = 65,
+            TargetMinutes = 30,
             Desc = [[5 Diamonds]],
             Reward = {
                 Type = [[Gem]],
@@ -216,7 +216,7 @@ return {
         },
         [9] = {
             Index = 9,
-            TargetMinutes = 75,
+            TargetMinutes = 35,
             Desc = [[Double Sell Value Card × 1]],
             Reward = {
                 Type = [[Item]],
@@ -226,7 +226,7 @@ return {
         },
         [10] = {
             Index = 10,
-            TargetMinutes = 90,
+            TargetMinutes = 40,
             Desc = [[Strength Card (30 Minutes) × 1]],
             Reward = {
                 Type = [[Item]],

@@ -45,7 +45,7 @@ return {
         },
         GiftData = {
             Gem = 5,
-            Count = 1,
+            Count = 0,
             Time = 600
         },
         ToyPriceRateRange = {
