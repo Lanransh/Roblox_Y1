@@ -255,10 +255,10 @@ function Component:CreateStrengthBillboard(head)
     billboard.Parent = head
 end
 
---- 按格式化数字的实际宽度调整整组世界尺寸，保持不同位数的力量显示居中。
+--- 显示当前累积力量而非等级曲线攻击力，并按数字宽度保持整组居中。
 function Component:RefreshStrengthBillboard()
     local text = self._strengthText
-    local value = GameUtility.NumberToText(self._strengthStat.Value)
+    local value = GameUtility.NumberToText(self:GetNumber(Fields.RockTrainingValue))
     local textWidth = TextService:GetTextSize(value, 28, text.Font, Vector2.new(1000, 44)).X + 4
     local width = 44 + 6 + textWidth
     self._strengthBillboard.Size = UDim2.fromScale(width / 44 * 0.9, 0.9)
