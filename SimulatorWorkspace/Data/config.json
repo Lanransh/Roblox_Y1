@@ -945,31 +945,31 @@
               {
                 "fromInput": 1,
                 "toInput": 14,
-                "fromValue": 3,
-                "toValue": 3.1
+                "fromValue": 2.5,
+                "toValue": 3
               },
               {
                 "fromInput": 15,
                 "toInput": 29,
-                "fromValue": 3.1,
-                "toValue": 3.5
+                "fromValue": 3,
+                "toValue": 3.2
               },
               {
                 "fromInput": 30,
                 "toInput": 44,
-                "fromValue": 3.5,
+                "fromValue": 3.3,
                 "toValue": 3.7
               },
               {
                 "fromInput": 45,
                 "toInput": 59,
                 "fromValue": 3.7,
-                "toValue": 4.5
+                "toValue": 4.3
               },
               {
                 "fromInput": 60,
                 "toInput": 74,
-                "fromValue": 4.5,
+                "fromValue": 4.3,
                 "toValue": 4.5
               },
               {
