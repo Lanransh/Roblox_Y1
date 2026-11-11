@@ -1,6 +1,7 @@
 -- 项目行为口径与会话计时；购买 GUID 仅用于官方漏斗会话，不作为自定义字段。
 local FX, FS = _G.FX, _G.FS
 local AnalyticsService = game:GetService("AnalyticsService")
+local Players = game:GetService("Players")
 local Fields = _G.PlayerDataConfig
 local Config = _G.GameConfig.CommonConfig
 local Component = FX.Class("SAnalyticsCompClass", "FSPlayerCompClass")
@@ -12,6 +13,29 @@ local STEPS = {
     "GuideStarted", "TwoItemsCollected", "LootDeposited", "LootSold",
     "TrainingRatePurchased", "StrongerWeaponEquipped", "GuideFinished",
 }
+-- 所有业务分析共用一分钟滑动窗口，留出平台额度余量；失败调用也计入预算。
+local requestTimes = {}
+local requestHead, requestTail = 1, 0
+
+--- 当前服务器统一限额低于官方 120 + 20 * CCU，不给重试额外额度。
+--- @return boolean 当前是否还能发出一次请求。
+local function TakeRequestBudget()
+    local now = os.clock()
+    while requestHead <= requestTail and now - requestTimes[requestHead] >= 60 do
+        requestTimes[requestHead] = nil
+        requestHead += 1
+    end
+    if requestHead > requestTail then
+        requestHead, requestTail = 1, 0
+    end
+    local limit = 100 + 15 * #Players:GetPlayers()
+    if requestTail - requestHead + 1 >= limit then
+        return false
+    end
+    requestTail += 1
+    requestTimes[requestTail] = now
+    return true
+end
 
 --- @return string 玩家内协作名称。
 function Component:GetCompName()
@@ -32,13 +56,23 @@ function Component:StartSession()
     self._startedAt = os.clock()
     self._accountedAt = self._startedAt
     self._node = self:GetPlayerNode()
+    self._analyticsSessionId = FX.GenObjectID()
     self._enabled = Config.AnalyticsEnabled and not FX.IsDeveloper(self:GetPlayerId())
         and not table.find(Config.AnalyticsExcludedUserIds, self:GetPlayerId())
-    self._purchaseFlows = {}
+    local purchases = self:GetTable(Fields.PurchaseAnalytics)
+    self._readyPurchases = {}
+    self._purchaseRetryAt = {}
+    self._eventRetryAt = {}
+    for purchaseId in pairs(purchases.pending) do
+        self._readyPurchases[purchaseId] = true
+    end
+    self._retryAt = os.clock() + 30
     self:WatchDataChanged(Fields.RebirthCount, self.RecordGrowth, self)
     self:WatchDataChanged(Fields.MaxTrainingLevel, self.RecordGrowth, self)
     self:RecordGuide(self:GetTable(Fields.Guide))
     self:RecordGrowth()
+    self:FlushEvents()
+    self:FlushPurchases()
 end
 
 --- 同一单调服务器时钟按经过秒数记账，离服与首付共用此方法补齐尾差。
@@ -52,10 +86,20 @@ function Component:AccountTime()
     return self:GetNumber(Fields.TrainingPlaytime)
 end
 
---- 使用框架每秒更新，仅记账，不逐秒发送事件。
+--- 每秒分批消费队列；平台失败等待三十秒，引导和成长也每三十秒重试。
 --- @param serverTime number 框架时间；计时使用同一单调时钟。
 function Component:OnUpdate(serverTime)
     self:AccountTime()
+    if not self:IsSessionActive() then
+        return
+    end
+    if os.clock() >= self._retryAt then
+        self._retryAt = os.clock() + 30
+        self:RecordGuide(self:GetTable(Fields.Guide))
+        self:RecordGrowth()
+    end
+    self:FlushEvents()
+    self:FlushPurchases()
 end
 
 --- 在业务组件清理前结束；重复登出不重复累计在线时间。
@@ -81,7 +125,7 @@ function Component:GetGuideStep(data)
     return nil
 end
 
---- 从开始点记录已完成动作，持久进度去重；未建立新版流程的测试档不补报。
+--- 持久化待报目标，成功调用后只在会话内去重；重登依赖平台去重恢复漏报。
 --- @param data table 已提交的权威引导数据。
 function Component:RecordGuide(data)
     if not self._startedAt or self._ended then
@@ -89,10 +133,15 @@ function Component:RecordGuide(data)
     end
     local step = self:GetGuideStep(data)
     local previous = self:GetNumber(Fields.FirstLootV2Step)
-    if step and step > previous and (previous > 0 or step == 1) then
-        self:SetNumber(Fields.FirstLootV2Step, step)
-        self:Funnel(GUIDE_VERSION, "LifetimeV2", step, STEPS[step],
-            {GUIDE_VERSION, "CompletedActions", VERSION})
+    if step then
+        local target = math.max(previous, step)
+        if target > previous then
+            self:SetNumber(Fields.FirstLootV2Step, target)
+        end
+        if target > (self._reportedGuideStep or 0) and self:Funnel(GUIDE_VERSION, "LifetimeV2", target,
+            STEPS[target], {GUIDE_VERSION, "CompletedActions", VERSION}) then
+            self._reportedGuideStep = target
+        end
     end
     if step == 7 then
         self:RecordGrowth()
@@ -105,16 +154,103 @@ end
 --- @param step number 从 1 开始的步骤。
 --- @param stepName string 稳定步骤名。
 --- @param fields table 三个字符串字段。
+--- @return boolean? 本地调用结果；nil 表示暂缓发送，不代表后台入库确认。
 function Component:Funnel(name, sessionId, step, stepName, fields)
-    if self._enabled then
-        FS.AnalyticsManager:Call(self._node, function()
-            AnalyticsService:LogFunnelStepEvent(self._node, name, sessionId, step, stepName, {
-                [Enum.AnalyticsCustomFieldKeys.CustomField01.Name] = fields[1],
-                [Enum.AnalyticsCustomFieldKeys.CustomField02.Name] = fields[2],
-                [Enum.AnalyticsCustomFieldKeys.CustomField03.Name] = fields[3],
+    return self:SendEvent({kind = "Funnel", name = name, sessionId = sessionId,
+        step = step, stepName = stepName, fields = fields})
+end
+
+--- 所有漏斗、自定义和经济事件共用预算，不直接绕过框架过滤和异常隔离。
+--- @param event table 服务端构造的分析事件。
+--- @return boolean? true 为本地调用成功，false 为调用失败，nil 为预算不足。
+function Component:SendEvent(event)
+    if not self._enabled then
+        return false
+    end
+    if not TakeRequestBudget() then
+        return nil
+    end
+    if event.kind == "Funnel" then
+        return FS.AnalyticsManager:Call(self._node, function()
+            AnalyticsService:LogFunnelStepEvent(self._node, event.name, event.sessionId, event.step, event.stepName, {
+                [Enum.AnalyticsCustomFieldKeys.CustomField01.Name] = event.fields[1],
+                [Enum.AnalyticsCustomFieldKeys.CustomField02.Name] = event.fields[2],
+                [Enum.AnalyticsCustomFieldKeys.CustomField03.Name] = event.fields[3],
             })
         end)
+    elseif event.kind == "Custom" then
+        return FS.AnalyticsManager:Custom(self._node, event.name, event.value, event.fields)
     end
+    return FS.AnalyticsManager:Economy(self._node, Enum.AnalyticsEconomyFlowType.Sink,
+        event.currency, event.amount, event.balance, Enum.AnalyticsEconomyTransactionType.Shop.Name, event.sku)
+end
+
+--- 普通事件最多积压二百五十六条，满时淘汰最旧记录，避免客户端动作撑大支付档案。
+--- 付款成功快照使用独立队列，不参与此处淘汰。
+--- @param event table 服务端构造且尚未发送的事件。
+function Component:QueueEvent(event)
+    local data = self:GetTable(Fields.AnalyticsEvents)
+    local count, oldest = 0, nil
+    for eventId in pairs(data.pending) do
+        count += 1
+        if oldest == nil or tonumber(eventId) < tonumber(oldest) then
+            oldest = eventId
+        end
+    end
+    if count >= 256 then
+        data.pending[oldest] = nil
+        self._eventRetryAt[oldest] = nil
+        if not self._queueOverflowWarned then
+            self._queueOverflowWarned = true
+            warn("[Analytics] ordinary event queue full; oldest event discarded", self:GetPlayerId())
+        end
+    end
+    data.nextId += 1
+    data.pending[tostring(data.nextId)] = event
+    self:SetTable(Fields.AnalyticsEvents, data)
+end
+
+--- 按入队顺序每次处理至多四条，成功才删除；失败只延后本条，不阻塞其他事件。
+function Component:FlushEvents()
+    if not self._enabled or not self:IsSessionActive() or self._flushingEvents then
+        return
+    end
+    self._flushingEvents = true
+    local keys = {}
+    for eventId in self:GetTableView(Fields.AnalyticsEvents).pending do
+        table.insert(keys, eventId)
+    end
+    --- 按持久序号排序，避免字典遍历改变步骤发送顺序。
+    --- @param left string 左侧事件序号。
+    --- @param right string 右侧事件序号。
+    --- @return boolean 左侧是否先入队。
+    table.sort(keys, function(left, right)
+        return tonumber(left) < tonumber(right)
+    end)
+    local processed = 0
+    for index, eventId in ipairs(keys) do
+        if processed >= 4 then
+            break
+        end
+        if os.clock() < (self._eventRetryAt[eventId] or 0) then
+            continue
+        end
+        local data = self:GetTable(Fields.AnalyticsEvents)
+        local result = self:SendEvent(data.pending[eventId])
+        if result == nil then
+            break
+        end
+        processed += 1
+        if result then
+            data = self:GetTable(Fields.AnalyticsEvents)
+            data.pending[eventId] = nil
+            self:SetTable(Fields.AnalyticsEvents, data)
+            self._eventRetryAt[eventId] = nil
+        else
+            self._eventRetryAt[eventId] = os.clock() + 30
+        end
+    end
+    self._flushingEvents = false
 end
 
 --- 从权威持久进度恢复最高里程碑；后续步骤由平台自动计入前序完成。
@@ -133,9 +269,9 @@ function Component:RecordGrowth()
             step = index + 1
         end
     end
-    if step > (self._growthStep or 0) then
+    if step > (self._growthStep or 0) and self:Funnel("GrowthV1", "LifetimeV1", step,
+        GROWTH_STEPS[step], {VERSION, "Progression", "Lifetime"}) then
         self._growthStep = step
-        self:Funnel("GrowthV1", "LifetimeV1", step, GROWTH_STEPS[step], {VERSION, "Progression", "Lifetime"})
     end
 end
 
@@ -153,7 +289,7 @@ local function DiamondBucket(diamonds)
     return "200+"
 end
 
---- 按阶段发送流程事件及服务端余额；同一流程每步最多一次。
+--- 每个阶段的漏斗与余额各自入队；步骤表示已入队，不假定已发送。
 --- @param flow table 当前购买流程。
 --- @param step number 购买步骤 1 到 4。
 --- @param diamonds number 该步骤的权威钻石余额。
@@ -161,19 +297,22 @@ function Component:RecordPurchaseStep(flow, step, diamonds)
     if step <= flow.step then
         return
     end
+    local stepName = step == 1 and flow.source == "QuickPurchase" and "QuickPurchaseStarted" or PURCHASE_STEPS[step]
+    self:QueueEvent({kind = "Funnel", name = flow.funnel, sessionId = flow.id, step = step,
+        stepName = stepName, fields = {flow.bucket, flow.source, VERSION}})
+    self:QueueEvent({kind = "Custom", name = "RobuxPurchaseDiamonds", value = diamonds,
+        fields = {stepName, flow.product or "None", flow.bucket}})
     flow.step = step
-    self:Funnel("RobuxPurchaseV1", flow.id, step, PURCHASE_STEPS[step], {flow.bucket, "CurrencyShop", VERSION})
-    self:Custom("RobuxPurchaseDiamonds", diamonds,
-        {PURCHASE_STEPS[step], flow.product or "None", flow.bucket})
 end
 
---- 新开页面或上次流程结束后，建立独立的商店曝光流程。
+--- 只在真实打开 Robux 页面时建立曝光，同一次页面访问复用一个漏斗会话。
 --- @return table 当前仅到达商店曝光步骤的流程。
 function Component:OpenPurchaseFlow()
     local flow = self._shopFlow
-    if not flow or flow.step >= 2 then
+    if not flow then
         local diamonds = self:GetNumber(Fields.Diamonds)
-        flow = {id = FX.GenObjectID(), bucket = DiamondBucket(diamonds), step = 0}
+        flow = {id = FX.GenObjectID(), bucket = DiamondBucket(diamonds), step = 0,
+            funnel = "RobuxPurchaseV2", source = "CurrencyShop"}
         self._shopFlow = flow
         self:RecordPurchaseStep(flow, 1, diamonds)
     end
@@ -182,10 +321,10 @@ end
 
 --- 只接收货币商店的有限动作；身份、余额、商品范围和频率均在服务端确定。
 --- @param action any Open、Close、Select、PromptRequested 或 Cancel。
---- @param productId any Select/PromptRequested 使用的真实产品 ID。
+--- @param goodsId any Select/PromptRequested/Cancel 使用的业务商品 ID，兼容两种平台商品。
 --- @param attemptId any 客户端本次点击标识，仅用于匹配取消与弹窗动作。
-function Component:RecordShopAction(action, productId, attemptId)
-    if not self:IsSessionActive() then
+function Component:RecordShopAction(action, goodsId, attemptId)
+    if not self:IsSessionActive() or not self._enabled then
         return
     end
     if action == "Close" then
@@ -205,10 +344,10 @@ function Component:RecordShopAction(action, productId, attemptId)
     if type(attemptId) ~= "string" or #attemptId == 0 or #attemptId > 64 then
         return
     end
-    if type(productId) ~= "number" or productId ~= productId or productId % 1 ~= 0 or productId <= 0 then
+    if type(goodsId) ~= "number" or goodsId ~= goodsId or goodsId % 1 ~= 0 or goodsId <= 0 then
         return
     end
-    local goods = _G.Provider:GetGoodsConfig(productId)
+    local goods = _G.GoodsConfig.GoodsData[goodsId]
     if not goods then
         return
     end
@@ -222,32 +361,54 @@ function Component:RecordShopAction(action, productId, attemptId)
     if not inShop then
         return
     end
-    local flow = self._purchaseFlows[productId]
+    local data = self:GetTable(Fields.PurchaseAnalytics)
+    local key = tostring(goodsId)
+    local flow = data.flows[key]
     if action == "Cancel" then
-        self:CancelPurchaseFlow(productId, attemptId)
+        self:CancelPurchaseFlow(goodsId, attemptId)
     elseif action == "Select" then
         local now = os.clock()
-        if flow or (self._lastShopSelect and now - self._lastShopSelect < 1) then
+        if (flow and flow.ownerSession == self._analyticsSessionId)
+            or (self._lastShopSelect and now - self._lastShopSelect < 1) then
             return
         end
         self._lastShopSelect = now
-        flow = self:OpenPurchaseFlow()
+        -- 重登后允许重试未付款商品；有旧尝试时收据无法区分来源，保守取消漏斗归因。
+        local ambiguous = flow ~= nil
+        flow = self._shopFlow
+        if flow then
+            -- 页面只保留曝光步骤；每次选择独立推进，取消后重选仍记录商品和余额。
+            flow = table.clone(flow)
+        else
+            local diamonds = self:GetNumber(Fields.Diamonds)
+            flow = {id = FX.GenObjectID(), bucket = DiamondBucket(diamonds), step = 0,
+                funnel = "RobuxQuickPurchaseV1", source = "QuickPurchase"}
+            self:RecordPurchaseStep(flow, 1, diamonds)
+        end
         flow.product = tostring(goods.DevGoodsId)
         flow.attemptId = attemptId
-        self._purchaseFlows[productId] = flow
+        flow.ownerSession = self._analyticsSessionId
+        flow.ambiguous = ambiguous
         self:RecordPurchaseStep(flow, 2, self:GetNumber(Fields.Diamonds))
-    elseif flow and flow.attemptId == attemptId and flow.step == 2 then
+        data.flows[key] = flow
+        self:SetTable(Fields.PurchaseAnalytics, data)
+    elseif flow and flow.attemptId == attemptId then
         self:RecordPurchaseStep(flow, 3, self:GetNumber(Fields.Diamonds))
+        data.flows[key] = flow
+        self:SetTable(Fields.PurchaseAnalytics, data)
     end
 end
 
 --- 取消、预检失败或弹窗异常后结束对应尝试；已支付流程保留等待收据。
---- @param productId number 平台产品 ID。
+--- @param goodsId number 业务商品 ID。
 --- @param attemptId string 本次点击标识，不允许重试取消清理上一笔流程。
-function Component:CancelPurchaseFlow(productId, attemptId)
-    local flow = self._purchaseFlows and self._purchaseFlows[productId]
+function Component:CancelPurchaseFlow(goodsId, attemptId)
+    local data = self:GetTable(Fields.PurchaseAnalytics)
+    local key = tostring(goodsId)
+    local flow = data.flows[key]
     if flow and flow.attemptId == attemptId then
-        self._purchaseFlows[productId] = nil
+        data.flows[key] = nil
+        self:SetTable(Fields.PurchaseAnalytics, data)
     end
 end
 
@@ -255,10 +416,9 @@ end
 --- @param name string 稳定事件名。
 --- @param value number 原始数值。
 --- @param fields table 三个稳定维度。
+--- @return boolean? 平台本地调用结果；nil 表示预算不足，等待后续重试。
 function Component:Custom(name, value, fields)
-    if self._enabled then
-        FS.AnalyticsManager:Custom(self._node, name, value, fields)
-    end
+    return self:SendEvent({kind = "Custom", name = name, value = value, fields = fields})
 end
 
 --- 业务结算成功后调用一次，零成本解锁不计货币消费。
@@ -268,39 +428,104 @@ end
 --- @param sku string 稳定商品 SKU。
 function Component:Sink(currency, amount, balance, sku)
     if self._enabled and amount > 0 then
-        FS.AnalyticsManager:Economy(self._node, Enum.AnalyticsEconomyFlowType.Sink,
-            currency, amount, balance, Enum.AnalyticsEconomyTransactionType.Shop.Name, sku)
+        self:QueueEvent({kind = "Economy", currency = currency, amount = amount, balance = balance, sku = sku})
     end
 end
 
---- 首付资格直接来自权威收据记录，不维护另一个可能脱节的已首付布尔值。
+--- 开发者商品仍沿用收据回调；业务待报记录与奖励处于同一个事务。
 --- @param receipt table 官方收据。
---- @param receipts table 同一档案的已发奖收据，尚未加入本笔。
---- @return table 本笔随收据保存的上报快照。
-function Component:CapturePurchase(receipt, receipts)
-    local first = next(receipts) == nil
+--- @return table 本笔保存成功后唤醒上报的购买标识。
+function Component:CapturePurchase(receipt)
     local goods = _G.Provider:GetGoodsConfig(receipt.ProductId)
-    local flow = self._purchaseFlows[receipt.ProductId]
-    self._purchaseFlows[receipt.ProductId] = nil
-    return {
-        first = first, playtime = self:AccountTime(), product = tostring(goods.DevGoodsId),
-        flow = flow and table.clone(flow), diamonds = self:GetNumber(Fields.Diamonds),
-    }
+    return self:CaptureGrantedPurchase(goods, receipt.PurchaseId)
 end
 
---- 仅消费保存成功前取得的快照，不在保存后重新推断首付。
---- @param snapshot table 与收据一起持久化的元数据。
+--- 两类商品在发奖事务内共用首付资格和持久待报快照，不发送平台事件。
+--- @param goods table 已核验并发奖的商品配置。
+--- @param purchaseId string 收据 ID 或通行证的稳定业务标识。
+--- @param playtime number? 服务端确认本次通行证购买时的累计在线秒数。
+--- @return table 保存成功后用于唤醒上报的标识。
+function Component:CaptureGrantedPurchase(goods, purchaseId, playtime)
+    local data = self:GetTable(Fields.PurchaseAnalytics)
+    local key = tostring(goods.DevGoodsId)
+    local first = not data.hasPurchase
+    data.hasPurchase = true
+    if self._enabled then
+        data.pending[purchaseId] = {
+            first = first, playtime = playtime or self:AccountTime(), product = key,
+            flow = data.flows[key], diamonds = self:GetNumber(Fields.Diamonds),
+        }
+    end
+    data.flows[key] = nil
+    self:SetTable(Fields.PurchaseAnalytics, data)
+    return {purchaseId = purchaseId}
+end
+
+--- 历史通行证补发只恢复已付费资格，不推断购买时间或完成当前点击的漏斗。
+--- @param goods table 已核验所有权的历史通行证配置。
+function Component:RecordHistoricalPurchase(goods)
+    local data = self:GetTable(Fields.PurchaseAnalytics)
+    data.hasPurchase = true
+    data.flows[tostring(goods.DevGoodsId)] = nil
+    self:SetTable(Fields.PurchaseAnalytics, data)
+end
+
+--- 仅保存成功的购买可以发送；加载时持久待报记录也已满足此条件。
+--- @param snapshot table 发奖事务返回的购买标识。
 function Component:ReportPurchase(snapshot)
-    if snapshot.flow then
-        self:RecordPurchaseStep(snapshot.flow, 4, snapshot.diamonds)
-    elseif snapshot.diamonds ~= nil then
-        self:Custom("RobuxPurchaseDiamonds", snapshot.diamonds,
-            {"PurchaseGranted", snapshot.product, "Unattributed"})
+    self._readyPurchases[snapshot.purchaseId] = true
+    self:FlushEvents()
+    self:FlushPurchases()
+end
+
+--- 本地失败保留待报事件；成功清理走正常存档，崩溃重发的漏斗由平台去重。
+function Component:FlushPurchases()
+    if not self._enabled or not self:IsSessionActive() or self._flushingPurchases then
+        return
     end
-    if snapshot.first then
-        self:Custom("FirstPurchasePlaytime", snapshot.playtime,
-            {snapshot.product, "OnlineSinceFirstLogin", VERSION})
+    self._flushingPurchases = true
+    local processed = 0
+    for purchaseId in pairs(self._readyPurchases) do
+        if processed >= 4 then
+            break
+        end
+        if os.clock() < (self._purchaseRetryAt[purchaseId] or 0) then
+            continue
+        end
+        processed += 1
+        local data = self:GetTable(Fields.PurchaseAnalytics)
+        local snapshot = data.pending[purchaseId]
+        if snapshot then
+            if not snapshot.funnelReported then
+                local flow = snapshot.flow
+                snapshot.funnelReported = not flow or flow.ambiguous or self:Funnel(flow.funnel, flow.id, 4,
+                    PURCHASE_STEPS[4], {flow.bucket, flow.source, VERSION})
+            end
+            if not snapshot.balanceReported then
+                snapshot.balanceReported = self:Custom("RobuxPurchaseDiamonds", snapshot.diamonds,
+                    {"PurchaseGranted", snapshot.product,
+                        snapshot.flow and not snapshot.flow.ambiguous and snapshot.flow.bucket or "Unattributed"})
+            end
+            if not snapshot.firstReported then
+                snapshot.firstReported = not snapshot.first or self:Custom("FirstPurchasePlaytime", snapshot.playtime,
+                    {snapshot.product, "OnlineSinceFirstLogin", VERSION})
+            end
+            -- 平台调用若发生等待，重新取字段，避免覆盖其间其他购买或界面动作。
+            data = self:GetTable(Fields.PurchaseAnalytics)
+            if snapshot.funnelReported and snapshot.balanceReported and snapshot.firstReported then
+                data.pending[purchaseId] = nil
+                self._readyPurchases[purchaseId] = nil
+                self._purchaseRetryAt[purchaseId] = nil
+            else
+                data.pending[purchaseId] = snapshot
+                self._purchaseRetryAt[purchaseId] = os.clock() + 30
+            end
+            self:SetTable(Fields.PurchaseAnalytics, data)
+        else
+            self._readyPurchases[purchaseId] = nil
+        end
     end
+    self._flushingPurchases = false
 end
 
 return Component

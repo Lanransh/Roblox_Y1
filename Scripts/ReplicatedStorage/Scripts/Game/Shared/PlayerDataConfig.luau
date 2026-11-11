@@ -21,10 +21,20 @@ return {
     },
     -- 仅同步出售卡数量，正式背包内容仍保持私有。
     DoubleSaleCards = {Type = "number", Key = "DoubleSaleCards", DefVal = 0, Sync = true},
-    -- 新版新手漏斗只从引导开始记录，重登不补报历史步骤。
+    -- 新版漏斗的最高待报进度；重登可重发，平台按玩家与漏斗会话去重。
     FirstLootV2Step = {
         Type = "number", Key = "FirstLootV2Step", DefVal = 0,
         KVTable = PlayerKVEnum.eStaticData, Sync = false,
+    },
+    -- 购买分析独立于收据去重表；待报快照随奖励保存，跨会话恢复归因。
+    PurchaseAnalytics = {
+        Type = "table", Key = "PurchaseAnalytics", KVTable = PlayerKVEnum.eStaticData, Sync = false,
+        DefVal = {hasPurchase = false, flows = {}, pending = {}},
+    },
+    -- 前置漏斗步骤与经济事件独立排队，关闭页面或取消购买不删除待报事件。
+    AnalyticsEvents = {
+        Type = "table", Key = "AnalyticsEvents", KVTable = PlayerKVEnum.eStaticData, Sync = false,
+        DefVal = {nextId = 0, pending = {}},
     },
     -- 当前同服好友人数为临时同步状态，不写入存档或每日任务记录。
     TrainingFriendCount = {Type = "number", Key = "TrainingFriendCount", DefVal = 0, Sync = true},

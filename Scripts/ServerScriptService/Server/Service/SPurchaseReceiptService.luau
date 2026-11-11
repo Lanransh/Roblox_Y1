@@ -26,17 +26,16 @@ function Service.Init()
         return goods.BuyHandler ~= "SkipRebirth"
     end
 
-    --- 在购买串行锁内捕获首付；档案只保存去重标记，分析快照留在当前会话。
+    --- 在购买串行锁内捕获首付；独立业务待报字段与奖励共同保存，收据仍只保存去重标记。
     --- @param player table 当前权威玩家对象。
     --- @param receipt table Roblox 官方收据。
-    --- @param receipts table 档案内既有收据记录。
-    --- @return table 保存成功后待上报的会话内分析快照。
-    FS.ShopService.CaptureReceiptAnalytics = function(player, receipt, receipts)
-        return player:RequireComponent("SAnalyticsComp"):CapturePurchase(receipt, receipts)
+    --- @return table 保存成功后用于唤醒持久待报记录的购买标识。
+    FS.ShopService.CaptureReceiptAnalytics = function(player, receipt)
+        return player:RequireComponent("SAnalyticsComp"):CapturePurchase(receipt)
     end
-    --- 框架仅在本笔新结算保存成功后尝试一次，平台异常不影响收据决定。
+    --- 保存成功才唤醒待报记录，后续本地失败由分析组件重试，不改变收据决定。
     --- @param player table 保存完成且仍属于同一会话的玩家对象。
-    --- @param snapshot table 保存前捕获的不可变分析快照。
+    --- @param snapshot table 保存前捕获的购买标识。
     FS.ShopService.OnReceiptAnalyticsSaved = function(player, snapshot)
         player:RequireComponent("SAnalyticsComp"):ReportPurchase(snapshot)
     end

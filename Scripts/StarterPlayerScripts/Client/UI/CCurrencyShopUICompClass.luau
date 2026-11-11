@@ -55,9 +55,10 @@ function Component:OnReady()
     self:TrackConnection(MarketplaceService.PromptProductPurchaseFinished:Connect(function(userId, productId, purchased)
         if userId == self:GetPlayerNode().UserId and productId == self._promptProductId then
             if not purchased then
-                self:ReportPurchaseAnalytics("Cancel", productId, self._purchaseAttemptId)
+                self:ReportPurchaseAnalytics("Cancel", self._purchaseGoodsId, self._purchaseAttemptId)
             end
             self._purchaseAttemptId = nil
+            self._purchaseGoodsId = nil
             self._promptProductId = nil
             self._busy = false
             self.State.pending = nil
@@ -72,8 +73,12 @@ function Component:OnReady()
     --- @param purchased boolean 是否购买成功。
     FX.Network:RegServerMsgCallback("S2C_GamePassPromptFinished", function(passId, purchased)
         if passId == self._promptGamePassId then
+            if not purchased then
+                self:ReportPurchaseAnalytics("Cancel", self._purchaseGoodsId, self._purchaseAttemptId)
+            end
             self._promptGamePassId = nil
             self._purchaseAttemptId = nil
+            self._purchaseGoodsId = nil
             self._busy = false
             self.State.pending = nil
             if purchased then
@@ -231,11 +236,11 @@ end
 
 --- 统计单向发送并隔离失败，不参与界面、购买资格或发奖。
 --- @param action string Open、Close、Select、PromptRequested 或 Cancel。
---- @param productId number? 平台产品 ID。
+--- @param goodsId number? 业务商品 ID，两种平台商品使用同一命名空间。
 --- @param attemptId string? 本次点击标识，防止同商品重试覆盖旧流程。
-function Component:ReportPurchaseAnalytics(action, productId, attemptId)
+function Component:ReportPurchaseAnalytics(action, goodsId, attemptId)
     pcall(function()
-        FX.Network:SendMsgToServer("C2S_RobuxPurchaseAnalytics", action, productId, attemptId)
+        FX.Network:SendMsgToServer("C2S_RobuxPurchaseAnalytics", action, goodsId, attemptId)
     end)
 end
 
@@ -312,9 +317,8 @@ function Component:Purchase(product)
         local attemptId = FX.GenObjectID()
         local isGamePass = product.productType == "GamePass"
         self._purchaseAttemptId = attemptId
-        if not isGamePass then
-            self:ReportPurchaseAnalytics("Select", product.productId, attemptId)
-        end
+        self._purchaseGoodsId = product.goodsId
+        self:ReportPurchaseAnalytics("Select", product.goodsId, attemptId)
         local ok, result = pcall(function()
             if isGamePass then
                 local status = FX.Network:InvokeServer("C2S_CheckGamePassPurchase", product.goodsId)
@@ -330,10 +334,9 @@ function Component:Purchase(product)
         end)
         self._requestTask = nil
         if not ok or not result or result == "Owned" then
-            if not isGamePass then
-                self:ReportPurchaseAnalytics("Cancel", product.productId, attemptId)
-            end
+            self:ReportPurchaseAnalytics("Cancel", product.goodsId, attemptId)
             self._purchaseAttemptId = nil
+            self._purchaseGoodsId = nil
             self._busy = false
             self.State.pending = nil
             self._promptProductId = nil
@@ -341,8 +344,8 @@ function Component:Purchase(product)
             if result ~= "Owned" or not ok then
                 self._commonUI:ShowLocalizedTips(self.BaseViewTranslationTexts.Unavailable)
             end
-        elseif not isGamePass then
-            self:ReportPurchaseAnalytics("PromptRequested", product.productId, attemptId)
+        else
+            self:ReportPurchaseAnalytics("PromptRequested", product.goodsId, attemptId)
         end
         self:RefreshUI()
     end)

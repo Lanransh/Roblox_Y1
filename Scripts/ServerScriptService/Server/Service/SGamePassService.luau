@@ -5,6 +5,25 @@ local Players = game:GetService("Players")
 local Fields = _G.PlayerDataConfig
 local Service = {}
 local pendingReconciliations = {}
+local purchaseStates = setmetatable({}, {__mode = "k"})
+
+--- 仅保留服务端观察的所有权变化和平台购买确认，不采信客户端支付声明。
+--- @param player table 当前会话的玩家对象。
+--- @param passId number 平台通行证 ID。
+--- @return table 当前会话的通行证购买证据。
+local function GetPurchaseState(player, passId)
+    local states = purchaseStates[player]
+    if not states then
+        states = {}
+        purchaseStates[player] = states
+    end
+    local state = states[passId]
+    if not state then
+        state = {wasUnowned = false}
+        states[passId] = state
+    end
+    return state
+end
 
 --- 只接受配置中的一次性钻石通行证，不把通行证伪造成开发者商品收据。
 --- @param goodsId any 业务商品 ID。
@@ -34,10 +53,26 @@ end
 --- 发奖与领取标记不可让出执行；通过公开事务同时回滚存档与待同步数据。
 --- @param player table 当前会话的玩家对象。
 --- @param goods table 一次性钻石礼包配置。
+--- @param purchaseState table 当前会话的平台确认或所有权变化证据。
 --- @return boolean 钻石和领取次数是否已共同写入内存。
-local function Grant(player, goods)
+local function Grant(player, goods, purchaseState)
     return player:RunDataTransaction(function()
-        return _G.Provider:GetBuyHandler("AddGem"):Buy({playerObject = player, goodsConfig = goods, num = 1})
+        if _G.Provider:GetBuyHandler("AddGem"):Buy({playerObject = player, goodsConfig = goods, num = 1}) ~= true then
+            return false
+        end
+        local ok, message = pcall(function()
+            local analytics = player:RequireComponent("SAnalyticsComp")
+            if purchaseState.confirmedPlaytime ~= nil or purchaseState.wasUnowned then
+                analytics:CaptureGrantedPurchase(goods, "GamePass:" .. goods.DevGoodsId,
+                    purchaseState.confirmedPlaytime)
+            else
+                analytics:RecordHistoricalPurchase(goods)
+            end
+        end)
+        if not ok then
+            warn("[GamePass] analytics capture failed", message)
+        end
+        return true
     end)
 end
 
@@ -49,28 +84,38 @@ function Service.Check(player, goods)
     local id = player:GetPlayerId()
     local session = FS.PlayerKVDataManager:GetSessionToken(id)
     local shop = FS.ShopService
-    if not session or not IsActive(player, session) or shop._busy[id] then
+    local analytics = player:GetComponent("SAnalyticsComp")
+    if not session or not IsActive(player, session) or shop._busy[id]
+        or not analytics or not analytics:IsSessionActive() then
         return false
     end
     -- 与开发者商品共用购买锁，避免保存期间交叉结算。
     shop._busy[id] = true
     local ok, result = pcall(function()
+        local purchaseState = GetPurchaseState(player, goods.RobloxProductId)
         local owns = MarketplaceService:UserOwnsGamePassAsync(id, goods.RobloxProductId)
         if not IsActive(player, session) then
             return false
         end
         if not owns then
+            purchaseState.wasUnowned = true
             return "Prompt"
         end
         local data = player:GetTableView(Fields.CurrencyShopData)
         if (data.robuxBought[tostring(goods.DevGoodsId)] or 0) < 1 then
-            if not Grant(player, goods) then
+            if not Grant(player, goods, purchaseState) then
                 return false
             end
         end
         if not FS.PlayerKVDataManager:Save(id, session) or not IsActive(player, session) then
             return false
         end
+        local reported, message = pcall(analytics.ReportPurchase, analytics,
+            {purchaseId = "GamePass:" .. goods.DevGoodsId})
+        if not reported then
+            warn("[GamePass] analytics report failed", message)
+        end
+        purchaseStates[player][goods.RobloxProductId] = nil
         return "Owned"
     end)
     shop._busy[id] = nil
@@ -150,6 +195,12 @@ function Service.Init()
     MarketplaceService.PromptGamePassPurchaseFinished:Connect(function(playerNode, passId, purchased)
         local player = FS.PlayerManager:GetPlayerObject(playerNode.UserId)
         if player and player:GetPlayerNode() == playerNode then
+            if purchased then
+                local analytics = player:GetComponent("SAnalyticsComp")
+                if analytics and analytics:IsSessionActive() then
+                    GetPurchaseState(player, passId).confirmedPlaytime = analytics:AccountTime()
+                end
+            end
             FX.Network:SendMsgToClient(playerNode.UserId, "S2C_GamePassPromptFinished", passId, purchased)
             if purchased then
                 task.spawn(Service.Reconcile, player, passId)

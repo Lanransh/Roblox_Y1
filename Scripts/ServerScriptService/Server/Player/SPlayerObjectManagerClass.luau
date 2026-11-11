@@ -59,13 +59,13 @@ function Manager:RegCurrencyShopMsg()
     --- 客户端仅报告界面动作；统计错误不影响购买或其他协议。
     --- @param userId number 引擎认证玩家 ID。
     --- @param action any 固定商店动作。
-    --- @param productId any 平台商品 ID，不接受客户端余额。
+    --- @param goodsId any 业务商品 ID，不接受客户端余额或平台商品类型。
     --- @param attemptId any 本次点击标识，由分析组件校验并匹配。
-    FX.Network:RegClientMsgCallback("C2S_RobuxPurchaseAnalytics", function(userId, action, productId, attemptId)
+    FX.Network:RegClientMsgCallback("C2S_RobuxPurchaseAnalytics", function(userId, action, goodsId, attemptId)
         local player = self:GetPlayerObject(userId)
         local analytics = player and player:GetComponent("SAnalyticsComp")
         if analytics then
-            pcall(analytics.RecordShopAction, analytics, action, productId, attemptId)
+            pcall(analytics.RecordShopAction, analytics, action, goodsId, attemptId)
         end
     end)
     --- 未建立有效会话时拒绝扣款。

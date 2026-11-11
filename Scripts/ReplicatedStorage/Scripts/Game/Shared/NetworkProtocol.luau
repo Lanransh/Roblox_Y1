@@ -10,9 +10,9 @@ return {
         "C2S_BuyCurrencyShopGoods",
         -- goodsId: number；服务端核验通行证，返回 Prompt / Owned / false；Owned 已保存奖励。
         "C2S_CheckGamePassPurchase",
-        -- action: Open|Close|Select|PromptRequested|Cancel，productId: number? 平台产品 ID。
+        -- action: Open|Close|Select|PromptRequested|Cancel，goodsId: number? 业务商品 ID。
         -- attemptId: string? 本次点击标识；Select/PromptRequested/Cancel 必填，仅匹配动作，不用于收据归属。
-        -- 单向行为统计；余额及漏斗会话由服务端确定，成功步骤只来自已保存收据。
+        -- 单向行为统计；余额及漏斗会话由服务端确定，成功步骤只来自已保存的权威结算。
         "C2S_RobuxPurchaseAnalytics",
         -- kind: "online"|"signin"|"task"|"diamonds"|"offline"|"retention"，rewardId: string 稳定配置或批次 ID。
         -- offline 的 multiplier 仅接受 1 或 OfflineReward.VIPRate/Rate；服务端读取价格并校验加成收益。
