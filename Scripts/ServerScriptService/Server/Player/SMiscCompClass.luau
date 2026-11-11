@@ -271,10 +271,10 @@ function Component:CreateStrengthBillboard(head)
     rebirthBillboard.Parent = head
 end
 
---- 按各行数字的实际宽度调整世界尺寸，力量沿用数量缩写，重生次数显示整数。
+--- 按各行数字宽度居中显示累计训练力量与整数重生次数。
 function Component:RefreshStrengthBillboard()
     local rows = {
-        {self._strengthBillboard, GameUtility.NumberToText(self._strengthStat.Value)},
+        {self._strengthBillboard, GameUtility.NumberToText(self:GetNumber(Fields.RockTrainingValue))},
         {self._rebirthBillboard, tostring(self:GetNumber(Fields.RebirthCount))},
     }
     for index, row in ipairs(rows) do

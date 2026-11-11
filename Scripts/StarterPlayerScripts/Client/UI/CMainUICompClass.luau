@@ -1027,13 +1027,14 @@ function Component:ShowPickupEffect(entry)
     self._pickupEffects[effect] = connection
 end
 
---- 刷新经验、力量与整数重生百分比；达到可重生门槛时显示引导箭头，封顶后隐藏。
+--- 刷新经验、累积力量与整数重生百分比；达到可重生门槛时显示引导箭头，封顶后隐藏。
 --- @param value number 同步后的累计训练值。
 --- @param oldValue number? 上一次训练值，首次回放为 nil。
 function Component:RefreshProgress(value, oldValue)
     local rebirthCount = self:GetNumber(Fields.RebirthCount)
     local rebirthRequiredLevel = Rebirth.GetRequiredLevel(rebirthCount)
-    local level, strength, progressValue, required = RockLevel.GetProgress(value, rebirthRequiredLevel)
+    -- 攻击力返回值仅占位，力量文案直接使用累计训练值，与头顶显示一致。
+    local level, attackPower, progressValue, required = RockLevel.GetProgress(value, rebirthRequiredLevel)
     self._rebirthBadge.Text = string.format("%d%%", math.floor(math.clamp(level / rebirthRequiredLevel, 0, 1) * 100))
     if level >= rebirthRequiredLevel and rebirthCount < Rebirth.MaxCount then
         self._rebirthArrow:Show(self._rebirthBadge.Parent, "Right")
@@ -1044,7 +1045,7 @@ function Component:RefreshProgress(value, oldValue)
     FXLoader:Here(self._bar, "LevelLabel").Text = string.format("Lv.%d", level)
     FXLoader:Here(self._bar, "ProgressLabel").Text = string.format("%s/%s",
         GameUtility.NumberToText(math.min(progressValue, required)), GameUtility.NumberToText(required))
-    self._strength.Text = Text.Tr(TranslationTexts.Strength, {value = GameUtility.NumberToText(strength)})
+    self._strength.Text = Text.Tr(TranslationTexts.Strength, {value = GameUtility.NumberToText(value)})
     if level >= RockLevel.MaxLevel then
         progress = 1
         FXLoader:Here(self._bar, "ProgressLabel").Text = Text.Tr(TranslationTexts.MaxLevel)
