@@ -1,6 +1,6 @@
 local FX, FC = _G.FX, _G.FC
 local FXLoader = FX.Loader
-local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
+local Text = FX.Text
 local TranslationTexts = Text.Define("Tooltips", {
     LuckyTooltip = "{item} · Lucky ×{rate} · {price} Coins",
     Tooltip = "{item} · {price} Coins",
@@ -274,7 +274,7 @@ function UI:BindCharacterTools(character)
     end
 end
 
---- 清理项目监听与翻译资源，提示和浮窗节点由父类统一释放。
+--- 清理项目监听与自有资源，提示和浮窗节点由父类统一释放。
 function UI:Dtor()
     if self._characterToolConnection then
         self._characterToolConnection:Disconnect()
@@ -286,8 +286,6 @@ function UI:Dtor()
     self._toolDescription:Destroy()
     self._buttonHover:Destroy()
     FX.Network:UnRegServerMsgCallback("S2C_ShowLocalizedTips")
-    self.Localization:Destroy()
-    FC.Localization = nil
     UI.Super.Dtor(self)
 end
 

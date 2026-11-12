@@ -12,7 +12,7 @@
 --    购买提醒距安全区底部 78 像素，预留物品栏和间距。
 local FX = _G.FX
 local FXLoader = FX.Loader
-local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
+local Text = FX.Text
 local TranslationTexts = Text.Define("Main", {
     GoHome = "Go Home",
     StrengthRate = "x{rate} Strength",

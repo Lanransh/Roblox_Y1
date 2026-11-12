@@ -1,6 +1,6 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
-local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
+local Text = FX.Text
 local TranslationTexts = Text.Define("WorldTeleport", {
     RequiredLevel = "Reach a best level of {level:int} to unlock this world.",
     Unknown = "Something went wrong. Please try again.",

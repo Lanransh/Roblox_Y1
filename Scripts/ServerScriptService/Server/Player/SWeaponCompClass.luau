@@ -1,6 +1,6 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
-local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
+local Text = FX.Text
 local TranslationTexts = Text.Define("Weapon", {
     Unknown = "Something went wrong. Please try again.",
     AlreadyOwned = "You already own this weapon.",

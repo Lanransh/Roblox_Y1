@@ -1,6 +1,6 @@
 local FX, FC = _G.FX, _G.FC
 local FXLoader = FX.Loader
-local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
+local Text = FX.Text
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local TranslationTexts = Text.Define("TrainingBonus", {
     Multiplier = "×{rate}",

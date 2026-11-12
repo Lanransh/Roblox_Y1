@@ -1,7 +1,7 @@
 -- Roblox 系统菜单背后的一次性挽留礼包，由服务端永久记录领取状态。
 local FX = _G.FX
 local FXLoader = FX.Loader
-local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
+local Text = FX.Text
 local TranslationTexts = Text.Define("MenuRetention", {
     GiftTitle = "Don't leave yet! A gift is ready for you!",
     GiftHint = "Close the Roblox menu to claim your gift.",

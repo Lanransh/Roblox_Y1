@@ -1,6 +1,6 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
-local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
+local Text = FX.Text
 local TranslationTexts = Text.Define("GMUI", {
     InvalidItemInput = "Enter a valid item ID and a positive whole-number quantity.",
     InvalidValue = "Enter a valid whole number within the allowed range.",

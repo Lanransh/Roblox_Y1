@@ -1,6 +1,6 @@
 local FX, FS = _G.FX, _G.FS
 local FXLoader = FX.Loader
-local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
+local Text = FX.Text
 local TranslationTexts = Text.Define("PurchaseReceipt", {
     DiamondsReceived = "Purchase received! +{value} Diamonds.",
     RebirthSuccess = "Rebirth complete!",

@@ -1,7 +1,7 @@
 -- 钻石单件购买业务：复用生成页面，余额与升级资格始终由服务端结算。
 local FX = _G.FX
 local FXLoader = FX.Loader
-local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
+local Text = FX.Text
 local TranslationTexts = Text.Define("ShopPurchase", {
     NeedDiamonds = "Not enough diamonds.",
     Unknown = "Something went wrong. Please try again.",

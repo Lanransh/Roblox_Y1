@@ -4,6 +4,7 @@ for _, name in ipairs({ "FXLoader", "FXTable", "FXClass", "FXLog", "FXTask", "FX
     require(core:WaitForChild(name))
 end
 
+_G.FX.Text = require(core:WaitForChild("FXText"))
 require(root:WaitForChild("FXUtility"))
 require(core:WaitForChild("FXNetwork"))
 for _, name in ipairs({ "FXObjectBaseClass", "FXCompBaseClass", "FXModelAnimationCompClass" }) do

@@ -83,7 +83,7 @@ require(script.Parent.CUIView)
 ]]
 local FX = _G.FX
 local FXLoader = FX.Loader
-local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
+local Text = FXLoader:RequireShared("Scripts.Framework.Shared.Core.FXText")
 local CAuraShopView = FX.Class("CAuraShopView", "CUIView")
 
 local TranslationTexts = Text.Define("AuraShopUI", {

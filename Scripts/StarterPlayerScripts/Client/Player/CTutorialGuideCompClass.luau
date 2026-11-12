@@ -1,6 +1,6 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
-local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
+local Text = FX.Text
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local InstancePath = FXLoader:RequireShared("Scripts/Game/Shared/InstancePath")
 local TranslationTexts = Text.Define("Tutorial", {

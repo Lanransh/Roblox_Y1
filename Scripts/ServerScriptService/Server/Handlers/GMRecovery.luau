@@ -1,6 +1,6 @@
 local FX, FS = _G.FX, _G.FS
 local FXLoader = FX.Loader
-local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
+local Text = FX.Text
 local TranslationTexts = Text.Define("GMRecovery", {
     Forbidden = "Only developers can use these controls.",
     Unknown = "Something went wrong. Please try again.",

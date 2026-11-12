@@ -1,7 +1,7 @@
 -- VIP 商品业务接入：通用介绍窗负责展示，资格只使用服务端同步数据。
 local FX = _G.FX
 local FXLoader = FX.Loader
-local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
+local Text = FX.Text
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 FXLoader:RequireFromParent(script, "Generated/CPurchaseIntroView")
 local MarketplaceService = game:GetService("MarketplaceService")

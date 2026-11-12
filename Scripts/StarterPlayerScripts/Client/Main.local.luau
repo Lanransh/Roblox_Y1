@@ -7,8 +7,6 @@ require(ReplicatedStorage:WaitForChild("Scripts"):WaitForChild("GameInit"))
 local FC = _G.FC
 local FX = _G.FX
 local FXLoader = FX.Loader
-local Localization = FXLoader:RequireFromParent(script, "Localization")
-FC.Localization = Localization.New(Players.LocalPlayer)
 FXLoader:RequireFromParent(script, "PickupPrompt").Init()
 
 FC.GiftDrop = FXLoader:RequireFromParent(script, "GiftDrop")

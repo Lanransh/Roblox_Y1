@@ -1,6 +1,6 @@
 local FX, FC = _G.FX, _G.FC
 local FXLoader = FX.Loader
-local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
+local Text = FX.Text
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local AnimatedText = FXLoader:Require(script.Parent.Parent, "UI/CAnimatedText")
 local GroupService = game:GetService("GroupService")

@@ -1,6 +1,6 @@
 local FX, FS = _G.FX, _G.FS
 local FXLoader = FX.Loader
-local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
+local Text = FX.Text
 local TranslationTexts = Text.Define("GM", {
     InvalidItemInput = "Enter a valid item ID and a positive whole-number quantity.",
     InvalidItem = "Unknown item ID.",

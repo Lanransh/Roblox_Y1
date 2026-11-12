@@ -1,7 +1,7 @@
 -- 货币商店业务子类：配置驱动展示，钻石由服务端结算，Robux 交给平台收据。
 local FX = _G.FX
 local FXLoader = FX.Loader
-local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
+local Text = FX.Text
 local TranslationTexts = Text.Define("CurrencyShopUI", {
     Processing = "Payment completed. Waiting for your reward.",
     Training = "Training x{rate}",

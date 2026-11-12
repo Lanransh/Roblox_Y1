@@ -1,6 +1,6 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
-local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
+local Text = FX.Text
 local TranslationTexts = Text.Define("Loot", {
     InventoryFull = "Storage limit reached: {capacity:int} items.",
     BagFull = "Your backpack is full. Return to your base to store your loot.",

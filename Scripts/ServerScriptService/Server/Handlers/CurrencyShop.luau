@@ -1,7 +1,7 @@
 -- 钻石商店结算不 yield，顺序、余额和奖励只从服务器数据读取。
 local FX = _G.FX
 local FXLoader = FX.Loader
-local Text = FXLoader:RequireShared("Scripts/Game/Shared/Text")
+local Text = FX.Text
 local TranslationTexts = Text.Define("CurrencyShop", {
     Invalid = "This offer has changed. Please select the next upgrade.",
     TrainingFull = "Training XP is full. Rebirth before buying a training pack.",
