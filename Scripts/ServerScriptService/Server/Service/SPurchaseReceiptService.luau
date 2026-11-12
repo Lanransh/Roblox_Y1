@@ -9,12 +9,13 @@ local TranslationTexts = Text.Define("PurchaseReceipt", {
 })
 local GameUtility = FX.Loader:RequireShared("Scripts/Game/Shared/GameUtility")
 local MarketplaceService = game:GetService("MarketplaceService")
+local Fields = _G.PlayerDataConfig
 local Service = {}
 
 --- 项目区分购买预检与收据结算，沿用框架发奖、回滚与保存逻辑。
 function Service.Init()
     local canBuy = FS.ShopService.CanBuy
-    --- 重生已改为钻石购买；关闭旧平台购买入口，已支付收据仍沿用原处理器结算。
+    --- 拦截已拥有 VIP 的新购买及旧重生入口，已支付收据仍沿用原处理器结算。
     --- @param playerId number 服务端认证的玩家 ID。
     --- @param productId number 待购买的 Developer Product ID。
     --- @return boolean 是否允许展示该商品的购买窗口。
@@ -23,6 +24,10 @@ function Service.Init()
             return false
         end
         local goods = _G.Provider:GetGoodsConfig(productId)
+        if goods.BuyHandler == "UnlockVip" then
+            local player = FS.PlayerManager:GetPlayerObject(playerId)
+            return player ~= nil and not player:GetFlag(Fields.Vip)
+        end
         return goods.BuyHandler ~= "SkipRebirth"
     end
 

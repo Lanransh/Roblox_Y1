@@ -1,5 +1,6 @@
 -- 货币商店共享规则；客户端仅用于展示，服务端重新检查同一购买顺序。
 local Shop = {}
+Shop.MaxTrainingRate = 128
 local FX, FS = _G.FX, _G.FS
 local FXLoader = FX.Loader
 local Rebirth = FXLoader:RequireShared("Scripts/Game/Shared/Rebirth")
@@ -8,7 +9,7 @@ local Aura = FXLoader:RequireShared("Scripts/Game/Shared/Aura")
 local Weapon = FXLoader:RequireShared("Scripts/Game/Shared/Weapon")
 local Fields = _G.PlayerDataConfig
 
---- 返回一个商品组的下一档；训练倍率以 TrainingRateConfig 中存在的下一档为准。
+--- 返回一个商品组的下一档；钻石训练倍率达到上限后停止升级。
 --- @param group number ShopConfig 中的商品组。
 --- @param data table 玩家 CurrencyShopData。
 --- @return table? 下一档商店配置；全部购买后返回 nil。
@@ -18,7 +19,7 @@ function Shop.GetNextGemGoods(group, data)
             local goods = _G.GoodsConfig.GemGoodsData[item.GemGoodsId]
             if goods.BuyHandler == "TrainingRateLevel" then
                 local nextRate = _G.GameConfig.TrainingRateConfig[data.trainingLevel + 1]
-                if nextRate and nextRate.GemGoodsId == item.GemGoodsId then
+                if nextRate and nextRate.Rate <= Shop.MaxTrainingRate and nextRate.GemGoodsId == item.GemGoodsId then
                     return item
                 end
             elseif not data.gemBought[tostring(item.GemGoodsId)] then
@@ -29,14 +30,14 @@ function Shop.GetNextGemGoods(group, data)
     return nil
 end
 
---- 付费永久训练倍率与好友额外倍率相加，未购买时为 1。
+--- 钻石永久训练倍率最高为 128，兼容已有更高档位；未购买时为 1。
 --- @param data table 玩家 CurrencyShopData。
 --- @return number 已购买档位的训练倍率。
 function Shop.GetTrainingRate(data)
     if data.trainingLevel == 0 then
         return 1
     end
-    return _G.GameConfig.TrainingRateConfig[data.trainingLevel].Rate
+    return math.min(_G.GameConfig.TrainingRateConfig[data.trainingLevel].Rate, Shop.MaxTrainingRate)
 end
 
 --- 服务端读取即时同服好友，客户端使用同步人数预览；平台未就绪时不发好友加成。

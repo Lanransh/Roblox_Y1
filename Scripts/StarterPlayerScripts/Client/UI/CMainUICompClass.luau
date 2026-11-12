@@ -138,6 +138,7 @@ function Component:OnReady()
         self:RefreshLootCapacity()
     end)
     self:CreateFriendBoostButton()
+    self:CreateVipOwnedIcon()
     self:ConfigureMainTextSizing()
     self._effects = {}
     self._pickupEffects = {}
@@ -181,10 +182,11 @@ function Component:OnReady()
     end
     self:WatchDataChanged(Fields.RebirthCount, self.RefreshRebirthCount, self)
     self:WatchDataChanged(Fields.Diamonds, self.RefreshDiamonds, self)
-    --- 已拥有 VIP 时隐藏主界面入口，首次回放覆盖重新登录的存档状态。
+    --- 已拥有 VIP 时隐藏购买入口并显示右下角图标，首次回放覆盖重新登录的存档状态。
     --- @param isVip boolean 服务端同步的永久 VIP 资格。
     self:WatchDataChanged(Fields.Vip, function(isVip)
         FXLoader:Here(self._rootNode, "LeftCenter/VipBtn").Visible = not isVip
+        self._vipOwnedIcon.Visible = isVip
     end)
     self:WatchDataChanged(Fields.RockLoot, self.RefreshLoot, self)
     self:WatchDataChanged(Fields.TrainingFriendCount, self.RefreshFriendBoost, self)
@@ -790,6 +792,24 @@ function Component:CreateFriendBoostButton()
     self:RefreshFriendBoost()
 end
 
+--- 复用 VIP 入口图案，在右下角加成栏左侧显示永久资格，缩放沿用主界面适配。
+function Component:CreateVipOwnedIcon()
+    local frame = Instance.new("Frame")
+    frame.Name = "VipOwnedIcon"
+    frame.AnchorPoint = Vector2.new(1, 1)
+    frame.Position = UDim2.new(1, -172, 1, -12)
+    frame.Size = UDim2.fromOffset(72, 88)
+    frame.BackgroundTransparency = 1
+    frame.Visible = false
+    local icon = FXLoader:Here(self._rootNode, "LeftCenter/VipBtn/IconImg"):Clone()
+    icon.AnchorPoint = Vector2.new(0.5, 0.5)
+    icon.Position = UDim2.new(0.5, 0, 0, 38)
+    icon.Size = UDim2.fromOffset(56, 56)
+    icon.Parent = frame
+    frame.Parent = self._rootNode
+    self._vipOwnedIcon = frame
+end
+
 --- 同服好友人数同步后按现有训练倍率规则刷新百分比，无加成时保留 +0%。
 function Component:RefreshFriendBoost()
     local rate = CurrencyShop.GetFriendTrainingRate(self:GetPlayerObject())
@@ -1229,6 +1249,9 @@ function Component:Dtor()
     end
     if self._friendBoost then
         self._friendBoost:Destroy()
+    end
+    if self._vipOwnedIcon then
+        self._vipOwnedIcon:Destroy()
     end
     FX.Task:Cancel(self._homeTimer)
     FX.Network:UnRegServerMsgCallback("S2C_TrainingEffect")

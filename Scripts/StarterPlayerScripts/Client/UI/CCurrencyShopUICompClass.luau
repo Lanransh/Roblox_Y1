@@ -146,7 +146,7 @@ function Component:GetProduct(goodsId)
     return nil
 end
 
---- 将配置与权威进度转换为渐变卡片，每组只显示下一档或完成态。
+--- 将配置与权威进度转换为渐变卡片，训练倍率显示不超过钻石升级上限。
 function Component:BuildProducts()
     local products, groups = {}, {}
     for index, item in ipairs(_G.ShopConfig.GemCoinData) do
@@ -159,7 +159,7 @@ function Component:BuildProducts()
             if goods.BuyHandler == "TrainingRateLevel" then
                 local level = nextItem and self._data.trainingLevel + 1 or self._data.trainingLevel
                 title = Text.Tr(TranslationTexts.Training, {
-                    rate = GameUtility.NumberToText(_G.GameConfig.TrainingRateConfig[level].Rate),
+                    rate = GameUtility.NumberToText(math.min(_G.GameConfig.TrainingRateConfig[level].Rate, Shop.MaxTrainingRate)),
                 })
                 description = goods.Desc
             else
