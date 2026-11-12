@@ -7,7 +7,6 @@ local TranslationTexts = Text.Define("GM", {
     ItemFull = "Not enough inventory space.",
     ItemAdded = "Item added.",
     InvalidValue = "Enter a valid whole number within the allowed range.",
-    LevelLimit = "The current level limit is {level:int}.",
     Success = "Operation completed.",
     Forbidden = "Only developers can use these controls.",
     Unknown = "Something went wrong. Please try again.",
@@ -83,7 +82,7 @@ function Component:ResetData()
     player:PublishEvent("Tutorial.Login")
 end
 
---- 修改持久源字段，金钱支持科学计数法对应的大数，其他字段保留安全整数限制。
+--- 修改持久源字段；设置等级时只补足所需重生次数，金钱支持大数，其他字段保留安全整数限制。
 --- @param action string 已确认的 GM 数值动作。
 --- @param value any 客户端提交值。
 --- @return table 权威校验与操作结果。
@@ -93,12 +92,16 @@ function Component:SetValue(action, value)
         return {success = false, key = TranslationTexts.InvalidValue}
     end
     if action == "SetLevel" then
-        local maxLevel = math.min(RockLevel.MaxLevel, Rebirth.GetRequiredLevel(player:GetNumber(Fields.RebirthCount)))
         if value % 1 ~= 0 or value < 1 or value > RockLevel.MaxLevel then
             return {success = false, key = TranslationTexts.InvalidValue}
         end
-        if value > maxLevel then
-            return {success = false, key = TranslationTexts.LevelLimit, arguments = {level = maxLevel}}
+        local currentCount = player:GetNumber(Fields.RebirthCount)
+        local targetCount = currentCount
+        while targetCount < Rebirth.MaxCount and value > Rebirth.GetRequiredLevel(targetCount) do
+            targetCount += 1
+        end
+        if targetCount > currentCount then
+            player:SetNumber(Fields.RebirthCount, targetCount)
         end
         player:SetNumber(Fields.RockTrainingValue, RockLevel.GetTrainingValueByLevel(value))
         player:RequireComponent("SMiscComp"):ResetTrainingProgress()
