@@ -36,7 +36,7 @@ return {
             TrainingRate = 0.01
         },
         OfflineReward = {
-            Time = 14400,
+            Time = 7200,
             Rate = 0.25,
             VIPRate = 0.5
         },

@@ -98,7 +98,8 @@ function Component:GetCompName()
     return "SActivityComp"
 end
 
---- 读档后结算离线批次并记录同服进服事件；礼包期限扣除跨会话累计在线时长。
+--- 登录保留尚未领取的有效离线批次；已领取或无收益时才生成新批次，不按天限领。
+--- @return nil
 function Component:OnPlayerLogin()
     self._lastTime = os.time()
     self._friendEntries = Players:GetPlayers()
@@ -110,11 +111,11 @@ function Component:OnPlayerLogin()
     self._nextSync = self._lastTime + 10
     local data = self:GetTable(Fields.WelfareData)
     local day = math.floor(self._lastTime / 86400)
-    if data.day ~= day or data.offline.training <= 0 then
+    if data.offline.claimed or data.offline.training <= 0 then
         local config = _G.GameConfig.CommonConfig.OfflineReward
         local seconds = data.lastSeenAt > 0 and math.clamp(self._lastTime - data.lastSeenAt, 0, config.Time) or 0
         data.offline = {
-            id = tostring(self._lastTime), seconds = seconds,
+            id = tostring(self._lastTime), seconds = seconds, claimed = false,
             training = self:RequireComponent("SMiscComp"):GetTrainingCardGain(seconds * config.Rate),
             boostedTraining = self:RequireComponent("SMiscComp"):GetTrainingCardGain(seconds * config.VIPRate),
         }
@@ -127,15 +128,12 @@ function Component:OnPlayerLogin()
         data.lastLoginDay = day
         data.loginDays = math.min(data.loginDays + 1, #_G.ActivityConfig.LoginMilestoneData)
     end
-    -- 离线批次在登录时生成；UpdateTime 跨日时不会清掉刚生成的新批次。
-    self._loggingIn = true
     self:SetTable(Fields.WelfareData, data)
     self:UpdateTime(self._lastTime)
-    self._loggingIn = nil
     self:PublishState()
 end
 
---- 使用服务端实际经过时间累计；跨 UTC 日仅计入今日部分并清空在线领取记录。
+--- 使用服务端实际经过时间累计；跨 UTC 日重置每日活动，保留当前离线奖励批次。
 --- @param now number 服务端 Unix 时间戳，单位秒。
 function Component:UpdateTime(now)
     local data = self:GetTable(Fields.WelfareData)
@@ -149,9 +147,6 @@ function Component:UpdateTime(now)
         data.taskClaimed = {}
         data.taskFriends = {}
         self._friendEntries = Players:GetPlayers()
-        if not self._loggingIn then
-            data.offline = {id = "", seconds = 0, training = 0}
-        end
         startTime = math.max(startTime, day * 86400)
     end
     data.onlineSeconds += math.max(0, now - startTime)
@@ -173,7 +168,7 @@ function Component:GetDailyAmount()
     return amount
 end
 
---- 按当前经验与倍率刷新离线预览，避免沿用登录时的追赶加成。
+--- 按当前经验与倍率刷新离线预览，领取状态仅取当前批次标记。
 function Component:PublishState()
     local data = self:GetTable(Fields.WelfareData)
     local config = _G.GameConfig.CommonConfig.OfflineReward
@@ -189,12 +184,12 @@ function Component:PublishState()
         dailyAmount = self:GetDailyAmount(), cards = FX.Table:DeepCopy(data.cards),
         offline = {
             id = data.offline.id,
-            seconds = data.offlineClaimDay == data.day and 0 or data.offline.seconds,
-            training = data.offlineClaimDay == data.day and 0
+            seconds = data.offline.seconds,
+            training = data.offline.claimed and 0
                 or misc:GetTrainingCardGain(data.offline.seconds * config.Rate),
-            boostedTraining = data.offlineClaimDay == data.day and 0
+            boostedTraining = data.offline.claimed and 0
                 or misc:GetTrainingCardGain(data.offline.seconds * config.VIPRate),
-            status = data.offlineClaimDay == data.day and "Claimed"
+            status = data.offline.claimed and "Claimed"
                 or (data.offline.training > 0 and "Claimable" or "Locked"),
         },
     })
@@ -387,7 +382,7 @@ function Component:GrantRewards(rewards)
     return self:RequireComponent("FSRewardComp"):AddRewards(batch)
 end
 
---- RPC 只领取本人配置档位；礼包按累计在线时间限领，成功后装备不弱于当前的赠送光环。
+--- RPC 只领取本人配置档位；离线按批次限领，礼包按累计在线时间限领并装备赠送光环。
 --- @param kind any 客户端类别，仅接受 online、signin、task、diamonds、offline、retention。
 --- @param rewardId any 稳定字符串 ID，不接受客户端金额或玩家身份。
 --- @param multiplier any 离线领取方式，仅接受 1 或配置 VIPRate/Rate；加成领取消耗配置商品的钻石。
@@ -426,7 +421,7 @@ function Component:Claim(kind, rewardId, multiplier)
     elseif kind == "offline" then
         local config = _G.GameConfig.CommonConfig.OfflineReward
         local boostMultiplier = config.VIPRate / config.Rate
-        if data.offlineClaimDay == data.day then
+        if data.offline.claimed then
             key = TranslationTexts.AlreadyClaimed
         elseif rewardId == data.offline.id and data.offline.training > 0
             and (multiplier == 1 or multiplier == boostMultiplier) then
@@ -445,7 +440,7 @@ function Component:Claim(kind, rewardId, multiplier)
                 {Type = "Money", Currency = "RockTrainingValue", Count = gain},
             }) then
                 -- 发奖和批次消费不 yield，重复请求只能命中已领取状态。
-                data.offlineClaimDay = data.day
+                data.offline.claimed = true
                 data.offline.seconds = 0
                 data.offline.training = 0
                 data.offline.boostedTraining = 0
