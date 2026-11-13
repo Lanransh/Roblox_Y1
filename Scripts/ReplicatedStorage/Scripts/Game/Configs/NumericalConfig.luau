@@ -763,12 +763,12 @@ return {
                 fromInput = 150,
                 toInput = 164,
                 fromValue = 5.9,
-                toValue = 6.4,
+                toValue = 6.2,
               },
               {
                 fromInput = 165,
                 toInput = 179,
-                fromValue = 6.4,
+                fromValue = 6.2,
                 toValue = 6.6,
               },
               {
