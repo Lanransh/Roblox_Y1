@@ -43,6 +43,7 @@ GM 面板接入契约（仅管理员自用）
     将等级升至 max(当前等级, 所需等级)，不执行重生；已达上限则不变。
   UnlockAllCollections -> {}；无需输入，校验权限和图鉴配置后解锁全部图鉴
     并持久化；不发道具，不写背包。
+  ToggleGMButton -> {}；无需输入，仅切换主界面上 GM 入口按钮的外观，保留原位置点击；不隐藏其他主界面内容。
   Close -> {}；View 已取消确认并隐藏底板/标题，接入可处理关闭通知。
   输入无效调用 OnInvalidInput(action:string)->无返回值，可选覆写以显示业务提示，默认 warn。
   ExecuteCommand、CancelReset 与 Render 继承，不在接入层重复校验或覆盖。
@@ -72,7 +73,7 @@ function CGMPanelView:OnReady()
     for index = 1, 3 do
         self.Inputs[index] = FXLoader:Here(root, "PopupPanelImg.Param" .. index .. "Input")
     end
-    local actions = { "SetLevel", "SetRebirth", "SetMoney", "SetDiamonds", "ResetData", "SaveNow", "AddItem", "ReachRebirthLevel", "UnlockAllCollections" }
+    local actions = { "SetLevel", "SetRebirth", "SetMoney", "SetDiamonds", "ResetData", "SaveNow", "AddItem", "ReachRebirthLevel", "UnlockAllCollections", "ToggleGMButton" }
     for index, action in ipairs(actions) do
         local button = FXLoader:Here(root, "PopupPanelImg." .. action .. "Btn")
         self.Buttons[action] = button
@@ -123,7 +124,7 @@ function CGMPanelView:ExecuteCommand(action)
         return
     end
     self:CancelReset()
-    if action == "SaveNow" or action == "ReachRebirthLevel" or action == "UnlockAllCollections" then
+    if action == "SaveNow" or action == "ReachRebirthLevel" or action == "UnlockAllCollections" or action == "ToggleGMButton" then
         self:EmitUIAction(action, {})
         return
     end

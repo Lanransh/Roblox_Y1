@@ -27,6 +27,9 @@ end
 function CGMPanelPreview:OnUIAction(action, payload)
     if action == "Close" then
         return
+    elseif action == "ToggleGMButton" then
+        self.GMButtonHidden = not self.GMButtonHidden
+        print("模拟：GM入口按钮隐藏 = " .. tostring(self.GMButtonHidden) .. "，保留点击")
     elseif action == "ResetData" then
         self.Data = { SetLevel = 1, SetRebirth = 0, SetMoney = 0, SetDiamonds = 0 }
         self.Items = {}

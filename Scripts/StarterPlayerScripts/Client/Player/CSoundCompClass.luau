@@ -9,11 +9,12 @@ local UPGRADE_SOUND_ID = "rbxassetid://97430098988000"
 local ADD_MONEY_SOUND_ID = "rbxassetid://99533862853751"
 local PICKUP_SOUND_ID = "rbxassetid://88292715815889"
 local REWARD_SOUND_ID = "rbxassetid://92949680432490"
+local REBIRTH_SOUND_ID = "rbxassetid://3120909354"
 
 ---@class CSoundCompClass: FCSoundCompClass
 local CSoundCompClass = FX.Class("CSoundCompClass", "FCSoundCompClass")
 
---- 轮播授权音乐，并监听服务端确认的升级、金币收益和拾取变化。
+--- 轮播授权音乐，并监听服务端确认的升级、重生、金币收益和拾取变化。
 --- @param owner CPlayerObjectClass 当前客户端玩家对象。
 function CSoundCompClass:Ctor(owner)
     local musicRoot = FXLoader:Shared("Assets/Sounds")
@@ -23,6 +24,7 @@ function CSoundCompClass:Ctor(owner)
     }
     CSoundCompClass.Super.Ctor(self, owner, 4)
     self:WatchDataChanged(Fields.RockTrainingLevel, self.OnTrainingLevelChanged, self)
+    self:WatchDataChanged(Fields.RebirthCount, self.OnRebirthCountChanged, self)
     self:WatchDataChanged(Fields.Money, self.OnCoinsChanged, self)
     self:WatchDataChanged(Fields.RockLoot, self.OnRockLootChanged, self)
     FX.Network:RegServerMsgCallback("S2C_NoobPickedUp", self.PlayPickupItemSound, self)
@@ -67,6 +69,16 @@ function CSoundCompClass:OnTrainingLevelChanged(level, oldLevel)
         self:PlayEffectSoundWithBGMDuck(UPGRADE_SOUND_ID, 2, 0.2)
     end
     self:PlayTrainingUpgradeEffect()
+end
+
+--- 服务端确认重生次数增加后播放成功音效，跳过首次同步和次数重置。
+--- @param count number 服务端同步的当前重生次数。
+--- @param oldCount number? 变化前次数，首次同步为空。
+function CSoundCompClass:OnRebirthCountChanged(count, oldCount)
+    if oldCount == nil or count <= oldCount then
+        return
+    end
+    self:PlayEffectSoundWithBGMDuck(REBIRTH_SOUND_ID, 1, 0.2)
 end
 
 --- 用蓝金双层冲击环、上冲光束和星芒爆发强调升级，先保留亮度再收尾，连续升级不叠加。

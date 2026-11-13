@@ -56,7 +56,7 @@ function Component:OnInvalidInput(action)
     end
 end
 
---- 只提交操作及原始数值，身份和权限由服务端验证；请求中禁用操作。
+--- GM 入口显隐在本地切换，数据命令提交服务端鉴权；请求中禁用操作。
 --- @param action string 展示类的稳定动作名。
 --- @param payload table 展示类校验后的输入，添加道具使用 itemId/count，数值动作使用 value。
 function Component:OnUIAction(action, payload)
@@ -65,6 +65,10 @@ function Component:OnUIAction(action, payload)
         return
     end
     if self.State.pending or not FX.IsDeveloper(self:GetPlayerNode().UserId) then
+        return
+    end
+    if action == "ToggleGMButton" then
+        self:GetPlayerObject():RequireComponent("CMainUIComp"):ToggleGMButtonVisuals()
         return
     end
     self.State.pending = true

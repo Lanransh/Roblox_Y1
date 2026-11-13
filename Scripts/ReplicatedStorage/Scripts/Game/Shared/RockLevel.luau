@@ -94,6 +94,13 @@ function RockLevel.GetProgress(value, maxLevel)
         value - thresholds[level], RockLevel.GetNextExperience(level)
 end
 
+--- 展示与伤害衰减共用推荐等级，按全局关卡序号读取现有曲线。
+--- @param index number 配置中的全局关卡序号。
+--- @return number 本关推荐训练等级。
+function RockLevel.GetRecommendedLevel(index)
+    return CurveSampler:SampleCurveGroupColumn(NumericalConfig.stageCurves, "grassLevel", index)
+end
+
 --- 落后推荐等级 15 级以内全额伤害，15–30 级线性降低，30 级及以上保留 1%。
 --- @param level number 玩家训练等级。
 --- @param index number 配置中的全局关卡序号。
@@ -101,7 +108,7 @@ end
 --- @return number 单次击打伤害。
 function RockLevel.GetDamage(level, index, trainingValue)
     local strength = RockLevel.GetAttackPower(level, trainingValue)
-    local recommendedLevel = CurveSampler:SampleCurveGroupColumn(NumericalConfig.stageCurves, "grassLevel", index)
+    local recommendedLevel = RockLevel.GetRecommendedLevel(index)
     local levelGap = recommendedLevel - level
     local points = GameEnum.RockLevelDamagePoints
     if levelGap <= points[1].LevelGap then

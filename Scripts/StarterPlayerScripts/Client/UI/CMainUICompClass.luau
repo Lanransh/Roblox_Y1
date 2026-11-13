@@ -416,6 +416,28 @@ function Component:BindButtons()
     end
 end
 
+--- 仅切换 GM 入口的外观，保留原位置、开发者可见性和点击事件。
+function Component:ToggleGMButtonVisuals()
+    local button = self._gmButton
+    if self._gmButtonVisuals then
+        for property, value in pairs(self._gmButtonVisuals) do
+            button[property] = value
+        end
+        self._gmButtonVisuals = nil
+    else
+        self._gmButtonVisuals = {
+            BackgroundTransparency = button.BackgroundTransparency,
+            TextTransparency = button.TextTransparency,
+            TextStrokeTransparency = button.TextStrokeTransparency,
+            AutoButtonColor = button.AutoButtonColor,
+        }
+        button.BackgroundTransparency = 1
+        button.TextTransparency = 1
+        button.TextStrokeTransparency = 1
+        button.AutoButtonColor = false
+    end
+end
+
 --- 平台允许邀请时打开原生好友选择窗口，防止重复点击叠加请求。
 function Component:PromptFriendInvite()
     if self._invitePending then
@@ -1228,6 +1250,9 @@ end
 
 --- 释放自建节点和未结束动画，保留共用 ScreenGui；基类负责取消数据及按钮监听。
 function Component:Dtor()
+    if self._gmButtonVisuals then
+        self:ToggleGMButtonVisuals()
+    end
     if self._rebirthArrow then
         self._rebirthArrow:Destroy()
     end

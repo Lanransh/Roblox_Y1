@@ -4,6 +4,7 @@ local Text = FX.Text
 local TranslationTexts = Text.Define("LootDisplay", {
     PickUp = "Pick Up",
     Luck = "x{rate} Luck",
+    RecommendedLevel = "Recommended Level: {level:int}",
     Quality = "Quality {level:int}",
 })
 local Players = game:GetService("Players")
@@ -167,7 +168,7 @@ function Component:OnReady()
     end))
 end
 
---- 在所有世界的关卡中心上方创建幸运牌，随场景遮挡和距离隐藏，避免远处牌子叠在一起。
+--- 在各关幸运牌下方展示推荐等级，沿用遮挡与距离隐藏，保持原幸运行的位置和尺寸。
 function Component:CreateLevelLuckSigns()
     local config = GameEnum.LevelLuckDisplay
     for index, area in ipairs(self._areas) do
@@ -175,15 +176,15 @@ function Component:CreateLevelLuckSigns()
         local billboard = Instance.new("BillboardGui")
         billboard.Name = worldName .. "_Level_" .. area.LocalIndex .. "_Luck"
         billboard.Adornee = area.Node
-        billboard.StudsOffsetWorldSpace = Vector3.new(0, config.Height, 0)
-        billboard.Size = UDim2.fromScale(30, 7)
+        billboard.StudsOffsetWorldSpace = Vector3.new(0, config.Height - 1.5, 0)
+        billboard.Size = UDim2.fromScale(30, 10)
         billboard.AlwaysOnTop = false
         billboard.LightInfluence = 0
         billboard.MaxDistance = 150
         local icon = Instance.new("ImageLabel")
         icon.Name = "LuckIcon"
         icon.BackgroundTransparency = 1
-        icon.Size = UDim2.fromScale(0.23, 1)
+        icon.Size = UDim2.fromScale(0.23, 0.7)
         icon.Image = config.Icon
         icon.ScaleType = Enum.ScaleType.Fit
         icon.Parent = billboard
@@ -191,7 +192,7 @@ function Component:CreateLevelLuckSigns()
         label.Name = "LuckText"
         label.BackgroundTransparency = 1
         label.Position = UDim2.fromScale(0.25, 0)
-        label.Size = UDim2.fromScale(0.75, 1)
+        label.Size = UDim2.fromScale(0.75, 0.7)
         label.Font = Enum.Font.GothamBlack
         label.TextScaled = true
         label.TextColor3 = Color3.new(1, 1, 1)
@@ -201,8 +202,22 @@ function Component:CreateLevelLuckSigns()
         stroke.Thickness = 3
         stroke.Parent = label
         label.Parent = billboard
+        local recommendedLabel = Instance.new("TextLabel")
+        recommendedLabel.Name = "RecommendedLevel"
+        recommendedLabel.BackgroundTransparency = 1
+        recommendedLabel.Position = UDim2.fromScale(0, 0.75)
+        recommendedLabel.Size = UDim2.fromScale(1, 0.25)
+        recommendedLabel.Font = Enum.Font.GothamBlack
+        recommendedLabel.TextScaled = true
+        recommendedLabel.TextColor3 = Color3.new(1, 1, 1)
+        recommendedLabel.AutoLocalize = false
+        stroke:Clone().Parent = recommendedLabel
+        recommendedLabel.Parent = billboard
         billboard.Parent = self._folder
-        table.insert(self._luckLabels, {Label = label, Rate = RockLevel.GetLuck(area.World, area.LocalIndex)})
+        table.insert(self._luckLabels, {
+            Label = label, Rate = RockLevel.GetLuck(area.World, area.LocalIndex),
+            RecommendedLabel = recommendedLabel, RecommendedLevel = RockLevel.GetRecommendedLevel(area.Index),
+        })
     end
     self:RefreshLevelLuckSigns()
     self:TrackConnection(self._localization.Changed:Connect(function()
@@ -210,11 +225,14 @@ function Component:CreateLevelLuckSigns()
     end))
 end
 
---- 云端翻译加载或语言变化后刷新幸运牌，幸运倍率使用一位小数格式。
+--- 云端翻译加载或语言变化后刷新幸运倍率及推荐等级，等级使用整数格式。
 function Component:RefreshLevelLuckSigns()
     for index, entry in ipairs(self._luckLabels) do
         entry.Label.Text = Text.Tr(TranslationTexts.Luck, {
             rate = FormatLuck(entry.Rate),
+        })
+        entry.RecommendedLabel.Text = Text.Tr(TranslationTexts.RecommendedLevel, {
+            level = entry.RecommendedLevel,
         })
     end
 end
@@ -1045,7 +1063,7 @@ function Component:SetPowerAura(root)
     self._powerAuraRoot = root
 end
 
---- 预测命中播放声音、碎石和短促金色星光；预测或确认击破只补一次烟尘，回包不重复反馈。
+--- 预测命中播放声音、碎石和短促金色星光；本人敲击声不随镜头距离衰减，击破烟尘不重复播放。
 --- @param rock Model 当前受击且仍在场景中的石头。
 --- @param broken boolean 本次扣血是否击破石头。
 --- @param impact RaycastResult? 训练巨石的实际表面命中；提供时只生成表现，不移动巨石。
@@ -1128,7 +1146,7 @@ function Component:PlayHitEffect(rock, broken, impact, lethalHit)
     local sound = self._breakSound:Clone()
     sound.Looped = false
     self:GetPlayerObject():RequireComponent("CSettingsUIComp"):ConfigureEffectSound(sound)
-    sound.Parent = effect
+    sound.Parent = self._folder
     local effectColor = RockLevel.HitEffectColors[math.random(1, #RockLevel.HitEffectColors)]
     local radius = math.clamp(math.max(rockPart.Size.X, rockPart.Size.Y, rockPart.Size.Z) * 0.55, 1.5, 4)
     self:PlayImpactParticles(effect, radius, lethalHit == true, effectColor)
@@ -1144,7 +1162,9 @@ function Component:PlayHitEffect(rock, broken, impact, lethalHit)
     local fragmentOrigin = lethalHit and CFrame.lookAt(center, center + normal) or effect.CFrame
     self:SpawnFragments(fragmentOrigin, impact and rockPart.Color or rock:GetAttribute("GroundColor"), rockPart.Size,
         lethalHit == true, impact ~= nil)
-    Debris:AddItem(effect, math.max(3, sound.TimeLength + 0.1))
+    local lifetime = math.max(3, sound.TimeLength + 0.1)
+    Debris:AddItem(sound, lifetime)
+    Debris:AddItem(effect, lifetime)
 end
 
 --- 使用紧凑的中心闪光、柔边冲击波和飞散火星，限制亮度与叠加以免遮住角色和石头。
