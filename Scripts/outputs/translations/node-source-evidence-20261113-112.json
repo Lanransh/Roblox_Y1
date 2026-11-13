@@ -1,0 +1,362 @@
+[
+  {
+    "status": "fulfilled",
+    "value": {
+      "path": "StarterGui.SettingsUI.SettingsPanel.ContentBox.MusicRowImg.LabelTxt",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"path\":\"StarterGui.SettingsUI.SettingsPanel.ContentBox.MusicRowImg.LabelTxt\",\"name\":\"LabelTxt\",\"className\":\"TextLabel\",\"attributes\":{\"UIEditorNodeId\":\"dec0081e-371f-4de5-98dd-b5cbaa08111c\"},\"uniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003b6d\",\"children\":{\"immediateChildren\":[],\"totalDescendants\":0,\"childrenCount\":0},\"properties\":{\"LayoutOrder\":0,\"TextWrapped\":false,\"LineHeight\":1,\"Active\":false,\"Interactable\":true,\"TextStrokeTransparency\":1,\"TextTruncate\":\"Enum.TextTruncate.None\",\"SizeConstraint\":\"Enum.SizeConstraint.RelativeXY\",\"ZIndex\":5,\"BorderSizePixel\":0,\"RichText\":false,\"AutoLocalize\":true,\"Sandboxed\":false,\"SelectionOrder\":0,\"TextYAlignment\":\"Enum.TextYAlignment.Center\",\"TextScaled\":false,\"BackgroundColor3\":\"1, 1, 1\",\"FontFace\":\"Font { Family = rbxasset://fonts/families/GothamSSm.json, Weight = Bold, Style = Normal }\",\"BorderMode\":\"Enum.BorderMode.Outline\",\"TextStrokeColor3\":\"0, 0, 0\",\"UniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003b6d\",\"OpenTypeFeatures\":\"\",\"Capabilities\":\"\",\"AnchorPoint\":\"0, 0\",\"Archivable\":true,\"SelectionGroup\":false,\"SelectionBehaviorUp\":\"Enum.SelectionBehavior.Escape\",\"SelectionBehaviorDown\":\"Enum.SelectionBehavior.Escape\",\"Position\":\"{0, 18}, {0, 0}\",\"TextSize\":24,\"Size\":\"{0, 250}, {0, 56}\",\"SelectionBehaviorLeft\":\"Enum.SelectionBehavior.Escape\",\"Visible\":true,\"TextDirection\":\"Enum.TextDirection.Auto\",\"TextColor3\":\"1, 1, 1\",\"BorderColor3\":\"0.10588235408067703, 0.16470588743686676, 0.2078431397676468\",\"Text\":\"Music\",\"TextTransparency\":0,\"Selectable\":false,\"Rotation\":0,\"AutomaticSize\":\"Enum.AutomaticSize.None\",\"BackgroundTransparency\":1,\"TextXAlignment\":\"Enum.TextXAlignment.Left\",\"SelectionBehaviorRight\":\"Enum.SelectionBehavior.Escape\",\"MaxVisibleGraphemes\":-1,\"InputSink\":\"Enum.InputSink.None\",\"ClipsDescendants\":false}}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "path": "StarterGui.SettingsUI.SettingsPanel.ContentBox.SoundEffectsRowImg.LabelTxt",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"path\":\"StarterGui.SettingsUI.SettingsPanel.ContentBox.SoundEffectsRowImg.LabelTxt\",\"name\":\"LabelTxt\",\"className\":\"TextLabel\",\"attributes\":{\"UIEditorNodeId\":\"98edf663-33ce-4c64-83ca-227b42ac6b1e\"},\"uniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003b7c\",\"children\":{\"immediateChildren\":[],\"totalDescendants\":0,\"childrenCount\":0},\"properties\":{\"LayoutOrder\":0,\"TextWrapped\":false,\"LineHeight\":1,\"Active\":false,\"Interactable\":true,\"TextStrokeTransparency\":1,\"TextTruncate\":\"Enum.TextTruncate.None\",\"SizeConstraint\":\"Enum.SizeConstraint.RelativeXY\",\"ZIndex\":5,\"BorderSizePixel\":0,\"RichText\":false,\"AutoLocalize\":true,\"Sandboxed\":false,\"SelectionOrder\":0,\"TextYAlignment\":\"Enum.TextYAlignment.Center\",\"TextScaled\":false,\"BackgroundColor3\":\"1, 1, 1\",\"FontFace\":\"Font { Family = rbxasset://fonts/families/GothamSSm.json, Weight = Bold, Style = Normal }\",\"BorderMode\":\"Enum.BorderMode.Outline\",\"TextStrokeColor3\":\"0, 0, 0\",\"UniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003b7c\",\"OpenTypeFeatures\":\"\",\"Capabilities\":\"\",\"AnchorPoint\":\"0, 0\",\"Archivable\":true,\"SelectionGroup\":false,\"SelectionBehaviorUp\":\"Enum.SelectionBehavior.Escape\",\"SelectionBehaviorDown\":\"Enum.SelectionBehavior.Escape\",\"Position\":\"{0, 18}, {0, 0}\",\"TextSize\":24,\"Size\":\"{0, 250}, {0, 56}\",\"SelectionBehaviorLeft\":\"Enum.SelectionBehavior.Escape\",\"Visible\":true,\"TextDirection\":\"Enum.TextDirection.Auto\",\"TextColor3\":\"1, 1, 1\",\"BorderColor3\":\"0.10588235408067703, 0.16470588743686676, 0.2078431397676468\",\"Text\":\"Sound Effects\",\"TextTransparency\":0,\"Selectable\":false,\"Rotation\":0,\"AutomaticSize\":\"Enum.AutomaticSize.None\",\"BackgroundTransparency\":1,\"TextXAlignment\":\"Enum.TextXAlignment.Left\",\"SelectionBehaviorRight\":\"Enum.SelectionBehavior.Escape\",\"MaxVisibleGraphemes\":-1,\"InputSink\":\"Enum.InputSink.None\",\"ClipsDescendants\":false}}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "path": "StarterGui.SettingsUI.SettingsPanel.ContentBox.ShowAuraRowImg.LabelTxt",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"path\":\"StarterGui.SettingsUI.SettingsPanel.ContentBox.ShowAuraRowImg.LabelTxt\",\"name\":\"LabelTxt\",\"className\":\"TextLabel\",\"attributes\":{\"UIEditorNodeId\":\"b5a4c901-46a7-40e7-b9f2-f114114c7786\"},\"uniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003b8b\",\"children\":{\"immediateChildren\":[],\"totalDescendants\":0,\"childrenCount\":0},\"properties\":{\"LayoutOrder\":0,\"TextWrapped\":false,\"LineHeight\":1,\"Active\":false,\"Interactable\":true,\"TextStrokeTransparency\":1,\"TextTruncate\":\"Enum.TextTruncate.None\",\"SizeConstraint\":\"Enum.SizeConstraint.RelativeXY\",\"ZIndex\":5,\"BorderSizePixel\":0,\"RichText\":false,\"AutoLocalize\":true,\"Sandboxed\":false,\"SelectionOrder\":0,\"TextYAlignment\":\"Enum.TextYAlignment.Center\",\"TextScaled\":false,\"BackgroundColor3\":\"1, 1, 1\",\"FontFace\":\"Font { Family = rbxasset://fonts/families/GothamSSm.json, Weight = Bold, Style = Normal }\",\"BorderMode\":\"Enum.BorderMode.Outline\",\"TextStrokeColor3\":\"0, 0, 0\",\"UniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003b8b\",\"OpenTypeFeatures\":\"\",\"Capabilities\":\"\",\"AnchorPoint\":\"0, 0\",\"Archivable\":true,\"SelectionGroup\":false,\"SelectionBehaviorUp\":\"Enum.SelectionBehavior.Escape\",\"SelectionBehaviorDown\":\"Enum.SelectionBehavior.Escape\",\"Position\":\"{0, 18}, {0, 0}\",\"TextSize\":24,\"Size\":\"{0, 250}, {0, 56}\",\"SelectionBehaviorLeft\":\"Enum.SelectionBehavior.Escape\",\"Visible\":true,\"TextDirection\":\"Enum.TextDirection.Auto\",\"TextColor3\":\"1, 1, 1\",\"BorderColor3\":\"0.10588235408067703, 0.16470588743686676, 0.2078431397676468\",\"Text\":\"Show Aura\",\"TextTransparency\":0,\"Selectable\":false,\"Rotation\":0,\"AutomaticSize\":\"Enum.AutomaticSize.None\",\"BackgroundTransparency\":1,\"TextXAlignment\":\"Enum.TextXAlignment.Left\",\"SelectionBehaviorRight\":\"Enum.SelectionBehavior.Escape\",\"MaxVisibleGraphemes\":-1,\"InputSink\":\"Enum.InputSink.None\",\"ClipsDescendants\":false}}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "path": "StarterGui.SettingsUI.SettingsPanel.ContentBox.GiantPickaxeRowImg.LabelTxt",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"path\":\"StarterGui.SettingsUI.SettingsPanel.ContentBox.GiantPickaxeRowImg.LabelTxt\",\"name\":\"LabelTxt\",\"className\":\"TextLabel\",\"attributes\":{\"UIEditorNodeId\":\"5d627aea-4dd7-4f3e-9292-28e5bb6f3353\"},\"uniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003b97\",\"children\":{\"immediateChildren\":[],\"totalDescendants\":0,\"childrenCount\":0},\"properties\":{\"LayoutOrder\":0,\"TextWrapped\":false,\"LineHeight\":1,\"Active\":false,\"Interactable\":true,\"TextStrokeTransparency\":1,\"TextTruncate\":\"Enum.TextTruncate.None\",\"SizeConstraint\":\"Enum.SizeConstraint.RelativeXY\",\"ZIndex\":5,\"BorderSizePixel\":0,\"RichText\":false,\"AutoLocalize\":true,\"Sandboxed\":false,\"SelectionOrder\":0,\"TextYAlignment\":\"Enum.TextYAlignment.Center\",\"TextScaled\":false,\"BackgroundColor3\":\"1, 1, 1\",\"FontFace\":\"Font { Family = rbxasset://fonts/families/GothamSSm.json, Weight = Bold, Style = Normal }\",\"BorderMode\":\"Enum.BorderMode.Outline\",\"TextStrokeColor3\":\"0, 0, 0\",\"UniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003b97\",\"OpenTypeFeatures\":\"\",\"Capabilities\":\"\",\"AnchorPoint\":\"0, 0\",\"Archivable\":true,\"SelectionGroup\":false,\"SelectionBehaviorUp\":\"Enum.SelectionBehavior.Escape\",\"SelectionBehaviorDown\":\"Enum.SelectionBehavior.Escape\",\"Position\":\"{0, 18}, {0, 0}\",\"TextSize\":24,\"Size\":\"{0, 250}, {0, 56}\",\"SelectionBehaviorLeft\":\"Enum.SelectionBehavior.Escape\",\"Visible\":true,\"TextDirection\":\"Enum.TextDirection.Auto\",\"TextColor3\":\"1, 1, 1\",\"BorderColor3\":\"0.10588235408067703, 0.16470588743686676, 0.2078431397676468\",\"Text\":\"Giant Pickaxe\",\"TextTransparency\":0,\"Selectable\":false,\"Rotation\":0,\"AutomaticSize\":\"Enum.AutomaticSize.None\",\"BackgroundTransparency\":1,\"TextXAlignment\":\"Enum.TextXAlignment.Left\",\"SelectionBehaviorRight\":\"Enum.SelectionBehavior.Escape\",\"MaxVisibleGraphemes\":-1,\"InputSink\":\"Enum.InputSink.None\",\"ClipsDescendants\":false}}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "path": "StarterGui.SettingsUI.SettingsPanel.ContentBox.RenderDistanceRowImg.LabelTxt",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"path\":\"StarterGui.SettingsUI.SettingsPanel.ContentBox.RenderDistanceRowImg.LabelTxt\",\"name\":\"LabelTxt\",\"className\":\"TextLabel\",\"attributes\":{\"UIEditorNodeId\":\"8c760b57-96e9-41e8-b163-82c58e5a4450\"},\"uniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003ba3\",\"children\":{\"immediateChildren\":[],\"totalDescendants\":0,\"childrenCount\":0},\"properties\":{\"LayoutOrder\":0,\"TextWrapped\":false,\"LineHeight\":1,\"Active\":false,\"Interactable\":true,\"TextStrokeTransparency\":1,\"TextTruncate\":\"Enum.TextTruncate.None\",\"SizeConstraint\":\"Enum.SizeConstraint.RelativeXY\",\"ZIndex\":5,\"BorderSizePixel\":0,\"RichText\":false,\"AutoLocalize\":true,\"Sandboxed\":false,\"SelectionOrder\":0,\"TextYAlignment\":\"Enum.TextYAlignment.Center\",\"TextScaled\":false,\"BackgroundColor3\":\"1, 1, 1\",\"FontFace\":\"Font { Family = rbxasset://fonts/families/GothamSSm.json, Weight = Bold, Style = Normal }\",\"BorderMode\":\"Enum.BorderMode.Outline\",\"TextStrokeColor3\":\"0, 0, 0\",\"UniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003ba3\",\"OpenTypeFeatures\":\"\",\"Capabilities\":\"\",\"AnchorPoint\":\"0, 0\",\"Archivable\":true,\"SelectionGroup\":false,\"SelectionBehaviorUp\":\"Enum.SelectionBehavior.Escape\",\"SelectionBehaviorDown\":\"Enum.SelectionBehavior.Escape\",\"Position\":\"{0, 18}, {0, 0}\",\"TextSize\":24,\"Size\":\"{0, 205}, {0, 56}\",\"SelectionBehaviorLeft\":\"Enum.SelectionBehavior.Escape\",\"Visible\":true,\"TextDirection\":\"Enum.TextDirection.Auto\",\"TextColor3\":\"1, 1, 1\",\"BorderColor3\":\"0.10588235408067703, 0.16470588743686676, 0.2078431397676468\",\"Text\":\"View Distance\",\"TextTransparency\":0,\"Selectable\":false,\"Rotation\":0,\"AutomaticSize\":\"Enum.AutomaticSize.None\",\"BackgroundTransparency\":1,\"TextXAlignment\":\"Enum.TextXAlignment.Left\",\"SelectionBehaviorRight\":\"Enum.SelectionBehavior.Escape\",\"MaxVisibleGraphemes\":-1,\"InputSink\":\"Enum.InputSink.None\",\"ClipsDescendants\":false}}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "path": "StarterGui.SettingsUI.SettingsPanel.ContentBox.RenderDistanceRowImg.LowBtn.ButtonTxt",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"path\":\"StarterGui.SettingsUI.SettingsPanel.ContentBox.RenderDistanceRowImg.LowBtn.ButtonTxt\",\"name\":\"ButtonTxt\",\"className\":\"TextLabel\",\"attributes\":{\"UIEditorNodeId\":\"9b81d855-e59b-4ad1-a6d3-107a6433a1d4\"},\"uniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003ba9\",\"children\":{\"immediateChildren\":[{\"path\":\"StarterGui.SettingsUI.SettingsPanel.ContentBox.RenderDistanceRowImg.LowBtn.ButtonTxt.TextStroke\",\"className\":\"UIStroke\"}],\"totalDescendants\":1,\"childrenCount\":1},\"properties\":{\"LayoutOrder\":0,\"TextWrapped\":false,\"LineHeight\":1,\"Active\":false,\"Interactable\":true,\"TextStrokeTransparency\":1,\"TextTruncate\":\"Enum.TextTruncate.None\",\"SizeConstraint\":\"Enum.SizeConstraint.RelativeXY\",\"ZIndex\":8,\"BorderSizePixel\":0,\"RichText\":false,\"AutoLocalize\":true,\"Sandboxed\":false,\"SelectionOrder\":0,\"TextYAlignment\":\"Enum.TextYAlignment.Center\",\"TextScaled\":false,\"BackgroundColor3\":\"1, 1, 1\",\"FontFace\":\"Font { Family = rbxasset://fonts/families/GothamSSm.json, Weight = Bold, Style = Normal }\",\"BorderMode\":\"Enum.BorderMode.Outline\",\"TextStrokeColor3\":\"0, 0, 0\",\"UniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003ba9\",\"OpenTypeFeatures\":\"\",\"Capabilities\":\"\",\"AnchorPoint\":\"0, 0\",\"Archivable\":true,\"SelectionGroup\":false,\"SelectionBehaviorUp\":\"Enum.SelectionBehavior.Escape\",\"SelectionBehaviorDown\":\"Enum.SelectionBehavior.Escape\",\"Position\":\"{0, 0}, {0, -2}\",\"TextSize\":18,\"Size\":\"{1, 0}, {1, 0}\",\"SelectionBehaviorLeft\":\"Enum.SelectionBehavior.Escape\",\"Visible\":true,\"TextDirection\":\"Enum.TextDirection.Auto\",\"TextColor3\":\"1, 1, 1\",\"BorderColor3\":\"0.10588235408067703, 0.16470588743686676, 0.2078431397676468\",\"Text\":\"Low\",\"TextTransparency\":0,\"Selectable\":false,\"Rotation\":0,\"AutomaticSize\":\"Enum.AutomaticSize.None\",\"BackgroundTransparency\":1,\"TextXAlignment\":\"Enum.TextXAlignment.Center\",\"SelectionBehaviorRight\":\"Enum.SelectionBehavior.Escape\",\"MaxVisibleGraphemes\":-1,\"InputSink\":\"Enum.InputSink.None\",\"ClipsDescendants\":false}}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "path": "StarterGui.SettingsUI.SettingsPanel.ContentBox.RenderDistanceRowImg.MediumBtn.ButtonTxt",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"path\":\"StarterGui.SettingsUI.SettingsPanel.ContentBox.RenderDistanceRowImg.MediumBtn.ButtonTxt\",\"name\":\"ButtonTxt\",\"className\":\"TextLabel\",\"attributes\":{\"UIEditorNodeId\":\"6e116be7-5452-4c22-a620-ba0c5652cede\"},\"uniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003bb0\",\"children\":{\"immediateChildren\":[{\"path\":\"StarterGui.SettingsUI.SettingsPanel.ContentBox.RenderDistanceRowImg.MediumBtn.ButtonTxt.TextStroke\",\"className\":\"UIStroke\"}],\"totalDescendants\":1,\"childrenCount\":1},\"properties\":{\"LayoutOrder\":0,\"TextWrapped\":false,\"LineHeight\":1,\"Active\":false,\"Interactable\":true,\"TextStrokeTransparency\":1,\"TextTruncate\":\"Enum.TextTruncate.None\",\"SizeConstraint\":\"Enum.SizeConstraint.RelativeXY\",\"ZIndex\":8,\"BorderSizePixel\":0,\"RichText\":false,\"AutoLocalize\":true,\"Sandboxed\":false,\"SelectionOrder\":0,\"TextYAlignment\":\"Enum.TextYAlignment.Center\",\"TextScaled\":false,\"BackgroundColor3\":\"1, 1, 1\",\"FontFace\":\"Font { Family = rbxasset://fonts/families/GothamSSm.json, Weight = Bold, Style = Normal }\",\"BorderMode\":\"Enum.BorderMode.Outline\",\"TextStrokeColor3\":\"0, 0, 0\",\"UniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003bb0\",\"OpenTypeFeatures\":\"\",\"Capabilities\":\"\",\"AnchorPoint\":\"0, 0\",\"Archivable\":true,\"SelectionGroup\":false,\"SelectionBehaviorUp\":\"Enum.SelectionBehavior.Escape\",\"SelectionBehaviorDown\":\"Enum.SelectionBehavior.Escape\",\"Position\":\"{0, 0}, {0, -2}\",\"TextSize\":18,\"Size\":\"{1, 0}, {1, 0}\",\"SelectionBehaviorLeft\":\"Enum.SelectionBehavior.Escape\",\"Visible\":true,\"TextDirection\":\"Enum.TextDirection.Auto\",\"TextColor3\":\"1, 1, 1\",\"BorderColor3\":\"0.10588235408067703, 0.16470588743686676, 0.2078431397676468\",\"Text\":\"Medium\",\"TextTransparency\":0,\"Selectable\":false,\"Rotation\":0,\"AutomaticSize\":\"Enum.AutomaticSize.None\",\"BackgroundTransparency\":1,\"TextXAlignment\":\"Enum.TextXAlignment.Center\",\"SelectionBehaviorRight\":\"Enum.SelectionBehavior.Escape\",\"MaxVisibleGraphemes\":-1,\"InputSink\":\"Enum.InputSink.None\",\"ClipsDescendants\":false}}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "path": "StarterGui.SettingsUI.SettingsPanel.ContentBox.RenderDistanceRowImg.HighBtn.ButtonTxt",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"path\":\"StarterGui.SettingsUI.SettingsPanel.ContentBox.RenderDistanceRowImg.HighBtn.ButtonTxt\",\"name\":\"ButtonTxt\",\"className\":\"TextLabel\",\"attributes\":{\"UIEditorNodeId\":\"cce0b123-8408-498c-a58b-bef2b858c17f\"},\"uniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003bb7\",\"children\":{\"immediateChildren\":[{\"path\":\"StarterGui.SettingsUI.SettingsPanel.ContentBox.RenderDistanceRowImg.HighBtn.ButtonTxt.TextStroke\",\"className\":\"UIStroke\"}],\"totalDescendants\":1,\"childrenCount\":1},\"properties\":{\"LayoutOrder\":0,\"TextWrapped\":false,\"LineHeight\":1,\"Active\":false,\"Interactable\":true,\"TextStrokeTransparency\":1,\"TextTruncate\":\"Enum.TextTruncate.None\",\"SizeConstraint\":\"Enum.SizeConstraint.RelativeXY\",\"ZIndex\":8,\"BorderSizePixel\":0,\"RichText\":false,\"AutoLocalize\":true,\"Sandboxed\":false,\"SelectionOrder\":0,\"TextYAlignment\":\"Enum.TextYAlignment.Center\",\"TextScaled\":false,\"BackgroundColor3\":\"1, 1, 1\",\"FontFace\":\"Font { Family = rbxasset://fonts/families/GothamSSm.json, Weight = Bold, Style = Normal }\",\"BorderMode\":\"Enum.BorderMode.Outline\",\"TextStrokeColor3\":\"0, 0, 0\",\"UniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003bb7\",\"OpenTypeFeatures\":\"\",\"Capabilities\":\"\",\"AnchorPoint\":\"0, 0\",\"Archivable\":true,\"SelectionGroup\":false,\"SelectionBehaviorUp\":\"Enum.SelectionBehavior.Escape\",\"SelectionBehaviorDown\":\"Enum.SelectionBehavior.Escape\",\"Position\":\"{0, 0}, {0, -2}\",\"TextSize\":18,\"Size\":\"{1, 0}, {1, 0}\",\"SelectionBehaviorLeft\":\"Enum.SelectionBehavior.Escape\",\"Visible\":true,\"TextDirection\":\"Enum.TextDirection.Auto\",\"TextColor3\":\"1, 1, 1\",\"BorderColor3\":\"0.10588235408067703, 0.16470588743686676, 0.2078431397676468\",\"Text\":\"High\",\"TextTransparency\":0,\"Selectable\":false,\"Rotation\":0,\"AutomaticSize\":\"Enum.AutomaticSize.None\",\"BackgroundTransparency\":1,\"TextXAlignment\":\"Enum.TextXAlignment.Center\",\"SelectionBehaviorRight\":\"Enum.SelectionBehavior.Escape\",\"MaxVisibleGraphemes\":-1,\"InputSink\":\"Enum.InputSink.None\",\"ClipsDescendants\":false}}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "path": "StarterGui.SettingsUI.TitleBox.TitleTxt",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"path\":\"StarterGui.SettingsUI.TitleBox.TitleTxt\",\"name\":\"TitleTxt\",\"className\":\"TextLabel\",\"attributes\":{\"UIEditorNodeId\":\"fbb343b3-a67d-4892-a236-caddd3740e83\"},\"uniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003bc2\",\"children\":{\"immediateChildren\":[{\"path\":\"StarterGui.SettingsUI.TitleBox.TitleTxt.TextStroke\",\"className\":\"UIStroke\"}],\"totalDescendants\":1,\"childrenCount\":1},\"properties\":{\"LayoutOrder\":0,\"TextWrapped\":false,\"LineHeight\":1,\"Active\":false,\"Interactable\":true,\"TextStrokeTransparency\":1,\"TextTruncate\":\"Enum.TextTruncate.None\",\"SizeConstraint\":\"Enum.SizeConstraint.RelativeXY\",\"ZIndex\":6,\"BorderSizePixel\":0,\"RichText\":false,\"AutoLocalize\":true,\"Sandboxed\":false,\"SelectionOrder\":0,\"TextYAlignment\":\"Enum.TextYAlignment.Center\",\"TextScaled\":false,\"BackgroundColor3\":\"1, 1, 1\",\"FontFace\":\"Font { Family = rbxasset://fonts/families/GothamSSm.json, Weight = Bold, Style = Normal }\",\"BorderMode\":\"Enum.BorderMode.Outline\",\"TextStrokeColor3\":\"0, 0, 0\",\"UniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003bc2\",\"OpenTypeFeatures\":\"\",\"Capabilities\":\"\",\"AnchorPoint\":\"0, 0\",\"Archivable\":true,\"SelectionGroup\":false,\"SelectionBehaviorUp\":\"Enum.SelectionBehavior.Escape\",\"SelectionBehaviorDown\":\"Enum.SelectionBehavior.Escape\",\"Position\":\"{0, 86}, {0, -2}\",\"TextSize\":30,\"Size\":\"{0, 388}, {0, 70}\",\"SelectionBehaviorLeft\":\"Enum.SelectionBehavior.Escape\",\"Visible\":true,\"TextDirection\":\"Enum.TextDirection.Auto\",\"TextColor3\":\"1, 1, 1\",\"BorderColor3\":\"0.10588235408067703, 0.16470588743686676, 0.2078431397676468\",\"Text\":\"Settings\",\"TextTransparency\":0,\"Selectable\":false,\"Rotation\":0,\"AutomaticSize\":\"Enum.AutomaticSize.None\",\"BackgroundTransparency\":1,\"TextXAlignment\":\"Enum.TextXAlignment.Left\",\"SelectionBehaviorRight\":\"Enum.SelectionBehavior.Escape\",\"MaxVisibleGraphemes\":-1,\"InputSink\":\"Enum.InputSink.None\",\"ClipsDescendants\":false}}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "path": "StarterGui.AuraShopUI.Templates.AuraRowImg.OwnedTxt",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"path\":\"StarterGui.AuraShopUI.Templates.AuraRowImg.OwnedTxt\",\"name\":\"OwnedTxt\",\"className\":\"TextLabel\",\"attributes\":{\"UIEditorNodeId\":\"22d4462f-0735-47ef-8097-cbc0e286da03\"},\"uniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003c54\",\"children\":{\"immediateChildren\":[{\"path\":\"StarterGui.AuraShopUI.Templates.AuraRowImg.OwnedTxt.TextStroke\",\"className\":\"UIStroke\"}],\"totalDescendants\":1,\"childrenCount\":1},\"properties\":{\"LayoutOrder\":0,\"TextWrapped\":false,\"LineHeight\":1,\"Active\":false,\"Interactable\":true,\"TextStrokeTransparency\":1,\"TextTruncate\":\"Enum.TextTruncate.None\",\"SizeConstraint\":\"Enum.SizeConstraint.RelativeXY\",\"ZIndex\":6,\"BorderSizePixel\":0,\"RichText\":false,\"AutoLocalize\":true,\"Sandboxed\":false,\"SelectionOrder\":0,\"TextYAlignment\":\"Enum.TextYAlignment.Center\",\"TextScaled\":false,\"BackgroundColor3\":\"1, 1, 1\",\"FontFace\":\"Font { Family = rbxasset://fonts/families/GothamSSm.json, Weight = Bold, Style = Normal }\",\"BorderMode\":\"Enum.BorderMode.Outline\",\"TextStrokeColor3\":\"0, 0, 0\",\"UniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003c54\",\"OpenTypeFeatures\":\"\",\"Capabilities\":\"\",\"AnchorPoint\":\"0, 0\",\"Archivable\":true,\"SelectionGroup\":false,\"SelectionBehaviorUp\":\"Enum.SelectionBehavior.Escape\",\"SelectionBehaviorDown\":\"Enum.SelectionBehavior.Escape\",\"Position\":\"{0, 455}, {0, 6}\",\"TextSize\":16,\"Size\":\"{0, 75}, {0, 17}\",\"SelectionBehaviorLeft\":\"Enum.SelectionBehavior.Escape\",\"Visible\":false,\"TextDirection\":\"Enum.TextDirection.Auto\",\"TextColor3\":\"0.40392157435417175, 0.929411768913269, 0.0784313753247261\",\"BorderColor3\":\"0.10588235408067703, 0.16470588743686676, 0.2078431397676468\",\"Text\":\"Owned\",\"TextTransparency\":0,\"Selectable\":false,\"Rotation\":0,\"AutomaticSize\":\"Enum.AutomaticSize.None\",\"BackgroundTransparency\":1,\"TextXAlignment\":\"Enum.TextXAlignment.Left\",\"SelectionBehaviorRight\":\"Enum.SelectionBehavior.Escape\",\"MaxVisibleGraphemes\":-1,\"InputSink\":\"Enum.InputSink.None\",\"ClipsDescendants\":false}}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "path": "StarterGui.CollectionUI.PopupPanelImg.SummaryImg.HintTxt",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"path\":\"StarterGui.CollectionUI.PopupPanelImg.SummaryImg.HintTxt\",\"name\":\"HintTxt\",\"className\":\"TextLabel\",\"attributes\":{\"UIEditorNodeId\":\"87dba65b-8e84-4914-8713-ee98983d6d6f\"},\"uniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003c97\",\"children\":{\"immediateChildren\":[{\"path\":\"StarterGui.CollectionUI.PopupPanelImg.SummaryImg.HintTxt.TextStroke\",\"className\":\"UIStroke\"}],\"totalDescendants\":1,\"childrenCount\":1},\"properties\":{\"LayoutOrder\":0,\"TextWrapped\":false,\"LineHeight\":1,\"Active\":false,\"Interactable\":true,\"TextStrokeTransparency\":1,\"TextTruncate\":\"Enum.TextTruncate.None\",\"SizeConstraint\":\"Enum.SizeConstraint.RelativeXY\",\"ZIndex\":6,\"BorderSizePixel\":0,\"RichText\":false,\"AutoLocalize\":true,\"Sandboxed\":false,\"SelectionOrder\":0,\"TextYAlignment\":\"Enum.TextYAlignment.Center\",\"TextScaled\":false,\"BackgroundColor3\":\"1, 1, 1\",\"FontFace\":\"Font { Family = rbxasset://fonts/families/GothamSSm.json, Weight = Bold, Style = Normal }\",\"BorderMode\":\"Enum.BorderMode.Outline\",\"TextStrokeColor3\":\"0, 0, 0\",\"UniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003c97\",\"OpenTypeFeatures\":\"\",\"Capabilities\":\"\",\"AnchorPoint\":\"0, 0\",\"Archivable\":true,\"SelectionGroup\":false,\"SelectionBehaviorUp\":\"Enum.SelectionBehavior.Escape\",\"SelectionBehaviorDown\":\"Enum.SelectionBehavior.Escape\",\"Position\":\"{0, 10}, {0, 2}\",\"TextSize\":22,\"Size\":\"{0, 340}, {0, 28}\",\"SelectionBehaviorLeft\":\"Enum.SelectionBehavior.Escape\",\"Visible\":true,\"TextDirection\":\"Enum.TextDirection.Auto\",\"TextColor3\":\"1, 1, 1\",\"BorderColor3\":\"0.10588235408067703, 0.16470588743686676, 0.2078431397676468\",\"Text\":\"Each activated entry grants\",\"TextTransparency\":0,\"Selectable\":false,\"Rotation\":0,\"AutomaticSize\":\"Enum.AutomaticSize.None\",\"BackgroundTransparency\":1,\"TextXAlignment\":\"Enum.TextXAlignment.Left\",\"SelectionBehaviorRight\":\"Enum.SelectionBehavior.Escape\",\"MaxVisibleGraphemes\":-1,\"InputSink\":\"Enum.InputSink.None\",\"ClipsDescendants\":false}}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "path": "StarterGui.CollectionUI.PopupPanelImg.SummaryImg.BoostLabelTxt",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"path\":\"StarterGui.CollectionUI.PopupPanelImg.SummaryImg.BoostLabelTxt\",\"name\":\"BoostLabelTxt\",\"className\":\"TextLabel\",\"attributes\":{\"UIEditorNodeId\":\"bc3f2456-0a64-42c3-b0a2-34bdd9a66aca\"},\"uniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003c9b\",\"children\":{\"immediateChildren\":[{\"path\":\"StarterGui.CollectionUI.PopupPanelImg.SummaryImg.BoostLabelTxt.TextStroke\",\"className\":\"UIStroke\"}],\"totalDescendants\":1,\"childrenCount\":1},\"properties\":{\"LayoutOrder\":0,\"TextWrapped\":false,\"LineHeight\":1,\"Active\":false,\"Interactable\":true,\"TextStrokeTransparency\":1,\"TextTruncate\":\"Enum.TextTruncate.None\",\"SizeConstraint\":\"Enum.SizeConstraint.RelativeXY\",\"ZIndex\":6,\"BorderSizePixel\":0,\"RichText\":false,\"AutoLocalize\":true,\"Sandboxed\":false,\"SelectionOrder\":0,\"TextYAlignment\":\"Enum.TextYAlignment.Center\",\"TextScaled\":false,\"BackgroundColor3\":\"1, 1, 1\",\"FontFace\":\"Font { Family = rbxasset://fonts/families/GothamSSm.json, Weight = Bold, Style = Normal }\",\"BorderMode\":\"Enum.BorderMode.Outline\",\"TextStrokeColor3\":\"0, 0, 0\",\"UniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003c9b\",\"OpenTypeFeatures\":\"\",\"Capabilities\":\"\",\"AnchorPoint\":\"0, 0\",\"Archivable\":true,\"SelectionGroup\":false,\"SelectionBehaviorUp\":\"Enum.SelectionBehavior.Escape\",\"SelectionBehaviorDown\":\"Enum.SelectionBehavior.Escape\",\"Position\":\"{0, 360}, {0, 2}\",\"TextSize\":22,\"Size\":\"{0, 220}, {0, 28}\",\"SelectionBehaviorLeft\":\"Enum.SelectionBehavior.Escape\",\"Visible\":true,\"TextDirection\":\"Enum.TextDirection.Auto\",\"TextColor3\":\"0.8392156958580017, 0.8666666746139526, 0.8549019694328308\",\"BorderColor3\":\"0.10588235408067703, 0.16470588743686676, 0.2078431397676468\",\"Text\":\"Total Strength Gained\",\"TextTransparency\":0,\"Selectable\":false,\"Rotation\":0,\"AutomaticSize\":\"Enum.AutomaticSize.None\",\"BackgroundTransparency\":1,\"TextXAlignment\":\"Enum.TextXAlignment.Left\",\"SelectionBehaviorRight\":\"Enum.SelectionBehavior.Escape\",\"MaxVisibleGraphemes\":-1,\"InputSink\":\"Enum.InputSink.None\",\"ClipsDescendants\":false}}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "path": "StarterGui.CollectionUI.TitleBox.TitleTxt",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"path\":\"StarterGui.CollectionUI.TitleBox.TitleTxt\",\"name\":\"TitleTxt\",\"className\":\"TextLabel\",\"attributes\":{\"UIEditorNodeId\":\"c8b05155-70be-4482-8dce-d22e3dd801be\"},\"uniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003ca8\",\"children\":{\"immediateChildren\":[{\"path\":\"StarterGui.CollectionUI.TitleBox.TitleTxt.TextStroke\",\"className\":\"UIStroke\"}],\"totalDescendants\":1,\"childrenCount\":1},\"properties\":{\"LayoutOrder\":0,\"TextWrapped\":false,\"LineHeight\":1,\"Active\":false,\"Interactable\":true,\"TextStrokeTransparency\":1,\"TextTruncate\":\"Enum.TextTruncate.None\",\"SizeConstraint\":\"Enum.SizeConstraint.RelativeXY\",\"ZIndex\":6,\"BorderSizePixel\":0,\"RichText\":false,\"AutoLocalize\":true,\"Sandboxed\":false,\"SelectionOrder\":0,\"TextYAlignment\":\"Enum.TextYAlignment.Center\",\"TextScaled\":false,\"BackgroundColor3\":\"1, 1, 1\",\"FontFace\":\"Font { Family = rbxasset://fonts/families/GothamSSm.json, Weight = Bold, Style = Normal }\",\"BorderMode\":\"Enum.BorderMode.Outline\",\"TextStrokeColor3\":\"0, 0, 0\",\"UniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003ca8\",\"OpenTypeFeatures\":\"\",\"Capabilities\":\"\",\"AnchorPoint\":\"0, 0\",\"Archivable\":true,\"SelectionGroup\":false,\"SelectionBehaviorUp\":\"Enum.SelectionBehavior.Escape\",\"SelectionBehaviorDown\":\"Enum.SelectionBehavior.Escape\",\"Position\":\"{0, 81}, {0, 0}\",\"TextSize\":19,\"Size\":\"{0, 473}, {0, 46}\",\"SelectionBehaviorLeft\":\"Enum.SelectionBehavior.Escape\",\"Visible\":true,\"TextDirection\":\"Enum.TextDirection.Auto\",\"TextColor3\":\"1, 1, 1\",\"BorderColor3\":\"0.10588235408067703, 0.16470588743686676, 0.2078431397676468\",\"Text\":\"COLLECTION\",\"TextTransparency\":0,\"Selectable\":false,\"Rotation\":0,\"AutomaticSize\":\"Enum.AutomaticSize.None\",\"BackgroundTransparency\":1,\"TextXAlignment\":\"Enum.TextXAlignment.Left\",\"SelectionBehaviorRight\":\"Enum.SelectionBehavior.Escape\",\"MaxVisibleGraphemes\":-1,\"InputSink\":\"Enum.InputSink.None\",\"ClipsDescendants\":false}}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "path": "StarterGui.CurrencyShopUI.PopupPanelImg.DiamondTabBtn.ButtonTxt",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"path\":\"StarterGui.CurrencyShopUI.PopupPanelImg.DiamondTabBtn.ButtonTxt\",\"name\":\"ButtonTxt\",\"className\":\"TextLabel\",\"attributes\":{\"UIEditorNodeId\":\"34290b5b-bd3a-41d4-858c-750b95c54712\"},\"uniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003cf6\",\"children\":{\"immediateChildren\":[{\"path\":\"StarterGui.CurrencyShopUI.PopupPanelImg.DiamondTabBtn.ButtonTxt.TextStroke\",\"className\":\"UIStroke\"}],\"totalDescendants\":1,\"childrenCount\":1},\"properties\":{\"LayoutOrder\":0,\"TextWrapped\":true,\"LineHeight\":1,\"Active\":false,\"Interactable\":true,\"TextStrokeTransparency\":1,\"TextTruncate\":\"Enum.TextTruncate.None\",\"SizeConstraint\":\"Enum.SizeConstraint.RelativeXY\",\"ZIndex\":5,\"BorderSizePixel\":0,\"RichText\":false,\"AutoLocalize\":true,\"Sandboxed\":false,\"SelectionOrder\":0,\"TextYAlignment\":\"Enum.TextYAlignment.Center\",\"TextScaled\":false,\"BackgroundColor3\":\"1, 1, 1\",\"FontFace\":\"Font { Family = rbxasset://fonts/families/GothamSSm.json, Weight = Bold, Style = Normal }\",\"BorderMode\":\"Enum.BorderMode.Outline\",\"TextStrokeColor3\":\"0, 0, 0\",\"UniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003cf6\",\"OpenTypeFeatures\":\"\",\"Capabilities\":\"\",\"AnchorPoint\":\"0, 0\",\"Archivable\":true,\"SelectionGroup\":false,\"SelectionBehaviorUp\":\"Enum.SelectionBehavior.Escape\",\"SelectionBehaviorDown\":\"Enum.SelectionBehavior.Escape\",\"Position\":\"{0, 44}, {0, -1}\",\"TextSize\":16,\"Size\":\"{0, 91}, {0, 47}\",\"SelectionBehaviorLeft\":\"Enum.SelectionBehavior.Escape\",\"Visible\":true,\"TextDirection\":\"Enum.TextDirection.Auto\",\"TextColor3\":\"1, 1, 1\",\"BorderColor3\":\"0.10588235408067703, 0.16470588743686676, 0.2078431397676468\",\"Text\":\"DIAMONDS\",\"TextTransparency\":0,\"Selectable\":false,\"Rotation\":0,\"AutomaticSize\":\"Enum.AutomaticSize.None\",\"BackgroundTransparency\":1,\"TextXAlignment\":\"Enum.TextXAlignment.Center\",\"SelectionBehaviorRight\":\"Enum.SelectionBehavior.Escape\",\"MaxVisibleGraphemes\":-1,\"InputSink\":\"Enum.InputSink.None\",\"ClipsDescendants\":false}}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "path": "StarterGui.CurrencyShopUI.PopupPanelImg.RobuxTabBtn.ButtonTxt",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"path\":\"StarterGui.CurrencyShopUI.PopupPanelImg.RobuxTabBtn.ButtonTxt\",\"name\":\"ButtonTxt\",\"className\":\"TextLabel\",\"attributes\":{\"UIEditorNodeId\":\"07abe1d1-6212-4f1a-944e-6505aacc0e58\"},\"uniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003cfe\",\"children\":{\"immediateChildren\":[{\"path\":\"StarterGui.CurrencyShopUI.PopupPanelImg.RobuxTabBtn.ButtonTxt.TextStroke\",\"className\":\"UIStroke\"}],\"totalDescendants\":1,\"childrenCount\":1},\"properties\":{\"LayoutOrder\":0,\"TextWrapped\":true,\"LineHeight\":1,\"Active\":false,\"Interactable\":true,\"TextStrokeTransparency\":1,\"TextTruncate\":\"Enum.TextTruncate.None\",\"SizeConstraint\":\"Enum.SizeConstraint.RelativeXY\",\"ZIndex\":5,\"BorderSizePixel\":0,\"RichText\":false,\"AutoLocalize\":true,\"Sandboxed\":false,\"SelectionOrder\":0,\"TextYAlignment\":\"Enum.TextYAlignment.Center\",\"TextScaled\":false,\"BackgroundColor3\":\"1, 1, 1\",\"FontFace\":\"Font { Family = rbxasset://fonts/families/GothamSSm.json, Weight = Bold, Style = Normal }\",\"BorderMode\":\"Enum.BorderMode.Outline\",\"TextStrokeColor3\":\"0, 0, 0\",\"UniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003cfe\",\"OpenTypeFeatures\":\"\",\"Capabilities\":\"\",\"AnchorPoint\":\"0, 0\",\"Archivable\":true,\"SelectionGroup\":false,\"SelectionBehaviorUp\":\"Enum.SelectionBehavior.Escape\",\"SelectionBehaviorDown\":\"Enum.SelectionBehavior.Escape\",\"Position\":\"{0, 44}, {0, -1}\",\"TextSize\":16,\"Size\":\"{0, 91}, {0, 47}\",\"SelectionBehaviorLeft\":\"Enum.SelectionBehavior.Escape\",\"Visible\":true,\"TextDirection\":\"Enum.TextDirection.Auto\",\"TextColor3\":\"1, 1, 1\",\"BorderColor3\":\"0.10588235408067703, 0.16470588743686676, 0.2078431397676468\",\"Text\":\"ROBUX\",\"TextTransparency\":0,\"Selectable\":false,\"Rotation\":0,\"AutomaticSize\":\"Enum.AutomaticSize.None\",\"BackgroundTransparency\":1,\"TextXAlignment\":\"Enum.TextXAlignment.Center\",\"SelectionBehaviorRight\":\"Enum.SelectionBehavior.Escape\",\"MaxVisibleGraphemes\":-1,\"InputSink\":\"Enum.InputSink.None\",\"ClipsDescendants\":false}}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "path": "StarterGui.CurrencyShopUI.PopupPanelImg.CategoriesImg.CategoriesTitleTxt",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"path\":\"StarterGui.CurrencyShopUI.PopupPanelImg.CategoriesImg.CategoriesTitleTxt\",\"name\":\"CategoriesTitleTxt\",\"className\":\"TextLabel\",\"attributes\":{\"UIEditorNodeId\":\"aff56e8d-860a-4abb-b382-65398fdd2d1a\"},\"uniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003d06\",\"children\":{\"immediateChildren\":[],\"totalDescendants\":0,\"childrenCount\":0},\"properties\":{\"LayoutOrder\":0,\"TextWrapped\":true,\"LineHeight\":1,\"Active\":false,\"Interactable\":true,\"TextStrokeTransparency\":1,\"TextTruncate\":\"Enum.TextTruncate.None\",\"SizeConstraint\":\"Enum.SizeConstraint.RelativeXY\",\"ZIndex\":6,\"BorderSizePixel\":0,\"RichText\":false,\"AutoLocalize\":true,\"Sandboxed\":false,\"SelectionOrder\":0,\"TextYAlignment\":\"Enum.TextYAlignment.Center\",\"TextScaled\":false,\"BackgroundColor3\":\"1, 1, 1\",\"FontFace\":\"Font { Family = rbxasset://fonts/families/GothamSSm.json, Weight = Bold, Style = Normal }\",\"BorderMode\":\"Enum.BorderMode.Outline\",\"TextStrokeColor3\":\"0, 0, 0\",\"UniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003d06\",\"OpenTypeFeatures\":\"\",\"Capabilities\":\"\",\"AnchorPoint\":\"0, 0\",\"Archivable\":true,\"SelectionGroup\":false,\"SelectionBehaviorUp\":\"Enum.SelectionBehavior.Escape\",\"SelectionBehaviorDown\":\"Enum.SelectionBehavior.Escape\",\"Position\":\"{0, 10}, {0, 8}\",\"TextSize\":19,\"Size\":\"{0, 140}, {0, 28}\",\"SelectionBehaviorLeft\":\"Enum.SelectionBehavior.Escape\",\"Visible\":true,\"TextDirection\":\"Enum.TextDirection.Auto\",\"TextColor3\":\"1, 1, 1\",\"BorderColor3\":\"0.10588235408067703, 0.16470588743686676, 0.2078431397676468\",\"Text\":\"CATEGORIES\",\"TextTransparency\":0,\"Selectable\":false,\"Rotation\":0,\"AutomaticSize\":\"Enum.AutomaticSize.None\",\"BackgroundTransparency\":1,\"TextXAlignment\":\"Enum.TextXAlignment.Center\",\"SelectionBehaviorRight\":\"Enum.SelectionBehavior.Escape\",\"MaxVisibleGraphemes\":-1,\"InputSink\":\"Enum.InputSink.None\",\"ClipsDescendants\":false}}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "path": "StarterGui.CurrencyShopUI.TitleBox.TitleTxt",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"path\":\"StarterGui.CurrencyShopUI.TitleBox.TitleTxt\",\"name\":\"TitleTxt\",\"className\":\"TextLabel\",\"attributes\":{\"UIEditorNodeId\":\"3a4124db-b25c-49d2-86cb-e2640b08369a\"},\"uniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003d14\",\"children\":{\"immediateChildren\":[{\"path\":\"StarterGui.CurrencyShopUI.TitleBox.TitleTxt.TextStroke\",\"className\":\"UIStroke\"}],\"totalDescendants\":1,\"childrenCount\":1},\"properties\":{\"LayoutOrder\":0,\"TextWrapped\":false,\"LineHeight\":1,\"Active\":false,\"Interactable\":true,\"TextStrokeTransparency\":1,\"TextTruncate\":\"Enum.TextTruncate.None\",\"SizeConstraint\":\"Enum.SizeConstraint.RelativeXY\",\"ZIndex\":6,\"BorderSizePixel\":0,\"RichText\":false,\"AutoLocalize\":true,\"Sandboxed\":false,\"SelectionOrder\":0,\"TextYAlignment\":\"Enum.TextYAlignment.Center\",\"TextScaled\":false,\"BackgroundColor3\":\"1, 1, 1\",\"FontFace\":\"Font { Family = rbxasset://fonts/families/GothamSSm.json, Weight = Bold, Style = Normal }\",\"BorderMode\":\"Enum.BorderMode.Outline\",\"TextStrokeColor3\":\"0, 0, 0\",\"UniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003d14\",\"OpenTypeFeatures\":\"\",\"Capabilities\":\"\",\"AnchorPoint\":\"0, 0\",\"Archivable\":true,\"SelectionGroup\":false,\"SelectionBehaviorUp\":\"Enum.SelectionBehavior.Escape\",\"SelectionBehaviorDown\":\"Enum.SelectionBehavior.Escape\",\"Position\":\"{0, 101}, {0, 0}\",\"TextSize\":24,\"Size\":\"{0, 657}, {0, 57}\",\"SelectionBehaviorLeft\":\"Enum.SelectionBehavior.Escape\",\"Visible\":true,\"TextDirection\":\"Enum.TextDirection.Auto\",\"TextColor3\":\"1, 1, 1\",\"BorderColor3\":\"0.10588235408067703, 0.16470588743686676, 0.2078431397676468\",\"Text\":\"SHOP\",\"TextTransparency\":0,\"Selectable\":false,\"Rotation\":0,\"AutomaticSize\":\"Enum.AutomaticSize.None\",\"BackgroundTransparency\":1,\"TextXAlignment\":\"Enum.TextXAlignment.Left\",\"SelectionBehaviorRight\":\"Enum.SelectionBehavior.Escape\",\"MaxVisibleGraphemes\":-1,\"InputSink\":\"Enum.InputSink.None\",\"ClipsDescendants\":false}}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "path": "StarterGui.CurrencyShopUI.Templates.DiamondGreenCardImg.CurrencyTxt",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"path\":\"StarterGui.CurrencyShopUI.Templates.DiamondGreenCardImg.CurrencyTxt\",\"name\":\"CurrencyTxt\",\"className\":\"TextLabel\",\"attributes\":{\"UIEditorNodeId\":\"83494b65-6f06-4bd7-af9d-a55a3769af7c\"},\"uniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003d23\",\"children\":{\"immediateChildren\":[],\"totalDescendants\":0,\"childrenCount\":0},\"properties\":{\"LayoutOrder\":0,\"TextWrapped\":true,\"LineHeight\":1,\"Active\":false,\"Interactable\":true,\"TextStrokeTransparency\":1,\"TextTruncate\":\"Enum.TextTruncate.None\",\"SizeConstraint\":\"Enum.SizeConstraint.RelativeXY\",\"ZIndex\":6,\"BorderSizePixel\":0,\"RichText\":false,\"AutoLocalize\":true,\"Sandboxed\":false,\"SelectionOrder\":0,\"TextYAlignment\":\"Enum.TextYAlignment.Center\",\"TextScaled\":false,\"BackgroundColor3\":\"1, 1, 1\",\"FontFace\":\"Font { Family = rbxasset://fonts/families/GothamSSm.json, Weight = Bold, Style = Normal }\",\"BorderMode\":\"Enum.BorderMode.Outline\",\"TextStrokeColor3\":\"0, 0, 0\",\"UniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003d23\",\"OpenTypeFeatures\":\"\",\"Capabilities\":\"\",\"AnchorPoint\":\"0, 0\",\"Archivable\":true,\"SelectionGroup\":false,\"SelectionBehaviorUp\":\"Enum.SelectionBehavior.Escape\",\"SelectionBehaviorDown\":\"Enum.SelectionBehavior.Escape\",\"Position\":\"{0, 11}, {0, 111}\",\"TextSize\":16,\"Size\":\"{0, 122}, {0, 23}\",\"SelectionBehaviorLeft\":\"Enum.SelectionBehavior.Escape\",\"Visible\":false,\"TextDirection\":\"Enum.TextDirection.Auto\",\"TextColor3\":\"1, 1, 1\",\"BorderColor3\":\"0.10588235408067703, 0.16470588743686676, 0.2078431397676468\",\"Text\":\"Diamonds\",\"TextTransparency\":0,\"Selectable\":false,\"Rotation\":0,\"AutomaticSize\":\"Enum.AutomaticSize.None\",\"BackgroundTransparency\":1,\"TextXAlignment\":\"Enum.TextXAlignment.Left\",\"SelectionBehaviorRight\":\"Enum.SelectionBehavior.Escape\",\"MaxVisibleGraphemes\":-1,\"InputSink\":\"Enum.InputSink.None\",\"ClipsDescendants\":false}}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "path": "StarterGui.CurrencyShopUI.Templates.DiamondGoldCardImg.CurrencyTxt",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"path\":\"StarterGui.CurrencyShopUI.Templates.DiamondGoldCardImg.CurrencyTxt\",\"name\":\"CurrencyTxt\",\"className\":\"TextLabel\",\"attributes\":{\"UIEditorNodeId\":\"f8e3e482-dda8-45f1-8888-0900cbe21af8\"},\"uniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003dae\",\"children\":{\"immediateChildren\":[],\"totalDescendants\":0,\"childrenCount\":0},\"properties\":{\"LayoutOrder\":0,\"TextWrapped\":true,\"LineHeight\":1,\"Active\":false,\"Interactable\":true,\"TextStrokeTransparency\":1,\"TextTruncate\":\"Enum.TextTruncate.None\",\"SizeConstraint\":\"Enum.SizeConstraint.RelativeXY\",\"ZIndex\":6,\"BorderSizePixel\":0,\"RichText\":false,\"AutoLocalize\":true,\"Sandboxed\":false,\"SelectionOrder\":0,\"TextYAlignment\":\"Enum.TextYAlignment.Center\",\"TextScaled\":false,\"BackgroundColor3\":\"1, 1, 1\",\"FontFace\":\"Font { Family = rbxasset://fonts/families/GothamSSm.json, Weight = Bold, Style = Normal }\",\"BorderMode\":\"Enum.BorderMode.Outline\",\"TextStrokeColor3\":\"0, 0, 0\",\"UniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003dae\",\"OpenTypeFeatures\":\"\",\"Capabilities\":\"\",\"AnchorPoint\":\"0, 0\",\"Archivable\":true,\"SelectionGroup\":false,\"SelectionBehaviorUp\":\"Enum.SelectionBehavior.Escape\",\"SelectionBehaviorDown\":\"Enum.SelectionBehavior.Escape\",\"Position\":\"{0, 11}, {0, 111}\",\"TextSize\":16,\"Size\":\"{0, 122}, {0, 23}\",\"SelectionBehaviorLeft\":\"Enum.SelectionBehavior.Escape\",\"Visible\":false,\"TextDirection\":\"Enum.TextDirection.Auto\",\"TextColor3\":\"1, 1, 1\",\"BorderColor3\":\"0.10588235408067703, 0.16470588743686676, 0.2078431397676468\",\"Text\":\"Diamonds\",\"TextTransparency\":0,\"Selectable\":false,\"Rotation\":0,\"AutomaticSize\":\"Enum.AutomaticSize.None\",\"BackgroundTransparency\":1,\"TextXAlignment\":\"Enum.TextXAlignment.Left\",\"SelectionBehaviorRight\":\"Enum.SelectionBehavior.Escape\",\"MaxVisibleGraphemes\":-1,\"InputSink\":\"Enum.InputSink.None\",\"ClipsDescendants\":false}}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "path": "StarterGui.CurrencyShopUI.Templates.DiamondCyanCardImg.CurrencyTxt",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"path\":\"StarterGui.CurrencyShopUI.Templates.DiamondCyanCardImg.CurrencyTxt\",\"name\":\"CurrencyTxt\",\"className\":\"TextLabel\",\"attributes\":{\"UIEditorNodeId\":\"72fd46a5-842a-4920-b975-6c2c08acbe3f\"},\"uniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003dc1\",\"children\":{\"immediateChildren\":[],\"totalDescendants\":0,\"childrenCount\":0},\"properties\":{\"LayoutOrder\":0,\"TextWrapped\":true,\"LineHeight\":1,\"Active\":false,\"Interactable\":true,\"TextStrokeTransparency\":1,\"TextTruncate\":\"Enum.TextTruncate.None\",\"SizeConstraint\":\"Enum.SizeConstraint.RelativeXY\",\"ZIndex\":6,\"BorderSizePixel\":0,\"RichText\":false,\"AutoLocalize\":true,\"Sandboxed\":false,\"SelectionOrder\":0,\"TextYAlignment\":\"Enum.TextYAlignment.Center\",\"TextScaled\":false,\"BackgroundColor3\":\"1, 1, 1\",\"FontFace\":\"Font { Family = rbxasset://fonts/families/GothamSSm.json, Weight = Bold, Style = Normal }\",\"BorderMode\":\"Enum.BorderMode.Outline\",\"TextStrokeColor3\":\"0, 0, 0\",\"UniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003dc1\",\"OpenTypeFeatures\":\"\",\"Capabilities\":\"\",\"AnchorPoint\":\"0, 0\",\"Archivable\":true,\"SelectionGroup\":false,\"SelectionBehaviorUp\":\"Enum.SelectionBehavior.Escape\",\"SelectionBehaviorDown\":\"Enum.SelectionBehavior.Escape\",\"Position\":\"{0, 11}, {0, 111}\",\"TextSize\":16,\"Size\":\"{0, 122}, {0, 23}\",\"SelectionBehaviorLeft\":\"Enum.SelectionBehavior.Escape\",\"Visible\":false,\"TextDirection\":\"Enum.TextDirection.Auto\",\"TextColor3\":\"1, 1, 1\",\"BorderColor3\":\"0.10588235408067703, 0.16470588743686676, 0.2078431397676468\",\"Text\":\"Diamonds\",\"TextTransparency\":0,\"Selectable\":false,\"Rotation\":0,\"AutomaticSize\":\"Enum.AutomaticSize.None\",\"BackgroundTransparency\":1,\"TextXAlignment\":\"Enum.TextXAlignment.Left\",\"SelectionBehaviorRight\":\"Enum.SelectionBehavior.Escape\",\"MaxVisibleGraphemes\":-1,\"InputSink\":\"Enum.InputSink.None\",\"ClipsDescendants\":false}}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "path": "StarterGui.CurrencyShopUI.Templates.DiamondOrangeCardImg.CurrencyTxt",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"path\":\"StarterGui.CurrencyShopUI.Templates.DiamondOrangeCardImg.CurrencyTxt\",\"name\":\"CurrencyTxt\",\"className\":\"TextLabel\",\"attributes\":{\"UIEditorNodeId\":\"20f39870-ca16-4a72-9698-7f6e906d15f6\"},\"uniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003dd4\",\"children\":{\"immediateChildren\":[],\"totalDescendants\":0,\"childrenCount\":0},\"properties\":{\"LayoutOrder\":0,\"TextWrapped\":true,\"LineHeight\":1,\"Active\":false,\"Interactable\":true,\"TextStrokeTransparency\":1,\"TextTruncate\":\"Enum.TextTruncate.None\",\"SizeConstraint\":\"Enum.SizeConstraint.RelativeXY\",\"ZIndex\":6,\"BorderSizePixel\":0,\"RichText\":false,\"AutoLocalize\":true,\"Sandboxed\":false,\"SelectionOrder\":0,\"TextYAlignment\":\"Enum.TextYAlignment.Center\",\"TextScaled\":false,\"BackgroundColor3\":\"1, 1, 1\",\"FontFace\":\"Font { Family = rbxasset://fonts/families/GothamSSm.json, Weight = Bold, Style = Normal }\",\"BorderMode\":\"Enum.BorderMode.Outline\",\"TextStrokeColor3\":\"0, 0, 0\",\"UniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003dd4\",\"OpenTypeFeatures\":\"\",\"Capabilities\":\"\",\"AnchorPoint\":\"0, 0\",\"Archivable\":true,\"SelectionGroup\":false,\"SelectionBehaviorUp\":\"Enum.SelectionBehavior.Escape\",\"SelectionBehaviorDown\":\"Enum.SelectionBehavior.Escape\",\"Position\":\"{0, 11}, {0, 111}\",\"TextSize\":16,\"Size\":\"{0, 122}, {0, 23}\",\"SelectionBehaviorLeft\":\"Enum.SelectionBehavior.Escape\",\"Visible\":false,\"TextDirection\":\"Enum.TextDirection.Auto\",\"TextColor3\":\"1, 1, 1\",\"BorderColor3\":\"0.10588235408067703, 0.16470588743686676, 0.2078431397676468\",\"Text\":\"Diamonds\",\"TextTransparency\":0,\"Selectable\":false,\"Rotation\":0,\"AutomaticSize\":\"Enum.AutomaticSize.None\",\"BackgroundTransparency\":1,\"TextXAlignment\":\"Enum.TextXAlignment.Left\",\"SelectionBehaviorRight\":\"Enum.SelectionBehavior.Escape\",\"MaxVisibleGraphemes\":-1,\"InputSink\":\"Enum.InputSink.None\",\"ClipsDescendants\":false}}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "path": "StarterGui.CurrencyShopUI.Templates.DiamondPurpleCardImg.CurrencyTxt",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"path\":\"StarterGui.CurrencyShopUI.Templates.DiamondPurpleCardImg.CurrencyTxt\",\"name\":\"CurrencyTxt\",\"className\":\"TextLabel\",\"attributes\":{\"UIEditorNodeId\":\"58b560b0-00b9-4236-a550-83bb280dc47c\"},\"uniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003de7\",\"children\":{\"immediateChildren\":[],\"totalDescendants\":0,\"childrenCount\":0},\"properties\":{\"LayoutOrder\":0,\"TextWrapped\":true,\"LineHeight\":1,\"Active\":false,\"Interactable\":true,\"TextStrokeTransparency\":1,\"TextTruncate\":\"Enum.TextTruncate.None\",\"SizeConstraint\":\"Enum.SizeConstraint.RelativeXY\",\"ZIndex\":6,\"BorderSizePixel\":0,\"RichText\":false,\"AutoLocalize\":true,\"Sandboxed\":false,\"SelectionOrder\":0,\"TextYAlignment\":\"Enum.TextYAlignment.Center\",\"TextScaled\":false,\"BackgroundColor3\":\"1, 1, 1\",\"FontFace\":\"Font { Family = rbxasset://fonts/families/GothamSSm.json, Weight = Bold, Style = Normal }\",\"BorderMode\":\"Enum.BorderMode.Outline\",\"TextStrokeColor3\":\"0, 0, 0\",\"UniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003de7\",\"OpenTypeFeatures\":\"\",\"Capabilities\":\"\",\"AnchorPoint\":\"0, 0\",\"Archivable\":true,\"SelectionGroup\":false,\"SelectionBehaviorUp\":\"Enum.SelectionBehavior.Escape\",\"SelectionBehaviorDown\":\"Enum.SelectionBehavior.Escape\",\"Position\":\"{0, 11}, {0, 111}\",\"TextSize\":16,\"Size\":\"{0, 122}, {0, 23}\",\"SelectionBehaviorLeft\":\"Enum.SelectionBehavior.Escape\",\"Visible\":false,\"TextDirection\":\"Enum.TextDirection.Auto\",\"TextColor3\":\"1, 1, 1\",\"BorderColor3\":\"0.10588235408067703, 0.16470588743686676, 0.2078431397676468\",\"Text\":\"Diamonds\",\"TextTransparency\":0,\"Selectable\":false,\"Rotation\":0,\"AutomaticSize\":\"Enum.AutomaticSize.None\",\"BackgroundTransparency\":1,\"TextXAlignment\":\"Enum.TextXAlignment.Left\",\"SelectionBehaviorRight\":\"Enum.SelectionBehavior.Escape\",\"MaxVisibleGraphemes\":-1,\"InputSink\":\"Enum.InputSink.None\",\"ClipsDescendants\":false}}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "path": "StarterGui.CurrencyShopUI.Templates.DiamondPinkCardImg.CurrencyTxt",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"path\":\"StarterGui.CurrencyShopUI.Templates.DiamondPinkCardImg.CurrencyTxt\",\"name\":\"CurrencyTxt\",\"className\":\"TextLabel\",\"attributes\":{\"UIEditorNodeId\":\"f717fba4-3825-409e-9a4b-5d8a64c73956\"},\"uniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003dfa\",\"children\":{\"immediateChildren\":[],\"totalDescendants\":0,\"childrenCount\":0},\"properties\":{\"LayoutOrder\":0,\"TextWrapped\":true,\"LineHeight\":1,\"Active\":false,\"Interactable\":true,\"TextStrokeTransparency\":1,\"TextTruncate\":\"Enum.TextTruncate.None\",\"SizeConstraint\":\"Enum.SizeConstraint.RelativeXY\",\"ZIndex\":6,\"BorderSizePixel\":0,\"RichText\":false,\"AutoLocalize\":true,\"Sandboxed\":false,\"SelectionOrder\":0,\"TextYAlignment\":\"Enum.TextYAlignment.Center\",\"TextScaled\":false,\"BackgroundColor3\":\"1, 1, 1\",\"FontFace\":\"Font { Family = rbxasset://fonts/families/GothamSSm.json, Weight = Bold, Style = Normal }\",\"BorderMode\":\"Enum.BorderMode.Outline\",\"TextStrokeColor3\":\"0, 0, 0\",\"UniqueId\":\"692fb03a-d005-9f20-0b07-1e7000003dfa\",\"OpenTypeFeatures\":\"\",\"Capabilities\":\"\",\"AnchorPoint\":\"0, 0\",\"Archivable\":true,\"SelectionGroup\":false,\"SelectionBehaviorUp\":\"Enum.SelectionBehavior.Escape\",\"SelectionBehaviorDown\":\"Enum.SelectionBehavior.Escape\",\"Position\":\"{0, 11}, {0, 111}\",\"TextSize\":16,\"Size\":\"{0, 122}, {0, 23}\",\"SelectionBehaviorLeft\":\"Enum.SelectionBehavior.Escape\",\"Visible\":false,\"TextDirection\":\"Enum.TextDirection.Auto\",\"TextColor3\":\"1, 1, 1\",\"BorderColor3\":\"0.10588235408067703, 0.16470588743686676, 0.2078431397676468\",\"Text\":\"Diamonds\",\"TextTransparency\":0,\"Selectable\":false,\"Rotation\":0,\"AutomaticSize\":\"Enum.AutomaticSize.None\",\"BackgroundTransparency\":1,\"TextXAlignment\":\"Enum.TextXAlignment.Left\",\"SelectionBehaviorRight\":\"Enum.SelectionBehavior.Escape\",\"MaxVisibleGraphemes\":-1,\"InputSink\":\"Enum.InputSink.None\",\"ClipsDescendants\":false}}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "path": "StarterGui.WelfareUI.TabsBox.DiamondsTabBtn.ButtonTxt",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"path\":\"StarterGui.WelfareUI.TabsBox.DiamondsTabBtn.ButtonTxt\",\"name\":\"ButtonTxt\",\"className\":\"TextLabel\",\"attributes\":{\"UIEditorNodeId\":\"9ae95a75-cdba-4eeb-b432-8a7111988f72\"},\"uniqueId\":\"3957564e-2949-6fc8-0b08-112f00001918\",\"children\":{\"immediateChildren\":[{\"path\":\"StarterGui.WelfareUI.TabsBox.DiamondsTabBtn.ButtonTxt.TextStroke\",\"className\":\"UIStroke\"}],\"totalDescendants\":1,\"childrenCount\":1},\"properties\":{\"LayoutOrder\":0,\"TextWrapped\":true,\"LineHeight\":1,\"Active\":false,\"Interactable\":true,\"TextStrokeTransparency\":1,\"TextTruncate\":\"Enum.TextTruncate.None\",\"SizeConstraint\":\"Enum.SizeConstraint.RelativeXY\",\"ZIndex\":9,\"BorderSizePixel\":0,\"RichText\":false,\"AutoLocalize\":true,\"Sandboxed\":false,\"SelectionOrder\":0,\"TextYAlignment\":\"Enum.TextYAlignment.Center\",\"TextScaled\":false,\"BackgroundColor3\":\"1, 1, 1\",\"FontFace\":\"Font { Family = rbxasset://fonts/families/GothamSSm.json, Weight = Bold, Style = Normal }\",\"BorderMode\":\"Enum.BorderMode.Outline\",\"TextStrokeColor3\":\"0, 0, 0\",\"UniqueId\":\"3957564e-2949-6fc8-0b08-112f00001918\",\"OpenTypeFeatures\":\"\",\"Capabilities\":\"\",\"AnchorPoint\":\"0, 0\",\"Archivable\":true,\"SelectionGroup\":false,\"SelectionBehaviorUp\":\"Enum.SelectionBehavior.Escape\",\"SelectionBehaviorDown\":\"Enum.SelectionBehavior.Escape\",\"Position\":\"{0, 0}, {0, -2}\",\"TextSize\":18,\"Size\":\"{1, 0}, {1, 0}\",\"SelectionBehaviorLeft\":\"Enum.SelectionBehavior.Escape\",\"Visible\":true,\"TextDirection\":\"Enum.TextDirection.Auto\",\"TextColor3\":\"1, 1, 1\",\"BorderColor3\":\"0.10588235408067703, 0.16470588743686676, 0.2078431397676468\",\"Text\":\"Diamonds\",\"TextTransparency\":0,\"Selectable\":false,\"Rotation\":0,\"AutomaticSize\":\"Enum.AutomaticSize.None\",\"BackgroundTransparency\":1,\"TextXAlignment\":\"Enum.TextXAlignment.Center\",\"SelectionBehaviorRight\":\"Enum.SelectionBehavior.Escape\",\"MaxVisibleGraphemes\":-1,\"InputSink\":\"Enum.InputSink.None\",\"ClipsDescendants\":false}}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  }
+]

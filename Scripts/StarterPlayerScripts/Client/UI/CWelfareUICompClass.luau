@@ -191,6 +191,26 @@ function Component:RefreshWelfare(data)
     end
 end
 
+--- 供主界面低优先级提醒复用奖励页状态，领取中和未就绪时不提示。
+--- @return boolean 是否存在可领取的力量卡或背包卡。
+function Component:HasClaimableCardReward()
+    if not self._snapshot or not self._snapshot.ready then
+        return false
+    end
+    for index, group in ipairs(self.Config.groups) do
+        for itemIndex, config in ipairs(group.items) do
+            local entry = self.State.entries[group.kind][config.id]
+            if entry.status == "Claimable" and not entry.pending and config.reward.type == "Item" then
+                local item = _G.ItemConfig.Data[tonumber(config.reward.id)]
+                if item.Type == "TrainingCard" or item.Type == "ExpandableBackpackCard" then
+                    return true
+                end
+            end
+        end
+    end
+    return false
+end
+
 --- 在线页每秒插值展示倒计时，领取资格仍只使用服务端快照。
 --- @param serverTime number 框架提供的当前秒级时间戳。
 function Component:OnUpdate(serverTime)

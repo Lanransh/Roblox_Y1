@@ -14,35 +14,13 @@ function Component:GetCompName()
     return "CTrainingHUDComp"
 end
 
---- 按完整配置路径克隆 HUD；监听后续复制的旧预览，避免初始化后出现重复标牌。
+--- 按完整配置路径克隆 HUD，并绑定到真实训练台。
 --- @return nil
 function Component:OnReady()
     self._localization = self:GetPlayerObject():RequireComponent("FCCommonUIComp").Localization
     self._huds = {}
-    self._previews = {}
     local template = FXLoader:Shared("Nodes/TrainingHUD")
     local playerGui = FXLoader:Here(self:GetPlayerNode(), "PlayerGui", math.huge)
-    --- 旧预览可能晚于组件复制到客户端，只隐藏预览目录中带标记的标牌。
-    --- @param preview Instance 新复制或已存在的场景节点。
-    local function hidePreview(preview)
-        if not preview:IsA("BillboardGui") or not preview:GetAttribute("TrainingHUDPreview") then
-            return
-        end
-        local previews = FXLoader:Find(workspace, "Decorations/TrainingHUDs")
-        if previews and preview:IsDescendantOf(previews) then
-            if self._previews[preview] == nil then
-                self._previews[preview] = preview.Enabled
-            end
-            preview.Enabled = false
-        end
-    end
-    self:TrackConnection(workspace.DescendantAdded:Connect(hidePreview))
-    local previews = FXLoader:Find(workspace, "Decorations/TrainingHUDs")
-    if previews then
-        for previewIndex, preview in ipairs(previews:GetDescendants()) do
-            hidePreview(preview)
-        end
-    end
     for index, config in ipairs(_G.GameConfig.TrainingFieldData) do
         local field = InstancePath.Wait(config.Node)
         local platform = field:FindFirstChild("彩色训练台", true)
@@ -79,15 +57,11 @@ function Component:RefreshLocalization()
     end
 end
 
---- 销毁本客户端克隆并恢复预览，语言订阅由父类解除。
+--- 销毁本客户端克隆，语言订阅由父类解除。
+--- @return nil
 function Component:Dtor()
     for index, entry in ipairs(self._huds or {}) do
         entry.Node:Destroy()
-    end
-    for preview, enabled in pairs(self._previews or {}) do
-        if preview.Parent then
-            preview.Enabled = enabled
-        end
     end
     Component.Super.Dtor(self)
 end

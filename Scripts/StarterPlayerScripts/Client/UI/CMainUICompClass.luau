@@ -32,6 +32,7 @@ local TranslationTexts = Text.Define("Main", {
     NewPickaxeAvailable = "A better pickaxe is available to buy!",
     NewAuraAvailable = "A better aura is available to buy!",
     World2Unlocked = "A new world is unlocked! Head to the golden portal and travel to World 2!",
+    CardRewardAvailable = "Strength or backpack cards are ready to claim on the Rewards page!",
 })
 local Rebirth = FXLoader:RequireShared("Scripts/Game/Shared/Rebirth")
 local Fields = _G.PlayerDataConfig
@@ -657,7 +658,7 @@ function Component:CreatePurchaseReminder()
     self._purchaseTextEffect = AnimatedText.Attach(label)
 end
 
---- 世界解锁提醒限时优先显示，随后恢复重生、训练台、镐子和光环的原有优先级。
+--- 世界解锁提醒限时优先显示，随后按重生、训练台、奖励卡片、镐子、光环的顺序提醒。
 --- @return table? 最高优先级的文案定义，没有符合条件的提醒时为 nil。
 --- @return table? 训练台提醒对应的配置，供世界箭头复用同一目标判定。
 function Component:GetPriorityReminder()
@@ -678,6 +679,10 @@ function Component:GetPriorityReminder()
                 return TranslationTexts.BetterTrainingAvailable, config
             end
         end
+    end
+    local welfare = self:GetComponent("CWelfareUIComp")
+    if welfare and welfare:HasClaimableCardReward() then
+        return TranslationTexts.CardRewardAvailable
     end
     local coins = self:GetNumber(Fields.Money)
     local shops = {
