@@ -1,6 +1,6 @@
 ---
 name: roblox-translate
-description: 补译并审查 Roblox 翻译 CSV 的全部已有目标语言，结合代码、Studio UI 和配置核实用途，记录覆盖范围并安全保存。不修改文案来源或上传云端。
+description: 仅在用户显式调用时补译并审查 Roblox 翻译 CSV 的全部已有目标语言，结合代码、Studio UI 和配置核实用途，记录覆盖范围并安全保存。不修改文案来源或上传云端。
 ---
 
 # Roblox 全表翻译与审查
