@@ -9,6 +9,8 @@ local startupTasks = {}
 local lastTimes = {}
 local Fields = _G.PlayerDataConfig
 local Config = _G.GameConfig.CommonConfig.GiftData
+-- 奖励内容待定，暂时关闭神秘礼物掉落与领取。
+local GIFT_DROP_ENABLED = false
 -- 最后六秒预先降落，到期落地；已经到期的未领取礼盒直接恢复到台面。
 local STARTUP_HEIGHT = 60
 local STARTUP_DURATION = 6
@@ -37,8 +39,11 @@ function Service.UpdateTime(playerObject, now)
     return data
 end
 
---- 注册每日计时和一次领取协议；只认可服务端签发且已经落地的礼盒。
+--- 功能开启后注册每日计时和领取协议，暂停期间不加载场景落点。
 function Service.Init()
+    if not GIFT_DROP_ENABLED then
+        return
+    end
     local dropOrigins = {}
     for worldIndex = 1, 3 do
         dropOrigins[worldIndex] = FXLoader:Workspace(
