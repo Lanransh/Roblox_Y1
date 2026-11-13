@@ -6,7 +6,7 @@ ShopAreas.__index = ShopAreas
 
 --- 三个世界共用商店入口，远处小屋未流入时不阻塞 UI 初始化。
 --- @param hutName string 同类商店的小屋名称。
---- @param withReminders boolean 是否显示购买与装备提醒。
+--- @param withReminders boolean 是否启用商店感叹号。
 --- @return table 由商店组件持有的区域集合。
 function ShopAreas.New(hutName, withReminders)
     return setmetatable({
@@ -40,10 +40,10 @@ function ShopAreas:IsInside(position)
         local trigger = FXLoader:Find(hut, "Trigger")
         if trigger and trigger:IsA("BasePart") then
             local sign = FXLoader:Find(hut, "ShopSign")
-            if self._withReminders and self._state and not self._reminders[hut]
+            if self._withReminders and self._reminderVisible ~= nil and not self._reminders[hut]
                 and sign and sign:IsA("BasePart") then
                 local reminder = ShopReminder.New(hut, sign)
-                reminder:Refresh(self._items, self._state)
+                reminder:SetVisible(self._reminderVisible)
                 self._reminders[hut] = reminder
             end
             if position then
@@ -63,15 +63,35 @@ function ShopAreas:IsInside(position)
     return inside
 end
 
---- 同一份权威状态刷新所有已加载世界的小屋提醒。
+--- 仅有买得起且倍率高于当前装备的未解锁商品时提醒。
 --- @param items table 对应商店的完整配置。
 --- @param state table 权威数据派生的拥有、装备和金币状态。
 function ShopAreas:Refresh(items, state)
-    self._items = items
-    self._state = state
+    local equippedStrength = 0
+    for index, item in ipairs(items) do
+        if item.id == state.equippedId then
+            equippedStrength = item.strength
+            break
+        end
+    end
+    local visible = false
+    for index, item in ipairs(items) do
+        if state.owned[item.id] ~= true and state.coins >= item.price
+            and item.strength > equippedStrength then
+            visible = true
+            break
+        end
+    end
+    self:SetReminderVisible(visible)
+end
+
+--- 同步所有已加载世界的小屋提醒，并保存显隐状态供后续流入的小屋使用。
+--- @param visible boolean 是否显示感叹号。
+function ShopAreas:SetReminderVisible(visible)
+    self._reminderVisible = visible
     self:IsInside(nil)
     for hut, reminder in pairs(self._reminders) do
-        reminder:Refresh(items, state)
+        reminder:SetVisible(visible)
     end
 end
 

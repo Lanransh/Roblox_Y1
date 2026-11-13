@@ -56,7 +56,7 @@ function Component:OnReady()
             id = tostring(config.Index), day = config.LoginDays,
             reward = Welfare.ToDisplayReward(config.Reward),
             featured = config.LoginDays == 7,
-            badge = "Weekly Reward",
+            badge = "Day 7 Reward",
             color = {102, 80, 25},
         })
     end

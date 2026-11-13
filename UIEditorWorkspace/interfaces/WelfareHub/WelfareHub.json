@@ -1022,7 +1022,7 @@
                       "scale": 0
                     }
                   },
-                  "Text": "Check in once per day",
+                  "Text": "One-time login rewards",
                   "TextColor3": "#D6DDDA",
                   "TextScaled": false,
                   "TextSize": 22,
@@ -1084,7 +1084,7 @@
                       "scale": 0
                     }
                   },
-                  "Text": "Check in daily for generous rewards!",
+                  "Text": "One-time rewards for your first 7 login days.",
                   "TextColor3": "#D6DDDA",
                   "TextScaled": false,
                   "TextSize": 22,
@@ -6045,7 +6045,7 @@
                       "scale": 1
                     }
                   },
-                  "Text": "Daily Login",
+                  "Text": "First Week",
                   "TextColor3": "#ffffff",
                   "TextScaled": false,
                   "TextSize": 18.72,
@@ -9960,7 +9960,7 @@
                       "scale": 0
                     }
                   },
-                  "Text": "Weekly Reward",
+                  "Text": "Day 7 Reward",
                   "TextColor3": "#fff1a3",
                   "TextScaled": false,
                   "TextSize": 16,
@@ -20700,7 +20700,7 @@
                       "scale": 0
                     }
                   },
-                  "Text": "Weekly Reward",
+                  "Text": "Day 7 Reward",
                   "TextColor3": "#fff1a3",
                   "TextScaled": false,
                   "TextSize": 16,
@@ -22994,7 +22994,7 @@
                       "scale": 0
                     }
                   },
-                  "Text": "Weekly Reward",
+                  "Text": "Day 7 Reward",
                   "TextColor3": "#fff1a3",
                   "TextScaled": false,
                   "TextSize": 16,
@@ -26241,7 +26241,7 @@
                       "scale": 0
                     }
                   },
-                  "Text": "Come back daily!",
+                  "Text": "First week only",
                   "TextColor3": "#fff0c1",
                   "TextScaled": false,
                   "TextSize": 16,

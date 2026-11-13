@@ -54,14 +54,18 @@ function CSoundCompClass:GetBGMSoundIdList()
     return self._bgmSoundConfigList
 end
 
---- 仅在训练等级实际上升时突出升级音效并暂时压低音乐，跳过首次同步和重生重置。
+--- 训练等级上升时播放特效，升级音效每 2 秒最多播放一次，跳过首次同步和重生重置。
 --- @param level number 服务端同步的当前训练等级。
 --- @param oldLevel number? 变化前等级，首次同步为空。
 function CSoundCompClass:OnTrainingLevelChanged(level, oldLevel)
     if oldLevel == nil or level <= oldLevel then
         return
     end
-    self:PlayEffectSoundWithBGMDuck(UPGRADE_SOUND_ID, 2, 0.2)
+    local now = os.clock()
+    if self._lastUpgradeSoundTime == nil or now - self._lastUpgradeSoundTime >= 2 then
+        self._lastUpgradeSoundTime = now
+        self:PlayEffectSoundWithBGMDuck(UPGRADE_SOUND_ID, 2, 0.2)
+    end
     self:PlayTrainingUpgradeEffect()
 end
 

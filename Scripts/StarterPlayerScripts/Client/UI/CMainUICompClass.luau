@@ -30,6 +30,7 @@ local TranslationTexts = Text.Define("Main", {
     BetterTrainingAvailable = "Move to a better training area for a higher strength multiplier!",
     NewPickaxeAvailable = "A better pickaxe is available to buy!",
     NewAuraAvailable = "A better aura is available to buy!",
+    World2Unlocked = "A new world is unlocked! Head to the golden portal and travel to World 2!",
 })
 local Rebirth = FXLoader:RequireShared("Scripts/Game/Shared/Rebirth")
 local Fields = _G.PlayerDataConfig
@@ -153,6 +154,7 @@ function Component:OnReady()
         self:RefreshHomeButton()
         self:RefreshLootCapacity()
         self:RefreshTrainingStatus(self:GetNumber(Fields.TrainingFieldIndex))
+        self:RefreshPurchaseReminder()
     end)
     --- 普通训练沿用飞行图标，力量卡成功结算后改为力量图标雨。
     --- @param gain number 服务端确认的训练收益。
@@ -604,10 +606,14 @@ function Component:CreatePurchaseReminder()
     self._purchaseTextEffect = AnimatedText.Attach(label)
 end
 
---- 统一提示优先级：重生、训练时可用的更好训练台、可购买的新镐子、新光环。
+--- 世界解锁提醒限时优先显示，随后恢复重生、训练台、镐子和光环的原有优先级。
 --- @return table? 最高优先级的文案定义，没有符合条件的提醒时为 nil。
 --- @return table? 训练台提醒对应的配置，供世界箭头复用同一目标判定。
 function Component:GetPriorityReminder()
+    local guide = self:GetTable(Fields.Guide)
+    if guide.world2ReminderUntil and workspace:GetServerTimeNow() < guide.world2ReminderUntil then
+        return TranslationTexts.World2Unlocked
+    end
     local rebirthCount = self:GetNumber(Fields.RebirthCount)
     local requiredLevel = Rebirth.GetRequiredLevel(rebirthCount)
     local level = RockLevel.GetProgress(self:GetNumber(Fields.RockTrainingValue), requiredLevel)

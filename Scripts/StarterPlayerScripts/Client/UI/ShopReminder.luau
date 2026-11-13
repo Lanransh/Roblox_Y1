@@ -42,24 +42,9 @@ function Reminder.New(hut, sign)
     return self
 end
 
---- 有买得起的未解锁商品或更强的已拥有商品未装备时提醒，窗口关闭也持续更新。
---- @param items table 商店完整配置，包含 id、price 和 strength。
---- @param state table 服务端派生的 owned、equippedId 与 coins 状态。
-function Reminder:Refresh(items, state)
-    local canBuy = false
-    local equippedStrength = 0
-    local bestOwnedStrength = 0
-    for index, item in ipairs(items) do
-        if item.id == state.equippedId then
-            equippedStrength = item.strength
-        end
-        if state.owned[item.id] == true then
-            bestOwnedStrength = math.max(bestOwnedStrength, item.strength)
-        elseif state.coins >= item.price then
-            canBuy = true
-        end
-    end
-    local visible = canBuy or bestOwnedStrength > equippedStrength
+--- 按商店业务判定显隐，隐藏时停止动画。
+--- @param visible boolean 是否显示感叹号。
+function Reminder:SetVisible(visible)
     if visible == self._visible then
         return
     end

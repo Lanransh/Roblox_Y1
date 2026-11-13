@@ -36,7 +36,7 @@ function Collectible.ResolveModel(displayModelId)
     return instance
 end
 
---- 过小模板先归一到 2.4 studs，再整体放大 1.2 倍；较大模板按原尺寸放大，再焊接为单个装配。
+--- 过小模板先归一到 2.4 studs，再整体放大 1.38 倍；较大模板按原尺寸放大，再焊接为单个装配。
 --- @param template Model 已导入的收藏品模板。
 --- @return Model 以 PrimaryPart 为锚点、无碰撞的收藏品副本。
 function Collectible.CreateModel(template)
@@ -47,7 +47,7 @@ function Collectible.CreateModel(template)
     if longestSide < 2.4 then
         model:ScaleTo(model:GetScale() * 2.4 / longestSide)
     end
-    model:ScaleTo(model:GetScale() * 1.2)
+    model:ScaleTo(model:GetScale() * 1.38)
     local root = model.PrimaryPart
     for index, node in ipairs(model:GetDescendants()) do
         if node:IsA("BasePart") then

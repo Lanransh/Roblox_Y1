@@ -19,11 +19,6 @@ local Fields = _G.PlayerDataConfig
 local Component = FX.Class("CRockLevelCompClass", "FCPlayerCompClass")
 local ColliderHeight = 16
 local RockNames = {"Rock_01", "Rock_02", "Rock_03", "Rock_04", "Rock_Small_01"}
-local RockColors = {
-    Color3.fromRGB(217, 220, 224), Color3.fromRGB(228, 225, 215),
-    Color3.fromRGB(224, 228, 226), Color3.fromRGB(235, 233, 223),
-    Color3.fromRGB(219, 224, 218),
-}
 local LuckUnits = {
     {1e36, "Ud"}, {1e33, "Dc"}, {1e30, "No"}, {1e27, "Oc"},
     {1e24, "Sp"}, {1e21, "Sx"}, {1e18, "Qi"}, {1e15, "Qa"},
@@ -1433,7 +1428,7 @@ function Component:UpdateTreasureEffects(position, now)
     end
 end
 
---- 按格子固定随机模型、朝向和灰色，清理复用的藏宝效果，避免重新载入时外观跳变。
+--- 按格子固定随机模型和朝向，清理复用的藏宝效果及颜色缓存，避免重新载入时外观跳变。
 --- @param area table 所属关卡。
 --- @param column number 从零开始的列号。
 --- @param row number 从零开始的行号。
@@ -1453,7 +1448,6 @@ function Component:CreateRock(area, column, row)
     rock:SetAttribute("CellKey", area.Index .. ":" .. (row * area.Columns + column + 1))
     rock:ScaleTo(1)
     self:SetTreasureEffect(rock, false)
-    rock:SetAttribute("BaseColor", RockColors[Random.new(seed + 17):NextInteger(1, #RockColors)])
     rock:SetAttribute("HealthRatio", nil)
     rock:SetAttribute("GroundColor", nil)
     rock:PivotTo(CFrame.new(x, area.FloorY + rock:GetAttribute("FullHeight") / 2, z) * rotation)
@@ -1505,7 +1499,7 @@ function Component:UpdateRockHealthBar(rock, healthRatio)
     FXLoader:Here(billboard, "Background/Fill").Size = UDim2.fromScale(math.clamp(healthRatio, 0, 1), 1)
 end
 
---- 藏宝石放大 12%，星光源跟随原受损缩小；血条及显隐跟随预测血量并可由回包恢复。
+--- 石纹混入 60% 关卡地板颜色；藏宝石放大 12%，星光源跟随受损缩小，血条及显隐跟随预测血量。
 --- @param rock Model 当前客户端石头。
 --- @param area table 所属关卡及常驻颜色标记。
 --- @param health number 大于零的服务端实际血量，仅在尚无预测显示值时使用。
@@ -1553,9 +1547,7 @@ function Component:UpdateRockAppearance(rock, area, health)
     self:UpdateRockHealthBar(rock, healthRatio)
     local color = area.Node.Color
     if rock:GetAttribute("GroundColor") ~= color then
-        local baseColor = rock:GetAttribute("BaseColor")
-        local tint = Color3.new(1, 1, 1):Lerp(color, 0.2)
-        FXLoader:Here(rock, "Root/SurfaceAppearance").Color = Color3.new(baseColor.R * tint.R, baseColor.G * tint.G, baseColor.B * tint.B)
+        FXLoader:Here(rock, "Root/SurfaceAppearance").Color = Color3.new(1, 1, 1):Lerp(color, 0.6)
         rock:SetAttribute("GroundColor", color)
     end
     if rock.Parent ~= self._folder then

@@ -55,8 +55,8 @@ function Component:OnReady()
     self:TrackConnection(self._localization.Changed:Connect(function()
         self:RefreshLoot()
     end))
+    self._shopAreas = ShopAreas.New("Shop", true)
     self:BindUIData()
-    self._shopAreas = ShopAreas.New("Shop", false)
     self._inSellArea = false
     self._nextSellAreaCheck = 0
     --- 只检测本地角色位置，每 0.1 秒检查一次；显隐仅在进出边沿改变。
@@ -107,7 +107,7 @@ function Component:BindUIData()
     end, self)
 end
 
---- 将真实实例转换为展示契约并补全图标资源 URI；幸运价格已包含倍率，重生加成只计算一次。
+--- 将真实库存转换为展示契约；有待出售库存时显示小屋提醒，幸运价格与重生加成只计算一次。
 --- @param entries table? 服务端快照；省略时读取最新同步值。
 function Component:RefreshLoot(entries)
     entries = entries or self:GetTable(Fields.LootSellEntries)
@@ -130,6 +130,7 @@ function Component:RefreshLoot(entries)
         })
     end
     self.State.items = items
+    self._shopAreas:SetReminderVisible(#items > 0)
     self:RefreshUI()
 end
 

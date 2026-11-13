@@ -243,9 +243,13 @@ function Guide:GetGuideStorage()
     return PlayerDataConfig.Guide
 end
 
---- 登录续接时清除上一会话的坐标，等待本轮进入首关后重新锁定。
+--- 收起旧版世界二引导；首关登录续接时清除上一会话坐标，等待重新锁定。
 --- @param eventName string 框架或业务发布的引导事件。
 function Guide:OnGuideEvent(eventName)
+    local data = self:GetGuideData()
+    if data.activeGuideId == "World2Guide" then
+        self:FinishGroup(data, "World2Guide")
+    end
     Guide.Super.OnGuideEvent(self, eventName)
     if eventName == "Tutorial.Login" and self:IsLootStep(1) then
         local data = self:GetGuideData()
@@ -343,7 +347,23 @@ function Guide:GetLootTarget(rock, position)
     return selected and "1:" .. selected or nil, target
 end
 
---- 使用权威存档恢复提前完成的操作，末尾提醒按配置计时推进，不新增跳步协议。
+--- 达到世界二门槛后仅弹一次通用渐变提醒，复用已有进度记录避免重登重复。
+function Guide:RefreshWorld2Reminder()
+    local data = self:GetGuideData()
+    local first = data.guideMap.FirstLootGuide
+    local world2 = data.guideMap.World2Guide
+    if not first or first.state ~= "Finished" or (world2 and world2.state == "Finished") then
+        return
+    end
+    if self:GetNumber(PlayerDataConfig.MaxTrainingLevel) < _G.GameEnum.WorldTransferConfig[2].NeedTrainingLevel then
+        return
+    end
+    data.guideMap.World2Guide = {state = "Finished", stepIndex = 0}
+    data.world2ReminderUntil = workspace:GetServerTimeNow() + 5
+    self:SetGuideData(data)
+end
+
+--- 使用权威存档恢复提前完成的操作，末尾提醒按配置计时推进，随后检查世界二解锁提醒。
 --- @param serverTime number 框架每秒回调时间。
 function Guide:OnUpdate(serverTime)
     if self:IsLootStep(1) then
@@ -417,6 +437,7 @@ function Guide:OnUpdate(serverTime)
             end
         end
     end
+    self:RefreshWorld2Reminder()
 end
 
 local Player = FX.Class("SPlayerObjectClass", "FSPlayerObjectClass")
