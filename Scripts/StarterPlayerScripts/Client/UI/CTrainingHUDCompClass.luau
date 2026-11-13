@@ -5,6 +5,7 @@ local TranslationTexts = Text.Define("TrainingHUD", {
     Strength = "{rate}x Strength",
 })
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
+local InstancePath = FXLoader:RequireShared("Scripts/Game/Shared/InstancePath")
 local Component = FX.Class("CTrainingHUDCompClass", "FCPlayerCompClass")
 
 --- 提供训练基地悬浮显示组件的协作名称。
@@ -13,26 +14,27 @@ function Component:GetCompName()
     return "CTrainingHUDComp"
 end
 
---- 克隆共享模板到 PlayerGui，避免随地图模型覆盖；独立预览仅在本客户端隐藏。
+--- 按完整配置路径为三个世界克隆 HUD；旧编辑态预览仅在本客户端隐藏，运行时不依赖预览节点。
+--- @return nil
 function Component:OnReady()
     self._localization = self:GetPlayerObject():RequireComponent("FCCommonUIComp").Localization
     self._huds = {}
     self._previews = {}
     local template = FXLoader:Shared("Nodes/TrainingHUD")
     local playerGui = FXLoader:Here(self:GetPlayerNode(), "PlayerGui", math.huge)
-    local previews = FXLoader:Workspace("Decorations/TrainingHUDs")
+    local previews = FXLoader:Find(workspace, "Decorations/TrainingHUDs")
+    if previews then
+        for previewIndex, preview in ipairs(previews:GetDescendants()) do
+            if preview:IsA("BillboardGui") and preview:GetAttribute("TrainingHUDPreview") then
+                self._previews[preview] = preview.Enabled
+                preview.Enabled = false
+            end
+        end
+    end
     for index, config in ipairs(_G.GameConfig.TrainingFieldData) do
-        local worldName, fieldName = GameUtility.ParseTrainingFieldNode(config.Node)
-        assert(worldName and fieldName, "Invalid training field Node: " .. config.Node)
-        local field = FXLoader:Workspace("BlockMeshs/" .. worldName .. "/TrainingCenter/" .. fieldName)
+        local field = InstancePath.Wait(config.Node)
         local platform = field:FindFirstChild("彩色训练台", true)
         assert(platform and platform:IsA("BasePart"), "Missing training platform: " .. field:GetFullName())
-        local previewAnchor = FXLoader:Find(previews, worldName .. "_" .. fieldName)
-        local preview = previewAnchor and FXLoader:Find(previewAnchor, "TrainingHUD")
-        if preview and preview:GetAttribute("TrainingHUDPreview") then
-            self._previews[preview] = preview.Enabled
-            preview.Enabled = false
-        end
         local bounds, size = field:GetBoundingBox()
         local hud = template:Clone()
         hud.Name = "TrainingHUDClient"

@@ -98,6 +98,76 @@ return {
             DevGoodId = nil,
             TrainingRate = 14,
             Node = [[game.Workspace.BlockMeshs.World1Root.TrainingCenter.Training5]]
+        },
+        [6] = {
+            Index = 6,
+            NeedRebirhLevel = 15,
+            DevGoodId = nil,
+            TrainingRate = 20,
+            Node = [[game.Workspace.BlockMeshs.World2Root.世界2.TrainingCenter.Training1]]
+        },
+        [7] = {
+            Index = 7,
+            NeedRebirhLevel = 18,
+            DevGoodId = nil,
+            TrainingRate = 27,
+            Node = [[game.Workspace.BlockMeshs.World2Root.世界2.TrainingCenter.Training2]]
+        },
+        [8] = {
+            Index = 8,
+            NeedRebirhLevel = 21,
+            DevGoodId = nil,
+            TrainingRate = 35,
+            Node = [[game.Workspace.BlockMeshs.World2Root.世界2.TrainingCenter.Training3]]
+        },
+        [9] = {
+            Index = 9,
+            NeedRebirhLevel = 24,
+            DevGoodId = nil,
+            TrainingRate = 44,
+            Node = [[game.Workspace.BlockMeshs.World2Root.世界2.TrainingCenter.Training4]]
+        },
+        [10] = {
+            Index = 10,
+            NeedRebirhLevel = 27,
+            DevGoodId = nil,
+            TrainingRate = 54,
+            Node = [[game.Workspace.BlockMeshs.World2Root.世界2.TrainingCenter.Training5]]
+        },
+        [11] = {
+            Index = 11,
+            NeedRebirhLevel = 30,
+            DevGoodId = nil,
+            TrainingRate = 65,
+            Node = [[game.Workspace.BlockMeshs.World3Root.世界3.TrainingCenter.Training1]]
+        },
+        [12] = {
+            Index = 12,
+            NeedRebirhLevel = 33,
+            DevGoodId = nil,
+            TrainingRate = 76,
+            Node = [[game.Workspace.BlockMeshs.World3Root.世界3.TrainingCenter.Training2]]
+        },
+        [13] = {
+            Index = 13,
+            NeedRebirhLevel = 36,
+            DevGoodId = nil,
+            TrainingRate = 89,
+            Node = [[game.Workspace.BlockMeshs.World3Root.世界3.TrainingCenter.Training3]]
+        },
+        [14] = {
+            Index = 14,
+            NeedRebirhLevel = 39,
+            DevGoodId = nil,
+            TrainingRate = 103,
+            Node = [[game.Workspace.BlockMeshs.World3Root.世界3.TrainingCenter.Training4]]
+        },
+        [15] = {
+            Index = 15,
+            NeedRebirhLevel = 42,
+            DevGoodId = nil,
+            TrainingRate = 117,
+            Node = [[game.Workspace.BlockMeshs.World3Root.世界3.TrainingCenter.Training5]]
         }
     },
     ToolConfig = {

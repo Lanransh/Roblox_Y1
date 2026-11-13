@@ -13,6 +13,7 @@ local TweenService = game:GetService("TweenService")
 local RockLevel = FXLoader:RequireShared("Scripts/Game/Shared/RockLevel")
 local Collectible = FXLoader:RequireShared("Scripts/Game/Shared/RockCollectible")
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
+local InstancePath = FXLoader:RequireShared("Scripts/Game/Shared/InstancePath")
 local GameEnum = FXLoader:RequireShared("Scripts/Game/Shared/GameEnum")
 local Rebirth = FXLoader:RequireShared("Scripts/Game/Shared/Rebirth")
 local Fields = _G.PlayerDataConfig
@@ -841,7 +842,7 @@ function Component:GetTrainingAnimationSpeed()
     return 1
 end
 
---- 对已解锁场地巨石播放火花、碎屑、声音及短暂缩放，不改血量或关卡命中记录。
+--- 按完整配置路径定位各世界已解锁场地，播放巨石特效，不改血量或关卡命中记录。
 --- @param character Model 开始本次挥镐的角色，切换角色后不播放旧动作的特效。
 function Component:PlayTrainingHitEffect(character)
     if character ~= self:GetPlayerCharacter() then
@@ -853,8 +854,7 @@ function Component:PlayTrainingHitEffect(character)
     if not config or not root or not humanoid or humanoid.Health <= 0 then
         return
     end
-    local worldName, fieldName = GameUtility.ParseTrainingFieldNode(config.Node)
-    local field = FXLoader:Find(workspace, "BlockMeshs/" .. worldName .. "/TrainingCenter/" .. fieldName)
+    local field = InstancePath.Find(config.Node)
     local core = field and field:FindFirstChild("巨岩暗色核心", true)
     if not core or not core:IsA("BasePart") then
         return

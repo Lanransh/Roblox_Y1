@@ -49,12 +49,15 @@ function Component:IsSessionActive()
 end
 
 --- 登录完成后明确启动，不依赖组件遍历顺序；测试账号仍正常记账但不发送。
-function Component:StartSession()
+--- @param isFirstSession boolean 发放初始武器前确认的首次玩家标记。
+function Component:StartSession(isFirstSession)
     if self._startedAt then
         return
     end
     self._startedAt = os.clock()
     self._accountedAt = self._startedAt
+    self._isFirstSession = isFirstSession
+    self._firstSessionProgressMinute = 0
     self._node = self:GetPlayerNode()
     self._analyticsSessionId = FX.GenObjectID()
     self._enabled = Config.AnalyticsEnabled and not FX.IsDeveloper(self:GetPlayerId())
@@ -93,6 +96,7 @@ function Component:OnUpdate(serverTime)
     if not self:IsSessionActive() then
         return
     end
+    self:RecordFirstSessionProgress()
     if os.clock() >= self._retryAt then
         self._retryAt = os.clock() + 30
         self:RecordGuide(self:GetTable(Fields.Guide))
@@ -102,13 +106,38 @@ function Component:OnUpdate(serverTime)
     self:FlushPurchases()
 end
 
---- 在业务组件清理前结束；重复登出不重复累计在线时间。
+--- 首次游玩每分钟采样当前重生次数；卡顿跳过的分钟不以之后的进度倒填，零次重生也上报。
+function Component:RecordFirstSessionProgress()
+    if not self._enabled or not self._isFirstSession or not self:IsSessionActive() then
+        return
+    end
+    local minute = math.floor(math.max(0, self._accountedAt - self._startedAt) / 60)
+    if minute <= self._firstSessionProgressMinute then
+        return
+    end
+    self._firstSessionProgressMinute = minute
+    local event = {kind = "Custom", name = "FirstSessionRebirthCount", value = self:GetNumber(Fields.RebirthCount),
+        fields = {tostring(minute) .. "min", "FirstSession", VERSION}}
+    if not self:SendEvent(event) then
+        self:QueueEvent(event)
+    end
+end
+
+--- 仅首次游玩结束时上报在线秒数；重复登出不重复记账或上报，失败留待重登补报。
 function Component:EndSession()
     if not self._startedAt or self._ended then
         return
     end
     self:AccountTime()
+    self:RecordFirstSessionProgress()
     self._ended = true
+    if self._enabled and self._isFirstSession then
+        local event = {kind = "Custom", name = "FirstSessionPlaytime",
+            value = math.max(0, self._accountedAt - self._startedAt), fields = {"FirstSession", "Logout", VERSION}}
+        if not self:SendEvent(event) then
+            self:QueueEvent(event)
+        end
+    end
 end
 
 --- 引导进入下一步才表示上一动作完成；三段计时提醒只保留装备完成点。

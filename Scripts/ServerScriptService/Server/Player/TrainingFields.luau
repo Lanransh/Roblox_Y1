@@ -1,10 +1,10 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
-local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
+local InstancePath = FXLoader:RequireShared("Scripts/Game/Shared/InstancePath")
 local TrainingFields = {}
 local fields
 
---- 只解析配置中已确认的训练基地路径，不执行路径文本；缓存服务端训练台引用。
+--- 按完整配置路径缓存三个世界的训练台引用，不执行路径文本。
 --- @return table 配置及对应训练台。
 function TrainingFields.GetFields()
     if fields then
@@ -12,9 +12,7 @@ function TrainingFields.GetFields()
     end
     fields = {}
     for index, config in ipairs(_G.GameConfig.TrainingFieldData) do
-        local worldName, fieldName = GameUtility.ParseTrainingFieldNode(config.Node)
-        assert(worldName and fieldName, "Invalid training field Node: " .. config.Node)
-        local model = FXLoader:Workspace("BlockMeshs/" .. worldName .. "/TrainingCenter/" .. fieldName)
+        local model = InstancePath.Wait(config.Node)
         local platform = model:FindFirstChild("彩色训练台", true)
         assert(platform and platform:IsA("BasePart"), "Missing training platform: " .. model:GetFullName())
         fields[index] = {Config = config, Platform = platform}

@@ -524,16 +524,17 @@ function Player:MigrateData(version)
     end
 end
 
---- 未拥有初始武器时通过统一奖励组件发放；钻石由出售引导完成后赠送。
+--- 以初始武器存档判断首次游玩并交给分析组件；钻石由出售引导完成后赠送。
 --- @return nil
 function Player:OnPlayerLogin()
     local rewards = {}
-    if not self:HasStoredData(PlayerDataConfig.WeaponData) then
+    local isFirstSession = not self:HasStoredData(PlayerDataConfig.WeaponData)
+    if isFirstSession then
         table.insert(rewards, {Type = "Unlock", Kind = "Weapon", Id = 101, Count = 1})
     end
     assert(self:RequireComponent("FSRewardComp"):AddRewards(rewards), "Initial rewards failed")
     Player.Super.OnPlayerLogin(self)
-    self:RequireComponent("SAnalyticsComp"):StartSession()
+    self:RequireComponent("SAnalyticsComp"):StartSession(isFirstSession)
     self:PublishEvent("Tutorial.Login")
     self:PublishEvent("PlayerLogin")
 end
