@@ -6,7 +6,6 @@ local TranslationTexts = Text.Define("MenuRetention", {
     GiftTitle = "Don't leave yet! A gift is ready for you!",
     GiftHint = "Close the Roblox menu to claim your gift.",
     OnlineCountdown = "Your next online reward is available in {time}!",
-    Available = "Reward ready! Claim now!",
     Unknown = "Something went wrong. Please try again.",
     Diamonds = "{value} Diamonds",
     ItemReward = "{item} ×{value}",
@@ -17,6 +16,8 @@ local TranslationTexts = Text.Define("MenuRetention", {
     Ready = "Your online reward is ready to claim!",
 })
 local GuiService = game:GetService("GuiService")
+local TweenService = game:GetService("TweenService")
+local UIGuideArrow = FXLoader:RequireFromParent(script, "UIGuideArrow")
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local Aura = FXLoader:RequireShared("Scripts/Game/Shared/Aura")
 local CurrencyShop = FXLoader:RequireShared("Scripts/Game/Shared/CurrencyShop")
@@ -36,12 +37,12 @@ local function CreateGiftText(parent, name, position, size, maxTextSize)
     text.Name = name
     text.BackgroundTransparency = 1
     text.Position, text.Size = position, size
-    text.Font = Enum.Font.GothamBlack
+    text.Font = Enum.Font.GothamBold
     text.TextColor3 = Color3.new(1, 1, 1)
     text.TextXAlignment = Enum.TextXAlignment.Center
     text.TextYAlignment = Enum.TextYAlignment.Center
     text.TextStrokeColor3 = Color3.fromRGB(20, 12, 36)
-    text.TextStrokeTransparency = 0.2
+    text.TextStrokeTransparency = 0.45
     text.TextScaled, text.TextWrapped = true, true
     text.AutoLocalize = false
     text.Text = ""
@@ -52,78 +53,93 @@ local function CreateGiftText(parent, name, position, size, maxTextSize)
     return text
 end
 
---- 创建礼包和两侧提示；标题沿面板中轴居中，以金色渐变粗体突出奖励，菜单关闭后可领取。
+--- 用四条透明渐变形成受伤式红色边缘，中心保持通透且不拦截输入。
+function Component:CreateExitWarning()
+    self._exitWarning = Instance.new("Frame")
+    self._exitWarning.Name = "ExitWarning"
+    self._exitWarning.Size = UDim2.fromScale(1, 1)
+    self._exitWarning.BackgroundTransparency = 1
+    self._exitWarning.Visible = false
+    self._exitWarning.ZIndex = 0
+    self._exitWarning.Parent = self._rootNode
+    self._warningTweens = {}
+    for index, edge in ipairs({
+        {name = "Left", position = Vector2.zero, size = Vector2.new(0.12, 1), rotation = 0},
+        {name = "Right", position = Vector2.new(0.88, 0), size = Vector2.new(0.12, 1), rotation = 180},
+        {name = "Top", position = Vector2.zero, size = Vector2.new(1, 0.16), rotation = 90},
+        {name = "Bottom", position = Vector2.new(0, 0.84), size = Vector2.new(1, 0.16), rotation = -90},
+    }) do
+        local frame = Instance.new("Frame")
+        frame.Name = edge.name
+        frame.Position = UDim2.fromScale(edge.position.X, edge.position.Y)
+        frame.Size = UDim2.fromScale(edge.size.X, edge.size.Y)
+        frame.BorderSizePixel = 0
+        frame.BackgroundColor3 = Color3.fromRGB(225, 25, 42)
+        frame.BackgroundTransparency = 0.25
+        frame.Parent = self._exitWarning
+        local gradient = Instance.new("UIGradient", frame)
+        gradient.Rotation = edge.rotation
+        gradient.Transparency = NumberSequence.new({
+            NumberSequenceKeypoint.new(0, 0),
+            NumberSequenceKeypoint.new(0.35, 0.5),
+            NumberSequenceKeypoint.new(1, 1),
+        })
+        self._warningTweens[index] = TweenService:Create(frame,
+            TweenInfo.new(0.85, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true),
+            {BackgroundTransparency = 0.65})
+    end
+end
+
+--- 侧边文字使用自身背景避免子节点遮挡字面，复用通用红箭头引导领取。
 function Component:CreateGiftPanel()
     local rewardButton = FXLoader:PlayerGui("MainUI/LeftCenter/RewardBtn")
     self._sideTexts = {}
+    self._sideArrows = {}
     for index, side in ipairs({"Left", "Right"}) do
         local text = CreateGiftText(self._rootNode, side .. "RetentionHint",
-            UDim2.fromScale(index == 1 and 0.015 or 0.875, 0.38), UDim2.fromScale(0.11, 0.24))
-        text.Font = Enum.Font.GothamBlack
-        text.TextStrokeColor3 = Color3.fromRGB(20, 12, 36)
-        text.TextStrokeTransparency = 0.2
+            UDim2.fromScale(index == 1 and 0.025 or 0.805, 0.42), UDim2.fromScale(0.17, 0.13), 48)
+        text.TextColor3 = Color3.new(1, 1, 1)
+        text.TextStrokeColor3 = Color3.new(0, 0, 0)
+        text.TextStrokeTransparency = 0
         text.Visible = false
-        local background = Instance.new("Frame", text)
-        background.Name = "Background"
-        background.Size = UDim2.fromScale(1, 1)
-        background.BackgroundColor3 = Color3.fromRGB(28, 22, 48)
-        background.BackgroundTransparency = 0.12
-        background.BorderSizePixel = 0
-        background.ZIndex = text.ZIndex - 1
-        Instance.new("UICorner", background).CornerRadius = UDim.new(0.08, 0)
-        local border = Instance.new("UIStroke", background)
-        border.Color = Color3.fromRGB(193, 126, 255)
+        text.BackgroundColor3 = Color3.fromRGB(20, 32, 55)
+        text.BackgroundTransparency = 0.08
+        text.BorderSizePixel = 0
+        Instance.new("UICorner", text).CornerRadius = UDim.new(0.08, 0)
+        local border = Instance.new("UIStroke", text)
+        border.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+        border.Color = Color3.fromRGB(255, 198, 76)
         border.Transparency = 0.25
         border.Thickness = 2
-        local gradient = Instance.new("UIGradient", text)
-        gradient.Rotation = 90
-        gradient.Color = ColorSequence.new({
-            ColorSequenceKeypoint.new(0, Color3.fromRGB(100, 240, 255)),
-            ColorSequenceKeypoint.new(0.5, Color3.fromRGB(193, 126, 255)),
-            ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 137, 210)),
-        })
         local padding = Instance.new("UIPadding", text)
         padding.PaddingLeft, padding.PaddingRight = UDim.new(0.06, 0), UDim.new(0.06, 0)
         padding.PaddingTop, padding.PaddingBottom = UDim.new(0.06, 0), UDim.new(0.06, 0)
-        -- 使用图形构造粗箭头，避免字体缺失箭头字符时显示方框。
-        local arrow = Instance.new("Frame", text)
-        arrow.Name = "InwardArrow"
-        arrow.BackgroundTransparency = 1
-        arrow.Position = UDim2.fromScale(0.05, 1.04)
-        arrow.Size = UDim2.fromScale(0.9, 0.75)
-        Instance.new("UIAspectRatioConstraint", arrow).AspectRatio = 1
-        arrow.Rotation = index == 1 and 0 or 180
-        for partIndex, segment in ipairs({
-            {position = Vector2.new(0.42, 0.5), size = Vector2.new(0.7, 0.16), rotation = 0},
-            {position = Vector2.new(0.68, 0.365), size = Vector2.new(0.45, 0.16), rotation = 45},
-            {position = Vector2.new(0.68, 0.635), size = Vector2.new(0.45, 0.16), rotation = -45},
-        }) do
-            local part = Instance.new("Frame", arrow)
-            part.Name = "Segment" .. partIndex
-            part.AnchorPoint = Vector2.new(0.5, 0.5)
-            part.Position = UDim2.fromScale(segment.position.X, segment.position.Y)
-            part.Size = UDim2.fromScale(segment.size.X, segment.size.Y)
-            part.Rotation = segment.rotation
-            part.BorderSizePixel = 0
-            part.BackgroundColor3 = Color3.fromRGB(193, 126, 255)
-        end
+        local arrowTarget = Instance.new("Frame", text)
+        arrowTarget.Name = "ArrowTarget"
+        arrowTarget.BackgroundTransparency = 1
+        arrowTarget.Position = UDim2.fromScale(index == 1 and 1 or -0.25, 1.1)
+        arrowTarget.Size = UDim2.fromScale(0.25, 0.8)
+        self._sideArrows[index] = {controller = UIGuideArrow.New(self._rootNode.Parent), target = arrowTarget, side = side}
         self._sideTexts[index] = text
     end
     local panel = Instance.new("Frame")
     panel.Name = "GiftPanel"
     panel.AnchorPoint = Vector2.new(0.5, 0.5)
     panel.Position = UDim2.fromScale(0.5, 0.5)
-    panel.Size = UDim2.fromScale(0.38, 0.58)
-    panel.BackgroundColor3 = Color3.fromRGB(30, 24, 55)
+    panel.Size = UDim2.fromScale(0.36, 0.55)
+    panel.BackgroundColor3 = Color3.new(1, 1, 1)
     panel.BorderSizePixel = 0
     panel.Visible = false
     panel.Parent = self._rootNode
-    Instance.new("UICorner", panel).CornerRadius = UDim.new(0.06, 0)
+    Instance.new("UICorner", panel).CornerRadius = UDim.new(0, 24)
+    local panelGradient = Instance.new("UIGradient", panel)
+    panelGradient.Rotation = 90
+    panelGradient.Color = ColorSequence.new(Color3.fromRGB(42, 74, 116), Color3.fromRGB(15, 25, 46))
     local stroke = Instance.new("UIStroke", panel)
-    stroke.Color, stroke.Thickness = Color3.fromRGB(255, 204, 77), 3
+    stroke.Color, stroke.Thickness = Color3.fromRGB(255, 204, 77), 2
     self._giftPanel = panel
     self._commonUI:RegisterTrainingClickModal(panel)
-    self._giftTitle = CreateGiftText(panel, "Title", UDim2.fromScale(0.12, 0.04), UDim2.fromScale(0.76, 0.18), 40)
+    self._giftTitle = CreateGiftText(panel, "Title", UDim2.fromScale(0.08, 0.06), UDim2.fromScale(0.84, 0.16), 34)
     local titleGradient = Instance.new("UIGradient", self._giftTitle)
     titleGradient.Rotation = 90
     titleGradient.Color = ColorSequence.new({
@@ -134,14 +150,14 @@ function Component:CreateGiftPanel()
     local image = Instance.new("ImageLabel")
     image.Name = "Gift"
     image.BackgroundTransparency = 1
-    image.Position, image.Size = UDim2.fromScale(0.25, 0.23), UDim2.fromScale(0.5, 0.38)
+    image.Position, image.Size = UDim2.fromScale(0.28, 0.25), UDim2.fromScale(0.44, 0.34)
     local reward = self._retention.MenuRetentionReward
     image.Image = reward.Type == "Aura"
         and "rbxassetid://" .. Aura.GetConfig(reward.Id).Img
         or FXLoader:Here(rewardButton, "IconImg").Image
     image.ScaleType = Enum.ScaleType.Fit
     image.Parent = panel
-    self._giftReward = CreateGiftText(panel, "Reward", UDim2.fromScale(0.05, 0.61), UDim2.fromScale(0.9, 0.12), 34)
+    self._giftReward = CreateGiftText(panel, "Reward", UDim2.fromScale(0.08, 0.61), UDim2.fromScale(0.84, 0.1), 30)
     local rewardGradient = Instance.new("UIGradient", self._giftReward)
     rewardGradient.Rotation = 90
     rewardGradient.Color = ColorSequence.new({
@@ -149,14 +165,23 @@ function Component:CreateGiftPanel()
         ColorSequenceKeypoint.new(0.5, Color3.fromRGB(255, 235, 163)),
         ColorSequenceKeypoint.new(1, Color3.fromRGB(245, 200, 100)),
     })
-    self._giftHint = CreateGiftText(panel, "MenuHint", UDim2.fromScale(0.05, 0.9), UDim2.fromScale(0.9, 0.08))
+    self._giftHint = CreateGiftText(panel, "MenuHint", UDim2.fromScale(0.08, 0.9), UDim2.fromScale(0.84, 0.07), 20)
+    self._giftHint.TextColor3 = Color3.fromRGB(202, 219, 240)
     local claim = Instance.new("TextButton")
     claim.Name = "Claim"
-    claim.Position, claim.Size = UDim2.fromScale(0.18, 0.76), UDim2.fromScale(0.64, 0.13)
-    claim.BackgroundColor3 = Color3.fromRGB(53, 177, 72)
+    claim.Position, claim.Size = UDim2.fromScale(0.12, 0.75), UDim2.fromScale(0.76, 0.13)
+    claim.BackgroundColor3 = Color3.new(1, 1, 1)
+    claim.BorderSizePixel = 0
     claim.Text = ""
     claim.Parent = panel
-    Instance.new("UICorner", claim)
+    Instance.new("UICorner", claim).CornerRadius = UDim.new(0, 12)
+    local claimGradient = Instance.new("UIGradient", claim)
+    claimGradient.Rotation = 90
+    claimGradient.Color = ColorSequence.new(Color3.fromRGB(116, 229, 74), Color3.fromRGB(36, 157, 62))
+    local claimStroke = Instance.new("UIStroke", claim)
+    claimStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    claimStroke.Color = Color3.fromRGB(16, 80, 36)
+    claimStroke.Thickness = 2
     self._giftClaimText = CreateGiftText(claim, "Label", UDim2.fromScale(0.05, 0.05), UDim2.fromScale(0.9, 0.9), 36)
     self._giftClaim = claim
     self:TrackConnection(claim.Activated:Connect(function()
@@ -166,6 +191,7 @@ function Component:CreateGiftPanel()
     close.Name = "Close"
     close.Position, close.Size = UDim2.fromScale(0.89, 0.02), UDim2.fromScale(0.09, 0.1)
     close.BackgroundTransparency = 1
+    close.AutoLocalize = false
     close.Text, close.TextScaled = "×", true
     close.TextColor3 = Color3.new(1, 1, 1)
     close.Parent = panel
@@ -230,10 +256,28 @@ function Component:RefreshGift()
     if not available then
         self._offerOpen = false
     end
-    local sideText = self:FormatText(TranslationTexts.Available)
+    local sideText = self:FormatText(TranslationTexts.GiftTitle)
+    local showReminder = available and GuiService.MenuIsOpen
     for index, text in ipairs(self._sideTexts) do
-        text.Visible = available and GuiService.MenuIsOpen
+        text.Visible = showReminder
         text.Text = sideText
+        local arrow = self._sideArrows[index]
+        if showReminder and not self._reminderVisible then
+            arrow.controller:Show(arrow.target, arrow.side)
+        elseif not showReminder and self._reminderVisible then
+            arrow.controller:Hide()
+        end
+    end
+    self._reminderVisible = showReminder
+    if self._exitWarning.Visible ~= GuiService.MenuIsOpen then
+        self._exitWarning.Visible = GuiService.MenuIsOpen
+        for index, tween in ipairs(self._warningTweens) do
+            if GuiService.MenuIsOpen then
+                tween:Play()
+            else
+                tween:Cancel()
+            end
+        end
     end
     self._giftPanel.Visible = available and self._offerOpen == true
     self._giftTitle.Text = Text.Tr(TranslationTexts.GiftTitle)
@@ -262,7 +306,7 @@ function Component:GetCompName()
     return "CMenuRetentionUIComp"
 end
 
---- 创建贴边黑底文字，避开左上角系统按钮区域。
+--- 创建贴边黑底白字提示，使用黑色描边保持系统菜单压暗后的对比度。
 --- @param name string 黑边节点名称。
 --- @param bottom boolean 是否贴住屏幕底部。
 --- @return TextLabel 黑边内的文字节点。
@@ -282,21 +326,16 @@ function Component:CreateBanner(name, bottom)
     text.Size = UDim2.fromScale(0.74, 0.76)
     text.Font = Enum.Font.GothamBold
     text.TextColor3 = Color3.new(1, 1, 1)
+    text.TextStrokeColor3 = Color3.new(0, 0, 0)
+    text.TextStrokeTransparency = 0
     text.TextScaled = true
     text.TextWrapped = true
     text.AutoLocalize = false
     text.Text = ""
     text.Parent = banner
     local constraint = Instance.new("UITextSizeConstraint")
-    constraint.MaxTextSize = 38
+    constraint.MaxTextSize = 48
     constraint.Parent = text
-    local gradient = Instance.new("UIGradient")
-    gradient.Color = ColorSequence.new({
-        ColorSequenceKeypoint.new(0, Color3.fromRGB(51, 224, 240)),
-        ColorSequenceKeypoint.new(0.5, Color3.fromRGB(158, 83, 255)),
-        ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 80, 155)),
-    })
-    gradient.Parent = text
     if not bottom then
         local icon = Instance.new("ImageLabel")
         icon.Name = "StrengthIcon"
@@ -326,7 +365,9 @@ function Component:OnReady()
     self._rootNode.ResetOnSpawn = false
     self._rootNode.ScreenInsets = Enum.ScreenInsets.None
     self._rootNode.DisplayOrder = 100
+    self._rootNode.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     self._rootNode.Enabled = true
+    self:CreateExitWarning()
     self._topText = self:CreateBanner("TopBar", false)
     self._bottomText = self:CreateBanner("BottomBar", true)
     self._rootNode.Parent = FXLoader:Player("PlayerGui")
@@ -407,7 +448,7 @@ function Component:OnUpdate(serverTime)
     end
 end
 
---- 只销毁本组件拥有的黑边、礼包和两侧提示。
+--- 释放红色边缘动画、通用箭头与本组件拥有的礼包节点。
 function Component:Dtor()
     if self._openTask then
         task.cancel(self._openTask)
@@ -416,6 +457,12 @@ function Component:Dtor()
     if self._requestTask then
         task.cancel(self._requestTask)
         self._requestTask = nil
+    end
+    for index, tween in ipairs(self._warningTweens or {}) do
+        tween:Cancel()
+    end
+    for index, arrow in ipairs(self._sideArrows or {}) do
+        arrow.controller:Destroy()
     end
     if self._rootNode then
         self._rootNode:Destroy()

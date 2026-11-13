@@ -38,6 +38,10 @@ function Component:OnReady()
         hud.StudsOffsetWorldSpace = Vector3.new(0,
             bounds.Position.Y + size.Y / 2 - platform.Position.Y + 5, 0)
         FXLoader:Here(hud, "Frame/Requirement/Count").Text = tostring(config.NeedRebirhLevel)
+        -- 挂载前填好倍率，避免等待后续世界加载时显示模板的 X1。
+        FXLoader:Here(hud, "Frame/Strength").Text = Text.Tr(TranslationTexts.Strength, {
+            rate = GameUtility.NumberToText(config.TrainingRate),
+        })
         hud.Parent = playerGui
         self._huds[index] = {Node = hud, Config = config}
     end

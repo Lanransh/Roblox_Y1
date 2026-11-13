@@ -29,6 +29,8 @@ local TranslationTexts = Text.Define("Main", {
     CoinReward = "{value} Coins",
     RebirthReady = "Ready to rebirth!",
     BetterTrainingAvailable = "Move to a better training area for a higher strength multiplier!",
+    -- 你已解锁新世界的更强训练基地！ 跟随箭头前往新的世界！
+    NewWorldTrainingAvailable = "You've unlocked a stronger training base in a new world! Follow the arrows to the new world!",
     NewPickaxeAvailable = "A better pickaxe is available to buy!",
     NewAuraAvailable = "A better aura is available to buy!",
     World2Unlocked = "A new world is unlocked! Head to the golden portal and travel to World 2!",
@@ -181,7 +183,7 @@ function Component:OnReady()
     end, self)
     self:WatchDataChanged(Fields.Money, self.RefreshCoins, self)
     for index, field in ipairs({Fields.Money, Fields.WeaponData, Fields.AuraData,
-        Fields.RockTrainingValue, Fields.RebirthCount, Fields.TrainingFieldIndex}) do
+        Fields.RockTrainingValue, Fields.RebirthCount, Fields.TrainingFieldIndex, Fields.WorldIndex}) do
         self:WatchDataChanged(field, self.RefreshPurchaseReminder, self)
     end
     self:WatchDataChanged(Fields.RebirthCount, self.RefreshRebirthCount, self)
@@ -658,26 +660,48 @@ function Component:CreatePurchaseReminder()
     self._purchaseTextEffect = AnimatedText.Attach(label)
 end
 
---- 世界解锁提醒限时优先显示，随后按重生、训练台、奖励卡片、镐子、光环的顺序提醒。
+--- 跨世界训练指引持续到达目标基地；其他提醒沿用世界解锁、重生、当地训练台、奖励及装备的优先级。
 --- @return table? 最高优先级的文案定义，没有符合条件的提醒时为 nil。
 --- @return table? 训练台提醒对应的配置，供世界箭头复用同一目标判定。
+--- @return string? 购买提醒对应的商店类型，供通用箭头复用同一目标判定。
+--- @return table? 跨世界训练指引途经的当前世界配置，箭头指向其中的传送门。
 function Component:GetPriorityReminder()
+    local worldIndex = self:GetNumber(Fields.WorldIndex)
+    local rebirthCount = self:GetNumber(Fields.RebirthCount)
+    local currentField = _G.GameConfig.TrainingFieldData[self:GetNumber(Fields.TrainingFieldIndex)]
+    local bestField = GameUtility.GetBestTrainingField(worldIndex, rebirthCount)
+    if self._trainingDestinationWorld == worldIndex then
+        if bestField and currentField ~= bestField then
+            return TranslationTexts.BetterTrainingAvailable, bestField
+        end
+        self._trainingDestinationWorld = nil
+    elseif self._trainingDestinationWorld and self._trainingDestinationWorld ~= worldIndex + 1 then
+        -- 玩家主动去了其他世界时结束旧路线，避免继续显示先前世界的目标。
+        self._trainingDestinationWorld = nil
+    end
+    local nextWorld = _G.GameEnum.WorldTransferConfig[worldIndex + 1]
+    if nextWorld and self:GetNumber(Fields.MaxTrainingLevel) >= nextWorld.NeedTrainingLevel then
+        local nextField = GameUtility.GetBestTrainingField(worldIndex + 1, rebirthCount)
+        if bestField and nextField and nextField.TrainingRate > bestField.TrainingRate
+            and (currentField == bestField or self._trainingDestinationWorld == worldIndex + 1) then
+            -- 离开基地去传送门期间保留路线；抵达新世界后继续指向当地最强的已解锁基地。
+            self._trainingDestinationWorld = worldIndex + 1
+            return TranslationTexts.NewWorldTrainingAvailable, nil, nil, _G.GameEnum.WorldTransferConfig[worldIndex]
+        end
+    end
+    self._trainingDestinationWorld = nil
     local guide = self:GetTable(Fields.Guide)
     if guide.world2ReminderUntil and workspace:GetServerTimeNow() < guide.world2ReminderUntil then
         return TranslationTexts.World2Unlocked
     end
-    local rebirthCount = self:GetNumber(Fields.RebirthCount)
     local requiredLevel = Rebirth.GetRequiredLevel(rebirthCount)
     local level = RockLevel.GetProgress(self:GetNumber(Fields.RockTrainingValue), requiredLevel)
     if rebirthCount < Rebirth.MaxCount and level >= requiredLevel then
         return TranslationTexts.RebirthReady
     end
-    local currentField = _G.GameConfig.TrainingFieldData[self:GetNumber(Fields.TrainingFieldIndex)]
     if currentField then
-        for index, config in ipairs(_G.GameConfig.TrainingFieldData) do
-            if rebirthCount >= config.NeedRebirhLevel and config.TrainingRate > currentField.TrainingRate then
-                return TranslationTexts.BetterTrainingAvailable, config
-            end
+        if bestField and bestField.TrainingRate > currentField.TrainingRate then
+            return TranslationTexts.BetterTrainingAvailable, bestField
         end
     end
     local welfare = self:GetComponent("CWelfareUIComp")
@@ -687,9 +711,9 @@ function Component:GetPriorityReminder()
     local coins = self:GetNumber(Fields.Money)
     local shops = {
         {Configs = _G.GameConfig.ToolConfig, Limit = _G.GameEnum.WeaponLimit,
-            Field = Fields.WeaponData, IdKey = "ToolId", Text = TranslationTexts.NewPickaxeAvailable},
+            Field = Fields.WeaponData, IdKey = "ToolId", Text = TranslationTexts.NewPickaxeAvailable, Type = "Weapon"},
         {Configs = _G.GameConfig.AuraConfig, Limit = _G.GameEnum.AuraLimit,
-            Field = Fields.AuraData, IdKey = "AuraId", Text = TranslationTexts.NewAuraAvailable},
+            Field = Fields.AuraData, IdKey = "AuraId", Text = TranslationTexts.NewAuraAvailable, Type = "Aura"},
     }
     for shopIndex, shop in ipairs(shops) do
         local owned = self:GetTable(shop.Field).owned
@@ -705,7 +729,7 @@ function Component:GetPriorityReminder()
             end
             if owned[tostring(config[shop.IdKey])] ~= true and coins >= config.Price
                 and config.TrainingRate > ownedRate then
-                return shop.Text
+                return shop.Text, nil, shop.Type
             end
         end
     end

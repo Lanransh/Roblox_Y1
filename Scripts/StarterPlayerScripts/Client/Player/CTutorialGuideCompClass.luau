@@ -54,7 +54,7 @@ function Guide:GetGuideStorage()
     return Fields.Guide
 end
 
---- 创建等比缩放的上方提示层，等待初始训练台复制完成后缓存目标；角色重生不销毁。
+--- 创建等比缩放的上方提示层；世界目标按当前世界动态查询，角色重生不销毁提示层。
 function Guide:OnReady()
     self._localization = self:RequireComponent("FCCommonUIComp").Localization
     self._screen = Instance.new("ScreenGui")
@@ -116,9 +116,6 @@ function Guide:OnReady()
     self._homeButton = FXLoader:PlayerGui("MainUI/TopCenter/HomeButton")
     self._rewardButton = FXLoader:PlayerGui("MainUI/LeftCenter/RewardBtn")
     self._purchaseScreen = FXLoader:PlayerGui("ShopPurchaseUI")
-    local worldName, fieldName = GameUtility.ParseTrainingFieldNode(_G.GameConfig.TrainingFieldData[1].Node)
-    local trainingField = FXLoader:Workspace("BlockMeshs/" .. worldName .. "/TrainingCenter/" .. fieldName)
-    self._trainingPlatform = FXLoader:Here(trainingField, "紫色巨岩训练基地/彩色训练台", math.huge)
     self:TrackConnection(self._localization.Changed:Connect(function()
         self:RefreshText()
     end))
@@ -131,6 +128,7 @@ function Guide:OnReady()
         elapsed += dt
         if elapsed >= 0.25 then
             elapsed = 0
+            self:RefreshUpgradeHint()
             self:RefreshTarget()
         end
     end))
@@ -143,7 +141,7 @@ function Guide:RefreshText()
     self._label.Text = target and Text.Tr(GuideTexts[target.textId]) or ""
 end
 
---- 主流程完成后只补充尚未拥有首件升级装备的购买提示。
+--- 主流程完成后持续接入主界面当前优先的装备升级提醒。
 --- @param guideData table 服务端同步的引导进度。
 function Guide:OnGuideDataChanged(guideData)
     local first = guideData.guideMap and guideData.guideMap.FirstLootGuide
@@ -156,39 +154,20 @@ function Guide:OnGuideDataChanged(guideData)
     end
 end
 
---- 镐子和光环各拥有一件升级装备后停止提醒；尚未购买且同时买得起时优先镐子。
+--- 与主界面共用购买资格、开放上限和提醒优先级，避免箭头与文案指向不同目标。
 --- @return string? 可购买升级的商店类型。
 function Guide:GetAffordableUpgradeType()
-    local coins = self:GetNumber(Fields.Money)
-    local shops = {
-        {type = "Weapon", configs = _G.GameConfig.ToolConfig, field = Fields.WeaponData, id = "ToolId"},
-        {type = "Aura", configs = _G.GameConfig.AuraConfig, field = Fields.AuraData, id = "AuraId"},
-    }
-    for index, shop in ipairs(shops) do
-        local owned = self:GetTable(shop.field).owned
-        local strongest = 1
-        for configIndex, config in ipairs(shop.configs) do
-            if owned[tostring(config[shop.id])] == true then
-                strongest = math.max(strongest, config.TrainingRate)
-            end
-        end
-        for configIndex, config in ipairs(shop.configs) do
-            if strongest == 1 and config.TrainingRate > strongest and config.Price <= coins
-                and owned[tostring(config[shop.id])] ~= true then
-                return shop.type
-            end
-        end
-    end
-    return nil
+    local reminder, trainingConfig, shopType = self:RequireComponent("CMainUIComp"):GetPriorityReminder()
+    return shopType
 end
 
---- 金币变化、购买与装备同步后立即切换或隐藏主界面的购买提示。
+--- 购买目标变化时切换或隐藏提示；新旧目标均为空时保留训练基地箭头。
 function Guide:RefreshUpgradeHint()
     if not self._mainGuideFinished then
         return
     end
     local shopType = self:GetAffordableUpgradeType()
-    if self._activeTarget and self._activeTarget.type == shopType then
+    if (self._activeTarget and self._activeTarget.type) == shopType then
         return
     end
     self:OnExitGuide(self._activeTarget)
@@ -286,19 +265,38 @@ function Guide:GetUIGuideButton(target)
     return nil
 end
 
---- 主引导结束后的训练台提醒复用彩色世界箭头；其他步骤沿用原目标与 UI 箭头。
+--- 按同步世界选择商店、回家及训练目标，跨世界训练先指向当地传送门。
 function Guide:RefreshTarget()
     local target = self._activeTarget
+    local worldIndex = self:GetNumber(Fields.WorldIndex)
     local trainingConfig
+    local portalWorld
     if self._mainGuideFinished then
-        trainingConfig = select(2, self:RequireComponent("CMainUIComp"):GetPriorityReminder())
+        local reminder, field, shopType, world = self:RequireComponent("CMainUIComp"):GetPriorityReminder()
+        trainingConfig = field
+        portalWorld = world
+    end
+    if target and target.type == "Training" then
+        trainingConfig = GameUtility.GetBestTrainingField(worldIndex, self:GetNumber(Fields.RebirthCount))
     end
     local character = self:GetPlayerCharacter()
     local humanoid = character and character:FindFirstChildOfClass("Humanoid")
-    if (not target and not trainingConfig) or not humanoid or humanoid.Health <= 0 then
+    if (not target and not trainingConfig and not portalWorld) or not humanoid or humanoid.Health <= 0 then
         self._uiGuideButton = nil
         self:HideGuideArrow()
         self._uiArrow:Hide()
+        return
+    end
+    if portalWorld then
+        self._uiGuideButton = nil
+        self._uiArrow:Hide()
+        local portal = FXLoader:Find(workspace, portalWorld.PortalPath)
+        if portal then
+            local center, size = portal:GetBoundingBox()
+            self:ShowGuideArrowToPosition(center.Position - Vector3.new(0, size.Y / 2 - 3, 0))
+        else
+            self:HideGuideArrow()
+        end
         return
     end
     if trainingConfig then
@@ -337,13 +335,15 @@ function Guide:RefreshTarget()
         local coordinates = target.position
         position = coordinates and Vector3.new(coordinates[1], coordinates[2], coordinates[3])
     elseif target.type == "Base" then
-        position = _G.GameEnum.WorldTransferConfig[1].Position
-    elseif target.type == "Training" then
-        position = self._trainingPlatform.Position
+        position = _G.GameEnum.WorldTransferConfig[worldIndex].Position
     else
         local names = {Sell = "Shop", Weapon = "PurpleHut", Aura = "BlueHut"}
         local name = names[target.type]
-        local trigger = name and FXLoader:Find(workspace, "Decorations/World1Decorations/" .. name .. "/Trigger")
+        local shopPath = "Decorations/World" .. worldIndex .. "Decorations/"
+        if worldIndex > 1 then
+            shopPath ..= "World" .. worldIndex .. "Shops/"
+        end
+        local trigger = name and FXLoader:Find(workspace, shopPath .. name .. "/Trigger")
         position = trigger and trigger.Position
     end
     if position then

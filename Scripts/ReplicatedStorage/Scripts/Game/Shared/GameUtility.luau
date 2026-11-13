@@ -200,6 +200,22 @@ function GameUtility.HexColorToColor3(hexColor)
     return Color3.fromRGB(tonumber(red, 16), tonumber(green, 16), tonumber(blue, 16))
 end
 
+--- 只在当前世界内选择已解锁且倍率最高的训练基地，避免跨世界引导。
+--- @param worldIndex number 服务端同步的当前世界序号。
+--- @param rebirthCount number 当前重生次数。
+--- @return table? 当前世界最强的已解锁训练基地，没有符合条件的基地时为 nil。
+function GameUtility.GetBestTrainingField(worldIndex, rebirthCount)
+    local worldRoot = ".World" .. worldIndex .. "Root."
+    local bestField
+    for index, config in ipairs(_G.GameConfig.TrainingFieldData) do
+        if string.find(config.Node, worldRoot, 1, true) and rebirthCount >= config.NeedRebirhLevel
+            and (not bestField or config.TrainingRate > bestField.TrainingRate) then
+            bestField = config
+        end
+    end
+    return bestField
+end
+
 --- 从 TrainingFieldData.Node 解析世界块根名与训练台模型名；支持 BlockMeshs["World"] 与 BlockMeshs.World 两种写法。
 --- @param node string 配置中的完整节点路径。
 --- @return string? worldName BlockMeshs 下的世界根名称。
