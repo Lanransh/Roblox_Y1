@@ -7,6 +7,14 @@
   "applied_sha256": "484b1286debf4c4777df76bbb61e29d4c0e3f75268bdaa0c55b8b209284ab0a7",
   "index_sha256": "04a26a3d2f565f171546ffb4dec20f969beac48ead1e75666b28c66c6c1186f1",
   "glossary": {
+    "latest_continuation_check": {
+      "date": "2026-11-13",
+      "scope": "续用匹配当前CSV与索引的既有记录；本次未重新声明全表语义审查。report确认无输入冲突、未应用候选、模板错误、身份问题或缺译。",
+      "studio": "Roblox MCP Studio 0ff22fb0-7033-4e9a-b41f-1f4d4ab2aec8，岩石寻宝，placeId 107081730213446，universeId 10768714039；get_studio_state确认仅Edit。",
+      "node_checks": "inspect_instance重新核对行71/76/89/100/103/127的全部7个来源节点：Text与CSV一致；全部RichText=false、TextScaled=false、AutoLocalize=true。字号依次22/24/18/22/22/16/18；行89、100不换行，其余TextWrapped=true；行89尺寸340×28，行103尺寸484×46。路径见各行sources.location。",
+      "remaining_blocker": "38个语言单元格仍缺当前候选在实际可见界面的排版证据。ReplicatedStorage/Scripts/Framework/Client/FCLocalization.luau的New使用云端GetTranslatorForLocaleAsync，Tr/TrSource使用_cloud；本地_sourceFallback仅格式化英文。已检查工具列表无专用候选预览接口。未启动试玩、修改UI、注入翻译或上传云端；不将Edit属性或历史尺寸估计作为候选显示证据。",
+      "saved_state": "CSV相对最初基线734格变化，涉及174条记录；本次译文单元格改动0、CSV记录改动0，仅更新同一审查记录。旧辅助文件未获清理授权，保留其证据依赖。"
+    },
     "Strength": {
       "meaning": "训练获得的力量属性；区别训练XP、训练倍率和金币",
       "locales": {
