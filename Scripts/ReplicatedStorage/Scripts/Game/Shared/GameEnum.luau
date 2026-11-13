@@ -15,7 +15,7 @@ return {
     -- 关卡头顶幸运牌：按 LevelConfig 加载的区域创建，倍率由 RockLevel.GetLuck 计算。
     LevelLuckDisplay = {
         Icon = "rbxassetid://99859137989503",
-        Height = 26, -- 相对区域中心的悬空高度，单位 studs。
+        Height = 36, -- 相对区域中心的悬空高度，单位 studs。
     },
     -- 菜鸟 NPC 配置：在区域内循环巡逻；增加世界时追加对应路径组。
     NoobNpcConfig = {

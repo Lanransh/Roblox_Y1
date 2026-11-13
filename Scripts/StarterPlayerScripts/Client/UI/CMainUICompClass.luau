@@ -4,9 +4,10 @@
 --    顶部、左右两侧和底部提示各用一个 UIScale，文字、图标、按钮和间距整体缩放。
 -- 2. 主界面常驻文字运行时全部关闭 TextScaled，包括按钮名称、提示、长数字和动态文案。
 --    设计字号按原有显示效果校准，不区分电脑和手机，不再按分辨率乘字号或主动取整。
---    例如设计字号 28，倍率 0.5 时显示约为 14；固定文字只跟随分组 UIScale 缩放。
---    长数字和动态文案由 ConfigureMainTextSizing 检查设计空间，仅在放不下时缩小字号；购买提醒允许换行。
---    初始化前的 TextScaled = true 仅用于标记需注册溢出适配的节点，注册时立即关闭，之后由代码控制字号。
+--    例如设计字号 28，倍率 0.5 时显示约为 14；文字随分组 UIScale 缩放，不重复乘倍率。
+--    ConfigureMainTextSizing 为初始化时已有的全部常驻文本注册溢出适配，不再依赖 TextScaled 标记。
+--    原设计字号作为上限，放得下保持原字号，超宽或超高才缩小；文字、语言或可用尺寸变化时重新计算。
+--    允许换行的文字（如购买提醒）先按原字号换行，超出文本框后才缩小，并计入行距。
 --    临时拾取奖励的 RewardAmount 飘字仍开启 TextScaled，适应动画容器，不属于常驻分组文字。
 -- 3. 定位独立维护：顶部避让原生顶栏，横向空间不足时下移，不额外缩小；
 --    购买提醒距安全区底部 78 像素，预留物品栏和间距。
@@ -217,11 +218,11 @@ function Component:OnReady()
     self:Show()
 end
 
---- 接管初始化时标记为 TextScaled 的常驻文字，关闭该属性并注册代码溢出适配；固定文字保持设计字号。
+--- 为全部常驻文字关闭 TextScaled 并注册溢出适配，以初始化字号为上限，换行文本先换行再缩小。
 function Component:ConfigureMainTextSizing()
     local textService = game:GetService("TextService")
     for index, label in ipairs(self._rootNode:GetDescendants()) do
-        if not (label:IsA("TextLabel") or label:IsA("TextButton")) or not label.TextScaled then
+        if not (label:IsA("TextLabel") or label:IsA("TextButton")) then
             continue
         end
         local designSize = label.TextSize
@@ -242,6 +243,34 @@ function Component:ConfigureMainTextSizing()
                 return
             end
             local available = label.AbsoluteSize / scale
+            if available.X <= 0 or available.Y <= 0 then
+                return
+            end
+            if label.TextWrapped then
+                --- 按可用宽度测量换行，行距一并参与高度判断。
+                --- @param size number 待检查的设计字号。
+                --- @return boolean 换行后的文字是否能完整放入文本框。
+                local function Fits(size)
+                    local bounds = textService:GetTextSize(label.ContentText, size, label.Font,
+                        Vector2.new(available.X, 100000))
+                    return bounds.X <= available.X and bounds.Y * label.LineHeight <= available.Y
+                end
+                local size = designSize
+                if not Fits(size) then
+                    local lower, upper = 1, math.floor(designSize)
+                    while lower < upper do
+                        local middle = math.ceil((lower + upper) / 2)
+                        if Fits(middle) then
+                            lower = middle
+                        else
+                            upper = middle - 1
+                        end
+                    end
+                    size = lower
+                end
+                label.TextSize = size
+                return
+            end
             local bounds = textService:GetTextSize(label.ContentText, designSize, label.Font, Vector2.new(100000, 100000))
             label.TextSize = designSize * math.min(1, available.X / math.max(1, bounds.X),
                 available.Y / math.max(1, bounds.Y))

@@ -1676,7 +1676,7 @@ function Component:UpdateNoobVisibility(position)
     end
 end
 
---- 每帧更新受击表现，每 0.1 秒检查分块、星光密度、攀爬和菜鸟显隐；按需刷新石头。
+--- 每帧更新受击表现，每 0.1 秒检查分块等显隐；分块按整排范围判断，低档也保留左右石头。
 function Component:UpdateVisuals()
     self:UpdateFragments()
     self:UpdateTrainingHitReactions()
@@ -1698,8 +1698,16 @@ function Component:UpdateVisuals()
         local candidate, nearest = nil, math.huge
         for index = 1, #self._chunks do
             local chunk = self._chunks[index]
-            local dx, dz = position.X - chunk.Center.X, position.Z - chunk.Center.Z
+            local area = chunk.Area
+            local minZ = area.MinZ + chunk.Row * RockLevel.CellSize
+            local maxZ = minZ + math.min(6, area.Rows - chunk.Row) * RockLevel.CellSize
+            -- 横向使用关卡全宽，纵向使用本排边界，避免圆形视距裁掉赛道两侧。
+            local dx = math.max(area.MinX - position.X, 0,
+                position.X - (area.MinX + area.Columns * RockLevel.CellSize))
+            local dz = math.max(minZ - position.Z, 0, position.Z - maxZ)
             local distanceSquared = dx * dx + dz * dz
+            local centerDx, centerDz = position.X - chunk.Center.X, position.Z - chunk.Center.Z
+            local centerDistanceSquared = centerDx * centerDx + centerDz * centerDz
             if chunk.Rocks and distanceSquared > hideDistance * hideDistance then
                 for key, rock in pairs(chunk.Rocks) do
                     self:RecycleRock(rock)
@@ -1709,8 +1717,8 @@ function Component:UpdateVisuals()
                     self._loadingChunk = nil
                 end
             elseif not chunk.Rocks and distanceSquared <= loadDistance * loadDistance
-                and distanceSquared < nearest then
-                candidate, nearest = chunk, distanceSquared
+                and centerDistanceSquared < nearest then
+                candidate, nearest = chunk, centerDistanceSquared
             end
         end
         if candidate and not self._loadingChunk then
