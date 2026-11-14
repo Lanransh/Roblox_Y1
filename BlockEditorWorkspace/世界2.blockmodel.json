@@ -98996,7 +98996,7 @@
         "position": [
           17.400000000000006,
           0.4,
-          25.099999999999998
+          17.099999999999998
         ],
         "rotation": [
           0,
@@ -99069,33 +99069,6 @@
       }
     },
     {
-      "id": "prefab-node-2233ffb7-d3a8-4d81-b012-684cf024952b",
-      "name": "Training6",
-      "parentId": "transform-41",
-      "type": "PrefabReference",
-      "transform": {
-        "position": [
-          4.275000000000006,
-          -0.5099999999999999,
-          -10.4
-        ],
-        "rotation": [
-          0,
-          0,
-          0
-        ],
-        "scale": [
-          0.7,
-          0.7,
-          0.7
-        ]
-      },
-      "target": {
-        "kind": "project",
-        "projectGuid": "b8126ec3-c76c-4644-abb0-eae64f77b46f"
-      }
-    },
-    {
       "id": "prefab-node-4e8787e6-6adc-47c1-ace3-f299b36c2995",
       "name": "Training5",
       "parentId": "transform-41",
@@ -99104,7 +99077,7 @@
         "position": [
           4.275000000000006,
           -0.5099999999999999,
-          -9.1
+          -17.1
         ],
         "rotation": [
           0,
