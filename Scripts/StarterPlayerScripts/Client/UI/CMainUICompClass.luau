@@ -660,12 +660,17 @@ function Component:CreatePurchaseReminder()
     self._purchaseTextEffect = AnimatedText.Attach(label)
 end
 
---- 下一世界已解锁更强基地时直接引导传送并持续到达目标基地，无需先到当地最强基地。
+--- 新手引导完成后才显示底部提醒；下一世界已解锁更强基地时持续引导至目标基地。
 --- @return table? 最高优先级的文案定义，没有符合条件的提醒时为 nil。
 --- @return table? 训练台提醒对应的配置，供世界箭头复用同一目标判定。
 --- @return string? 购买提醒对应的商店类型，供通用箭头复用同一目标判定。
 --- @return table? 跨世界训练指引途经的当前世界配置，箭头指向其中的传送门。
 function Component:GetPriorityReminder()
+    local guide = self:GetTable(Fields.Guide)
+    local first = guide.guideMap and guide.guideMap.FirstLootGuide
+    if first == nil or first.state ~= "Finished" then
+        return nil
+    end
     local worldIndex = self:GetNumber(Fields.WorldIndex)
     local rebirthCount = self:GetNumber(Fields.RebirthCount)
     local currentField = _G.GameConfig.TrainingFieldData[self:GetNumber(Fields.TrainingFieldIndex)]
@@ -689,7 +694,6 @@ function Component:GetPriorityReminder()
         end
     end
     self._trainingDestinationWorld = nil
-    local guide = self:GetTable(Fields.Guide)
     if guide.world2ReminderUntil and workspace:GetServerTimeNow() < guide.world2ReminderUntil then
         return TranslationTexts.World2Unlocked
     end
