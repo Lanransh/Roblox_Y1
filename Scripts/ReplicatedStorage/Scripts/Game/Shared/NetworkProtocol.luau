@@ -2,6 +2,9 @@
 -- 框架已有的 Ready、玩家数据和服务器数据同步协议继续由 FrameworkInit 声明。
 return {
     ClientMsgID = {
+        -- 无参数；RPC 返回是否首次消费已到期的收藏提醒。
+        -- 服务端校验本人累计在线时长，只记录提醒状态，不查询平台收藏状态。
+        "C2S_ConsumeFavoritePrompt",
         -- 无参数；服务端校验入群、距离和永久领取记录，返回 success、key、groupId?、amount?。
         "C2S_ClaimGroupReward",
         -- dropId: string，RPC 返回 boolean；校验今日个人档位、落地与距离，按 GiftData 发钻石并去重。

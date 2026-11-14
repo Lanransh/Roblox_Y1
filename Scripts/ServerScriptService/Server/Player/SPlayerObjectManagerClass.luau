@@ -23,6 +23,27 @@ function Manager:Ctor()
     self:RegActivityMsg()
     self:RegCurrencyShopMsg()
     self:RegSettingsMsg()
+    self:RegFavoritePromptMsg()
+end
+
+--- 收藏提醒仅消费一次，持久去重避免重登重复弹窗。
+function Manager:RegFavoritePromptMsg()
+    --- 提醒资格由服务端累计在线时长决定，不接受客户端时长或收藏状态。
+    --- @param userId number 网络层认证的玩家 ID。
+    --- @return boolean 本次是否首次消费已到期的提醒。
+    FX.Network:RegClientMsgCallback("C2S_ConsumeFavoritePrompt", function(userId)
+        local player = self:GetPlayerObject(userId)
+        if not player then
+            return false
+        end
+        local fields = _G.PlayerDataConfig
+        if player:GetNumber(fields.FavoritePromptStep) > 0
+            or player:GetNumber(fields.TrainingPlaytime) < _G.GameEnum.FavoritePromptMinutes * 60 then
+            return false
+        end
+        player:SetNumber(fields.FavoritePromptStep, 1)
+        return true
+    end)
 end
 
 --- 设置只保存到认证请求者的现有存档，不允许客户端提交其他玩家或字段。

@@ -43,6 +43,11 @@ return {
         Type = "number", Key = "TrainingPlaytime", DefVal = 0,
         KVTable = PlayerKVEnum.eStaticData, Sync = true,
     },
+    -- 收藏提醒已处理标记：0 为未处理，正数表示已处理，重登不再提醒。
+    FavoritePromptStep = {
+        Type = "number", Key = "FavoritePromptStep", DefVal = 0,
+        KVTable = PlayerKVEnum.eStaticData, Sync = false,
+    },
     -- 玩家表现偏好，不参与装备属性和奖励计算。
     Settings = {
         Type = "table", Key = "Settings", KVTable = PlayerKVEnum.eStaticData, Sync = true,

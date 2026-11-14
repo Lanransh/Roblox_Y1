@@ -1,6 +1,8 @@
 -- 项目公共枚举；背包与快捷栏容量由 SetupProvider 返回。
 return {
     RankingDataStore = "ActivityData",
+    -- 首次累计在线达到该分钟数时，直接提示收藏一次。
+    FavoritePromptMinutes = 10,
     -- 当前三个世界仅开放配置顺序中的前 13 个光环，客户端与服务端共用。
     AuraLimit = 13,
     -- 镐子仅开放配置顺序中的前 39 个，客户端与服务端共用。
