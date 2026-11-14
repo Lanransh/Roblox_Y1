@@ -117931,14 +117931,14 @@
     },
     {
       "id": "prefab-node-8073423c-ef1e-4436-b146-e9fc55d79009",
-      "name": "Training3",
+      "name": "Training4",
       "parentId": "transform-41",
       "type": "PrefabReference",
       "transform": {
         "position": [
-          2.7477396835,
-          -0.5,
-          -5.5505623356
+          15.347739683530005,
+          0.4,
+          26.449437664399998
         ],
         "rotation": [
           0,
@@ -117958,14 +117958,14 @@
     },
     {
       "id": "prefab-node-03066938-ae5f-42a9-9235-7511467af97f",
-      "name": "Training2",
+      "name": "Training3",
       "parentId": "transform-41",
       "type": "PrefabReference",
       "transform": {
         "position": [
-          2.7477396835,
-          -0.15,
-          -0.7505623356
+          2.7477396835300034,
+          -0.15000000000000002,
+          -16.7505623356
         ],
         "rotation": [
           0,
@@ -117985,14 +117985,14 @@
     },
     {
       "id": "prefab-node-79a78914-995e-49a3-a3bc-799fe4d334df",
-      "name": "Training1",
+      "name": "Training2",
       "parentId": "transform-41",
       "type": "PrefabReference",
       "transform": {
         "position": [
-          2.7477396835,
-          -0.15,
-          4.0494376644
+          2.7477396835300034,
+          -0.15000000000000002,
+          -11.9505623356
         ],
         "rotation": [
           0,
@@ -118012,14 +118012,14 @@
     },
     {
       "id": "prefab-node-0052f2c3-438f-48ae-b1d5-4315556eef94",
-      "name": "Training5",
+      "name": "Training6",
       "parentId": "transform-41",
       "type": "PrefabReference",
       "transform": {
         "position": [
-          2.2227396835,
-          -0.51,
-          -4.0505623356
+          2.222739683530005,
+          -0.5099999999999999,
+          -9.0505623356
         ],
         "rotation": [
           0,
@@ -118039,14 +118039,14 @@
     },
     {
       "id": "prefab-node-14b7f722-4c49-4058-81e3-10b4936eeb70",
-      "name": "Training4",
+      "name": "Training5",
       "parentId": "transform-41",
       "type": "PrefabReference",
       "transform": {
         "position": [
-          2.2227396835,
-          -0.51,
-          2.2494376644
+          2.222739683530005,
+          -0.5099999999999999,
+          -7.7505623356
         ],
         "rotation": [
           0,
@@ -118691,6 +118691,33 @@
           }
         }
       }
+    },
+    {
+      "id": "prefab-node-a3ab2de8-2de5-4df5-880b-f751211fe9b2",
+      "name": "Training1",
+      "parentId": "transform-41",
+      "type": "PrefabReference",
+      "transform": {
+        "position": [
+          -8.325,
+          -1.41,
+          21.6
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          0.7,
+          0.7,
+          0.7
+        ]
+      },
+      "target": {
+        "kind": "project",
+        "projectGuid": "b8126ec3-c76c-4644-abb0-eae64f77b46f"
+      }
     }
   ],
   "prefabFolders": [],
@@ -119298,6 +119325,10 @@
     {
       "projectGuid": "e24287fe-3042-4a6b-8333-80364f4ac65d",
       "name": "橙木空白排行榜"
+    },
+    {
+      "projectGuid": "b8126ec3-c76c-4644-abb0-eae64f77b46f",
+      "name": "World2_Training5"
     }
   ]
 }
