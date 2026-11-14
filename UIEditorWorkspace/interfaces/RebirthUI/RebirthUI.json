@@ -2535,6 +2535,68 @@
               "Visible": true,
               "ZIndex": 7
             }
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "className": "UIStroke",
+                "id": "fe464ded-5786-490e-92bd-5c34694e305f",
+                "name": "TextStroke",
+                "properties": {
+                  "Color": "#000000",
+                  "Enabled": true,
+                  "Thickness": 1.3,
+                  "Transparency": 0
+                }
+              }
+            ],
+            "className": "TextLabel",
+            "id": "0b563b7a-d27d-4a40-968b-53efa252794a",
+            "name": "MaxNoticeTxt",
+            "properties": {
+              "AnchorPoint": {
+                "x": 0,
+                "y": 0
+              },
+              "AutoLocalize": false,
+              "BackgroundColor3": "#ffffff",
+              "BackgroundTransparency": 1,
+              "ClipsDescendants": false,
+              "Font": "GothamBold",
+              "LayoutOrder": 0,
+              "Position": {
+                "x": {
+                  "offset": 26,
+                  "scale": 0
+                },
+                "y": {
+                  "offset": 230,
+                  "scale": 0
+                }
+              },
+              "Rotation": 0,
+              "Size": {
+                "x": {
+                  "offset": 507,
+                  "scale": 0
+                },
+                "y": {
+                  "offset": 62,
+                  "scale": 0
+                }
+              },
+              "Text": "",
+              "TextColor3": "#ffffff",
+              "TextScaled": false,
+              "TextSize": 22,
+              "TextTransparency": 0,
+              "TextWrapped": true,
+              "TextXAlignment": "Center",
+              "TextYAlignment": "Center",
+              "Visible": false,
+              "ZIndex": 7
+            }
           }
         ],
         "className": "Frame",

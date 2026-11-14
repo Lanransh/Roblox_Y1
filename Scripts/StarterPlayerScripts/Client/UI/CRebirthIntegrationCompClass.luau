@@ -6,7 +6,6 @@ local FXLoader = FX.Loader
 local Text = FX.Text
 local TranslationTexts = Text.Define("Rebirth", {
     CompleteNotice = "Rebirth complete!  {previous:int} → {current:int}",
-    MaxCount = "You have reached the rebirth limit.",
     InDevelopment = "Coming soon.",
     Unknown = "Something went wrong. Please try again.",
     RequiredLevel = "Reach level {level:int} to rebirth.",
@@ -334,7 +333,7 @@ function Component:OnUIAction(action, payload)
         return
     end
     if self:GetNumber(Fields.RebirthCount) >= Rebirth.MaxCount then
-        self._commonUI:ShowLocalizedTips(TranslationTexts.MaxCount)
+        self._commonUI:ShowLocalizedTips(self.BaseViewTranslationTexts.NewWorldNotice)
         return
     end
     if action == "RequestSkip" then

@@ -11,6 +11,7 @@ local TranslationTexts = Text.Define("Misc", {
     RebirthReady = "Rebirth is ready! Rebirth to keep growing stronger.",
     NeedDiamonds = "Not enough diamonds.",
     RebirthOfferChanged = "This rebirth offer has changed. Please try again.",
+    RebirthLimit = "The creator is working on new worlds. Stay tuned!",
 })
 local TextService = game:GetService("TextService")
 local HttpService = game:GetService("HttpService")
@@ -53,7 +54,7 @@ function Component:ApplyRebirth()
     self:ResetTrainingProgress()
 end
 
---- 等级和次数只取服务端数据；重置后重复请求无法再次满足门槛。
+--- 等级和次数只取服务端数据；达到开放上限后不再重置训练或增加次数。
 --- @return table 重生是否成功。
 function Component:HandleRebirth()
     if not self._levelStat then
@@ -62,7 +63,7 @@ function Component:HandleRebirth()
     local player = self:GetPlayerObject()
     local count = self:GetNumber(Fields.RebirthCount)
     if count >= Rebirth.MaxCount then
-        player:ShowLocalizedTips(TranslationTexts.InDevelopment)
+        player:ShowLocalizedTips(TranslationTexts.RebirthLimit)
         return {success = false}
     end
     local required = Rebirth.GetRequiredLevel(count)
@@ -74,7 +75,7 @@ function Component:HandleRebirth()
     return {success = true}
 end
 
---- 钻石跳过沿用原付费效果，保留力量和等级；客户端只提交看到的次数以拒绝重复旧请求。
+--- 钻石跳过保留力量和等级；达到开放上限时不扣钻石，旧次数请求不重复结算。
 --- @param expectedCount any 客户端请求前看到的重生次数，不接受客户端价格。
 --- @return table 权威结算结果、余额不足原因与成功后的重生次数。
 function Component:HandleSkipRebirth(expectedCount)
@@ -83,6 +84,10 @@ function Component:HandleSkipRebirth(expectedCount)
     end
     local player = self:GetPlayerObject()
     local count = self:GetNumber(Fields.RebirthCount)
+    if count >= Rebirth.MaxCount then
+        player:ShowLocalizedTips(TranslationTexts.RebirthLimit)
+        return {success = false}
+    end
     local goods = Rebirth.GetSkipGoods(count)
     if expectedCount ~= count or not goods then
         player:ShowLocalizedTips(TranslationTexts.RebirthOfferChanged)

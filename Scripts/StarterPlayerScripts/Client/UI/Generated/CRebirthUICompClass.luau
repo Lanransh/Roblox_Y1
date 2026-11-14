@@ -51,7 +51,7 @@ require(script.Parent.CUIView)
   余额、价格与支付校验由接入层负责，View 不执行��付。
   RequestRebirth -> {}；请求重生，不传等级、倍率或客户端计算的资格。
   Config.allowIneligibleAction:boolean?，true 时未满足门槛或到达上限仍允许点击提示。
-  State.AtMax:boolean?，true 显示重生上限提示并保持灰色。
+  State.AtMax:boolean?，true 隐藏重生和 Skip 按钮，在原按钮区域显示“作者正在更新新的世界，敬请期待。”。
   FormatNumber(value:number)->string 可选覆写，默认 tostring，用于倍率与 SkipCost。
   继承 Render 与输入绑定，不覆盖按钮资格或进度文案。
   重生可用条件：Open、RequiredLevel>0、未 Completed、未 Pending、
@@ -81,6 +81,7 @@ local TranslationTexts = Text.Define("RebirthUI", {
     Complete = "Rebirth complete! Strength reset.",
     ResetWarning = "Rebirth resets your strength!",
     MaxCount = "You have reached the rebirth limit.",
+    NewWorldNotice = "The creator is working on new worlds. Stay tuned!",
 })
 
 -- 暴露只读文案定义，供接入子类通过 self.BaseViewTranslationTexts 复用。
@@ -104,6 +105,7 @@ function UI:OnReady()
     self.ProgressFill = FXLoader:Here(root, "PopupPanelImg.ProgressBarImg.ProgressFillImg")
     self.ProgressTxt = FXLoader:Here(root, "PopupPanelImg.ProgressBarImg.ProgressTxt")
     self.WarningTxt = FXLoader:Here(root, "PopupPanelImg.ResetWarningTxt")
+    self.MaxNoticeTxt = FXLoader:Here(root, "PopupPanelImg.MaxNoticeTxt")
     self.CurrentStrengthTxt = FXLoader:Here(root, "PopupPanelImg.CurrentStrengthImg.MultiplierTxt")
     self.NextStrengthTxt = FXLoader:Here(root, "PopupPanelImg.NextStrengthImg.MultiplierTxt")
     self.CurrentMoneyTxt = FXLoader:Here(root, "PopupPanelImg.CurrentMoneyImg.MultiplierTxt")
@@ -134,6 +136,14 @@ end
 function UI:Render(state)
     self.Panel.Visible = state.Open
     self.TitleBox.Visible = state.Open
+    self.RebirthBtn.Visible = not state.AtMax
+    self.SkipBtn.Visible = not state.AtMax
+    self.WarningTxt.Visible = not state.AtMax
+    self.MaxNoticeTxt.Visible = state.AtMax == true
+    self.MaxNoticeTxt.Text = ""
+    if state.AtMax then
+        self.MaxNoticeTxt.Text = Text.Tr(TranslationTexts.NewWorldNotice)
+    end
     self.CurrentStrengthTxt.Text = Text.Tr(TranslationTexts.Multiplier, {
         value = self:FormatNumber(state.CurrentStrengthMultiplier),
     })
@@ -174,7 +184,7 @@ function UI:Render(state)
     end
     self.RebirthGradient.Enabled = not eligible
     if state.AtMax then
-        self.WarningTxt.Text = Text.Tr(TranslationTexts.MaxCount)
+        self.WarningTxt.Text = Text.Tr(TranslationTexts.NewWorldNotice)
     elseif state.Completed then
         self.WarningTxt.Text = Text.Tr(TranslationTexts.Complete)
     else

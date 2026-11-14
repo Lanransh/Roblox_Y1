@@ -1,8 +1,9 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
 local RockLevel = FXLoader:RequireShared("Scripts/Game/Shared/RockLevel")
+local GameEnum = FXLoader:RequireShared("Scripts/Game/Shared/GameEnum")
 local Curves = _G.NumericalConfig.rebirthCurves
-local Rebirth = {MaxCount = Curves.input.max}
+local Rebirth = {MaxCount = math.min(GameEnum.RebirthLimit, Curves.input.max)}
 
 --- 按当前重生次数选择钻石跳过商品；没有配置的区间不开放购买。
 --- @param count number 已完成的重生次数。
