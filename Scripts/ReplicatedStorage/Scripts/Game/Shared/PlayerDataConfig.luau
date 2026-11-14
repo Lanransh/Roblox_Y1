@@ -21,9 +21,9 @@ return {
     },
     -- 仅同步出售卡数量，正式背包内容仍保持私有。
     DoubleSaleCards = {Type = "number", Key = "DoubleSaleCards", DefVal = 0, Sync = true},
-    -- 新版漏斗的最高待报进度；重登可重发，平台按玩家与漏斗会话去重。
-    FirstLootV2Step = {
-        Type = "number", Key = "FirstLootV2Step", DefVal = 0,
+    -- 当前漏斗的最高待报进度；与旧版编号隔离，重登由平台按玩家与漏斗会话去重。
+    FirstLootV3Step = {
+        Type = "number", Key = "FirstLootV3Step", DefVal = 0,
         KVTable = PlayerKVEnum.eStaticData, Sync = false,
     },
     -- 购买分析独立于收据去重表；待报快照随奖励保存，跨会话恢复归因。
@@ -190,11 +190,12 @@ return {
         DefVal = 0,
         Sync = true,
     },
-    -- 服务端确认的当前世界序号；1 为默认世界，不保存到 KV，重登回到默认世界。
+    -- 服务端确认的当前世界序号，持久保存供重登和角色重生恢复；旧存档默认世界 1。
     WorldIndex = {
         Type = "number",
         Key = "WorldIndex",
         DefVal = 1,
+        KVTable = PlayerKVEnum.eStaticData,
         Sync = true,
     },
     -- 玩家存档版本号，用于检查和迁移旧存档。

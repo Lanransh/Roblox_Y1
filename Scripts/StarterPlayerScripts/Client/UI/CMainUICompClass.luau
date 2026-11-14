@@ -660,7 +660,7 @@ function Component:CreatePurchaseReminder()
     self._purchaseTextEffect = AnimatedText.Attach(label)
 end
 
---- 跨世界训练指引持续到达目标基地；其他提醒沿用世界解锁、重生、当地训练台、奖励及装备的优先级。
+--- 下一世界已解锁更强基地时直接引导传送并持续到达目标基地，无需先到当地最强基地。
 --- @return table? 最高优先级的文案定义，没有符合条件的提醒时为 nil。
 --- @return table? 训练台提醒对应的配置，供世界箭头复用同一目标判定。
 --- @return string? 购买提醒对应的商店类型，供通用箭头复用同一目标判定。
@@ -682,8 +682,7 @@ function Component:GetPriorityReminder()
     local nextWorld = _G.GameEnum.WorldTransferConfig[worldIndex + 1]
     if nextWorld and self:GetNumber(Fields.MaxTrainingLevel) >= nextWorld.NeedTrainingLevel then
         local nextField = GameUtility.GetBestTrainingField(worldIndex + 1, rebirthCount)
-        if bestField and nextField and nextField.TrainingRate > bestField.TrainingRate
-            and (currentField == bestField or self._trainingDestinationWorld == worldIndex + 1) then
+        if bestField and nextField and nextField.TrainingRate > bestField.TrainingRate then
             -- 离开基地去传送门期间保留路线；抵达新世界后继续指向当地最强的已解锁基地。
             self._trainingDestinationWorld = worldIndex + 1
             return TranslationTexts.NewWorldTrainingAvailable, nil, nil, _G.GameEnum.WorldTransferConfig[worldIndex]

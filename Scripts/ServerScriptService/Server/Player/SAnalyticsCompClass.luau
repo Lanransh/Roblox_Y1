@@ -4,15 +4,12 @@ local AnalyticsService = game:GetService("AnalyticsService")
 local Players = game:GetService("Players")
 local Fields = _G.PlayerDataConfig
 local Config = _G.GameConfig.CommonConfig
+local GuideSteps = _G.TutorialGuideConfig.FirstLootGuide.steps
 local Component = FX.Class("SAnalyticsCompClass", "FSPlayerCompClass")
 local VERSION = "V1"
-local GUIDE_VERSION = "FirstLootV2"
+local GUIDE_VERSION = "FirstLootV3"
 local GROWTH_STEPS = {"GuideCompleted", "FirstRebirth", "World2Unlocked", "World3Unlocked"}
 local PURCHASE_STEPS = {"ShopOpened", "ProductSelected", "PromptRequested", "PurchaseGranted"}
-local STEPS = {
-    "GuideStarted", "TwoItemsCollected", "LootDeposited", "LootSold",
-    "TrainingRatePurchased", "StrongerWeaponEquipped", "GuideFinished",
-}
 -- 所有业务分析共用一分钟滑动窗口，留出平台额度余量；失败调用也计入预算。
 local requestTimes = {}
 local requestHead, requestTail = 1, 0
@@ -57,7 +54,6 @@ function Component:StartSession(isFirstSession)
     self._startedAt = os.clock()
     self._accountedAt = self._startedAt
     self._isFirstSession = isFirstSession
-    self._firstSessionProgressMinute = 0
     self._node = self:GetPlayerNode()
     self._analyticsSessionId = FX.GenObjectID()
     self._enabled = Config.AnalyticsEnabled and not FX.IsDeveloper(self:GetPlayerId())
@@ -96,7 +92,6 @@ function Component:OnUpdate(serverTime)
     if not self:IsSessionActive() then
         return
     end
-    self:RecordFirstSessionProgress()
     if os.clock() >= self._retryAt then
         self._retryAt = os.clock() + 30
         self:RecordGuide(self:GetTable(Fields.Guide))
@@ -106,50 +101,36 @@ function Component:OnUpdate(serverTime)
     self:FlushPurchases()
 end
 
---- 首次游玩每分钟采样当前重生次数；卡顿跳过的分钟不以之后的进度倒填，零次重生也上报。
-function Component:RecordFirstSessionProgress()
-    if not self._enabled or not self._isFirstSession or not self:IsSessionActive() then
-        return
-    end
-    local minute = math.floor(math.max(0, self._accountedAt - self._startedAt) / 60)
-    if minute <= self._firstSessionProgressMinute then
-        return
-    end
-    self._firstSessionProgressMinute = minute
-    local event = {kind = "Custom", name = "FirstSessionRebirthCount", value = self:GetNumber(Fields.RebirthCount),
-        fields = {tostring(minute) .. "min", "FirstSession", VERSION}}
-    if not self:SendEvent(event) then
-        self:QueueEvent(event)
-    end
-end
-
---- 仅首次游玩结束时上报在线秒数；重复登出不重复记账或上报，失败留待重登补报。
+--- 首次离服用一条事件记录在线秒数、重生次数和当前装备；重复登出不重报，失败保存原快照补报。
 function Component:EndSession()
     if not self._startedAt or self._ended then
         return
     end
     self:AccountTime()
-    self:RecordFirstSessionProgress()
     self._ended = true
     if self._enabled and self._isFirstSession then
         local event = {kind = "Custom", name = "FirstSessionPlaytime",
-            value = math.max(0, self._accountedAt - self._startedAt), fields = {"FirstSession", "Logout", VERSION}}
+            value = math.max(0, self._accountedAt - self._startedAt), fields = {
+                "Rebirth:" .. tostring(self:GetNumber(Fields.RebirthCount)),
+                "Pickaxe:" .. tostring(self:GetTableView(Fields.WeaponData).equippedId),
+                "Aura:" .. tostring(self:GetTableView(Fields.AuraData).equippedId),
+            }}
         if not self:SendEvent(event) then
             self:QueueEvent(event)
         end
     end
 end
 
---- 引导进入下一步才表示上一动作完成；三段计时提醒只保留装备完成点。
+--- 引导进入下一步才表示上一动作完成；最后一条计时提醒结束后才记为全部完成。
 --- @param data table 权威引导数据。
 --- @return number? 可上报的漏斗步骤。
 function Component:GetGuideStep(data)
     local first = data.guideMap and data.guideMap.FirstLootGuide
     if first and first.state == "Finished" then
-        return 7
+        return #GuideSteps + 1
     end
     if first and first.state == "Running" then
-        return math.min(first.stepIndex, 6)
+        return first.stepIndex
     end
     return nil
 end
@@ -161,18 +142,19 @@ function Component:RecordGuide(data)
         return
     end
     local step = self:GetGuideStep(data)
-    local previous = self:GetNumber(Fields.FirstLootV2Step)
+    local previous = self:GetNumber(Fields.FirstLootV3Step)
     if step then
         local target = math.max(previous, step)
         if target > previous then
-            self:SetNumber(Fields.FirstLootV2Step, target)
+            self:SetNumber(Fields.FirstLootV3Step, target)
         end
-        if target > (self._reportedGuideStep or 0) and self:Funnel(GUIDE_VERSION, "LifetimeV2", target,
-            STEPS[target], {GUIDE_VERSION, "CompletedActions", VERSION}) then
+        local stepName = target == 1 and "GuideStarted" or GuideSteps[target - 1].analyticsStepName
+        if target > (self._reportedGuideStep or 0) and self:Funnel(GUIDE_VERSION, "LifetimeV3", target,
+            stepName, {GUIDE_VERSION, "CompletedActions", VERSION}) then
             self._reportedGuideStep = target
         end
     end
-    if step == 7 then
+    if step == #GuideSteps + 1 then
         self:RecordGrowth()
     end
 end
@@ -282,13 +264,13 @@ function Component:FlushEvents()
     self._flushingEvents = false
 end
 
---- 从权威持久进度恢复最高里程碑；后续步骤由平台自动计入前序完成。
+--- 从权威持久进度恢复最高里程碑；引导完成跟随当前配置总步数，后续里程碑由平台计入前序完成。
 function Component:RecordGrowth()
     if not self:IsSessionActive() then
         return
     end
     local guideStep = self:GetGuideStep(self:GetTable(Fields.Guide))
-    local step = guideStep == 7 and 1 or 0
+    local step = guideStep == #GuideSteps + 1 and 1 or 0
     if self:GetNumber(Fields.RebirthCount) > 0 then
         step = 2
     end
@@ -318,19 +300,16 @@ local function DiamondBucket(diamonds)
     return "200+"
 end
 
---- 每个阶段的漏斗与余额各自入队；步骤表示已入队，不假定已发送。
+--- 购买前各阶段只记录漏斗及余额区间，精确余额由购买成功快照上报；步骤表示已入队。
 --- @param flow table 当前购买流程。
 --- @param step number 购买步骤 1 到 4。
---- @param diamonds number 该步骤的权威钻石余额。
-function Component:RecordPurchaseStep(flow, step, diamonds)
+function Component:RecordPurchaseStep(flow, step)
     if step <= flow.step then
         return
     end
     local stepName = step == 1 and flow.source == "QuickPurchase" and "QuickPurchaseStarted" or PURCHASE_STEPS[step]
     self:QueueEvent({kind = "Funnel", name = flow.funnel, sessionId = flow.id, step = step,
         stepName = stepName, fields = {flow.bucket, flow.source, VERSION}})
-    self:QueueEvent({kind = "Custom", name = "RobuxPurchaseDiamonds", value = diamonds,
-        fields = {stepName, flow.product or "None", flow.bucket}})
     flow.step = step
 end
 
@@ -343,7 +322,7 @@ function Component:OpenPurchaseFlow()
         flow = {id = FX.GenObjectID(), bucket = DiamondBucket(diamonds), step = 0,
             funnel = "RobuxPurchaseV2", source = "CurrencyShop"}
         self._shopFlow = flow
-        self:RecordPurchaseStep(flow, 1, diamonds)
+        self:RecordPurchaseStep(flow, 1)
     end
     return flow
 end
@@ -412,17 +391,17 @@ function Component:RecordShopAction(action, goodsId, attemptId)
             local diamonds = self:GetNumber(Fields.Diamonds)
             flow = {id = FX.GenObjectID(), bucket = DiamondBucket(diamonds), step = 0,
                 funnel = "RobuxQuickPurchaseV1", source = "QuickPurchase"}
-            self:RecordPurchaseStep(flow, 1, diamonds)
+            self:RecordPurchaseStep(flow, 1)
         end
         flow.product = tostring(goods.DevGoodsId)
         flow.attemptId = attemptId
         flow.ownerSession = self._analyticsSessionId
         flow.ambiguous = ambiguous
-        self:RecordPurchaseStep(flow, 2, self:GetNumber(Fields.Diamonds))
+        self:RecordPurchaseStep(flow, 2)
         data.flows[key] = flow
         self:SetTable(Fields.PurchaseAnalytics, data)
     elseif flow and flow.attemptId == attemptId then
-        self:RecordPurchaseStep(flow, 3, self:GetNumber(Fields.Diamonds))
+        self:RecordPurchaseStep(flow, 3)
         data.flows[key] = flow
         self:SetTable(Fields.PurchaseAnalytics, data)
     end

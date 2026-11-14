@@ -112,10 +112,6 @@ function Component:OnPlayerLogin()
     self:SetNumber(Fields.TrainingFriendCount, FS.FriendService:GetFriendCountInRoom(self:GetPlayerId()) or 0)
     TrainingFields.GetFields()
     local player = self:GetPlayerNode()
-    -- 当前唯一启用的出生点位于世界 1；新角色出生时同步重置世界，恢复原世界传送资格。
-    self:TrackConnection(player.CharacterAdded:Connect(function()
-        self:SetNumber(Fields.WorldIndex, 1)
-    end))
     self._stats = player:FindFirstChild("leaderstats")
     self._ownsStats = self._stats == nil
     if self._ownsStats then
@@ -288,6 +284,19 @@ function Component:RefreshStrengthBillboard()
         text.Size = UDim2.fromScale(textWidth / width, 28 / 44)
         text.Text = value
     end
+end
+
+--- 角色根节点就绪后恢复存档世界；无效或不再满足解锁条件的旧记录退回世界 1。
+--- @param character Model 当前存活且已具备根节点的角色。
+function Component:RestoreWorld(character)
+    local index = self:GetNumber(Fields.WorldIndex)
+    local worlds = _G.GameEnum.WorldTransferConfig
+    if index ~= math.floor(index) or index < 1 or index > #worlds
+        or self:GetNumber(Fields.MaxTrainingLevel) < worlds[index].NeedTrainingLevel then
+        index = 1
+    end
+    character:PivotTo(CFrame.new(worlds[index].Position))
+    self:SetNumber(Fields.WorldIndex, index)
 end
 
 --- 校验世界序号与历史最高等级后，把角色移动到配置落点并同步当前世界。
@@ -567,6 +576,7 @@ function Component:TickTraining()
     local now = os.clock()
     if self._character ~= character then
         self:ClearTrainingBonus()
+        self:RestoreWorld(character)
         self._character = character
         self._lastGrowth = now
         self._hit = false
