@@ -98,7 +98,7 @@ function Component:GetCompName()
     return "SActivityComp"
 end
 
---- 登录保留尚未领取的有效离线批次；已领取或无收益时才生成新批次，不按天限领。
+--- 离线超过五分钟才结算；未领取时只保留最长的一段离线收益，不累加批次。
 --- @return nil
 function Component:OnPlayerLogin()
     self._lastTime = os.time()
@@ -111,9 +111,13 @@ function Component:OnPlayerLogin()
     self._nextSync = self._lastTime + 10
     local data = self:GetTable(Fields.WelfareData)
     local day = math.floor(self._lastTime / 86400)
-    if data.offline.claimed or data.offline.training <= 0 then
-        local config = _G.GameConfig.CommonConfig.OfflineReward
-        local seconds = data.lastSeenAt > 0 and math.clamp(self._lastTime - data.lastSeenAt, 0, config.Time) or 0
+    local config = _G.GameConfig.CommonConfig.OfflineReward
+    local seconds = data.lastSeenAt > 0 and math.clamp(self._lastTime - data.lastSeenAt, 0, config.Time) or 0
+    if seconds <= 300 then
+        seconds = 0
+    end
+    if data.offline.claimed or data.offline.training <= 0 or data.offline.seconds <= 300
+        or seconds > data.offline.seconds then
         data.offline = {
             id = tostring(self._lastTime), seconds = seconds, claimed = false,
             training = self:RequireComponent("SMiscComp"):GetTrainingCardGain(seconds * config.Rate),
