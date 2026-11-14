@@ -7,7 +7,7 @@ local CWeaponShopPreview = FX.Class("CWeaponShopPreview", "CWeaponShopView")
 function CWeaponShopPreview:Ctor(owner)
     CWeaponShopPreview.Super.Ctor(self, owner)
     self.Config = {
-        title = "WEAPONS",
+        title = self.BaseViewTranslationTexts.Title,
         strengthIsMultiplier = true,
         allowUnaffordableAction = true,
         qualities = {

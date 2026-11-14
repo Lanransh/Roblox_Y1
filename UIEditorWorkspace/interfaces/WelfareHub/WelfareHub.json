@@ -3686,7 +3686,7 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 286,
+                      "offset": 370,
                       "scale": 0
                     }
                   },
@@ -3697,14 +3697,14 @@
                       "scale": 0
                     },
                     "y": {
-                      "offset": 40,
+                      "offset": 24,
                       "scale": 0
                     }
                   },
                   "Text": "",
                   "TextColor3": "#ffffff",
                   "TextScaled": false,
-                  "TextSize": 32,
+                  "TextSize": 20,
                   "TextTransparency": 0,
                   "TextWrapped": true,
                   "TextXAlignment": "Center",
@@ -5046,6 +5046,408 @@
                   "Visible": true,
                   "ZIndex": 7
                 }
+              },
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UICorner",
+                    "id": "6cf979bd-dd84-4b6e-b529-b2bd091fb9d1",
+                    "name": "UICorner",
+                    "properties": {
+                      "CornerRadius": {
+                        "offset": 6,
+                        "scale": 0
+                      }
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "f9591836-c2f1-4c9f-8c69-3a7f30889000",
+                    "name": "UIStroke",
+                    "properties": {
+                      "Color": "#000000",
+                      "Enabled": true,
+                      "Thickness": 2,
+                      "Transparency": 0
+                    }
+                  },
+                  {
+                    "children": [],
+                    "className": "Frame",
+                    "id": "6f32672d-9c84-4748-924a-dea94d404b1d",
+                    "name": "DividerImg",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "AutoLocalize": true,
+                      "BackgroundColor3": "#73858e",
+                      "BackgroundTransparency": 0.65,
+                      "ClipsDescendants": false,
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 293,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 12,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "Size": {
+                        "x": {
+                          "offset": 1,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 42,
+                          "scale": 0
+                        }
+                      },
+                      "Visible": true,
+                      "ZIndex": 8
+                    }
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [],
+                        "className": "UIStroke",
+                        "id": "0765c85c-1d11-4b4b-9cf0-67db12b20839",
+                        "name": "TextStroke",
+                        "properties": {
+                          "Color": "#20231c",
+                          "Enabled": true,
+                          "Thickness": 1,
+                          "Transparency": 0
+                        }
+                      }
+                    ],
+                    "className": "TextLabel",
+                    "id": "bcd5dabe-338e-45aa-9a03-2217d7294cae",
+                    "name": "ElapsedLabelTxt",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "AutoLocalize": true,
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 1,
+                      "ClipsDescendants": false,
+                      "Font": "GothamBold",
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 8,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 5,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "Size": {
+                        "x": {
+                          "offset": 277,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 22,
+                          "scale": 0
+                        }
+                      },
+                      "Text": "Time Accumulated",
+                      "TextColor3": "#d6ddda",
+                      "TextScaled": false,
+                      "TextSize": 18,
+                      "TextTransparency": 0,
+                      "TextWrapped": false,
+                      "TextXAlignment": "Center",
+                      "TextYAlignment": "Center",
+                      "Visible": true,
+                      "ZIndex": 9
+                    }
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [],
+                        "className": "UIStroke",
+                        "id": "374ba1ac-a6fc-4413-8665-0aba67a87591",
+                        "name": "TextStroke",
+                        "properties": {
+                          "Color": "#20231c",
+                          "Enabled": true,
+                          "Thickness": 1,
+                          "Transparency": 0
+                        }
+                      }
+                    ],
+                    "className": "TextLabel",
+                    "id": "e9aa8782-661d-4231-96d6-fa3e9927185e",
+                    "name": "CapLabelTxt",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "AutoLocalize": true,
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 1,
+                      "ClipsDescendants": false,
+                      "Font": "GothamBold",
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 302,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 5,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "Size": {
+                        "x": {
+                          "offset": 277,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 22,
+                          "scale": 0
+                        }
+                      },
+                      "Text": "Maximum Offline Time",
+                      "TextColor3": "#d6ddda",
+                      "TextScaled": false,
+                      "TextSize": 18,
+                      "TextTransparency": 0,
+                      "TextWrapped": false,
+                      "TextXAlignment": "Center",
+                      "TextYAlignment": "Center",
+                      "Visible": true,
+                      "ZIndex": 9
+                    }
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [],
+                        "className": "UIStroke",
+                        "id": "d88842a2-7298-4a1d-a230-42af7fff6ce6",
+                        "name": "TextStroke",
+                        "properties": {
+                          "Color": "#20231c",
+                          "Enabled": true,
+                          "Thickness": 1,
+                          "Transparency": 0
+                        }
+                      }
+                    ],
+                    "className": "TextLabel",
+                    "id": "86b85f23-6ef7-424e-9ae5-1ba860dae5b4",
+                    "name": "ElapsedValueTxt",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "AutoLocalize": false,
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 1,
+                      "ClipsDescendants": false,
+                      "Font": "GothamBold",
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 8,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 28,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "Size": {
+                        "x": {
+                          "offset": 277,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 32,
+                          "scale": 0
+                        }
+                      },
+                      "Text": "",
+                      "TextColor3": "#55e7ff",
+                      "TextScaled": false,
+                      "TextSize": 26,
+                      "TextTransparency": 0,
+                      "TextWrapped": false,
+                      "TextXAlignment": "Center",
+                      "TextYAlignment": "Center",
+                      "Visible": true,
+                      "ZIndex": 9
+                    }
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [],
+                        "className": "UIStroke",
+                        "id": "b817184f-ae37-480b-a76b-e7f965c2a786",
+                        "name": "TextStroke",
+                        "properties": {
+                          "Color": "#20231c",
+                          "Enabled": true,
+                          "Thickness": 1,
+                          "Transparency": 0
+                        }
+                      }
+                    ],
+                    "className": "TextLabel",
+                    "id": "e014ebfe-48c8-4603-9ceb-18647281386d",
+                    "name": "CapValueTxt",
+                    "properties": {
+                      "AnchorPoint": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "AutoLocalize": false,
+                      "BackgroundColor3": "#ffffff",
+                      "BackgroundTransparency": 1,
+                      "ClipsDescendants": false,
+                      "Font": "GothamBold",
+                      "LayoutOrder": 0,
+                      "Position": {
+                        "x": {
+                          "offset": 302,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 28,
+                          "scale": 0
+                        }
+                      },
+                      "Rotation": 0,
+                      "Size": {
+                        "x": {
+                          "offset": 277,
+                          "scale": 0
+                        },
+                        "y": {
+                          "offset": 32,
+                          "scale": 0
+                        }
+                      },
+                      "Text": "",
+                      "TextColor3": "#ffd36a",
+                      "TextScaled": false,
+                      "TextSize": 26,
+                      "TextTransparency": 0,
+                      "TextWrapped": false,
+                      "TextXAlignment": "Center",
+                      "TextYAlignment": "Center",
+                      "Visible": true,
+                      "ZIndex": 9
+                    }
+                  }
+                ],
+                "className": "Frame",
+                "id": "01320a09-4e0e-4b52-9ac6-ec7e2bcc00a3",
+                "name": "TimeInfoImg",
+                "properties": {
+                  "AnchorPoint": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "AutoLocalize": true,
+                  "BackgroundColor3": "#151e24",
+                  "BackgroundTransparency": 0.16,
+                  "ClipsDescendants": false,
+                  "LayoutOrder": 0,
+                  "Position": {
+                    "x": {
+                      "offset": 14,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 298,
+                      "scale": 0
+                    }
+                  },
+                  "Rotation": 0,
+                  "Size": {
+                    "x": {
+                      "offset": 587,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 66,
+                      "scale": 0
+                    }
+                  },
+                  "Visible": true,
+                  "ZIndex": 7
+                }
+              },
+              {
+                "children": [],
+                "className": "TextLabel",
+                "id": "a8378470-cfb6-469d-8ab6-71c8b3b47af8",
+                "name": "TimeFooterTxt",
+                "properties": {
+                  "AnchorPoint": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "AutoLocalize": true,
+                  "BackgroundColor3": "#ffffff",
+                  "BackgroundTransparency": 1,
+                  "ClipsDescendants": false,
+                  "Font": "Gotham",
+                  "LayoutOrder": 0,
+                  "Position": {
+                    "x": {
+                      "offset": 0,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 370,
+                      "scale": 0
+                    }
+                  },
+                  "Rotation": 0,
+                  "Size": {
+                    "x": {
+                      "offset": 615,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 24,
+                      "scale": 0
+                    }
+                  },
+                  "Text": "Offline earnings stop at the time limit.",
+                  "TextColor3": "#d6ddda",
+                  "TextScaled": false,
+                  "TextSize": 16,
+                  "TextTransparency": 0,
+                  "TextWrapped": false,
+                  "TextXAlignment": "Center",
+                  "TextYAlignment": "Center",
+                  "Visible": true,
+                  "ZIndex": 9
+                }
               }
             ],
             "className": "Frame",
@@ -5078,7 +5480,7 @@
                   "scale": 0
                 },
                 "y": {
-                  "offset": 326,
+                  "offset": 386,
                   "scale": 0
                 }
               },

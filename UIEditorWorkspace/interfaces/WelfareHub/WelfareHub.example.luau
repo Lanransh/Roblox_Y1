@@ -56,9 +56,10 @@ function CWelfarePreview:Ctor(owner)
     self.Config.offline = {
         rewardId = "offline_session_1",
         boostMultiplier = 2,
+        maxSeconds = 7200,
     }
     self.State.offline = {
-        seconds = 9000,
+        seconds = 5400,
         training = 259,
         boostedTraining = 518,
         boostAvailable = true,

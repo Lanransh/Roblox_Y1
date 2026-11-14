@@ -13,6 +13,7 @@ require(script.Parent.CUIView)
 【二、Config：完整配置】
   offline: table，必填。
     rewardId: string，必填；稳定离线奖励批次 ID，不是奖励物品 ID。
+    maxSeconds: number，必填；收益计时上限，单位秒，来自游戏配置。
     boostMultiplier: number，必填；大于 1 的配置倍率，仅表示请求倍率，不用于 View 计算奖励。
   diamonds: table，必填。
     rewardId: string，必填；稳定每日钻石奖励业务 ID。
@@ -44,7 +45,7 @@ require(script.Parent.CUIView)
 
 【三、State：Render 的完整输入】
   offline: table，必填；以下 seconds/training/boostedTraining/status/boostPrice/boostCurrency 必填。
-    seconds: number，非负离线秒数；本页不单独显示时长。
+    seconds: number，非负收益累计秒数；由服务端按 maxSeconds 截断，并非未截断的实际离线时长。
     training: number，非负基础奖励数量。
     boostedTraining: number，非负加成奖励数量，由业务层提供，View 不自行计算。
     boostAvailable: boolean，必填；业务确认加成奖励高于普通奖励时为 true。
@@ -87,6 +88,7 @@ require(script.Parent.CUIView)
       offline = {
           rewardId = "offline_session_1",
           boostMultiplier = 2,
+          maxSeconds = 7200,
       },
       diamonds = { rewardId = "daily_diamonds", loginAmount = 100,
           premiumAmount = 50, friendAmount = 10, friendCap = 100 },
@@ -237,6 +239,7 @@ local TranslationTexts = Text.Define("WelfareHub", {
     PassRemaining = "{days:int} claims left · {status}",
     PassInactive = "Use this pass from your backpack to activate it.",
     ClaimBoost = "Claim {multiplier}X",
+    OfflineDuration = "{hours}h {minutes}m",
 })
 
 -- 暴露只读文案定义，供接入子类通过 self.BaseViewTranslationTexts 复用。
@@ -889,12 +892,26 @@ function CWelfareView:RenderOnlineProgress(group, state)
     subtitleTxt.Text = hint
 end
 
+-- 将服务端累计秒数与配置上限统一显示为时、分，秒数向下取整。
+-- @param seconds number 非负时长，单位秒
+-- @return string 当前语言的时长文案
+function CWelfareView:FormatOfflineDuration(seconds)
+    seconds = math.floor(seconds)
+    return Text.Tr(TranslationTexts.OfflineDuration, {
+        hours = string.format("%02d", math.floor(seconds / 3600)),
+        minutes = string.format("%02d", math.floor(seconds / 60) % 60),
+    })
+end
+
 -- 离线奖励及价格仅作展示；领取数量、余额与支付结果全部由业务层确认。
 -- @param state table 完整 State.offline，包含业务提供的基础与加成奖励，见文件头
 function CWelfareView:RenderOffline(state)
     local page = Loader:Here(self.Root, "PopupPanelImg.OfflineBox")
     page.Visible = self.ActiveTab == "offline"
-    local boostMultiplier = self:GetUIConfig().offline.boostMultiplier
+    local offlineConfig = self:GetUIConfig().offline
+    Loader:Here(page, "TimeInfoImg.ElapsedValueTxt").Text = self:FormatOfflineDuration(state.seconds)
+    Loader:Here(page, "TimeInfoImg.CapValueTxt").Text = self:FormatOfflineDuration(offlineConfig.maxSeconds)
+    local boostMultiplier = offlineConfig.boostMultiplier
     assert(boostMultiplier > 1, "Offline boost multiplier must exceed 1")
     Loader:Here(page, "NormalRewardImg.AmountTxt").Text = "+" .. self:FormatNumber(state.training)
     Loader:Here(page, "BoostRewardImg.AmountTxt").Text = "+" .. self:FormatNumber(state.boostedTraining)
@@ -935,6 +952,7 @@ function CWelfareView:RenderOffline(state)
     end
     status.Text = hint
     status.Visible = hint ~= ""
+    Loader:Here(page, "TimeFooterTxt").Visible = hint == ""
     local tab = Loader:Here(self.Root, "TabsBox.OfflineTabBtn")
     Loader:Here(tab, "RedDotImg").Visible = claimable and not state.pending
     self:RenderButton(tab, nil, true)

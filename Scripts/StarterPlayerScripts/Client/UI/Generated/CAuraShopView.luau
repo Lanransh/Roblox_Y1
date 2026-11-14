@@ -4,7 +4,7 @@ require(script.Parent.CUIView)
 光环商店接入契约
 
 【Config：完整配置】
-  title: string，必填，无默认值；标题原文，经 Text.TrSource 查询。
+  title: table，必填，无默认值；Text.Define 文案定义，经 Text.Tr 查询；默认标题复用 self.BaseViewTranslationTexts.Title。
   qualities: {[qualityId: string]: Quality}，必填；品质 ID 由项目定义。
     Quality.color: string，必填，无默认值；#RRGGBB 渐变起色。
     Quality.colorEnd: string，可选；省略使用 color，作为竖向渐变终色。
@@ -33,7 +33,7 @@ require(script.Parent.CUIView)
 
 【最小完整数据（接入 Ctor 调用父构造之后）】
   self.Config = {
-      title = "AURAS",
+      title = self.BaseViewTranslationTexts.Title,
       qualities = { common = { color = "#A5ADB8" } },
       auras = {
           { id = "calm", name = "Calm Aura", qualityId = "common",
@@ -87,6 +87,7 @@ local Text = FXLoader:RequireShared("Scripts.Framework.Shared.Core.FXText")
 local CAuraShopView = FX.Class("CAuraShopView", "CUIView")
 
 local TranslationTexts = Text.Define("AuraShopUI", {
+    Title = "AURAS",
     Strength = "Strength +{strength}",
     Price = "{price}",
     Equip = "Equip",
@@ -143,7 +144,7 @@ function CAuraShopView:Render(state)
     local config = self:GetUIConfig()
     self.Panel.Visible = state.open
     self.TitleBox.Visible = state.open
-    self.TitleTxt.Text = Text.TrSource(config.title)
+    self.TitleTxt.Text = Text.Tr(config.title)
     local active = {}
     local count = 0
     if not state.loading then

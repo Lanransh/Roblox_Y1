@@ -7,7 +7,7 @@ local CAuraShopPreview = FX.Class("CAuraShopPreview", "CAuraShopView")
 function CAuraShopPreview:Ctor(owner)
     CAuraShopPreview.Super.Ctor(self, owner)
     self.Config = {
-        title = "AURAS",
+        title = self.BaseViewTranslationTexts.Title,
         allowUnequip = true,
         allowUnaffordableAction = true,
         strengthIsMultiplier = true,

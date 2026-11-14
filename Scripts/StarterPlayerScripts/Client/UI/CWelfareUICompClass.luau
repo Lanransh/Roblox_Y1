@@ -42,7 +42,8 @@ function Component:OnReady()
         },
         diamonds = {rewardId = "daily_diamonds", passes = {},
             loginAmount = _G.GameConfig.CommonConfig.LoginData.GemCount},
-        offline = {rewardId = "", boostMultiplier = offlineConfig.VIPRate / offlineConfig.Rate},
+        offline = {rewardId = "", boostMultiplier = offlineConfig.VIPRate / offlineConfig.Rate,
+            maxSeconds = offlineConfig.Time},
         allowUnavailableAction = true,
     }
     for index, config in ipairs(_G.ActivityConfig.OnlineRewardData) do

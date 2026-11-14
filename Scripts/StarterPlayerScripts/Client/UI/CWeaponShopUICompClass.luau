@@ -28,7 +28,7 @@ function Component:OnReady()
     self._commonUI:RegisterTrainingClickModal(self.Root)
     self._localization = self._commonUI.Localization
     self.Config = {
-        title = "WEAPONS", weapons = {}, qualities = {},
+        title = self.BaseViewTranslationTexts.Title, weapons = {}, qualities = {},
         strengthIsMultiplier = true, hideQuality = true, allowUnaffordableAction = true,
     }
     -- 工具没有品质字段，展示配色按顺序循环，不增加虚构的品质文案。

@@ -10,7 +10,7 @@ local function enlargeTool(tool)
     local container = Instance.new("Model")
     container.WorldPivot = tool.Handle.CFrame
     tool.Parent = container
-    container:ScaleTo(1.5)
+    container:ScaleTo(2)
     -- 握点属于角色手部空间，不能随武器放大，否则会滑出手指。
     tool.Grip = grip
     tool.Parent = nil
@@ -19,7 +19,7 @@ end
 
 --- 克隆已配置握点的 Tool，或将柄底为原点的模型组装为右手装备。
 --- @param template Model|Tool 导出武器模型，或已配置 Handle、Grip 和焊接的 Tool。
---- @param giantPickaxe boolean 是否将当前基础尺寸放大至 1.5 倍。
+--- @param giantPickaxe boolean 是否将当前基础尺寸放大至 2 倍。
 --- @return Tool 已修正握点、朝向和物理属性的未挂载装备。
 --- @return Model 装备中的可见模型，供调用方布置镐头拖尾。
 function RockWeaponTool.Build(template, giantPickaxe)

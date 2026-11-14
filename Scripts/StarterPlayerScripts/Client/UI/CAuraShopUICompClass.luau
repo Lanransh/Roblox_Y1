@@ -26,7 +26,7 @@ function Component:OnReady()
     self._commonUI = self:GetPlayerObject():RequireComponent("FCCommonUIComp")
     self._commonUI:RegisterTrainingClickModal(self.Root)
     self._localization = self._commonUI.Localization
-    self.Config = {title = "AURAS", auras = {}, qualities = {},
+    self.Config = {title = self.BaseViewTranslationTexts.Title, auras = {}, qualities = {},
         strengthIsMultiplier = true, allowUnaffordableAction = true, allowUnequip = true}
     -- 与出售界面的浅色渐变风格保持一致，未配置专色时按品质循环配色。
     local qualityColors = {
