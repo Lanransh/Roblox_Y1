@@ -76,7 +76,7 @@ function Component:FormatNumber(value)
     return GameUtility.NumberToText(value)
 end
 
---- 购买只提交固定商品 ID；成败均提示，收益只使用服务端实际结算结果。
+--- 购买只提交固定商品 ID；成功后标记已购买再关窗，关闭动画期间不重新开放购买与引导高亮。
 --- @param action string 生成页面提供的 Buy 或 Close。
 --- @param payload table Buy 携带稳定 itemId，Close 为空表。
 function Component:OnUIAction(action, payload)
@@ -96,7 +96,8 @@ function Component:OnUIAction(action, payload)
                 if result.success then
                     local shop = self:GetPlayerObject():RequireComponent("CCurrencyShopUIComp")
                     shop:ApplyShopData(result.data)
-                    self.State = {status = "Ready", pending = false}
+                    self.State = {status = "Purchased", pending = false}
+                    self:RefreshUI()
                     self._commonUI:ShowLocalizedTips(result.key, result.arguments)
                     self:Hide()
                     return

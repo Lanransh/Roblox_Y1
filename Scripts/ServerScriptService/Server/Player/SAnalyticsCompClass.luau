@@ -7,7 +7,7 @@ local Config = _G.GameConfig.CommonConfig
 local GuideSteps = _G.TutorialGuideConfig.FirstLootGuide.steps
 local Component = FX.Class("SAnalyticsCompClass", "FSPlayerCompClass")
 local VERSION = "V1"
-local GUIDE_VERSION = "FirstLootV4"
+local GUIDE_VERSION = "FirstLootV5"
 local GROWTH_STEPS = {"GuideCompleted", "FirstRebirth", "World2Unlocked", "World3Unlocked"}
 local PURCHASE_STEPS = {"ShopOpened", "ProductSelected", "PromptRequested", "PurchaseGranted"}
 -- 所有业务分析共用一分钟滑动窗口，留出平台额度余量；失败调用也计入预算。
@@ -45,14 +45,14 @@ function Component:IsSessionActive()
     return self._startedAt ~= nil and not self._ended
 end
 
---- 登录时固定引导参与版本，历史玩家不进入 V4；测试账号仍正常记账但不发送。
+--- 登录时固定引导参与版本，仅首次玩家进入 V5；保留历史版本，测试账号仍正常记账但不发送。
 --- @param isFirstSession boolean 发放初始武器前确认的首次玩家标记。
 function Component:StartSession(isFirstSession)
     if self._startedAt then
         return
     end
     if self:GetNumber(Fields.FirstLootAnalyticsVersion) == 0 then
-        self:SetNumber(Fields.FirstLootAnalyticsVersion, isFirstSession and 4 or 3)
+        self:SetNumber(Fields.FirstLootAnalyticsVersion, isFirstSession and 5 or 3)
     end
     self._startedAt = os.clock()
     self._accountedAt = self._startedAt
@@ -104,12 +104,17 @@ function Component:OnUpdate(serverTime)
     self:FlushPurchases()
 end
 
---- 首次离服用一条事件记录在线秒数、重生次数和当前装备；重复登出不重报，失败保存原快照补报。
+--- 离服前补报尚未成功发送的 V5 最高进度；首次离服另记在线快照，重复登出不重报。
 function Component:EndSession()
     if not self._startedAt or self._ended then
         return
     end
     self:AccountTime()
+    if self._enabled and self:GetNumber(Fields.FirstLootAnalyticsVersion) == 5
+        and self:GetNumber(Fields.FirstLootV5Step) > (self._reportedGuideStep or 0) then
+        -- 结束会话前只尝试一次，沿用发送预算和异常隔离，失败仍保留持久进度供重登补报。
+        self:RecordGuide(self:GetTable(Fields.Guide))
+    end
     self._ended = true
     if self._enabled and self._isFirstSession then
         local event = {kind = "Custom", name = "FirstSessionPlaytime",
@@ -138,21 +143,21 @@ function Component:GetGuideStep(data)
     return nil
 end
 
---- 仅为新版参与者持久化 V4 待报目标；历史玩家仍正常触发成长里程碑。
+--- 仅为 V5 新玩家持久化单件拾取口径的待报目标；历史玩家仍正常触发成长里程碑。
 --- @param data table 已提交的权威引导数据。
 function Component:RecordGuide(data)
     if not self._startedAt or self._ended then
         return
     end
     local step = self:GetGuideStep(data)
-    local previous = self:GetNumber(Fields.FirstLootV4Step)
-    if step and self:GetNumber(Fields.FirstLootAnalyticsVersion) == 4 then
+    local previous = self:GetNumber(Fields.FirstLootV5Step)
+    if step and self:GetNumber(Fields.FirstLootAnalyticsVersion) == 5 then
         local target = math.max(previous, step)
         if target > previous then
-            self:SetNumber(Fields.FirstLootV4Step, target)
+            self:SetNumber(Fields.FirstLootV5Step, target)
         end
         local stepName = target == 1 and "GuideStarted" or GuideSteps[target - 1].analyticsStepName
-        if target > (self._reportedGuideStep or 0) and self:Funnel(GUIDE_VERSION, "LifetimeV4", target,
+        if target > (self._reportedGuideStep or 0) and self:Funnel(GUIDE_VERSION, "LifetimeV5", target,
             stepName, {GUIDE_VERSION, "CompletedActions", VERSION}) then
             self._reportedGuideStep = target
         end

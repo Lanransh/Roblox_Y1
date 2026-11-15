@@ -3,7 +3,7 @@ return {
     FirstLootGuide = {
         startEvent = "Tutorial.Login",
         steps = {
-            {finishEvent = "Tutorial.Collected", analyticsStepName = "TwoItemsCollected",
+            {finishEvent = "Tutorial.Collected", analyticsStepName = "OneItemCollected",
                 target = {type = "NearestItem", textId = "Tutorial.Collect"}},
             {finishEvent = "Tutorial.Deposited", analyticsStepName = "LootDeposited",
                 target = {type = "Base", textId = "Tutorial.Deposit"}},

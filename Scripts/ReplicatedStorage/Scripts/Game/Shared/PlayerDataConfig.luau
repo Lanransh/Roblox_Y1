@@ -26,14 +26,19 @@ return {
     },
     -- 仅同步出售卡数量，正式背包内容仍保持私有。
     DoubleSaleCards = {Type = "number", Key = "DoubleSaleCards", DefVal = 0, Sync = true},
-    -- 首次进入新版时固定参与版本；0 待判定，3 为历史玩家，4 才参与新版引导漏斗。
+    -- 首次登录固定参与版本；0 待判定，3/4 保留历史归属，仅 5 参与单件拾取引导漏斗。
     FirstLootAnalyticsVersion = {
         Type = "number", Key = "FirstLootAnalyticsVersion", DefVal = 0,
         KVTable = PlayerKVEnum.eStaticData, Sync = false,
     },
-    -- 光环拥有口径的最高待报进度；使用新 Key 隔离旧版装备口径，重登由平台去重。
+    -- 保留 V4 光环拥有口径的历史进度，不迁入 V5。
     FirstLootV4Step = {
         Type = "number", Key = "FirstLootV4Step", DefVal = 0,
+        KVTable = PlayerKVEnum.eStaticData, Sync = false,
+    },
+    -- V5 单件拾取、一击保底口径的最高待报进度，重登继续上报同一终身漏斗。
+    FirstLootV5Step = {
+        Type = "number", Key = "FirstLootV5Step", DefVal = 0,
         KVTable = PlayerKVEnum.eStaticData, Sync = false,
     },
     -- 购买分析独立于收据去重表；待报快照随奖励保存，跨会话恢复归因。

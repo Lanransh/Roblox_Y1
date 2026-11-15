@@ -14,8 +14,8 @@ local TranslationTexts = Text.Define("Leaderboard", {
     View = "E · View Leaderboard",
     Close = "Close · E",
     Minutes = "{count:int}min",
-    Hours = "{count:int}h",
-    DaysHours = "{days:int}d{hours:int}h",
+    Hours = "{count:int}h {minutes:int}min",
+    DaysHours = "{days:int}d {hours:int}h {minutes:int}min",
     Loading = "Loading...",
     Empty = "No rankings yet.",
     Unavailable = "Leaderboard unavailable.",
@@ -38,7 +38,7 @@ local BoardTypes = {
     {Name = "Playtime", TextColor = Color3.fromRGB(110, 235, 245)},
 }
 
---- 力量沿用统一缩写，重生次数显示整数；在线不足一小时显示分钟，其余显示整小时或天和剩余小时。
+--- 力量沿用统一缩写，重生次数显示整数；在线时长按天、小时和分钟组合显示，保留整分钟精度。
 --- @param kind number 榜单类型，依次为力量、重生和在线时长。
 --- @param score number 服务端原始分数；在线时长单位为秒。
 --- @return string 榜单数值文案。
@@ -51,10 +51,11 @@ local function FormatScore(kind, score)
             return Text.Tr(TranslationTexts.Minutes, {count = math.floor(score / 60)})
         end
         local hours = math.floor(score / 3600)
+        local minutes = math.floor(score / 60) % 60
         if hours >= 24 then
-            return Text.Tr(TranslationTexts.DaysHours, {days = math.floor(hours / 24), hours = hours % 24})
+            return Text.Tr(TranslationTexts.DaysHours, {days = math.floor(hours / 24), hours = hours % 24, minutes = minutes})
         end
-        return Text.Tr(TranslationTexts.Hours, {count = hours})
+        return Text.Tr(TranslationTexts.Hours, {count = hours, minutes = minutes})
     end
     return tostring(math.floor(score))
 end
@@ -472,7 +473,7 @@ function Component:ExitView()
     StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Backpack, state.BackpackEnabled)
 end
 
---- 列表使用固定行高，右侧留出滚动条空间；个人行由调用方固定尺寸。
+--- 列表使用固定行高，分数按列宽缩放以容纳组合时长；个人行由调用方固定尺寸。
 --- @param parent Instance 列表或固定个人行的父节点。
 --- @param rank number 列表行槽位；个人行传 0，不作为实际名次显示。
 --- @param personal boolean 是否为金色个人行。
@@ -495,6 +496,8 @@ function Component:CreateRow(parent, rank, personal)
     name.AutoLocalize = false
     local score = Label(row, "--", UDim2.fromScale(0.70, 0), UDim2.fromScale(0.29, 1))
     score.Name = "Score"
+    score.TextScaled = true
+    Create("UITextSizeConstraint", score, {MinTextSize = 1, MaxTextSize = 42})
     if personal then
         for index, child in ipairs(row:GetChildren()) do
             if child:IsA("TextLabel") then

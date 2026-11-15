@@ -4,7 +4,7 @@ local Text = FX.Text
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local InstancePath = FXLoader:RequireShared("Scripts/Game/Shared/InstancePath")
 local TranslationTexts = Text.Define("Tutorial", {
-    Collect = "Head into the rocks! Your pickaxe clears the way. Pick up 2 pieces of loot.",
+    Collect = "Head into World 1's first stage! During this step, every rock there breaks in one swing and drops loot. Pick up 1 piece of loot.",
     Deposit = "Return to your base to store your loot. You can also use HOME.",
     Sell = "Visit the merchant and sell your stored loot for coins!",
     Rate = "Use your 30 welcome diamonds to buy the training multiplier on the right!",
@@ -231,16 +231,19 @@ function Guide:GetShopGuideButton(target)
     return entry and entry.button
 end
 
---- 按当前步骤选择实际按钮，确认页只引导训练倍率商品，避免误导购买其他商品。
+--- 按当前步骤选择按钮；倍率已到账或确认页已购买时不再高亮旧按钮，避免关窗等待同步时遮罩闪回。
 --- @param target table 当前引导目标。
 --- @return GuiButton? 当前可见界面中需要操作的按钮。
 function Guide:GetUIGuideButton(target)
     if target.textId == "Tutorial.Rate" then
+        local purchase = self:RequireComponent("CShopPurchaseUIComp")
+        local product = purchase._product
+        local isTrainingRate = product and _G.GoodsConfig.GemGoodsData[product.goodsId].BuyHandler == "TrainingRateLevel"
+        if self:GetTable(Fields.CurrencyShopData).trainingLevel > 0 then
+            return nil
+        end
         if self._purchaseScreen.Enabled then
-            local purchase = self:RequireComponent("CShopPurchaseUIComp")
-            local product = purchase._product
-            if product and _G.GoodsConfig.GemGoodsData[product.goodsId].BuyHandler == "TrainingRateLevel"
-                and not purchase.State.pending then
+            if isTrainingRate and purchase.State.status == "Ready" and not purchase.State.pending then
                 return purchase.BuyBtn
             end
         elseif not self:RequireComponent("FCCommonUIComp"):IsTrainingClickBlocked() then

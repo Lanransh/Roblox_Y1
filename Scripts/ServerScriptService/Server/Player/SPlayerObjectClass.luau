@@ -243,7 +243,7 @@ function Guide:GetGuideStorage()
     return PlayerDataConfig.Guide
 end
 
---- 收起旧版世界二引导；首关登录续接时清除上一会话坐标，等待重新锁定。
+--- 登录续接时清除旧坐标；历史已拾取玩家须仍有随身或已存战利品才进入寄存步骤，避免空库存卡住。
 --- @param eventName string 框架或业务发布的引导事件。
 function Guide:OnGuideEvent(eventName)
     local data = self:GetGuideData()
@@ -256,6 +256,10 @@ function Guide:OnGuideEvent(eventName)
         data.target.cell = nil
         data.target.position = nil
         self:SetGuideData(data)
+        if (data.collected or 0) >= 1 and (#self:GetTableView(PlayerDataConfig.RockLoot) > 0
+            or #self:GetTableView(PlayerDataConfig.StoredLoot) > 0) then
+            self:PublishEvent("Tutorial.Collected")
+        end
     end
 end
 
@@ -268,7 +272,7 @@ function Guide:IsLootStep(index)
         and data.guideMap.FirstLootGuide.stepIndex == index
 end
 
---- 成功拾取后记录持久次数，重登与回基地不会清零。
+--- 成功拾取一件即完成收集引导，持久次数在重登与回基地时保留。
 function Guide:RecordPickup()
     if not self:IsLootStep(1) then
         return
@@ -276,7 +280,7 @@ function Guide:RecordPickup()
     local data = self:GetGuideData()
     data.collected = (data.collected or 0) + 1
     self:SetGuideData(data)
-    if data.collected >= 2 then
+    if data.collected >= 1 then
         self:PublishEvent("Tutorial.Collected")
     end
 end
@@ -285,6 +289,16 @@ end
 function Guide:RecordSale()
     self:PublishEvent("Tutorial.Sold")
     self:GrantTrainingDiamonds()
+end
+
+--- 倍率购买成功后立即推进并赠送武器金币；每秒续接复用同一入口，步骤校验避免重复奖励。
+function Guide:RecordTrainingRatePurchase()
+    if not self:IsLootStep(4) or self:GetTableView(PlayerDataConfig.CurrencyShopData).trainingLevel <= 0 then
+        return
+    end
+    -- 同一个无让出执行的回调先推进再奖励，重复检查不会再次发钱。
+    self:PublishEvent("Tutorial.Rate")
+    assert(self:RequireComponent("FSRewardComp"):AddRewards({{Type = "Money", Currency = "Money", Count = 100}}))
 end
 
 --- 出售引导完成后赠送 35 钻石用于首次倍率升级；领取状态随引导存档，重复事件和重登不重复发放。
@@ -302,12 +316,25 @@ function Guide:GrantTrainingDiamonds()
     self:SetGuideData(data)
 end
 
---- 关卡外先指向首关入口，进入后按服务端掉落记录及有效期锁定本轮道具；模型仅在客户端生成。
+--- 收集时优先指向最近的有效掉落；尚无掉落时沿用首关入口和藏宝格引导。
 --- @param rock table 玩家的服务端关卡组件。
 --- @param position Vector3 服务端角色当前位置。
---- @return string? 当前轮次内锁定的石头格号。
---- @return Vector3? 首关入口或道具所在格子的固定世界坐标。
+--- @return string? 当前轮次内有效掉落或锁定石头的格号。
+--- @return Vector3? 有效掉落、首关入口或藏宝格的世界坐标。
 function Guide:GetLootTarget(rock, position)
+    local nearestDrop, nearestDistance = nil, math.huge
+    local now = workspace:GetServerTimeNow()
+    for dropId, drop in pairs(rock._dropNodes) do
+        if drop.ExpiresAt > now then
+            local distance = (drop.Position - position).Magnitude
+            if distance < nearestDistance then
+                nearestDrop, nearestDistance = drop, distance
+            end
+        end
+    end
+    if nearestDrop then
+        return nearestDrop.CellKey, nearestDrop.Position + Vector3.new(0, 1, 0)
+    end
     local area = rock._areas and rock._areas[1]
     local state = rock._areaStates[1]
     if not area then
@@ -326,7 +353,6 @@ function Guide:GetLootTarget(rock, position)
         self._lootCell = nil
     end
     local selected, target, distance = nil, nil, math.huge
-    local now = workspace:GetServerTimeNow()
     for cell, content in pairs(state.Contents) do
         local key = "1:" .. cell
         local dropId = rock._dropByCell[key]
@@ -388,11 +414,7 @@ function Guide:OnUpdate(serverTime)
     if self:IsLootStep(2) and #self:GetTable(PlayerDataConfig.StoredLoot) > 0 then
         self:PublishEvent("Tutorial.Deposited")
     end
-    if self:IsLootStep(4) and self:GetTable(PlayerDataConfig.CurrencyShopData).trainingLevel > 0 then
-        -- 同一个无让出执行的回调先推进再奖励，重复检查不会再次发钱。
-        self:PublishEvent("Tutorial.Rate")
-        assert(self:RequireComponent("FSRewardComp"):AddRewards({{Type = "Money", Currency = "Money", Count = 100}}))
-    end
+    self:RecordTrainingRatePurchase()
     if self:IsLootStep(5) then
         local weapon = FXLoader:RequireShared("Scripts/Game/Shared/Weapon")
         local equipped = weapon.GetEquippedConfig(self:GetTable(PlayerDataConfig.WeaponData))

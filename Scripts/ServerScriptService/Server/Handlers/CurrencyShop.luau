@@ -15,7 +15,7 @@ local Shop = FX.Loader:RequireShared("Scripts/Game/Shared/CurrencyShop")
 local Fields = _G.PlayerDataConfig
 local Service = {}
 
---- 升级同组只能买下一档，力量包允许逐次购买；价格和实际收益均由服务端重算。
+--- 升级同组只能买下一档；权威结算成功后立即通知倍率引导，避免客户端关窗后仍停留在旧步骤。
 --- @param player table 引擎认证身份对应的已就绪玩家对象。
 --- @param goodsId any 客户端提交的钻石商品 ID。
 --- @return table 结果 Key 与权威商店状态。
@@ -73,6 +73,7 @@ function Service.Buy(player, goodsId)
         FX.Network:SendMsgToClient(player:GetPlayerId(), "S2C_TrainingEffect", gain, true)
     elseif goods.BuyHandler == "TrainingRateLevel" then
         arguments = {rate = GameUtility.NumberToText(Shop.GetTrainingRate(data))}
+        player:RequireComponent("TutorialGuide"):RecordTrainingRatePurchase()
     end
     return {success = true, key = key, arguments = arguments, data = data}
 end

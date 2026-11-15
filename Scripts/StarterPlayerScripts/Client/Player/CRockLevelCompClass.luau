@@ -631,7 +631,18 @@ function Component:OnHitResult(key, round, accepted, health)
     self._refreshRocks = true
 end
 
---- 命中即时预扣血条；以实际血量预测一击，避免重复拒绝把血条越扣越低。
+--- 仅首件战利品收集步骤的世界一首关启用引导一击，其他关卡保持普通伤害与秒杀表现。
+--- @param area table 当前检查的石头所属关卡。
+--- @return boolean 当前关卡是否适用收集引导特殊规则。
+function Component:IsTutorialCollecting(area)
+    if area.World ~= 1 or area.LocalIndex ~= 1 then
+        return false
+    end
+    local guide = self:GetTable(Fields.Guide)
+    return guide.activeGuideId == "FirstLootGuide" and guide.guideMap.FirstLootGuide.stepIndex == 1
+end
+
+--- 命中即时预扣血条；世界一首关收集引导预测一击破碎，其他情况使用实际伤害。
 --- 预测致命时立即碎裂并隐藏石头及血条；保留实际血量以便回包纠正，掉落仍由服务端决定。
 --- @param key string 已经过本地目标检查的格号。
 --- @param area table 目标所属关卡。
@@ -642,6 +653,9 @@ function Component:ApplyHit(key, area)
     local oldValue = self._health[key] or RockLevel.HP[area.Index]
     local damage = RockLevel.GetDamage(self:GetNumber(Fields.RockTrainingLevel), area.Index,
         self:GetNumber(Fields.RockTrainingValue))
+    if self:IsTutorialCollecting(area) then
+        damage = math.max(damage, oldValue)
+    end
     if oldValue <= 0 or damage <= 0 then
         return
     end
@@ -934,7 +948,7 @@ function Component:UpdateTrainingHitReactions(reset)
     end
 end
 
---- 已解锁训练基地复用挥镐表现；选目标跳过预测已碎石头，场外秒杀只处理角色进入的格子。
+--- 世界一首关收集引导使用普通挥镐且关闭秒杀气场；其他情况沿用普通攻击表现。
 function Component:UpdateAttacks()
     local character = self:GetPlayerCharacter()
     local root = character and FXLoader:Find(character, "HumanoidRootPart")
@@ -984,7 +998,7 @@ function Component:UpdateAttacks()
         if math.abs(position.Y - area.FloorY) < 12
             and position.X >= area.MinX and position.X < area.MinX + area.Columns * RockLevel.CellSize
             and position.Z >= area.MinZ and position.Z < area.MinZ + area.Rows * RockLevel.CellSize then
-            if RockLevel.GetDamage(level, index, strength) >= RockLevel.HP[index] then
+            if not self:IsTutorialCollecting(area) and RockLevel.GetDamage(level, index, strength) >= RockLevel.HP[index] then
                 powerRoot = root
             end
             break
@@ -997,7 +1011,7 @@ function Component:UpdateAttacks()
             and position.Z >= area.MinZ - 8 and position.Z < area.MinZ + area.Node.Size.Z + 8 then
             local damage = RockLevel.GetDamage(level, index, strength)
             local cells = RockLevel.GetNearbyCells(area, position, root.CFrame.LookVector)
-            local instantBreak = damage >= RockLevel.HP[index]
+            local instantBreak = not self:IsTutorialCollecting(area) and damage >= RockLevel.HP[index]
             if instantBreak then
                 -- 秒杀只击碎角色进入的格子，避免站在原地依次引爆前方和左右的石头。
                 cells = {}
@@ -1676,7 +1690,7 @@ function Component:UpdateNoobVisibility(position)
     end
 end
 
---- 每帧更新受击表现，每 0.1 秒检查分块等显隐；分块按整排范围判断，低档也保留左右石头。
+--- 每帧更新受击表现，每 0.1 秒检查分块显隐；收集引导切换时同步刷新普通挥镐碰撞。
 function Component:UpdateVisuals()
     self:UpdateFragments()
     self:UpdateTrainingHitReactions()
@@ -1731,10 +1745,11 @@ function Component:UpdateVisuals()
     local strength = self:GetNumber(Fields.RockTrainingValue)
     local loading = self._loadingChunk
     local hasPickaxe = self:HasEquippedPickaxe()
+    local tutorialCollecting = self:IsTutorialCollecting(self._areas[1])
     if loading then
         local columns = math.min(6, loading.Area.Columns - loading.Column)
         local count = columns * math.min(6, loading.Area.Rows - loading.Row)
-        local canCollide = not hasPickaxe
+        local canCollide = self:IsTutorialCollecting(loading.Area) or not hasPickaxe
             or RockLevel.GetDamage(level, loading.Area.Index, strength) < RockLevel.HP[loading.Area.Index]
         for cell = loading.NextCell, math.min(loading.NextCell + 5, count - 1) do
             local row = loading.Row + math.floor(cell / columns)
@@ -1754,11 +1769,12 @@ function Component:UpdateVisuals()
         end
     end
     if self._refreshRocks or self._visualLevel ~= level or self._visualStrength ~= strength
-        or self._visualPickaxe ~= hasPickaxe then
+        or self._visualPickaxe ~= hasPickaxe or self._visualTutorialCollecting ~= tutorialCollecting then
         self._refreshRocks = false
         self._visualLevel = level
         self._visualStrength = strength
         self._visualPickaxe = hasPickaxe
+        self._visualTutorialCollecting = tutorialCollecting
         self:RefreshVisibleRocks(level, strength)
     end
     for rock, reaction in pairs(self._hitReactions) do
@@ -1766,7 +1782,7 @@ function Component:UpdateVisuals()
     end
 end
 
---- 在血量、装备、数值或地板颜色变化时同步石头；只有手持镐子且能秒杀时允许穿行。
+--- 同步石头血量和碰撞；世界一首关收集引导须正常挥镐，其他情况沿用普通穿行规则。
 --- @param level number 当前训练等级，按关卡满血判断是否允许直接穿行。
 --- @param strength number 当前阶段累计训练值，同等级内增长也刷新秒杀碰撞。
 function Component:RefreshVisibleRocks(level, strength)
@@ -1774,7 +1790,7 @@ function Component:RefreshVisibleRocks(level, strength)
     for index = 1, #self._chunks do
         local chunk = self._chunks[index]
         if chunk.Rocks then
-            local canCollide = not hasPickaxe
+            local canCollide = self:IsTutorialCollecting(chunk.Area) or not hasPickaxe
                 or RockLevel.GetDamage(level, chunk.Area.Index, strength) < RockLevel.HP[chunk.Area.Index]
             for key, rock in pairs(chunk.Rocks) do
                 local health = self._health[key] or RockLevel.HP[chunk.Area.Index]

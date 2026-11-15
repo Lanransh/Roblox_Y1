@@ -341,7 +341,27 @@ function Component:SendRockRound()
     end
 end
 
---- 校验近身范围及世界资格后累计伤害，容纳移动时一格位置复制偏差；确认击破后结算掉落并回传血量。
+--- 收集引导期间仅世界一首关的石头保底掉落；空格复用本轮奖励，不挪动普通藏宝格。
+--- @param area table 已通过命中校验并初始化的区域。
+--- @param cell number 当前有效命中的格号。
+--- @return boolean 当前石头是否享有引导一击破碎。
+function Component:PrepareTutorialRock(area, cell)
+    if area.World ~= 1 or area.LocalIndex ~= 1 or not self:RequireComponent("TutorialGuide"):IsLootStep(1) then
+        return false
+    end
+    local state = self._areaStates[area.Index]
+    if not state.Contents[cell] then
+        -- 奖励只读，原格已击破或掉落过期时仍可作为引导保底来源。
+        local sourceCell = next(state.Contents)
+        state.Contents[cell] = sourceCell and state.Contents[sourceCell]
+    end
+    if not state.Contents[cell] then
+        return false
+    end
+    return true
+end
+
+--- 校验近身范围及世界资格后累计伤害；收集引导仅世界一首关一击破碎，其他关卡沿用普通结算。
 --- @param key string 客户端命中的石头格号。
 --- @param round number 客户端当前关卡轮次。
 --- @return boolean 是否认可本次命中，客户端仅在认可后更新血量。
@@ -376,7 +396,9 @@ function Component:RecordHit(key, round)
     if damage <= 0 then
         return false
     end
-    local instantBreak = damage >= RockLevel.HP[area.Index]
+    local tutorialCollecting = area.World == 1 and area.LocalIndex == 1
+        and self:RequireComponent("TutorialGuide"):IsLootStep(1)
+    local instantBreak = not tutorialCollecting and damage >= RockLevel.HP[area.Index]
     -- 客户端秒杀只选择脚下格；服务端允许相邻一格，避免位置复制滞后导致已碎石头恢复。
     local canHit = RockLevel.CanHitCell(area, root.Position, cell)
     local now = os.clock()
@@ -393,6 +415,9 @@ function Component:RecordHit(key, round)
     self._hitInterval = interval
     if not self:InitializeArea(area) then
         return false
+    end
+    if self:PrepareTutorialRock(area, cell) then
+        damage = math.max(damage, RockLevel.HP[area.Index])
     end
     -- 等级复制延迟时直接校正为击破，已具备开奖资格的格子不再产生训练收益。
     if self:GetRecordedDamage(key) >= RockLevel.HP[area.Index] then
