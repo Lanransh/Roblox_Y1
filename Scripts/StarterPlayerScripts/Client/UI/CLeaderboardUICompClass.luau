@@ -24,13 +24,14 @@ local TranslationTexts = Text.Define("Leaderboard", {
 local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
 local ContextActionService = game:GetService("ContextActionService")
+local StarterGui = game:GetService("StarterGui")
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local RankingDataConfig = FXLoader:RequireShared("Scripts/Game/Shared/RankingDataConfig")
 local Component = FX.Class("CLeaderboardUICompClass", "FCUICompClass")
 
 local Gold = Color3.fromRGB(255, 194, 46)
 local Cream = Color3.fromRGB(255, 237, 198)
-local VisibleRankCount = 7
+local VisibleRankCount = 100
 local BoardTypes = {
     {Name = "Strength", TextColor = Gold},
     {Name = "Rebirth", TextColor = Color3.fromRGB(210, 165, 255)},
@@ -93,7 +94,7 @@ function Component:GetCompName()
     return "CLeaderboardUIComp"
 end
 
---- UI 留在 PlayerGui；绑定现有模型面板，前七名纵向滚动，个人行固定显示。
+--- UI 留在 PlayerGui；绑定现有模型面板，前百名纵向滚动，个人行固定显示。
 function Component:OnReady()
     self._localization = self:GetPlayerObject():RequireComponent("FCCommonUIComp").Localization
     self._rankingData = {}
@@ -170,7 +171,7 @@ function Component:OnReady()
     end)
 end
 
---- 其余八块榜单沿用前七名布局，异步等待复制，避免阻塞首个榜单初始化。
+--- 其余八块榜单沿用前百名布局，异步等待复制，避免阻塞首个榜单初始化。
 --- @param path string 已核对的世界排行榜模型路径。
 --- @param worldIndex number 世界编号，用于界面节点名。
 --- @param kind number 榜单类型，依次为力量、重生和在线时长。
@@ -251,11 +252,12 @@ function Component:BindCameraView()
     })
     self._viewButton = Create("TextButton", self._viewUI, {
         Name = "View", AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.fromScale(0.92, 0.65),
-        Size = UDim2.new(0.28, 0, 0, 36), BackgroundColor3 = Gold, BorderSizePixel = 0,
-        TextColor3 = Color3.fromRGB(64, 38, 15), Font = Enum.Font.FredokaOne, TextSize = 16,
-        AutoLocalize = false, Visible = false, Text = Text.Tr(TranslationTexts.View),
+        Size = UDim2.new(0.32, 0, 0, 64), BackgroundColor3 = Gold, BorderSizePixel = 0,
+        TextColor3 = Color3.fromRGB(64, 38, 15), Font = Enum.Font.FredokaOne, TextSize = 28,
+        AutoLocalize = false, Visible = false, TextScaled = true, Text = Text.Tr(TranslationTexts.View),
     })
-    Create("UISizeConstraint", self._viewButton, {MaxSize = Vector2.new(220, 36)})
+    Create("UITextSizeConstraint", self._viewButton, {MinTextSize = 1, MaxTextSize = 28})
+    Create("UISizeConstraint", self._viewButton, {MaxSize = Vector2.new(320, 64)})
     Create("UICorner", self._viewButton, {CornerRadius = UDim.new(0, 14)})
     Create("UIStroke", self._viewButton, {Color = Color3.fromRGB(255, 225, 139), Thickness = 2, ApplyStrokeMode = Enum.ApplyStrokeMode.Border})
     self:TrackConnection(self._viewButton.Activated:Connect(function()
@@ -263,11 +265,12 @@ function Component:BindCameraView()
     end))
     self._closeButton = Create("TextButton", self._viewUI, {
         Name = "Close", AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.fromScale(0.92, 0.65),
-        Size = UDim2.new(0.28, 0, 0, 36), BackgroundColor3 = Gold, BorderSizePixel = 0,
-        TextColor3 = Color3.fromRGB(64, 38, 15), Font = Enum.Font.FredokaOne, TextSize = 16,
-        AutoLocalize = false, Visible = false, Modal = true, Text = Text.Tr(TranslationTexts.Close),
+        Size = UDim2.new(0.32, 0, 0, 64), BackgroundColor3 = Gold, BorderSizePixel = 0,
+        TextColor3 = Color3.fromRGB(64, 38, 15), Font = Enum.Font.FredokaOne, TextSize = 28,
+        AutoLocalize = false, Visible = false, Modal = true, TextScaled = true, Text = Text.Tr(TranslationTexts.Close),
     })
-    Create("UISizeConstraint", self._closeButton, {MaxSize = Vector2.new(220, 36)})
+    Create("UITextSizeConstraint", self._closeButton, {MinTextSize = 1, MaxTextSize = 28})
+    Create("UISizeConstraint", self._closeButton, {MaxSize = Vector2.new(320, 64)})
     Create("UICorner", self._closeButton, {CornerRadius = UDim.new(0, 14)})
     Create("UIStroke", self._closeButton, {Color = Color3.fromRGB(255, 225, 139), Thickness = 2, ApplyStrokeMode = Enum.ApplyStrokeMode.Border})
     self:GetPlayerObject():RequireComponent("FCCommonUIComp"):RegisterTrainingClickModal(self._closeButton)
@@ -324,7 +327,65 @@ function Component:BindCameraView()
     end))
 end
 
---- 以显示面正面为镜头轴；按屏幕比例计算距离，缩小留白并完整容纳榜单。
+--- 仅在本地隐藏角色及装备特效，并监听查看期间新增或移出的装备。
+function Component:HideCharacterForView()
+    local character = self:GetPlayerCharacter()
+    self._characterVisuals = {}
+    if not character then
+        return
+    end
+    --- 保存节点原有显示状态；透明度控制器或特效刷新不能重新显示遮挡物。
+    --- @param node Instance 当前角色的后代节点。
+    local function HideNode(node)
+        if self._characterVisuals[node] then
+            return
+        end
+        local property, hiddenValue
+        if node:IsA("BasePart") then
+            property, hiddenValue = "LocalTransparencyModifier", 1
+        elseif node:IsA("Decal") then
+            property, hiddenValue = "Transparency", 1
+        elseif node:IsA("ParticleEmitter") or node:IsA("Trail") or node:IsA("Beam")
+            or node:IsA("BillboardGui") or node:IsA("SurfaceGui") or node:IsA("Highlight")
+            or node:IsA("Light") or node:IsA("Fire") or node:IsA("Smoke") or node:IsA("Sparkles") then
+            property, hiddenValue = "Enabled", false
+        else
+            return
+        end
+        local visual = {Property = property, Value = node[property]}
+        self._characterVisuals[node] = visual
+        node[property] = hiddenValue
+        visual.Connection = node:GetPropertyChangedSignal(property):Connect(function()
+            if node[property] ~= hiddenValue then
+                node[property] = hiddenValue
+            end
+        end)
+        if node:IsA("ParticleEmitter") or node:IsA("Trail") then
+            node:Clear()
+        end
+    end
+    self._characterAddedConnection = character.DescendantAdded:Connect(HideNode)
+    self._characterRemovingConnection = character.DescendantRemoving:Connect(function(node)
+        self:RestoreCharacterVisual(node)
+    end)
+    for index, node in ipairs(character:GetDescendants()) do
+        HideNode(node)
+    end
+end
+
+--- 退出查看或装备离开角色时，释放强制隐藏监听并恢复该节点原有显示状态。
+--- @param node Instance 曾由本组件临时隐藏的角色节点。
+function Component:RestoreCharacterVisual(node)
+    local visual = self._characterVisuals[node]
+    if not visual then
+        return
+    end
+    visual.Connection:Disconnect()
+    self._characterVisuals[node] = nil
+    node[visual.Property] = visual.Value
+end
+
+--- 隐藏主界面、本人角色和原生背包，仅保留退出按钮；以显示面正面为镜头轴居中取景。
 function Component:EnterView()
     if self._cameraState or not self._nearBoard then
         return
@@ -333,11 +394,18 @@ function Component:EnterView()
     if not camera then
         return
     end
+    local mainUI = self:GetPlayerObject():RequireComponent("CMainUIComp")
     self._panel = self._nearBoard.Panel
     self._cameraState = {
         Camera = camera, Type = camera.CameraType, Subject = camera.CameraSubject,
         CFrame = camera.CFrame, Focus = camera.Focus,
+        MainUIEnabled = mainUI:GetRootNode().Enabled,
+        BackpackEnabled = StarterGui:GetCoreGuiEnabled(Enum.CoreGuiType.Backpack),
     }
+    self:GetPlayerObject():RequireComponent("FCCommonUIComp"):HideTooltips()
+    mainUI:Hide()
+    StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Backpack, false)
+    self:HideCharacterForView()
     camera.CameraType = Enum.CameraType.Scriptable
     self._viewButton.Visible = false
     self._closeButton.Visible = true
@@ -358,13 +426,23 @@ function Component:EnterView()
     end)
 end
 
---- 退出、死亡或组件销毁时恢复镜头，解除本组件的移动限制。
+--- 手动退出、离远、死亡或组件销毁时恢复原有主界面、背包和镜头，解除移动限制。
 function Component:ExitView()
     local state = self._cameraState
     if not state then
         return
     end
     self._cameraState = nil
+    if self._characterAddedConnection then
+        self._characterAddedConnection:Disconnect()
+        self._characterRemovingConnection:Disconnect()
+        self._characterAddedConnection = nil
+        self._characterRemovingConnection = nil
+    end
+    for node, visual in pairs(self._characterVisuals) do
+        self:RestoreCharacterVisual(node)
+    end
+    self._characterVisuals = nil
     self._cameraConnection:Disconnect()
     self._cameraConnection = nil
     ContextActionService:UnbindAction("LeaderboardViewMovement")
@@ -373,9 +451,13 @@ function Component:ExitView()
     state.Camera.CameraSubject = state.Subject
     state.Camera.CameraType = state.Type
     self._closeButton.Visible = false
+    if state.MainUIEnabled then
+        self:GetPlayerObject():RequireComponent("CMainUIComp"):Show()
+    end
+    StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Backpack, state.BackpackEnabled)
 end
 
---- 列表行高保证七名榜单有实际滚动范围，右侧留出滚动条空间；个人行由调用方固定尺寸。
+--- 列表使用固定行高，右侧留出滚动条空间；个人行由调用方固定尺寸。
 --- @param parent Instance 列表或固定个人行的父节点。
 --- @param rank number 列表行槽位；个人行传 0，不作为实际名次显示。
 --- @param personal boolean 是否为金色个人行。
