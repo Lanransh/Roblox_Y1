@@ -95,7 +95,8 @@ function Component:OnReady()
     self._trainingStatus = Instance.new("TextLabel")
     self._trainingStatus.Name = "TrainingStatus"
     self._trainingStatus.AnchorPoint = Vector2.new(0.5, 0)
-    self._trainingStatus.Position = UDim2.new(0.5, 0, 0, 150)
+    -- 顶部距离随安全区高度变化，避免手机横屏偏低、PC 又贴近顶部信息。
+    self._trainingStatus.Position = UDim2.fromScale(0.5, 150 / 720)
     self._trainingStatus.Size = UDim2.fromOffset(480, 44)
     self._trainingStatus.BackgroundTransparency = 1
     self._trainingStatus.Font = Enum.Font.GothamBold
