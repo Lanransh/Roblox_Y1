@@ -5,7 +5,7 @@ description: 开发 Roblox_Y1 普通客户端 UI 组件及通用显隐、生命�
 
 # Roblox UI 组件
 
-- 接入前读取 [界面来源与生命周期](reference-rules.md)。
+- 接入前读取 [界面来源、生命周期与屏幕适配](reference-rules.md)；新增或修改 UI 默认落实其中的适配与验收要求。
 - 先按 [外部工具协作](../roblox-external-tools/SKILL.md) 中的 [UI 归属与业务接入](../roblox-external-tools/references/ui-integration.md) 判断是否由 UIEditor 托管；有对应生成 View 时沿该参考接入，不套用普通组件示例重写展示层。
 - 普通 UI 组件需要骨架时读取 [组件示例](reference-examples.md)。
 - 确认框和 UI 动画接口见 [常用接法](reference-cheatsheet.md)。

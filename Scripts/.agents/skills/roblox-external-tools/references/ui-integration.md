@@ -53,6 +53,7 @@ Generated、框架和导入元数据不得手工修补；生成内容只能经�
 
 ## 交付检查
 
+- 新增或修改 UI 默认落实 [屏幕适配与验收](../../roblox-ui-components/reference-rules.md#屏幕适配与验收)；托管展示的适配通过源 UI 完成，不在业务接入侧重复实现。
 - 核对数据、动作、pending、初始化与清理；确认没有父子两套展示规则、重复事件和二次翻译。已有绕过仅在本次授权范围内迁移，不能删掉有意保留的业务差异。
 - 按 [Luau 验证规则](../../roblox-luau-standards/reference-rules.md#验证) 做语法验证和 Roblox MCP 只读同步核验；文本节点、隐藏原型及祖先 AutoLocalize 按本地化 skill 核验。
 - 分别报告 UIEditor 模拟、MCP 导出、Studio/Script Sync 核对与真实游戏测试结果。UIEditor 模拟不代表游戏业务验证；未获试玩授权不启动 Roblox 游戏。

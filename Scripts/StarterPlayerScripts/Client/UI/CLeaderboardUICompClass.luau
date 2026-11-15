@@ -245,7 +245,18 @@ function Component:RefreshBoardData(board)
     FXLoader:Here(personal, "Avatar").Image = "rbxthumb://type=AvatarHeadShot&id=" .. self:GetPlayerId() .. "&w=150&h=150"
 end
 
---- 查看与退出按钮位于屏幕右侧，避开底部物品栏，不往模型添加节点。
+--- 按安全区可用尺寸缩放两个按钮；手机保留至少 44 像素高度，电脑沿用设计尺寸。
+function Component:RefreshViewControlsSize()
+    local available = self._viewUI.AbsoluteSize
+    local scale = math.clamp(math.min(available.X / 1280, available.Y / 720), 44 / 64, 1)
+    for index, button in ipairs({self._viewButton, self._closeButton}) do
+        button.Size = UDim2.new(0.32, 0, 0, 64 * scale)
+        button:FindFirstChildOfClass("UISizeConstraint").MaxSize = Vector2.new(320 * scale, 64 * scale)
+        button:FindFirstChildOfClass("UITextSizeConstraint").MaxTextSize = math.floor(28 * scale)
+    end
+end
+
+--- 查看与退出按钮位于屏幕右侧，随可用尺寸变化适配，避开底部物品栏。
 function Component:BindCameraView()
     self._viewUI = Create("ScreenGui", FXLoader:Here(self:GetPlayerNode(), "PlayerGui", math.huge), {
         Name = "LeaderboardViewControls", ResetOnSpawn = false, DisplayOrder = 30,
@@ -273,6 +284,10 @@ function Component:BindCameraView()
     Create("UISizeConstraint", self._closeButton, {MaxSize = Vector2.new(320, 64)})
     Create("UICorner", self._closeButton, {CornerRadius = UDim.new(0, 14)})
     Create("UIStroke", self._closeButton, {Color = Color3.fromRGB(255, 225, 139), Thickness = 2, ApplyStrokeMode = Enum.ApplyStrokeMode.Border})
+    self:RefreshViewControlsSize()
+    self:TrackConnection(self._viewUI:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
+        self:RefreshViewControlsSize()
+    end))
     self:GetPlayerObject():RequireComponent("FCCommonUIComp"):RegisterTrainingClickModal(self._closeButton)
     self:TrackConnection(self._closeButton.Activated:Connect(function()
         self:ExitView()
