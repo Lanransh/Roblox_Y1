@@ -31,12 +31,11 @@ end
 function Manager:RegTrainingRejoinMsg()
     --- 未就绪或已离服的玩家不能发起存档与传送。
     --- @param userId number 引擎认证玩家 ID。
-    --- @param action any SetEnabled / Cancel / Request。
-    --- @param enabled any 开关动作携带的 boolean，其他动作忽略。
-    FX.Network:RegClientMsgCallback("C2S_TrainingRejoin", function(userId, action, enabled)
+    --- @param action any Cancel / Request。
+    FX.Network:RegClientMsgCallback("C2S_TrainingRejoin", function(userId, action)
         local player = self:GetPlayerObject(userId)
         if player then
-            player:RequireComponent("STrainingRejoinComp"):Request(action, enabled)
+            player:RequireComponent("STrainingRejoinComp"):Request(action)
         end
     end)
 end

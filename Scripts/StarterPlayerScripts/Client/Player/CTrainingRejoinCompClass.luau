@@ -3,11 +3,10 @@ local Text = FX.Text
 local UserInputService = game:GetService("UserInputService")
 local Fields = _G.PlayerDataConfig
 local TranslationTexts = Text.Define("TrainingRejoin", {
-    Enabled = "Anti-AFK Mode: ON",
-    Disabled = "Anti-AFK Mode: OFF",
+    Enabled = "Anti-Kick Mode Enabled",
 })
 
---- 只处理训练重进状态和真实输入；按钮、布局与翻译刷新统一交给主界面。
+--- 只处理训练重进状态和真实输入；提示文字、布局与翻译刷新统一交给主界面。
 local Component = FX.Class("CTrainingRejoinCompClass", "FCPlayerCompClass")
 
 --- 提供主界面使用的业务组件名称，不注册独立界面。
@@ -20,7 +19,6 @@ end
 function Component:OnReady()
     self._lastInput = os.clock()
     self:WatchDataChanged(Fields.TrainingRejoinEnabled, function()
-        self._pending = false
         self:NotifyState()
     end)
     self:WatchDataChanged(Fields.TrainingFieldIndex, function()
@@ -50,14 +48,13 @@ function Component:OnReady()
     end))
 end
 
---- 首次读取不依赖 OnReady 顺序；仅展示开启/关闭，内部等待状态只用于防止重复点击。
---- @return table enabled、pending、status、visible 和未翻译的 definition。
+--- 首次读取不依赖 OnReady 顺序；固定开启的模式只提供状态提示。
+--- @return table enabled、status、visible 和未翻译的 definition。
 function Component:GetState()
     local enabled = self:GetFlag(Fields.TrainingRejoinEnabled)
     local status = self:GetPlayerNode():GetAttribute("TrainingRejoinStatus") or "Idle"
-    local definition = enabled and TranslationTexts.Enabled or TranslationTexts.Disabled
-    return {enabled = enabled, pending = self._pending == true, status = status,
-        visible = self:GetNumber(Fields.TrainingFieldIndex) > 0, definition = definition}
+    return {enabled = enabled, status = status,
+        visible = self:GetNumber(Fields.TrainingFieldIndex) > 0, definition = TranslationTexts.Enabled}
 end
 
 --- 通过玩家已有事件分发通知主界面，避免持有或重复创建 UI 节点。
@@ -75,28 +72,11 @@ function Component:RecordInput()
     end
 end
 
---- 主界面只调用此入口；开关防重与按钮等待状态一起更新。
-function Component:Toggle()
-    local state = self:GetState()
-    if state.pending or state.status == "Teleporting" then
-        return
-    end
-    self:RecordInput()
-    self._pending = true
-    self._toggleDeadline = os.clock() + 5
-    self:NotifyState()
-    FX.Network:SendMsgToServer("C2S_TrainingRejoin", "SetEnabled", not state.enabled)
-end
-
---- 复用框架每秒更新，保持原有空闲阈值、单轮请求与开关超时恢复。
+--- 复用框架每秒更新，保持原有空闲阈值与单轮重进请求。
 --- @param serverTime number 框架传入的时间；空闲时长使用单调时钟。
 function Component:OnUpdate(serverTime)
     local now = os.clock()
-    if self._pending and now >= self._toggleDeadline then
-        self._pending = false
-        self:NotifyState()
-    end
-    if self._idled and not self._requested and not self._pending
+    if self._idled and not self._requested
         and self:GetFlag(Fields.TrainingRejoinEnabled) and self:GetNumber(Fields.TrainingFieldIndex) > 0
         and now - self._lastInput >= 15 * 60 then
         self._requested = true

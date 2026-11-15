@@ -13,7 +13,7 @@ return {
                 target = {type = "Text", textId = "Tutorial.Rate"}},
             {finishEvent = "Tutorial.Weapon", analyticsStepName = "StrongerWeaponEquipped",
                 target = {type = "Weapon", textId = "Tutorial.Weapon"}},
-            {finishEvent = "Tutorial.Aura", analyticsStepName = "AuraEquipped",
+            {finishEvent = "Tutorial.Aura", analyticsStepName = "AuraOwned",
                 target = {type = "Aura", textId = "Tutorial.Aura"}},
             {finishEvent = "Tutorial.Training", analyticsStepName = "AutomaticTrainingReminderShown", duration = 5,
                 target = {type = "Training", textId = "Tutorial.AutomaticTraining"}},

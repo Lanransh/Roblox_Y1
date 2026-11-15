@@ -7,7 +7,7 @@ local Config = _G.GameConfig.CommonConfig
 local GuideSteps = _G.TutorialGuideConfig.FirstLootGuide.steps
 local Component = FX.Class("SAnalyticsCompClass", "FSPlayerCompClass")
 local VERSION = "V1"
-local GUIDE_VERSION = "FirstLootV3"
+local GUIDE_VERSION = "FirstLootV4"
 local GROWTH_STEPS = {"GuideCompleted", "FirstRebirth", "World2Unlocked", "World3Unlocked"}
 local PURCHASE_STEPS = {"ShopOpened", "ProductSelected", "PromptRequested", "PurchaseGranted"}
 -- 所有业务分析共用一分钟滑动窗口，留出平台额度余量；失败调用也计入预算。
@@ -45,11 +45,14 @@ function Component:IsSessionActive()
     return self._startedAt ~= nil and not self._ended
 end
 
---- 登录完成后明确启动，不依赖组件遍历顺序；测试账号仍正常记账但不发送。
+--- 登录时固定引导参与版本，历史玩家不进入 V4；测试账号仍正常记账但不发送。
 --- @param isFirstSession boolean 发放初始武器前确认的首次玩家标记。
 function Component:StartSession(isFirstSession)
     if self._startedAt then
         return
+    end
+    if self:GetNumber(Fields.FirstLootAnalyticsVersion) == 0 then
+        self:SetNumber(Fields.FirstLootAnalyticsVersion, isFirstSession and 4 or 3)
     end
     self._startedAt = os.clock()
     self._accountedAt = self._startedAt
@@ -135,21 +138,21 @@ function Component:GetGuideStep(data)
     return nil
 end
 
---- 持久化待报目标，成功调用后只在会话内去重；重登依赖平台去重恢复漏报。
+--- 仅为新版参与者持久化 V4 待报目标；历史玩家仍正常触发成长里程碑。
 --- @param data table 已提交的权威引导数据。
 function Component:RecordGuide(data)
     if not self._startedAt or self._ended then
         return
     end
     local step = self:GetGuideStep(data)
-    local previous = self:GetNumber(Fields.FirstLootV3Step)
-    if step then
+    local previous = self:GetNumber(Fields.FirstLootV4Step)
+    if step and self:GetNumber(Fields.FirstLootAnalyticsVersion) == 4 then
         local target = math.max(previous, step)
         if target > previous then
-            self:SetNumber(Fields.FirstLootV3Step, target)
+            self:SetNumber(Fields.FirstLootV4Step, target)
         end
         local stepName = target == 1 and "GuideStarted" or GuideSteps[target - 1].analyticsStepName
-        if target > (self._reportedGuideStep or 0) and self:Funnel(GUIDE_VERSION, "LifetimeV3", target,
+        if target > (self._reportedGuideStep or 0) and self:Funnel(GUIDE_VERSION, "LifetimeV4", target,
             stepName, {GUIDE_VERSION, "CompletedActions", VERSION}) then
             self._reportedGuideStep = target
         end

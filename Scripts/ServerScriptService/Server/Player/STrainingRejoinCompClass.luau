@@ -24,6 +24,8 @@ function Component:Ctor(owner)
     self._player = self:GetPlayerNode()
     self._session = Storage:GetSessionToken(self:GetPlayerId())
     self._nextRequest = 0
+    -- 防踢出固定开启，同时恢复旧版本曾保存为关闭的玩家状态。
+    self:SetFlag(Fields.TrainingRejoinEnabled, true)
     local context = self:GetTable(Fields.TrainingRejoinContext)
     local join = self._player:GetJoinData()
     local data = join.TeleportData
@@ -91,19 +93,13 @@ function Component:CancelPending()
     self:SetStatus("Idle")
 end
 
---- 接受本人开关、取消或重进请求；每轮最多三次，并限制客户端反复创建流程。
---- @param action any SetEnabled / Cancel / Request。
---- @param enabled any SetEnabled 时必须为 boolean。
-function Component:Request(action, enabled)
+--- 仅接受本人取消本轮或重进请求；防踢出模式不提供关闭入口。
+--- @param action any Cancel / Request，其他动作忽略。
+function Component:Request(action)
     if not self:IsSessionActive() then
         return
     end
-    if action == "SetEnabled" and type(enabled) == "boolean" then
-        self:SetFlag(Fields.TrainingRejoinEnabled, enabled)
-        if not enabled then
-            self:CancelPending()
-        end
-    elseif action == "Cancel" then
+    if action == "Cancel" then
         self:CancelPending()
     elseif action == "Request" and not self._attempt and not self._working and os.clock() >= self._nextRequest
         and self:GetTrainingField() then

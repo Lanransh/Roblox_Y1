@@ -118,7 +118,7 @@ function Component:OnReady()
     self._trainingStatus.Parent = self._rootNode
     self._trainingTextEffect = AnimatedText.Attach(self._trainingStatus)
     self:CreatePurchaseReminder()
-    self:CreateTrainingRejoinButton()
+    self:CreateTrainingRejoinLabel()
     self._strength.AutoLocalize = false
     FXLoader:Here(self._bar, "ProgressLabel").AutoLocalize = false
     --- 翻译就绪或语言切换时刷新主界面，出售界面自行监听语言变化。
@@ -431,8 +431,6 @@ function Component:BindButtons()
             self:TrackConnection(node.Activated:Connect(function()
                 if node == self._friendBoost then
                     return
-                elseif node == self._trainingRejoinButton then
-                    self._trainingRejoin:Toggle()
                 elseif node.Name == "GMButton" then
                     if FX.IsDeveloper(self:GetPlayerNode().UserId) then
                         self:GetPlayerObject():RequireComponent("CGMUIComp"):Show()
@@ -643,7 +641,7 @@ function Component:RefreshLocalization()
     self:RefreshTrainingRejoin()
 end
 
---- 底部文字与防挂机按钮共用设计坐标，文字初始化后移至遮罩上层，保留快捷栏留白。
+--- 底部提醒与防踢出状态共用设计坐标，仅彩色提醒移至遮罩上层，保留快捷栏留白。
 function Component:CreatePurchaseReminder()
     local group = Instance.new("Frame")
     group.Name = "BottomTraining"
@@ -721,63 +719,31 @@ function Component:CreateReminderOverlay()
     self._purchaseReminder.Parent = layout
 end
 
---- 在主界面底部组内创建唯一开关，按钮事件复用 BindButtons 的统一入口。
-function Component:CreateTrainingRejoinButton()
+--- 防踢出状态仅用一行文字展示，沿用底部组缩放，不提供点击交互。
+function Component:CreateTrainingRejoinLabel()
     self._trainingRejoin = self:RequireComponent("CTrainingRejoinComp")
-    local button = Instance.new("ImageButton")
-    button.Name = "TrainingRejoinButton"
-    button.AnchorPoint = Vector2.new(0.5, 1)
-    button.Size = UDim2.fromOffset(300, 48)
-    button.BackgroundColor3 = Color3.fromRGB(103, 237, 20)
-    button.BorderSizePixel = 0
-    button.Image = "rbxassetid://82793028306773"
-    button.ScaleType = Enum.ScaleType.Tile
-    button.TileSize = UDim2.fromOffset(28, 28)
-    button.ZIndex = 3
-    button.Visible = false
-    local corner = Instance.new("UICorner")
-    corner.CornerRadius = UDim.new(0, 6)
-    corner.Parent = button
-    local outline = Instance.new("UIStroke")
-    outline.Color = Color3.new(0, 0, 0)
-    outline.Thickness = 3
-    outline.Parent = button
-    local highlight = Instance.new("Frame")
-    highlight.Name = "TopHighlight"
-    highlight.Size = UDim2.new(1, 0, 0, 2)
-    highlight.BackgroundColor3 = Color3.new(1, 1, 1)
-    highlight.BackgroundTransparency = 0.58
-    highlight.BorderSizePixel = 0
-    highlight.ZIndex = 4
-    highlight.Parent = button
-    local edge = Instance.new("Frame")
-    edge.Name = "BottomEdge"
-    edge.Position = UDim2.new(0, 0, 1, -4)
-    edge.Size = UDim2.new(1, 0, 0, 4)
-    edge.BackgroundTransparency = 0.2
-    edge.BorderSizePixel = 0
-    edge.ZIndex = 4
-    edge.Parent = button
     local label = Instance.new("TextLabel")
-    label.Name = "Label"
-    label.Size = UDim2.fromScale(1, 1)
-    label.Position = UDim2.fromOffset(0, -2)
+    label.Name = "TrainingRejoinStatus"
+    label.AnchorPoint = Vector2.new(0.5, 1)
+    label.Size = UDim2.new(1, 0, 0, 32)
     label.BackgroundTransparency = 1
     label.Font = Enum.Font.GothamBold
     label.TextSize = 22
+    label.TextScaled = false
+    label.TextWrapped = false
     label.TextColor3 = Color3.new(1, 1, 1)
     label.TextStrokeColor3 = Color3.new(0, 0, 0)
     label.TextStrokeTransparency = 0
-    label.Text = ""
     label.AutoLocalize = false
+    label.Text = ""
+    label.Active = false
+    label.Interactable = false
+    label.Visible = false
     label.ZIndex = 5
-    label.Parent = button
-    button.Parent = self._bottomTrainingGroup
-    self._trainingRejoinButton = button
+    label.Parent = self._bottomTrainingGroup
     self._trainingRejoinLabel = label
-    self._trainingRejoinEdge = edge
     self:SubscribeEvent("TrainingRejoinChanged", self.RefreshTrainingRejoin)
-    -- 文案换行或溢出缩小后，开关仍紧贴实际文字上方，位置不受设备倍率重复影响。
+    -- 彩色提醒换行或缩小后，状态行仍放在实际文字上方，避免相互遮挡。
     for index, property in ipairs({"ContentText", "TextSize", "Visible"}) do
         self:TrackConnection(self._purchaseReminder:GetPropertyChangedSignal(property):Connect(function()
             self:RefreshTrainingRejoinLayout()
@@ -786,18 +752,15 @@ function Component:CreateTrainingRejoinButton()
     self:RefreshTrainingRejoin()
 end
 
---- 主界面负责开关文字、颜色和交互，业务组件不持有任何界面节点。
+--- 仅在训练中且已开启时显示防踢出状态，文案沿用业务组件的翻译定义。
 function Component:RefreshTrainingRejoin()
     local state = self._trainingRejoin:GetState()
-    self._trainingRejoinButton.Visible = state.visible
-    self._trainingRejoinButton.Interactable = not state.pending and state.status ~= "Teleporting"
-    self._trainingRejoinButton.BackgroundColor3 = Color3.fromHex(state.enabled and "#67ed14" or "#638079")
-    self._trainingRejoinEdge.BackgroundColor3 = Color3.fromHex(state.enabled and "#225a07" or "#263e36")
+    self._trainingRejoinLabel.Visible = state.visible and state.enabled
     self._trainingRejoinLabel.Text = Text.Tr(state.definition)
     self:RefreshTrainingRejoinLayout()
 end
 
---- 在同一设计坐标系内按实际换行高度定位，文字与按钮统一交给主界面 UIScale 缩放。
+--- 按彩色提醒的实际换行高度留出间距，两行文字统一沿用主界面 UIScale 缩放。
 function Component:RefreshTrainingRejoinLayout()
     local label = self._purchaseReminder
     local height = 0
@@ -806,7 +769,7 @@ function Component:RefreshTrainingRejoinLayout()
             Vector2.new(self._bottomTrainingGroup.Size.X.Offset, 100000))
         height = math.min(self._bottomTrainingGroup.Size.Y.Offset, bounds.Y * label.LineHeight)
     end
-    self._trainingRejoinButton.Position = UDim2.new(0.5, 0, 1, -height - 12)
+    self._trainingRejoinLabel.Position = UDim2.new(0.5, 0, 1, -height - 16)
 end
 
 --- 新手引导完成后才显示底部提醒；下一世界已解锁更强基地时持续引导至目标基地。
