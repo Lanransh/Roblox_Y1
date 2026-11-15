@@ -1,6 +1,7 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
 local Text = FX.Text
+local GroupService = game:GetService("GroupService")
 local TranslationTexts = Text.Define("Welfare", {
     OfflineEmpty = "No offline rewards available.",
     NotReady = "This reward is not available yet.",
@@ -9,6 +10,7 @@ local TranslationTexts = Text.Define("Welfare", {
     LoginRequired = "Log in on {days:int} days to claim this reward.",
     TaskIncomplete = "Complete this task before claiming ({current:int}/{target:int}).",
     Unknown = "Something went wrong. Please try again.",
+    MembershipPending = "If you just joined the group, rejoin the game to claim your reward.",
 })
 FXLoader:RequireFromParent(script, "Generated/CWelfareView")
 local Welfare = FXLoader:RequireShared("Scripts/Game/Shared/Welfare")
@@ -35,6 +37,7 @@ function Component:OnReady()
     self._mainRewardDot.Visible = false
     local offlineConfig = _G.GameConfig.CommonConfig.OfflineReward
     self.Config = {
+        free = {amount = _G.ActivityConfig.CommonConfig.GroupRewardChestReward.Count},
         groups = {
             {kind = "online", page = "OnlineBox", columns = 3, gapX = 20, gapY = 16, items = {}},
             {kind = "signin", page = "SignInBox", columns = 3, gapX = 12, gapY = 16, items = {}},
@@ -81,6 +84,12 @@ end
 --- 监听立即回放当前快照；训练值和重生次数变化时同步刷新离线奖励的经验上限。
 function Component:BindUIData()
     self:WatchDataChanged(Fields.WelfareState, self.RefreshWelfare, self)
+    self:WatchDataChanged(Fields.GroupRewardClaimed, function()
+        self:RefreshWelfare()
+    end)
+    self:WatchDataChanged(Fields.GroupRewardReminderDisabled, function()
+        self:RefreshWelfare()
+    end)
     for index, field in ipairs({Fields.RockTrainingValue, Fields.RebirthCount}) do
         self:WatchDataChanged(field, function()
             self:RefreshWelfare()
@@ -112,7 +121,14 @@ function Component:RefreshWelfare(data)
         })
     end
     self.State = {
-        busy = self._pending ~= nil,
+        busy = self._pending ~= nil or self._groupRequestTask ~= nil,
+        free = {
+            claimed = self._groupClaimed == true or self:GetFlag(Fields.GroupRewardClaimed),
+            pending = self._groupRequestTask ~= nil,
+            reminderDisabled = self._groupReminderDisabled == true or self:GetFlag(Fields.GroupRewardReminderDisabled),
+            reminderPending = self._reminderRequestTask ~= nil,
+            errorText = self._groupError and Text.Tr(self._groupError) or nil,
+        },
         offline = table.clone(data.offline),
         onlineMinutes = (data.onlineSeconds + math.max(0, os.time() - self._snapshotTime)) / 60,
         signInDay = data.loginDays,
@@ -180,6 +196,7 @@ function Component:RefreshWelfare(data)
         end
     end
     self._mainRewardDot.Visible = hasClaimable
+        or data.ready and not self.State.free.claimed and not self.State.free.reminderDisabled
     self:RefreshUI()
     if data.ready and self._firstSnapshot then
         self._firstSnapshot = false
@@ -240,10 +257,84 @@ function Component:FormatNumber(value)
     return GameUtility.NumberToText(value)
 end
 
+--- 打开时只核实资格并领取已有会员奖励，未加入时等待玩家主动点击平台入群。
+function Component:OnShow()
+    Component.Super.OnShow(self)
+    self:ClaimFreeReward(false)
+end
+
+--- 复用福利协议和群组宝箱永久标记，平台弹窗仅由玩家主动操作触发。
+--- @param promptJoin boolean 是否允许弹出 Roblox 加入群组窗口。
+function Component:ClaimFreeReward(promptJoin)
+    if not self._snapshot or not self._snapshot.ready or self.State.free.claimed
+        or self._requestTask or self._groupRequestTask then
+        return
+    end
+    self._groupError = nil
+    self._groupRequestTask = task.defer(function()
+        local ok, result = pcall(function()
+            local response = FX.Network:InvokeServer("C2S_ClaimWelfareReward", "group", "once")
+            if promptJoin and response and response.groupId then
+                local status = GroupService:PromptJoinAsync(response.groupId)
+                if status == Enum.GroupMembershipStatus.Joined or status == Enum.GroupMembershipStatus.AlreadyMember then
+                    response = FX.Network:InvokeServer("C2S_ClaimWelfareReward", "group", "once")
+                    if response and response.groupId then
+                        response.key = TranslationTexts.MembershipPending
+                    end
+                end
+            end
+            return response
+        end)
+        self._groupRequestTask = nil
+        if ok and type(result) == "table" and result.success then
+            self._groupClaimed = true
+            self:GetPlayerObject():RequireComponent("CSoundComp"):PlayRewardSound()
+            self._commonUI:ShowLocalizedTips(result.key)
+        elseif promptJoin then
+            self._groupError = ok and type(result) == "table" and result.key or TranslationTexts.Unknown
+            self._commonUI:ShowLocalizedTips(self._groupError)
+        end
+        self:RefreshWelfare()
+    end)
+    self:RefreshWelfare()
+end
+
+--- 只关闭群组奖励提醒；服务端确认成功后隐藏红点，失败保留按钮供重试。
+function Component:DismissGroupReminder()
+    if not self._snapshot.ready or self.State.free.claimed or self.State.free.reminderDisabled
+        or self._reminderRequestTask then
+        return
+    end
+    self._reminderRequestTask = task.defer(function()
+        local ok, disabled = pcall(function()
+            return FX.Network:InvokeServer("C2S_DisableGroupRewardReminder")
+        end)
+        self._reminderRequestTask = nil
+        if ok and disabled == true then
+            self._groupReminderDisabled = true
+        else
+            self._commonUI:ShowLocalizedTips(TranslationTexts.Unknown)
+        end
+        self:RefreshWelfare()
+    end)
+    self:RefreshWelfare()
+end
+
 --- 条件不足提示原因；同页批量领取顺序排队，服务端逐项确认后刷新权威快照。
---- @param action string 展示层的 Claim、ClaimDiamonds 或 ClaimOffline。
+--- @param action string 展示层的 Claim、ClaimDiamonds、ClaimOffline、JoinGroup 或 DismissGroupReminder。
 --- @param payload table 稳定 rewardId 及可选 kind、multiplier。
 function Component:OnUIAction(action, payload)
+    if action == "DismissGroupReminder" then
+        self:DismissGroupReminder()
+        return
+    end
+    if action == "JoinGroup" then
+        self:ClaimFreeReward(true)
+        return
+    end
+    if self._groupRequestTask then
+        return
+    end
     if self._requestTask then
         if action == "Claim" and (payload.kind == "online" or payload.kind == "signin")
             and self._pending.kind == payload.kind then
@@ -321,6 +412,14 @@ end
 
 --- 取消尚未完成的领取请求，父类负责销毁行节点及数据、按钮订阅。
 function Component:Dtor()
+    if self._reminderRequestTask then
+        task.cancel(self._reminderRequestTask)
+        self._reminderRequestTask = nil
+    end
+    if self._groupRequestTask then
+        task.cancel(self._groupRequestTask)
+        self._groupRequestTask = nil
+    end
     if self._requestTask then
         task.cancel(self._requestTask)
         self._requestTask = nil

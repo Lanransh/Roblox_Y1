@@ -139,7 +139,7 @@ function Component:OnHide()
     self.State.open = false
 end
 
---- 扣款与解锁由服务端负责，成功后按权威返回值更新列表及小屋提醒。
+--- 扣款与解锁由服务端负责；新手购买镐子成功后关闭商店，让玩家继续下一步。
 --- @param action string Buy、Equip 或 Close。
 --- @param payload table 展示类提供的字符串 weaponId。
 function Component:OnUIAction(action, payload)
@@ -150,6 +150,9 @@ function Component:OnUIAction(action, payload)
     if self._requestTask then
         return
     end
+    -- 在请求前记录引导步骤，避免购买结果同步先推进步骤而漏关界面。
+    local guide = self:GetTable(Fields.Guide)
+    local closeAfterPurchase = action == "Buy" and guide.target and guide.target.textId == "Tutorial.Weapon"
     self.State.pending[payload.weaponId] = true
     self.State.busy = true
     self:RefreshUI()
@@ -167,6 +170,9 @@ function Component:OnUIAction(action, payload)
             self.State.equippedId = tostring(result.data.equippedId)
             self.State.coins = result.coins
             self._shopAreas:Refresh(self.Config.weapons, self.State)
+            if closeAfterPurchase then
+                self:Hide()
+            end
         else
             self._commonUI:ShowLocalizedTips(ok and result.key or TranslationTexts.Unknown)
         end

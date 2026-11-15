@@ -12,6 +12,7 @@ function Player:Ctor(playerId)
         self:AddComponent("CGMIntegrationCompClass"):OnReady()
     end
     self:AddComponent("CTrainingHUDCompClass")
+    self:AddComponent("CTrainingRejoinCompClass")
     self:AddComponent("CTrainingBonusUICompClass")
     self:AddComponent("CLeaderboardUICompClass")
     self:AddComponent("FCFriendCompClass")

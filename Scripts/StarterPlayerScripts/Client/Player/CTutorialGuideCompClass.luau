@@ -54,13 +54,13 @@ function Guide:GetGuideStorage()
     return Fields.Guide
 end
 
---- 创建等比缩放的上方提示层；世界目标按当前世界动态查询，角色重生不销毁提示层。
+--- 创建高于引导遮罩的等比提示层；世界目标按当前世界动态查询，角色重生不销毁提示层。
 function Guide:OnReady()
     self._localization = self:RequireComponent("FCCommonUIComp").Localization
     self._screen = Instance.new("ScreenGui")
     self._screen.Name = "TutorialGuideUI"
     self._screen.ResetOnSpawn = false
-    self._screen.DisplayOrder = 20
+    self._screen.DisplayOrder = 101
     self._screen.RootLocalizationTable = FXLoader:Shared("Shared/Localization")
     self._label = Instance.new("TextLabel")
     self._label.Name = "Instruction"
@@ -265,7 +265,7 @@ function Guide:GetUIGuideButton(target)
     return nil
 end
 
---- 按同步世界选择商店、回家及训练目标，跨世界训练先指向当地传送门。
+--- 按同步世界选择目标，奖励按钮引导不显示遮罩，其他新手 UI 操作显示方形亮区，跨世界训练先指向当地传送门。
 function Guide:RefreshTarget()
     local target = self._activeTarget
     local worldIndex = self:GetNumber(Fields.WorldIndex)
@@ -324,7 +324,7 @@ function Guide:RefreshTarget()
             end
         end
         self._uiGuideButton = button
-        self._uiArrow:Show(button, target.type == "Rewards" and "Right" or "Left")
+        self._uiArrow:Show(button, target.type == "Rewards" and "Right" or "Left", not self._mainGuideFinished and target.type ~= "Rewards")
         self:HideGuideArrow()
         return
     end

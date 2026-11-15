@@ -24,6 +24,21 @@ function Manager:Ctor()
     self:RegCurrencyShopMsg()
     self:RegSettingsMsg()
     self:RegFavoritePromptMsg()
+    self:RegTrainingRejoinMsg()
+end
+
+--- 训练重进协议只注册一次，身份取自网络层，位置和保存资格由本人组件决定。
+function Manager:RegTrainingRejoinMsg()
+    --- 未就绪或已离服的玩家不能发起存档与传送。
+    --- @param userId number 引擎认证玩家 ID。
+    --- @param action any SetEnabled / Cancel / Request。
+    --- @param enabled any 开关动作携带的 boolean，其他动作忽略。
+    FX.Network:RegClientMsgCallback("C2S_TrainingRejoin", function(userId, action, enabled)
+        local player = self:GetPlayerObject(userId)
+        if player then
+            player:RequireComponent("STrainingRejoinComp"):Request(action, enabled)
+        end
+    end)
 end
 
 --- 收藏提醒仅消费一次，持久去重避免重登重复弹窗。
@@ -104,6 +119,14 @@ end
 
 --- 福利协议只注册一次，按引擎认证身份取得本人的活动组件。
 function Manager:RegActivityMsg()
+    --- 客户端只能关闭本人的群组奖励提醒，不能修改领取标记或重新开启他人提醒。
+    --- @param userId number 引擎认证的请求者。
+    --- @return boolean 是否成功记录关闭偏好。
+    FX.Network:RegClientMsgCallback("C2S_DisableGroupRewardReminder", function(userId)
+        local player = self:GetPlayerObject(userId)
+        local activity = player and player:GetComponent("SActivityComp")
+        return activity ~= nil and activity:DisableGroupRewardReminder()
+    end)
     --- 群组和金额由服务端固定，请求只能领取认证玩家本人的奖励。
     --- @param userId number 引擎认证的请求者。
     --- @return table 群组奖励领取结果。

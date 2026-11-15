@@ -15,6 +15,7 @@ local FX = _G.FX
 local FXLoader = FX.Loader
 local Text = FX.Text
 local TranslationTexts = Text.Define("Main", {
+    TutorialCollectReminder = 'Break the ✨<font color="#FF5555">rocks with stars</font> and <font color="#67ED14">pick up the dropped items</font>!',
     GoHome = "Go Home",
     StrengthRate = "x{rate} Strength",
     SoldOut = "Sold Out",
@@ -88,6 +89,15 @@ function Component:OnReady()
     self._rebirthBadge = FXLoader:Here(self._rootNode, "LeftCenter/RebirthButton/Badge")
     self._rebirthBadge.AutoLocalize = false
     self._rebirthArrow = UIGuideArrow.New(self._playerGui)
+    self._rebirthScreen = FXLoader:Here(self._playerGui, "RebirthUI")
+    self._rebirthPanel = FXLoader:Here(self._rebirthScreen, "PopupPanelImg")
+    self._rebirthConfirmButton = FXLoader:Here(self._rebirthPanel, "RebirthBtn")
+    --- 弹窗打开后立即把首次重生遮罩切到确认按钮，关闭时恢复主界面入口。
+    local function RefreshRebirthGuide()
+        self:RefreshRebirthGuide()
+    end
+    self:TrackConnection(self._rebirthScreen:GetPropertyChangedSignal("Enabled"):Connect(RefreshRebirthGuide))
+    self:TrackConnection(self._rebirthPanel:GetPropertyChangedSignal("Visible"):Connect(RefreshRebirthGuide))
     self:BindNotificationBadges()
     self:ConfigureTopRightLayout()
     self._commonUI = self:GetPlayerObject():RequireComponent("FCCommonUIComp")
@@ -108,6 +118,7 @@ function Component:OnReady()
     self._trainingStatus.Parent = self._rootNode
     self._trainingTextEffect = AnimatedText.Attach(self._trainingStatus)
     self:CreatePurchaseReminder()
+    self:CreateTrainingRejoinButton()
     self._strength.AutoLocalize = false
     FXLoader:Here(self._bar, "ProgressLabel").AutoLocalize = false
     --- 翻译就绪或语言切换时刷新主界面，出售界面自行监听语言变化。
@@ -146,6 +157,7 @@ function Component:OnReady()
     self:CreateFriendBoostButton()
     self:CreateVipOwnedIcon()
     self:ConfigureMainTextSizing()
+    self:CreateReminderOverlay()
     self._effects = {}
     self._pickupEffects = {}
     self._rainEffects = {}
@@ -419,6 +431,8 @@ function Component:BindButtons()
             self:TrackConnection(node.Activated:Connect(function()
                 if node == self._friendBoost then
                     return
+                elseif node == self._trainingRejoinButton then
+                    self._trainingRejoin:Toggle()
                 elseif node.Name == "GMButton" then
                     if FX.IsDeveloper(self:GetPlayerNode().UserId) then
                         self:GetPlayerObject():RequireComponent("CGMUIComp"):Show()
@@ -626,15 +640,23 @@ function Component:RefreshLocalization()
     self:RefreshTrainingStatus(self:GetNumber(Fields.TrainingFieldIndex))
     self:RefreshStrengthOffers()
     self:RefreshPurchaseReminder()
+    self:RefreshTrainingRejoin()
 end
 
---- 从安全区底部预留原生快捷栏的 70 像素和 8 像素间距，统一设计字号随分组缩放。
+--- 底部文字与防挂机按钮共用设计坐标，文字初始化后移至遮罩上层，保留快捷栏留白。
 function Component:CreatePurchaseReminder()
+    local group = Instance.new("Frame")
+    group.Name = "BottomTraining"
+    group.AnchorPoint = Vector2.new(0.5, 1)
+    group.Position = UDim2.new(0.5, 0, 1, -78)
+    group.Size = UDim2.fromOffset(1152, 80)
+    group.BackgroundTransparency = 1
+    self._bottomTrainingGroup = group
     local label = Instance.new("TextLabel")
     label.Name = "PurchaseReminder"
     label.AnchorPoint = Vector2.new(0.5, 1)
-    label.Position = UDim2.new(0.5, 0, 1, -78)
-    label.Size = UDim2.fromOffset(1152, 80)
+    label.Position = UDim2.fromScale(0.5, 1)
+    label.Size = UDim2.fromScale(1, 1)
     label.BackgroundTransparency = 1
     label.Font = Enum.Font.GothamBold
     label.TextScaled = false
@@ -649,7 +671,7 @@ function Component:CreatePurchaseReminder()
     label.Visible = false
     label.Active = false
     label.Interactable = false
-    label.Parent = self._rootNode
+    label.Parent = group
     local stroke = Instance.new("UIStroke")
     stroke.Name = "TextOutline"
     stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
@@ -659,6 +681,132 @@ function Component:CreatePurchaseReminder()
     stroke.Parent = label
     self._purchaseReminder = label
     self._purchaseTextEffect = AnimatedText.Attach(label)
+    group.Parent = self._rootNode
+end
+
+--- 将彩色提示放到遮罩上层，沿用主界面底部组的位置、缩放与显隐。
+function Component:CreateReminderOverlay()
+    local screen = Instance.new("ScreenGui")
+    screen.Name = "MainReminderUI"
+    screen.ResetOnSpawn = false
+    screen.DisplayOrder = 101
+    screen.ScreenInsets = self._rootNode.ScreenInsets
+    screen.Parent = self._playerGui
+    self._reminderScreen = screen
+    local layout = Instance.new("Frame")
+    layout.BackgroundTransparency = 1
+    layout.Parent = screen
+    local scale = Instance.new("UIScale")
+    scale.Parent = layout
+    local group = self._bottomTrainingGroup
+    local responsiveScale = FXLoader:Here(group, "ResponsiveScale")
+    --- 只映射原有布局，不另算设备倍率，避免文字重复缩放。
+    local function SyncLayout()
+        layout.Position = group.Position
+        layout.Size = group.Size
+        layout.AnchorPoint = group.AnchorPoint
+        layout.Visible = group.Visible
+        scale.Scale = responsiveScale.Scale
+        screen.Enabled = self._rootNode.Enabled
+        screen.ScreenInsets = self._rootNode.ScreenInsets
+    end
+    for index, property in ipairs({"Position", "Size", "AnchorPoint", "Visible"}) do
+        self:TrackConnection(group:GetPropertyChangedSignal(property):Connect(SyncLayout))
+    end
+    for index, property in ipairs({"Enabled", "ScreenInsets"}) do
+        self:TrackConnection(self._rootNode:GetPropertyChangedSignal(property):Connect(SyncLayout))
+    end
+    self:TrackConnection(responsiveScale:GetPropertyChangedSignal("Scale"):Connect(SyncLayout))
+    SyncLayout()
+    self._purchaseReminder.Parent = layout
+end
+
+--- 在主界面底部组内创建唯一开关，按钮事件复用 BindButtons 的统一入口。
+function Component:CreateTrainingRejoinButton()
+    self._trainingRejoin = self:RequireComponent("CTrainingRejoinComp")
+    local button = Instance.new("ImageButton")
+    button.Name = "TrainingRejoinButton"
+    button.AnchorPoint = Vector2.new(0.5, 1)
+    button.Size = UDim2.fromOffset(300, 48)
+    button.BackgroundColor3 = Color3.fromRGB(103, 237, 20)
+    button.BorderSizePixel = 0
+    button.Image = "rbxassetid://82793028306773"
+    button.ScaleType = Enum.ScaleType.Tile
+    button.TileSize = UDim2.fromOffset(28, 28)
+    button.ZIndex = 3
+    button.Visible = false
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 6)
+    corner.Parent = button
+    local outline = Instance.new("UIStroke")
+    outline.Color = Color3.new(0, 0, 0)
+    outline.Thickness = 3
+    outline.Parent = button
+    local highlight = Instance.new("Frame")
+    highlight.Name = "TopHighlight"
+    highlight.Size = UDim2.new(1, 0, 0, 2)
+    highlight.BackgroundColor3 = Color3.new(1, 1, 1)
+    highlight.BackgroundTransparency = 0.58
+    highlight.BorderSizePixel = 0
+    highlight.ZIndex = 4
+    highlight.Parent = button
+    local edge = Instance.new("Frame")
+    edge.Name = "BottomEdge"
+    edge.Position = UDim2.new(0, 0, 1, -4)
+    edge.Size = UDim2.new(1, 0, 0, 4)
+    edge.BackgroundTransparency = 0.2
+    edge.BorderSizePixel = 0
+    edge.ZIndex = 4
+    edge.Parent = button
+    local label = Instance.new("TextLabel")
+    label.Name = "Label"
+    label.Size = UDim2.fromScale(1, 1)
+    label.Position = UDim2.fromOffset(0, -2)
+    label.BackgroundTransparency = 1
+    label.Font = Enum.Font.GothamBold
+    label.TextSize = 22
+    label.TextColor3 = Color3.new(1, 1, 1)
+    label.TextStrokeColor3 = Color3.new(0, 0, 0)
+    label.TextStrokeTransparency = 0
+    label.Text = ""
+    label.AutoLocalize = false
+    label.ZIndex = 5
+    label.Parent = button
+    button.Parent = self._bottomTrainingGroup
+    self._trainingRejoinButton = button
+    self._trainingRejoinLabel = label
+    self._trainingRejoinEdge = edge
+    self:SubscribeEvent("TrainingRejoinChanged", self.RefreshTrainingRejoin)
+    -- 文案换行或溢出缩小后，开关仍紧贴实际文字上方，位置不受设备倍率重复影响。
+    for index, property in ipairs({"ContentText", "TextSize", "Visible"}) do
+        self:TrackConnection(self._purchaseReminder:GetPropertyChangedSignal(property):Connect(function()
+            self:RefreshTrainingRejoinLayout()
+        end))
+    end
+    self:RefreshTrainingRejoin()
+end
+
+--- 主界面负责开关文字、颜色和交互，业务组件不持有任何界面节点。
+function Component:RefreshTrainingRejoin()
+    local state = self._trainingRejoin:GetState()
+    self._trainingRejoinButton.Visible = state.visible
+    self._trainingRejoinButton.Interactable = not state.pending and state.status ~= "Teleporting"
+    self._trainingRejoinButton.BackgroundColor3 = Color3.fromHex(state.enabled and "#67ed14" or "#638079")
+    self._trainingRejoinEdge.BackgroundColor3 = Color3.fromHex(state.enabled and "#225a07" or "#263e36")
+    self._trainingRejoinLabel.Text = Text.Tr(state.definition)
+    self:RefreshTrainingRejoinLayout()
+end
+
+--- 在同一设计坐标系内按实际换行高度定位，文字与按钮统一交给主界面 UIScale 缩放。
+function Component:RefreshTrainingRejoinLayout()
+    local label = self._purchaseReminder
+    local height = 0
+    if label.Visible then
+        local bounds = game:GetService("TextService"):GetTextSize(label.ContentText, label.TextSize, label.Font,
+            Vector2.new(self._bottomTrainingGroup.Size.X.Offset, 100000))
+        height = math.min(self._bottomTrainingGroup.Size.Y.Offset, bounds.Y * label.LineHeight)
+    end
+    self._trainingRejoinButton.Position = UDim2.new(0.5, 0, 1, -height - 12)
 end
 
 --- 新手引导完成后才显示底部提醒；下一世界已解锁更强基地时持续引导至目标基地。
@@ -740,9 +888,13 @@ function Component:GetPriorityReminder()
     return nil
 end
 
---- 复用底部购买提醒的字号、颜色与动画，只展示当前最高优先级的一条文案。
+--- 拾取引导在矿区内复用底部提醒并固定重点颜色，其他提醒继续使用彩色渐变。
 function Component:RefreshPurchaseReminder()
-    local definition = self:GetPriorityReminder()
+    local guide = self:GetTable(Fields.Guide)
+    local collectReminder = self._inLevelArea and guide.target and guide.target.textId == "Tutorial.Collect"
+    local definition = collectReminder and TranslationTexts.TutorialCollectReminder or self:GetPriorityReminder()
+    self._purchaseReminder.RichText = collectReminder == true
+    FXLoader:Here(self._purchaseReminder, "AnimatedTextGradient").Enabled = not collectReminder
     self._purchaseReminder.Text = definition and Text.Tr(definition) or ""
     self._purchaseReminder.Visible = definition ~= nil
 end
@@ -1137,7 +1289,24 @@ function Component:ShowPickupEffect(entry)
     self._pickupEffects[effect] = connection
 end
 
---- 刷新经验、累积力量与整数重生百分比；达到可重生门槛时显示引导箭头，封顶后隐藏。
+--- 独立于新手流程提示可重生状态；首次重生在主界面入口与弹窗确认按钮间切换方形遮罩。
+function Component:RefreshRebirthGuide()
+    local rebirthCount = self:GetNumber(Fields.RebirthCount)
+    local requiredLevel = Rebirth.GetRequiredLevel(rebirthCount)
+    local level = RockLevel.GetProgress(self:GetNumber(Fields.RockTrainingValue), requiredLevel)
+    if level < requiredLevel or rebirthCount >= Rebirth.MaxCount then
+        self._rebirthArrow:Hide()
+        return
+    end
+    local firstRebirth = rebirthCount == 0
+    if firstRebirth and self._rebirthScreen.Enabled and self._rebirthPanel.Visible then
+        self._rebirthArrow:Show(self._rebirthConfirmButton, "Top", true)
+    else
+        self._rebirthArrow:Show(self._rebirthBadge.Parent, "Right", firstRebirth)
+    end
+end
+
+--- 刷新经验、力量与重生进度，并同步独立的重生按钮引导。
 --- @param value number 同步后的累计训练值。
 --- @param oldValue number? 上一次训练值，首次回放为 nil。
 function Component:RefreshProgress(value, oldValue)
@@ -1146,11 +1315,7 @@ function Component:RefreshProgress(value, oldValue)
     -- 攻击力返回值仅占位，力量文案直接使用累计训练值，与头顶显示一致。
     local level, attackPower, progressValue, required = RockLevel.GetProgress(value, rebirthRequiredLevel)
     self._rebirthBadge.Text = string.format("%d%%", math.floor(math.clamp(level / rebirthRequiredLevel, 0, 1) * 100))
-    if level >= rebirthRequiredLevel and rebirthCount < Rebirth.MaxCount then
-        self._rebirthArrow:Show(self._rebirthBadge.Parent, "Right")
-    else
-        self._rebirthArrow:Hide()
-    end
+    self:RefreshRebirthGuide()
     local progress = math.clamp(progressValue / required, 0, 1)
     FXLoader:Here(self._bar, "LevelLabel").Text = string.format("Lv.%d", level)
     FXLoader:Here(self._bar, "ProgressLabel").Text = string.format("%s/%s",
@@ -1320,7 +1485,12 @@ function Component:Dtor()
     end
     if self._purchaseTextEffect then
         self._purchaseTextEffect:Destroy()
-        self._purchaseReminder:Destroy()
+    end
+    if self._reminderScreen then
+        self._reminderScreen:Destroy()
+    end
+    if self._bottomTrainingGroup then
+        self._bottomTrainingGroup:Destroy()
     end
     if self._trainingTextEffect then
         self._trainingTextEffect:Destroy()

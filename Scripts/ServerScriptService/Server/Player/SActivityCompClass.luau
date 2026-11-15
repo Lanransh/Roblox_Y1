@@ -41,9 +41,19 @@ local function IsNearGroupChest(playerNode)
     return false
 end
 
+--- 关闭提醒只保存玩家偏好，不改变共用领取记录与奖励资格。
+--- @return boolean 是否已在有效活动会话中关闭提醒。
+function Component:DisableGroupRewardReminder()
+    if not self._lastTime then
+        return false
+    end
+    return self:SetFlag(Fields.GroupRewardReminderDisabled, true)
+end
+
 --- 服务端通过群组列表核实入群，避开 IsInGroupAsync 的会话缓存；发奖与永久标记共同提交。
+--- @param fromWelfare boolean? 仅服务端福利入口传 true；场景宝箱仍校验交互距离。
 --- @return table 权威领取结果；未入群时附带固定群组 ID，供客户端展示平台入群弹窗。
-function Component:ClaimGroupReward()
+function Component:ClaimGroupReward(fromWelfare)
     if not self._lastTime or self._groupRewardBusy then
         return {success = false, key = TranslationTexts.NotReady}
     end
@@ -55,7 +65,7 @@ function Component:ClaimGroupReward()
     local userId = self:GetPlayerId()
     local storage = FS.PlayerKVDataManager
     local session = storage:GetSessionToken(userId)
-    if not session or not IsNearGroupChest(playerNode) then
+    if not session or (not fromWelfare and not IsNearGroupChest(playerNode)) then
         return {success = false, key = TranslationTexts.NotReady}
     end
     self._groupRewardBusy = true
@@ -71,7 +81,8 @@ function Component:ClaimGroupReward()
     self._groupRewardBusy = nil
     -- 平台查询允许 yield，旧会话或旧 Player 的结果不能写入重进后的档案。
     if not self._lastTime or FS.PlayerManager:GetPlayerObject(userId) ~= player
-        or not storage:IsSessionActive(userId, session) or not IsNearGroupChest(playerNode) then
+        or not storage:IsSessionActive(userId, session)
+        or (not fromWelfare and not IsNearGroupChest(playerNode)) then
         return {success = false, key = TranslationTexts.NotReady}
     end
     if not ok then
@@ -387,13 +398,17 @@ function Component:GrantRewards(rewards)
 end
 
 --- RPC 只领取本人配置档位；离线按批次限领，礼包按累计在线时间限领并装备赠送光环。
---- @param kind any 客户端类别，仅接受 online、signin、task、diamonds、offline、retention。
+--- @param kind any 客户端类别，仅接受 online、signin、task、diamonds、offline、retention、group。
 --- @param rewardId any 稳定字符串 ID，不接受客户端金额或玩家身份。
 --- @param multiplier any 离线领取方式，仅接受 1 或配置 VIPRate/Rate；加成领取消耗配置商品的钻石。
 --- @return table 成功标记、提示 Key 和最新权威快照。
 function Component:Claim(kind, rewardId, multiplier)
     if not self._lastTime or type(kind) ~= "string" or type(rewardId) ~= "string" or #rewardId > 32 then
         return {success = false, key = TranslationTexts.NotReady}
+    end
+    -- 福利入口复用群组宝箱的资格、发奖事务和永久标记，不另建奖励。
+    if kind == "group" and rewardId == "once" then
+        return self:ClaimGroupReward(true)
     end
     self:UpdateTime(os.time())
     local data = self:GetTable(Fields.WelfareData)

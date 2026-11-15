@@ -3,6 +3,31 @@ require(script.Parent.CUIView)
 --[[
 福利中心统一接入契约（离线 / 每日钻石 / 签到 / 在线 / 任务）
 
+【免费群组奖励扩展】
+  Config.free: table，必填；amount:number 为群组宝箱配置的钻石数量。
+  State.free: table，必填。
+    claimed:boolean，必填；只使用服务端持久化的共用领取标记。
+    pending:boolean，可选，省略 false；核实及加入群组期间禁用按钮。
+    reminderDisabled:boolean，可选，省略 false；服务端保存的永久关闭提醒标记。
+    reminderPending:boolean，可选，省略 false；关闭请求中禁用关闭提醒按钮。
+    errorText:string，可选，最终译文；失败后显示，可再次点击重试。
+  未领取显示绿色 Join Group；pending 显示 Claiming...；
+  claimed 优先显示灰色 Claimed，按钮禁用，不受 allowUnavailableAction 影响。
+  未领取且 reminderDisabled=false 时，免费奖励页签显示红点与关闭提醒按钮；
+  已领取或关闭后隐藏二者，领取按钮仍按原规则工作。
+  DismissGroupReminder -> {}，无参数；业务保存本人永久关闭标记，成功后刷新状态；
+  请求中设 reminderPending=true，成功与失败后恢复 false，失败保留按钮供重试。
+  主界面入口由业务将同一提醒条件与其他奖励提醒合并；关闭仅影响本项。
+  JoinGroup -> {}，不携带群组 ID、金额或玩家身份；游戏负责平台入群、
+  服务端资格核实、领取及失败恢复。已加入且未领取时由游戏尝试领取，
+  服务端确认成功后再设置 claimed；与场景宝箱共用永久领取标记。
+  游戏订阅共用领取标记，首次展示前准备 free 状态；继承 OnShow 后
+  可异步核实已有会员资格，不在 Render 中请求或发奖。
+  免费奖励钻石背后的光芒由 View 管理，24 秒匀速旋转一周；切页或关闭暂停，重开继续。
+  RenderFree 为展示层内部方法，禁止覆写；其他生命周期及接口沿用下文。
+  最小新增数据：Config.free = { amount = 30 }；
+    State.free = { claimed = false, pending = false }。
+
 【一、公共约定与完整数据结构】
   Config、State 均为完整表，以下标为必填的字段无默认值。
   Status = "Locked" | "Claimable" | "Claimed"，分别为未满足 / 可领取 / 已领取。
@@ -200,6 +225,7 @@ local Text = Loader:RequireShared("Scripts.Framework.Shared.Core.FXText")
 local CWelfareView = FX.Class("CWelfareView", "CUIView")
 
 local TranslationTexts = Text.Define("WelfareHub", {
+    JoinGroup = "Join Group",
     Minutes = "{minutes:int} min",
     Day = "Day {day:int}",
     TaskProgress = "{current:int} / {target:int}",
@@ -448,6 +474,14 @@ function CWelfareView:OnReady()
     self.Root = Loader:PlayerGui("WelfareUI")
     -- 仅关闭主动翻译的具体动态文本；原型克隆继承设置，静态节点保持自动本地化。
     self.Rows = {}
+    -- 群组奖励沿用列表奖励的旋转速度，制作预览不模拟原生 Tween。
+    if game then
+        self._freeGlowTween = game:GetService("TweenService"):Create(
+            Loader:Here(self.Root, "PopupPanelImg.FreeBox.GroupRewardImg.RewardGlowBox"),
+            TweenInfo.new(24, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1),
+            { Rotation = 360 }
+        )
+    end
     -- 原生越界弹性只在 Roblox 中提供；三个奖励列表到边界即停止。
     if game then
         for index, pageName in ipairs({ "OnlineBox", "SignInBox", "TasksBox" }) do
@@ -456,7 +490,7 @@ function CWelfareView:OnReady()
         end
     end
     self.ActiveTab = "offline"
-    local tabs = { { "offline", "OfflineTabBtn" }, { "diamonds", "DiamondsTabBtn" }, { "signin", "SignInTabBtn" }, { "online", "OnlineTabBtn" }, { "task", "TasksTabBtn" } }
+    local tabs = { { "offline", "OfflineTabBtn" }, { "diamonds", "DiamondsTabBtn" }, { "signin", "SignInTabBtn" }, { "online", "OnlineTabBtn" }, { "task", "TasksTabBtn" }, { "free", "FreeTabBtn" } }
     for _, tab in ipairs(tabs) do
         self:TrackConnection(Loader:Here(self.Root, "TabsBox." .. tab[2]).Activated:Connect(function()
             self.ActiveTab = tab[1]
@@ -487,6 +521,18 @@ function CWelfareView:OnReady()
     self:TrackConnection(Loader:Here(self.Root, "PopupPanelImg.DiamondsBox.ClaimBtn").Activated:Connect(function()
         -- 点击发送稳定奖励 ID，数量与资格由业务层确认。
         self:EmitUIAction("ClaimDiamonds", { rewardId = self:GetUIConfig().diamonds.rewardId })
+    end))
+    self:TrackConnection(Loader:Here(self.Root, "PopupPanelImg.FreeBox.DismissReminderBtn").Activated:Connect(function()
+        local state = self:GetUIState().free
+        if not state.claimed and not state.reminderDisabled and not state.reminderPending then
+            self:EmitUIAction("DismissGroupReminder", {})
+        end
+    end))
+    self:TrackConnection(Loader:Here(self.Root, "PopupPanelImg.FreeBox.JoinGroupBtn").Activated:Connect(function()
+        local state = self:GetUIState().free
+        if not state.claimed and not state.pending and not self:GetUIState().busy then
+            self:EmitUIAction("JoinGroup", {})
+        end
     end))
     for _, pageName in ipairs({ "OnlineBox", "SignInBox" }) do
         self:TrackConnection(Loader:Here(self.Root, "PopupPanelImg." .. pageName .. ".PageClaimBtn").Activated:Connect(function()
@@ -533,6 +579,15 @@ end
 
 -- 分组条目缓存继续复用；隐藏页和关闭窗口不保留运行中的旋转动画。
 function CWelfareView:RefreshRewardGlows()
+    local freeActive = self._glowVisible == true and self.ActiveTab == "free"
+    if self._freeGlowTween and self._freeGlowActive ~= freeActive then
+        self._freeGlowActive = freeActive
+        if freeActive then
+            self._freeGlowTween:Play()
+        else
+            self._freeGlowTween:Pause()
+        end
+    end
     for kind, rows in pairs(self.Rows) do
         local active = self._glowVisible == true and self.ActiveTab == kind
         for id, row in pairs(rows) do
@@ -806,9 +861,38 @@ function CWelfareView:RenderDiamonds(state)
     end
 end
 
+-- 群组奖励与宝箱共用领取状态；关闭提醒只隐藏本项红点，不影响领取。
+-- @param state table 完整 State.free，字段见文件头扩展契约。
+function CWelfareView:RenderFree(state)
+    local page = Loader:Here(self.Root, "PopupPanelImg.FreeBox")
+    page.Visible = self.ActiveTab == "free"
+    Loader:Here(page, "AmountTxt").Text = self:FormatNumber(self:GetUIConfig().free.amount)
+    local label = TranslationTexts.JoinGroup
+    if state.claimed then
+        label = TranslationTexts.Claimed
+    elseif state.pending then
+        label = TranslationTexts.Claiming
+    end
+    self:RenderButton(Loader:Here(page, "JoinGroupBtn"), Text.Tr(label),
+        not state.claimed and not state.pending and not self:GetUIState().busy)
+    Loader:Here(page, "StatusTxt").Text = not state.claimed and state.errorText or ""
+    local tab = Loader:Here(self.Root, "TabsBox.FreeTabBtn")
+    local reminderVisible = not state.claimed and not state.reminderDisabled
+    Loader:Here(tab, "RedDotImg").Visible = reminderVisible
+    local dismissButton = Loader:Here(page, "DismissReminderBtn")
+    dismissButton.Visible = reminderVisible
+    self:SetButtonEnabled(dismissButton, reminderVisible and not state.reminderPending)
+    self:RenderButton(tab, nil, true)
+    if self.ActiveTab ~= "free" then
+        tab.BackgroundColor3 = Color3.fromRGB(99, 128, 121)
+        Loader:Here(tab, "BottomEdgeImg").BackgroundColor3 = Color3.fromRGB(38, 62, 54)
+    end
+end
+
 -- 接入提供状态，View 只组织页面和条目展示，不改根节点的显隐。
 -- @param state table 完整 State：offline、diamonds、entries、onlineMinutes、signInDay，见文件头
 function CWelfareView:Render(state)
+    self:RenderFree(state.free)
     self:RenderOffline(state.offline)
     self:RenderDiamonds(state.diamonds)
     local tabs = { online = "OnlineTabBtn", signin = "SignInTabBtn", task = "TasksTabBtn" }
@@ -960,6 +1044,15 @@ function CWelfareView:RenderOffline(state)
         tab.BackgroundColor3 = Color3.fromRGB(99, 128, 121)
         Loader:Here(tab, "BottomEdgeImg").BackgroundColor3 = Color3.fromRGB(38, 62, 54)
     end
+end
+
+-- 销毁界面时释放群组奖励动画，父类继续负责连接和界面适配清理。
+function CWelfareView:Dtor()
+    if self._freeGlowTween then
+        self._freeGlowTween:Cancel()
+        self._freeGlowTween = nil
+    end
+    CWelfareView.Super.Dtor(self)
 end
 
 CWelfareView.ScreenGuiName = "WelfareUI"

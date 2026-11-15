@@ -44,6 +44,7 @@ function CWelfarePreview:Ctor(owner)
             }
         }
     }
+    self.Config.free = { amount = 30 }
     self.Config.diamonds = {
         rewardId = "daily_diamonds",
         loginAmount = 100,
@@ -52,6 +53,7 @@ function CWelfarePreview:Ctor(owner)
         friendCap = 100,
     }
     self.State = { onlineMinutes = 12, signInDay = 1, entries = {} }
+    self.State.free = { claimed = false, pending = false }
     self.State.diamonds = { amount = 250, status = "Claimable", pending = false }
     self.Config.offline = {
         rewardId = "offline_session_1",
@@ -178,6 +180,18 @@ end
 -- @param action string View 发出的动作
 -- @param payload table kind 与 rewardId
 function CWelfarePreview:OnUIAction(action, payload)
+    if action == "DismissGroupReminder" then
+        self.State.free.reminderDisabled = true
+        self:RefreshUI()
+        return
+    end
+    if action == "JoinGroup" then
+        if not self.State.free.claimed and not self.State.free.pending then
+            self.State.free.claimed = true
+            self:RefreshUI()
+        end
+        return
+    end
     if action == "ClaimOffline" then
         assert(payload.rewardId == self.Config.offline.rewardId, "Unknown offline reward")
         assert(payload.multiplier == 1 or payload.multiplier == self.Config.offline.boostMultiplier, "Unsupported offline multiplier")

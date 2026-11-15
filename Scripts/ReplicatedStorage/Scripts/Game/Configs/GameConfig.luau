@@ -641,7 +641,7 @@ return {
             Index = 1,
             AuraId = 101,
             Name = [[Common]],
-            Price = 1875,
+            Price = 1,
             TrainingRate = 1.5,
             Quality = 1,
             DevGoodId = nil,

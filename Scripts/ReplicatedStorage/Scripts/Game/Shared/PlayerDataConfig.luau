@@ -14,6 +14,11 @@ return {
         Type = "boolean", Key = "GroupRewardClaimed", DefVal = false,
         KVTable = PlayerKVEnum.eStaticData, Sync = true,
     },
+    -- 仅关闭群组奖励红点，跨登录保留，不影响奖励领取。
+    GroupRewardReminderDisabled = {
+        Type = "boolean", Key = "GroupRewardReminderDisabled", DefVal = false,
+        KVTable = PlayerKVEnum.eStaticData, Sync = true,
+    },
     -- VIP 由平台收据永久解锁；客户端只读取服务端同步资格。
     Vip = {
         Type = "boolean", Key = "Vip", DefVal = false,
@@ -187,6 +192,16 @@ return {
         DefVal = 1,
         KVTable = PlayerKVEnum.eStaticData,
         Sync = true,
+    },
+    -- 训练时默认开启空闲重进；玩家选择跨登录保留，独立于普通表现设置。
+    TrainingRejoinEnabled = {
+        Type = "boolean", Key = "TrainingRejoinEnabled", DefVal = true,
+        KVTable = PlayerKVEnum.eStaticData, Sync = true,
+    },
+    -- 仅服务端保存一次性训练恢复凭据与位置，传送数据不作为收益或位置的可信来源。
+    TrainingRejoinContext = {
+        Type = "table", Key = "TrainingRejoinContext", DefVal = {},
+        KVTable = PlayerKVEnum.eStaticData, Sync = false,
     },
     -- 服务端校验的当前训练基地；0 表示场外或尚未解锁，不保存到 KV。
     TrainingFieldIndex = {

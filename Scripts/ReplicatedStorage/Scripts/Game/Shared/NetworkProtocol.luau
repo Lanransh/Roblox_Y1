@@ -2,11 +2,16 @@
 -- 框架已有的 Ready、玩家数据和服务器数据同步协议继续由 FrameworkInit 声明。
 return {
     ClientMsgID = {
+        -- action: SetEnabled / Cancel / Request，enabled: boolean?；单向请求，仅操作认证请求者。
+        -- 服务端验证训练资格、请求频率和会话；保存成功后才传送，不接受坐标、奖励或空闲秒数。
+        "C2S_TrainingRejoin",
         -- 无参数；RPC 返回是否首次消费已到期的收藏提醒。
         -- 服务端校验本人累计在线时长，只记录提醒状态，不查询平台收藏状态。
         "C2S_ConsumeFavoritePrompt",
         -- 无参数；服务端校验入群、距离和永久领取记录，返回 success、key、groupId?、amount?。
         "C2S_ClaimGroupReward",
+        -- 无参数；RPC 返回 boolean，仅永久关闭认证请求者的群组奖励提醒。
+        "C2S_DisableGroupRewardReminder",
         -- dropId: string，RPC 返回 boolean；校验今日个人档位、落地与距离，按 GiftData 发钻石并去重。
         "C2S_OpenGiftDrop",
         -- goodsId: number，服务端校验钻石余额与下一档；返回 success、key、data。

@@ -291,7 +291,7 @@ function Component:RefreshStrengthBillboard()
     end
 end
 
---- 角色根节点就绪后恢复存档世界；无效或不再满足解锁条件的旧记录退回世界 1。
+--- 角色根节点就绪后恢复存档世界并面向岩石道路，再消费训练重进落点；无效世界记录退回世界 1。
 --- @param character Model 当前存活且已具备根节点的角色。
 function Component:RestoreWorld(character)
     local index = self:GetNumber(Fields.WorldIndex)
@@ -300,8 +300,9 @@ function Component:RestoreWorld(character)
         or self:GetNumber(Fields.MaxTrainingLevel) < worlds[index].NeedTrainingLevel then
         index = 1
     end
-    character:PivotTo(CFrame.new(worlds[index].Position))
+    character:PivotTo(CFrame.new(worlds[index].Position) * CFrame.Angles(0, math.pi, 0))
     self:SetNumber(Fields.WorldIndex, index)
+    self:RequireComponent("STrainingRejoinComp"):RestoreTraining(character)
 end
 
 --- 校验世界序号与历史最高等级后，把角色移动到配置落点并同步当前世界。

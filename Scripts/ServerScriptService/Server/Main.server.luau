@@ -9,6 +9,7 @@ local Service = script.Parent.Service
 
 local RockLevelClass = require(Player.SRockLevelCompClass)
 require(Player.SMiscCompClass)
+require(Player.STrainingRejoinCompClass)
 require(Player.SLootSellCompClass)
 require(Player.SAuraCompClass)
 require(Player.SWeaponCompClass)

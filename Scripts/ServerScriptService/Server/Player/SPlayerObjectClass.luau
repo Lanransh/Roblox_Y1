@@ -363,7 +363,7 @@ function Guide:RefreshWorld2Reminder()
     self:SetGuideData(data)
 end
 
---- 使用权威存档恢复提前完成的操作，末尾提醒按配置计时推进，随后检查世界二解锁提醒。
+--- 使用权威存档恢复提前完成的操作；已拥有光环直接跳过购买引导，不补钱，末尾提醒按配置计时推进。
 --- @param serverTime number 框架每秒回调时间。
 function Guide:OnUpdate(serverTime)
     if self:IsLootStep(1) then
@@ -402,21 +402,10 @@ function Guide:OnUpdate(serverTime)
     end
     if self:IsLootStep(6) then
         local auraData = self:GetTable(PlayerDataConfig.AuraData)
-        if auraData.equippedId ~= 0 then
-            self:PublishEvent("Tutorial.Aura")
-        else
-            local guideData = self:GetGuideData()
-            if not guideData.auraMoneyGranted then
-                -- 第六步仅补足首个光环的购买差额一次，已有光环则等待装备，不再补钱。
-                local config = _G.GameConfig.AuraConfig[1]
-                local shortfall = config.Price - self:GetNumber(PlayerDataConfig.Money)
-                if auraData.owned[tostring(config.AuraId)] ~= true and shortfall > 0 then
-                    assert(self:RequireComponent("FSRewardComp"):AddRewards({
-                        {Type = "Money", Currency = "Money", Count = shortfall},
-                    }), "Tutorial aura money failed")
-                end
-                guideData.auraMoneyGranted = true
-                self:SetGuideData(guideData)
+        for auraId, owned in pairs(auraData.owned) do
+            if owned == true then
+                self:PublishEvent("Tutorial.Aura")
+                break
             end
         end
     end
@@ -453,6 +442,7 @@ function Player:Ctor(id)
     self:AddComponent("STutorialGuideCompClass")
     self:AddComponent("SRockLevelCompClass")
     self:AddComponent("SMiscCompClass")
+    self:AddComponent("STrainingRejoinCompClass")
     self:AddComponent("SLootSellCompClass")
     self:AddComponent("SAuraCompClass")
     self:AddComponent("SWeaponCompClass")
