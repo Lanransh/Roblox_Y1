@@ -1,0 +1,182 @@
+[
+  {
+    "name": "01-人物动作-挥镐破石-黑边",
+    "id": "32d638fb42264f789b4ecc97b784e237/T001",
+    "status": "succeeded",
+    "error": null,
+    "output": {
+      "id": "32d638fb42264f789b4ecc97b784e237/T001/C002",
+      "projectId": "ff9400efcb46f932",
+      "taskId": "32d638fb42264f789b4ecc97b784e237/T001",
+      "kind": "image",
+      "path": ".studiogametoolkit/ai-board/contents/32d638fb42264f789b4ecc97b784e237/T001/C002/output.png",
+      "absolutePath": "C:\\Users\\lanran\\Desktop\\Gamedev\\Roblox_Y2\\GameKitWorkspace\\.studiogametoolkit\\ai-board\\contents\\32d638fb42264f789b4ecc97b784e237\\T001\\C002\\output.png",
+      "downloadUrl": "/api/projects/ff9400efcb46f932/tools/asset-workflow/script-content/32d638fb42264f789b4ecc97b784e237/T001/C002"
+    }
+  },
+  {
+    "name": "02-人物动作-破石得金-白边",
+    "id": "32d638fb42264f789b4ecc97b784e237/T002",
+    "status": "succeeded",
+    "error": null,
+    "output": {
+      "id": "32d638fb42264f789b4ecc97b784e237/T002/C002",
+      "projectId": "ff9400efcb46f932",
+      "taskId": "32d638fb42264f789b4ecc97b784e237/T002",
+      "kind": "image",
+      "path": ".studiogametoolkit/ai-board/contents/32d638fb42264f789b4ecc97b784e237/T002/C002/output.png",
+      "absolutePath": "C:\\Users\\lanran\\Desktop\\Gamedev\\Roblox_Y2\\GameKitWorkspace\\.studiogametoolkit\\ai-board\\contents\\32d638fb42264f789b4ecc97b784e237\\T002\\C002\\output.png",
+      "downloadUrl": "/api/projects/ff9400efcb46f932/tools/asset-workflow/script-content/32d638fb42264f789b4ecc97b784e237/T002/C002"
+    }
+  },
+  {
+    "name": "03-人物动作-皇冠出石-黑边",
+    "id": "32d638fb42264f789b4ecc97b784e237/T003",
+    "status": "succeeded",
+    "error": null,
+    "output": {
+      "id": "32d638fb42264f789b4ecc97b784e237/T003/C002",
+      "projectId": "ff9400efcb46f932",
+      "taskId": "32d638fb42264f789b4ecc97b784e237/T003",
+      "kind": "image",
+      "path": ".studiogametoolkit/ai-board/contents/32d638fb42264f789b4ecc97b784e237/T003/C002/output.png",
+      "absolutePath": "C:\\Users\\lanran\\Desktop\\Gamedev\\Roblox_Y2\\GameKitWorkspace\\.studiogametoolkit\\ai-board\\contents\\32d638fb42264f789b4ecc97b784e237\\T003\\C002\\output.png",
+      "downloadUrl": "/api/projects/ff9400efcb46f932/tools/asset-workflow/script-content/32d638fb42264f789b4ecc97b784e237/T003/C002"
+    }
+  },
+  {
+    "name": "04-关卡对比-宝石与金条-白边",
+    "id": "32d638fb42264f789b4ecc97b784e237/T004",
+    "status": "succeeded",
+    "error": null,
+    "output": {
+      "id": "32d638fb42264f789b4ecc97b784e237/T004/C002",
+      "projectId": "ff9400efcb46f932",
+      "taskId": "32d638fb42264f789b4ecc97b784e237/T004",
+      "kind": "image",
+      "path": ".studiogametoolkit/ai-board/contents/32d638fb42264f789b4ecc97b784e237/T004/C002/output.png",
+      "absolutePath": "C:\\Users\\lanran\\Desktop\\Gamedev\\Roblox_Y2\\GameKitWorkspace\\.studiogametoolkit\\ai-board\\contents\\32d638fb42264f789b4ecc97b784e237\\T004\\C002\\output.png",
+      "downloadUrl": "/api/projects/ff9400efcb46f932/tools/asset-workflow/script-content/32d638fb42264f789b4ecc97b784e237/T004/C002"
+    }
+  },
+  {
+    "name": "05-关卡对比-金条与皇冠-黑边",
+    "id": "32d638fb42264f789b4ecc97b784e237/T005",
+    "status": "succeeded",
+    "error": null,
+    "output": {
+      "id": "32d638fb42264f789b4ecc97b784e237/T005/C002",
+      "projectId": "ff9400efcb46f932",
+      "taskId": "32d638fb42264f789b4ecc97b784e237/T005",
+      "kind": "image",
+      "path": ".studiogametoolkit/ai-board/contents/32d638fb42264f789b4ecc97b784e237/T005/C002/output.png",
+      "absolutePath": "C:\\Users\\lanran\\Desktop\\Gamedev\\Roblox_Y2\\GameKitWorkspace\\.studiogametoolkit\\ai-board\\contents\\32d638fb42264f789b4ecc97b784e237\\T005\\C002\\output.png",
+      "downloadUrl": "/api/projects/ff9400efcb46f932/tools/asset-workflow/script-content/32d638fb42264f789b4ecc97b784e237/T005/C002"
+    }
+  },
+  {
+    "name": "06-关卡对比-不同地点宝物-白边",
+    "id": "32d638fb42264f789b4ecc97b784e237/T006",
+    "status": "succeeded",
+    "error": null,
+    "output": {
+      "id": "32d638fb42264f789b4ecc97b784e237/T006/C002",
+      "projectId": "ff9400efcb46f932",
+      "taskId": "32d638fb42264f789b4ecc97b784e237/T006",
+      "kind": "image",
+      "path": ".studiogametoolkit/ai-board/contents/32d638fb42264f789b4ecc97b784e237/T006/C002/output.png",
+      "absolutePath": "C:\\Users\\lanran\\Desktop\\Gamedev\\Roblox_Y2\\GameKitWorkspace\\.studiogametoolkit\\ai-board\\contents\\32d638fb42264f789b4ecc97b784e237\\T006\\C002\\output.png",
+      "downloadUrl": "/api/projects/ff9400efcb46f932/tools/asset-workflow/script-content/32d638fb42264f789b4ecc97b784e237/T006/C002"
+    }
+  },
+  {
+    "name": "07-路径目标-通往宝石石头-黑边",
+    "id": "32d638fb42264f789b4ecc97b784e237/T007",
+    "status": "succeeded",
+    "error": null,
+    "output": {
+      "id": "32d638fb42264f789b4ecc97b784e237/T007/C002",
+      "projectId": "ff9400efcb46f932",
+      "taskId": "32d638fb42264f789b4ecc97b784e237/T007",
+      "kind": "image",
+      "path": ".studiogametoolkit/ai-board/contents/32d638fb42264f789b4ecc97b784e237/T007/C002/output.png",
+      "absolutePath": "C:\\Users\\lanran\\Desktop\\Gamedev\\Roblox_Y2\\GameKitWorkspace\\.studiogametoolkit\\ai-board\\contents\\32d638fb42264f789b4ecc97b784e237\\T007\\C002\\output.png",
+      "downloadUrl": "/api/projects/ff9400efcb46f932/tools/asset-workflow/script-content/32d638fb42264f789b4ecc97b784e237/T007/C002"
+    }
+  },
+  {
+    "name": "08-路径目标-尽头金条-白边",
+    "id": "32d638fb42264f789b4ecc97b784e237/T008",
+    "status": "succeeded",
+    "error": null,
+    "output": {
+      "id": "32d638fb42264f789b4ecc97b784e237/T008/C002",
+      "projectId": "ff9400efcb46f932",
+      "taskId": "32d638fb42264f789b4ecc97b784e237/T008",
+      "kind": "image",
+      "path": ".studiogametoolkit/ai-board/contents/32d638fb42264f789b4ecc97b784e237/T008/C002/output.png",
+      "absolutePath": "C:\\Users\\lanran\\Desktop\\Gamedev\\Roblox_Y2\\GameKitWorkspace\\.studiogametoolkit\\ai-board\\contents\\32d638fb42264f789b4ecc97b784e237\\T008\\C002\\output.png",
+      "downloadUrl": "/api/projects/ff9400efcb46f932/tools/asset-workflow/script-content/32d638fb42264f789b4ecc97b784e237/T008/C002"
+    }
+  },
+  {
+    "name": "09-路径目标-皇冠目标-黑边",
+    "id": "32d638fb42264f789b4ecc97b784e237/T009",
+    "status": "succeeded",
+    "error": null,
+    "output": {
+      "id": "32d638fb42264f789b4ecc97b784e237/T009/C002",
+      "projectId": "ff9400efcb46f932",
+      "taskId": "32d638fb42264f789b4ecc97b784e237/T009",
+      "kind": "image",
+      "path": ".studiogametoolkit/ai-board/contents/32d638fb42264f789b4ecc97b784e237/T009/C002/output.png",
+      "absolutePath": "C:\\Users\\lanran\\Desktop\\Gamedev\\Roblox_Y2\\GameKitWorkspace\\.studiogametoolkit\\ai-board\\contents\\32d638fb42264f789b4ecc97b784e237\\T009\\C002\\output.png",
+      "downloadUrl": "/api/projects/ff9400efcb46f932/tools/asset-workflow/script-content/32d638fb42264f789b4ecc97b784e237/T009/C002"
+    }
+  },
+  {
+    "name": "10-未知揭晓-裂缝谜团-白边",
+    "id": "32d638fb42264f789b4ecc97b784e237/T010",
+    "status": "succeeded",
+    "error": null,
+    "output": {
+      "id": "32d638fb42264f789b4ecc97b784e237/T010/C002",
+      "projectId": "ff9400efcb46f932",
+      "taskId": "32d638fb42264f789b4ecc97b784e237/T010",
+      "kind": "image",
+      "path": ".studiogametoolkit/ai-board/contents/32d638fb42264f789b4ecc97b784e237/T010/C002/output.png",
+      "absolutePath": "C:\\Users\\lanran\\Desktop\\Gamedev\\Roblox_Y2\\GameKitWorkspace\\.studiogametoolkit\\ai-board\\contents\\32d638fb42264f789b4ecc97b784e237\\T010\\C002\\output.png",
+      "downloadUrl": "/api/projects/ff9400efcb46f932/tools/asset-workflow/script-content/32d638fb42264f789b4ecc97b784e237/T010/C002"
+    }
+  },
+  {
+    "name": "11-未知揭晓-最后一击-黑边",
+    "id": "32d638fb42264f789b4ecc97b784e237/T011",
+    "status": "succeeded",
+    "error": null,
+    "output": {
+      "id": "32d638fb42264f789b4ecc97b784e237/T011/C002",
+      "projectId": "ff9400efcb46f932",
+      "taskId": "32d638fb42264f789b4ecc97b784e237/T011",
+      "kind": "image",
+      "path": ".studiogametoolkit/ai-board/contents/32d638fb42264f789b4ecc97b784e237/T011/C002/output.png",
+      "absolutePath": "C:\\Users\\lanran\\Desktop\\Gamedev\\Roblox_Y2\\GameKitWorkspace\\.studiogametoolkit\\ai-board\\contents\\32d638fb42264f789b4ecc97b784e237\\T011\\C002\\output.png",
+      "downloadUrl": "/api/projects/ff9400efcb46f932/tools/asset-workflow/script-content/32d638fb42264f789b4ecc97b784e237/T011/C002"
+    }
+  },
+  {
+    "name": "12-未知揭晓-揭开石壳-白边",
+    "id": "32d638fb42264f789b4ecc97b784e237/T012",
+    "status": "succeeded",
+    "error": null,
+    "output": {
+      "id": "32d638fb42264f789b4ecc97b784e237/T012/C002",
+      "projectId": "ff9400efcb46f932",
+      "taskId": "32d638fb42264f789b4ecc97b784e237/T012",
+      "kind": "image",
+      "path": ".studiogametoolkit/ai-board/contents/32d638fb42264f789b4ecc97b784e237/T012/C002/output.png",
+      "absolutePath": "C:\\Users\\lanran\\Desktop\\Gamedev\\Roblox_Y2\\GameKitWorkspace\\.studiogametoolkit\\ai-board\\contents\\32d638fb42264f789b4ecc97b784e237\\T012\\C002\\output.png",
+      "downloadUrl": "/api/projects/ff9400efcb46f932/tools/asset-workflow/script-content/32d638fb42264f789b4ecc97b784e237/T012/C002"
+    }
+  }
+]
