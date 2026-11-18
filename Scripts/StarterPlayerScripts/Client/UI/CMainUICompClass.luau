@@ -92,14 +92,14 @@ function Component:OnReady()
     self._rebirthScreen = FXLoader:Here(self._playerGui, "RebirthUI")
     self._rebirthPanel = FXLoader:Here(self._rebirthScreen, "PopupPanelImg")
     self._rebirthConfirmButton = FXLoader:Here(self._rebirthPanel, "RebirthBtn")
-    --- 弹窗打开后立即把首次重生遮罩切到确认按钮，关闭时恢复主界面入口。
+    --- 弹窗打开后把重生提示切到确认按钮，关闭时恢复主界面入口；首次重生保留遮罩。
     local function RefreshRebirthGuide()
         self:RefreshRebirthGuide()
     end
     self:TrackConnection(self._rebirthScreen:GetPropertyChangedSignal("Enabled"):Connect(RefreshRebirthGuide))
     self:TrackConnection(self._rebirthPanel:GetPropertyChangedSignal("Visible"):Connect(RefreshRebirthGuide))
     self:BindNotificationBadges()
-    self:ConfigureTopRightLayout()
+    self._gmButton = FXLoader:Here(self._rootNode, "GMButton")
     self._commonUI = self:GetPlayerObject():RequireComponent("FCCommonUIComp")
     self._localization = self._commonUI.Localization
     self._trainingStatus = Instance.new("TextLabel")
@@ -350,29 +350,6 @@ function Component:BindNotificationBadges()
             end
         end
     end))
-end
-
---- 右上入口统一由容器适配，移出旧分组后等待旧布局释放，再设置容器内坐标。
-function Component:ConfigureTopRightLayout()
-    local button = FXLoader:Here(self._rootNode, "SettingsButton")
-    self._gmButton = FXLoader:Here(self._rootNode, "GMButton")
-    local layout = Instance.new("Frame")
-    layout.Name = "TopRight"
-    layout.BackgroundTransparency = 1
-    layout.AnchorPoint = Vector2.new(1, 0)
-    layout.Position = UDim2.new(1, -12, 0, 10)
-    layout.Size = UDim2.fromOffset(104, 48)
-    layout.ZIndex = button.ZIndex
-    button.Parent = layout
-    self._gmButton.Parent = layout
-    -- ResponsiveLayout 的 ChildRemoved 延迟恢复旧坐标，需先让该回调完成。
-    task.wait()
-    button.AnchorPoint = Vector2.new(1, 0)
-    button.Position = UDim2.fromScale(1, 0)
-    button.Size = UDim2.fromOffset(48, 48)
-    self._gmButton.AnchorPoint = Vector2.zero
-    self._gmButton.Position = UDim2.fromOffset(0, 0)
-    layout.Parent = self._rootNode
 end
 
 --- 只按显式禁点标记判断 UI 占用，弹窗状态由通用 UI 统一查询。
@@ -772,7 +749,7 @@ function Component:RefreshTrainingRejoinLayout()
     self._trainingRejoinLabel.Position = UDim2.new(0.5, 0, 1, -height - 16)
 end
 
---- 新手引导完成后才显示底部提醒；下一世界已解锁更强基地时持续引导至目标基地。
+--- 新手引导完成后才显示底部提醒；训练路线优先，镐子、光环购买提醒先于卡牌奖励。
 --- @return table? 最高优先级的文案定义，没有符合条件的提醒时为 nil。
 --- @return table? 训练台提醒对应的配置，供世界箭头复用同一目标判定。
 --- @return string? 购买提醒对应的商店类型，供通用箭头复用同一目标判定。
@@ -781,6 +758,10 @@ function Component:GetPriorityReminder()
     local guide = self:GetTable(Fields.Guide)
     local first = guide.guideMap and guide.guideMap.FirstLootGuide
     if first == nil or first.state ~= "Finished" then
+        return nil
+    end
+    local route = guide.guideMap.SecondRebirthGuide
+    if route == nil or route.state ~= "Finished" then
         return nil
     end
     local worldIndex = self:GetNumber(Fields.WorldIndex)
@@ -819,10 +800,6 @@ function Component:GetPriorityReminder()
             return TranslationTexts.BetterTrainingAvailable, bestField
         end
     end
-    local welfare = self:GetComponent("CWelfareUIComp")
-    if welfare and welfare:HasClaimableCardReward() then
-        return TranslationTexts.CardRewardAvailable
-    end
     local coins = self:GetNumber(Fields.Money)
     local shops = {
         {Configs = _G.GameConfig.ToolConfig, Limit = _G.GameEnum.WeaponLimit,
@@ -847,6 +824,10 @@ function Component:GetPriorityReminder()
                 return shop.Text, nil, shop.Type
             end
         end
+    end
+    local welfare = self:GetComponent("CWelfareUIComp")
+    if welfare and welfare:HasClaimableCardReward() then
+        return TranslationTexts.CardRewardAvailable
     end
     return nil
 end
@@ -1252,7 +1233,7 @@ function Component:ShowPickupEffect(entry)
     self._pickupEffects[effect] = connection
 end
 
---- 独立于新手流程提示可重生状态；首次重生在主界面入口与弹窗确认按钮间切换方形遮罩。
+--- 独立提示可重生状态，在入口与确认按钮间切换；首次重生显示遮罩，后续只显示箭头。
 function Component:RefreshRebirthGuide()
     local rebirthCount = self:GetNumber(Fields.RebirthCount)
     local requiredLevel = Rebirth.GetRequiredLevel(rebirthCount)
@@ -1262,8 +1243,8 @@ function Component:RefreshRebirthGuide()
         return
     end
     local firstRebirth = rebirthCount == 0
-    if firstRebirth and self._rebirthScreen.Enabled and self._rebirthPanel.Visible then
-        self._rebirthArrow:Show(self._rebirthConfirmButton, "Top", true)
+    if self._rebirthScreen.Enabled and self._rebirthPanel.Visible then
+        self._rebirthArrow:Show(self._rebirthConfirmButton, "Top", firstRebirth)
     else
         self._rebirthArrow:Show(self._rebirthBadge.Parent, "Right", firstRebirth)
     end

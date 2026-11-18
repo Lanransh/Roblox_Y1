@@ -389,7 +389,114 @@ function Guide:RefreshWorld2Reminder()
     self:SetGuideData(data)
 end
 
---- 使用权威存档恢复提前完成的操作；已拥有光环直接跳过购买引导，不补钱，末尾提醒按配置计时推进。
+--- 按真实库存和购买资格判断固定路线步骤，不接受客户端自报完成，不重复发放新手奖励。
+--- @param target table 当前步骤目标。
+--- @param config table 固定路线配置。
+--- @return boolean 是否已满足当前步骤。
+function Guide:IsRebirthRouteStepComplete(target, config)
+    if target.type == "Training" then
+        return self:GetNumber(PlayerDataConfig.RockTrainingLevel) >= target.level
+    elseif target.type == "Rebirth" then
+        return self:GetNumber(PlayerDataConfig.RebirthCount) >= target.count
+    end
+    local weapon = FXLoader:RequireShared("Scripts/Game/Shared/Weapon")
+    local goal = weapon.GetConfig(config.weaponId)
+    local data = self:GetTable(PlayerDataConfig.WeaponData)
+    if target.type == "Weapon" then
+        return weapon.GetEquippedConfig(data).TrainingRate >= goal.TrainingRate
+    end
+    for index, item in ipairs(_G.GameConfig.ToolConfig) do
+        if index > _G.GameEnum.WeaponLimit then
+            break
+        end
+        if data.owned[tostring(item.ToolId)] == true and item.TrainingRate >= goal.TrainingRate then
+            return true
+        end
+    end
+    local money = self:GetNumber(PlayerDataConfig.Money)
+    if money >= goal.Price then
+        return true
+    end
+    local carried = self:GetTable(PlayerDataConfig.RockLoot)
+    local stored = self:GetTable(PlayerDataConfig.StoredLoot)
+    if target.type == "Base" then
+        return #carried == 0
+    elseif target.type == "Sell" then
+        return #stored == 0
+    end
+    local capacity = self:RequireComponent("SRockLevelComp"):GetLootCapacity()
+    if #stored > 0 or #carried >= math.min(config.lootCount, capacity) then
+        return true
+    end
+    local rate = Rebirth.GetMoneyRate(self:GetNumber(PlayerDataConfig.RebirthCount))
+    for index, item in ipairs(carried) do
+        money += math.floor(item.Price * rate)
+    end
+    return money >= goal.Price
+end
+
+--- 首轮结束后续接固定路线；旧玩家跳过已完成阶段，低价掉落不足以买镐时允许再收集一趟。
+function Guide:RefreshRebirthRoute()
+    local config = TutorialGuideConfig.SecondRebirthGuide
+    local data = self:GetGuideData()
+    local first = data.guideMap.FirstLootGuide
+    local route = data.guideMap.SecondRebirthGuide
+    if not first or first.state ~= "Finished" or (route and route.state == "Finished") then
+        return
+    end
+    if self:GetNumber(PlayerDataConfig.RebirthCount) >= config.completionRebirthCount then
+        self:FinishGroup(data, "SecondRebirthGuide")
+        return
+    end
+    self:TryStartGroup(config.startEvent)
+    data = self:GetGuideData()
+    local rebirthCount = self:GetNumber(PlayerDataConfig.RebirthCount)
+    if data.activeGuideId == "SecondRebirthGuide"
+        and self:GetNumber(PlayerDataConfig.RockTrainingLevel) >= Rebirth.GetRequiredLevel(rebirthCount) then
+        -- 已能重生就不再要求额外赚钱或买镐；下一次重生目标仍由配置中的步骤决定。
+        for index, step in ipairs(config.steps) do
+            if step.target.type == "Rebirth" and step.target.count == rebirthCount + 1 then
+                if data.guideMap.SecondRebirthGuide.stepIndex ~= index then
+                    self:EnterGroupStep(data, "SecondRebirthGuide", config, index)
+                end
+                return
+            end
+        end
+    end
+    for attempt = 1, #config.steps do
+        data = self:GetGuideData()
+        if data.activeGuideId ~= "SecondRebirthGuide" then
+            return
+        end
+        local step = config.steps[data.guideMap.SecondRebirthGuide.stepIndex]
+        if self:GetNumber(PlayerDataConfig.RebirthCount) >= step.skipAtRebirthCount
+            or self:IsRebirthRouteStepComplete(step.target, config) then
+            self:TryFinishCurrentStep(step.finishEvent)
+        else
+            if step.target.type == "Weapon" then
+                local weapon = FXLoader:RequireShared("Scripts/Game/Shared/Weapon")
+                local goal = weapon.GetConfig(config.weaponId)
+                local owned = self:GetTable(PlayerDataConfig.WeaponData).owned
+                local canEquip = false
+                for index, item in ipairs(_G.GameConfig.ToolConfig) do
+                    if index > _G.GameEnum.WeaponLimit then
+                        break
+                    end
+                    if owned[tostring(item.ToolId)] == true and item.TrainingRate >= goal.TrainingRate then
+                        canEquip = true
+                        break
+                    end
+                end
+                if not canEquip and self:GetNumber(PlayerDataConfig.Money) < goal.Price then
+                    self:EnterGroupStep(data, "SecondRebirthGuide", config, config.collectStepIndex)
+                end
+            end
+            return
+        end
+    end
+end
+
+--- 使用权威存档恢复提前完成的操作；首轮结束后继续按配置引导至第二次重生。
 --- @param serverTime number 框架每秒回调时间。
 function Guide:OnUpdate(serverTime)
     if self:IsLootStep(1) then
@@ -448,6 +555,7 @@ function Guide:OnUpdate(serverTime)
             end
         end
     end
+    self:RefreshRebirthRoute()
     self:RefreshWorld2Reminder()
 end
 

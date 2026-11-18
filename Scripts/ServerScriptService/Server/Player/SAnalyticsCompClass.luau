@@ -8,6 +8,11 @@ local GuideSteps = _G.TutorialGuideConfig.FirstLootGuide.steps
 local Component = FX.Class("SAnalyticsCompClass", "FSPlayerCompClass")
 local VERSION = "V1"
 local GUIDE_VERSION = "FirstLootV5"
+local ROUTE_VERSION = "SecondRebirthV1"
+-- 步骤表示任务通过（包含权威条件满足后的跳过），不推断玩家实际执行过被跳过的动作。
+local ROUTE_STEPS = {"RouteStarted", "Training15TaskCompleted", "FirstRebirthTaskCompleted",
+    "CollectTaskCompleted", "DepositTaskCompleted", "SellTaskCompleted", "WeaponTaskCompleted",
+    "Training30TaskCompleted", "SecondRebirthTaskCompleted"}
 local GROWTH_STEPS = {"GuideCompleted", "FirstRebirth", "World2Unlocked", "World3Unlocked"}
 local PURCHASE_STEPS = {"ShopOpened", "ProductSelected", "PromptRequested", "PurchaseGranted"}
 -- 所有业务分析共用一分钟滑动窗口，留出平台额度余量；失败调用也计入预算。
@@ -88,7 +93,7 @@ function Component:AccountTime()
     return self:GetNumber(Fields.TrainingPlaytime)
 end
 
---- 每秒分批消费队列；平台失败等待三十秒，引导和成长也每三十秒重试。
+--- 每秒分批消费队列；平台失败等待三十秒，引导、二次重生任务和成长也每三十秒重试。
 --- @param serverTime number 框架时间；计时使用同一单调时钟。
 function Component:OnUpdate(serverTime)
     self:AccountTime()
@@ -104,7 +109,7 @@ function Component:OnUpdate(serverTime)
     self:FlushPurchases()
 end
 
---- 离服前补报尚未成功发送的 V5 最高进度；首次离服另记在线快照，重复登出不重报。
+--- 离服前补报引导和二次重生任务最高进度；首次离服另记在线快照，重复登出不重报。
 function Component:EndSession()
     if not self._startedAt or self._ended then
         return
@@ -115,6 +120,7 @@ function Component:EndSession()
         -- 结束会话前只尝试一次，沿用发送预算和异常隔离，失败仍保留持久进度供重登补报。
         self:RecordGuide(self:GetTable(Fields.Guide))
     end
+    self:RecordRebirthRoute(self:GetTable(Fields.Guide))
     self._ended = true
     if self._enabled and self._isFirstSession then
         local event = {kind = "Custom", name = "FirstSessionPlaytime",
@@ -143,12 +149,13 @@ function Component:GetGuideStep(data)
     return nil
 end
 
---- 仅为 V5 新玩家持久化单件拾取口径的待报目标；历史玩家仍正常触发成长里程碑。
+--- 记录后续任务；首轮仅为 V5 新玩家持久化单件拾取口径，历史玩家仍正常触发成长里程碑。
 --- @param data table 已提交的权威引导数据。
 function Component:RecordGuide(data)
     if not self._startedAt or self._ended then
         return
     end
+    self:RecordRebirthRoute(data)
     local step = self:GetGuideStep(data)
     local previous = self:GetNumber(Fields.FirstLootV5Step)
     if step and self:GetNumber(Fields.FirstLootAnalyticsVersion) == 5 then
@@ -164,6 +171,33 @@ function Component:RecordGuide(data)
     end
     if step == #GuideSteps + 1 then
         self:RecordGrowth()
+    end
+end
+
+--- 任务进入下一步才算上一任务通过；只纳入实际运行过路线的玩家，历史整线完成不补入。
+--- @param data table 已提交的权威引导数据。
+function Component:RecordRebirthRoute(data)
+    if not self._startedAt or self._ended then
+        return
+    end
+    local route = data.guideMap and data.guideMap.SecondRebirthGuide
+    local previous = self:GetNumber(Fields.SecondRebirthV1Step)
+    if previous == 0 and (not route or route.state ~= "Running"
+        or self:GetNumber(Fields.RebirthCount) >= _G.TutorialGuideConfig.SecondRebirthGuide.completionRebirthCount) then
+        return
+    end
+    local target = previous
+    if route and route.state == "Finished" then
+        target = #ROUTE_STEPS
+    elseif route and route.state == "Running" then
+        target = math.max(previous, route.stepIndex)
+    end
+    if target > previous then
+        self:SetNumber(Fields.SecondRebirthV1Step, target)
+    end
+    if target > (self._reportedRouteStep or 0) and self:Funnel(ROUTE_VERSION, "LifetimeV1", target,
+        ROUTE_STEPS[target], {ROUTE_VERSION, "CompletedTasks", VERSION}) then
+        self._reportedRouteStep = target
     end
 end
 

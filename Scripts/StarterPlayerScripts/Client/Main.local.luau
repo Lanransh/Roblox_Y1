@@ -7,6 +7,9 @@ require(ReplicatedStorage:WaitForChild("Scripts"):WaitForChild("GameInit"))
 local FC = _G.FC
 local FX = _G.FX
 local FXLoader = FX.Loader
+local LoadingClass = FXLoader:RequireFromParent(script, "UI/CLoadingScreenClass")
+local loading = LoadingClass.New(nil)
+loading:Start()
 FXLoader:RequireFromParent(script, "PickupPrompt").Init()
 
 FC.GiftDrop = FXLoader:RequireFromParent(script, "GiftDrop")
@@ -45,3 +48,4 @@ FC.PlayerObject = PlayerClass.New(Players.LocalPlayer.UserId)
 
 -- 在此添加项目客户端组件；UI 子类提供自己的原生节点和模板。
 FC.WaitServerReady()
+loading:Finish()

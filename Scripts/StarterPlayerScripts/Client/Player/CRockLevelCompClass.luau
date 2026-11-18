@@ -516,6 +516,41 @@ function Component:UpdateDrops()
     end
 end
 
+--- 矿区外指向指定入口，进入后只指向当前区域最近的未碎藏宝石头。
+--- @param position Vector3 当前角色根节点位置。
+--- @param worldIndex number 引导目标世界序号。
+--- @param stageIndex number 引导入口关卡序号。
+--- @return Vector3? 入口或最近藏宝石头的位置，区域未就绪或没有未碎藏宝石头时为空。
+function Component:GetMiningGuidePosition(position, worldIndex, stageIndex)
+    if not self._areas then
+        return nil
+    end
+    local inside, area = RockLevel.IsInArea(self._areas, position)
+    if inside and area.World == worldIndex then
+        local nearest, nearestDistance = nil, math.huge
+        local cellSize = RockLevel.CellSize
+        for cell = 1, area.Rows * area.Columns do
+            local key = area.Index .. ":" .. cell
+            if self._treasureCells[key] and self._health[key] ~= 0 then
+                local center = Vector3.new(area.MinX + ((cell - 1) % area.Columns + 0.5) * cellSize,
+                    area.FloorY + 1, area.MinZ + (math.floor((cell - 1) / area.Columns) + 0.5) * cellSize)
+                local distance = (center - position).Magnitude
+                if distance < nearestDistance then
+                    nearest, nearestDistance = center, distance
+                end
+            end
+        end
+        return nearest
+    end
+    for index, entry in ipairs(self._areas) do
+        if entry.World == worldIndex and entry.LocalIndex == stageIndex then
+            return Vector3.new(entry.MinX + entry.Columns * RockLevel.CellSize / 2,
+                entry.FloorY + 1, entry.MinZ + RockLevel.CellSize / 2)
+        end
+    end
+    return nil
+end
+
 --- 释放本人客户端创建的掉落模型、提示连接、补间和光环。
 --- @param dropId string 服务端签发的掉落 ID。
 function Component:RemoveDrop(dropId)

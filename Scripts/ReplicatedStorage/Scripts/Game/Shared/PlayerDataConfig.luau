@@ -41,6 +41,11 @@ return {
         Type = "number", Key = "FirstLootV5Step", DefVal = 0,
         KVTable = PlayerKVEnum.eStaticData, Sync = false,
     },
+    -- 二次重生任务漏斗的最高待报进度；采集循环不回退，重登继续补报。
+    SecondRebirthV1Step = {
+        Type = "number", Key = "SecondRebirthV1Step", DefVal = 0,
+        KVTable = PlayerKVEnum.eStaticData, Sync = false,
+    },
     -- 购买分析独立于收据去重表；待报快照随奖励保存，跨会话恢复归因。
     PurchaseAnalytics = {
         Type = "table", Key = "PurchaseAnalytics", KVTable = PlayerKVEnum.eStaticData, Sync = false,
