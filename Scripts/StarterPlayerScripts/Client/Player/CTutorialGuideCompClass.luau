@@ -116,7 +116,8 @@ function Guide:OnReady()
     local topCenter = FXLoader:PlayerGui("MainUI/TopCenter")
     local strength = FXLoader:Here(topCenter, "Strength")
     local levelBar = FXLoader:Here(topCenter, "LevelProgressBar")
-    --- 与其他界面使用相同设计分辨率，并让提示始终贴在当前顶部 HUD 下方。
+    local tips = self:RequireComponent("FCCommonUIComp").Tips
+    --- 沿用设计分辨率，在顶部 HUD 和通用提示下方预留间距，避免提示弹出时重叠或跳动。
     local function updateScale()
         local size = self._screen.AbsoluteSize
         if size.X <= 0 or size.Y <= 0 then
@@ -125,10 +126,11 @@ function Guide:OnReady()
         scale.Scale = math.min(size.X / 1280, size.Y / 720)
         local header = strength.Visible and strength or levelBar
         local headerBottom = header.AbsolutePosition.Y + header.AbsoluteSize.Y
-        self._label.Position = UDim2.fromScale(0.5, (headerBottom + 8 * scale.Scale) / size.Y)
+        local tipsBottom = tips.AbsolutePosition.Y + tips.AbsoluteSize.Y
+        self._label.Position = UDim2.fromScale(0.5, (math.max(headerBottom, tipsBottom) + 12 * scale.Scale) / size.Y)
     end
     self:TrackConnection(self._screen:GetPropertyChangedSignal("AbsoluteSize"):Connect(updateScale))
-    for index, node in ipairs({strength, levelBar}) do
+    for index, node in ipairs({strength, levelBar, tips}) do
         self:TrackConnection(node:GetPropertyChangedSignal("AbsolutePosition"):Connect(updateScale))
         self:TrackConnection(node:GetPropertyChangedSignal("AbsoluteSize"):Connect(updateScale))
     end
@@ -457,7 +459,7 @@ function Guide:RefreshTarget()
     end
 end
 
---- 保留三角形路线，并叠加始终可见的半透明轮廓，避免前往关卡或拾取时被石头遮挡。
+--- 保留三角形路线，并叠加始终可见的白色实线轮廓，避免前往关卡或拾取时被石头遮挡。
 --- @param position Vector3 世界目标。
 function Guide:ShowGuideArrowToPosition(position)
     self._worldTargetPosition = position
@@ -478,8 +480,8 @@ function Guide:ShowGuideArrowToPosition(position)
         overlay.Adornee = arrow
         overlay.AlwaysOnTop = true
         overlay.ZIndex = 1
-        overlay.Color3 = Color3.fromRGB(255, 240, 150)
-        overlay.Transparency = 0.35
+        overlay.Color3 = Color3.fromRGB(255, 255, 255)
+        overlay.Transparency = 0
         overlay.Parent = arrow
         self._arrowOverlay = overlay
         self._renderSteppedConn = RunService.RenderStepped:Connect(function()
@@ -489,7 +491,7 @@ function Guide:ShowGuideArrowToPosition(position)
     self:UpdateGuideArrow()
 end
 
---- 三角形沿路线滚动并淡出首尾；穿透轮廓复用同一组顶点，避免与实际箭头方向错位。
+--- 三角形放大 20% 后沿路线滚动并淡出首尾；白色穿透轮廓复用同一组顶点。
 function Guide:UpdateGuideArrow()
     local character = self:GetPlayerCharacter()
     local root = character and FXLoader:Find(character, "HumanoidRootPart")
@@ -502,7 +504,7 @@ function Guide:UpdateGuideArrow()
     local direction = origin and target and target - origin
     local distance = direction and direction.Magnitude or 0
     local spacing = 4
-    local count = root and camera and math.min(32, math.max(0, math.ceil((distance - 3.1) / spacing))) or 0
+    local count = root and camera and math.min(32, math.max(0, math.ceil((distance - 3.32) / spacing))) or 0
     local now = os.clock()
     local forward, side, normal, flatForward
     local flatDirection = direction and Vector3.new(direction.X, 0, direction.Z)
@@ -523,7 +525,7 @@ function Guide:UpdateGuideArrow()
             for half = 1, 2 do
                 local wedge = Instance.new("WedgePart")
                 wedge.Name = "Triangle" .. index .. "Half" .. half
-                wedge.Size = Vector3.new(0.04, 1, 2.2)
+                wedge.Size = Vector3.new(0.048, 1.2, 2.64)
                 wedge.Anchored = true
                 wedge.CanCollide, wedge.CanTouch, wedge.CanQuery = false, false, false
                 wedge.CastShadow = false
@@ -534,12 +536,12 @@ function Guide:UpdateGuideArrow()
             self._arrowTriangles[index] = triangle
         end
         local along = index <= count and 2 + (index - 1) * spacing + (now * 1.5) % spacing
-        local visible = along and along < distance - 1.1
+        local visible = along and along < distance - 1.32
         if visible then
             local center = origin + forward * along
-            local tip = self._arrowTrans.CFrame:PointToObjectSpace(center + flatForward * 1.1)
-            local left = self._arrowTrans.CFrame:PointToObjectSpace(center - flatForward * 1.1 - side)
-            local right = self._arrowTrans.CFrame:PointToObjectSpace(center - flatForward * 1.1 + side)
+            local tip = self._arrowTrans.CFrame:PointToObjectSpace(center + flatForward * 1.32)
+            local left = self._arrowTrans.CFrame:PointToObjectSpace(center - flatForward * 1.32 - side * 1.2)
+            local right = self._arrowTrans.CFrame:PointToObjectSpace(center - flatForward * 1.32 + side * 1.2)
             table.insert(overlayLines, tip)
             table.insert(overlayLines, left)
             table.insert(overlayLines, left)
@@ -548,11 +550,11 @@ function Guide:UpdateGuideArrow()
             table.insert(overlayLines, tip)
         end
         for half, wedge in ipairs(triangle) do
-            local visibility = visible and math.clamp(math.min(along - 2, distance - 1.1 - along) / 0.6, 0, 1) or 0
+            local visibility = visible and math.clamp(math.min(along - 2, distance - 1.32 - along) / 0.6, 0, 1) or 0
             wedge.Transparency = 1 - 0.95 * visibility
             if visible then
                 local sign = half == 1 and 1 or -1
-                local center = origin + forward * along + side * (sign * 0.5)
+                local center = origin + forward * along + side * (sign * 0.6)
                 wedge.CFrame = CFrame.fromMatrix(center, normal * sign, side * sign, -flatForward)
                 wedge.Color = Color3.fromHSV((along / distance - now * 0.2) % 1, 0.85, 1)
             end

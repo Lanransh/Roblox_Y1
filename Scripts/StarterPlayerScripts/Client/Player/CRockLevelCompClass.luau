@@ -69,6 +69,7 @@ function Component:Ctor(owner)
     self._pendingHits = {}
     self._nextDropUpdate = 0
     self._drops = {}
+    self._lootDisplayScale = 1
     self._luckLabels = {}
 end
 
@@ -256,6 +257,8 @@ function Component:SpawnDrop(data)
     end
 
     local model = Collectible.CreateModel(template)
+    local baseScale = model:GetScale()
+    model:ScaleTo(baseScale * self._lootDisplayScale)
     local box, size = model:GetBoundingBox()
     model:PivotTo(CFrame.new(data.GroundPosition + Vector3.new(0, size.Y / 2 + 0.2, 0) - box.Position))
     local root = model.PrimaryPart
@@ -294,6 +297,7 @@ function Component:SpawnDrop(data)
     local drop = {
         DropId = data.DropId,
         Model = model,
+        BaseScale = baseScale,
         Prompt = prompt,
         Hud = hud,
         NameSource = data.NameSource,
@@ -432,9 +436,45 @@ function Component:UpdateDropText(drop, now)
     FXLoader:Here(drop.Hud, "Frame/Timer").Text = string.format("%ds", math.max(0, math.ceil(drop.ExpiresAt - now)))
 end
 
---- 落地后注册按品质着色的放射光环和漂浮动画所需的固定落点数据。
+--- 开发者截图倍率仅保留在本客户端；揭晓或落地中的掉落在动画结束时应用最新值。
+--- @param scale number GM 面板已校验的 0.1～20 倍显示倍率，1 恢复原尺寸。
+function Component:SetLootDisplayScale(scale)
+    if not FX.IsDeveloper(self:GetPlayerNode().UserId) then
+        return
+    end
+    self._lootDisplayScale = scale
+    for dropId, drop in pairs(self._drops) do
+        if drop.LandedAt then
+            self:ApplyDropDisplayScale(drop)
+        end
+    end
+end
+
+--- 按原始尺寸绝对缩放并保持模型底部落点，刷新漂浮锚点、HUD 和光环，拾取距离保持不变。
+--- @param drop table 本客户端创建且已结束落地动画的战利品。
+function Component:ApplyDropDisplayScale(drop)
+    local model = drop.Model
+    model:ScaleTo(drop.BaseScale * self._lootDisplayScale)
+    local box, size = model:GetBoundingBox()
+    local centerOffset = model:GetPivot():ToObjectSpace(box)
+    drop.PivotOffset = centerOffset:Inverse()
+    drop.Center = CFrame.new(drop.GroundPosition + Vector3.new(0, size.Y / 2 + 0.2, 0))
+    drop.Landing = drop.Center * drop.PivotOffset
+    model:PivotTo(drop.Landing)
+    Collectible.StyleHUD(drop.Hud, model, drop.Quality)
+    drop.Prompt.MaxActivationDistance = Collectible.PickupDistance
+    if drop.Glow then
+        box = model:GetBoundingBox()
+        drop.Anchor.Position = model.PrimaryPart.CFrame:PointToObjectSpace(box.Position)
+        local diameter = math.max(size.X, size.Y, size.Z) * 2.2
+        drop.Glow.Size = UDim2.fromScale(diameter, diameter)
+    end
+end
+
+--- 落地后应用最新截图倍率，再注册按品质着色的放射光环和漂浮动画所需的固定落点数据。
 --- @param drop table 已完成落地的本地掉落。
 function Component:RegisterDropVisual(drop)
+    self:ApplyDropDisplayScale(drop)
     local model = drop.Model
     local root = model.PrimaryPart
     local box, size = model:GetBoundingBox()
@@ -518,11 +558,11 @@ function Component:UpdateDrops()
     end
 end
 
---- 到达指定关卡前指向入口，进关后优先指向可拾取战利品，其次是未碎藏宝石头。
+--- 到达指定矿区前指向中央石头，进区后优先指向区内最近的可拾取战利品，其次是未碎藏宝石头。
 --- @param position Vector3 当前角色根节点位置。
 --- @param worldIndex number 引导目标世界序号。
---- @param stageIndex number 引导入口关卡序号。
---- @return Vector3? 入口、掉落或藏宝石头的位置，没有可指引目标时为空。
+--- @param stageIndex number 引导目标矿区序号。
+--- @return Vector3? 中央石头、掉落或藏宝石头的位置，没有可指引目标时为空。
 function Component:GetMiningGuidePosition(position, worldIndex, stageIndex)
     if not self._areas then
         return nil
@@ -533,8 +573,9 @@ function Component:GetMiningGuidePosition(position, worldIndex, stageIndex)
         local now = workspace:GetServerTimeNow()
         for dropId, drop in pairs(self._drops) do
             if drop.Prompt.Enabled and now < drop.ExpiresAt then
+                local dropInside, dropArea = RockLevel.IsInArea(self._areas, drop.GroundPosition)
                 local distance = (drop.GroundPosition - position).Magnitude
-                if distance <= Collectible.PickupDistance and distance < nearestDistance then
+                if dropInside and dropArea.Index == area.Index and distance < nearestDistance then
                     nearest, nearestDistance = drop.GroundPosition, distance
                 end
             end
@@ -558,8 +599,8 @@ function Component:GetMiningGuidePosition(position, worldIndex, stageIndex)
     end
     for index, entry in ipairs(self._areas) do
         if entry.World == worldIndex and entry.LocalIndex == stageIndex then
-            return Vector3.new(entry.MinX + entry.Columns * RockLevel.CellSize / 2,
-                entry.FloorY + 1, entry.MinZ + RockLevel.CellSize / 2)
+            return Vector3.new(entry.MinX + (math.floor(entry.Columns / 2) + 0.5) * RockLevel.CellSize,
+                entry.FloorY + 1, entry.MinZ + (math.floor(entry.Rows / 2) + 0.5) * RockLevel.CellSize)
         end
     end
     return nil

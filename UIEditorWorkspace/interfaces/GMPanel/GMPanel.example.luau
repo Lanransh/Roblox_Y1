@@ -30,6 +30,9 @@ function CGMPanelPreview:OnUIAction(action, payload)
     elseif action == "ToggleGMButton" then
         self.GMButtonHidden = not self.GMButtonHidden
         print("模拟：GM入口按钮隐藏 = " .. tostring(self.GMButtonHidden) .. "，保留点击")
+    elseif action == "SetLootScale" then
+        self.LootScale = payload.value
+        print("模拟：本机战利品截图倍率 = " .. tostring(self.LootScale))
     elseif action == "ResetData" then
         self.Data = { SetLevel = 1, SetRebirth = 0, SetMoney = 0, SetDiamonds = 0 }
         self.Items = {}

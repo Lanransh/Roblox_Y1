@@ -10,11 +10,26 @@ local VERSION = "V1"
 local GUIDE_VERSION = "FirstLootV5"
 -- 删除领奖提示后仍保留 V5 的完成序号，兼容历史已上报与已保存的漏斗进度。
 local GUIDE_COMPLETED_STEP = 10
-local ROUTE_VERSION = "SecondRebirthV1"
--- 步骤表示任务通过（包含权威条件满足后的跳过），不推断玩家实际执行过被跳过的动作。
-local ROUTE_STEPS = {"RouteStarted", "Training15TaskCompleted", "FirstRebirthTaskCompleted",
+-- 老玩家保留 V1 的九步口径；V2 使用独立参与版本、存档进度和漏斗会话。
+local LEGACY_ROUTE_VERSION = "SecondRebirthV1"
+local LEGACY_ROUTE_STEPS = {"RouteStarted", "Training15TaskCompleted", "FirstRebirthTaskCompleted",
     "CollectTaskCompleted", "DepositTaskCompleted", "SellTaskCompleted", "WeaponTaskCompleted",
     "Training30TaskCompleted", "SecondRebirthTaskCompleted"}
+local ROUTE_VERSION = "RebirthRouteV2"
+-- 步骤表示任务通过（包含权威条件满足后的跳过），不推断玩家实际执行过被跳过的动作。
+local ROUTE_STEPS = {"RouteStarted", "Training15TaskCompleted", "FirstRebirthTaskCompleted",
+    "SecondRouteTraining15TaskCompleted", "CollectTaskCompleted", "DepositTaskCompleted", "SellTaskCompleted",
+    "SecondRouteMoneyTaskCompleted", "WeaponTaskCompleted",
+    "Training30TaskCompleted", "SecondRebirthTaskCompleted",
+    "ThirdRouteCollectTaskCompleted", "ThirdRouteDepositTaskCompleted", "ThirdRouteSellTaskCompleted",
+    "ThirdRouteMoneyTaskCompleted", "ThirdRouteWeaponTaskCompleted", "Training45TaskCompleted",
+    "ThirdRebirthTaskCompleted",
+    "FourthRouteCollectTaskCompleted", "FourthRouteDepositTaskCompleted", "FourthRouteSellTaskCompleted",
+    "FourthRouteMoneyTaskCompleted", "FourthRouteWeaponTaskCompleted", "SecondTrainingFieldReminderCompleted",
+    "Training60TaskCompleted", "FourthRebirthTaskCompleted",
+    "FifthRouteCollectTaskCompleted", "FifthRouteDepositTaskCompleted", "FifthRouteSellTaskCompleted",
+    "FifthRouteMoneyTaskCompleted", "FifthRouteWeaponTaskCompleted", "Training75TaskCompleted",
+    "FifthRebirthTaskCompleted"}
 local GROWTH_STEPS = {"GuideCompleted", "FirstRebirth", "World2Unlocked", "World3Unlocked"}
 local PURCHASE_STEPS = {"ShopOpened", "ProductSelected", "PromptRequested", "PurchaseGranted"}
 -- 所有业务分析共用一分钟滑动窗口，留出平台额度余量；失败调用也计入预算。
@@ -52,7 +67,7 @@ function Component:IsSessionActive()
     return self._startedAt ~= nil and not self._ended
 end
 
---- 登录时固定引导参与版本，仅首次玩家进入 V5；保留历史版本，测试账号仍正常记账但不发送。
+--- 登录时固定统计参与版本；仅首次玩家进入重生 V2，老玩家继续 V1，测试账号记账但不发送。
 --- @param isFirstSession boolean 发放初始武器前确认的首次玩家标记。
 function Component:StartSession(isFirstSession)
     if self._startedAt then
@@ -60,6 +75,9 @@ function Component:StartSession(isFirstSession)
     end
     if self:GetNumber(Fields.FirstLootAnalyticsVersion) == 0 then
         self:SetNumber(Fields.FirstLootAnalyticsVersion, isFirstSession and 5 or 3)
+    end
+    if self:GetNumber(Fields.RebirthRouteAnalyticsVersion) == 0 then
+        self:SetNumber(Fields.RebirthRouteAnalyticsVersion, isFirstSession and 2 or 1)
     end
     self._startedAt = os.clock()
     self._accountedAt = self._startedAt
@@ -95,7 +113,7 @@ function Component:AccountTime()
     return self:GetNumber(Fields.TrainingPlaytime)
 end
 
---- 每秒分批消费队列；平台失败等待三十秒，引导、二次重生任务和成长也每三十秒重试。
+--- 每秒分批消费队列；平台失败等待三十秒，引导、五次重生任务和成长也每三十秒重试。
 --- @param serverTime number 框架时间；计时使用同一单调时钟。
 function Component:OnUpdate(serverTime)
     self:AccountTime()
@@ -111,7 +129,7 @@ function Component:OnUpdate(serverTime)
     self:FlushPurchases()
 end
 
---- 离服前补报引导和二次重生任务最高进度；首次离服另记在线快照，重复登出不重报。
+--- 离服前补报引导和五次重生任务最高进度；首次离服另记在线快照，重复登出不重报。
 function Component:EndSession()
     if not self._startedAt or self._ended then
         return
@@ -177,10 +195,14 @@ function Component:RecordGuide(data)
     end
 end
 
---- 两段沿用原八步漏斗序号；新增回练和攒钱阶段不改写历史任务序号。
+--- 按固定参与版本分流；老玩家继续原九步漏斗，不将历史任务或 V1 进度迁入 V2。
 --- @param data table 已提交的权威引导数据。
 function Component:RecordRebirthRoute(data)
     if not self._startedAt or self._ended then
+        return
+    end
+    if self:GetNumber(Fields.RebirthRouteAnalyticsVersion) == 2 then
+        self:RecordRebirthRouteV2(data)
         return
     end
     local route = data.guideMap and data.guideMap.SecondRebirthGuide
@@ -193,7 +215,7 @@ function Component:RecordRebirthRoute(data)
     end
     local target = previous
     if route and route.state == "Finished" then
-        target = #ROUTE_STEPS
+        target = #LEGACY_ROUTE_STEPS
     elseif route and route.state == "Running" then
         local routeStep = route.stepIndex <= 5 and route.stepIndex + 1 or route.stepIndex
         target = math.max(previous, 3, routeStep)
@@ -205,9 +227,35 @@ function Component:RecordRebirthRoute(data)
     if target > previous then
         self:SetNumber(Fields.SecondRebirthV1Step, target)
     end
-    if target > (self._reportedRouteStep or 0) and self:Funnel(ROUTE_VERSION, "LifetimeV1", target,
-        ROUTE_STEPS[target], {ROUTE_VERSION, "CompletedTasks", VERSION}) then
+    if target > (self._reportedRouteStep or 0) and self:Funnel(LEGACY_ROUTE_VERSION, "LifetimeV1", target,
+        LEGACY_ROUTE_STEPS[target], {LEGACY_ROUTE_VERSION, "CompletedTasks", VERSION}) then
         self._reportedRouteStep = target
+    end
+end
+
+--- V2 覆盖五段任务；进入下一步才计为上一任务通过，回环及重登只补报最高持久进度。
+--- @param data table 已提交的权威引导数据；调用方已确认会话及 V2 参与资格。
+function Component:RecordRebirthRouteV2(data)
+    local previous = self:GetNumber(Fields.RebirthRouteV2Step)
+    local target = previous
+    local offset = 1
+    for index, groupId in ipairs({"FirstRebirthGuide", "SecondRebirthGuide", "ThirdRebirthGuide",
+        "FourthRebirthGuide", "FifthRebirthGuide"}) do
+        local group = data.guideMap and data.guideMap[groupId]
+        local stepCount = #_G.TutorialGuideConfig[groupId].steps
+        if group and group.state == "Finished" then
+            target = math.max(target, offset + stepCount)
+        elseif group and group.state == "Running" then
+            target = math.max(target, offset + group.stepIndex - 1)
+        end
+        offset += stepCount
+    end
+    if target > previous then
+        self:SetNumber(Fields.RebirthRouteV2Step, target)
+    end
+    if target > (self._reportedRouteV2Step or 0) and self:Funnel(ROUTE_VERSION, "LifetimeV2", target,
+        ROUTE_STEPS[target], {ROUTE_VERSION, "CompletedTasks", "V2"}) then
+        self._reportedRouteV2Step = target
     end
 end
 

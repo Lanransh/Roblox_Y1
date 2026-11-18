@@ -92,7 +92,7 @@ function Component:OnReady()
     self._rebirthScreen = FXLoader:Here(self._playerGui, "RebirthUI")
     self._rebirthPanel = FXLoader:Here(self._rebirthScreen, "PopupPanelImg")
     self._rebirthConfirmButton = FXLoader:Here(self._rebirthPanel, "RebirthBtn")
-    --- 弹窗打开后把重生箭头切到确认按钮，关闭时恢复主界面入口；遮罩只由基础教学管理。
+    --- 弹窗打开后把重生引导切到确认按钮，关闭时恢复主界面入口；首次重生同时显示遮罩。
     local function RefreshRebirthGuide()
         self:RefreshRebirthGuide()
     end
@@ -1238,7 +1238,7 @@ function Component:ShowPickupEffect(entry)
     self._pickupEffects[effect] = connection
 end
 
---- 独立提示可重生状态，在入口与确认按钮间切换；重生路线均只显示箭头。
+--- 独立提示可重生状态，在入口与确认按钮间切换；首次重生显示遮罩，后续只显示箭头。
 function Component:RefreshRebirthGuide()
     local rebirthCount = self:GetNumber(Fields.RebirthCount)
     local requiredLevel = Rebirth.GetRequiredLevel(rebirthCount)
@@ -1248,9 +1248,9 @@ function Component:RefreshRebirthGuide()
         return
     end
     if self._rebirthScreen.Enabled and self._rebirthPanel.Visible then
-        self._rebirthArrow:Show(self._rebirthConfirmButton, "Top", false)
+        self._rebirthArrow:Show(self._rebirthConfirmButton, "Top", rebirthCount == 0)
     else
-        self._rebirthArrow:Show(self._rebirthBadge.Parent, "Right", false)
+        self._rebirthArrow:Show(self._rebirthBadge.Parent, "Right", rebirthCount == 0)
     end
 end
 

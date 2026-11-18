@@ -4,6 +4,7 @@ local Text = FX.Text
 local TranslationTexts = Text.Define("GMUI", {
     InvalidItemInput = "Enter a valid item ID and a positive whole-number quantity.",
     InvalidValue = "Enter a valid whole number within the allowed range.",
+    InvalidLootScale = "Enter a loot size multiplier from 0.1 to 20. Use 1 to restore the original size.",
     Unknown = "Something went wrong. Please try again.",
 })
 FXLoader:RequireFromParent(script, "Generated/CGMPanelView")
@@ -51,12 +52,14 @@ end
 function Component:OnInvalidInput(action)
     if action == "AddItem" then
         self._commonUI:ShowLocalizedTips(TranslationTexts.InvalidItemInput)
+    elseif action == "SetLootScale" then
+        self._commonUI:ShowLocalizedTips(TranslationTexts.InvalidLootScale)
     else
         self._commonUI:ShowLocalizedTips(TranslationTexts.InvalidValue)
     end
 end
 
---- GM 入口显隐在本地切换，数据命令提交服务端鉴权；请求中禁用操作。
+--- GM 入口显隐和战利品截图缩放仅在本地执行，数据命令提交服务端鉴权；请求中禁用操作。
 --- @param action string 展示类的稳定动作名。
 --- @param payload table 展示类校验后的输入，添加道具使用 itemId/count，数值动作使用 value。
 function Component:OnUIAction(action, payload)
@@ -69,6 +72,10 @@ function Component:OnUIAction(action, payload)
     end
     if action == "ToggleGMButton" then
         self:GetPlayerObject():RequireComponent("CMainUIComp"):ToggleGMButtonVisuals()
+        return
+    end
+    if action == "SetLootScale" then
+        self:GetPlayerObject():RequireComponent("CRockLevelComp"):SetLootDisplayScale(payload.value)
         return
     end
     self.State.pending = true

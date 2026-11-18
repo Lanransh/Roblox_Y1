@@ -46,6 +46,16 @@ return {
         Type = "number", Key = "SecondRebirthV1Step", DefVal = 0,
         KVTable = PlayerKVEnum.eStaticData, Sync = false,
     },
+    -- 重生统计固定参与版本：0 待判定，1 为更新前老玩家，2 为更新后首次玩家；重登不切换。
+    RebirthRouteAnalyticsVersion = {
+        Type = "number", Key = "RebirthRouteAnalyticsVersion", DefVal = 0,
+        KVTable = PlayerKVEnum.eStaticData, Sync = false,
+    },
+    -- 五次重生 V2 的独立最高待报进度，不读取或迁移 V1，采集循环不回退。
+    RebirthRouteV2Step = {
+        Type = "number", Key = "RebirthRouteV2Step", DefVal = 0,
+        KVTable = PlayerKVEnum.eStaticData, Sync = false,
+    },
     -- 购买分析独立于收据去重表；待报快照随奖励保存，跨会话恢复归因。
     PurchaseAnalytics = {
         Type = "table", Key = "PurchaseAnalytics", KVTable = PlayerKVEnum.eStaticData, Sync = false,

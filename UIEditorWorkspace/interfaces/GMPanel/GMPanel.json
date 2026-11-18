@@ -225,7 +225,7 @@
                   "scale": 0
                 },
                 "y": {
-                  "offset": 20,
+                  "offset": 24,
                   "scale": 0
                 }
               },
@@ -442,11 +442,11 @@
               "LayoutOrder": 0,
               "Position": {
                 "x": {
-                  "offset": 172,
+                  "offset": 176,
                   "scale": 0
                 },
                 "y": {
-                  "offset": 20,
+                  "offset": 24,
                   "scale": 0
                 }
               },
@@ -663,11 +663,11 @@
               "LayoutOrder": 0,
               "Position": {
                 "x": {
-                  "offset": 324,
+                  "offset": 332,
                   "scale": 0
                 },
                 "y": {
-                  "offset": 20,
+                  "offset": 24,
                   "scale": 0
                 }
               },
@@ -884,11 +884,11 @@
               "LayoutOrder": 0,
               "Position": {
                 "x": {
-                  "offset": 476,
+                  "offset": 488,
                   "scale": 0
                 },
                 "y": {
-                  "offset": 20,
+                  "offset": 24,
                   "scale": 0
                 }
               },
@@ -1109,7 +1109,7 @@
                   "scale": 0
                 },
                 "y": {
-                  "offset": 66,
+                  "offset": 76,
                   "scale": 0
                 }
               },
@@ -1326,11 +1326,11 @@
               "LayoutOrder": 0,
               "Position": {
                 "x": {
-                  "offset": 172,
+                  "offset": 176,
                   "scale": 0
                 },
                 "y": {
-                  "offset": 66,
+                  "offset": 76,
                   "scale": 0
                 }
               },
@@ -1395,14 +1395,14 @@
                   "scale": 0
                 },
                 "y": {
-                  "offset": 224,
+                  "offset": 368,
                   "scale": 0
                 }
               },
               "Rotation": 0,
               "Size": {
                 "x": {
-                  "offset": 190,
+                  "offset": 270,
                   "scale": 0
                 },
                 "y": {
@@ -1470,14 +1470,14 @@
                   "scale": 0
                 },
                 "y": {
-                  "offset": 252,
+                  "offset": 400,
                   "scale": 0
                 }
               },
               "Rotation": 0,
               "Size": {
                 "x": {
-                  "offset": 190,
+                  "offset": 270,
                   "scale": 0
                 },
                 "y": {
@@ -1528,18 +1528,18 @@
               "LayoutOrder": 0,
               "Position": {
                 "x": {
-                  "offset": 230,
+                  "offset": 315,
                   "scale": 0
                 },
                 "y": {
-                  "offset": 224,
+                  "offset": 368,
                   "scale": 0
                 }
               },
               "Rotation": 0,
               "Size": {
                 "x": {
-                  "offset": 190,
+                  "offset": 270,
                   "scale": 0
                 },
                 "y": {
@@ -1603,18 +1603,18 @@
               "PlaceholderText": "",
               "Position": {
                 "x": {
-                  "offset": 230,
+                  "offset": 315,
                   "scale": 0
                 },
                 "y": {
-                  "offset": 252,
+                  "offset": 400,
                   "scale": 0
                 }
               },
               "Rotation": 0,
               "Size": {
                 "x": {
-                  "offset": 190,
+                  "offset": 270,
                   "scale": 0
                 },
                 "y": {
@@ -1665,18 +1665,18 @@
               "LayoutOrder": 0,
               "Position": {
                 "x": {
-                  "offset": 440,
+                  "offset": 610,
                   "scale": 0
                 },
                 "y": {
-                  "offset": 224,
+                  "offset": 368,
                   "scale": 0
                 }
               },
               "Rotation": 0,
               "Size": {
                 "x": {
-                  "offset": 190,
+                  "offset": 270,
                   "scale": 0
                 },
                 "y": {
@@ -1740,18 +1740,18 @@
               "PlaceholderText": "",
               "Position": {
                 "x": {
-                  "offset": 440,
+                  "offset": 610,
                   "scale": 0
                 },
                 "y": {
-                  "offset": 252,
+                  "offset": 400,
                   "scale": 0
                 }
               },
               "Rotation": 0,
               "Size": {
                 "x": {
-                  "offset": 190,
+                  "offset": 270,
                   "scale": 0
                 },
                 "y": {
@@ -1958,11 +1958,11 @@
               "LayoutOrder": 0,
               "Position": {
                 "x": {
-                  "offset": 324,
+                  "offset": 332,
                   "scale": 0
                 },
                 "y": {
-                  "offset": 66,
+                  "offset": 76,
                   "scale": 0
                 }
               },
@@ -2046,7 +2046,7 @@
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 292,
+                      "offset": 260,
                       "scale": 0
                     },
                     "y": {
@@ -2086,7 +2086,7 @@
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 292,
+                      "offset": 260,
                       "scale": 0
                     },
                     "y": {
@@ -2183,7 +2183,7 @@
                   "scale": 0
                 },
                 "y": {
-                  "offset": 112,
+                  "offset": 132,
                   "scale": 0
                 }
               },
@@ -2191,7 +2191,7 @@
               "ScaleType": "Tile",
               "Size": {
                 "x": {
-                  "offset": 292,
+                  "offset": 260,
                   "scale": 0
                 },
                 "y": {
@@ -2267,7 +2267,7 @@
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 292,
+                      "offset": 260,
                       "scale": 0
                     },
                     "y": {
@@ -2307,7 +2307,7 @@
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 292,
+                      "offset": 260,
                       "scale": 0
                     },
                     "y": {
@@ -2400,11 +2400,11 @@
               "LayoutOrder": 0,
               "Position": {
                 "x": {
-                  "offset": 324,
+                  "offset": 300,
                   "scale": 0
                 },
                 "y": {
-                  "offset": 112,
+                  "offset": 132,
                   "scale": 0
                 }
               },
@@ -2412,7 +2412,7 @@
               "ScaleType": "Tile",
               "Size": {
                 "x": {
-                  "offset": 292,
+                  "offset": 260,
                   "scale": 0
                 },
                 "y": {
@@ -2488,7 +2488,7 @@
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 292,
+                      "offset": 260,
                       "scale": 0
                     },
                     "y": {
@@ -2528,7 +2528,7 @@
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 292,
+                      "offset": 260,
                       "scale": 0
                     },
                     "y": {
@@ -2621,11 +2621,11 @@
               "LayoutOrder": 0,
               "Position": {
                 "x": {
-                  "offset": 324,
+                  "offset": 300,
                   "scale": 0
                 },
                 "y": {
-                  "offset": 152,
+                  "offset": 184,
                   "scale": 0
                 }
               },
@@ -2633,7 +2633,7 @@
               "ScaleType": "Tile",
               "Size": {
                 "x": {
-                  "offset": 292,
+                  "offset": 260,
                   "scale": 0
                 },
                 "y": {
@@ -2654,6 +2654,289 @@
               "Visible": true,
               "ZIndex": 3
             }
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "className": "UICorner",
+                "id": "6b1f4670-45cd-425a-b1a2-1bbf49269d57",
+                "name": "UICorner",
+                "properties": {
+                  "CornerRadius": {
+                    "offset": 6,
+                    "scale": 0
+                  }
+                }
+              },
+              {
+                "children": [],
+                "className": "UIStroke",
+                "id": "0c24e451-7b4b-4a9a-96f9-976a0f4d3157",
+                "name": "UIStroke",
+                "properties": {
+                  "Color": "#000000",
+                  "Enabled": true,
+                  "Thickness": 3,
+                  "Transparency": 0
+                }
+              },
+              {
+                "children": [],
+                "className": "Frame",
+                "id": "b864dc52-6f79-4e91-9d16-fc288fb4776d",
+                "name": "TopHighlightImg",
+                "properties": {
+                  "AnchorPoint": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "AutoLocalize": true,
+                  "BackgroundColor3": "#ffffff",
+                  "BackgroundTransparency": 0.58,
+                  "ClipsDescendants": false,
+                  "LayoutOrder": 0,
+                  "Position": {
+                    "x": {
+                      "offset": 0,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 0,
+                      "scale": 0
+                    }
+                  },
+                  "Rotation": 0,
+                  "Size": {
+                    "x": {
+                      "offset": 260,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 2,
+                      "scale": 0
+                    }
+                  },
+                  "Visible": true,
+                  "ZIndex": 4
+                }
+              },
+              {
+                "children": [],
+                "className": "Frame",
+                "id": "ffd69939-2ae0-4675-8d8b-f73b20290256",
+                "name": "BottomEdgeImg",
+                "properties": {
+                  "AnchorPoint": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "AutoLocalize": true,
+                  "BackgroundColor3": "#225a07",
+                  "BackgroundTransparency": 0.2,
+                  "ClipsDescendants": false,
+                  "LayoutOrder": 0,
+                  "Position": {
+                    "x": {
+                      "offset": 0,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 30,
+                      "scale": 0
+                    }
+                  },
+                  "Rotation": 0,
+                  "Size": {
+                    "x": {
+                      "offset": 260,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": 4,
+                      "scale": 0
+                    }
+                  },
+                  "Visible": true,
+                  "ZIndex": 4
+                }
+              },
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "className": "UIStroke",
+                    "id": "46d1f2e9-c05c-44de-95dd-5e4b1ff2c6eb",
+                    "name": "TextStroke",
+                    "properties": {
+                      "Color": "#20231c",
+                      "Enabled": true,
+                      "Thickness": 2,
+                      "Transparency": 0
+                    }
+                  }
+                ],
+                "className": "TextLabel",
+                "id": "2326fb31-a774-4764-85cf-57fc89163dce",
+                "name": "ButtonTxt",
+                "properties": {
+                  "AnchorPoint": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "AutoLocalize": true,
+                  "BackgroundColor3": "#ffffff",
+                  "BackgroundTransparency": 1,
+                  "ClipsDescendants": false,
+                  "Font": "GothamBold",
+                  "LayoutOrder": 0,
+                  "Position": {
+                    "x": {
+                      "offset": 0,
+                      "scale": 0
+                    },
+                    "y": {
+                      "offset": -2,
+                      "scale": 0
+                    }
+                  },
+                  "Rotation": 0,
+                  "Size": {
+                    "x": {
+                      "offset": 0,
+                      "scale": 1
+                    },
+                    "y": {
+                      "offset": 0,
+                      "scale": 1
+                    }
+                  },
+                  "Text": "战利品大小（截图）",
+                  "TextColor3": "#ffffff",
+                  "TextScaled": false,
+                  "TextSize": 16,
+                  "TextTransparency": 0,
+                  "TextWrapped": true,
+                  "TextXAlignment": "Center",
+                  "TextYAlignment": "Center",
+                  "Visible": true,
+                  "ZIndex": 5
+                }
+              }
+            ],
+            "className": "ImageButton",
+            "id": "cbcb271d-1bc6-4b62-8139-d3012a106b0e",
+            "name": "SetLootScaleBtn",
+            "properties": {
+              "AnchorPoint": {
+                "x": 0,
+                "y": 0
+              },
+              "AutoLocalize": true,
+              "BackgroundColor3": "#67ed14",
+              "BackgroundTransparency": 0,
+              "ClipsDescendants": false,
+              "Image": "rbxassetid://82793028306773",
+              "ImageColor3": "#ffffff",
+              "ImageTransparency": 0,
+              "LayoutOrder": 0,
+              "Position": {
+                "x": {
+                  "offset": 20,
+                  "scale": 0
+                },
+                "y": {
+                  "offset": 184,
+                  "scale": 0
+                }
+              },
+              "Rotation": 0,
+              "ScaleType": "Tile",
+              "Size": {
+                "x": {
+                  "offset": 260,
+                  "scale": 0
+                },
+                "y": {
+                  "offset": 34,
+                  "scale": 0
+                }
+              },
+              "TileSize": {
+                "x": {
+                  "offset": 28,
+                  "scale": 0
+                },
+                "y": {
+                  "offset": 28,
+                  "scale": 0
+                }
+              },
+              "Visible": true,
+              "ZIndex": 3
+            }
+          },
+          {
+            "children": [
+              {
+                "children": [],
+                "className": "UIStroke",
+                "id": "55d98013-44b5-434e-b6d0-3a4339507ed8",
+                "name": "TextStroke",
+                "properties": {
+                  "Color": "#000000",
+                  "Enabled": true,
+                  "Thickness": 1,
+                  "Transparency": 0
+                }
+              }
+            ],
+            "className": "TextLabel",
+            "id": "c8db62e9-4e6e-40bf-a380-f47d7cc9107d",
+            "name": "LootScaleHintTxt",
+            "properties": {
+              "AnchorPoint": {
+                "x": 0,
+                "y": 0
+              },
+              "AutoLocalize": true,
+              "BackgroundColor3": "#ffffff",
+              "BackgroundTransparency": 1,
+              "ClipsDescendants": false,
+              "Font": "GothamBold",
+              "LayoutOrder": 0,
+              "Position": {
+                "x": {
+                  "offset": 20,
+                  "scale": 0
+                },
+                "y": {
+                  "offset": 240,
+                  "scale": 0
+                }
+              },
+              "Rotation": 0,
+              "Size": {
+                "x": {
+                  "offset": 860,
+                  "scale": 0
+                },
+                "y": {
+                  "offset": 24,
+                  "scale": 0
+                }
+              },
+              "Text": "参数1：0.1～20倍，1恢复；仅本机，含后续掉落",
+              "TextColor3": "#FFFFFF",
+              "TextScaled": false,
+              "TextSize": 16,
+              "TextTransparency": 0,
+              "TextWrapped": false,
+              "TextXAlignment": "Left",
+              "TextYAlignment": "Center",
+              "Visible": true,
+              "ZIndex": 5
+            }
           }
         ],
         "className": "Frame",
@@ -2671,22 +2954,22 @@
           "LayoutOrder": 0,
           "Position": {
             "x": {
-              "offset": 315,
+              "offset": 190,
               "scale": 0
             },
             "y": {
-              "offset": 225,
+              "offset": 150,
               "scale": 0
             }
           },
           "Rotation": 0,
           "Size": {
             "x": {
-              "offset": 650,
+              "offset": 900,
               "scale": 0
             },
             "y": {
-              "offset": 310,
+              "offset": 460,
               "scale": 0
             }
           },
@@ -2804,7 +3087,7 @@
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 650,
+                      "offset": 900,
                       "scale": 0
                     },
                     "y": {
@@ -2884,7 +3167,7 @@
                   "Rotation": 0,
                   "Size": {
                     "x": {
-                      "offset": 650,
+                      "offset": 900,
                       "scale": 0
                     },
                     "y": {
@@ -2923,7 +3206,7 @@
               "Rotation": 0,
               "Size": {
                 "x": {
-                  "offset": 650,
+                  "offset": 900,
                   "scale": 0
                 },
                 "y": {
@@ -2977,7 +3260,7 @@
               "Rotation": 0,
               "Size": {
                 "x": {
-                  "offset": 438,
+                  "offset": 688,
                   "scale": 0
                 },
                 "y": {
@@ -3028,7 +3311,7 @@
               "LayoutOrder": 0,
               "Position": {
                 "x": {
-                  "offset": 606,
+                  "offset": 856,
                   "scale": 0
                 },
                 "y": {
@@ -3078,18 +3361,18 @@
           "LayoutOrder": 0,
           "Position": {
             "x": {
-              "offset": 315,
+              "offset": 190,
               "scale": 0
             },
             "y": {
-              "offset": 185,
+              "offset": 110,
               "scale": 0
             }
           },
           "Rotation": 0,
           "Size": {
             "x": {
-              "offset": 650,
+              "offset": 900,
               "scale": 0
             },
             "y": {
