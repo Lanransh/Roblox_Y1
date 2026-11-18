@@ -55,6 +55,7 @@ local GuideTexts = {
     ["Quest.Weapon"] = TranslationTexts.QuestWeapon,
 }
 local UIGuideArrow = FXLoader:Require(script.Parent.Parent, "UI/UIGuideArrow")
+local PickupPrompt = FXLoader:Require(script.Parent.Parent, "PickupPrompt")
 local RunService = game:GetService("RunService")
 local Fields = _G.PlayerDataConfig
 local Guide = FX.Class("CTutorialGuideCompClass", "FCTutorialGuideCompClass")
@@ -354,7 +355,7 @@ function Guide:GetUIGuideButton(target)
     return nil
 end
 
---- 基础教学的界面操作使用遮罩；重生路线只用箭头，三次重生后明确指向第二训练场。
+--- 基础教学突出实际拾取或操作按钮；重生路线只用箭头，三次重生后指向第二训练场。
 function Guide:RefreshTarget()
     local target = self._activeTarget
     local worldIndex = self:GetNumber(Fields.WorldIndex)
@@ -403,6 +404,12 @@ function Guide:RefreshTarget()
         return
     end
     local button = self:GetUIGuideButton(target)
+    if target.textId == "Tutorial.Collect" then
+        local root = character:FindFirstChild("HumanoidRootPart")
+        if root then
+            button = PickupPrompt.GetRockDropButton(root.Position)
+        end
+    end
     if button then
         -- 切换商品时将目标滚入视野；同一目标不反复改动玩家的滚动位置。
         if self._uiGuideButton ~= button then

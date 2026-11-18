@@ -149,6 +149,7 @@ function UIGuideArrow:_Update()
     local visibleMin = target.AbsolutePosition
     local visibleMax = visibleMin + size
     local node = target
+    local billboard
     while node and node ~= self._playerGui do
         if node:IsA("GuiObject") then
             if not node.Visible then
@@ -165,11 +166,26 @@ function UIGuideArrow:_Update()
             end
         elseif node:IsA("ScreenGui") and not node.Enabled then
             return
+        elseif node:IsA("BillboardGui") then
+            billboard = node
         end
         node = node.Parent
     end
     size = visibleMax - visibleMin
     local center = (visibleMin + visibleMax) / 2
+    if billboard then
+        local camera = workspace.CurrentCamera
+        local adornee = billboard.Adornee
+        if not billboard.Enabled or not camera or not adornee or not adornee:IsDescendantOf(workspace) then
+            return
+        end
+        -- 拾取 Billboard 的坐标在其画布内；用当前相机把世界锚点投影到引导层所在的屏幕。
+        local projected, onScreen = camera:WorldToScreenPoint(adornee.Position + billboard.StudsOffsetWorldSpace)
+        if not onScreen then
+            return
+        end
+        center += Vector2.new(projected.X, projected.Y) - billboard.AbsolutePosition - billboard.AbsoluteSize / 2
+    end
     local localCenter = center - self._root.AbsolutePosition
     local viewport = self._root.AbsoluteSize
     if localCenter.X < 0 or localCenter.Y < 0 or localCenter.X > viewport.X or localCenter.Y > viewport.Y then

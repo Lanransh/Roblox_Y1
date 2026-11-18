@@ -234,14 +234,19 @@ function Component:OnReady()
     self:Show()
 end
 
---- 为全部常驻文字关闭 TextScaled 并注册溢出适配，以初始化字号为上限，换行文本先换行再缩小。
+--- 为常驻文字关闭 TextScaled 并注册溢出适配；任务标题和说明使用较大的字号上限，长文案仍可缩小。
 function Component:ConfigureMainTextSizing()
     local textService = game:GetService("TextService")
+    local questPanel = FXLoader:Here(self._rootNode, "QuestPanel")
+    local questTextSizes = {
+        [FXLoader:Here(questPanel, "GoalTxt")] = 24,
+        [FXLoader:Here(questPanel, "DescriptionTxt")] = 19,
+    }
     for index, label in ipairs(self._rootNode:GetDescendants()) do
         if not (label:IsA("TextLabel") or label:IsA("TextButton")) then
             continue
         end
-        local designSize = label.TextSize
+        local designSize = questTextSizes[label] or label.TextSize
         label.TextScaled = false
         local limit = label:FindFirstChildOfClass("UITextSizeConstraint")
         if limit then

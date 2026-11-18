@@ -7,6 +7,23 @@ local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
 local PickupPrompt = {}
 local promptShownConnection
+local rockDropButtons = {}
+
+--- 在引擎当前显示的战利品提示中选择最近的一个，排除菜鸟等其他拾取。
+--- @param position Vector3 玩家角色位置。
+--- @return GuiButton? 教程可指向的实际拾取按钮。
+function PickupPrompt.GetRockDropButton(position)
+    local nearestButton, nearestDistance = nil, math.huge
+    for prompt, button in pairs(rockDropButtons) do
+        if prompt.Enabled and prompt.Parent then
+            local distance = (prompt.Parent.Position - position).Magnitude
+            if distance < nearestDistance then
+                nearestButton, nearestDistance = button, distance
+            end
+        end
+    end
+    return nearestButton
+end
 
 --- 创建圆角，保持提示框与进度条的统一轮廓。
 --- @param parent Instance 所属界面节点。
@@ -186,6 +203,7 @@ local function ShowPrompt(prompt, inputType)
             return
         end
         cleaned = true
+        rockDropButtons[prompt] = nil
         if viewportConnection then
             viewportConnection:Disconnect()
         end
@@ -221,6 +239,9 @@ local function ShowPrompt(prompt, inputType)
     table.insert(connections, workspace:GetPropertyChangedSignal("CurrentCamera"):Connect(BindViewport))
     BindViewport()
     gui.Parent = FXLoader:Player("PlayerGui", math.huge)
+    if prompt:GetAttribute("RockDropPickup") == true then
+        rockDropButtons[prompt] = button
+    end
 end
 
 --- 客户端入口仅注册一次，全局监听由引擎管理的拾取可见性。

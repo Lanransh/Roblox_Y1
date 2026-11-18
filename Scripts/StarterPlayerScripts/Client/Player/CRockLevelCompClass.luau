@@ -279,6 +279,7 @@ function Component:SpawnDrop(data)
     local prompt = Instance.new("ProximityPrompt")
     prompt.Style = Enum.ProximityPromptStyle.Custom
     prompt:SetAttribute("CustomPickup", true)
+    prompt:SetAttribute("RockDropPickup", true)
     -- 原生提示与掉落 HUD 共用客户端翻译及语言刷新入口。
     prompt.AutoLocalize = false
     prompt.ActionText = Text.Tr(TranslationTexts.PickUp)
@@ -301,6 +302,7 @@ function Component:SpawnDrop(data)
         IsLucky = data.IsLucky,
         LuckRate = data.LuckRate,
         ExpiresAt = data.ExpiresAt,
+        GroundPosition = data.GroundPosition,
         Landing = landing,
     }
     self._drops[drop.DropId] = drop
@@ -516,18 +518,30 @@ function Component:UpdateDrops()
     end
 end
 
---- 矿区外指向指定入口，进入后只指向当前区域最近的未碎藏宝石头。
+--- 到达指定关卡前指向入口，进关后优先指向可拾取战利品，其次是未碎藏宝石头。
 --- @param position Vector3 当前角色根节点位置。
 --- @param worldIndex number 引导目标世界序号。
 --- @param stageIndex number 引导入口关卡序号。
---- @return Vector3? 入口或最近藏宝石头的位置，区域未就绪或没有未碎藏宝石头时为空。
+--- @return Vector3? 入口、掉落或藏宝石头的位置，没有可指引目标时为空。
 function Component:GetMiningGuidePosition(position, worldIndex, stageIndex)
     if not self._areas then
         return nil
     end
     local inside, area = RockLevel.IsInArea(self._areas, position)
-    if inside and area.World == worldIndex then
+    if inside and area.World == worldIndex and area.LocalIndex == stageIndex then
         local nearest, nearestDistance = nil, math.huge
+        local now = workspace:GetServerTimeNow()
+        for dropId, drop in pairs(self._drops) do
+            if drop.Prompt.Enabled and now < drop.ExpiresAt then
+                local distance = (drop.GroundPosition - position).Magnitude
+                if distance <= Collectible.PickupDistance and distance < nearestDistance then
+                    nearest, nearestDistance = drop.GroundPosition, distance
+                end
+            end
+        end
+        if nearest then
+            return nearest
+        end
         local cellSize = RockLevel.CellSize
         for cell = 1, area.Rows * area.Columns do
             local key = area.Index .. ":" .. cell
