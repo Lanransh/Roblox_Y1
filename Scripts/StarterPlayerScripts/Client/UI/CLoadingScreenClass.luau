@@ -27,7 +27,7 @@ function Loading:SetStatus(status)
     self:RefreshUI()
 end
 
---- 跳过可选资源的前台等待；握手、角色与地面仍须真实准备好。
+--- 跳过仅收起加载页；资源等待、握手及入场检查继续按原流程执行。
 --- @param action string View 发出的 Skip 动作。
 --- @param payload table Skip 无业务参数。
 function Loading:OnUIAction(action, payload)
@@ -36,7 +36,28 @@ function Loading:OnUIAction(action, payload)
         return
     end
     self.State.skipRequested = true
-    self:SetStatus("Waiting")
+    self:ClosePage()
+end
+
+--- 收起页面并释放其输入占用，后台加载对象保留到初始化实际完成。
+function Loading:ClosePage()
+    if self._pageClosed then
+        return
+    end
+    self._pageClosed = true
+    self:Hide()
+    ContextActionService:UnbindAction(ACTION)
+    if self._backpackTask and coroutine.status(self._backpackTask) ~= "dead" then
+        task.cancel(self._backpackTask)
+    end
+    if self._backpackEnabled ~= nil then
+        local success, message = pcall(function()
+            StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Backpack, self._backpackEnabled)
+        end)
+        if not success then
+            warn("[Loading] Restore backpack:", message)
+        end
+    end
 end
 
 --- 有限等待真实复制或初始化条件，超时保留加载页，不冒充准备成功。
@@ -55,7 +76,7 @@ function Loading:WaitFor(predicate, description)
     error("Loading stopped: " .. description)
 end
 
---- 加载失败保留遮罩和输入限制，提示重新加入，日志保留具体原因。
+--- 加载失败记录具体原因；页面尚未关闭时保留失败提示，已关闭时不重新弹出。
 --- @param message string 异步初始化或复制失败原因。
 function Loading:Fail(message)
     if self._failed or self._finished then
@@ -75,7 +96,7 @@ function Loading:Start()
     end, "loading interface replication")
     -- CoreGui 可能尚未初始化；独立重试，避免阻塞加载页显示。
     self._backpackTask = task.spawn(function()
-        while not self._finished do
+        while not self._pageClosed do
             local success = pcall(function()
                 if self._backpackEnabled == nil then
                     self._backpackEnabled = StarterGui:GetCoreGuiEnabled(Enum.CoreGuiType.Backpack)
@@ -134,7 +155,7 @@ function Loading:RequestRegion(position)
     end
 end
 
---- 先发布资源总量，再独立解析与下载；流式装饰缺失不能中断整批进度。
+--- 先发布资源总量，再独立解析与下载；收起页面不改变等待流程，超时下载仍继续。
 function Loading:PrepareResources()
     self:WaitFor(function()
         return game:IsLoaded()
@@ -181,12 +202,10 @@ function Loading:PrepareResources()
             self:RequestRegion(level.Position)
         end
     end)
-    -- 同时发起清单内全部下载，防止一首慢音乐阻塞其余模型；最长等待 45 秒。
-    local workers = {}
-    self._preloadWorkers = workers
+    -- 下载任务只持有资源与完成计数；页面销毁只结束前台等待，不取消后台下载。
     local completed = 0
     for index, resource in ipairs(resources) do
-        workers[index] = task.spawn(function()
+        task.spawn(function()
             local success, message = pcall(function()
                 local asset = resource
                 if type(resource) == "string" and string.sub(resource, 1, 5) == "game." then
@@ -210,39 +229,33 @@ function Loading:PrepareResources()
                 warn("[Loading] Preload failed:", message)
             end
             completed += 1
-            if not self._failed and not self._finished and not self._resourcesReady then
-                self.State.current = completed
-                self:RefreshUI()
-            end
         end)
     end
     local preloadDeadline = os.clock() + 45
-    while completed < #resources and not self._failed and not self.State.skipRequested
-        and os.clock() < preloadDeadline do
+    while completed < #resources and not self._failed and os.clock() < preloadDeadline do
+        self.State.current = completed
+        self:RefreshUI()
         task.wait(0.05)
     end
-    for index, worker in ipairs(workers) do
-        if coroutine.status(worker) ~= "dead" then
-            task.cancel(worker)
-            if not self.State.skipRequested then
-                warn("[Loading] Asset download exceeded the foreground time limit")
-            end
-        end
+    if completed < #resources and not self._failed then
+        warn("[Loading] Asset download exceeded the foreground time limit; continuing in background")
     end
     if not self._failed then
+        self.State.current = completed
         self._resourcesReady = true
         self:SetStatus("Waiting")
     end
 end
 
---- 主入口握手完成后检查当前镐子和真实可碰撞地面，成功才开放操作。
+--- 主入口握手完成后检查复制、资源、镐子及地面；页面关闭不影响真实完成判定。
 function Loading:Finish()
     local success, message = xpcall(function()
         self:WaitFor(function()
-            return self._resourcesReady or self.State.skipRequested
+            return game:IsLoaded()
+        end, "initial replication")
+        self:WaitFor(function()
+            return self._resourcesReady
         end, "startup resources")
-        -- 跳过发生在资源清单构建期间时，后台结果也不能覆盖进入阶段的进度。
-        self._resourcesReady = true
         self.State.current += 1
         self:RefreshUI()
         local player = Players.LocalPlayer
@@ -265,27 +278,20 @@ function Loading:Finish()
                 end
             end
         end, "equipped pickaxe")
-        -- 镐子贴图属于可选下载，不让无超时的 PreloadAsync 阻塞入场。
-        if not self.State.skipRequested then
-            local ready = false
-            local worker = task.spawn(function()
-                local ok, problem = pcall(function()
-                    ContentProvider:PreloadAsync({tool})
-                end)
-                if not ok then
-                    warn("[Loading] Equipped pickaxe preload:", problem)
-                end
-                ready = true
+        -- 镐子贴图沿用十秒等待上限；收起页面不提前结束等待。
+        local ready = false
+        task.spawn(function()
+            local ok, problem = pcall(function()
+                ContentProvider:PreloadAsync({tool})
             end)
-            self._toolTask = worker
-            local deadline = os.clock() + 10
-            while not ready and not self.State.skipRequested and not self._failed and os.clock() < deadline do
-                task.wait(0.05)
+            if not ok then
+                warn("[Loading] Equipped pickaxe preload:", problem)
             end
-            if coroutine.status(worker) ~= "dead" then
-                task.cancel(worker)
-            end
-            self._toolTask = nil
+            ready = true
+        end)
+        local deadline = os.clock() + 10
+        while not ready and not self._failed and os.clock() < deadline do
+            task.wait(0.05)
         end
         self.State.current += 1
         self:RefreshUI()
@@ -311,8 +317,7 @@ function Loading:Finish()
         self:RefreshUI()
         RunService.RenderStepped:Wait()
         self._finished = true
-        self:Hide()
-        ContextActionService:UnbindAction(ACTION)
+        self:ClosePage()
         self:Dtor()
     end, debug.traceback)
     if not success then
@@ -320,26 +325,13 @@ function Loading:Finish()
     end
 end
 
---- 释放启动任务与输入限制并恢复原生物品栏；销毁后不允许资源回调刷新 View。
+--- 释放页面持有的启动任务与输入限制；独立下载不持有 View，可在关闭后继续完成。
 function Loading:Dtor()
     self._finished = true
-    ContextActionService:UnbindAction(ACTION)
-    for index, worker in pairs({self._watchdog, self._resourceTask, self._toolTask, self._backpackTask, self._regionTask}) do
+    self:ClosePage()
+    for index, worker in pairs({self._watchdog, self._resourceTask, self._regionTask}) do
         if coroutine.status(worker) ~= "dead" and worker ~= coroutine.running() then
             task.cancel(worker)
-        end
-    end
-    for index, worker in ipairs(self._preloadWorkers or {}) do
-        if coroutine.status(worker) ~= "dead" then
-            task.cancel(worker)
-        end
-    end
-    if self._backpackEnabled ~= nil then
-        local success, message = pcall(function()
-            StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Backpack, self._backpackEnabled)
-        end)
-        if not success then
-            warn("[Loading] Restore backpack:", message)
         end
     end
     Loading.Super.Dtor(self)

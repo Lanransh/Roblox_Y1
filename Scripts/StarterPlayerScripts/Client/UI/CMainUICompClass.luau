@@ -754,7 +754,7 @@ function Component:RefreshTrainingRejoinLayout()
     self._trainingRejoinLabel.Position = UDim2.new(0.5, 0, 1, -height - 16)
 end
 
---- 基础教学及四段重生路线结束后才显示底部提醒，避免与当前路线争抢箭头和文案。
+--- 基础教学及五段重生路线结束后才显示底部提醒，避免与当前路线争抢箭头和文案。
 --- @return table? 最高优先级的文案定义，没有符合条件的提醒时为 nil。
 --- @return table? 训练台提醒对应的配置，供世界箭头复用同一目标判定。
 --- @return string? 购买提醒对应的商店类型，供通用箭头复用同一目标判定。
@@ -765,7 +765,7 @@ function Component:GetPriorityReminder()
     if first == nil or first.state ~= "Finished" then
         return nil
     end
-    local route = guide.guideMap.FourthRebirthGuide
+    local route = guide.guideMap.FifthRebirthGuide
     if route == nil or route.state ~= "Finished" then
         return nil
     end

@@ -437,7 +437,7 @@ function Guide:IsRebirthRouteStepComplete(target, config)
     return money >= goal.Price
 end
 
---- 依次续接重生路线；镐子与光环共用攒钱循环，已可重生时优先重生。
+--- 依次续接重生路线；三至五段先购买或装备当前升级，再判断重生，余额不足时沿用攒钱循环。
 --- @param groupId string 当前重生路线的配置与存档分组名。
 function Guide:RefreshRebirthRoute(groupId)
     local config = TutorialGuideConfig[groupId]
@@ -454,9 +454,19 @@ function Guide:RefreshRebirthRoute(groupId)
     self:TryStartGroup(config.startEvent)
     data = self:GetGuideData()
     local rebirthCount = self:GetNumber(PlayerDataConfig.RebirthCount)
+    if data.activeGuideId == groupId and config.purchaseStepIndex then
+        local shopData = self:GetTable(PlayerDataConfig[config.shopType .. "Data"])
+        local goal, ownedGoal, isEquipped = TutorialPurchase.GetStatus(config, shopData)
+        if not isEquipped and (ownedGoal or self:GetNumber(PlayerDataConfig.Money) >= goal.Price) then
+            if data.guideMap[groupId].stepIndex ~= config.purchaseStepIndex then
+                self:EnterGroupStep(data, groupId, config, config.purchaseStepIndex)
+            end
+            return
+        end
+    end
     if data.activeGuideId == groupId
         and self:GetNumber(PlayerDataConfig.RockTrainingLevel) >= Rebirth.GetRequiredLevel(rebirthCount) then
-        -- 已能重生就不再要求额外赚钱或买镐；下一次重生目标仍由配置中的步骤决定。
+        -- 当前买得起的升级已优先处理；已能重生时不再强制攒钱购买尚买不起的装备。
         for index, step in ipairs(config.steps) do
             if step.target.type == "Rebirth" and step.target.count == rebirthCount + 1 then
                 if data.guideMap[groupId].stepIndex ~= index then
@@ -497,7 +507,7 @@ function Guide:RefreshRebirthRoute(groupId)
     end
 end
 
---- 使用权威存档恢复提前完成的操作；基础教学后连续提示到第四次重生。
+--- 使用权威存档恢复提前完成的操作；基础教学后连续提示到第五次重生。
 --- @param serverTime number 框架每秒回调时间。
 function Guide:OnUpdate(serverTime)
     if self:IsLootStep(1) then
@@ -560,6 +570,7 @@ function Guide:OnUpdate(serverTime)
     self:RefreshRebirthRoute("SecondRebirthGuide")
     self:RefreshRebirthRoute("ThirdRebirthGuide")
     self:RefreshRebirthRoute("FourthRebirthGuide")
+    self:RefreshRebirthRoute("FifthRebirthGuide")
     self:RefreshWorld2Reminder()
 end
 
@@ -711,6 +722,20 @@ function Player:MigrateData(version)
             self:SetTable(PlayerDataConfig.Guide, guide)
         end
         self:SetNumber(PlayerDataConfig.DataVersion, 9)
+    end
+    if version < 10 then
+        -- 三至五段的装备目标和步骤顺序已修正；只重建正在运行的路线，保留已完成分组。
+        local guide = self:GetTable(PlayerDataConfig.Guide)
+        local groupId = guide.activeGuideId
+        if groupId == "ThirdRebirthGuide" or groupId == "FourthRebirthGuide" or groupId == "FifthRebirthGuide" then
+            local state = guide.guideMap and guide.guideMap[groupId]
+            if state and state.state == "Running" then
+                state.stepIndex = 1
+                guide.target = table.clone(TutorialGuideConfig[groupId].steps[1].target)
+                self:SetTable(PlayerDataConfig.Guide, guide)
+            end
+        end
+        self:SetNumber(PlayerDataConfig.DataVersion, 10)
     end
 end
 

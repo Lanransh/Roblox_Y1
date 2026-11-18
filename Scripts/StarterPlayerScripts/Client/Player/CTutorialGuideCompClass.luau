@@ -215,7 +215,7 @@ function Guide:RefreshQuestProgress()
     self._questProgress.Visible = current ~= nil
 end
 
---- 基础教学后依次展示四段重生路线；全部结束后才恢复普通装备升级提醒。
+--- 基础教学后依次展示五段重生路线；全部结束后才恢复普通装备升级提醒。
 --- @param guideData table 服务端同步的引导进度。
 function Guide:OnGuideDataChanged(guideData)
     local first = guideData.guideMap and guideData.guideMap.FirstLootGuide
@@ -224,7 +224,7 @@ function Guide:OnGuideDataChanged(guideData)
     self._routeGuideRunning = routeConfig ~= nil and routeConfig.previousGuideId ~= nil
     self._routeConfig = self._routeGuideRunning and routeConfig or nil
     local activeRoute = self._routeGuideRunning and guideData.guideMap[guideData.activeGuideId]
-    local route = guideData.guideMap and guideData.guideMap.FourthRebirthGuide
+    local route = guideData.guideMap and guideData.guideMap.FifthRebirthGuide
     self._questStep = self._routeGuideRunning and routeConfig.steps[activeRoute.stepIndex].target or nil
     -- 标题来自当前配置，不依赖旧存档目标中是否已经保存了新增展示字段。
     self._questTitleTextId = self._questStep and self._questStep.titleTextId or nil
