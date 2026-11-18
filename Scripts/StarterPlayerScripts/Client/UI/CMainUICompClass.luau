@@ -92,7 +92,7 @@ function Component:OnReady()
     self._rebirthScreen = FXLoader:Here(self._playerGui, "RebirthUI")
     self._rebirthPanel = FXLoader:Here(self._rebirthScreen, "PopupPanelImg")
     self._rebirthConfirmButton = FXLoader:Here(self._rebirthPanel, "RebirthBtn")
-    --- 弹窗打开后把重生提示切到确认按钮，关闭时恢复主界面入口；首次重生保留遮罩。
+    --- 弹窗打开后把重生箭头切到确认按钮，关闭时恢复主界面入口；遮罩只由基础教学管理。
     local function RefreshRebirthGuide()
         self:RefreshRebirthGuide()
     end
@@ -749,7 +749,7 @@ function Component:RefreshTrainingRejoinLayout()
     self._trainingRejoinLabel.Position = UDim2.new(0.5, 0, 1, -height - 16)
 end
 
---- 新手引导完成后才显示底部提醒；训练路线优先，镐子、光环购买提醒先于卡牌奖励。
+--- 基础教学及四段重生路线结束后才显示底部提醒，避免与当前路线争抢箭头和文案。
 --- @return table? 最高优先级的文案定义，没有符合条件的提醒时为 nil。
 --- @return table? 训练台提醒对应的配置，供世界箭头复用同一目标判定。
 --- @return string? 购买提醒对应的商店类型，供通用箭头复用同一目标判定。
@@ -760,7 +760,7 @@ function Component:GetPriorityReminder()
     if first == nil or first.state ~= "Finished" then
         return nil
     end
-    local route = guide.guideMap.SecondRebirthGuide
+    local route = guide.guideMap.FourthRebirthGuide
     if route == nil or route.state ~= "Finished" then
         return nil
     end
@@ -1233,7 +1233,7 @@ function Component:ShowPickupEffect(entry)
     self._pickupEffects[effect] = connection
 end
 
---- 独立提示可重生状态，在入口与确认按钮间切换；首次重生显示遮罩，后续只显示箭头。
+--- 独立提示可重生状态，在入口与确认按钮间切换；重生路线均只显示箭头。
 function Component:RefreshRebirthGuide()
     local rebirthCount = self:GetNumber(Fields.RebirthCount)
     local requiredLevel = Rebirth.GetRequiredLevel(rebirthCount)
@@ -1242,11 +1242,10 @@ function Component:RefreshRebirthGuide()
         self._rebirthArrow:Hide()
         return
     end
-    local firstRebirth = rebirthCount == 0
     if self._rebirthScreen.Enabled and self._rebirthPanel.Visible then
-        self._rebirthArrow:Show(self._rebirthConfirmButton, "Top", firstRebirth)
+        self._rebirthArrow:Show(self._rebirthConfirmButton, "Top", false)
     else
-        self._rebirthArrow:Show(self._rebirthBadge.Parent, "Right", firstRebirth)
+        self._rebirthArrow:Show(self._rebirthBadge.Parent, "Right", false)
     end
 end
 

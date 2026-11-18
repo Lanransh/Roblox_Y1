@@ -8,6 +8,8 @@ local GuideSteps = _G.TutorialGuideConfig.FirstLootGuide.steps
 local Component = FX.Class("SAnalyticsCompClass", "FSPlayerCompClass")
 local VERSION = "V1"
 local GUIDE_VERSION = "FirstLootV5"
+-- 删除领奖提示后仍保留 V5 的完成序号，兼容历史已上报与已保存的漏斗进度。
+local GUIDE_COMPLETED_STEP = 10
 local ROUTE_VERSION = "SecondRebirthV1"
 -- 步骤表示任务通过（包含权威条件满足后的跳过），不推断玩家实际执行过被跳过的动作。
 local ROUTE_STEPS = {"RouteStarted", "Training15TaskCompleted", "FirstRebirthTaskCompleted",
@@ -141,7 +143,7 @@ end
 function Component:GetGuideStep(data)
     local first = data.guideMap and data.guideMap.FirstLootGuide
     if first and first.state == "Finished" then
-        return #GuideSteps + 1
+        return GUIDE_COMPLETED_STEP
     end
     if first and first.state == "Running" then
         return first.stepIndex
@@ -163,26 +165,29 @@ function Component:RecordGuide(data)
         if target > previous then
             self:SetNumber(Fields.FirstLootV5Step, target)
         end
-        local stepName = target == 1 and "GuideStarted" or GuideSteps[target - 1].analyticsStepName
+        local stepName = target == GUIDE_COMPLETED_STEP and "GuideFinished"
+            or (target == 1 and "GuideStarted" or GuideSteps[target - 1].analyticsStepName)
         if target > (self._reportedGuideStep or 0) and self:Funnel(GUIDE_VERSION, "LifetimeV5", target,
             stepName, {GUIDE_VERSION, "CompletedActions", VERSION}) then
             self._reportedGuideStep = target
         end
     end
-    if step == #GuideSteps + 1 then
+    if step == GUIDE_COMPLETED_STEP then
         self:RecordGrowth()
     end
 end
 
---- 任务进入下一步才算上一任务通过；只纳入实际运行过路线的玩家，历史整线完成不补入。
+--- 两段沿用原八步漏斗序号；新增回练和攒钱阶段不改写历史任务序号。
 --- @param data table 已提交的权威引导数据。
 function Component:RecordRebirthRoute(data)
     if not self._startedAt or self._ended then
         return
     end
     local route = data.guideMap and data.guideMap.SecondRebirthGuide
+    local firstRoute = data.guideMap and data.guideMap.FirstRebirthGuide
     local previous = self:GetNumber(Fields.SecondRebirthV1Step)
-    if previous == 0 and (not route or route.state ~= "Running"
+    local running = (firstRoute and firstRoute.state == "Running") or (route and route.state == "Running")
+    if previous == 0 and (not running
         or self:GetNumber(Fields.RebirthCount) >= _G.TutorialGuideConfig.SecondRebirthGuide.completionRebirthCount) then
         return
     end
@@ -190,7 +195,12 @@ function Component:RecordRebirthRoute(data)
     if route and route.state == "Finished" then
         target = #ROUTE_STEPS
     elseif route and route.state == "Running" then
-        target = math.max(previous, route.stepIndex)
+        local routeStep = route.stepIndex <= 5 and route.stepIndex + 1 or route.stepIndex
+        target = math.max(previous, 3, routeStep)
+    elseif firstRoute and firstRoute.state == "Finished" then
+        target = math.max(previous, 3)
+    elseif firstRoute and firstRoute.state == "Running" then
+        target = math.max(previous, firstRoute.stepIndex)
     end
     if target > previous then
         self:SetNumber(Fields.SecondRebirthV1Step, target)
@@ -312,7 +322,7 @@ function Component:RecordGrowth()
         return
     end
     local guideStep = self:GetGuideStep(self:GetTable(Fields.Guide))
-    local step = guideStep == #GuideSteps + 1 and 1 or 0
+    local step = guideStep == GUIDE_COMPLETED_STEP and 1 or 0
     if self:GetNumber(Fields.RebirthCount) > 0 then
         step = 2
     end

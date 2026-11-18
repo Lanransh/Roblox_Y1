@@ -3,6 +3,7 @@ local FXLoader = FX.Loader
 local Text = FX.Text
 local Rebirth = FXLoader:RequireShared("Scripts/Game/Shared/Rebirth")
 local RockLevel = FXLoader:RequireShared("Scripts/Game/Shared/RockLevel")
+local TutorialPurchase = FXLoader:RequireShared("Scripts/Game/Shared/TutorialPurchase")
 local ItemToolVisual = FXLoader:RequireFromParent(script, "ItemToolVisual")
 local PlayerDataConfig, ItemConfig = _G.PlayerDataConfig, _G.ItemConfig
 local TutorialGuideConfig = _G.TutorialGuideConfig
@@ -389,7 +390,7 @@ function Guide:RefreshWorld2Reminder()
     self:SetGuideData(data)
 end
 
---- 按真实库存和购买资格判断固定路线步骤，不接受客户端自报完成，不重复发放新手奖励。
+--- 按真实等级、训练场和商品价格判断路线；攒钱目标只统计已到账金币。
 --- @param target table 当前步骤目标。
 --- @param config table 固定路线配置。
 --- @return boolean 是否已满足当前步骤。
@@ -398,24 +399,25 @@ function Guide:IsRebirthRouteStepComplete(target, config)
         return self:GetNumber(PlayerDataConfig.RockTrainingLevel) >= target.level
     elseif target.type == "Rebirth" then
         return self:GetNumber(PlayerDataConfig.RebirthCount) >= target.count
+    elseif target.type == "TrainingField" then
+        local current = _G.GameConfig.TrainingFieldData[self:GetNumber(PlayerDataConfig.TrainingFieldIndex)]
+        local goal = _G.GameConfig.TrainingFieldData[target.fieldIndex]
+        return current ~= nil and current.TrainingRate >= goal.TrainingRate
     end
-    local weapon = FXLoader:RequireShared("Scripts/Game/Shared/Weapon")
-    local goal = weapon.GetConfig(config.weaponId)
-    local data = self:GetTable(PlayerDataConfig.WeaponData)
-    if target.type == "Weapon" then
-        return weapon.GetEquippedConfig(data).TrainingRate >= goal.TrainingRate
+    local data = self:GetTable(PlayerDataConfig[config.shopType .. "Data"])
+    local goal, ownedGoal, isEquipped = TutorialPurchase.GetStatus(config, data)
+    if target.type == "Weapon" or target.type == "Aura" then
+        return isEquipped
     end
-    for index, item in ipairs(_G.GameConfig.ToolConfig) do
-        if index > _G.GameEnum.WeaponLimit then
-            break
-        end
-        if data.owned[tostring(item.ToolId)] == true and item.TrainingRate >= goal.TrainingRate then
-            return true
-        end
+    if ownedGoal then
+        return true
     end
     local money = self:GetNumber(PlayerDataConfig.Money)
     if money >= goal.Price then
         return true
+    end
+    if target.type == "Money" then
+        return false
     end
     local carried = self:GetTable(PlayerDataConfig.RockLoot)
     local stored = self:GetTable(PlayerDataConfig.StoredLoot)
@@ -435,29 +437,30 @@ function Guide:IsRebirthRouteStepComplete(target, config)
     return money >= goal.Price
 end
 
---- 首轮结束后续接固定路线；旧玩家跳过已完成阶段，低价掉落不足以买镐时允许再收集一趟。
-function Guide:RefreshRebirthRoute()
-    local config = TutorialGuideConfig.SecondRebirthGuide
+--- 依次续接重生路线；镐子与光环共用攒钱循环，已可重生时优先重生。
+--- @param groupId string 当前重生路线的配置与存档分组名。
+function Guide:RefreshRebirthRoute(groupId)
+    local config = TutorialGuideConfig[groupId]
     local data = self:GetGuideData()
-    local first = data.guideMap.FirstLootGuide
-    local route = data.guideMap.SecondRebirthGuide
-    if not first or first.state ~= "Finished" or (route and route.state == "Finished") then
+    local previous = data.guideMap[config.previousGuideId]
+    local route = data.guideMap[groupId]
+    if not previous or previous.state ~= "Finished" or (route and route.state == "Finished") then
         return
     end
     if self:GetNumber(PlayerDataConfig.RebirthCount) >= config.completionRebirthCount then
-        self:FinishGroup(data, "SecondRebirthGuide")
+        self:FinishGroup(data, groupId)
         return
     end
     self:TryStartGroup(config.startEvent)
     data = self:GetGuideData()
     local rebirthCount = self:GetNumber(PlayerDataConfig.RebirthCount)
-    if data.activeGuideId == "SecondRebirthGuide"
+    if data.activeGuideId == groupId
         and self:GetNumber(PlayerDataConfig.RockTrainingLevel) >= Rebirth.GetRequiredLevel(rebirthCount) then
         -- 已能重生就不再要求额外赚钱或买镐；下一次重生目标仍由配置中的步骤决定。
         for index, step in ipairs(config.steps) do
             if step.target.type == "Rebirth" and step.target.count == rebirthCount + 1 then
-                if data.guideMap.SecondRebirthGuide.stepIndex ~= index then
-                    self:EnterGroupStep(data, "SecondRebirthGuide", config, index)
+                if data.guideMap[groupId].stepIndex ~= index then
+                    self:EnterGroupStep(data, groupId, config, index)
                 end
                 return
             end
@@ -465,30 +468,28 @@ function Guide:RefreshRebirthRoute()
     end
     for attempt = 1, #config.steps do
         data = self:GetGuideData()
-        if data.activeGuideId ~= "SecondRebirthGuide" then
+        if data.activeGuideId ~= groupId then
             return
         end
-        local step = config.steps[data.guideMap.SecondRebirthGuide.stepIndex]
+        local step = config.steps[data.guideMap[groupId].stepIndex]
+        local reminderFinished = false
+        if step.duration then
+            local reminderId = groupId .. ":" .. data.guideMap[groupId].stepIndex
+            if self._routeReminderId ~= reminderId then
+                self._routeReminderId = reminderId
+                self._routeReminderEnd = workspace:GetServerTimeNow() + step.duration
+            end
+            reminderFinished = workspace:GetServerTimeNow() >= self._routeReminderEnd
+        end
         if self:GetNumber(PlayerDataConfig.RebirthCount) >= step.skipAtRebirthCount
-            or self:IsRebirthRouteStepComplete(step.target, config) then
+            or reminderFinished or self:IsRebirthRouteStepComplete(step.target, config) then
             self:TryFinishCurrentStep(step.finishEvent)
         else
-            if step.target.type == "Weapon" then
-                local weapon = FXLoader:RequireShared("Scripts/Game/Shared/Weapon")
-                local goal = weapon.GetConfig(config.weaponId)
-                local owned = self:GetTable(PlayerDataConfig.WeaponData).owned
-                local canEquip = false
-                for index, item in ipairs(_G.GameConfig.ToolConfig) do
-                    if index > _G.GameEnum.WeaponLimit then
-                        break
-                    end
-                    if owned[tostring(item.ToolId)] == true and item.TrainingRate >= goal.TrainingRate then
-                        canEquip = true
-                        break
-                    end
-                end
-                if not canEquip and self:GetNumber(PlayerDataConfig.Money) < goal.Price then
-                    self:EnterGroupStep(data, "SecondRebirthGuide", config, config.collectStepIndex)
+            if step.target.type == "Money" or step.target.type == "Weapon" or step.target.type == "Aura" then
+                local shopData = self:GetTable(PlayerDataConfig[config.shopType .. "Data"])
+                local goal, ownedGoal = TutorialPurchase.GetStatus(config, shopData)
+                if not ownedGoal and self:GetNumber(PlayerDataConfig.Money) < goal.Price then
+                    self:EnterGroupStep(data, groupId, config, config.collectStepIndex)
                 end
             end
             return
@@ -496,7 +497,7 @@ function Guide:RefreshRebirthRoute()
     end
 end
 
---- 使用权威存档恢复提前完成的操作；首轮结束后继续按配置引导至第二次重生。
+--- 使用权威存档恢复提前完成的操作；基础教学后连续提示到第四次重生。
 --- @param serverTime number 框架每秒回调时间。
 function Guide:OnUpdate(serverTime)
     if self:IsLootStep(1) then
@@ -555,7 +556,10 @@ function Guide:OnUpdate(serverTime)
             end
         end
     end
-    self:RefreshRebirthRoute()
+    self:RefreshRebirthRoute("FirstRebirthGuide")
+    self:RefreshRebirthRoute("SecondRebirthGuide")
+    self:RefreshRebirthRoute("ThirdRebirthGuide")
+    self:RefreshRebirthRoute("FourthRebirthGuide")
     self:RefreshWorld2Reminder()
 end
 
@@ -589,7 +593,7 @@ function Player:ShowLocalizedTips(key, arguments, duration)
     FX.Network:SendMsgToClient(self:GetPlayerId(), "S2C_ShowLocalizedTips", key, arguments, duration)
 end
 
---- 补齐历史数据、重建引导业务目标，并迁移菜鸟任务和可视距离设置。
+--- 补齐历史数据及设置，并将旧的合并重生路线迁移为重生一、重生二。
 --- @param version number 框架传入的旧存档版本。
 function Player:MigrateData(version)
     if version < 1 then
@@ -641,6 +645,72 @@ function Player:MigrateData(version)
         settings.renderDistance = PlayerDataConfig.Settings.DefVal.renderDistance
         self:SetTable(PlayerDataConfig.Settings, settings)
         self:SetNumber(PlayerDataConfig.DataVersion, 6)
+    end
+    if version < 7 then
+        local guide = self:GetTable(PlayerDataConfig.Guide)
+        local groups = guide.guideMap or {}
+        guide.guideMap = groups
+        local route = groups.SecondRebirthGuide
+        if route and route.state == "Finished" then
+            groups.FirstRebirthGuide = {state = "Finished", stepIndex = 0}
+        elseif route and route.state == "Running" then
+            if route.stepIndex <= 2 then
+                groups.FirstRebirthGuide = route
+                groups.SecondRebirthGuide = nil
+                if guide.activeGuideId == "SecondRebirthGuide" then
+                    guide.activeGuideId = "FirstRebirthGuide"
+                end
+            else
+                groups.FirstRebirthGuide = {state = "Finished", stepIndex = 0}
+                -- 旧采矿步骤先补回练；已经在寄存或出售的玩家继续当前动作。
+                route.stepIndex = route.stepIndex == 3 and 1 or route.stepIndex - 1
+            end
+        end
+        local first = groups.FirstLootGuide
+        if first and first.state == "Running" and first.stepIndex == 9 then
+            first.state, first.stepIndex = "Finished", 0
+            if guide.activeGuideId == "FirstLootGuide" then
+                guide.activeGuideId = ""
+            end
+        end
+        local config = TutorialGuideConfig[guide.activeGuideId]
+        local state = groups[guide.activeGuideId]
+        local step = config and state and config.steps[state.stepIndex]
+        guide.target = step and table.clone(step.target) or {type = "None"}
+        self:SetTable(PlayerDataConfig.Guide, guide)
+        self:SetNumber(PlayerDataConfig.DataVersion, 7)
+    end
+    if version < 8 then
+        local guide = self:GetTable(PlayerDataConfig.Guide)
+        local groups = guide.guideMap or {}
+        local second = groups.SecondRebirthGuide
+        if second and second.state == "Running" and second.stepIndex >= 5 then
+            second.stepIndex += 1
+        end
+        local third = groups.ThirdRebirthGuide
+        if third and third.state == "Running" then
+            third.stepIndex = third.stepIndex == 1 and 1 or third.stepIndex + 5
+        end
+        local config = TutorialGuideConfig[guide.activeGuideId]
+        local state = groups[guide.activeGuideId]
+        local step = config and state and config.steps[state.stepIndex]
+        guide.target = step and table.clone(step.target) or {type = "None"}
+        self:SetTable(PlayerDataConfig.Guide, guide)
+        self:SetNumber(PlayerDataConfig.DataVersion, 8)
+    end
+    if version < 9 then
+        -- 已停在旧收尾提示的玩家直接完成基础教学，由现有路线逻辑衔接重生一。
+        local guide = self:GetTable(PlayerDataConfig.Guide)
+        local first = guide.guideMap and guide.guideMap.FirstLootGuide
+        if first and first.state == "Running" and first.stepIndex > #TutorialGuideConfig.FirstLootGuide.steps then
+            first.state, first.stepIndex = "Finished", 0
+            if guide.activeGuideId == "FirstLootGuide" then
+                guide.activeGuideId = ""
+                guide.target = {type = "None"}
+            end
+            self:SetTable(PlayerDataConfig.Guide, guide)
+        end
+        self:SetNumber(PlayerDataConfig.DataVersion, 9)
     end
 end
 

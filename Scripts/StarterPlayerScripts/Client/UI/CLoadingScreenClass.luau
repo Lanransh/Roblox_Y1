@@ -66,8 +66,13 @@ function Loading:Fail(message)
     warn("[Loading]", message)
 end
 
---- 加载期间隐藏原生物品栏，并在后台准备资源，让主入口继续创建玩家和发起握手。
+--- 先在启动期限内等待加载页复制，再绑定 View；避免默认十秒等待提前中断客户端入口。
 function Loading:Start()
+    self._deadline = os.clock() + 120
+    local playerGui = FXLoader:Player("PlayerGui")
+    self:WaitFor(function()
+        return FXLoader:Find(playerGui, self.ScreenGuiName)
+    end, "loading interface replication")
     -- CoreGui 可能尚未初始化；独立重试，避免阻塞加载页显示。
     self._backpackTask = task.spawn(function()
         while not self._finished do
@@ -85,7 +90,6 @@ function Loading:Start()
     end)
     Loading.Super.OnReady(self)
     self:Show()
-    self._deadline = os.clock() + 120
     -- 高优先级覆盖移动、跳跃和快捷栏；View 的全屏遮罩拦截世界点击。
     ContextActionService:BindActionAtPriority(ACTION, function()
         return Enum.ContextActionResult.Sink

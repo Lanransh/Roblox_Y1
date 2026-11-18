@@ -3,9 +3,7 @@ local FXLoader = FX.Loader
 local Text = FX.Text
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
 local InstancePath = FXLoader:RequireShared("Scripts/Game/Shared/InstancePath")
-local Weapon = FXLoader:RequireShared("Scripts/Game/Shared/Weapon")
-local RockLevel = FXLoader:RequireShared("Scripts/Game/Shared/RockLevel")
-local RouteConfig = _G.TutorialGuideConfig.SecondRebirthGuide
+local TutorialPurchase = FXLoader:RequireShared("Scripts/Game/Shared/TutorialPurchase")
 local TranslationTexts = Text.Define("Tutorial", {
     Collect = "Head into World 1's first stage! During this step, every rock there breaks in one swing and drops loot. Pick up 1 piece of loot.",
     Deposit = "Return to your base to store your loot. You can also use HOME.",
@@ -13,15 +11,16 @@ local TranslationTexts = Text.Define("Tutorial", {
     Rate = "Use your 30 welcome diamonds to buy the training multiplier on the right!",
     Weapon = "You earned 100 coins! Visit the weapon shop and equip a better pickaxe.",
     AutomaticTraining = "Train here automatically, even while AFK! Rebirth to unlock training areas with higher multipliers.",
-    Done = "Keep getting stronger and discover more valuable loot!",
-    Rewards = "Claim your rewards from the Rewards button!",
     Aura = "You're doing great! You can now buy an aura!",
     UpgradeWeapon = "Buy a stronger pickaxe!",
     UpgradeAura = "Buy a stronger aura!",
     RouteTraining = "Follow the arrows to the training base and train until Level {level:int}!",
-    RouteCollect = "Follow the arrows on the ground to the mining area. Collect loot to earn coins!",
-    RouteWeapon = "Visit the weapon shop. Buy and equip {weapon} for {price} coins!",
+    RouteEarnMoney = "Save {price} Coins for {item}! Mine and sell loot. Coins: {current}/{price}.",
+    RouteSaveMoney = "Save {price} Coins to buy {item}! Coins: {current}/{price}.",
+    RouteWeapon = "Visit the weapon shop. Buy and equip {item} for {price} Coins!",
+    RouteAura = "Visit the aura shop. Buy and equip {item} for {price} Coins to train faster!",
     RouteRebirth = "Click Rebirth, then confirm to complete rebirth {count:int}!",
+    RouteTrainingField = "Rebirth 3 unlocked the second training area (x{rate})! Follow the arrows to train there!",
     QuestTraining = "Get stronger!",
     QuestRebirth = "Time to rebirth!",
     QuestCollect = "Collect loot!",
@@ -38,15 +37,16 @@ local GuideTexts = {
     ["Tutorial.Rate"] = TranslationTexts.Rate,
     ["Tutorial.Weapon"] = TranslationTexts.Weapon,
     ["Tutorial.AutomaticTraining"] = TranslationTexts.AutomaticTraining,
-    ["Tutorial.Done"] = TranslationTexts.Done,
-    ["Tutorial.Rewards"] = TranslationTexts.Rewards,
     ["Tutorial.Aura"] = TranslationTexts.Aura,
     ["Upgrade.Weapon"] = TranslationTexts.UpgradeWeapon,
     ["Upgrade.Aura"] = TranslationTexts.UpgradeAura,
     ["Route.Training"] = TranslationTexts.RouteTraining,
-    ["Route.Collect"] = TranslationTexts.RouteCollect,
+    ["Route.EarnMoney"] = TranslationTexts.RouteEarnMoney,
+    ["Route.SaveMoney"] = TranslationTexts.RouteSaveMoney,
     ["Route.Weapon"] = TranslationTexts.RouteWeapon,
     ["Route.Rebirth"] = TranslationTexts.RouteRebirth,
+    ["Route.Aura"] = TranslationTexts.RouteAura,
+    ["Route.TrainingField"] = TranslationTexts.RouteTrainingField,
     ["Quest.Training"] = TranslationTexts.QuestTraining,
     ["Quest.Rebirth"] = TranslationTexts.QuestRebirth,
     ["Quest.Collect"] = TranslationTexts.QuestCollect,
@@ -137,7 +137,6 @@ function Guide:OnReady()
     self._uiArrow = UIGuideArrow.New(self._screen.Parent)
     self._rateButton = FXLoader:PlayerGui("MainUI/RightCenter/DoubleStrengthButton")
     self._homeButton = FXLoader:PlayerGui("MainUI/TopCenter/HomeButton")
-    self._rewardButton = FXLoader:PlayerGui("MainUI/LeftCenter/RewardBtn")
     self._purchaseScreen = FXLoader:PlayerGui("ShopPurchaseUI")
     self._questPanel = FXLoader:PlayerGui("MainUI/QuestPanel")
     self._questTitle = FXLoader:Here(self._questPanel, "GoalTxt")
@@ -155,8 +154,8 @@ function Guide:OnReady()
     self:WatchDataChanged(Fields.WeaponData, self.RefreshUpgradeHint, self)
     self:WatchDataChanged(Fields.AuraData, self.RefreshUpgradeHint, self)
     for index, field in ipairs({Fields.RockTrainingLevel, Fields.RebirthCount, Fields.Money,
-        Fields.RockLoot, Fields.CurrencyShopData, Fields.RockLootCapacityBoost}) do
-        self:WatchDataChanged(field, self.RefreshQuestProgress, self)
+        Fields.WeaponData, Fields.AuraData}) do
+        self:WatchDataChanged(field, self.RefreshText, self)
     end
     local elapsed = 0
     self:TrackConnection(RunService.Heartbeat:Connect(function(dt)
@@ -169,29 +168,34 @@ function Guide:OnReady()
     end))
 end
 
---- 原新手教学使用顶部文字，后续固定任务只更新右上角任务面板；数值和标题均从配置读取。
+--- 力量下方显示当前目标；攒钱数额与购买价格共用正式配置，并随余额变化刷新。
 function Guide:RefreshText()
     local target = self._activeTarget
     self._label.AutoLocalize = false
     local parameters
     if target and self._routeGuideRunning then
-        local weapon = Weapon.GetConfig(RouteConfig.weaponId)
-        parameters = {
-            level = target.level, count = target.count or RouteConfig.lootCount,
-            world = RouteConfig.worldIndex, stage = RouteConfig.stageIndex,
-            weapon = Text.TrSource(weapon.Name), price = GameUtility.NumberToText(weapon.Price),
-        }
+        parameters = {level = target.level, count = target.count}
+        if self._routeConfig.shopType then
+            local data = self:GetTable(Fields[self._routeConfig.shopType .. "Data"])
+            local goal = TutorialPurchase.GetStatus(self._routeConfig, data)
+            parameters.item = Text.TrSource(goal.Name)
+            parameters.price = GameUtility.NumberToText(goal.Price)
+            parameters.current = GameUtility.NumberToText(self:GetNumber(Fields.Money))
+        end
+        if target.type == "TrainingField" then
+            parameters.rate = GameUtility.NumberToText(_G.GameConfig.TrainingFieldData[target.fieldIndex].TrainingRate)
+        end
     end
     local instruction = target and Text.Tr(GuideTexts[target.textId], parameters) or ""
     local showQuest = self._routeGuideRunning and target ~= nil
-    self._questPanel.Visible = showQuest == true
+    self._questPanel.Visible = false
     self._questTitle.Text = showQuest and Text.Tr(GuideTexts[self._questTitleTextId]) or ""
     self._questDescription.Text = showQuest and instruction or ""
-    self._label.Text = not showQuest and instruction or ""
+    self._label.Text = instruction
     self:RefreshQuestProgress()
 end
 
---- 按任务配置显示黄色数字进度；金币只统计已到账余额，不把未出售战利品当作现金。
+--- 旧任务框保持隐藏；金币进度与顶部文字共用目标价格，不把未出售战利品算作余额。
 function Guide:RefreshQuestProgress()
     local target = self._questStep
     local kind = target and target.progress
@@ -200,32 +204,29 @@ function Guide:RefreshQuestProgress()
         current, required = self:GetNumber(Fields.RockTrainingLevel), target.level
     elseif self._activeTarget and kind == "Rebirth" then
         current, required = self:GetNumber(Fields.RebirthCount), target.count
-    elseif self._activeTarget and kind == "Loot" then
-        current = #self:GetTable(Fields.RockLoot)
-        local capacity = RockLevel.LootCapacity + self:GetTable(Fields.CurrencyShopData).capacity
-        local boost = self:GetTable(Fields.RockLootCapacityBoost)
-        if boost.expiresAt > workspace:GetServerTimeNow() then
-            capacity += boost.count
-        end
-        required = math.min(RouteConfig.lootCount, capacity)
     elseif self._activeTarget and kind == "Money" then
         current = GameUtility.NumberToText(self:GetNumber(Fields.Money))
-        required = GameUtility.NumberToText(Weapon.GetConfig(RouteConfig.weaponId).Price)
+        local data = self:GetTable(Fields[self._routeConfig.shopType .. "Data"])
+        local goal = TutorialPurchase.GetStatus(self._routeConfig, data)
+        required = GameUtility.NumberToText(goal.Price)
     end
     self._questProgress.Text = current ~= nil and tostring(current) .. "/" .. tostring(required) or ""
     self._questProgress.Visible = current ~= nil
 end
 
---- 首轮完成后展示服务端固定路线；路线结束才恢复普通装备升级提醒。
+--- 基础教学后依次展示四段重生路线；全部结束后才恢复普通装备升级提醒。
 --- @param guideData table 服务端同步的引导进度。
 function Guide:OnGuideDataChanged(guideData)
     local first = guideData.guideMap and guideData.guideMap.FirstLootGuide
     self._mainGuideFinished = first ~= nil and first.state == "Finished"
-    self._routeGuideRunning = guideData.activeGuideId == "SecondRebirthGuide"
-    local route = guideData.guideMap and guideData.guideMap.SecondRebirthGuide
-    self._questStep = self._routeGuideRunning and RouteConfig.steps[route.stepIndex].target or nil
+    local routeConfig = _G.TutorialGuideConfig[guideData.activeGuideId]
+    self._routeGuideRunning = routeConfig ~= nil and routeConfig.previousGuideId ~= nil
+    self._routeConfig = self._routeGuideRunning and routeConfig or nil
+    local activeRoute = self._routeGuideRunning and guideData.guideMap[guideData.activeGuideId]
+    local route = guideData.guideMap and guideData.guideMap.FourthRebirthGuide
+    self._questStep = self._routeGuideRunning and routeConfig.steps[activeRoute.stepIndex].target or nil
     -- 标题来自当前配置，不依赖旧存档目标中是否已经保存了新增展示字段。
-    self._questTitleTextId = self._routeGuideRunning and RouteConfig.steps[route.stepIndex].target.titleTextId or nil
+    self._questTitleTextId = self._questStep and self._questStep.titleTextId or nil
     self._routeGuideFinished = route ~= nil and route.state == "Finished"
     if self._mainGuideFinished and not self._routeGuideRunning then
         Guide.Super.OnGuideDataChanged(self, {target = {type = "None"}})
@@ -275,7 +276,7 @@ function Guide:OnExitGuide(target)
     self:RefreshText()
 end
 
---- 商店尚未就绪时等待下一次刷新；就绪后优先装备，再推荐买得起的升级。
+--- 镐子和光环共用路线目标，已有更强物品时指向装备按钮，不重复要求购买。
 --- @param target table 当前主引导或持续升级提醒目标。
 --- @return GuiButton? 当前可执行操作的按钮。
 function Guide:GetShopGuideButton(target)
@@ -285,15 +286,11 @@ function Guide:GetShopGuideButton(target)
         return nil
     end
     local items = isWeapon and shop.Config.weapons or shop.Config.auras
-    if self._routeGuideRunning and isWeapon then
-        local goal = Weapon.GetConfig(RouteConfig.weaponId)
-        local selectedId = tostring(goal.ToolId)
-        local selectedStrength = goal.TrainingRate
-        for index, item in ipairs(items) do
-            if shop.State.owned[item.id] and item.strength >= selectedStrength then
-                selectedId, selectedStrength = item.id, item.strength
-            end
-        end
+    if self._routeGuideRunning and self._routeConfig.shopType == target.type then
+        local data = self:GetTable(Fields[self._routeConfig.shopType .. "Data"])
+        local goal, ownedGoal = TutorialPurchase.GetStatus(self._routeConfig, data)
+        local selected = ownedGoal or goal
+        local selectedId = tostring(selected[isWeapon and "ToolId" or "AuraId"])
         local entry = shop.Rows[selectedId]
         return entry and entry.button
     end
@@ -346,10 +343,6 @@ function Guide:GetUIGuideButton(target)
         if not self:RequireComponent("FCCommonUIComp"):IsTrainingClickBlocked() and self._homeButton.Visible then
             return self._homeButton
         end
-    elseif target.type == "Rewards" then
-        if not self:RequireComponent("FCCommonUIComp"):IsTrainingClickBlocked() then
-            return self._rewardButton
-        end
     elseif target.type == "Sell" then
         local sell = self:RequireComponent("CLootSellUIComp")
         if sell.State and sell:GetRootNode().Enabled and sell.State.isOpen and not sell.State.pending and #sell.State.items > 0 then
@@ -361,7 +354,7 @@ function Guide:GetUIGuideButton(target)
     return nil
 end
 
---- 原新手 UI 操作恢复遮罩（奖励提醒除外）；后续任务仅用箭头，进入矿区后指向附近未碎藏宝石头。
+--- 基础教学的界面操作使用遮罩；重生路线只用箭头，三次重生后明确指向第二训练场。
 function Guide:RefreshTarget()
     local target = self._activeTarget
     local worldIndex = self:GetNumber(Fields.WorldIndex)
@@ -374,6 +367,8 @@ function Guide:RefreshTarget()
     end
     if target and target.type == "Training" then
         trainingConfig = GameUtility.GetBestTrainingField(worldIndex, self:GetNumber(Fields.RebirthCount))
+    elseif target and target.type == "TrainingField" then
+        trainingConfig = _G.GameConfig.TrainingFieldData[target.fieldIndex]
     end
     local character = self:GetPlayerCharacter()
     local humanoid = character and character:FindFirstChildOfClass("Humanoid")
@@ -420,8 +415,7 @@ function Guide:RefreshTarget()
             end
         end
         self._uiGuideButton = button
-        self._uiArrow:Show(button, target.type == "Rewards" and "Right" or "Left",
-            not self._mainGuideFinished and target.type ~= "Rewards")
+        self._uiArrow:Show(button, "Left", not self._mainGuideFinished)
         self:HideGuideArrow()
         return
     end
@@ -437,7 +431,7 @@ function Guide:RefreshTarget()
         local root = character:FindFirstChild("HumanoidRootPart")
         if root then
             position = self:RequireComponent("CRockLevelComp"):GetMiningGuidePosition(root.Position,
-                RouteConfig.worldIndex, RouteConfig.stageIndex)
+                self._routeConfig.worldIndex, self._routeConfig.stageIndex)
         end
     else
         local names = {Sell = "Shop", Weapon = "PurpleHut", Aura = "BlueHut"}
@@ -456,7 +450,7 @@ function Guide:RefreshTarget()
     end
 end
 
---- 两片薄楔形拼出尖端朝向目标的三角形，避免纹理透明度和朝向影响识别。
+--- 保留三角形路线，并叠加始终可见的半透明轮廓，避免前往关卡或拾取时被石头遮挡。
 --- @param position Vector3 世界目标。
 function Guide:ShowGuideArrowToPosition(position)
     self._worldTargetPosition = position
@@ -472,6 +466,15 @@ function Guide:ShowGuideArrowToPosition(position)
         self._arrowTriangles = {}
         arrow.Parent = decorations
         self._arrowTrans = arrow
+        local overlay = Instance.new("WireframeHandleAdornment")
+        overlay.Name = "OcclusionOverlay"
+        overlay.Adornee = arrow
+        overlay.AlwaysOnTop = true
+        overlay.ZIndex = 1
+        overlay.Color3 = Color3.fromRGB(255, 240, 150)
+        overlay.Transparency = 0.35
+        overlay.Parent = arrow
+        self._arrowOverlay = overlay
         self._renderSteppedConn = RunService.RenderStepped:Connect(function()
             self:UpdateGuideArrow()
         end)
@@ -479,7 +482,7 @@ function Guide:ShowGuideArrowToPosition(position)
     self:UpdateGuideArrow()
 end
 
---- 固定间距与滚动周期，移动时只增减末端三角；箭头平铺在水平面并平滑隐藏首尾。
+--- 三角形沿路线滚动并淡出首尾；穿透轮廓复用同一组顶点，避免与实际箭头方向错位。
 function Guide:UpdateGuideArrow()
     local character = self:GetPlayerCharacter()
     local root = character and FXLoader:Find(character, "HumanoidRootPart")
@@ -505,6 +508,7 @@ function Guide:UpdateGuideArrow()
     else
         count = 0
     end
+    local overlayLines = {}
     for index = 1, math.max(count, #self._arrowTriangles) do
         local triangle = self._arrowTriangles[index]
         if not triangle then
@@ -524,6 +528,18 @@ function Guide:UpdateGuideArrow()
         end
         local along = index <= count and 2 + (index - 1) * spacing + (now * 1.5) % spacing
         local visible = along and along < distance - 1.1
+        if visible then
+            local center = origin + forward * along
+            local tip = self._arrowTrans.CFrame:PointToObjectSpace(center + flatForward * 1.1)
+            local left = self._arrowTrans.CFrame:PointToObjectSpace(center - flatForward * 1.1 - side)
+            local right = self._arrowTrans.CFrame:PointToObjectSpace(center - flatForward * 1.1 + side)
+            table.insert(overlayLines, tip)
+            table.insert(overlayLines, left)
+            table.insert(overlayLines, left)
+            table.insert(overlayLines, right)
+            table.insert(overlayLines, right)
+            table.insert(overlayLines, tip)
+        end
         for half, wedge in ipairs(triangle) do
             local visibility = visible and math.clamp(math.min(along - 2, distance - 1.1 - along) / 0.6, 0, 1) or 0
             wedge.Transparency = 1 - 0.95 * visibility
@@ -535,6 +551,8 @@ function Guide:UpdateGuideArrow()
             end
         end
     end
+    self._arrowOverlay:Clear()
+    self._arrowOverlay:AddLines(overlayLines)
 end
 
 --- 清理提示层、刷新连接与全部箭头实例。
