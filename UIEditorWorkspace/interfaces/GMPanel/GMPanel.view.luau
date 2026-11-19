@@ -4,13 +4,19 @@ GM 面板接入契约（仅管理员自用）
 【Config / State】
   Config：不读取配置字段，可设置 self.Config = {}。
   State：必填完整表；pending: boolean 可选，省略 false。
-    true 禁用全部命令按钮并取消本地重置确认；关闭按钮仍可操作。
+    true 禁用全部命令按钮并取消本地重置确认；翻页和关闭仍可操作。
+    playerStatsHidden: boolean，当前客户端是否隐藏玩家头顶的力量和重生次数。
+    pickupPromptsHidden: boolean，当前客户端是否隐藏拾取按钮。
   无列表或独立加载态；首次刷新前准备 State，等待请求时用 pending=true。
   面板不读取管理员身份、存档或结果消息，不改写正在输入的 TextBox 文本。
 
 【最小完整数据（接入 Ctor 调用父构造之后）】
   self.Config = {}
-  self.State = { pending = false }
+  self.State = {
+      pending = false,
+      playerStatsHidden = false,
+      pickupPromptsHidden = false,
+  }
 
 【初始化与刷新】
   游戏接入类继承 CGMPanelView。
@@ -44,7 +50,10 @@ GM 面板接入契约（仅管理员自用）
   UnlockAllCollections -> {}；无需输入，校验权限和图鉴配置后解锁全部图鉴
     并持久化；不发道具，不写背包。
   ToggleGMButton -> {}；无需输入，仅切换主界面上 GM 入口按钮的外观，保留原位置点击；不隐藏其他主界面内容。
-  SetLootScale -> { value: number }；参数1为 0.1..20 的有限倍率，允许小数；1 恢复原尺寸。
+  拍照与返回仅切换面板内容，不发送动作；重新打开面板返回主菜单。
+  TogglePlayerStats / TogglePickupPrompts -> {}；接入层切换当前客户端的对应显隐，
+    更新 State 并调用 RefreshUI；关闭面板后保留设置。
+  SetLootScale -> { value: number }；拍照页的独立输入框接受 0.1..20 的有限倍率，允许小数；1 恢复原尺寸。
     仅供内部截图，由接入层在当前客户端缩放场景未拾取战利品及后续掉落，不发送网络命令或保存。
   Close -> {}；View 已取消确认并隐藏底板/标题，接入可处理关闭通知。
   输入无效调用 OnInvalidInput(action:string)->无返回值，可选覆写以显示业务提示，默认 warn。
@@ -56,7 +65,7 @@ GM 面板接入契约（仅管理员自用）
 
 【显隐与输入边界】
   View 当前关闭时直接隐藏底板/标题，OnShow 再恢复，非完整 Show/Hide 动画流程。
-  State 无 open 字段，Render 只控制命令按钮及重置确认，不回填输入框。
+  State 无 open 字段，Render 根据本地页码及完整状态控制页面、命令按钮及开关文案，不回填输入框。
   静态标签、输入提示和重置确认保留中文；输入原文不翻译。
   ScreenGui 实际名称为 GMPanelUI，不是文档目录名 GMPanel。
 ]]
@@ -64,27 +73,55 @@ local FX = _G.FX
 local FXLoader = FX.Loader
 local CGMPanelView = FX.Class("CGMPanelView", "CUIView")
 
--- 一次绑定静态节点和按钮，输入值在点击时读取。
+--- 绑定两页的节点和操作；翻页复用同一底板和关闭按钮。
 function CGMPanelView:OnReady()
     local root = FXLoader:PlayerGui("GMPanelUI")
     self.Panel = FXLoader:Here(root, "PopupPanelImg")
     self.Title = FXLoader:Here(root, "TitleBox")
+    self._mainBox = FXLoader:Here(self.Panel, "MainBox")
+    self._photoBox = FXLoader:Here(self.Panel, "PhotoBox")
+    self._mainTitle = FXLoader:Here(self.Title, "TitleTxt")
+    self._photoTitle = FXLoader:Here(self.Title, "PhotoTitleTxt")
+    self._lootScaleInput = FXLoader:Here(self._photoBox, "LootScaleInput")
+    self._photoPage = false
     self.Inputs = {}
     self.Buttons = {}
     self.ResetArmed = false
     for index = 1, 3 do
-        self.Inputs[index] = FXLoader:Here(root, "PopupPanelImg.Param" .. index .. "Input")
+        self.Inputs[index] = FXLoader:Here(self._mainBox, "Param" .. index .. "Input")
     end
-    local actions = { "SetLevel", "SetRebirth", "SetMoney", "SetDiamonds", "ResetData", "SaveNow", "AddItem", "ReachRebirthLevel", "UnlockAllCollections", "ToggleGMButton", "SetLootScale" }
+    local actions = { "SetLevel", "SetRebirth", "SetMoney", "SetDiamonds", "ResetData", "SaveNow", "AddItem", "ReachRebirthLevel", "UnlockAllCollections", "ToggleGMButton" }
     for index, action in ipairs(actions) do
-        local button = FXLoader:Here(root, "PopupPanelImg." .. action .. "Btn")
+        local button = FXLoader:Here(self._mainBox, action .. "Btn")
         self.Buttons[action] = button
         -- 绑定稳定命令名，不按显示文字判断动作。
         self:TrackConnection(button.Activated:Connect(function()
             self:ExecuteCommand(action)
         end))
     end
-    self.ResetTxt = FXLoader:Here(root, "PopupPanelImg.ResetDataBtn.ButtonTxt")
+    for index, action in ipairs({ "SetLootScale", "TogglePlayerStats", "TogglePickupPrompts" }) do
+        local button = FXLoader:Here(self._photoBox, action .. "Btn")
+        self.Buttons[action] = button
+        self:TrackConnection(button.Activated:Connect(function()
+            self:ExecuteCommand(action)
+        end))
+    end
+    self._hideStatsTxt = FXLoader:Here(self.Buttons.TogglePlayerStats, "ButtonTxt")
+    self._showStatsTxt = FXLoader:Here(self.Buttons.TogglePlayerStats, "ShowTxt")
+    self._hidePickupTxt = FXLoader:Here(self.Buttons.TogglePickupPrompts, "ButtonTxt")
+    self._showPickupTxt = FXLoader:Here(self.Buttons.TogglePickupPrompts, "ShowTxt")
+    local openPhoto = FXLoader:Here(self._mainBox, "OpenPhotoBtn")
+    self:TrackConnection(openPhoto.Activated:Connect(function()
+        self._photoPage = true
+        self:CancelReset()
+        self:RefreshUI()
+    end))
+    local back = FXLoader:Here(self._photoBox, "BackBtn")
+    self:TrackConnection(back.Activated:Connect(function()
+        self._photoPage = false
+        self:RefreshUI()
+    end))
+    self.ResetTxt = FXLoader:Here(self.Buttons.ResetData, "ButtonTxt")
     local close = FXLoader:Here(root, "TitleBox.CloseSurfaceImg")
     -- 关闭隐藏当前面板，并取消尚未执行的重置确认。
     self:TrackConnection(close.Activated:Connect(function()
@@ -95,8 +132,9 @@ function CGMPanelView:OnReady()
     end))
 end
 
--- 每次打开用最新完整状态刷新。
+--- 打开面板时回到主菜单，保留已设置的拍照选项。
 function CGMPanelView:OnShow()
+    self._photoPage = false
     self.Panel.Visible = true
     self.Title.Visible = true
     self:CancelReset()
@@ -109,8 +147,8 @@ function CGMPanelView:CancelReset()
     self.ResetTxt.Text = "重置数据"
 end
 
--- 校验输入后发送命令；截图缩放允许小数，数据命令沿用整数及重置确认规则。
--- @param action string 契约中声明的稳定命令名
+--- 校验输入后发送命令；拍照倍率使用独立输入，允许小数。
+--- @param action string 契约中声明的稳定命令名。
 function CGMPanelView:ExecuteCommand(action)
     if self:GetUIState().pending then
         return
@@ -126,12 +164,13 @@ function CGMPanelView:ExecuteCommand(action)
         return
     end
     self:CancelReset()
-    if action == "SaveNow" or action == "ReachRebirthLevel" or action == "UnlockAllCollections" or action == "ToggleGMButton" then
+    if action == "SaveNow" or action == "ReachRebirthLevel" or action == "UnlockAllCollections" or action == "ToggleGMButton"
+        or action == "TogglePlayerStats" or action == "TogglePickupPrompts" then
         self:EmitUIAction(action, {})
         return
     end
     if action == "SetLootScale" then
-        local value = tonumber(self.Inputs[1].Text)
+        local value = tonumber(self._lootScaleInput.Text)
         if not value or value ~= value or value < 0.1 or value > 20 then
             self:OnInvalidInput(action)
             return
@@ -176,9 +215,17 @@ function CGMPanelView:OnInvalidInput(action)
     warn("GM invalid input: " .. action)
 end
 
--- 渲染完整业务状态，保留正在输入的参数。
--- @param state table pending，字段缺省规则见文件头
+--- 在同一个窗口切换两页，并按当前显隐状态显示下一步操作。
+--- @param state table 当前请求状态及两项本地拍照设置。
 function CGMPanelView:Render(state)
+    self._mainBox.Visible = not self._photoPage
+    self._photoBox.Visible = self._photoPage
+    self._mainTitle.Visible = not self._photoPage
+    self._photoTitle.Visible = self._photoPage
+    self._hideStatsTxt.Visible = not state.playerStatsHidden
+    self._showStatsTxt.Visible = state.playerStatsHidden
+    self._hidePickupTxt.Visible = not state.pickupPromptsHidden
+    self._showPickupTxt.Visible = state.pickupPromptsHidden
     for action, button in pairs(self.Buttons) do
         self:SetButtonEnabled(button, not state.pending)
     end

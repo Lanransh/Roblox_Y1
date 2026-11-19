@@ -8,11 +8,28 @@ local UserInputService = game:GetService("UserInputService")
 local PickupPrompt = {}
 local promptShownConnection
 local rockDropButtons = {}
+local pickupDisplays = {}
+local pickupHidden = false
+
+--- 只切换当前客户端的拾取按钮，保留引擎的提示范围和键盘手柄操作。
+--- @param hidden boolean 是否隐藏已有及后续出现的拾取按钮。
+function PickupPrompt.SetHidden(hidden)
+    pickupHidden = hidden
+    for prompt, display in pairs(pickupDisplays) do
+        display.gui.Enabled = not hidden
+        if hidden then
+            display.releasePointer()
+        end
+    end
+end
 
 --- 在引擎当前显示的战利品提示中选择最近的一个，排除菜鸟等其他拾取。
 --- @param position Vector3 玩家角色位置。
 --- @return GuiButton? 教程可指向的实际拾取按钮。
 function PickupPrompt.GetRockDropButton(position)
+    if pickupHidden then
+        return nil
+    end
     local nearestButton, nearestDistance = nil, math.huge
     for prompt, button in pairs(rockDropButtons) do
         if prompt.Enabled and prompt.Parent then
@@ -59,6 +76,7 @@ local function ShowPrompt(prompt, inputType)
     gui.AlwaysOnTop = true
     gui.ResetOnSpawn = false
     gui.Active = true
+    gui.Enabled = not pickupHidden
 
     local canvas = Instance.new("Frame")
     canvas.Name = "Canvas"
@@ -191,7 +209,7 @@ local function ShowPrompt(prompt, inputType)
     --- 只记录按下拾取按钮的手指，摇杆或镜头触点松开不打断拾取。
     --- @param input InputObject 本次按钮输入。
     local function BeginPointer(input)
-        if not pointerInput and (input.UserInputType == Enum.UserInputType.MouseButton1
+        if not pickupHidden and not pointerInput and (input.UserInputType == Enum.UserInputType.MouseButton1
             or input.UserInputType == Enum.UserInputType.Touch) then
             pointerInput = input
             prompt:InputHoldBegin()
@@ -203,6 +221,7 @@ local function ShowPrompt(prompt, inputType)
             return
         end
         cleaned = true
+        pickupDisplays[prompt] = nil
         rockDropButtons[prompt] = nil
         if viewportConnection then
             viewportConnection:Disconnect()
@@ -238,6 +257,7 @@ local function ShowPrompt(prompt, inputType)
     table.insert(connections, UserInputService.WindowFocusReleased:Connect(ReleasePointer))
     table.insert(connections, workspace:GetPropertyChangedSignal("CurrentCamera"):Connect(BindViewport))
     BindViewport()
+    pickupDisplays[prompt] = { gui = gui, releasePointer = ReleasePointer }
     gui.Parent = FXLoader:Player("PlayerGui", math.huge)
     if prompt:GetAttribute("RockDropPickup") == true then
         rockDropButtons[prompt] = button

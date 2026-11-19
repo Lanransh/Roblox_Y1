@@ -6,7 +6,11 @@ local CGMPanelPreview = FX.Class("CGMPanelPreview", "CGMPanelView")
 function CGMPanelPreview:Ctor(owner)
     CGMPanelPreview.Super.Ctor(self, owner)
     self.Config = {}
-    self.State = { pending = false }
+    self.State = {
+        pending = false,
+        playerStatsHidden = false,
+        pickupPromptsHidden = false,
+    }
     self.Data = { SetLevel = 1, SetRebirth = 0, SetMoney = 0, SetDiamonds = 0 }
     self.Items = {}
     self.AllCollectionsUnlocked = false
@@ -21,15 +25,19 @@ function CGMPanelPreview:OnReady()
     self:Show()
 end
 
--- 模拟命令仅更新内存；保存按钮仅模拟成功反馈。
--- @param action string 稳定命令名
--- @param payload table 设置命令的 value/param2/param3、AddItem 的 itemId/count 或空表
+--- 模拟命令只更新内存，拍照选项通过状态反映在按钮上。
+--- @param action string 稳定命令名。
+--- @param payload table 对应命令的输入或空表。
 function CGMPanelPreview:OnUIAction(action, payload)
     if action == "Close" then
         return
     elseif action == "ToggleGMButton" then
         self.GMButtonHidden = not self.GMButtonHidden
         print("模拟：GM入口按钮隐藏 = " .. tostring(self.GMButtonHidden) .. "，保留点击")
+    elseif action == "TogglePlayerStats" then
+        self.State.playerStatsHidden = not self.State.playerStatsHidden
+    elseif action == "TogglePickupPrompts" then
+        self.State.pickupPromptsHidden = not self.State.pickupPromptsHidden
     elseif action == "SetLootScale" then
         self.LootScale = payload.value
         print("模拟：本机战利品截图倍率 = " .. tostring(self.LootScale))

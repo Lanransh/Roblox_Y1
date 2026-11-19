@@ -1,6 +1,8 @@
 local FX = _G.FX
 local FXLoader = FX.Loader
 local Text = FX.Text
+local Players = game:GetService("Players")
+local PickupPrompt = FXLoader:Require(script.Parent.Parent, "PickupPrompt")
 local TranslationTexts = Text.Define("GMUI", {
     InvalidItemInput = "Enter a valid item ID and a positive whole-number quantity.",
     InvalidValue = "Enter a valid whole number within the allowed range.",
@@ -21,7 +23,11 @@ end
 function Component:Ctor(owner)
     Component.Super.Ctor(self, owner)
     self.Config = {}
-    self.State = {pending = false}
+    self.State = {
+        pending = false,
+        playerStatsHidden = false,
+        pickupPromptsHidden = false,
+    }
 end
 
 --- 开发者提前初始化面板，入口统一使用主界面按钮，Ready 回放时不重复绑定。
@@ -59,7 +65,52 @@ function Component:OnInvalidInput(action)
     end
 end
 
---- GM 入口显隐和战利品截图缩放仅在本地执行，数据命令提交服务端鉴权；请求中禁用操作。
+--- 切换本机看到的力量和重生次数两行，恢复时保留各自原有的可见性。
+--- @param hidden boolean 是否隐藏这两个头顶浮标。
+function Component:_SetPlayerStatsHidden(hidden)
+    if not hidden then
+        self._playerStatsConnection:Disconnect()
+        self._playerStatsConnection = nil
+        for billboard, enabled in pairs(self._playerStatsVisibility) do
+            if billboard.Parent then
+                billboard.Enabled = enabled
+            end
+        end
+        self._playerStatsVisibility = nil
+        return
+    end
+
+    local visibility = setmetatable({}, { __mode = "k" })
+    self._playerStatsVisibility = visibility
+
+    --- 仅接管 SMiscCompClass 放在角色头部的两行浮标。
+    --- @param node Instance 已有或刚进入客户端场景的节点。
+    local function HideStat(node)
+        if node.Name ~= "StrengthBillboard" and node.Name ~= "RebirthBillboard" then
+            return
+        end
+        local head = node.Parent
+        if self._playerStatsVisibility == visibility and node:IsA("BillboardGui")
+            and head and head.Name == "Head" and visibility[node] == nil then
+            visibility[node] = node.Enabled
+            node.Enabled = false
+        end
+    end
+
+    -- 只在隐藏期间监听，覆盖重生、晚加入和流式加载的浮标。
+    self._playerStatsConnection = workspace.DescendantAdded:Connect(HideStat)
+    for index, player in ipairs(Players:GetPlayers()) do
+        local character = player.Character
+        local head = character and character:FindFirstChild("Head")
+        if head then
+            for childIndex, node in ipairs(head:GetChildren()) do
+                HideStat(node)
+            end
+        end
+    end
+end
+
+--- GM 入口显隐和拍照设置在本地执行；数据命令走服务端鉴权，请求中禁用操作。
 --- @param action string 展示类的稳定动作名。
 --- @param payload table 展示类校验后的输入，添加道具使用 itemId/count，数值动作使用 value。
 function Component:OnUIAction(action, payload)
@@ -76,6 +127,18 @@ function Component:OnUIAction(action, payload)
     end
     if action == "SetLootScale" then
         self:GetPlayerObject():RequireComponent("CRockLevelComp"):SetLootDisplayScale(payload.value)
+        return
+    end
+    if action == "TogglePlayerStats" then
+        self.State.playerStatsHidden = not self.State.playerStatsHidden
+        self:_SetPlayerStatsHidden(self.State.playerStatsHidden)
+        self:RefreshUI()
+        return
+    end
+    if action == "TogglePickupPrompts" then
+        self.State.pickupPromptsHidden = not self.State.pickupPromptsHidden
+        PickupPrompt.SetHidden(self.State.pickupPromptsHidden)
+        self:RefreshUI()
         return
     end
     self.State.pending = true
@@ -97,8 +160,14 @@ function Component:OnUIAction(action, payload)
     end)
 end
 
---- 离服取消等待任务，生成父类负责界面连接及适配清理。
+--- 析构时恢复本地隐藏设置并取消等待任务，父类负责界面连接及适配清理。
 function Component:Dtor()
+    if self.State.playerStatsHidden then
+        self:_SetPlayerStatsHidden(false)
+    end
+    if self.State.pickupPromptsHidden then
+        PickupPrompt.SetHidden(false)
+    end
     if self._requestTask then
         task.cancel(self._requestTask)
         self._requestTask = nil
