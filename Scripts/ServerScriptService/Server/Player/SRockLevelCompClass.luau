@@ -44,6 +44,7 @@ function Component:Ctor(owner)
     self._dropByCell = {}
     self._areaStates = {}
     self._inSafeArea = nil
+    self._inLevelArea = false
     self._random = Random.new()
 end
 
@@ -731,6 +732,7 @@ function Component:EquipPickaxe(humanoid)
 end
 
 --- 服务端处理掉落、角色与入库，按基地判定切换移速；死亡期间仍回收掉落。
+--- 仅在从关卡外进入时切回镐子，避免覆盖玩家在关卡内手动切换的工具。
 function Component:Tick()
     local now = workspace:GetServerTimeNow()
     for dropId, drop in pairs(self._dropNodes) do
@@ -788,6 +790,7 @@ function Component:Tick()
         self._inSafeArea = inSafeArea
     end
     if inSafeArea then
+        self._inLevelArea = false
         if not self._inSafeArea then
             self:RestoreRocks()
         end
@@ -796,16 +799,20 @@ function Component:Tick()
     else
         self._inSafeArea = false
         self._depositFull = false
-        for _, area in ipairs(self._areas) do
-            if position.X >= area.MinX and position.X < area.MinX + area.Columns * RockLevel.CellSize
-                and position.Z >= area.MinZ and position.Z < area.MinZ + area.Rows * RockLevel.CellSize
-                and math.abs(position.Y - area.FloorY) < 12 then
-                self:InitializeArea(area)
-                local nextArea = self._areas[area.Index + 1]
-                if nextArea and nextArea.World == area.World then
-                    self:InitializeArea(nextArea)
-                end
-                break
+        local inLevelArea, area = RockLevel.IsInArea(self._areas, position)
+        local enteredLevelArea = inLevelArea and not self._inLevelArea
+        self._inLevelArea = inLevelArea
+        if enteredLevelArea then
+            local backpack = self:GetPlayerNode():FindFirstChildOfClass("Backpack")
+            if backpack and self._pickaxe.Parent == backpack then
+                humanoid:EquipTool(self._pickaxe)
+            end
+        end
+        if area then
+            self:InitializeArea(area)
+            local nextArea = self._areas[area.Index + 1]
+            if nextArea and nextArea.World == area.World then
+                self:InitializeArea(nextArea)
             end
         end
     end

@@ -132,6 +132,7 @@ function Component:OnReady()
         self._backpackBoost.Parent = self._rootNode
     end
     self:ConfigureBackpackBoostLayout()
+    self:LayoutStrengthOffers()
     self._backpackBoost.Visible = false
     self._lootCount = 0
     self._lootBaseCapacity = RockLevel.LootCapacity
@@ -463,10 +464,27 @@ function Component:ToggleGMButtonVisuals()
     end
 end
 
---- 价格与钻石紧邻排列，整组贴近商品图标上沿并略微偏右。
+--- 为三个力量购买入口分开价格、商品图标和收益；沿用右侧分组的整体缩放。
+function Component:LayoutStrengthOffers()
+    local right = FXLoader:Here(self._rootNode, "RightCenter")
+    local background = FXLoader:Here(right, "DoubleStrengthButton/Background")
+    background.Position += UDim2.fromOffset(0, 4)
+    background.Size -= UDim2.fromOffset(0, 2)
+    for index, name in ipairs({"StrengthPack1Button", "StrengthPack2Button"}) do
+        local button = FXLoader:Here(right, name)
+        button.Position = UDim2.fromOffset(66, 170 + (index - 1) * 114)
+        button.Size = UDim2.fromOffset(82, 109)
+        local icon = FXLoader:Here(button, "Icon")
+        icon.AnchorPoint = Vector2.new(0.5, 0)
+        icon.Position = UDim2.new(0.5, 0, 0, 26)
+        icon.Size = UDim2.fromOffset(54, 54)
+        FXLoader:Here(button, "Amount").Position = UDim2.fromOffset(0, 84)
+    end
+end
+
+--- 价格与钻石紧邻排列，放在商品图标上方。
 --- @param button GuiButton 力量倍率或力量包按钮。
---- @param centerY number 价格行中心相对按钮顶部的偏移。
-function Component:LayoutStrengthOfferPrice(button, centerY)
+function Component:LayoutStrengthOfferPrice(button)
     local price = FXLoader:Here(button, "Price")
     local diamond = FXLoader:Here(button, "PriceDiamond")
     local textSize = game:GetService("TextService"):GetTextSize(
@@ -475,11 +493,11 @@ function Component:LayoutStrengthOfferPrice(button, centerY)
     local diamondWidth = diamond.Visible and 26 or 0
     local left = -(width + diamondWidth) / 2 + 8
     price.AnchorPoint = Vector2.new(0, 0.5)
-    price.Position = UDim2.new(0.5, left, 0, centerY)
+    price.Position = UDim2.new(0.5, left, 0, 12)
     price.Size = UDim2.fromOffset(width, 24)
     price.TextXAlignment = Enum.TextXAlignment.Left
     diamond.AnchorPoint = Vector2.new(0, 0.5)
-    diamond.Position = UDim2.new(0.5, left + width + 2, 0, centerY)
+    diamond.Position = UDim2.new(0.5, left + width + 2, 0, 12)
     diamond.Size = UDim2.fromOffset(24, 24)
 end
 
@@ -507,7 +525,7 @@ function Component:RefreshStrengthOffers()
             rate = GameUtility.NumberToText(CurrencyShop.GetTrainingRate(data)),
         })
     end
-    self:LayoutStrengthOfferPrice(rateButton, 10)
+    self:LayoutStrengthOfferPrice(rateButton)
     for name, goodsId in pairs(StrengthPacks) do
         local button = FXLoader:Here(right, name)
         local price = FXLoader:Here(button, "Price")
@@ -518,7 +536,7 @@ function Component:RefreshStrengthOffers()
         amount.AutoLocalize = false
         price.Text = GameUtility.NumberToText(_G.GoodsConfig.GemGoodsData[goodsId].Price)
         amount.Text = "+" .. GameUtility.NumberToText(gain)
-        self:LayoutStrengthOfferPrice(button, 10)
+        self:LayoutStrengthOfferPrice(button)
     end
 end
 

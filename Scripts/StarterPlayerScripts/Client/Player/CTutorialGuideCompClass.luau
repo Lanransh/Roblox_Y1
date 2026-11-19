@@ -78,7 +78,7 @@ function Guide:GetGuideStorage()
     return Fields.Guide
 end
 
---- 创建无点击遮挡的等比提示层；世界目标按当前世界动态查询，角色重生不销毁提示层。
+--- 创建跟随通用提示安全区的引导层；世界目标按当前世界动态查询，角色重生不销毁提示层。
 function Guide:OnReady()
     self._localization = self:RequireComponent("FCCommonUIComp").Localization
     self._screen = Instance.new("ScreenGui")
@@ -112,19 +112,36 @@ function Guide:OnReady()
     self._label.Parent = self._screen
     local scale = Instance.new("UIScale")
     scale.Parent = self._label
-    self._screen.ScreenInsets = FXLoader:PlayerGui("MainUI").ScreenInsets
     local tips = self:RequireComponent("FCCommonUIComp").Tips
-    --- 用通用提示的布局值预留整行，不依赖隐藏模板的渲染尺寸。
+    local tipsScreen = tips.Parent
+    --- 默认紧跟力量栏；黑色提示显示到淡出结束期间才为它留出一行。
     local function updateScale()
+        self._screen.ScreenInsets = tipsScreen.ScreenInsets
         local size = self._screen.AbsoluteSize
         if size.X <= 0 or size.Y <= 0 then
             return
         end
         scale.Scale = math.min(size.X / 1280, size.Y / 720)
-        local tipsBottom = tips.Position.Y.Offset + tips.Size.Y.Offset
-        self._label.Position = UDim2.new(0.5, 0, 0, tipsBottom + 12 * scale.Scale)
+        -- 小屏仍给长译文保留足够的实际换行高度。
+        self._label.Size = UDim2.fromOffset(1024, math.max(48, 48 / scale.Scale))
+        local y = tips.Position.Y.Offset
+        if tipsScreen.Enabled and tipsScreen:FindFirstChild("ActiveTip") then
+            y += tips.Size.Y.Offset + 12 * scale.Scale
+        end
+        self._label.Position = UDim2.new(0.5, 0, 0, y)
+    end
+    --- 提示副本被创建或淡出销毁时重新排列引导。
+    --- @param child Instance 通用提示层新增或移除的直属节点。
+    local function OnTipChanged(child)
+        if child.Name == "ActiveTip" then
+            updateScale()
+        end
     end
     self:TrackConnection(self._screen:GetPropertyChangedSignal("AbsoluteSize"):Connect(updateScale))
+    self:TrackConnection(tipsScreen:GetPropertyChangedSignal("ScreenInsets"):Connect(updateScale))
+    self:TrackConnection(tipsScreen:GetPropertyChangedSignal("Enabled"):Connect(updateScale))
+    self:TrackConnection(tipsScreen.ChildAdded:Connect(OnTipChanged))
+    self:TrackConnection(tipsScreen.ChildRemoved:Connect(OnTipChanged))
     self:TrackConnection(tips:GetPropertyChangedSignal("Position"):Connect(updateScale))
     self:TrackConnection(tips:GetPropertyChangedSignal("Size"):Connect(updateScale))
     self._screen.Parent = FXLoader:Here(self:GetPlayerNode(), "PlayerGui", math.huge)

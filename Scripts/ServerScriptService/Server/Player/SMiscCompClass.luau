@@ -567,12 +567,45 @@ function Component:ClaimTrainingBonus(offerId)
     player:SetAttribute("TrainingBonusUntil", self._trainingBonusUntil)
 end
 
---- 场内按秒自动训练，替代走路与击打；统一应用装备、图鉴、付费与好友倍率、重生、追赶和经验封顶。
+--- 进训练基地立即装备已有镐子；场内从最近一次切换道具或收起道具开始等四秒。
+--- @param character Model 当前存活角色。
+--- @param humanoid Humanoid 当前角色的 Humanoid。
+--- @param enteredField boolean 本次检查是否刚进入训练基地。
+--- @param now number 当前单调时间。
+function Component:RefreshTrainingPickaxe(character, humanoid, enteredField, now)
+    local equippedTool = character:FindFirstChildOfClass("Tool")
+    if equippedTool and equippedTool:GetAttribute("StarterPickaxe") == true then
+        self._trainingPickaxeSwitch = nil
+        return
+    end
+    local pending = self._trainingPickaxeSwitch
+    if enteredField or not pending or pending.Tool ~= equippedTool then
+        pending = {Tool = equippedTool, EquipAt = enteredField and now or now + 4}
+        self._trainingPickaxeSwitch = pending
+    end
+    if now < pending.EquipAt then
+        return
+    end
+    local backpack = self:GetPlayerNode():FindFirstChildOfClass("Backpack")
+    if not backpack then
+        return
+    end
+    for index, tool in ipairs(backpack:GetChildren()) do
+        if tool:IsA("Tool") and tool:GetAttribute("StarterPickaxe") == true then
+            humanoid:EquipTool(tool)
+            self._trainingPickaxeSwitch = nil
+            return
+        end
+    end
+end
+
+--- 检查训练基地的镐子装备状态，并按秒自动训练，替代走路与击打；沿用现有倍率与封顶规则。
 function Component:TickTraining()
     local character = self:GetPlayerCharacter()
     local root = character and character:FindFirstChild("HumanoidRootPart")
     local humanoid = character and character:FindFirstChildOfClass("Humanoid")
     if not root or not humanoid or humanoid.Health <= 0 then
+        self._trainingPickaxeSwitch = nil
         self:ClearTrainingBonus()
         self:RefreshTrainingField(nil, os.clock())
         self._lastGrowth = os.clock()
@@ -580,14 +613,22 @@ function Component:TickTraining()
         return
     end
     local now = os.clock()
-    if self._character ~= character then
+    local changedCharacter = self._character ~= character
+    if changedCharacter then
         self:ClearTrainingBonus()
         self:RestoreWorld(character)
         self._character = character
         self._lastGrowth = now
         self._hit = false
     end
-    local fieldRate = self:RefreshTrainingField(TrainingFields.GetAtPosition(root.Position), now)
+    local field = TrainingFields.GetAtPosition(root.Position)
+    if field then
+        local enteredField = changedCharacter or field.Index ~= self._trainingFieldIndex
+        self:RefreshTrainingPickaxe(character, humanoid, enteredField, now)
+    else
+        self._trainingPickaxeSwitch = nil
+    end
+    local fieldRate = self:RefreshTrainingField(field, now)
     if fieldRate > 0 then
         self:TickTrainingBonus(workspace:GetServerTimeNow())
     end

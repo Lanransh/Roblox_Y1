@@ -1,4 +1,5 @@
 local FX, FC = _G.FX, _G.FC
+local GuiService = game:GetService("GuiService")
 local FXLoader = FX.Loader
 local Text = FX.Text
 local TranslationTexts = Text.Define("Tooltips", {
@@ -77,12 +78,21 @@ function UI:BindTipLayout()
     self._tipScreen = screen
     self.Tips.Parent = screen
 
-    --- 响应版面变化，同时更新仍在显示的提示副本。
+    --- 将顶部栏的实际下沿转换到提示层的安全区坐标，并更新仍在显示的提示副本。
     local function UpdateLayout()
+        screen.ScreenInsets = main.ScreenInsets
         local viewport = screen.AbsoluteSize
+        if viewport.X <= 0 or viewport.Y <= 0 then
+            return
+        end
         local scale = math.clamp(math.min(viewport.X / 1280, viewport.Y / 720), 0.65, 1)
-        local header = strength.Visible and strength or levelBar
-        local y = header.AbsolutePosition.Y + header.AbsoluteSize.Y + 8 * scale
+        local bottom = levelBar.AbsolutePosition.Y + levelBar.AbsoluteSize.Y
+        if strength.Visible then
+            bottom = math.max(bottom, strength.AbsolutePosition.Y + strength.AbsoluteSize.Y)
+        end
+        -- AbsolutePosition 与 GetInsetArea 都以 CoreUISafeInsets 为原点。
+        local originY = GuiService:GetInsetArea(screen.ScreenInsets).Min.Y
+        local y = bottom - originY + 8 * scale
         self.Tips.Position = UDim2.new(0.5, 0, 0, y)
         self.Tips.Size = UDim2.new(0.86, 0, 0, 44 * scale)
         if self._tipGroup then
@@ -91,6 +101,8 @@ function UI:BindTipLayout()
         end
     end
     self:TrackConnection(screen:GetPropertyChangedSignal("AbsoluteSize"):Connect(UpdateLayout))
+    self:TrackConnection(main:GetPropertyChangedSignal("ScreenInsets"):Connect(UpdateLayout))
+    self:TrackConnection(GuiService:GetPropertyChangedSignal("TopbarInset"):Connect(UpdateLayout))
     for index, node in ipairs({strength, levelBar}) do
         self:TrackConnection(node:GetPropertyChangedSignal("AbsolutePosition"):Connect(UpdateLayout))
         self:TrackConnection(node:GetPropertyChangedSignal("AbsoluteSize"):Connect(UpdateLayout))
