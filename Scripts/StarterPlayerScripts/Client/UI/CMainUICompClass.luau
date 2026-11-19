@@ -43,7 +43,6 @@ local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
 local GuiService = game:GetService("GuiService")
-local SocialService = game:GetService("SocialService")
 local ContentProvider = game:GetService("ContentProvider")
 local RockLevel = FXLoader:RequireShared("Scripts/Game/Shared/RockLevel")
 local GameUtility = FXLoader:RequireShared("Scripts/Game/Shared/GameUtility")
@@ -51,6 +50,7 @@ local CurrencyShop = FXLoader:RequireShared("Scripts/Game/Shared/CurrencyShop")
 local InstancePath = FXLoader:RequireShared("Scripts/Game/Shared/InstancePath")
 local AnimatedText = FXLoader:RequireFromParent(script, "CAnimatedText")
 local UIGuideArrow = FXLoader:RequireFromParent(script, "UIGuideArrow")
+FXLoader:RequireFromParent(script, "CFriendBoostUICompClass")
 local StrengthPacks = {StrengthPack1Button = 301, StrengthPack2Button = 302}
 local AREA_EXIT_PADDING = 2
 local Component = FX.Class("CMainUICompClass", "FCUICompClass")
@@ -102,11 +102,10 @@ function Component:OnReady()
     self._gmButton = FXLoader:Here(self._rootNode, "GMButton")
     self._commonUI = self:GetPlayerObject():RequireComponent("FCCommonUIComp")
     self._localization = self._commonUI.Localization
+    self:CreatePurchaseReminder()
     self._trainingStatus = Instance.new("TextLabel")
     self._trainingStatus.Name = "TrainingStatus"
-    self._trainingStatus.AnchorPoint = Vector2.new(0.5, 0)
-    -- 顶部距离随安全区高度变化，避免手机横屏偏低、PC 又贴近顶部信息。
-    self._trainingStatus.Position = UDim2.fromScale(0.5, 150 / 720)
+    self._trainingStatus.AnchorPoint = Vector2.new(0.5, 1)
     self._trainingStatus.Size = UDim2.fromOffset(480, 44)
     self._trainingStatus.BackgroundTransparency = 1
     self._trainingStatus.Font = Enum.Font.GothamBold
@@ -115,9 +114,8 @@ function Component:OnReady()
     self._trainingStatus.TextStrokeTransparency = 0.3
     self._trainingStatus.AutoLocalize = false
     self._trainingStatus.Visible = false
-    self._trainingStatus.Parent = self._rootNode
+    self._trainingStatus.Parent = self._bottomTrainingGroup
     self._trainingTextEffect = AnimatedText.Attach(self._trainingStatus)
-    self:CreatePurchaseReminder()
     self:CreateTrainingRejoinLabel()
     self._strength.AutoLocalize = false
     FXLoader:Here(self._bar, "ProgressLabel").AutoLocalize = false
@@ -420,7 +418,7 @@ function Component:BindButtons()
                 elseif node.Name == "CollectionBtn" then
                     self:GetPlayerObject():RequireComponent("CCollectionUIComp"):Show()
                 elseif node.Name == "InviteBtn" then
-                    self:PromptFriendInvite()
+                    self:GetPlayerObject():RequireComponent("CFriendBoostUIComp"):Show()
                 elseif node.Name == "RebirthButton" then
                     self:GetPlayerObject():RequireComponent("CRebirthUIComp"):Show()
                 elseif node.Name == "RewardBtn" then
@@ -462,24 +460,6 @@ function Component:ToggleGMButtonVisuals()
         button.TextTransparency = 1
         button.TextStrokeTransparency = 1
         button.AutoButtonColor = false
-    end
-end
-
---- 平台允许邀请时打开原生好友选择窗口，防止重复点击叠加请求。
-function Component:PromptFriendInvite()
-    if self._invitePending then
-        return
-    end
-    self._invitePending = true
-    local success, message = pcall(function()
-        local player = self:GetPlayerNode()
-        if SocialService:CanSendGameInviteAsync(player) then
-            SocialService:PromptGameInvite(player)
-        end
-    end)
-    self._invitePending = false
-    if not success then
-        warn("Unable to open friend invite:", message)
     end
 end
 
@@ -742,7 +722,7 @@ function Component:RefreshTrainingRejoin()
     self:RefreshTrainingRejoinLayout()
 end
 
---- 按彩色提醒的实际换行高度留出间距，两行文字统一沿用主界面 UIScale 缩放。
+--- 底部从上到下排训练倍率、防踢出状态和彩色提醒，只为可见文案留出空间。
 function Component:RefreshTrainingRejoinLayout()
     local label = self._purchaseReminder
     local height = 0
@@ -751,7 +731,10 @@ function Component:RefreshTrainingRejoinLayout()
             Vector2.new(self._bottomTrainingGroup.Size.X.Offset, 100000))
         height = math.min(self._bottomTrainingGroup.Size.Y.Offset, bounds.Y * label.LineHeight)
     end
-    self._trainingRejoinLabel.Position = UDim2.new(0.5, 0, 1, -height - 16)
+    local rejoin = self._trainingRejoinLabel
+    local statusY = -height - 16
+    rejoin.Position = UDim2.new(0.5, 0, 1, statusY)
+    self._trainingStatus.Position = UDim2.new(0.5, 0, 1, statusY - (rejoin.Visible and rejoin.Size.Y.Offset + 6 or 0))
 end
 
 --- 基础教学及五段重生路线结束后才显示底部提醒，避免与当前路线争抢箭头和文案。

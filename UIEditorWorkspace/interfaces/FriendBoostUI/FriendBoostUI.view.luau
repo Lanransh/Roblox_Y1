@@ -1,0 +1,69 @@
+--[[
+好友加成窗口接入契约
+
+【Config / State】
+  Config（首次刷新前设置）：
+    perFriendRate: number；每位同服好友的额外训练倍率，0.25 表示 +25%。
+    maxFriends: number；计入加成的好友人数上限。
+  State（每次刷新传完整快照）：
+    bonusRate: number；已经应用人数上限的当前额外训练倍率，0 表示 +0%。
+    invitePending: boolean；原生邀请检查或调用进行中，期间邀请按钮不可点击。
+
+【初始化与刷新】
+  接入类继承 CFriendBoostView。在接入 OnReady 中先调用父 OnReady，
+  然后准备 Config 和 State、订阅同服好友人数、调用 RefreshUI。
+  初始 Hide；主界面入口调用 Show。数据或邀请状态变化后更新 State 并 RefreshUI。
+  语言变化时刷新。继承节点绑定、Render、RefreshUI 及显隐，不重复绑定按钮。
+
+【动作】
+  必需覆写 OnUIAction(action: string, payload: table)，无返回值。
+    Invite -> {}；复用项目的原生邀请入口，业务负责资格、请求防重和恢复 pending。
+    Close -> {}；调用 Hide()。
+  View 只展示加成和规则，游戏负责从现有配置和训练逻辑取得数据。
+]]
+local FX = _G.FX
+local FXLoader = FX.Loader
+local Text = FXLoader:RequireShared("Scripts.Framework.Shared.Core.FXText")
+local CFriendBoostView = FX.Class("CFriendBoostView", "CUIView")
+CFriendBoostView.ScreenGuiName = "FriendBoostUI"
+
+local TranslationTexts = Text.Define("FriendBoostUI", {
+    Rules = "+{bonus}% training boost per friend on the same server, up to {count:int} friends.",
+})
+CFriendBoostView.BaseViewTranslationTexts = TranslationTexts
+
+--- 绑定好友倍率和规则文本，将界面的邀请和关闭动作交给接入层。
+function CFriendBoostView:OnReady()
+    local root = FXLoader:PlayerGui("FriendBoostUI")
+    self._multiplierTxt = FXLoader:Here(root, "PopupPanelImg.CurrentBoostImg.MultiplierTxt")
+    self._rulesTxt = FXLoader:Here(root, "PopupPanelImg.ExplanationImg.RulesTxt")
+    self._inviteBtn = FXLoader:Here(root, "PopupPanelImg.InviteBtn")
+    local closeBtn = FXLoader:Here(root, "TitleBox.CloseSurfaceImg.CloseBtn")
+    self:TrackConnection(self._inviteBtn.Activated:Connect(function()
+        self:EmitUIAction("Invite", {})
+    end))
+    self:TrackConnection(closeBtn.Activated:Connect(function()
+        self:EmitUIAction("Close", {})
+    end))
+end
+
+--- 将小数形式的额外倍率转成最多两位小数的百分比数字。
+--- @param rate number 小数形式的额外倍率。
+--- @return string 不含百分号的数字。
+local function FormatPercent(rate)
+    return string.format("%g", math.round(rate * 10000) / 100)
+end
+
+--- 显示当前训练加成和好友计入规则；等待原生邀请时暂时锁定邀请按钮。
+--- @param state table 当前加成和邀请状态。
+function CFriendBoostView:Render(state)
+    local config = self:GetUIConfig()
+    self._multiplierTxt.Text = "+" .. FormatPercent(state.bonusRate) .. "%"
+    self._rulesTxt.Text = Text.Tr(TranslationTexts.Rules, {
+        bonus = FormatPercent(config.perFriendRate),
+        count = config.maxFriends,
+    })
+    self:SetButtonEnabled(self._inviteBtn, not state.invitePending)
+end
+
+return CFriendBoostView

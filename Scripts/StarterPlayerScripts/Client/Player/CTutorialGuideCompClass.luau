@@ -89,7 +89,6 @@ function Guide:OnReady()
     self._label = Instance.new("TextLabel")
     self._label.Name = "Instruction"
     self._label.AnchorPoint = Vector2.new(0.5, 0)
-    self._label.Position = UDim2.fromScale(0.5, 0.13)
     self._label.Size = UDim2.fromOffset(1024, 48)
     self._label.BackgroundTransparency = 1
     self._label.Font = Enum.Font.GothamBold
@@ -113,28 +112,21 @@ function Guide:OnReady()
     self._label.Parent = self._screen
     local scale = Instance.new("UIScale")
     scale.Parent = self._label
-    local topCenter = FXLoader:PlayerGui("MainUI/TopCenter")
-    local strength = FXLoader:Here(topCenter, "Strength")
-    local levelBar = FXLoader:Here(topCenter, "LevelProgressBar")
+    self._screen.ScreenInsets = FXLoader:PlayerGui("MainUI").ScreenInsets
     local tips = self:RequireComponent("FCCommonUIComp").Tips
-    --- 沿用设计分辨率，在顶部 HUD 和通用提示下方预留间距，避免提示弹出时重叠或跳动。
+    --- 用通用提示的布局值预留整行，不依赖隐藏模板的渲染尺寸。
     local function updateScale()
         local size = self._screen.AbsoluteSize
         if size.X <= 0 or size.Y <= 0 then
             return
         end
         scale.Scale = math.min(size.X / 1280, size.Y / 720)
-        local header = strength.Visible and strength or levelBar
-        local headerBottom = header.AbsolutePosition.Y + header.AbsoluteSize.Y
-        local tipsBottom = tips.AbsolutePosition.Y + tips.AbsoluteSize.Y
-        self._label.Position = UDim2.fromScale(0.5, (math.max(headerBottom, tipsBottom) + 12 * scale.Scale) / size.Y)
+        local tipsBottom = tips.Position.Y.Offset + tips.Size.Y.Offset
+        self._label.Position = UDim2.new(0.5, 0, 0, tipsBottom + 12 * scale.Scale)
     end
     self:TrackConnection(self._screen:GetPropertyChangedSignal("AbsoluteSize"):Connect(updateScale))
-    for index, node in ipairs({strength, levelBar, tips}) do
-        self:TrackConnection(node:GetPropertyChangedSignal("AbsolutePosition"):Connect(updateScale))
-        self:TrackConnection(node:GetPropertyChangedSignal("AbsoluteSize"):Connect(updateScale))
-    end
-    self:TrackConnection(strength:GetPropertyChangedSignal("Visible"):Connect(updateScale))
+    self:TrackConnection(tips:GetPropertyChangedSignal("Position"):Connect(updateScale))
+    self:TrackConnection(tips:GetPropertyChangedSignal("Size"):Connect(updateScale))
     self._screen.Parent = FXLoader:Here(self:GetPlayerNode(), "PlayerGui", math.huge)
     updateScale()
     self._uiArrow = UIGuideArrow.New(self._screen.Parent)

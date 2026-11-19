@@ -35,6 +35,7 @@ function Player:Ctor(playerId)
     self:AddComponent("CMenuRetentionUICompClass")
     self:AddComponent("CWorldTeleportUICompClass")
     self:AddComponent("CSettingsUICompClass")
+    self:AddComponent("CFriendBoostUICompClass")
     self:AddComponent("CMainUICompClass")
     self:AddComponent("CTutorialGuideCompClass")
 end

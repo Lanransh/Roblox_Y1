@@ -1,5 +1,17 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
+local ContentProvider = game:GetService("ContentProvider")
+local StarterGui = game:GetService("StarterGui")
+
+-- 框架初始化前先后台请求加载页封面，直接使用 UIEditor 模板上的图片。
+task.spawn(function()
+    local loadingGui = StarterGui:WaitForChild("RockTreasureLoadingConceptUI", 10)
+    local cover = loadingGui and loadingGui:WaitForChild("ForestSceneImg", 10)
+    if cover and cover:IsA("ImageLabel") then
+        ContentProvider:PreloadAsync({cover})
+    end
+end)
+
 -- 进入游戏时使用横屏，并允许根据设备朝向左右翻转。
 Players.LocalPlayer:WaitForChild("PlayerGui").ScreenOrientation = Enum.ScreenOrientation.LandscapeSensor
 

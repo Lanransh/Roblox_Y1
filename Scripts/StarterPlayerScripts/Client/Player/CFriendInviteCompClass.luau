@@ -132,6 +132,8 @@ function Component:ShowInviteNotification(friend)
     message.TextXAlignment = Enum.TextXAlignment.Left
     message.TextYAlignment = Enum.TextYAlignment.Top
     local invite = createText("TextButton", "Invite", UDim2.fromOffset(0, 104), UDim2.fromOffset(150, 40))
+    invite.Interactable = not self:IsInvitePending()
+    self._notificationInviteButton = invite
     local close = createText("TextButton", "Close", UDim2.fromOffset(150, 104), UDim2.fromOffset(150, 40))
     for index, button in ipairs({invite, close}) do
         button.BackgroundColor3 = Color3.new(1, 1, 1)
@@ -169,7 +171,7 @@ function Component:ShowInviteNotification(friend)
         screen:GetPropertyChangedSignal("AbsoluteSize"):Connect(updateScale),
         localization.Changed:Connect(refreshText),
         invite.Activated:Connect(function()
-            if self._destroyed or self._inviteHandled then
+            if self._destroyed or self._inviteHandled or self._invitePending then
                 return
             end
             self._inviteHandled = true
@@ -191,6 +193,7 @@ end
 
 --- 关闭提示并解除其连接，避免过期计时或语言刷新访问已销毁节点。
 function Component:CloseInviteNotification()
+    self._notificationInviteButton = nil
     if self._notificationTask then
         task.cancel(self._notificationTask)
         self._notificationTask = nil
@@ -207,19 +210,58 @@ function Component:CloseInviteNotification()
     end
 end
 
---- 点击时再次检查邀请资格与同服状态，再交由玩家确认官方邀请。
---- @param friendId number 本次通知对应好友的 Roblox UserId。
+--- 读取两个邀请入口共用的请求状态，用于初始化按钮。
+--- @return boolean 是否正在检查或打开原生邀请。
+function Component:IsInvitePending()
+    return self._invitePending == true
+end
+
+--- 更新请求锁，并同步在线好友通知和好友加成弹窗的按钮状态。
+--- @param pending boolean 是否正在处理邀请请求。
+function Component:SetInvitePending(pending)
+    self._invitePending = pending
+    if self._notificationInviteButton then
+        self._notificationInviteButton.Interactable = not pending
+    end
+    self:PublishEvent("FriendInvitePendingChanged", pending)
+end
+
+--- 两个邀请入口共用请求锁；打开平台窗口前再次检查资格、离服和同服状态。
+--- @param friendId number? 指定好友的 Roblox UserId；省略时打开好友选择器。
 function Component:PromptInvite(friendId)
+    if self._destroyed or self._invitePending then
+        return
+    end
+    self:SetInvitePending(true)
+    local options
     local success, message = pcall(function()
         local player = self:GetPlayerNode()
-        if SocialService:CanSendGameInviteAsync(player, friendId)
-            and not self._destroyed and not Players:GetPlayerByUserId(friendId) then
-            local options = Instance.new("ExperienceInviteOptions")
+        local canInvite
+        if friendId then
+            canInvite = SocialService:CanSendGameInviteAsync(player, friendId)
+        else
+            canInvite = SocialService:CanSendGameInviteAsync(player)
+        end
+        if not canInvite or self._destroyed or not player.Parent then
+            return
+        end
+        if friendId then
+            if Players:GetPlayerByUserId(friendId) then
+                return
+            end
+            options = Instance.new("ExperienceInviteOptions")
             options.InviteUser = friendId
             SocialService:PromptGameInvite(player, options)
-            options:Destroy()
+        else
+            SocialService:PromptGameInvite(player)
         end
     end)
+    if options then
+        options:Destroy()
+    end
+    if not self._destroyed then
+        self:SetInvitePending(false)
+    end
     if not success then
         warn("Unable to open friend invite:", message)
     end

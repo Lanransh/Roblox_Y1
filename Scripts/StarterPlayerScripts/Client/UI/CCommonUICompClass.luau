@@ -59,7 +59,47 @@ function UI:Ctor(owner)
     self.Modal:SetAttribute("HoverEnabled", false)
     self._buttonHover = ButtonHover.New(playerGui)
     self.Tips.TextSize = 28
-    -- 提示保留在通用高层浮窗中，不能移到低层画布被出售等弹窗遮住。
+    self:BindTipLayout()
+end
+
+--- 通用提示固定在力量行下方，与主界面共用安全区，保留原有浮窗显示层级。
+function UI:BindTipLayout()
+    local main = FXLoader:PlayerGui("MainUI")
+    local top = FXLoader:Here(main, "TopCenter")
+    local strength = FXLoader:Here(top, "Strength")
+    local levelBar = FXLoader:Here(top, "LevelProgressBar")
+    local screen = Instance.new("ScreenGui")
+    screen.Name = "CommonTipsUI"
+    screen.ResetOnSpawn = false
+    screen.DisplayOrder = self.Root.DisplayOrder
+    screen.ScreenInsets = main.ScreenInsets
+    screen.Parent = self.Root.Parent
+    self._tipScreen = screen
+    self.Tips.Parent = screen
+
+    --- 响应版面变化，同时更新仍在显示的提示副本。
+    local function UpdateLayout()
+        local viewport = screen.AbsoluteSize
+        local scale = math.clamp(math.min(viewport.X / 1280, viewport.Y / 720), 0.65, 1)
+        local header = strength.Visible and strength or levelBar
+        local y = header.AbsolutePosition.Y + header.AbsoluteSize.Y + 8 * scale
+        self.Tips.Position = UDim2.new(0.5, 0, 0, y)
+        self.Tips.Size = UDim2.new(0.86, 0, 0, 44 * scale)
+        if self._tipGroup then
+            self._tipGroup.Position = self.Tips.Position
+            self._tipGroup.Size = self.Tips.Size
+        end
+    end
+    self:TrackConnection(screen:GetPropertyChangedSignal("AbsoluteSize"):Connect(UpdateLayout))
+    for index, node in ipairs({strength, levelBar}) do
+        self:TrackConnection(node:GetPropertyChangedSignal("AbsolutePosition"):Connect(UpdateLayout))
+        self:TrackConnection(node:GetPropertyChangedSignal("AbsoluteSize"):Connect(UpdateLayout))
+    end
+    self:TrackConnection(strength:GetPropertyChangedSignal("Visible"):Connect(UpdateLayout))
+    self:TrackConnection(self.Root:GetPropertyChangedSignal("Enabled"):Connect(function()
+        screen.Enabled = self.Root.Enabled
+    end))
+    UpdateLayout()
 end
 
 --- 登记需要暂停空白区域点击的弹窗根节点，实际隐藏后才解除禁点。
@@ -102,9 +142,8 @@ end
 --- @param duration number? 显示时长，单位为秒。
 function UI:ShowTips(message, duration)
     self._tipKey, self._tipArguments = nil, nil
-    local viewport = self.Root.AbsoluteSize
+    local viewport = self._tipScreen.AbsoluteSize
     local scale = math.clamp(math.min(viewport.X / 1280, viewport.Y / 720), 0.65, 1)
-    self.Tips.Size = UDim2.new(0.86, 0, 0, 64 * scale)
     self.Tips.TextSize = math.round(28 * scale)
     FXLoader:Here(self.Tips, "TextSizeLimit").MaxTextSize = math.round(28 * scale)
     FXLoader:Here(self.Tips, "TextStroke").Thickness = 2 * scale
@@ -287,6 +326,7 @@ function UI:Dtor()
     self._buttonHover:Destroy()
     FX.Network:UnRegServerMsgCallback("S2C_ShowLocalizedTips")
     UI.Super.Dtor(self)
+    self._tipScreen:Destroy()
 end
 
 return UI
